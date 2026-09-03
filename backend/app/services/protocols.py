@@ -361,8 +361,15 @@ def run_protocol_health_check(
         ("h2h_context", "AIN 6 — H2H context"),
         ("market_value", "AIN 7 — Market value"),
     ]
+    # AIN 1 / AIN 5 check that matchup and script inputs were computed in-range.
+    # Do NOT require score >= 0.5 here: two-sided slates correctly include the weak
+    # side of each market (and some underdog PLAYs) below 0.5. Strength belongs in
+    # the decision engine, not the slate health sweep — otherwise every live MLB
+    # board falsely FAILS the final protocol check.
     inferred: dict[str, list[bool | None]] = {
-        "matchup_edge": [candidate.matchup_score >= 0.5 for candidate in candidates],
+        "matchup_edge": [
+            0.0 <= float(candidate.matchup_score) <= 1.0 for candidate in candidates
+        ],
         "recent_form_l5_l10": [
             candidate.ain_checks.get("recent_form_l5_l10", candidate.current_form_verified)
             for candidate in candidates
@@ -371,7 +378,9 @@ def run_protocol_health_check(
             candidate.ain_checks.get("situational_angles") for candidate in candidates
         ],
         "injuries_and_rest": [candidate.injuries_verified for candidate in candidates],
-        "pace_or_tempo": [candidate.script_alignment >= 0.5 for candidate in candidates],
+        "pace_or_tempo": [
+            0.0 <= float(candidate.script_alignment) <= 1.0 for candidate in candidates
+        ],
         "h2h_context": [candidate.ain_checks.get("h2h_context") for candidate in candidates],
         "market_value": [
             candidate.estimated_probability > 0 and candidate.american_odds != 0

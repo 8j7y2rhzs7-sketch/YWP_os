@@ -226,7 +226,7 @@ export default function AnalysisScreen() {
             accent={colors.success}
           />
           <Metric
-            label="Official PASS"
+            label="Stay away"
             value={analysis.stay_away.length}
             accent={colors.danger}
           />
