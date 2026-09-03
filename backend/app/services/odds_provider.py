@@ -6,6 +6,7 @@ Aggregates odds from Hard Rock, DraftKings, FanDuel, BetMGM, etc.
 from __future__ import annotations
 
 import logging
+import re
 from typing import Any
 
 import httpx
@@ -66,6 +67,13 @@ def _api_key() -> str:
     return key
 
 
+def _safe_error_message(exc: BaseException) -> str:
+    text = str(exc)
+    # Never echo apiKey query values back to clients/logs consumers.
+    text = re.sub(r"(apiKey=)[^&\s]+", r"\1***", text, flags=re.IGNORECASE)
+    return text[:180]
+
+
 def _set_status(**kwargs: Any) -> None:
     _last_fetch_status.update(kwargs)
     _last_fetch_status["configured"] = odds_api_configured()
@@ -117,7 +125,11 @@ def get_game_odds(
             },
         )
     except Exception as exc:
-        _set_status(ok=False, events=0, error=str(exc)[:180])
+        # Prefer the structured status already set by _get_sync for 401/429.
+        if not _last_fetch_status.get("error"):
+            _set_status(ok=False, events=0, error=_safe_error_message(exc))
+        else:
+            _set_status(ok=False, events=0)
         logger.exception("Odds API fetch failed")
         return []
 
