@@ -1,8 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const API_URL_KEY = "ywp.os.api_url.v1";
+const configuredApiUrl = process.env.EXPO_PUBLIC_API_URL?.trim();
 const DEFAULT_API_URL = (
-  process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:8000/api/v1"
+  configuredApiUrl || (__DEV__ ? "http://localhost:8000/api/v1" : "")
 ).replace(/\/$/, "");
 
 let currentApiUrl = DEFAULT_API_URL;
@@ -17,7 +18,24 @@ export const WHOP_CHECKOUT_URL =
   "https://whop.com/checkout/plan_MwJ2qcFxmvqDY";
 
 export function normalizeApiUrl(value: string): string {
-  return value.trim().replace(/\/$/, "");
+  const normalized = value.trim().replace(/\/$/, "");
+  if (!normalized) throw new Error("Enter your deployed YWP OS API URL");
+  let parsed: URL;
+  try {
+    parsed = new URL(normalized);
+  } catch {
+    throw new Error("Enter a complete API URL beginning with https://");
+  }
+  const localDevelopment = ["localhost", "127.0.0.1", "10.0.2.2"].includes(
+    parsed.hostname,
+  );
+  if (parsed.protocol !== "https:" && !(__DEV__ && localDevelopment)) {
+    throw new Error("Production API connections must use HTTPS");
+  }
+  if (!parsed.pathname.endsWith("/api/v1")) {
+    throw new Error("The API URL must end with /api/v1");
+  }
+  return normalized;
 }
 
 export async function loadApiUrl(): Promise<string> {
@@ -34,9 +52,6 @@ export async function loadApiUrl(): Promise<string> {
 
 export async function saveApiUrl(value: string): Promise<string> {
   const next = normalizeApiUrl(value);
-  if (!next) {
-    throw new Error("Enter your YWP OS API URL");
-  }
   currentApiUrl = next;
   await AsyncStorage.setItem(API_URL_KEY, next);
   return next;
@@ -59,6 +74,12 @@ export async function rawRequest<T>(
   init: RequestInit = {},
   accessToken?: string,
 ): Promise<T> {
+  if (!getApiUrl()) {
+    throw new ApiError(
+      "This build has no backend configured. Add EXPO_PUBLIC_API_URL during the build or save the Render /api/v1 address in Settings.",
+      503,
+    );
+  }
   const headers = new Headers(init.headers);
   if (init.body && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");

@@ -39,9 +39,29 @@ from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate
 from app.services.live_mlb_slate import live_mlb_slate
 from app.services.live_wnba_slate import live_wnba_slate
 from app.services.odds_provider import get_last_fetch_status, odds_api_configured
+from app.services.readiness import slate_readiness, verification_summary
 from app.services.ticket_builder import build_cards
 
 router = APIRouter(prefix="/sports", tags=["sports"])
+
+
+def _slate_response(
+    *,
+    sport: str,
+    slate_date: date,
+    mode: str,
+    notice: str,
+    candidates: list,
+) -> SlateResponse:
+    return SlateResponse(
+        sport=sport,
+        date=slate_date,
+        mode=mode,
+        readiness=slate_readiness(candidates),
+        notice=notice,
+        verification_summary=verification_summary(candidates),
+        candidates=candidates,
+    )
 
 
 def _owned_recommendation(db: DB, recommendation_id: str, user_id: str) -> Recommendation:
@@ -101,23 +121,23 @@ def slate(
                         "After changing ODDS_API_KEY on Render, use Manual Deploy, "
                         "wait for version 3.0.2+, then refresh."
                     )
-                return SlateResponse(
+                return _slate_response(
                     sport=sport_lower,
-                    date=slate_date,
+                    slate_date=slate_date,
                     mode="live",
                     notice=notice,
                     candidates=candidates,
                 )
         except Exception:
-            logger.exception("Live MLB slate failed, falling back to demo")
+            logger.exception("Live MLB slate failed")
 
     if not settings.demo_mode and sport_lower in ("wnba", "basketball") and settings.odds_api_key:
         try:
             candidates = live_wnba_slate(slate_date)
             if candidates:
-                return SlateResponse(
+                return _slate_response(
                     sport=sport_lower,
-                    date=slate_date,
+                    slate_date=slate_date,
                     mode="live",
                     notice=(
                         "Live WNBA data from The Odds API. "
@@ -126,15 +146,15 @@ def slate(
                     candidates=candidates,
                 )
         except Exception:
-            logger.exception("Live WNBA slate failed, falling back to demo")
+            logger.exception("Live WNBA slate failed")
 
     if not settings.demo_mode and sport_lower in SPORT_KEYS and settings.odds_api_key:
         try:
             candidates = live_generic_slate(sport_lower, slate_date)
             if candidates:
-                return SlateResponse(
+                return _slate_response(
                     sport=sport_lower,
-                    date=slate_date,
+                    slate_date=slate_date,
                     mode="live",
                     notice=(
                         f"Live {sport_lower.upper()} data from The Odds API. "
@@ -143,26 +163,28 @@ def slate(
                     candidates=candidates,
                 )
         except Exception:
-            logger.exception("Live %s slate failed, falling back to demo", sport_lower)
+            logger.exception("Live %s slate failed", sport_lower)
 
-    if not settings.demo_mode and sport_lower not in ("mlb", "wnba", "basketball") and sport_lower not in SPORT_KEYS:
+    if not settings.demo_mode:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=(
-                "No live provider for this sport. Supply licensed provider data "
-                "through POST /sports/analyze or enable demo mode."
+                "No verified live slate is available. The server will not silently substitute "
+                "demo data in production. Check provider configuration or submit verified "
+                "candidate data through POST /sports/analyze."
             ),
         )
 
-    return SlateResponse(
+    candidates = demo_slate(sport_name, slate_date)
+    return _slate_response(
         sport=sport_lower,
-        date=slate_date,
+        slate_date=slate_date,
         mode="demo",
         notice=(
             "Synthetic demonstration data only. It is intentionally not a live slate and must "
             "not be used for wagering."
         ),
-        candidates=demo_slate(sport_name, slate_date),
+        candidates=candidates,
     )
 
 
@@ -295,12 +317,14 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         for candidate in payload.candidates
         for value in candidate.source_status.values()
     )
+    readiness = slate_readiness(payload.candidates)
     return AnalyzeResponse(
         model_version=settings.model_version,
         analysis_id=analysis_id,
         date=payload.date,
         ranked_picks=ranked,
         stay_away=stay_away,
+        readiness=readiness,
         data_quality_summary={
             "protocol_status": protocol_run.status,
             "protocol_run_id": protocol_run.id,
@@ -310,8 +334,13 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             ),
             "unknown_source_labels": unknowns,
             "candidate_count": len(payload.candidates),
-            "official_pass_count": len(stay_away),
+            "official_pass_count": len(ranked),
+            "official_skip_count": len(stay_away),
             "official_pass": len(ranked) == 0,
+            "verified_candidate_count": sum(
+                1 for candidate in payload.candidates if slate_readiness([candidate]) == "VERIFIED"
+            ),
+            "readiness": readiness,
         },
     )
 

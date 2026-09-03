@@ -158,6 +158,7 @@ class CandidateInput(YWPModel):
     line: Decimal | None = None
     american_odds: int = Field(ge=-10000, le=10000)
     estimated_probability: float = Field(gt=0.01, lt=0.99)
+    probability_source: Literal["model", "manual_verified", "market_implied", "demo"] = "model"
     variance: float = Field(ge=0, le=1)
     data_quality: float = Field(ge=0, le=1)
     factors: dict[str, float] = Field(default_factory=dict)
@@ -341,6 +342,7 @@ class AnalyzeResponse(YWPModel):
     date: date
     ranked_picks: list[RecommendationOut]
     stay_away: list[RecommendationOut]
+    readiness: Literal["DEMO", "PARTIAL", "VERIFIED"]
     data_quality_summary: dict[str, Any]
 
 
@@ -348,7 +350,9 @@ class SlateResponse(YWPModel):
     sport: str
     date: date
     mode: Literal["demo", "live"]
+    readiness: Literal["DEMO", "PARTIAL", "VERIFIED"]
     notice: str
+    verification_summary: dict[str, Any]
     candidates: list[CandidateInput]
 
 

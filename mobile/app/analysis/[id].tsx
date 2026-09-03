@@ -219,6 +219,7 @@ export default function AnalysisScreen() {
           />
         </View>
         <Text style={type.caption}>
+          {analysis.readiness ?? analysis.data_quality_summary.readiness ?? "DEMO"} •
           Model {analysis.model_version} • Analysis {analysis.analysis_id.slice(0, 8)} •
           unknown source labels {analysis.data_quality_summary.unknown_source_labels}
         </Text>

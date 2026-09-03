@@ -201,6 +201,7 @@ def _build(
         line=line,
         american_odds=odds_clamped,
         estimated_probability=prob_clamped,
+        probability_source="market_implied",
         variance=0.32,
         data_quality=0.80,
         factors={"matchup": 0.50, "current_form": 0.45, "market_value": 0.40},

@@ -9,6 +9,7 @@ from typing import Any
 
 from app.core.config import settings
 from app.schemas import CandidateInput, Decision, RiskProfile
+from app.services.readiness import candidate_readiness, candidate_verification_gaps
 
 
 def clamp(value: float, low: float, high: float) -> float:
@@ -83,6 +84,21 @@ class DecisionEngine:
         reasons = list(dict.fromkeys(candidate.reason_codes))
         hard_skip_reasons: list[str] = []
         confidence_penalty = 0.0
+
+        readiness = candidate_readiness(candidate)
+        if readiness == "PARTIAL":
+            gaps = candidate_verification_gaps(candidate)
+            hard_skip_reasons.append(
+                "Official play blocked until required research is verified: "
+                + ", ".join(gaps)
+                + "."
+            )
+            reasons.append("RESEARCH_INCOMPLETE")
+        if candidate.probability_source == "market_implied":
+            hard_skip_reasons.append(
+                "Sportsbook implied probability is not an independent YWP projection."
+            )
+            reasons.append("NO_INDEPENDENT_PROBABILITY")
 
         age_seconds = max(0, (now - candidate.source_timestamp).total_seconds())
         stale_limit = 120 if candidate.market_period == "live" else 6 * 60 * 60

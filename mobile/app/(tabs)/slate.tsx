@@ -15,7 +15,18 @@ import { YwpButton } from "@/components/YwpButton";
 import { useAppData } from "@/context/AppDataContext";
 import { useAuth } from "@/context/AuthContext";
 import { colors, radius, spacing, type } from "@/theme";
-import type { AnalyzeResponse, SlateResponse } from "@/types";
+import type { AnalyzeResponse, Readiness, SlateResponse } from "@/types";
+
+function slateReadiness(slate: SlateResponse): Readiness {
+  return slate.readiness ?? (slate.mode === "demo" ? "DEMO" : "PARTIAL");
+}
+
+function probabilityLabel(source: string | undefined): string {
+  if (source === "market_implied") return "MARKET P";
+  if (source === "demo") return "DEMO P";
+  if (source === "manual_verified") return "VERIFIED P";
+  return "MODEL P";
+}
 
 const sports = [
   { key: "mlb", label: "MLB", icon: "⚾" },
@@ -132,12 +143,26 @@ export default function SlateScreen() {
 
       {slate ? (
         <>
-          <MetalPanel tone={slate.mode === "demo" ? "danger" : "success"}>
+          <MetalPanel tone={slateReadiness(slate) === "VERIFIED" ? "success" : "danger"}>
             <View style={styles.noticeHeader}>
-              <Text style={styles.noticeTitle}>{slate.mode.toUpperCase()} DATA SOURCE</Text>
-              <StatusPill value={slate.mode === "demo" ? "WARNING" : "LOCKED"} />
+              <Text style={styles.noticeTitle}>
+                {slateReadiness(slate) === "VERIFIED"
+                  ? "LIVE VERIFIED"
+                  : slateReadiness(slate) === "PARTIAL"
+                    ? "LIVE — RESEARCH INCOMPLETE"
+                    : "DEMO DATA"}
+              </Text>
+              <StatusPill value={slateReadiness(slate) === "VERIFIED" ? "LOCKED" : "WARNING"} />
             </View>
             <Text style={type.body}>{slate.notice}</Text>
+            {slateReadiness(slate) === "PARTIAL" ? (
+              <Text style={styles.verificationWarning}>
+                {slate.verification_summary?.partial_count ?? slate.candidates.length}{" "}
+                candidate(s) are missing required verification. The engine will calculate
+                them, but Strict Mode will return SKIP until every required input and an
+                independent probability are supplied.
+              </Text>
+            ) : null}
           </MetalPanel>
 
           <SectionTitle
@@ -164,9 +189,14 @@ export default function SlateScreen() {
                 </Text>
               </View>
               <Text style={styles.market}>
-                {candidate.market_type.replaceAll("_", " ")} • MODEL P{" "}
+                {candidate.market_type.replaceAll("_", " ")} •{" "}
+                {probabilityLabel(candidate.probability_source)}{" "}
                 {(candidate.estimated_probability * 100).toFixed(1)}% • DATA{" "}
                 {(candidate.data_quality * 100).toFixed(0)}%
+              </Text>
+              <Text style={type.caption}>
+                Probability source:{" "}
+                {(candidate.probability_source ?? "model").replaceAll("_", " ")}
               </Text>
             </MetalPanel>
           ))}
@@ -227,4 +257,10 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   footer: { ...type.caption, textAlign: "center", padding: spacing.md },
+  verificationWarning: {
+    color: colors.danger,
+    fontSize: 12,
+    fontWeight: "800",
+    marginTop: spacing.sm,
+  },
 });

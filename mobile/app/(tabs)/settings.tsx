@@ -172,7 +172,13 @@ export default function SettingsScreen() {
           label="SAVE API URL"
           variant="outline"
           onPress={() => {
-            void saveApiUrl(apiUrl).then(() => setApiSaved(true));
+            setError(null);
+            void saveApiUrl(apiUrl)
+              .then(() => setApiSaved(true))
+              .catch((reason) => {
+                setApiSaved(false);
+                setError(reason instanceof Error ? reason.message : "API URL could not be saved");
+              });
           }}
         />
         {apiSaved ? <Text style={styles.saved}>Server URL saved on this device.</Text> : null}

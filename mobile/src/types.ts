@@ -54,16 +54,30 @@ export interface CandidateInput {
   line: string | null;
   american_odds: number;
   estimated_probability: number;
+  probability_source?: "model" | "manual_verified" | "market_implied" | "demo";
   variance: number;
   data_quality: number;
   [key: string]: unknown;
+}
+
+export type Readiness = "DEMO" | "PARTIAL" | "VERIFIED";
+
+export interface VerificationSummary {
+  readiness: Readiness;
+  candidate_count: number;
+  verified_count: number;
+  partial_count: number;
+  demo_count: number;
+  gaps_by_candidate: Record<string, string[]>;
 }
 
 export interface SlateResponse {
   sport: string;
   date: string;
   mode: "demo" | "live";
+  readiness?: Readiness;
   notice: string;
+  verification_summary?: VerificationSummary;
   candidates: CandidateInput[];
 }
 
@@ -135,6 +149,7 @@ export interface AnalyzeResponse {
   date: string;
   ranked_picks: Recommendation[];
   stay_away: Recommendation[];
+  readiness?: Readiness;
   data_quality_summary: {
     protocol_status: string;
     protocol_run_id: string;
@@ -143,7 +158,10 @@ export interface AnalyzeResponse {
     unknown_source_labels: number;
     candidate_count: number;
     official_pass_count: number;
+    official_skip_count?: number;
     official_pass?: boolean;
+    verified_candidate_count?: number;
+    readiness?: Readiness;
   };
 }
 

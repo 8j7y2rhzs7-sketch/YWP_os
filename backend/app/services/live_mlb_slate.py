@@ -275,6 +275,7 @@ def _build_candidate(
         line=line,
         american_odds=odds,
         estimated_probability=prob_clamped,
+        probability_source="market_implied",
         variance=0.30,
         data_quality=0.88,
         factors={"matchup": 0.60, "current_form": 0.50, "market_value": 0.45},

@@ -46,6 +46,7 @@ def _base(
         line=line,
         american_odds=odds,
         estimated_probability=probability,
+        probability_source="demo",
         variance=variance,
         data_quality=quality,
         factors={"matchup": 0.66, "current_form": 0.52, "market_value": 0.40},

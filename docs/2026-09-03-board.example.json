@@ -1,0 +1,64 @@
+{
+  "purpose": "Regression example showing why real teams do not automatically equal verified analysis",
+  "date": "2026-09-03",
+  "sport": "mlb",
+  "readiness": "PARTIAL",
+  "protocol_status": "WARNING",
+  "final_board": [
+    {
+      "selection": "Brewers ML",
+      "ywp_rating": 8.9,
+      "status": "PROVISIONAL",
+      "verified_evidence": [
+        "Henderson 2.23 L5 ERA",
+        "Henderson 32 strikeouts across the referenced L5 sample",
+        "Henderson completed at least 6 innings in all five referenced starts"
+      ]
+    },
+    {
+      "selection": "Rangers +1.5",
+      "ywp_rating": 8.3,
+      "status": "PROVISIONAL"
+    },
+    {
+      "selection": "Seattle team total over 3.5",
+      "ywp_rating": 8.4,
+      "status": "PROVISIONAL"
+    },
+    {
+      "selection": "Dodgers F5 ML — tie pushes",
+      "ywp_rating": 8.5,
+      "status": "PROVISIONAL"
+    },
+    {
+      "selection": "Boston-Baltimore under 9 or 9.5",
+      "ywp_rating": 7.8,
+      "status": "PASS_AT_8.5"
+    },
+    {
+      "selection": "Miami-Kansas City under 9 with push protection",
+      "ywp_rating": 7.8,
+      "status": "PROVISIONAL_NO_SIDE"
+    }
+  ],
+  "ticket_a": [
+    "Brewers ML",
+    "Dodgers F5 ML — tie pushes",
+    "Seattle team total over 3.5"
+  ],
+  "ticket_b": [
+    "Rangers +1.5",
+    "Miami-Kansas City under 9.5; under 9 acceptable with push"
+  ],
+  "ticket_c": [
+    "Brewers ML",
+    "Dodgers F5 ML — tie pushes"
+  ],
+  "blocking_checks": [
+    "Exact current Hard Rock lines and prices",
+    "Confirmed evening lineups",
+    "Final injury and availability check",
+    "Final market movement and Lock Check"
+  ],
+  "expected_engine_behavior": "Show the real teams and provisional board, label it PARTIAL/WARNING, and block LOCKED status until the blocking checks and independent model probabilities are supplied."
+}
