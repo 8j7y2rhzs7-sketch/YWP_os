@@ -1,0 +1,75 @@
+from functools import lru_cache
+from typing import Literal
+
+from pydantic import Field, field_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    app_name: str = "YWP OS API"
+    app_version: str = "3.0.0"
+    api_prefix: str = "/api/v1"
+    env: Literal["development", "test", "staging", "production"] = Field(
+        default="development", validation_alias="YWP_ENV"
+    )
+    demo_mode: bool = Field(default=True, validation_alias="YWP_DEMO_MODE")
+
+    jwt_secret: str = Field(
+        default="local-development-secret-change-before-production-12345",
+        validation_alias="YWP_JWT_SECRET",
+    )
+    jwt_algorithm: str = "HS256"
+    jwt_issuer: str = "ywp-os"
+    jwt_audience: str = "ywp-app"
+    access_token_minutes: int = Field(default=30, validation_alias="YWP_ACCESS_TOKEN_MINUTES")
+    refresh_token_days: int = Field(default=30, validation_alias="YWP_REFRESH_TOKEN_DAYS")
+
+    database_url: str = Field(default="sqlite:///./ywp.db", validation_alias="DATABASE_URL")
+    redis_url: str | None = Field(default=None, validation_alias="REDIS_URL")
+    cors_origins_raw: str = Field(
+        default="http://localhost:8081,http://localhost:19006",
+        validation_alias="YWP_CORS_ORIGINS",
+    )
+
+    openai_api_key: str | None = Field(default=None, validation_alias="OPENAI_API_KEY")
+    sports_data_api_key: str | None = Field(default=None, validation_alias="SPORTS_DATA_API_KEY")
+    odds_api_key: str | None = Field(default=None, validation_alias="ODDS_API_KEY")
+    weather_api_key: str | None = Field(default=None, validation_alias="WEATHER_API_KEY")
+
+    lock_check_ttl_seconds: int = 300
+    odds_warning_move_probability_points: float = 0.03
+    odds_blocking_move_probability_points: float = 0.06
+    minimum_data_quality: float = 0.65
+    minimum_edge: float = 0.015
+    model_version: str = "ywp-sports-v3.0.0"
+    protocol_version: str = "2026.09.03"
+    learning_min_sample_size: int = 30
+    learning_min_repeated_pattern: int = 5
+    learning_max_weight_delta: float = 0.03
+    learning_requires_human_approval: bool = True
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore",
+    )
+
+    @field_validator("jwt_secret")
+    @classmethod
+    def validate_secret(cls, value: str) -> str:
+        if len(value.encode()) < 32:
+            raise ValueError("YWP_JWT_SECRET must be at least 32 bytes")
+        return value
+
+    @property
+    def cors_origins(self) -> list[str]:
+        return [item.strip() for item in self.cors_origins_raw.split(",") if item.strip()]
+
+
+@lru_cache
+def get_settings() -> Settings:
+    return Settings()
+
+
+settings = get_settings()

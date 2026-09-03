@@ -1,0 +1,53 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ywp
+      POSTGRES_USER: ywp
+      POSTGRES_PASSWORD: ywp
+    volumes:
+      - ywp_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ywp -d ywp"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:8-alpine
+    command: redis-server --appendonly yes
+    volumes:
+      - ywp_redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: ./backend
+    environment:
+      YWP_ENV: development
+      YWP_DEMO_MODE: "true"
+      YWP_JWT_SECRET: local-development-secret-change-before-production-12345
+      DATABASE_URL: postgresql+psycopg://ywp:ywp@db:5432/ywp
+      REDIS_URL: redis://redis:6379/0
+      YWP_CORS_ORIGINS: http://localhost:8081,http://localhost:19006
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+    command: >-
+      sh -c "alembic upgrade head &&
+      python -m app.seed &&
+      uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+
+volumes:
+  ywp_postgres:
+  ywp_redis:

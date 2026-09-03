@@ -1,0 +1,201 @@
+"""
+Live odds provider using The Odds API (the-odds-api.com).
+Requires a free API key (500 req/month on free tier).
+Aggregates odds from Hard Rock, DraftKings, FanDuel, BetMGM, etc.
+"""
+from __future__ import annotations
+
+import logging
+from typing import Any
+
+import httpx
+
+from app.core.config import settings
+
+logger = logging.getLogger(__name__)
+
+BASE = "https://api.the-odds-api.com"
+TIMEOUT = 15.0
+SPORT_KEY = "baseball_mlb"
+
+PREFERRED_BOOKS = [
+    "hardrockbet",
+    "draftkings",
+    "fanduel",
+    "betmgm",
+    "betrivers",
+    "pointsbetus",
+]
+
+
+def _api_key() -> str:
+    key = settings.odds_api_key
+    if not key:
+        raise RuntimeError(
+            "ODDS_API_KEY is not set. Sign up free at https://the-odds-api.com "
+            "and set the ODDS_API_KEY env var."
+        )
+    return key
+
+
+def _get_sync(path: str, params: dict[str, Any] | None = None) -> dict[str, Any] | list[Any]:
+    with httpx.Client(timeout=TIMEOUT) as client:
+        all_params = {"apiKey": _api_key(), **(params or {})}
+        resp = client.get(f"{BASE}{path}", params=all_params)
+        remaining = resp.headers.get("x-requests-remaining", "?")
+        logger.info("Odds API requests remaining: %s", remaining)
+        resp.raise_for_status()
+        return resp.json()
+
+
+# ---------------------------------------------------------------------------
+# Game odds (moneyline, spread, totals)
+# ---------------------------------------------------------------------------
+
+def get_game_odds(
+    sport: str = SPORT_KEY,
+    markets: str = "h2h,spreads,totals",
+    regions: str = "us",
+) -> list[dict[str, Any]]:
+    """Fetch current odds for all upcoming games in the sport."""
+    data = _get_sync(
+        f"/v4/sports/{sport}/odds",
+        {
+            "regions": regions,
+            "markets": markets,
+            "oddsFormat": "american",
+        },
+    )
+    if not isinstance(data, list):
+        return []
+    return data
+
+
+def get_event_odds(
+    event_id: str,
+    sport: str = SPORT_KEY,
+    markets: str = "h2h,spreads,totals",
+    regions: str = "us",
+) -> dict[str, Any] | None:
+    """Fetch odds for a single event by event_id."""
+    data = _get_sync(
+        f"/v4/sports/{sport}/events/{event_id}/odds",
+        {
+            "regions": regions,
+            "markets": markets,
+            "oddsFormat": "american",
+        },
+    )
+    if isinstance(data, dict):
+        return data
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Player props
+# ---------------------------------------------------------------------------
+
+def get_player_props(
+    event_id: str,
+    sport: str = SPORT_KEY,
+    markets: str = "batter_hits,batter_total_bases,batter_rbis,batter_home_runs,pitcher_strikeouts",
+    regions: str = "us",
+) -> dict[str, Any] | None:
+    """Fetch player prop odds for a single event."""
+    try:
+        data = _get_sync(
+            f"/v4/sports/{sport}/events/{event_id}/odds",
+            {
+                "regions": regions,
+                "markets": markets,
+                "oddsFormat": "american",
+            },
+        )
+        if isinstance(data, dict):
+            return data
+        return None
+    except httpx.HTTPStatusError as exc:
+        if exc.response.status_code == 422:
+            logger.warning("Props not available for event %s", event_id)
+            return None
+        raise
+
+
+# ---------------------------------------------------------------------------
+# Parsing helpers
+# ---------------------------------------------------------------------------
+
+def extract_best_odds(
+    bookmakers: list[dict[str, Any]],
+    market_key: str,
+    selection_name: str | None = None,
+    preferred_books: list[str] | None = None,
+) -> dict[str, Any] | None:
+    """
+    From a list of bookmakers, find the best odds for a given market/selection.
+    Prioritizes preferred books (Hard Rock first), falls back to best available.
+    """
+    preferred = preferred_books or PREFERRED_BOOKS
+    candidates: list[dict[str, Any]] = []
+
+    for book in bookmakers:
+        book_key = book.get("key", "")
+        for market in book.get("markets", []):
+            if market.get("key") != market_key:
+                continue
+            for outcome in market.get("outcomes", []):
+                if selection_name and outcome.get("name") != selection_name:
+                    continue
+                candidates.append({
+                    "book": book_key,
+                    "name": outcome.get("name", ""),
+                    "price": outcome.get("price", 0),
+                    "point": outcome.get("point"),
+                    "preferred_rank": preferred.index(book_key) if book_key in preferred else 999,
+                })
+
+    if not candidates:
+        return None
+
+    candidates.sort(key=lambda c: (c["preferred_rank"], -c["price"]))
+    best = candidates[0]
+    return {
+        "book": best["book"],
+        "name": best["name"],
+        "american_odds": best["price"],
+        "point": best["point"],
+    }
+
+
+def match_game_to_event(
+    game: dict[str, Any],
+    odds_events: list[dict[str, Any]],
+) -> dict[str, Any] | None:
+    """Match an MLB Stats API game to an Odds API event by team names."""
+    home = game.get("home_team", "").lower()
+    away = game.get("away_team", "").lower()
+    if not home or not away:
+        return None
+
+    for event in odds_events:
+        event_home = event.get("home_team", "").lower()
+        event_away = event.get("away_team", "").lower()
+        if _fuzzy_team_match(home, event_home) and _fuzzy_team_match(away, event_away):
+            return event
+    return None
+
+
+def _fuzzy_team_match(mlb_name: str, odds_name: str) -> bool:
+    """Simple fuzzy match: check if the last word of each name matches."""
+    mlb_parts = mlb_name.strip().split()
+    odds_parts = odds_name.strip().split()
+    if not mlb_parts or not odds_parts:
+        return False
+    return mlb_parts[-1] == odds_parts[-1]
+
+
+def odds_to_implied_probability(american_odds: int) -> float:
+    """Convert American odds to implied probability (no-vig)."""
+    if american_odds < 0:
+        return abs(american_odds) / (abs(american_odds) + 100)
+    return 100 / (american_odds + 100)
