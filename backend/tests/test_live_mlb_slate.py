@@ -49,7 +49,11 @@ def _research() -> dict[str, object]:
             "verified": True,
             "home": dict(side),
             "away": dict(side),
-            "weather": {"verified": True},
+            "weather": {"verified": True, "condition": "Clear", "temperature_f": "72"},
+            "venue": "Test Park",
+            "park_verified": True,
+            "umpire_verified": True,
+            "officials": [{"name": "Crew Chief", "role": "Home Plate"}],
             "source_url": "https://statsapi.mlb.com/live",
             "gameday_url": "https://www.mlb.com/gameday/123",
         },
@@ -59,6 +63,12 @@ def _research() -> dict[str, object]:
         "away_pitcher_log": [],
         "home_pitcher_l5": {"era": 3.5},
         "away_pitcher_l5": {"era": 4.5},
+        "market_search": {"verified": True, "book_count": 2, "detail": "2 trusted quotes"},
+        "searchers": {
+            "umpires": {"verified": True, "source_url": "https://statsapi.mlb.com"},
+            "park": {"verified": True, "source_url": "https://statsapi.mlb.com"},
+            "weather_backup": {"verified": False},
+        },
     }
 
 
@@ -72,6 +82,12 @@ def test_live_slate_uses_model_probability_and_real_market_price(monkeypatch) ->
         "away_team": "Away Club",
         "away_id": 20,
         "away_pitcher": {"id": 200, "name": "Away Starter"},
+        "venue": "Test Park",
+        "venue_id": 31,
+        "officials": [
+            {"official": {"id": 1, "fullName": "Plate Ump"}, "officialType": "Home Plate"}
+        ],
+        "weather": {"condition": "Clear", "temp": "72", "wind": "5 mph"},
         "mlb_game_url": "https://www.mlb.com/gameday/123",
     }
     event = {
@@ -103,6 +119,17 @@ def test_live_slate_uses_model_probability_and_real_market_price(monkeypatch) ->
     monkeypatch.setattr(slate_module, "get_schedule", lambda slate_date: [game])
     monkeypatch.setattr(slate_module, "get_game_odds", lambda **kwargs: [event])
     monkeypatch.setattr(slate_module, "_game_research", lambda game, slate_date: _research())
+    monkeypatch.setattr(
+        slate_module,
+        "run_mlb_research_searchers",
+        lambda **kwargs: {
+            "umpires": {"verified": True, "source_id": "mlb_stats_api", "crew": []},
+            "park": {"verified": True, "source_id": "mlb_stats_api", "venue": "Test Park"},
+            "weather_backup": {"verified": False},
+            "market": {"verified": True, "book_count": 2, "detail": "2 books"},
+            "sources_used": ["mlb_stats_api", "the_odds_api"],
+        },
+    )
     monkeypatch.setattr(slate_module.settings, "mlb_props_enabled", False)
 
     candidates = slate_module.live_mlb_slate(date(2026, 9, 3))
@@ -113,3 +140,5 @@ def test_live_slate_uses_model_probability_and_real_market_price(monkeypatch) ->
     assert {candidate.american_odds for candidate in candidates} >= {-125, 110, -108, -112}
     assert not any(candidate.market_is_pitcher_strikeout_over for candidate in candidates)
     assert any("mlb.com/gameday/123" in url for url in candidates[0].source_urls)
+    assert all(candidate.sport_specific_sweep_complete for candidate in candidates)
+    assert all(candidate.market_movement_verified for candidate in candidates)

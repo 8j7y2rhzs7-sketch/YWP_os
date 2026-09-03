@@ -96,9 +96,9 @@ def slate(
                 odds_status = get_last_fetch_status()
                 if has_book_markets:
                     notice = (
-                        "Live MLB: independent YWP model probability from official MLB Stats API "
-                        "facts, compared against real sportsbook prices from The Odds API. "
-                        "Research gaps still return SKIP under Strict Mode."
+                        "Live MLB: independent YWP model from official MLB Stats API facts, "
+                        "filled by the trusted-source research searchers, compared against "
+                        "real sportsbook prices from The Odds API."
                     )
                 elif not odds_api_configured():
                     notice = (

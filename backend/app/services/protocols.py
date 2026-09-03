@@ -236,6 +236,28 @@ CURRENT_PROTOCOL = {
             "Version every weight and support rollback",
         ],
     },
+    "trusted_source_research_protocol": {
+        "rule": (
+            "Strict Mode may auto-verify a research field only from the certified source list. "
+            "Searchers query those sources before a slate is labeled PARTIAL."
+        ),
+        "searchers": [
+            "mlb_schedule_officials_weather_venue",
+            "mlb_live_feed_lineups_weather_park",
+            "mlb_boxscore_umpire_crew",
+            "mlb_roster_availability",
+            "mlb_bullpen_workload",
+            "open_meteo_backup_weather",
+            "odds_api_current_price_and_multi_book_consensus",
+            "ywp_mlb_independent_model",
+        ],
+        "never_trusted": [
+            "Random blogs or tip pages",
+            "Unauthenticated HTML scrapes of sportsbook sites",
+            "Social media rumor without an official confirmation",
+            "Manufactured or implied-only probabilities used as YWP projections",
+        ],
+    },
     "superseded_or_removed": [
         "Any older workflow is superseded by the newest canonical version.",
         "Incorrect ABC interpretations are removed; A/B/C use the definitions above.",

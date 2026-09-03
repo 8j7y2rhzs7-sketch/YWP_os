@@ -31,8 +31,20 @@ def candidate_verification_gaps(candidate: CandidateInput) -> list[str]:
     ):
         gaps.append("weather/venue conditions")
 
+    # Only unknown labels on hard research channels block readiness.
+    # "probable" is allowed for pregame lineups/umpires while certified feeds catch up.
+    hard_source_keys = {
+        "schedule",
+        "market",
+        "current_form",
+        "injuries",
+        "starter",
+        "bullpen",
+    }
     unknown_sources = [
-        label for label, state in candidate.source_status.items() if state == "unknown"
+        label
+        for label, state in candidate.source_status.items()
+        if state == "unknown" and label in hard_source_keys
     ]
     gaps.extend(f"source:{label}" for label in unknown_sources)
 

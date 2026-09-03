@@ -112,7 +112,7 @@ def get_schedule(slate_date: date) -> list[dict[str, Any]]:
         {
             "sportId": 1,
             "date": slate_date.isoformat(),
-            "hydrate": "probablePitcher,team,venue,linescore",
+            "hydrate": "probablePitcher,team,venue,linescore,weather,officials",
         },
         cache_ttl=45,
     )
@@ -121,12 +121,15 @@ def get_schedule(slate_date: date) -> list[dict[str, Any]]:
         for g in d.get("games", []):
             status_data = g.get("status", {})
             status = status_data.get("abstractGameState", "")
-            if status in ("Final", "Postponed", "Cancelled"):
+            # Pregame slate only. Live/final games belong to lock-check and grading, not new cards.
+            if status in ("Final", "Live", "Postponed", "Cancelled"):
                 continue
             away = g.get("teams", {}).get("away", {})
             home = g.get("teams", {}).get("home", {})
             away_record = away.get("leagueRecord", {})
             home_record = home.get("leagueRecord", {})
+            venue = g.get("venue", {}) or {}
+            location = venue.get("location", {}) or {}
             games.append(
                 {
                     "game_pk": g["gamePk"],
@@ -141,7 +144,16 @@ def get_schedule(slate_date: date) -> list[dict[str, Any]]:
                     "home_id": home.get("team", {}).get("id"),
                     "home_record": (f"{home_record.get('wins', 0)}-{home_record.get('losses', 0)}"),
                     "home_pitcher": _pitcher_info(home.get("probablePitcher")),
-                    "venue": g.get("venue", {}).get("name", ""),
+                    "venue": venue.get("name", ""),
+                    "venue_id": venue.get("id"),
+                    "venue_lat": location.get("defaultCoordinates", {}).get("latitude")
+                    if isinstance(location.get("defaultCoordinates"), dict)
+                    else location.get("lat"),
+                    "venue_lon": location.get("defaultCoordinates", {}).get("longitude")
+                    if isinstance(location.get("defaultCoordinates"), dict)
+                    else location.get("lng") or location.get("lon"),
+                    "officials": g.get("officials") or [],
+                    "weather": g.get("weather") or {},
                     "mlb_game_url": f"https://www.mlb.com/gameday/{g['gamePk']}",
                 }
             )
@@ -467,6 +479,12 @@ def get_game_context(game_pk: int) -> dict[str, Any]:
 
     weather = game_data.get("weather") or {}
     status = game_data.get("status") or {}
+    venue = game_data.get("venue") or {}
+    officials = (
+        live_data.get("boxscore", {}).get("officials")
+        or game_data.get("officials")
+        or []
+    )
     return {
         "verified": bool(game_data),
         "status": status.get("abstractGameState", "Unknown"),
@@ -479,7 +497,11 @@ def get_game_context(game_pk: int) -> dict[str, Any]:
             "temperature_f": weather.get("temp"),
             "wind": weather.get("wind"),
         },
-        "venue": game_data.get("venue", {}).get("name", ""),
+        "venue": venue.get("name", ""),
+        "venue_id": venue.get("id"),
+        "officials": officials,
+        "park_verified": bool(venue.get("name")),
+        "umpire_verified": bool(officials),
         "source_url": f"{SOURCE_API}/api/v1.1/game/{game_pk}/feed/live",
         "gameday_url": f"https://www.mlb.com/gameday/{game_pk}",
     }

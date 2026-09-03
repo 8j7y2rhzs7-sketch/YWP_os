@@ -5,6 +5,7 @@ from app.deps import DB, SubscribedUser
 from app.models import ProtocolRun
 from app.schemas import ProtocolRunOut
 from app.services.protocols import CURRENT_PROTOCOL
+from app.services.trusted_sources import trusted_sources_manifest
 
 router = APIRouter(prefix="/protocol", tags=["protocol"])
 
@@ -12,6 +13,12 @@ router = APIRouter(prefix="/protocol", tags=["protocol"])
 @router.get("/current")
 def current_protocol(_: SubscribedUser) -> dict:
     return CURRENT_PROTOCOL
+
+
+@router.get("/trusted-sources")
+def trusted_sources(_: SubscribedUser) -> dict:
+    """Certified sources the research searchers are allowed to pull from."""
+    return trusted_sources_manifest()
 
 
 @router.get("/runs/{analysis_id}", response_model=ProtocolRunOut)
