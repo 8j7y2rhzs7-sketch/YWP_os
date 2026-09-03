@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "name": "YWP OS",
+    "slug": "ywp-os",
+    "version": "3.0.0",
+    "orientation": "portrait",
+    "scheme": "ywpos",
+    "userInterfaceStyle": "dark",
+    "icon": "./assets/brand/app-icon.png",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ywpos.app",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.ywpos.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/brand/app-icon.png",
+        "backgroundColor": "#050505"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/brand/ywp-crest.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/brand/splash-logo.png",
+          "imageWidth": 280,
+          "resizeMode": "contain",
+          "backgroundColor": "#050505",
+          "dark": {
+            "image": "./assets/brand/splash-logo.png",
+            "backgroundColor": "#050505"
+          }
+        }
+      ],
+      "expo-secure-store"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "protocolVersion": "2026.09.03"
+    }
+  }
+}
