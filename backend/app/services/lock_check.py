@@ -11,6 +11,7 @@ from app.core.config import settings
 from app.models import BankrollAccount, LockCheck, Ticket, TicketLeg
 from app.schemas import CurrentStateUpdate, LockCheckRequest
 from app.services.decision_engine import implied_probability, input_hash
+from app.services.lock_refresh import ensure_lock_updates
 from app.services.ticket_gates import (
     cash_card_k_overs_ok,
     game_status_ok,
@@ -34,7 +35,9 @@ def run_lock_check(
     request: LockCheckRequest,
 ) -> LockCheck:
     now = datetime.now(UTC)
-    updates = {item.recommendation_id: item for item in request.updates}
+    # Phone clients send updates=[] — the API must refresh live provider state.
+    refreshed = ensure_lock_updates(ticket, list(request.updates))
+    updates = {item.recommendation_id: item for item in refreshed}
     status = "LOCKED"
     warnings: list[str] = []
     leg_results: list[dict[str, Any]] = []
@@ -147,7 +150,10 @@ def run_lock_check(
             checks["data_quality"] = "FAIL"
 
         if update is None and not is_demo:
-            changes.append("No fresh provider snapshot was supplied.")
+            # Should be rare after ensure_lock_updates; still fail closed.
+            changes.append(
+                "No fresh provider snapshot could be loaded from MLB/Odds providers."
+            )
             leg_status = "SKIP"
             checks["data_quality"] = "FAIL"
         elif update is not None:
@@ -276,7 +282,7 @@ def run_lock_check(
     expires_at = now + timedelta(seconds=settings.lock_check_ttl_seconds)
     hash_payload = {
         "ticket_id": ticket.id,
-        "updates": [item.model_dump(mode="json") for item in request.updates],
+        "updates": [item.model_dump(mode="json") for item in refreshed],
         "checks": checks,
         "status": status,
         "timestamp": now.isoformat(),

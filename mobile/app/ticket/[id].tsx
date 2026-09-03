@@ -340,8 +340,8 @@ export default function TicketDetailScreen() {
       ) : null}
 
       <Text style={styles.footer}>
-        Live-provider tickets require fresh current-state updates from the server.
-        Empty updates are accepted only for clearly labeled demo data.
+        Lock Check refreshes MLB and sportsbook snapshots on the server before
+        placement. Demo tickets may clear without a live provider pull.
       </Text>
 
       <Modal
