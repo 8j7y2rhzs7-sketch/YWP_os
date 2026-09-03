@@ -47,13 +47,45 @@ def odds_api_configured() -> bool:
     return bool(_normalized_key())
 
 
+def key_diagnostics(raw: str | None = None) -> dict[str, Any]:
+    """Public, secret-safe description of the configured Odds API key."""
+    key = raw if raw is not None else _normalized_key()
+    if not key:
+        return {
+            "configured": False,
+            "length": 0,
+            "fingerprint": None,
+            "looks_like_hex": False,
+            "has_non_hex": False,
+        }
+    looks_like_hex = bool(re.fullmatch(r"[0-9a-fA-F]+", key))
+    fingerprint = f"{key[:4]}…{key[-4:]}" if len(key) >= 8 else "too_short"
+    return {
+        "configured": True,
+        "length": len(key),
+        "fingerprint": fingerprint,
+        "looks_like_hex": looks_like_hex,
+        "has_non_hex": not looks_like_hex,
+    }
+
+
 def _normalized_key() -> str | None:
     key = settings.odds_api_key
     if key is None:
         return None
     cleaned = key.strip().strip('"').strip("'")
+    cleaned = re.sub(r"[\s\u200b\u200c\u200d\ufeff]", "", cleaned)
     if cleaned in {"", "-", "null", "None"}:
         return None
+    if re.fullmatch(r"[0-9a-fA-F]+", cleaned):
+        return cleaned
+    # Odds API keys are hex. Common copy/paste mixups: l/I → 1, O → 0.
+    repaired = cleaned.translate(str.maketrans({"l": "1", "L": "1", "I": "1", "O": "0"}))
+    if re.fullmatch(r"[0-9a-fA-F]+", repaired) and len(repaired) >= 16:
+        logger.warning(
+            "ODDS_API_KEY contained non-hex lookalike characters; using hex-normalized value"
+        )
+        return repaired
     return cleaned
 
 
@@ -77,6 +109,7 @@ def _safe_error_message(exc: BaseException) -> str:
 def _set_status(**kwargs: Any) -> None:
     _last_fetch_status.update(kwargs)
     _last_fetch_status["configured"] = odds_api_configured()
+    _last_fetch_status.update(key_diagnostics())
 
 
 def _get_sync(path: str, params: dict[str, Any] | None = None) -> dict[str, Any] | list[Any]:

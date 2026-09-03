@@ -86,10 +86,19 @@ def slate(
                     )
                 else:
                     detail = odds_status.get("error") or "book_odds_unavailable"
+                    fingerprint = odds_status.get("fingerprint") or "unknown"
+                    key_len = odds_status.get("length") or 0
+                    hex_note = (
+                        "key looks like hex"
+                        if odds_status.get("looks_like_hex")
+                        else "key is not hex — Odds API keys are 0-9 and a-f only"
+                    )
                     notice = (
                         "Live MLB schedule loaded, but book odds were unavailable "
-                        f"({detail}). Only pitcher strikeout estimates are shown. "
-                        "Confirm ODDS_API_KEY on Render and check /api/v1/health/providers."
+                        f"({detail}). Server key fingerprint {fingerprint} "
+                        f"({key_len} chars, {hex_note}). "
+                        "After changing ODDS_API_KEY on Render, use Manual Deploy, "
+                        "wait for version 3.0.2+, then refresh."
                     )
                 return SlateResponse(
                     sport=sport_lower,
