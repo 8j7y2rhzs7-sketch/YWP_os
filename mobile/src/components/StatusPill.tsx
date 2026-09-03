@@ -4,7 +4,7 @@ import { colors, radius, spacing } from "@/theme";
 
 const success = new Set(["PLAY", "LOCKED", "DOUBLE_CLEARED", "WIN", "POSITIVE"]);
 const warning = new Set(["LEAN", "WATCH", "WARNING", "PENDING"]);
-const danger = new Set(["SKIP", "LOSS", "FAILED", "CHANGE_REQUIRED", "NEGATIVE"]);
+const danger = new Set(["SKIP", "REVIEW", "LOSS", "FAILED", "CHANGE_REQUIRED", "NEGATIVE"]);
 
 export function StatusPill({ value }: { value: string }) {
   const normalized = value.toUpperCase();

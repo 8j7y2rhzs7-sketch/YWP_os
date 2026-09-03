@@ -102,6 +102,19 @@ export interface Recommendation {
   edge: string;
   expected_value: string;
   confidence_score: number;
+  quality_score?: number | null;
+  quality_score_max?: number;
+  model_win_probability?: number | null;
+  probability_available?: boolean;
+  probability_unavailable_reason?: string | null;
+  home_team?: string | null;
+  away_team?: string | null;
+  start_time?: string | null;
+  bookmaker?: string | null;
+  bookmaker_label?: string | null;
+  price_timestamp?: string | null;
+  market_scope_label?: string | null;
+  verification_status?: string | null;
   ywp_rating: string;
   vision_score: string;
   miss_by_one_risk: string;
@@ -115,7 +128,7 @@ export interface Recommendation {
   edge_class: string;
   expected_value_label: string;
   suggested_stake_pct: string;
-  decision: "PLAY" | "LEAN" | "WATCH" | "SKIP";
+  decision: "PLAY" | "LEAN" | "WATCH" | "REVIEW" | "SKIP";
   recommendation_tier: string;
   rank: number;
   reason_codes: string[];
@@ -173,8 +186,17 @@ export interface TicketCard {
   recommendation_ids: string[];
   legs: Recommendation[];
   risk: string;
+  risk_explanation?: string | null;
   confidence_score: number;
+  quality_score?: number | null;
+  quality_score_max?: number;
+  quality_score_note?: string;
+  joint_win_probability?: number | null;
+  joint_probability_status?: string;
+  joint_probability_note?: string | null;
   weakest_leg_id: string | null;
+  weakest_leg_criterion?: string | null;
+  weakest_leg_explanation?: string | null;
   warnings: string[];
 }
 

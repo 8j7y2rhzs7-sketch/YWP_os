@@ -307,10 +307,14 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         db.refresh(record)
 
     ranked = [
-        RecommendationOut.model_validate(record) for record in records if record.decision != "SKIP"
+        RecommendationOut.model_validate(record)
+        for record in records
+        if record.decision in {"PLAY", "LEAN", "WATCH"}
     ]
     stay_away = [
-        RecommendationOut.model_validate(record) for record in records if record.decision == "SKIP"
+        RecommendationOut.model_validate(record)
+        for record in records
+        if record.decision in {"SKIP", "REVIEW"}
     ]
     qualities = [candidate.data_quality for candidate in payload.candidates]
     unknowns = sum(
@@ -394,7 +398,7 @@ def build_ticket(payload: BuildTicketRequest, user: SubscribedUser, db: DB) -> B
         stay_away=[
             RecommendationOut.model_validate(item)
             for item in recommendations
-            if item.decision == "SKIP"
+            if item.decision in {"SKIP", "REVIEW"}
         ],
         quarantined=quarantined,
     )

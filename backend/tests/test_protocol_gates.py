@@ -95,7 +95,8 @@ def test_model_edge_over_15_points_is_quarantined() -> None:
         candidate(estimated_probability=0.90, american_odds=-110)
     )
     assert "MODEL_EDGE_QUARANTINE" in evaluation.reason_codes
-    assert evaluation.decision == "SKIP"
+    assert evaluation.decision == "REVIEW"
+    assert any(code.startswith("OUTLIER_") for code in evaluation.reason_codes)
     rec = SimpleNamespace(
         id="rec-1",
         decision="PLAY",

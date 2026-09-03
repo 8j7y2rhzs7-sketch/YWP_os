@@ -4,6 +4,11 @@ from collections.abc import Callable, Iterable
 
 from app.models import Recommendation
 from app.schemas import QuarantineItemOut, RecommendationOut, TicketCardOut
+from app.services.board_metrics import (
+    card_risk,
+    joint_win_probability_disclosure,
+    select_weakest_leg,
+)
 from app.services.ticket_gates import (
     CASH_CARD_KEYS,
     cap_pitcher_k_overs,
@@ -74,33 +79,41 @@ def _card(
     key: str, label: str, legs: list[Recommendation], warnings: list[str] | None = None
 ) -> TicketCardOut:
     warnings = list(warnings or [])
+    joint = joint_win_probability_disclosure(legs)
     if not legs:
         warnings.append("No plays qualified. PASS is the official output.")
         confidence = 0
         risk = "none"
+        risk_explanation = "No legs; PASS."
         weakest = None
+        criterion = None
+        explanation = None
     else:
         confidence = round(sum(item.confidence_score for item in legs) / len(legs))
-        weakest_item = min(legs, key=lambda item: item.confidence_score)
+        weakest_item, criterion, explanation = select_weakest_leg(legs)
         weakest = weakest_item.id
-        risk_order = {"low": 0, "medium": 1, "medium_high": 2, "high": 3}
-        risk = max(legs, key=lambda item: risk_order.get(item.risk, 2)).risk
-        if len(legs) > 1:
-            risk = "medium" if risk == "low" else risk
+        risk, risk_explanation = card_risk(legs)
         high_near_miss = [
             item.selection for item in legs if float(item.miss_by_one_risk) >= 0.55
         ]
         if high_near_miss:
             warnings.append("Elevated miss-by-1 leg(s): " + ", ".join(high_near_miss))
-        warnings.append(f"Weakest leg: {weakest_item.selection}")
+        warnings.append(explanation)
     return TicketCardOut(
         key=key,
         label=label,
         recommendation_ids=[item.id for item in legs],
         legs=[RecommendationOut.model_validate(item) for item in legs],
         risk=risk,
+        risk_explanation=risk_explanation,
         confidence_score=confidence,
+        quality_score=confidence,
+        joint_win_probability=joint["joint_win_probability"],
+        joint_probability_status=str(joint["joint_probability_status"]),
+        joint_probability_note=joint.get("joint_probability_note"),
         weakest_leg_id=weakest,
+        weakest_leg_criterion=criterion,
+        weakest_leg_explanation=explanation,
         warnings=warnings,
     )
 
@@ -124,6 +137,28 @@ def build_cards(
                         f"{item.decision} is not ticket-eligible (PLAY/LEAN only).",
                     )
                 )
+            continue
+        snap = item.snapshot or {}
+        source = str(
+            snap.get("probability_source")
+            or getattr(item, "data_source", "")
+            or ""
+        ).lower()
+        # Never promote demo/synthetic fixtures onto production official cards.
+        from app.core.config import settings
+
+        production_live = (not settings.demo_mode) or settings.env == "production"
+        if production_live and (
+            snap.get("probability_source") == "demo"
+            or "demo" in source
+            or "synthetic" in source
+        ):
+            quarantined.append(
+                _quarantine(
+                    item,
+                    "Demo/synthetic probability cannot enter production official cards.",
+                )
+            )
             continue
         if float(item.ywp_rating) < min_rating:
             quarantined.append(

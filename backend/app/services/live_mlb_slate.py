@@ -39,6 +39,7 @@ from app.services.odds_provider import (
 )
 from app.services.research_searchers import run_mlb_research_searchers
 from app.services.ticket_gates import event_market_status
+from app.services.board_metrics import bookmaker_display_name
 
 logger = logging.getLogger(__name__)
 
@@ -203,6 +204,7 @@ def _game_market_candidates(
                 market_type="moneyline",
                 selection=f"{team} ML",
                 odds=offer["american_odds"],
+                bookmaker=str(offer.get("book") or "") or None,
                 probability=probability,
                 model_quality=projection.model_quality,
                 thesis_key=f"mlb-{_slug(team)}-moneyline-{slate_date}",
@@ -247,6 +249,7 @@ def _game_market_candidates(
                 selection=f"{label} {line} runs",
                 line=line,
                 odds=offer["american_odds"],
+                bookmaker=str(offer.get("book") or "") or None,
                 probability=probability,
                 model_quality=projection.model_quality,
                 thesis_key=f"mlb-{_slug(event_name)}-{direction}-{line}-{slate_date}",
@@ -294,6 +297,7 @@ def _game_market_candidates(
                 selection=f"{team} {line:+}",
                 line=line,
                 odds=offer["american_odds"],
+                bookmaker=str(offer.get("book") or "") or None,
                 probability=probability,
                 model_quality=projection.model_quality,
                 thesis_key=f"mlb-{_slug(team)}-run-line-{line}-{slate_date}",
@@ -369,6 +373,7 @@ def _pitcher_strikeout_candidates(
                 selection=f"{pitcher['name']} Over {line} strikeouts",
                 line=line,
                 odds=offer["american_odds"],
+                bookmaker=str(offer.get("book") or "") or None,
                 probability=probability,
                 model_quality=min(0.92, 0.62 + 0.035 * min(len(logs), 10)),
                 thesis_key=f"mlb-{_slug(pitcher['name'])}-k-over-{line}-{slate_date}",
@@ -434,6 +439,8 @@ def _build_candidate(
     first_start_back: bool = False,
     normal_workload_confirmed: bool = False,
     k_duration_verified: bool = True,
+    bookmaker: str | None = None,
+    price_timestamp: datetime | None = None,
 ) -> CandidateInput:
     context = research["context"]
     lineups_confirmed = bool(
@@ -554,6 +561,11 @@ def _build_candidate(
         sport="mlb",
         league="MLB",
         start_time=start_time,
+        home_team=str(game.get("home_team") or "") or None,
+        away_team=str(game.get("away_team") or "") or None,
+        bookmaker=bookmaker,
+        bookmaker_label=bookmaker_display_name(bookmaker),
+        price_timestamp=price_timestamp or now,
         market_type=market_type,
         selection=selection,
         line=line,

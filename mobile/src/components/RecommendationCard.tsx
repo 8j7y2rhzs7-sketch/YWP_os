@@ -44,6 +44,18 @@ export function RecommendationCard({
           </Text>
           <Text style={styles.selection}>{item.selection}</Text>
           <Text style={type.caption}>{item.event_name}</Text>
+          <Text style={type.caption}>
+            {item.market_scope_label ??
+              `${item.market_period} · ${item.market_type.replaceAll("_", " ")}`}
+            {item.bookmaker_label ? ` · ${item.bookmaker_label}` : ""}
+            {item.verification_status ? ` · ${item.verification_status}` : ""}
+          </Text>
+          <Text style={type.caption}>
+            {item.probability_available && item.model_win_probability != null
+              ? `Model win ${(Number(item.model_win_probability) * 100).toFixed(1)}%`
+              : item.probability_unavailable_reason ??
+                "Model win probability unavailable"}
+          </Text>
         </View>
         <View style={styles.right}>
           <Text style={styles.odds}>{odds(item.american_odds)}</Text>
@@ -52,7 +64,9 @@ export function RecommendationCard({
       </View>
       <View style={styles.statusRow}>
         <StatusPill value={item.decision} />
-        <Text style={styles.confidence}>{item.confidence_score}% CONFIDENCE</Text>
+        <Text style={styles.confidence}>
+          QUALITY {item.quality_score ?? item.confidence_score}/100
+        </Text>
         <Text style={styles.vision}>VISION {item.vision_score}</Text>
         {selected ? <Text style={styles.picked}>ON TICKET</Text> : null}
       </View>

@@ -9,6 +9,7 @@ from typing import Any
 
 from app.core.config import settings
 from app.schemas import CandidateInput, Decision, RiskProfile
+from app.services.board_metrics import outlier_review_reasons
 from app.services.readiness import candidate_readiness, candidate_verification_gaps
 
 
@@ -144,7 +145,7 @@ class DecisionEngine:
             adjusted += average_factor * 0.015 * quality
         if learned_weights:
             # Learned weights default at 0.10. Drift above/below nudges probability slightly.
-            for feature, weight in learned_weights.items():
+            for _feature, weight in learned_weights.items():
                 adjusted += (float(weight) - 0.10) * 0.04 * quality
         adjusted = clamp(adjusted, 0.02, 0.98)
 
@@ -268,10 +269,20 @@ class DecisionEngine:
             )
             reasons.append("MARKET_NOT_OPEN")
 
-        if abs(edge) > 0.15:
-            hard_skip_reasons.append(
-                "Model edge exceeds 15 percentage points and is quarantined for review."
+        outlier_codes = outlier_review_reasons(
+            adjusted_probability=adjusted,
+            american_odds=candidate.american_odds,
+            probability_source=candidate.probability_source,
+        )
+        review_reasons: list[str] = []
+        if outlier_codes:
+            review_reasons.extend(
+                [
+                    "Model probability is an unresolved outlier versus the sportsbook "
+                    "break-even price and requires REVIEW before any official card."
+                ]
             )
+            reasons.extend(outlier_codes)
             reasons.append("MODEL_EDGE_QUARANTINE")
 
         if candidate.previous_game_recency_only:
@@ -312,6 +323,11 @@ class DecisionEngine:
         if hard_skip_reasons:
             decision = Decision.skip.value
             confidence = min(confidence, 69)
+        elif review_reasons:
+            # Unresolved calibration / mapping outliers — visible REVIEW, never official PLAY.
+            decision = Decision.review.value
+            confidence = min(confidence, 80)
+            warnings.extend(review_reasons)
         elif confidence >= 85 and edge >= 0.03:
             decision = Decision.play.value
         elif confidence >= 75 and edge >= settings.minimum_edge:
@@ -375,8 +391,10 @@ class DecisionEngine:
         )
         if decision == Decision.skip.value:
             yis = min(yis, 5.9)
+        elif decision == Decision.review.value:
+            yis = min(yis, 6.5)
 
-        if decision == Decision.skip.value:
+        if decision in {Decision.skip.value, Decision.review.value}:
             suggested_stake_pct = 0.0
         elif confidence >= 92 and risk in {"low", "medium"}:
             suggested_stake_pct = 0.02
@@ -391,6 +409,8 @@ class DecisionEngine:
 
         if decision == Decision.skip.value:
             tier = "stay_away"
+        elif decision == Decision.review.value:
+            tier = "review"
         elif confidence >= 90 and risk == "low":
             tier = "cash_builder"
         elif confidence >= 88:
@@ -409,6 +429,11 @@ class DecisionEngine:
             )
         if hard_skip_reasons:
             reasoning_parts.append("Official YWP output: SKIP / NO PLAY.")
+        elif review_reasons:
+            reasoning_parts.append(
+                "Official YWP output: REVIEW — excluded from official cards until "
+                "the probability outlier is resolved (not capped away)."
+            )
         if not reasoning_parts:
             reasoning_parts.append(
                 "Recommendation is derived only from the supplied structured inputs."
@@ -447,7 +472,8 @@ class DecisionEngine:
             Decision.play.value: 0,
             Decision.lean.value: 1,
             Decision.watch.value: 2,
-            Decision.skip.value: 3,
+            Decision.review.value: 3,
+            Decision.skip.value: 4,
         }
         return sorted(
             gated,

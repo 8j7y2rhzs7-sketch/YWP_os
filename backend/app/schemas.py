@@ -22,6 +22,7 @@ class Decision(StrEnum):
     play = "PLAY"
     lean = "LEAN"
     watch = "WATCH"
+    review = "REVIEW"
     skip = "SKIP"
 
 
@@ -152,6 +153,11 @@ class CandidateInput(YWPModel):
     sport: str = Field(min_length=2, max_length=24)
     league: str = Field(min_length=2, max_length=40)
     start_time: datetime
+    home_team: str | None = Field(default=None, max_length=80)
+    away_team: str | None = Field(default=None, max_length=80)
+    bookmaker: str | None = Field(default=None, max_length=40)
+    bookmaker_label: str | None = Field(default=None, max_length=80)
+    price_timestamp: datetime | None = None
     market_type: str = Field(min_length=2, max_length=50)
     market_period: str = Field(default="full_game", max_length=32)
     selection: str = Field(min_length=2, max_length=180)
@@ -295,6 +301,19 @@ class RecommendationOut(YWPModel):
     edge: Decimal
     expected_value: Decimal
     confidence_score: int
+    quality_score: int | None = None
+    quality_score_max: int = 100
+    model_win_probability: float | None = None
+    probability_available: bool = False
+    probability_unavailable_reason: str | None = None
+    home_team: str | None = None
+    away_team: str | None = None
+    start_time: datetime | None = None
+    bookmaker: str | None = None
+    bookmaker_label: str | None = None
+    price_timestamp: datetime | None = None
+    market_scope_label: str | None = None
+    verification_status: str | None = None
     ywp_rating: Decimal
     vision_score: Decimal
     miss_by_one_risk: Decimal
@@ -379,8 +398,19 @@ class TicketCardOut(YWPModel):
     recommendation_ids: list[str]
     legs: list[RecommendationOut]
     risk: str
+    risk_explanation: str | None = None
     confidence_score: int
+    quality_score: int | None = None
+    quality_score_max: int = 100
+    quality_score_note: str = (
+        "Card score is average YWP quality (0-100), not a win probability."
+    )
+    joint_win_probability: float | None = None
+    joint_probability_status: str = "unavailable"
+    joint_probability_note: str | None = None
     weakest_leg_id: str | None
+    weakest_leg_criterion: str | None = None
+    weakest_leg_explanation: str | None = None
     warnings: list[str]
 
 

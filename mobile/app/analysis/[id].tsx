@@ -122,7 +122,24 @@ export default function AnalysisScreen() {
       confidence_score: Math.round(
         customLegs.reduce((sum, item) => sum + item.confidence_score, 0) / customLegs.length,
       ),
-      weakest_leg_id: customLegs[customLegs.length - 1]?.id ?? null,
+      quality_score: Math.round(
+        customLegs.reduce((sum, item) => sum + item.confidence_score, 0) / customLegs.length,
+      ),
+      quality_score_note:
+        "Card score is average YWP quality (0-100), not a win probability.",
+      joint_win_probability: null,
+      joint_probability_status: "unavailable",
+      joint_probability_note:
+        "Custom cards do not invent a joint win probability from quality scores.",
+      weakest_leg_id: [...customLegs].sort((a, b) => {
+        const qa = a.quality_score ?? a.confidence_score;
+        const qb = b.quality_score ?? b.confidence_score;
+        if (qa !== qb) return qa - qb;
+        return Number(a.ywp_rating) - Number(b.ywp_rating);
+      })[0]?.id ?? null,
+      weakest_leg_criterion: "lowest_quality_then_yis",
+      weakest_leg_explanation:
+        "Weakest custom leg uses lowest quality score, then lowest YIS (not list order).",
       warnings: [],
     };
   }, [customLegs]);

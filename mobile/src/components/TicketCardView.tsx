@@ -7,6 +7,18 @@ import { PlayerPortrait } from "./PlayerPortrait";
 import { MetalPanel } from "./MetalPanel";
 import { StatusPill } from "./StatusPill";
 
+function formatStart(value?: string | null): string | null {
+  if (!value) return null;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleString(undefined, {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
+
 export function TicketCardView({
   card,
   onPress,
@@ -26,38 +38,93 @@ export function TicketCardView({
               <Text style={type.eyebrow}>YWP OFFICIAL CARD</Text>
               <Text style={styles.title}>{card.label}</Text>
             </View>
-            <Text style={styles.score}>{card.confidence_score}</Text>
+            <View style={styles.scoreWrap}>
+              <Text style={styles.score}>{card.quality_score ?? card.confidence_score}</Text>
+              <Text style={styles.scoreCaption}>QUALITY /100</Text>
+            </View>
           </View>
           <View style={styles.statusRow}>
             <StatusPill value={card.legs.length ? card.risk : "PASS"} />
             <Text style={styles.legCount}>{card.legs.length} LEGS</Text>
           </View>
-          {card.legs.map((leg, index) => (
-            <View key={leg.id} style={styles.leg}>
-              <Text style={styles.number}>{index + 1}</Text>
-              <PlayerPortrait
-                imageUrl={leg.image_url}
-                teamImageUrl={leg.team_image_url}
-                sport={leg.sport}
-                size={36}
-              />
-              <View style={styles.legCopy}>
-                <Text style={styles.selection}>{leg.selection}</Text>
-                <Text style={type.caption}>
-                  YIS {leg.ywp_rating} • {leg.confidence_score}% • {leg.risk_tier}
+          {card.risk_explanation ? (
+            <Text style={styles.meta}>{card.risk_explanation}</Text>
+          ) : null}
+          <Text style={styles.meta}>
+            {card.quality_score_note ??
+              "Card score is average YWP quality (0-100), not a win probability."}
+          </Text>
+          <Text style={styles.meta}>
+            {card.joint_probability_note ??
+              "Joint win probability unavailable unless every leg has an independent model probability."}
+            {card.joint_win_probability != null
+              ? ` Estimate: ${(card.joint_win_probability * 100).toFixed(1)}%.`
+              : ""}
+          </Text>
+          {card.legs.map((leg) => {
+            const teams =
+              leg.away_team && leg.home_team
+                ? `${leg.away_team} @ ${leg.home_team}`
+                : leg.event_name;
+            const start = formatStart(leg.start_time);
+            const winP =
+              leg.probability_available && leg.model_win_probability != null
+                ? `Model win ${(leg.model_win_probability * 100).toFixed(1)}%`
+                : "Model win unavailable";
+            return (
+              <View key={leg.id} style={styles.leg}>
+                <View
+                  style={[
+                    styles.number,
+                    card.weakest_leg_id === leg.id && styles.numberWeak,
+                  ]}
+                >
+                  <Text style={styles.numberText}>
+                    {card.weakest_leg_id === leg.id ? "W" : "•"}
+                  </Text>
+                </View>
+                <PlayerPortrait
+                  imageUrl={leg.image_url}
+                  teamImageUrl={leg.team_image_url}
+                  sport={leg.sport}
+                  size={36}
+                />
+                <View style={styles.legCopy}>
+                  <Text style={styles.selection}>{leg.selection}</Text>
+                  <Text style={type.caption}>{teams}</Text>
+                  <Text style={type.caption}>
+                    {leg.market_scope_label ??
+                      `${leg.market_period} · ${leg.market_type}`}
+                    {start ? ` · ${start}` : ""}
+                  </Text>
+                  <Text style={type.caption}>
+                    YIS {leg.ywp_rating} · Quality {leg.quality_score ?? leg.confidence_score}/100 ·{" "}
+                    {winP}
+                  </Text>
+                  <Text style={type.caption}>
+                    {leg.bookmaker_label ?? leg.bookmaker ?? "Book unknown"}
+                    {leg.verification_status ? ` · ${leg.verification_status}` : ""}
+                    {leg.risk_tier ? ` · ${leg.risk_tier}` : ""}
+                  </Text>
+                </View>
+                <Text style={styles.odds}>
+                  {leg.american_odds > 0 ? "+" : ""}
+                  {leg.american_odds}
                 </Text>
               </View>
-              <Text style={styles.odds}>
-                {leg.american_odds > 0 ? "+" : ""}
-                {leg.american_odds}
+            );
+          })}
+          {card.weakest_leg_explanation ? (
+            <Text style={styles.warning}>{card.weakest_leg_explanation}</Text>
+          ) : null}
+          {card.warnings
+            .filter((warning) => warning !== card.weakest_leg_explanation)
+            .slice(0, 2)
+            .map((warning) => (
+              <Text key={warning} style={styles.warning}>
+                {warning}
               </Text>
-            </View>
-          ))}
-          {card.warnings.slice(0, 2).map((warning) => (
-            <Text key={warning} style={styles.warning}>
-              {warning}
-            </Text>
-          ))}
+            ))}
           {onPress && card.legs.length ? (
             <Text style={styles.action}>OPEN & SAVE TICKET →</Text>
           ) : null}
@@ -72,9 +139,12 @@ const styles = StyleSheet.create({
   header: { flexDirection: "row", alignItems: "center", gap: spacing.md },
   headerCopy: { flex: 1, gap: 2 },
   title: { color: colors.white, fontSize: 20, fontWeight: "900" },
+  scoreWrap: { alignItems: "flex-end" },
   score: { color: colors.gold, fontSize: 34, fontWeight: "900" },
+  scoreCaption: { color: colors.muted, fontSize: 9, fontWeight: "800", letterSpacing: 0.6 },
   statusRow: { flexDirection: "row", alignItems: "center", gap: spacing.sm },
   legCount: { color: colors.muted, fontSize: 11, fontWeight: "800" },
+  meta: { color: colors.muted, fontSize: 11, lineHeight: 15 },
   leg: {
     flexDirection: "row",
     alignItems: "center",
@@ -84,16 +154,15 @@ const styles = StyleSheet.create({
     borderTopColor: colors.border,
   },
   number: {
-    color: colors.background,
     backgroundColor: colors.gold,
     width: 28,
     height: 28,
     borderRadius: 14,
-    textAlign: "center",
-    textAlignVertical: "center",
-    lineHeight: 28,
-    fontWeight: "900",
+    alignItems: "center",
+    justifyContent: "center",
   },
+  numberWeak: { backgroundColor: colors.warning },
+  numberText: { color: colors.background, fontWeight: "900", fontSize: 12 },
   legCopy: { flex: 1, gap: 2 },
   selection: { color: colors.white, fontWeight: "800", fontSize: 14 },
   odds: { color: colors.gold, fontWeight: "900" },

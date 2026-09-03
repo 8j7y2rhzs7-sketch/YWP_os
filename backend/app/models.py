@@ -215,6 +215,95 @@ class Recommendation(Base):
         value = self.snapshot.get("source_urls", []) if self.snapshot else []
         return [str(item) for item in value if item]
 
+    @property
+    def quality_score(self) -> int:
+        """YWP process/quality score 0-100. Not a win probability."""
+        return int(self.confidence_score)
+
+    @property
+    def home_team(self) -> str | None:
+        snap = self.snapshot or {}
+        if snap.get("home_team"):
+            return str(snap["home_team"])
+        from app.services.board_metrics import parse_event_teams
+
+        _, home = parse_event_teams(self.event_name)
+        return home
+
+    @property
+    def away_team(self) -> str | None:
+        snap = self.snapshot or {}
+        if snap.get("away_team"):
+            return str(snap["away_team"])
+        from app.services.board_metrics import parse_event_teams
+
+        away, _ = parse_event_teams(self.event_name)
+        return away
+
+    @property
+    def start_time(self):
+        snap = self.snapshot or {}
+        value = snap.get("start_time") or snap.get("commence_time")
+        return value
+
+    @property
+    def bookmaker(self) -> str | None:
+        snap = self.snapshot or {}
+        value = snap.get("bookmaker") or snap.get("book")
+        return str(value) if value else None
+
+    @property
+    def bookmaker_label(self) -> str | None:
+        snap = self.snapshot or {}
+        if snap.get("bookmaker_label"):
+            return str(snap["bookmaker_label"])
+        from app.services.board_metrics import bookmaker_display_name
+
+        return bookmaker_display_name(self.bookmaker)
+
+    @property
+    def price_timestamp(self):
+        snap = self.snapshot or {}
+        return snap.get("price_timestamp") or snap.get("source_timestamp")
+
+    @property
+    def market_scope_label(self) -> str:
+        from app.services.board_metrics import market_scope_label
+
+        return market_scope_label(self.market_type, self.market_period)
+
+    @property
+    def verification_status(self) -> str:
+        from app.services.board_metrics import verification_status_from_snapshot
+
+        return verification_status_from_snapshot(self.snapshot)
+
+    @property
+    def model_win_probability(self) -> float | None:
+        from app.services.board_metrics import model_win_probability
+
+        snap = self.snapshot or {}
+        return model_win_probability(
+            adjusted_probability=float(self.adjusted_probability),
+            probability_source=str(snap.get("probability_source") or ""),
+        )
+
+    @property
+    def probability_available(self) -> bool:
+        return self.model_win_probability is not None
+
+    @property
+    def probability_unavailable_reason(self) -> str | None:
+        if self.probability_available:
+            return None
+        snap = self.snapshot or {}
+        source = str(snap.get("probability_source") or "unknown")
+        return (
+            f"Independent model win probability unavailable "
+            f"(probability_source={source}). "
+            f"Quality score {self.confidence_score}/100 is not a win probability."
+        )
+
 
 class Ticket(Base, TimestampMixin):
     __tablename__ = "tickets"
