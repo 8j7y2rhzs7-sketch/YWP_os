@@ -269,7 +269,7 @@ class DecisionEngine:
             reasons.append("MARKET_NOT_OPEN")
 
         if abs(edge) > 0.15:
-            warnings.append(
+            hard_skip_reasons.append(
                 "Model edge exceeds 15 percentage points and is quarantined for review."
             )
             reasons.append("MODEL_EDGE_QUARANTINE")

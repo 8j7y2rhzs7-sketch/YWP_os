@@ -52,14 +52,18 @@ class MLBProjection:
         return self.home_win_probability if side == "home" else self.away_win_probability
 
     def total_probability(self, line: float, direction: Literal["over", "under"]) -> float:
-        over = 1 - _normal_cdf(line, self.expected_total_runs, 3.15)
+        # Wider sigma + shrink toward 50% so independent projections cannot print
+        # fake 90%+ certainty that the board ranks #1 then ticket gates strip.
+        over = 1 - _normal_cdf(line, self.expected_total_runs, 3.85)
         probability = over if direction == "over" else 1 - over
-        return _clamp(probability, 0.05, 0.95)
+        shrunk = 0.5 + (probability - 0.5) * 0.42
+        return _clamp(shrunk, 0.18, 0.82)
 
     def spread_probability(self, side: Literal["home", "away"], line: float) -> float:
         side_margin = self.expected_home_margin if side == "home" else -self.expected_home_margin
-        cover_probability = 1 - _normal_cdf(-line, side_margin, 3.35)
-        return _clamp(cover_probability, 0.05, 0.95)
+        cover_probability = 1 - _normal_cdf(-line, side_margin, 3.85)
+        shrunk = 0.5 + (cover_probability - 0.5) * 0.42
+        return _clamp(shrunk, 0.18, 0.82)
 
 
 def project_mlb_game(
@@ -121,7 +125,7 @@ def project_mlb_game(
         expected_total += 0.25
     if away_bullpen.get("heavy_usage"):
         expected_total += 0.25
-    expected_total = _clamp(expected_total, 5.0, 13.5)
+    expected_total = _clamp(expected_total, 5.5, 11.5)
 
     expected_home_margin = _clamp(
         0.35 + 0.80 * run_edge + 0.45 * starter_edge + 0.55 * bullpen_edge,

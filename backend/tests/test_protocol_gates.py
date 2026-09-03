@@ -95,6 +95,7 @@ def test_model_edge_over_15_points_is_quarantined() -> None:
         candidate(estimated_probability=0.90, american_odds=-110)
     )
     assert "MODEL_EDGE_QUARANTINE" in evaluation.reason_codes
+    assert evaluation.decision == "SKIP"
     rec = SimpleNamespace(
         id="rec-1",
         decision="PLAY",
@@ -260,8 +261,14 @@ def test_analysis_rank_one_lands_on_max_bet() -> None:
     )
     cards, quarantined = build_cards([top, louder], max_legs=5, min_rating=0)
     assert cards["max_bet"].recommendation_ids == ["rank-1"]
-    assert "rank-1" in cards["ticket_a"].recommendation_ids
-    assert quarantined == []
+    assert "elite_two" in cards
+    assert cards["elite_two"].recommendation_ids[0] == "rank-1"
+    held = {
+        item.recommendation_id
+        for item in quarantined
+        if "needs" not in item.reason
+    }
+    assert "rank-1" not in held
 
 
 def test_ineligible_top_rank_is_explained() -> None:
@@ -287,5 +294,26 @@ def test_ineligible_top_rank_is_explained() -> None:
     assert cards["max_bet"].recommendation_ids == ["play-2"]
     assert any(
         item.recommendation_id == "watch-1" and "not ticket-eligible" in item.reason
+        for item in quarantined
+    )
+
+
+def test_underfilled_multi_leg_cards_are_dropped() -> None:
+    only = _play(
+        id="solo-1",
+        rank=2,
+        thesis_key="solo-thesis",
+        event_id="event-solo",
+        selection="Solo play ML",
+        player_key="player-solo",
+        script_key="script-solo",
+    )
+    cards, quarantined = build_cards([only], max_legs=5, min_rating=0)
+    assert "max_bet" in cards
+    assert cards["max_bet"].recommendation_ids == ["solo-1"]
+    assert "elite_two" not in cards
+    assert "core_3" not in cards
+    assert any(
+        "needs 2 legs" in item.reason or "needs 3 legs" in item.reason
         for item in quarantined
     )

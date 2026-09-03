@@ -267,6 +267,23 @@ export default function AnalysisScreen() {
         </Text>
       ) : null}
 
+      {build?.quarantined.length ? (
+        <>
+          <SectionTitle
+            title="Held Out of Cards"
+            subtitle="Top board picks can be removed by edge, miss-by-1, or diversity gates. This is why #1 may not appear below."
+          />
+          <MetalPanel tone="danger">
+            {build.quarantined.map((item) => (
+              <Text key={`${item.recommendation_id}-${item.reason}`} style={styles.quarantine}>
+                ⛔ {item.selection ? `${item.selection} — ` : ""}
+                {item.reason}
+              </Text>
+            ))}
+          </MetalPanel>
+        </>
+      ) : null}
+
       <SectionTitle
         title="Official Cards"
         subtitle="Max Bet, Elite 2, Core, Cash Builder, special cards, and correct ABC logic."
@@ -293,23 +310,6 @@ export default function AnalysisScreen() {
           />
         ))
       )}
-
-      {build?.quarantined.length ? (
-        <>
-          <SectionTitle
-            title="Quarantine"
-            subtitle="Why a ranked pick did not land on a ticket card."
-          />
-          <MetalPanel tone="danger">
-            {build.quarantined.map((item) => (
-              <Text key={`${item.recommendation_id}-${item.reason}`} style={styles.quarantine}>
-                ⛔ {item.selection ? `${item.selection} — ` : ""}
-                {item.reason}
-              </Text>
-            ))}
-          </MetalPanel>
-        </>
-      ) : null}
 
       <SectionTitle
         title="Stay Away"

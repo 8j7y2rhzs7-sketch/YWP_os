@@ -279,9 +279,50 @@ def build_cards(
         "ticket_b": _card("ticket_b", "Ticket B — different players/theses", b),
         "ticket_c": _card("ticket_c", "Ticket C — best of A + B", c),
     }
-    if not any(card.legs for card in cards.values()):
+    min_legs = {
+        "max_bet": 1,
+        "elite_two": 2,
+        "core_parlay": 2,
+        "core_3": 3,
+        "core_4": 4,
+        "core_5": 5,
+        "cash_builder": 1,
+        "edge_plays": 2,
+        "fortress": 2,
+        "handicap": 2,
+        "no_stress": 2,
+        "scripted": 2,
+        "quick_cash": 1,
+        "chain_reaction": 2,
+        "ghostt": 2,
+        "comeback": 2,
+        "ticket_a": 2,
+        "ticket_b": 2,
+        "ticket_c": 2,
+    }
+    pruned: dict[str, TicketCardOut] = {}
+    for key, card in cards.items():
+        needed = min_legs.get(key, 1)
+        if len(card.legs) >= needed:
+            pruned[key] = card
+            continue
+        if card.legs:
+            quarantined.append(
+                QuarantineItemOut(
+                    recommendation_id=card.legs[0].id,
+                    reason=(
+                        f"{card.label} needs {needed} legs; only {len(card.legs)} "
+                        "survived ticket gates (no filler legs added)."
+                    ),
+                    selection=card.legs[0].selection,
+                    analysis_rank=card.legs[0].rank or None,
+                )
+            )
+    if "max_bet" not in pruned and strongest:
+        pruned["max_bet"] = _card("max_bet", "Max Bet — strongest single", strongest)
+    if not any(card.legs for card in pruned.values()):
         return {}, quarantined
-    return cards, quarantined
+    return pruned, quarantined
 
 
 def _cash_card(
