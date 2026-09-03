@@ -60,6 +60,8 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
         event_name = f"{game['away_team']} @ {game['home_team']}"
 
         start_time = _parse_start(game.get("game_date"), slate_date)
+        game_status = game.get("game_status") or "PRE_GAME"
+        market_status = "OPEN" if game_status == "PRE_GAME" else "CLOSED"
 
         # --- Moneyline candidates (home + away) ---
         for side in ("home", "away"):
@@ -91,6 +93,8 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
                 reason_codes=_ml_reason_codes(pitcher),
                 reasoning=[f"{team} moneyline. Probable pitcher: {pitcher_name}. Record: {game[f'{side}_record']}."],
                 now=now,
+                game_status=game_status,
+                market_status=market_status,
             ))
 
         # --- Totals (over/under) ---
@@ -114,6 +118,8 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
                 reason_codes=["LINEUP_EDGE", "BULLPEN_EDGE"],
                 reasoning=[f"Game total Over {line_val}. Both lineups and bullpens factor into scoring expectation."],
                 now=now,
+                game_status=game_status,
+                market_status=market_status,
             ))
         if total_under and total_under.get("point"):
             line_val = Decimal(str(total_under["point"]))
@@ -133,6 +139,8 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
                 reason_codes=["STARTING_PITCHER_EDGE", "BULLPEN_EDGE"],
                 reasoning=[f"Game total Under {line_val}. Pitching matchup drives the thesis."],
                 now=now,
+                game_status=game_status,
+                market_status=market_status,
             ))
 
         # --- Spreads (run line) ---
@@ -158,6 +166,8 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
                 reason_codes=["STARTING_PITCHER_EDGE", "LINEUP_EDGE"],
                 reasoning=[f"{team} run line {spread_line:+}. Margin of victory thesis."],
                 now=now,
+                game_status=game_status,
+                market_status=market_status,
             ))
 
         # --- Pitcher strikeout props (if we have pitcher data) ---
@@ -177,6 +187,8 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
                 if k_line < 3:
                     continue
                 k_line_dec = Decimal(str(k_line)) + Decimal("0.5")
+                k_hit = _k_hit_rate(k_log, float(k_line_dec))
+                k_prob = max(0.35, min(0.78, k_hit if k_hit > 0 else 0.52))
 
                 candidates.append(_build_candidate(
                     candidate_id=f"mlb-k-{side}-{game['game_pk']}",
@@ -187,7 +199,7 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
                     selection=f"{pitcher['name']} Over {k_line_dec} Ks",
                     line=k_line_dec,
                     odds=-115,
-                    probability=0.60,
+                    probability=k_prob,
                     thesis_key=f"mlb-{_slug(pitcher['name'])}-k-over-{k_line_dec}-{slate_date}",
                     script_key=f"mlb-{_slug(event_name)}-{_slug(pitcher['name'])}-strikeouts",
                     player_key=f"mlb-pitcher-{pitcher['id']}",
@@ -197,9 +209,11 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
                         f"avg IP: {k_stats['avg_ip']}. Line set at {k_line_dec}."
                     ],
                     now=now,
+                    game_status=game_status,
+                    market_status=market_status,
                     market_is_pitcher_strikeout_over=True,
                     average_cushion=round(k_stats["avg_k"] - float(k_line_dec), 2),
-                    recent_hit_rate=_k_hit_rate(k_log, float(k_line_dec)),
+                    recent_hit_rate=k_hit,
                     miss_by_one_count_l10=_k_miss_by_one(k_log, float(k_line_dec)),
                 ))
             except Exception:
@@ -231,6 +245,8 @@ def _build_candidate(
     average_cushion: float | None = None,
     recent_hit_rate: float | None = None,
     miss_by_one_count_l10: int = 0,
+    game_status: str = "PRE_GAME",
+    market_status: str = "OPEN",
 ) -> CandidateInput:
     prob_clamped = max(0.02, min(0.98, probability))
     return CandidateInput(
@@ -270,6 +286,8 @@ def _build_candidate(
         home_away_verified=True,
         market_movement_verified=True,
         sport_specific_sweep_complete=False,
+        game_status=game_status,
+        market_status=market_status,
         market_is_pitcher_strikeout_over=market_is_pitcher_strikeout_over,
         recent_hit_rate=recent_hit_rate or min(0.85, prob_clamped + 0.05),
         average_cushion=average_cushion or 1.5,

@@ -289,6 +289,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             "unknown_source_labels": unknowns,
             "candidate_count": len(payload.candidates),
             "official_pass_count": len(stay_away),
+            "official_pass": len(ranked) == 0,
         },
     )
 
@@ -333,9 +334,11 @@ def build_ticket(payload: BuildTicketRequest, user: SubscribedUser, db: DB) -> B
         min_rating=payload.min_rating,
         exposed_thesis_keys=exposed_theses,
     )
+    official_pass = not any(card.legs for card in cards.values())
     return BuildTicketResponse(
         analysis_id=payload.analysis_id,
-        cards=cards,
+        official_pass=official_pass,
+        cards={} if official_pass else cards,
         stay_away=[
             RecommendationOut.model_validate(item)
             for item in recommendations

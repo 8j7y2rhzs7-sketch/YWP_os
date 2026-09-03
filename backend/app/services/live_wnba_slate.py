@@ -17,6 +17,7 @@ from app.services.odds_provider import (
     get_game_odds,
     odds_to_implied_probability,
 )
+from app.services.ticket_gates import event_market_status
 
 logger = logging.getLogger(__name__)
 
@@ -172,6 +173,7 @@ def _build(
     odds_clamped = max(-10000, min(10000, odds))
     if odds_clamped == 0 or -100 < odds_clamped < 100:
         odds_clamped = -100 if odds < 0 else 100
+    game_status, market_status = event_market_status(start_time, now)
     return CandidateInput(
         candidate_id=candidate_id,
         event_id=event_id,
@@ -232,6 +234,8 @@ def _build(
             "Compare any cash-out offer with current fair remaining value. "
             "Reduce exposure only after material thesis change."
         ),
+        game_status=game_status,
+        market_status=market_status,
     )
 
 

@@ -183,6 +183,11 @@ class CandidateInput(YWPModel):
     market_movement_verified: bool = False
     sport_specific_sweep_complete: bool = False
 
+    game_status: Literal["PRE_GAME", "LIVE", "FINAL", "POSTPONED", "CANCELLED", "UNKNOWN"] = (
+        "PRE_GAME"
+    )
+    market_status: Literal["OPEN", "SUSPENDED", "CLOSED", "LOCKED"] = "OPEN"
+
     market_is_pitcher_strikeout_over: bool = False
     first_start_back: bool = False
     normal_workload_confirmed: bool = False
@@ -371,6 +376,7 @@ class TicketCardOut(YWPModel):
 
 class BuildTicketResponse(YWPModel):
     analysis_id: str | None
+    official_pass: bool = False
     cards: dict[str, TicketCardOut]
     stay_away: list[RecommendationOut]
     quarantined: list[dict[str, str]]
@@ -446,6 +452,10 @@ class CurrentStateUpdate(YWPModel):
     key_injury_change: bool = False
     severe_weather_change: bool = False
     data_quality: float | None = Field(default=None, ge=0, le=1)
+    game_status: Literal["PRE_GAME", "LIVE", "FINAL", "POSTPONED", "CANCELLED", "UNKNOWN"] | None = (
+        None
+    )
+    market_status: Literal["OPEN", "SUSPENDED", "CLOSED", "LOCKED"] | None = None
     first_start_back: bool | None = None
     normal_workload_confirmed: bool | None = None
     k_duration_verified: bool | None = None

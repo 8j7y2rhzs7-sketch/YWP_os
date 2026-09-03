@@ -28,6 +28,14 @@ from app.schemas import (
 )
 from app.services.decision_engine import american_to_decimal
 from app.services.lock_check import load_ticket_for_lock, run_lock_check
+from app.services.ticket_gates import (
+    cash_card_k_overs_ok,
+    game_status_ok,
+    market_status_ok,
+    model_edge_quarantine,
+    snapshot_game_status,
+    snapshot_market_status,
+)
 
 router = APIRouter(prefix="/tickets", tags=["tickets"])
 
@@ -95,6 +103,22 @@ def create_ticket(payload: TicketCreate, user: SubscribedUser, db: DB) -> Ticket
     if any(item.decision not in {"PLAY", "LEAN"} for item in recommendations):
         raise HTTPException(
             status_code=422, detail="Only PLAY or LEAN recommendations can be saved"
+        )
+    if any("DATA_ANOMALY" in (item.reason_codes or []) for item in recommendations):
+        raise HTTPException(status_code=422, detail="DATA_ANOMALY candidates cannot be saved")
+    if any(not game_status_ok(snapshot_game_status(item.snapshot)) for item in recommendations):
+        raise HTTPException(status_code=422, detail="Only PRE_GAME tickets can be saved")
+    if any(not market_status_ok(snapshot_market_status(item.snapshot)) for item in recommendations):
+        raise HTTPException(status_code=422, detail="Only OPEN markets can be saved")
+    if any(model_edge_quarantine(float(item.edge)) for item in recommendations):
+        raise HTTPException(
+            status_code=422,
+            detail="Model edge exceeds 15 percentage points; quarantined for review",
+        )
+    if not cash_card_k_overs_ok(payload.ticket_type, recommendations):
+        raise HTTPException(
+            status_code=422,
+            detail="Cash cards cannot include more than one pitcher strikeout over",
         )
     if len({item.slate_date for item in recommendations}) != 1:
         raise HTTPException(status_code=422, detail="A ticket must use one slate date")

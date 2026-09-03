@@ -139,6 +139,11 @@ export default function AnalysisScreen() {
     );
   }
 
+  const officialPass =
+    analysis.data_quality_summary.official_pass === true ||
+    analysis.ranked_picks.length === 0 ||
+    build?.official_pass === true;
+
   return (
     <Screen>
       <BrandHeader title="DECISION BOARD" subtitle="FINAL SWEEP • CARD CONSTRUCTION" compact />
@@ -207,13 +212,24 @@ export default function AnalysisScreen() {
       {!loading && !build ? (
         <YwpButton label="RE-RUN TICKET BUILDER" onPress={() => void runBuilder()} />
       ) : null}
-      {orderedCards.map((card) => (
-        <TicketCardView
-          key={card.key}
-          card={card}
-          onPress={card.legs.length ? () => setSelectedCard(card) : undefined}
-        />
-      ))}
+      {officialPass ? (
+        <MetalPanel tone="danger">
+          <StatusPill value="PASS" />
+          <Text style={styles.title}>Official PASS. No tickets.</Text>
+          <Text style={type.body}>
+            Open and Save stay disabled. PASS is the product output—not an empty
+            board waiting for filler legs.
+          </Text>
+        </MetalPanel>
+      ) : (
+        orderedCards.map((card) => (
+          <TicketCardView
+            key={card.key}
+            card={card}
+            onPress={card.legs.length ? () => setSelectedCard(card) : undefined}
+          />
+        ))
+      )}
 
       {build?.quarantined.length ? (
         <>
@@ -281,7 +297,12 @@ export default function AnalysisScreen() {
                 thumbColor={intentionalThesis ? colors.gold : colors.silver}
               />
             </View>
-            <YwpButton label="SAVE & OPEN LOCK CENTER" onPress={() => void saveTicket()} loading={saving} />
+            <YwpButton
+              label="SAVE & OPEN LOCK CENTER"
+              onPress={() => void saveTicket()}
+              loading={saving}
+              disabled={officialPass || !selectedCard?.legs.length}
+            />
             <YwpButton
               label="CREATE SHARE GRAPHIC"
               variant="outline"

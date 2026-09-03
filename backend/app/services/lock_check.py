@@ -11,6 +11,14 @@ from app.core.config import settings
 from app.models import BankrollAccount, LockCheck, Ticket, TicketLeg
 from app.schemas import CurrentStateUpdate, LockCheckRequest
 from app.services.decision_engine import implied_probability, input_hash
+from app.services.ticket_gates import (
+    cash_card_k_overs_ok,
+    game_status_ok,
+    market_status_ok,
+    model_edge_quarantine,
+    snapshot_game_status,
+    snapshot_market_status,
+)
 
 STATUS_PRIORITY = {"LOCKED": 0, "WARNING": 1, "CHANGE_REQUIRED": 2, "SKIP": 3}
 
@@ -84,6 +92,14 @@ def run_lock_check(
             warnings.append(f"Stake exceeds the configured per-ticket cap of {cap:.2f}.")
             status = _raise_status(status, "SKIP")
 
+    active_recs = [
+        leg.recommendation for leg in ticket.legs if leg.action in active_actions
+    ]
+    if not cash_card_k_overs_ok(ticket.ticket_type, active_recs):
+        checks["correlation"] = "FAIL"
+        warnings.append("Cash cards cannot include more than one pitcher strikeout over.")
+        status = _raise_status(status, "SKIP")
+
     for leg in ticket.legs:
         recommendation = leg.recommendation
         leg_status = "LOCKED"
@@ -103,6 +119,33 @@ def run_lock_check(
             continue
 
         is_demo = recommendation.data_source == "YWP_DEMO_PROVIDER"
+        game_status = snapshot_game_status(snapshot)
+        market_status = snapshot_market_status(snapshot)
+        if update is not None:
+            if update.game_status:
+                game_status = update.game_status
+            if update.market_status:
+                market_status = update.market_status
+            if not update.market_available:
+                market_status = "CLOSED"
+
+        if not game_status_ok(game_status):
+            changes.append(f"Game status is {game_status}; only PRE_GAME is eligible.")
+            leg_status = "SKIP"
+            checks["market_availability"] = "FAIL"
+        if not market_status_ok(market_status):
+            changes.append(f"Market status is {market_status}; only OPEN is eligible.")
+            leg_status = "SKIP"
+            checks["market_availability"] = "FAIL"
+        if model_edge_quarantine(float(recommendation.edge)):
+            changes.append("Model edge exceeds 15 percentage points; quarantined for review.")
+            leg_status = "SKIP"
+            checks["data_quality"] = "FAIL"
+        if "DATA_ANOMALY" in (recommendation.reason_codes or []):
+            changes.append("DATA_ANOMALY remains on this recommendation.")
+            leg_status = "SKIP"
+            checks["data_quality"] = "FAIL"
+
         if update is None and not is_demo:
             changes.append("No fresh provider snapshot was supplied.")
             leg_status = "SKIP"

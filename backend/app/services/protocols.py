@@ -420,6 +420,16 @@ def run_protocol_health_check(
                 "Multiple independent cashing paths",
                 [candidate.multiple_paths_score >= 0.35 for candidate in candidates],
             ),
+            _check(
+                "pre_game_only",
+                "Game status is PRE_GAME",
+                [candidate.game_status == "PRE_GAME" for candidate in candidates],
+            ),
+            _check(
+                "market_open",
+                "Market status is OPEN",
+                [candidate.market_status == "OPEN" for candidate in candidates],
+            ),
         ]
     )
 

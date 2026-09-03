@@ -62,8 +62,24 @@ def get_schedule(slate_date: date) -> list[dict[str, Any]]:
                 "home_record": f"{home.get('leagueRecord', {}).get('wins', 0)}-{home.get('leagueRecord', {}).get('losses', 0)}",
                 "home_pitcher": _pitcher_info(home.get("probablePitcher")),
                 "venue": g.get("venue", {}).get("name", ""),
+                "game_status": _map_game_status(status),
             })
     return games
+
+
+def _map_game_status(abstract: str) -> str:
+    mapping = {
+        "preview": "PRE_GAME",
+        "pre-game": "PRE_GAME",
+        "scheduled": "PRE_GAME",
+        "live": "LIVE",
+        "in progress": "LIVE",
+        "final": "FINAL",
+        "postponed": "POSTPONED",
+        "cancelled": "CANCELLED",
+        "canceled": "CANCELLED",
+    }
+    return mapping.get(abstract.strip().lower(), "UNKNOWN" if abstract else "PRE_GAME")
 
 
 def _pitcher_info(p: dict[str, Any] | None) -> dict[str, Any] | None:

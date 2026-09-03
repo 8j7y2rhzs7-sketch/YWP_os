@@ -109,6 +109,7 @@ export default function TicketsScreen() {
             label="OPEN LOCK CENTER"
             variant="outline"
             onPress={() => router.push(`/ticket/${ticket.id}`)}
+            disabled={ticket.legs.length === 0}
           />
         </MetalPanel>
       ))}

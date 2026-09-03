@@ -4,6 +4,13 @@ from collections.abc import Callable, Iterable
 
 from app.models import Recommendation
 from app.schemas import RecommendationOut, TicketCardOut
+from app.services.ticket_gates import (
+    CASH_CARD_KEYS,
+    cap_pitcher_k_overs,
+    cash_card_k_overs_ok,
+    is_pitcher_k_over,
+    model_edge_quarantine,
+)
 
 
 def _score(recommendation: Recommendation) -> tuple[float, float, float, float, float, float]:
@@ -95,6 +102,16 @@ def build_cards(
                 }
             )
             continue
+        if model_edge_quarantine(float(item.edge)):
+            quarantined.append(
+                {
+                    "recommendation_id": item.id,
+                    "reason": (
+                        "Model edge exceeds 15 percentage points; quarantined for review."
+                    ),
+                }
+            )
+            continue
         if float(item.miss_by_one_risk) >= 0.80:
             quarantined.append(
                 {
@@ -181,16 +198,17 @@ def build_cards(
         "core_3": _card("core_3", "Official 3-Pick", core_3),
         "core_4": _card("core_4", "Official 4-Pick", core_4),
         "core_5": _card("core_5", "Official 5-Pick", core_5),
-        "cash_builder": _card("cash_builder", "Cash Builder", cash),
+        "cash_builder": _cash_card("cash_builder", "Cash Builder", cash, quarantined),
         "edge_plays": _card("edge_plays", "Edge Plays", edge),
         "fortress": _card("fortress", "Fortress Card", fortress),
         "handicap": _card("handicap", "Handicap Card — biggest cushion", handicap),
-        "no_stress": _card("no_stress", "No Stress Card", no_stress),
+        "no_stress": _cash_card("no_stress", "No Stress Card", no_stress, quarantined),
         "scripted": _card("scripted", "Scripted Card", scripted),
-        "quick_cash": _card(
+        "quick_cash": _cash_card(
             "quick_cash",
             "Quick Cash — early-settlement edge",
             quick_cash,
+            quarantined,
         ),
         "chain_reaction": _card(
             "chain_reaction",
@@ -216,4 +234,31 @@ def build_cards(
         "ticket_b": _card("ticket_b", "Ticket B — different players/theses", b),
         "ticket_c": _card("ticket_c", "Ticket C — best of A + B", c),
     }
+    if not any(card.legs for card in cards.values()):
+        return {}, quarantined
     return cards, quarantined
+
+
+def _cash_card(
+    key: str,
+    label: str,
+    legs: list[Recommendation],
+    quarantined: list[dict[str, str]],
+) -> TicketCardOut:
+    capped, rejected = cap_pitcher_k_overs(legs, max_k=1)
+    warnings: list[str] = []
+    if rejected or not cash_card_k_overs_ok(key, capped):
+        for item in legs:
+            if is_pitcher_k_over(item) and item.id not in {leg.id for leg in capped}:
+                quarantined.append(
+                    {
+                        "recommendation_id": item.id,
+                        "reason": "Cash card rejected extra pitcher strikeout over (max 1).",
+                    }
+                )
+        warnings.append("Pitcher-K overs per cash card cannot exceed 1.")
+        if not cash_card_k_overs_ok(key, capped):
+            return _card(key, label, [], warnings)
+    if key not in CASH_CARD_KEYS:
+        return _card(key, label, capped, warnings)
+    return _card(key, label, capped, warnings)

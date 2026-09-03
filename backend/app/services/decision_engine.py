@@ -235,6 +235,24 @@ class DecisionEngine:
             hard_skip_reasons.append("Heavily priced filler leg has no independent value case.")
             reasons.append("FILLER_LEG_TAX")
 
+        if candidate.game_status != "PRE_GAME":
+            hard_skip_reasons.append(
+                f"Game status is {candidate.game_status}; only PRE_GAME markets are eligible."
+            )
+            reasons.append("GAME_NOT_PRE_GAME")
+
+        if candidate.market_status != "OPEN":
+            hard_skip_reasons.append(
+                f"Market status is {candidate.market_status}; only OPEN markets are eligible."
+            )
+            reasons.append("MARKET_NOT_OPEN")
+
+        if abs(edge) > 0.15:
+            warnings.append(
+                "Model edge exceeds 15 percentage points and is quarantined for review."
+            )
+            reasons.append("MODEL_EDGE_QUARANTINE")
+
         if candidate.previous_game_recency_only:
             hard_skip_reasons.append(
                 "Case depends on the previous game's score rather than rebuilt inputs."
@@ -403,6 +421,7 @@ class DecisionEngine:
         )
 
     def rank(self, evaluations: list[Evaluation]) -> list[Evaluation]:
+        gated = self.apply_slate_integrity_gates(evaluations)
         priority = {
             Decision.play.value: 0,
             Decision.lean.value: 1,
@@ -410,7 +429,7 @@ class DecisionEngine:
             Decision.skip.value: 3,
         }
         return sorted(
-            evaluations,
+            gated,
             key=lambda item: (
                 priority[item.decision],
                 -item.confidence_score,
@@ -418,6 +437,41 @@ class DecisionEngine:
                 item.candidate.variance,
             ),
         )
+
+    def apply_slate_integrity_gates(self, evaluations: list[Evaluation]) -> list[Evaluation]:
+        from collections import Counter
+
+        counts = Counter(
+            round(item.candidate.estimated_probability, 4) for item in evaluations
+        )
+        anomalous = {prob for prob, count in counts.items() if count >= 3}
+        if not anomalous:
+            return evaluations
+        for item in evaluations:
+            key = round(item.candidate.estimated_probability, 4)
+            if key not in anomalous:
+                continue
+            self._force_skip(
+                item,
+                "DATA_ANOMALY",
+                "Three or more candidates share an identical model probability.",
+            )
+        return evaluations
+
+    @staticmethod
+    def _force_skip(evaluation: Evaluation, code: str, message: str) -> None:
+        if code not in evaluation.reason_codes:
+            evaluation.reason_codes.append(code)
+        if message not in evaluation.warnings:
+            evaluation.warnings.append(message)
+        evaluation.decision = Decision.skip.value
+        evaluation.recommendation_tier = "stay_away"
+        evaluation.suggested_stake_pct = 0.0
+        evaluation.ywp_intelligence_score = min(evaluation.ywp_intelligence_score, 5.9)
+        if "Official YWP output: SKIP / NO PLAY." not in evaluation.reasoning_summary:
+            evaluation.reasoning_summary = (
+                f"{evaluation.reasoning_summary} Official YWP output: SKIP / NO PLAY."
+            ).strip()
 
 
 decision_engine = DecisionEngine()

@@ -141,6 +141,7 @@ export interface AnalyzeResponse {
     unknown_source_labels: number;
     candidate_count: number;
     official_pass_count: number;
+    official_pass?: boolean;
   };
 }
 
@@ -157,6 +158,7 @@ export interface TicketCard {
 
 export interface BuildTicketResponse {
   analysis_id: string | null;
+  official_pass?: boolean;
   cards: Record<string, TicketCard>;
   stay_away: Recommendation[];
   quarantined: Array<{ recommendation_id: string; reason: string }>;

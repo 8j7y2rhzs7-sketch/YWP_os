@@ -52,7 +52,9 @@ def test_health_and_authenticated_full_flow(
         headers=auth_headers,
     )
     assert cards_response.status_code == 200, cards_response.text
-    cards = cards_response.json()["cards"]
+    payload = cards_response.json()
+    assert payload["official_pass"] is False
+    cards = payload["cards"]
     assert {
         "max_bet",
         "elite_two",
