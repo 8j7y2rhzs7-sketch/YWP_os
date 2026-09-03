@@ -1,12 +1,14 @@
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { AppDataProvider } from "@/context/AppDataContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { colors } from "@/theme";
 
 export default function RootLayout() {
   return (
+    <ErrorBoundary>
     <AuthProvider>
       <AppDataProvider>
         <StatusBar style="light" />
@@ -41,5 +43,6 @@ export default function RootLayout() {
         </Stack>
       </AppDataProvider>
     </AuthProvider>
+    </ErrorBoundary>
   );
 }

@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Platform, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 import { BrandHeader } from "@/components/BrandHeader";
 import { ErrorNotice } from "@/components/ErrorNotice";
@@ -31,6 +31,9 @@ export default function SettingsScreen() {
   const [dailyExposure, setDailyExposure] = useState("10.0");
   const [thesisExposure, setThesisExposure] = useState("3.0");
   const [lossPause, setLossPause] = useState("3");
+  const [txnAmount, setTxnAmount] = useState("");
+  const [txnLoading, setTxnLoading] = useState(false);
+  const [txnMsg, setTxnMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -91,6 +94,29 @@ export default function SettingsScreen() {
     }
   }
 
+  async function submitTxn(txnType: "deposit" | "withdrawal") {
+    const amt = parseFloat(txnAmount);
+    if (!amt || amt <= 0) {
+      setTxnMsg("Enter a valid amount.");
+      return;
+    }
+    setTxnLoading(true);
+    setTxnMsg(null);
+    try {
+      await request("/bankroll/transaction", {
+        method: "POST",
+        body: JSON.stringify({ transaction_type: txnType, amount: amt.toFixed(2) }),
+      });
+      setTxnAmount("");
+      await load();
+      setTxnMsg(`${txnType === "deposit" ? "Deposit" : "Withdrawal"} of $${amt.toFixed(2)} recorded.`);
+    } catch (reason) {
+      setTxnMsg(reason instanceof Error ? reason.message : "Transaction failed");
+    } finally {
+      setTxnLoading(false);
+    }
+  }
+
   async function signOut() {
     await logout();
     router.replace("/(auth)/login");
@@ -139,7 +165,35 @@ export default function SettingsScreen() {
         </View>
       </MetalPanel>
 
-      <SectionTitle title="Bankroll Guardrails" subtitle={`Current balance $${bankroll?.balance ?? "0.00"}`} />
+      <SectionTitle title="Bankroll" subtitle={`Current balance $${bankroll?.balance ?? "0.00"}`} />
+      <MetalPanel>
+        <View style={styles.txnRow}>
+          <TextInput
+            style={styles.txnInput}
+            placeholder="Amount"
+            placeholderTextColor={colors.muted}
+            keyboardType="decimal-pad"
+            value={txnAmount}
+            onChangeText={setTxnAmount}
+          />
+          <YwpButton
+            label="DEPOSIT"
+            onPress={() => void submitTxn("deposit")}
+            style={styles.txnBtn}
+            loading={txnLoading}
+          />
+          <YwpButton
+            label="WITHDRAW"
+            variant="danger"
+            onPress={() => void submitTxn("withdrawal")}
+            style={styles.txnBtn}
+            loading={txnLoading}
+          />
+        </View>
+        {txnMsg ? <Text style={styles.txnMsg}>{txnMsg}</Text> : null}
+      </MetalPanel>
+
+      <SectionTitle title="Bankroll Guardrails" />
       <MetalPanel>
         <FormField label="Maximum stake per ticket (%)" value={maxStake} onChangeText={setMaxStake} keyboardType="decimal-pad" />
         <FormField label="Maximum daily exposure (%)" value={dailyExposure} onChangeText={setDailyExposure} keyboardType="decimal-pad" />
@@ -195,4 +249,19 @@ const styles = StyleSheet.create({
   flex: { flex: 1, gap: spacing.xs },
   law: { color: colors.success, fontSize: 13, lineHeight: 20 },
   removed: { color: colors.danger, fontSize: 13, lineHeight: 20 },
+  txnRow: { flexDirection: "row", gap: spacing.sm, alignItems: "center", flexWrap: "wrap" },
+  txnInput: {
+    flex: 1,
+    minWidth: 100,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.backgroundRaised,
+    borderRadius: radius.md,
+    padding: spacing.md,
+    color: colors.white,
+    fontWeight: "700",
+    fontSize: 16,
+  },
+  txnBtn: { minWidth: 90 },
+  txnMsg: { color: colors.goldBright, fontSize: 13, marginTop: spacing.sm },
 });
