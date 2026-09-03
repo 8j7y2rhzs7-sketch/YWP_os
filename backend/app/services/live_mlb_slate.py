@@ -37,8 +37,14 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
     try:
         odds_events = get_game_odds(sport="baseball_mlb", markets="h2h,spreads,totals")
     except Exception:
-        logger.exception("Failed to fetch odds; building slate without odds")
+        logger.exception("Failed to fetch odds; building slate without book lines")
         odds_events = []
+
+    if not odds_events:
+        logger.warning(
+            "Odds API returned no MLB events. Moneyline/total/run-line markets will be missing; "
+            "only pitcher K estimates from MLB.com can be built."
+        )
 
     candidates: list[CandidateInput] = []
     now = datetime.now(UTC)

@@ -94,6 +94,22 @@ class Settings(BaseSettings):
             return "postgresql+psycopg://" + value.removeprefix("postgresql://")
         return value
 
+    @field_validator(
+        "odds_api_key",
+        "whop_api_key",
+        "whop_webhook_secret",
+        "whop_app_id",
+        "openai_api_key",
+        mode="before",
+    )
+    @classmethod
+    def empty_secret_to_none(cls, value: object) -> object:
+        if value is None:
+            return None
+        if isinstance(value, str) and value.strip() in {"", "-", "null", "None"}:
+            return None
+        return value
+
     @property
     def cors_origins(self) -> list[str]:
         return [item.strip() for item in self.cors_origins_raw.split(",") if item.strip()]

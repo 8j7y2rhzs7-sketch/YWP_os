@@ -144,11 +144,16 @@ def extract_best_odds(
             if market.get("key") != market_key:
                 continue
             for outcome in market.get("outcomes", []):
-                if selection_name and outcome.get("name") != selection_name:
-                    continue
+                outcome_name = str(outcome.get("name", ""))
+                if selection_name and outcome_name.casefold() != selection_name.casefold():
+                    # Soft match: last token (e.g. "Guardians") or containment.
+                    sel = selection_name.casefold()
+                    out = outcome_name.casefold()
+                    if sel not in out and out not in sel and sel.split()[-1] != out.split()[-1]:
+                        continue
                 candidates.append({
                     "book": book_key,
-                    "name": outcome.get("name", ""),
+                    "name": outcome_name,
                     "price": outcome.get("price", 0),
                     "point": outcome.get("point"),
                     "preferred_rank": preferred.index(book_key) if book_key in preferred else 999,

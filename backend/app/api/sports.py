@@ -66,14 +66,26 @@ def slate(
         try:
             candidates = live_mlb_slate(slate_date)
             if candidates:
+                has_book_markets = any(
+                    item.market_type
+                    in {"moneyline", "run_line", "game_total_over", "game_total_under"}
+                    for item in candidates
+                )
+                notice = (
+                    "Live MLB data from MLB.com Stats API + The Odds API. "
+                    "Verify all inputs before wagering."
+                    if has_book_markets
+                    else (
+                        "Live MLB schedule loaded, but book odds were unavailable. "
+                        "Only pitcher strikeout estimates are shown. "
+                        "Set a valid ODDS_API_KEY on the server and refresh."
+                    )
+                )
                 return SlateResponse(
                     sport=sport_lower,
                     date=slate_date,
                     mode="live",
-                    notice=(
-                        "Live MLB data from MLB.com Stats API + The Odds API. "
-                        "Verify all inputs before wagering."
-                    ),
+                    notice=notice,
                     candidates=candidates,
                 )
         except Exception as exc:
