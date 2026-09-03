@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 
-import { ApiError, rawRequest } from "@/lib/api";
+import { ApiError, loadApiUrl, rawRequest } from "@/lib/api";
 import {
   clearStoredTokens,
   getStoredTokens,
@@ -149,6 +149,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let active = true;
     void (async () => {
       try {
+        await loadApiUrl();
         const stored = await getStoredTokens();
         if (!stored) return;
         const restored = JSON.parse(stored) as Tokens;

@@ -12,6 +12,7 @@ import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
+import { getApiUrl, saveApiUrl } from "@/lib/api";
 import { colors, radius, spacing, type } from "@/theme";
 import type {
   Bankroll,
@@ -38,6 +39,8 @@ export default function SettingsScreen() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const [apiUrl, setApiUrl] = useState(getApiUrl());
+  const [apiSaved, setApiSaved] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -146,6 +149,33 @@ export default function SettingsScreen() {
         <Text style={styles.title}>{user?.name}</Text>
         <Text style={type.body}>{user?.email}</Text>
         <Text style={type.caption}>Timezone {user?.timezone} • Role {user?.role}</Text>
+      </MetalPanel>
+
+      <SectionTitle
+        title="API Server"
+        subtitle="Point the Android app at your deployed YWP OS backend."
+      />
+      <MetalPanel>
+        <FormField
+          label="API URL"
+          value={apiUrl}
+          onChangeText={(value) => {
+            setApiUrl(value);
+            setApiSaved(false);
+          }}
+          autoCapitalize="none"
+          autoCorrect={false}
+          keyboardType="url"
+          placeholder="https://your-api.example.com/api/v1"
+        />
+        <YwpButton
+          label="SAVE API URL"
+          variant="outline"
+          onPress={() => {
+            void saveApiUrl(apiUrl).then(() => setApiSaved(true));
+          }}
+        />
+        {apiSaved ? <Text style={styles.saved}>Server URL saved on this device.</Text> : null}
       </MetalPanel>
 
       <SectionTitle title="Risk Profile" subtitle="This changes stake sizing, not the official daily card." />

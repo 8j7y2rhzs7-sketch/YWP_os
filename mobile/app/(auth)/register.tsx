@@ -19,14 +19,16 @@ export default function RegisterScreen() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  if (user) return <Redirect href="/(tabs)" />;
+  if (user) {
+    return <Redirect href={user.has_app_access ? "/(tabs)" : "/(auth)/paywall"} />;
+  }
 
   async function submit() {
     setLoading(true);
     setError(null);
     try {
       await register({ name, email, password });
-      router.replace("/(tabs)");
+      router.replace("/(auth)/paywall");
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Registration failed");
     } finally {

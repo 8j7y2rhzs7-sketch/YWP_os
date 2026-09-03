@@ -16,6 +16,7 @@
     },
     "android": {
       "package": "com.ywpos.app",
+      "usesCleartextTraffic": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/brand/app-icon.png",
         "backgroundColor": "#050505"

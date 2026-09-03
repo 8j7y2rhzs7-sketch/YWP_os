@@ -1,6 +1,43 @@
-export const API_URL = (
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const API_URL_KEY = "ywp.os.api_url.v1";
+const DEFAULT_API_URL = (
   process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:8000/api/v1"
 ).replace(/\/$/, "");
+
+let currentApiUrl = DEFAULT_API_URL;
+
+export function getApiUrl(): string {
+  return currentApiUrl;
+}
+
+export const API_URL = DEFAULT_API_URL;
+
+export function normalizeApiUrl(value: string): string {
+  return value.trim().replace(/\/$/, "");
+}
+
+export async function loadApiUrl(): Promise<string> {
+  try {
+    const stored = await AsyncStorage.getItem(API_URL_KEY);
+    if (stored) {
+      currentApiUrl = stored.replace(/\/$/, "");
+    }
+  } catch {
+    // keep compiled default
+  }
+  return currentApiUrl;
+}
+
+export async function saveApiUrl(value: string): Promise<string> {
+  const next = normalizeApiUrl(value);
+  if (!next) {
+    throw new Error("Enter your YWP OS API URL");
+  }
+  currentApiUrl = next;
+  await AsyncStorage.setItem(API_URL_KEY, next);
+  return next;
+}
 
 export class ApiError extends Error {
   constructor(
@@ -25,7 +62,7 @@ export async function rawRequest<T>(
   if (accessToken) {
     headers.set("Authorization", `Bearer ${accessToken}`);
   }
-  const response = await fetch(`${API_URL}${path}`, { ...init, headers });
+  const response = await fetch(`${getApiUrl()}${path}`, { ...init, headers });
   const contentType = response.headers.get("content-type") ?? "";
   const body = contentType.includes("application/json")
     ? await response.json()
