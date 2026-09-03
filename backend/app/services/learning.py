@@ -402,3 +402,162 @@ def rollback_weight_proposal(
     db.commit()
     db.refresh(proposal)
     return proposal
+
+
+def load_feature_weights(db: Session, sport: str, market_type: str) -> dict[str, float]:
+    rows = db.scalars(
+        select(ModelWeight).where(
+            ModelWeight.sport == sport,
+            ModelWeight.market_type == market_type,
+            ModelWeight.is_active.is_(True),
+        )
+    ).all()
+    return {row.feature_name: float(row.weight) for row in rows}
+
+
+def record_usage_event(
+    db: Session,
+    *,
+    event_type: str,
+    sport: str | None,
+    market_type: str | None = None,
+    recommendation_id: str | None = None,
+    analysis: dict[str, Any] | None = None,
+) -> None:
+    db.add(
+        LearningEvent(
+            recommendation_id=recommendation_id,
+            event_type=event_type,
+            sport=sport,
+            market_type=market_type,
+            analysis=analysis or {},
+        )
+    )
+
+
+def apply_micro_learning(db: Session, result: Result, recommendation: Recommendation) -> None:
+    """Every graded result trains a tiny, bounded weight shift immediately."""
+    feature = ERROR_FEATURE_MAP.get(result.error_category or "", "market_value")
+    if result.outcome == "WIN":
+        delta = settings.learning_micro_delta
+        if result.process_grade in {"A", "B"}:
+            delta *= 1.25
+    elif result.outcome == "LOSS":
+        delta = -settings.learning_micro_delta
+        if result.error_category in ERROR_FEATURE_MAP:
+            delta *= 1.5
+    else:
+        record_usage_event(
+            db,
+            event_type="RESULT_NEUTRAL",
+            sport=recommendation.sport,
+            market_type=recommendation.market_type,
+            recommendation_id=recommendation.id,
+            analysis={"outcome": result.outcome, "lesson": result.lesson},
+        )
+        return
+
+    active = db.scalar(
+        select(ModelWeight)
+        .where(
+            ModelWeight.sport == recommendation.sport,
+            ModelWeight.market_type == recommendation.market_type,
+            ModelWeight.feature_name == feature,
+            ModelWeight.is_active.is_(True),
+        )
+        .order_by(ModelWeight.version.desc())
+    )
+    current = float(active.weight) if active else 0.10
+    next_weight = min(
+        settings.learning_weight_ceiling,
+        max(settings.learning_weight_floor, current + delta),
+    )
+    if abs(next_weight - current) < 0.0001:
+        return
+    if active:
+        active.is_active = False
+        next_version = active.version + 1
+        sample = active.sample_size + 1
+    else:
+        next_version = 1
+        sample = 1
+    db.add(
+        ModelWeight(
+            sport=recommendation.sport,
+            market_type=recommendation.market_type,
+            feature_name=feature,
+            weight=Decimal(str(round(next_weight, 6))),
+            version=next_version,
+            sample_size=sample,
+            is_active=True,
+        )
+    )
+    record_usage_event(
+        db,
+        event_type="MICRO_WEIGHT_APPLIED",
+        sport=recommendation.sport,
+        market_type=recommendation.market_type,
+        recommendation_id=recommendation.id,
+        analysis={
+            "feature": feature,
+            "from": current,
+            "to": next_weight,
+            "delta": delta,
+            "outcome": result.outcome,
+            "error_category": result.error_category,
+            "lesson": result.lesson,
+        },
+    )
+
+
+def learning_pulse(db: Session, user_id: str) -> dict[str, Any]:
+    rows = db.execute(
+        select(LearningEvent, Recommendation)
+        .join(
+            Recommendation,
+            Recommendation.id == LearningEvent.recommendation_id,
+            isouter=True,
+        )
+    ).all()
+    events = [
+        event
+        for event, recommendation in rows
+        if (recommendation is not None and recommendation.created_by_user_id == user_id)
+        or (
+            event.recommendation_id is None
+            and (event.analysis or {}).get("user_id") == user_id
+        )
+    ]
+    protocol_runs = sum(1 for event in events if event.event_type == "PROTOCOL_RUN")
+    graded = sum(1 for event in events if event.event_type == "RESULT_GRADED")
+    micros = [event for event in events if event.event_type == "MICRO_WEIGHT_APPLIED"]
+    weights = list(db.scalars(select(ModelWeight).where(ModelWeight.is_active.is_(True))).all())
+    latest = None
+    if micros:
+        latest_event = max(micros, key=lambda item: item.created_at)
+        latest = str((latest_event.analysis or {}).get("lesson") or latest_event.event_type)
+    if graded or protocol_runs:
+        headline = (
+            f"Trained on {graded} grades and {protocol_runs} protocol runs. "
+            f"{len(micros)} live weight shifts are already in the engine."
+        )
+    else:
+        headline = "No training yet. Grade a result or run a slate — every use teaches it."
+    return {
+        "protocol_runs": protocol_runs,
+        "graded_results": graded,
+        "micro_updates": len(micros),
+        "active_shifts": [
+            {
+                "sport": row.sport,
+                "market_type": row.market_type,
+                "feature_name": row.feature_name,
+                "weight": float(row.weight),
+                "version": row.version,
+                "sample_size": row.sample_size,
+            }
+            for row in weights
+        ],
+        "latest_lesson": latest,
+        "headline": headline,
+    }

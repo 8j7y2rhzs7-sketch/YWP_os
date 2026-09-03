@@ -15,6 +15,7 @@ import { useAuth } from "@/context/AuthContext";
 import { brand, colors, spacing, type } from "@/theme";
 import type {
   Bankroll,
+  LearningPulse,
   Performance,
   ProtocolDefinition,
   Ticket,
@@ -30,6 +31,7 @@ export default function CommandCenter() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [performance, setPerformance] = useState<Performance | null>(null);
   const [protocol, setProtocol] = useState<ProtocolDefinition | null>(null);
+  const [pulse, setPulse] = useState<LearningPulse | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -39,17 +41,19 @@ export default function CommandCenter() {
       refresh ? setRefreshing(true) : setLoading(true);
       setError(null);
       try {
-        const [nextBankroll, nextTickets, nextPerformance, nextProtocol] =
+        const [nextBankroll, nextTickets, nextPerformance, nextProtocol, nextPulse] =
           await Promise.all([
             request<Bankroll>("/bankroll"),
             request<Ticket[]>("/tickets?limit=4"),
             request<Performance>("/learning/performance"),
             request<ProtocolDefinition>("/protocol/current"),
+            request<LearningPulse>("/learning/pulse"),
           ]);
         setBankroll(nextBankroll);
         setTickets(nextTickets);
         setPerformance(nextPerformance);
         setProtocol(nextProtocol);
+        setPulse(nextPulse);
       } catch (reason) {
         setError(reason instanceof Error ? reason.message : "Dashboard failed to load");
       } finally {
@@ -80,10 +84,10 @@ export default function CommandCenter() {
         <View style={styles.heroTop}>
           <View style={styles.heroCopy}>
             <Text style={type.eyebrow}>WELCOME BACK, {user?.name}</Text>
-            <Text style={styles.heroTitle}>Trust the process.</Text>
+            <Text style={styles.heroTitle}>It learns every time you use it.</Text>
             <Text style={styles.heroText}>
-              The system protects capital first, searches for real edge, and treats
-              PASS as a successful decision.
+              {pulse?.headline ??
+                "Run a slate, edit a ticket, grade a result. Quiet metal is still the chassis — color, photos, and training are the point."}
             </Text>
           </View>
           <StatusPill value={protocol?.status ?? "canonical"} />
@@ -96,6 +100,7 @@ export default function CommandCenter() {
             accent={colors.success}
           />
           <Metric label="Settled" value={performance?.settled ?? 0} />
+          <Metric label="Trained" value={pulse?.micro_updates ?? 0} accent={colors.gold} />
           <Metric
             label="P/L"
             value={`$${Number(performance?.profit_loss ?? 0).toFixed(2)}`}
@@ -128,6 +133,7 @@ export default function CommandCenter() {
         <Text style={styles.rule}>✓ Miss-by-1 ticket-killer detection</Text>
         <Text style={styles.rule}>✓ Lock Check immediately before placement</Text>
         <Text style={styles.rule}>✓ Guarded self-learning with human approval</Text>
+        <Text style={styles.rule}>✓ Micro-learning on every graded result</Text>
       </MetalPanel>
 
       <SectionTitle title="Recent Tickets" subtitle="Every active thesis remains visible." />

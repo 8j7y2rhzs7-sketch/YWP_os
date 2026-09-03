@@ -62,6 +62,7 @@ export default function AnalysisScreen() {
   const [saving, setSaving] = useState(false);
   const [intentionalCorrelation, setIntentionalCorrelation] = useState(false);
   const [intentionalThesis, setIntentionalThesis] = useState(false);
+  const [selectedPickIds, setSelectedPickIds] = useState<string[]>([]);
 
   const runBuilder = useCallback(async () => {
     if (!id || !analysis) return;
@@ -97,6 +98,40 @@ export default function AnalysisScreen() {
         .filter((card): card is TicketCard => Boolean(card)),
     [build],
   );
+
+  const customLegs = useMemo(
+    () =>
+      (analysis?.ranked_picks ?? []).filter((item) => selectedPickIds.includes(item.id)),
+    [analysis, selectedPickIds],
+  );
+
+  const customCard = useMemo<TicketCard | null>(() => {
+    if (!customLegs.length) return null;
+    const riskOrder = ["low", "medium", "medium_high", "high"];
+    const risk = customLegs.reduce(
+      (worst, item) =>
+        riskOrder.indexOf(item.risk) > riskOrder.indexOf(worst) ? item.risk : worst,
+      customLegs[0].risk,
+    );
+    return {
+      key: "custom",
+      label: `Custom ${customLegs.length}-leg`,
+      recommendation_ids: customLegs.map((item) => item.id),
+      legs: customLegs,
+      risk,
+      confidence_score: Math.round(
+        customLegs.reduce((sum, item) => sum + item.confidence_score, 0) / customLegs.length,
+      ),
+      weakest_leg_id: customLegs[customLegs.length - 1]?.id ?? null,
+      warnings: [],
+    };
+  }, [customLegs]);
+
+  function togglePick(id: string) {
+    setSelectedPickIds((current) =>
+      current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
+    );
+  }
 
   async function saveTicket() {
     if (!selectedCard || !id) return;
@@ -145,8 +180,13 @@ export default function AnalysisScreen() {
     build?.official_pass === true;
 
   return (
-    <Screen>
-      <BrandHeader title="DECISION BOARD" subtitle="FINAL SWEEP • CARD CONSTRUCTION" compact />
+    <Screen sport={analysis.ranked_picks[0]?.sport ?? analysis.stay_away[0]?.sport}>
+      <BrandHeader
+        title="DECISION BOARD"
+        subtitle="FINAL SWEEP • BUILD YOUR OWN"
+        compact
+        sport={analysis.ranked_picks[0]?.sport ?? analysis.stay_away[0]?.sport}
+      />
       <MetalPanel
         tone={
           analysis.data_quality_summary.protocol_status === "DOUBLE_CLEARED"
@@ -187,11 +227,20 @@ export default function AnalysisScreen() {
 
       <SectionTitle
         title="Ranked Plays"
-        subtitle="Probability, price, role, cushion, script, variance, and Miss-by-1 risk are separated."
+        subtitle="Tap any PLAY or LEAN to build your own ticket. Official cards stay available below."
       />
       {analysis.ranked_picks.length ? (
         analysis.ranked_picks.map((item) => (
-          <RecommendationCard key={item.id} item={item} />
+          <RecommendationCard
+            key={item.id}
+            item={item}
+            selected={selectedPickIds.includes(item.id)}
+            onPress={
+              officialPass || !["PLAY", "LEAN"].includes(item.decision)
+                ? undefined
+                : () => togglePick(item.id)
+            }
+          />
         ))
       ) : (
         <MetalPanel tone="danger">
@@ -203,6 +252,19 @@ export default function AnalysisScreen() {
           </Text>
         </MetalPanel>
       )}
+      {!officialPass && customLegs.length ? (
+        <YwpButton
+          label={`SAVE CUSTOM ${customLegs.length}-LEG TICKET`}
+          onPress={() => customCard && setSelectedCard(customCard)}
+        />
+      ) : null}
+      {!officialPass && analysis.ranked_picks.length ? (
+        <Text style={type.caption}>
+          {selectedPickIds.length
+            ? `${selectedPickIds.length} play${selectedPickIds.length === 1 ? "" : "s"} selected. You are not stuck with the printed cards.`
+            : "Tap plays to assemble a custom ticket, or open an official card below."}
+        </Text>
+      ) : null}
 
       <SectionTitle
         title="Official Cards"

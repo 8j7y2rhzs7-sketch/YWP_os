@@ -22,12 +22,15 @@ from app.schemas import (
     LockCheckOut,
     LockCheckRequest,
     MessageOut,
+    RecommendationOut,
+    TicketAddLeg,
     TicketCreate,
     TicketLegAction,
     TicketOut,
 )
 from app.services.decision_engine import american_to_decimal
 from app.services.lock_check import load_ticket_for_lock, run_lock_check
+from app.services.learning import record_usage_event
 from app.services.ticket_gates import (
     cash_card_k_overs_ok,
     game_status_ok,
@@ -230,6 +233,17 @@ def create_ticket(payload: TicketCreate, user: SubscribedUser, db: DB) -> Ticket
             },
         )
     )
+    record_usage_event(
+        db,
+        event_type="TICKET_CREATED",
+        sport=ticket.sport,
+        analysis={
+            "ticket_id": ticket.id,
+            "ticket_type": ticket.ticket_type,
+            "user_id": user.id,
+            "leg_count": len(recommendations),
+        },
+    )
     db.commit()
     return TicketOut.model_validate(_load_ticket(db, ticket.id, user.id))
 
@@ -281,6 +295,14 @@ def change_leg(
         )
         if not replacement or replacement.decision not in {"PLAY", "LEAN"}:
             raise HTTPException(status_code=422, detail="Replacement is not a qualified play")
+        if "DATA_ANOMALY" in (replacement.reason_codes or []):
+            raise HTTPException(status_code=422, detail="DATA_ANOMALY candidates cannot be saved")
+        if not game_status_ok(snapshot_game_status(replacement.snapshot)):
+            raise HTTPException(status_code=422, detail="Only PRE_GAME tickets can be edited")
+        if not market_status_ok(snapshot_market_status(replacement.snapshot)):
+            raise HTTPException(status_code=422, detail="Only OPEN markets can be added")
+        if model_edge_quarantine(float(replacement.edge)):
+            raise HTTPException(status_code=422, detail="Model edge is quarantined for review")
         other_theses = {
             item.thesis_key
             for item in ticket.legs
@@ -288,6 +310,16 @@ def change_leg(
         }
         if replacement.thesis_key in other_theses:
             raise HTTPException(status_code=422, detail="Replacement duplicates a ticket thesis")
+        preview = [
+            item.recommendation
+            for item in ticket.legs
+            if item.id != leg.id and item.action in {"follow", "replace"}
+        ] + [replacement]
+        if not cash_card_k_overs_ok(ticket.ticket_type, preview):
+            raise HTTPException(
+                status_code=422,
+                detail="Cash cards cannot include more than one pitcher strikeout over",
+            )
         leg.recommendation_id = replacement.id
         leg.recommendation = replacement
         leg.selection = replacement.selection
@@ -313,6 +345,103 @@ def change_leg(
                 "skip_reason": payload.skip_reason,
             },
         )
+    )
+    db.commit()
+    return TicketOut.model_validate(_load_ticket(db, ticket.id, user.id))
+
+
+@router.get("/{ticket_id}/alternatives", response_model=list[RecommendationOut])
+def ticket_alternatives(ticket_id: str, user: SubscribedUser, db: DB) -> list[RecommendationOut]:
+    ticket = _load_ticket(db, ticket_id, user.id)
+    used = {leg.recommendation_id for leg in ticket.legs if leg.action in {"follow", "replace"}}
+    analysis_ids = {
+        leg.recommendation.analysis_id
+        for leg in ticket.legs
+        if leg.recommendation is not None
+    }
+    if not analysis_ids:
+        return []
+    rows = list(
+        db.scalars(
+            select(Recommendation).where(
+                Recommendation.created_by_user_id == user.id,
+                Recommendation.analysis_id.in_(analysis_ids),
+                Recommendation.decision.in_(["PLAY", "LEAN"]),
+            )
+        ).all()
+    )
+    return [
+        RecommendationOut.model_validate(item)
+        for item in rows
+        if item.id not in used
+        and game_status_ok(snapshot_game_status(item.snapshot))
+        and market_status_ok(snapshot_market_status(item.snapshot))
+        and not model_edge_quarantine(float(item.edge))
+        and "DATA_ANOMALY" not in (item.reason_codes or [])
+    ]
+
+
+@router.post("/{ticket_id}/legs", response_model=TicketOut, status_code=status.HTTP_201_CREATED)
+def add_ticket_leg(ticket_id: str, payload: TicketAddLeg, user: SubscribedUser, db: DB) -> TicketOut:
+    ticket = _load_ticket(db, ticket_id, user.id)
+    if ticket.status in {"placed", "settled", "cancelled"}:
+        raise HTTPException(status_code=409, detail="This ticket can no longer be edited")
+    recommendation = db.scalar(
+        select(Recommendation).where(
+            Recommendation.id == payload.recommendation_id,
+            Recommendation.created_by_user_id == user.id,
+        )
+    )
+    if not recommendation or recommendation.decision not in {"PLAY", "LEAN"}:
+        raise HTTPException(status_code=422, detail="Only PLAY or LEAN recommendations can be added")
+    if "DATA_ANOMALY" in (recommendation.reason_codes or []):
+        raise HTTPException(status_code=422, detail="DATA_ANOMALY candidates cannot be saved")
+    active = _active_legs(ticket)
+    if recommendation.id in {leg.recommendation_id for leg in active}:
+        raise HTTPException(status_code=422, detail="That play is already on this ticket")
+    if recommendation.thesis_key in {leg.thesis_key for leg in active}:
+        raise HTTPException(status_code=422, detail="A thesis may appear only once on a ticket")
+    if not game_status_ok(snapshot_game_status(recommendation.snapshot)):
+        raise HTTPException(status_code=422, detail="Only PRE_GAME tickets can be edited")
+    if not market_status_ok(snapshot_market_status(recommendation.snapshot)):
+        raise HTTPException(status_code=422, detail="Only OPEN markets can be added")
+    if model_edge_quarantine(float(recommendation.edge)):
+        raise HTTPException(status_code=422, detail="Model edge is quarantined for review")
+    preview = [leg.recommendation for leg in active] + [recommendation]
+    if not cash_card_k_overs_ok(ticket.ticket_type, preview):
+        raise HTTPException(
+            status_code=422,
+            detail="Cash cards cannot include more than one pitcher strikeout over",
+        )
+    next_position = max((leg.position for leg in ticket.legs), default=0) + 1
+    ticket.legs.append(
+        TicketLeg(
+            ticket_id=ticket.id,
+            recommendation_id=recommendation.id,
+            position=next_position,
+            selection=recommendation.selection,
+            american_odds=recommendation.american_odds,
+            thesis_key=recommendation.thesis_key,
+            script_key=recommendation.script_key,
+            action="follow",
+        )
+    )
+    ticket.status = "draft"
+    ticket.last_lock_status = None
+    ticket.last_lock_expires_at = None
+    db.flush()
+    _recalculate(ticket)
+    record_usage_event(
+        db,
+        event_type="TICKET_LEG_ADDED",
+        sport=ticket.sport,
+        market_type=recommendation.market_type,
+        recommendation_id=recommendation.id,
+        analysis={
+            "ticket_id": ticket.id,
+            "ticket_type": ticket.ticket_type,
+            "user_id": user.id,
+        },
     )
     db.commit()
     return TicketOut.model_validate(_load_ticket(db, ticket.id, user.id))

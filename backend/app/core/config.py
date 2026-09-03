@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "YWP OS API"
-    app_version: str = "3.0.2"
+    app_version: str = "3.1.0"
     api_prefix: str = "/api/v1"
     env: Literal["development", "test", "staging", "production"] = Field(
         default="development", validation_alias="YWP_ENV"
@@ -69,6 +69,9 @@ class Settings(BaseSettings):
     learning_min_sample_size: int = 30
     learning_min_repeated_pattern: int = 5
     learning_max_weight_delta: float = 0.03
+    learning_micro_delta: float = 0.008
+    learning_weight_floor: float = 0.02
+    learning_weight_ceiling: float = 0.25
     learning_requires_human_approval: bool = True
 
     model_config = SettingsConfigDict(

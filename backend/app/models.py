@@ -201,6 +201,15 @@ class Recommendation(Base):
         back_populates="recommendation", uselist=False, cascade="all, delete-orphan"
     )
 
+    @property
+    def image_url(self) -> str | None:
+        snap = self.snapshot or {}
+        return snap.get("image_url") or snap.get("player_image_url")
+
+    @property
+    def team_image_url(self) -> str | None:
+        return (self.snapshot or {}).get("team_image_url")
+
 
 class Ticket(Base, TimestampMixin):
     __tablename__ = "tickets"
@@ -261,6 +270,14 @@ class TicketLeg(Base):
     @property
     def outcome(self) -> str | None:
         return self.recommendation.outcome if self.recommendation else None
+
+    @property
+    def image_url(self) -> str | None:
+        return self.recommendation.image_url if self.recommendation else None
+
+    @property
+    def team_image_url(self) -> str | None:
+        return self.recommendation.team_image_url if self.recommendation else None
 
 
 class LockCheck(Base):

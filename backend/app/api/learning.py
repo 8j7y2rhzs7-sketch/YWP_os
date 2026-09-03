@@ -7,6 +7,7 @@ from app.deps import DB, AdminUser, SubscribedUser
 from app.models import AuditLog, LearningEvent, Recommendation, WeightChangeProposal
 from app.schemas import (
     ErrorAnalysisRequest,
+    LearningPulseOut,
     MessageOut,
     MissByOneOut,
     PatternOut,
@@ -15,6 +16,7 @@ from app.schemas import (
     WeightProposalReview,
 )
 from app.services.learning import (
+    learning_pulse,
     miss_by_one_report,
     patterns,
     performance,
@@ -24,6 +26,11 @@ from app.services.learning import (
 )
 
 router = APIRouter(prefix="/learning", tags=["learning"])
+
+
+@router.get("/pulse", response_model=LearningPulseOut)
+def pulse(user: SubscribedUser, db: DB) -> LearningPulseOut:
+    return LearningPulseOut.model_validate(learning_pulse(db, user.id))
 
 
 @router.get("/performance", response_model=PerformanceOut)

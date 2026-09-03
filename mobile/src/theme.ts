@@ -28,8 +28,8 @@ export const colors = {
 } as const;
 
 export const gradients = {
-  page: ["#050608", "#080B10", "#050608"] as const,
-  panel: ["#171D25", "#0C1016", "#090C11"] as const,
+  page: ["#0C1C14", "#12110A", "#1A1208"] as const,
+  panel: ["#243028", "#141A1C", "#0C1014"] as const,
   gold: ["#FFE58D", "#E2AD26", "#8B5D08"] as const,
   success: ["#0D3A2A", "#081C16"] as const,
   danger: ["#3A1119", "#170A0D"] as const,

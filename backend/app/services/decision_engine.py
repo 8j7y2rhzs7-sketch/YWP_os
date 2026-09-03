@@ -72,6 +72,7 @@ class DecisionEngine:
         candidate: CandidateInput,
         risk_profile: RiskProfile = RiskProfile.balanced,
         now: datetime | None = None,
+        learned_weights: dict[str, float] | None = None,
     ) -> Evaluation:
         now = now or datetime.now(UTC)
         payload = candidate.model_dump(mode="json")
@@ -125,6 +126,10 @@ class DecisionEngine:
         if candidate.factors:
             average_factor = sum(candidate.factors.values()) / len(candidate.factors)
             adjusted += average_factor * 0.015 * quality
+        if learned_weights:
+            # Learned weights default at 0.10. Drift above/below nudges probability slightly.
+            for feature, weight in learned_weights.items():
+                adjusted += (float(weight) - 0.10) * 0.04 * quality
         adjusted = clamp(adjusted, 0.02, 0.98)
 
         edge = adjusted - implied

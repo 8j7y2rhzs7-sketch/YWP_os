@@ -1,19 +1,23 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 
 import { brandAssets } from "@/brandAssets";
+import { sportLook } from "@/sportVisuals";
 import { brand, colors, spacing, type } from "@/theme";
 
 interface BrandHeaderProps {
   title?: string;
   subtitle?: string;
   compact?: boolean;
+  sport?: string;
 }
 
 export function BrandHeader({
   title = brand.product,
   subtitle = brand.descriptor,
   compact = false,
+  sport,
 }: BrandHeaderProps) {
+  const look = sportLook(sport);
   return (
     <View style={[styles.wrap, compact && styles.wrapCompact]}>
       <Image
@@ -25,8 +29,13 @@ export function BrandHeader({
       <View style={styles.copy}>
         <Text style={type.eyebrow}>{subtitle}</Text>
         <Text style={[styles.title, compact && styles.titleCompact]}>{title}</Text>
-        {!compact ? (
-          <Text style={styles.protocol}>PROTOCOL {brand.protocolVersion}</Text>
+        {sport ? (
+          <Text style={[styles.sportChip, { color: look.accent }]}>
+            {look.emoji}  {look.label}
+            {!compact ? `  •  PROTOCOL ${brand.protocolVersion}` : ""}
+          </Text>
+        ) : !compact ? (
+          <Text style={styles.sportChip}>PROTOCOL {brand.protocolVersion}</Text>
         ) : null}
       </View>
     </View>
@@ -54,10 +63,11 @@ const styles = StyleSheet.create({
     letterSpacing: 0.6,
   },
   titleCompact: { fontSize: 23 },
-  protocol: {
-    color: colors.muted,
-    fontSize: 10,
-    fontWeight: "700",
-    letterSpacing: 1.2,
+  sportChip: {
+    color: colors.gold,
+    fontSize: 11,
+    fontWeight: "800",
+    letterSpacing: 1.4,
+    textTransform: "uppercase",
   },
 });

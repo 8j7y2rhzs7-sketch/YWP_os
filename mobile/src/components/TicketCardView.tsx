@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { colors, spacing, type } from "@/theme";
 import type { TicketCard } from "@/types";
 
+import { PlayerPortrait } from "./PlayerPortrait";
 import { MetalPanel } from "./MetalPanel";
 import { StatusPill } from "./StatusPill";
 
@@ -34,6 +35,12 @@ export function TicketCardView({
           {card.legs.map((leg, index) => (
             <View key={leg.id} style={styles.leg}>
               <Text style={styles.number}>{index + 1}</Text>
+              <PlayerPortrait
+                imageUrl={leg.image_url}
+                teamImageUrl={leg.team_image_url}
+                sport={leg.sport}
+                size={36}
+              />
               <View style={styles.legCopy}>
                 <Text style={styles.selection}>{leg.selection}</Text>
                 <Text style={type.caption}>

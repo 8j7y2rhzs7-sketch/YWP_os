@@ -82,6 +82,22 @@ def _map_game_status(abstract: str) -> str:
     return mapping.get(abstract.strip().lower(), "UNKNOWN" if abstract else "PRE_GAME")
 
 
+def player_headshot_url(player_id: int | None) -> str | None:
+    if not player_id:
+        return None
+    return (
+        "https://img.mlbstatic.com/mlb-photos/image/upload/"
+        "d_people:generic:headshot:67:current.png/w_180,q_auto:best/"
+        f"v1/people/{player_id}/headshot/silo/current"
+    )
+
+
+def team_logo_url(team_id: int | None) -> str | None:
+    if not team_id:
+        return None
+    return f"https://midfield.mlbstatic.com/v1/team/{team_id}/spots/96"
+
+
 def _pitcher_info(p: dict[str, Any] | None) -> dict[str, Any] | None:
     if not p:
         return None

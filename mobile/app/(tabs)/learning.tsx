@@ -11,11 +11,7 @@ import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
 import { useAuth } from "@/context/AuthContext";
 import { colors, spacing, type } from "@/theme";
-import type {
-  MissByOneReport,
-  Performance,
-  ProtocolDefinition,
-} from "@/types";
+import type { LearningPulse, MissByOneReport, Performance, ProtocolDefinition } from "@/types";
 
 interface Patterns {
   root_cause_tags: Array<{ tag: string; count: number }>;
@@ -39,6 +35,7 @@ export default function LearningScreen() {
   const [miss, setMiss] = useState<MissByOneReport | null>(null);
   const [patterns, setPatterns] = useState<Patterns | null>(null);
   const [protocol, setProtocol] = useState<ProtocolDefinition | null>(null);
+  const [pulse, setPulse] = useState<LearningPulse | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -48,17 +45,19 @@ export default function LearningScreen() {
       refresh ? setRefreshing(true) : setLoading(true);
       setError(null);
       try {
-        const [nextPerformance, nextMiss, nextPatterns, nextProtocol] =
+        const [nextPerformance, nextMiss, nextPatterns, nextProtocol, nextPulse] =
           await Promise.all([
             request<Performance>("/learning/performance"),
             request<MissByOneReport>("/learning/miss-by-one"),
             request<Patterns>("/learning/patterns"),
             request<ProtocolDefinition>("/protocol/current"),
+            request<LearningPulse>("/learning/pulse"),
           ]);
         setPerformance(nextPerformance);
         setMiss(nextMiss);
         setPatterns(nextPatterns);
         setProtocol(nextProtocol);
+        setPulse(nextPulse);
       } catch (reason) {
         setError(reason instanceof Error ? reason.message : "Learning data failed to load");
       } finally {
@@ -84,22 +83,57 @@ export default function LearningScreen() {
 
   return (
     <Screen refreshing={refreshing} onRefresh={() => void load(true)}>
-      <BrandHeader title="ADAPTIVE LEARNING" subtitle="ALE • MISS-BY-1 • CALIBRATION" compact />
+      <BrandHeader title="ADAPTIVE LEARNING" subtitle="EVERY GRADE TRAINS THE ENGINE" compact />
       {error ? <ErrorNotice message={error} /> : null}
       <MetalPanel tone="gold">
         <View style={styles.row}>
           <View style={styles.flex}>
             <Text style={type.eyebrow}>SELF-LEARNING PROTOCOL</Text>
-            <Text style={styles.title}>Learn slowly. Never overreact.</Text>
+            <Text style={styles.title}>Every use makes it smarter.</Text>
           </View>
-          <StatusPill value="LOCKED" />
+          <StatusPill value="TRAINING" />
         </View>
         <Text style={type.body}>
-          Results create structured evidence. One win or loss can never rewrite
-          production weights. Repeated patterns need a minimum sample, bounded
-          changes, versioning, human approval, and rollback.
+          {pulse?.headline ??
+            "Grade a result or run a slate. Tiny weight shifts land immediately; big production changes still need a sample and human approval."}
         </Text>
+        {pulse?.latest_lesson ? (
+          <Text style={type.caption}>Latest lesson: {pulse.latest_lesson}</Text>
+        ) : null}
+        <View style={styles.metrics}>
+          <Metric label="Protocol runs" value={pulse?.protocol_runs ?? 0} />
+          <Metric label="Grades" value={pulse?.graded_results ?? 0} accent={colors.gold} />
+          <Metric
+            label="Live shifts"
+            value={pulse?.micro_updates ?? 0}
+            accent={colors.success}
+          />
+        </View>
       </MetalPanel>
+
+      {(pulse?.active_shifts ?? []).length ? (
+        <>
+          <SectionTitle
+            title="Live Weight Shifts"
+            subtitle="Micro-learning already moved these features. Large jumps still wait for approval."
+          />
+          <MetalPanel>
+            {pulse?.active_shifts.slice(0, 8).map((shift) => (
+              <View
+                key={`${shift.sport}-${shift.market_type}-${shift.feature_name}-${shift.version}`}
+                style={styles.dataRow}
+              >
+                <Text style={styles.dataName}>
+                  {shift.sport} {shift.market_type.replaceAll("_", " ")} • {shift.feature_name.replaceAll("_", " ")}
+                </Text>
+                <Text style={styles.dataValue}>
+                  {(shift.weight * 100).toFixed(1)} • v{shift.version} • n={shift.sample_size}
+                </Text>
+              </View>
+            ))}
+          </MetalPanel>
+        </>
+      ) : null}
 
       <SectionTitle title="Performance" subtitle="Outcome metrics never replace process grading." />
       <MetalPanel>
@@ -183,6 +217,9 @@ export default function LearningScreen() {
         {(protocol?.adaptive_learning.guardrails ?? []).map((guardrail) => (
           <Text key={guardrail} style={styles.guardrail}>✓ {guardrail}</Text>
         ))}
+        <Text style={styles.guardrail}>
+          ✓ Every graded result applies a tiny bounded weight shift immediately
+        </Text>
       </MetalPanel>
     </Screen>
   );

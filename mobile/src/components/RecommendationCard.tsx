@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { colors, radius, spacing, type } from "@/theme";
 import type { Recommendation } from "@/types";
 
+import { PlayerPortrait } from "./PlayerPortrait";
 import { MetalPanel } from "./MetalPanel";
 import { StatusPill } from "./StatusPill";
 
@@ -13,17 +14,29 @@ function odds(value: number): string {
 export function RecommendationCard({
   item,
   compact = false,
+  selected = false,
+  onPress,
 }: {
   item: Recommendation;
   compact?: boolean;
+  selected?: boolean;
+  onPress?: () => void;
 }) {
   const skip = item.decision === "SKIP";
-  return (
-    <MetalPanel tone={skip ? "danger" : "default"} style={styles.panel}>
+  const body = (
+    <MetalPanel
+      tone={skip ? "danger" : selected ? "gold" : "default"}
+      style={styles.panel}
+    >
       <View style={styles.top}>
         <View style={styles.rank}>
           <Text style={styles.rankText}>{item.rank}</Text>
         </View>
+        <PlayerPortrait
+          imageUrl={item.image_url}
+          teamImageUrl={item.team_image_url}
+          sport={item.sport}
+        />
         <View style={styles.titleWrap}>
           <Text style={styles.market}>
             {item.sport.toUpperCase()} • {item.market_type.replaceAll("_", " ")}
@@ -40,6 +53,7 @@ export function RecommendationCard({
         <StatusPill value={item.decision} />
         <Text style={styles.confidence}>{item.confidence_score}% CONFIDENCE</Text>
         <Text style={styles.vision}>VISION {item.vision_score}</Text>
+        {selected ? <Text style={styles.picked}>ON TICKET</Text> : null}
       </View>
       {!compact ? (
         <>
@@ -72,6 +86,12 @@ export function RecommendationCard({
         </>
       ) : null}
     </MetalPanel>
+  );
+  if (!onPress) return body;
+  return (
+    <Pressable onPress={onPress} accessibilityRole="button">
+      {body}
+    </Pressable>
   );
 }
 
@@ -115,6 +135,7 @@ const styles = StyleSheet.create({
   },
   confidence: { color: colors.white, fontSize: 11, fontWeight: "900" },
   vision: { color: colors.gold, fontSize: 11, fontWeight: "900" },
+  picked: { color: colors.goldBright, fontSize: 11, fontWeight: "900", letterSpacing: 1 },
   reasoning: { ...type.body, color: colors.silver },
   tags: { flexDirection: "row", flexWrap: "wrap", gap: spacing.xs },
   tag: {

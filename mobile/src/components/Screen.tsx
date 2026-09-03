@@ -9,6 +9,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { sportLook } from "@/sportVisuals";
 import { colors, gradients, spacing } from "@/theme";
 
 interface ScreenProps {
@@ -17,6 +18,7 @@ interface ScreenProps {
   refreshing?: boolean;
   onRefresh?: () => void;
   contentStyle?: ViewStyle;
+  sport?: string;
 }
 
 export function Screen({
@@ -25,10 +27,15 @@ export function Screen({
   refreshing = false,
   onRefresh,
   contentStyle,
+  sport,
 }: ScreenProps) {
+  const look = sportLook(sport);
+  const pageColors = sport
+    ? ([look.field, "#12110A", look.field] as const)
+    : gradients.page;
   const content = <View style={[styles.content, contentStyle]}>{children}</View>;
   return (
-    <LinearGradient colors={gradients.page} style={styles.page}>
+    <LinearGradient colors={pageColors} style={styles.page}>
       <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
         {scroll ? (
           <ScrollView

@@ -17,6 +17,7 @@ from app.services.odds_provider import (
     get_game_odds,
     odds_to_implied_probability,
 )
+from app.services.team_art import logo_for_play
 from app.services.ticket_gates import event_market_status
 
 logger = logging.getLogger(__name__)
@@ -226,6 +227,7 @@ def _build(
         thesis_key=thesis_key,
         script_key=script_key,
         player_key=player_key,
+        team_image_url=logo_for_play("wnba", selection, event_name),
         safer_alternative=f"Safer version of {selection}",
         higher_upside=f"Higher-upside version of {selection}",
         invalidation_conditions=["Starter ruled out", "Large line movement"],

@@ -2,6 +2,7 @@ import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import { PlayerPortrait } from "@/components/PlayerPortrait";
 import { BrandHeader } from "@/components/BrandHeader";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { FormField } from "@/components/FormField";
@@ -88,8 +89,8 @@ export default function SlateScreen() {
   }, [sport]);
 
   return (
-    <Screen>
-      <BrandHeader title="FULL PROTOCOL RUN" subtitle="AIN • STRICT MODE • ALL ANGLES" compact />
+    <Screen sport={sport}>
+      <BrandHeader title="FULL PROTOCOL RUN" subtitle="AIN • STRICT MODE • ALL ANGLES" compact sport={sport} />
       <MetalPanel tone="gold">
         <Text style={type.eyebrow}>SELECT SPORT</Text>
         <View style={styles.sports}>
@@ -147,6 +148,12 @@ export default function SlateScreen() {
             <MetalPanel key={candidate.candidate_id} style={styles.candidate}>
               <View style={styles.candidateTop}>
                 <Text style={styles.number}>{index + 1}</Text>
+                <PlayerPortrait
+                  imageUrl={String(candidate.image_url ?? "") || null}
+                  teamImageUrl={String(candidate.team_image_url ?? "") || null}
+                  sport={sport}
+                  size={46}
+                />
                 <View style={styles.candidateCopy}>
                   <Text style={styles.selection}>{candidate.selection}</Text>
                   <Text style={type.caption}>{candidate.event_name}</Text>

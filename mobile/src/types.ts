@@ -116,6 +116,8 @@ export interface Recommendation {
   thesis_key: string;
   script_key: string;
   player_key: string | null;
+  image_url?: string | null;
+  team_image_url?: string | null;
   data_source: string;
   source_timestamp: string;
   model_version: string;
@@ -176,6 +178,8 @@ export interface TicketLeg {
   skip_reason: string | null;
   status: string;
   outcome: string | null;
+  image_url?: string | null;
+  team_image_url?: string | null;
 }
 
 export interface Ticket {
@@ -244,6 +248,22 @@ export interface MissByOneReport {
   by_script: Array<Record<string, string | number>>;
   by_card_type: Array<Record<string, string | number>>;
   recurring_theses: Array<Record<string, string | number>>;
+}
+
+export interface LearningPulse {
+  protocol_runs: number;
+  graded_results: number;
+  micro_updates: number;
+  active_shifts: Array<{
+    sport: string;
+    market_type: string;
+    feature_name: string;
+    weight: number;
+    version: number;
+    sample_size: number;
+  }>;
+  latest_lesson: string | null;
+  headline: string;
 }
 
 export interface ProtocolDefinition {

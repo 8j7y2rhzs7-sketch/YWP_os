@@ -223,6 +223,8 @@ class CandidateInput(YWPModel):
     thesis_key: str = Field(min_length=3, max_length=160)
     script_key: str = Field(min_length=3, max_length=160)
     player_key: str | None = Field(default=None, max_length=120)
+    image_url: str | None = Field(default=None, max_length=400)
+    team_image_url: str | None = Field(default=None, max_length=400)
     safer_alternative: str | None = Field(default=None, max_length=180)
     higher_upside: str | None = Field(default=None, max_length=180)
     invalidation_conditions: list[str] = Field(default_factory=list)
@@ -320,6 +322,8 @@ class RecommendationOut(YWPModel):
     thesis_key: str
     script_key: str
     player_key: str | None
+    image_url: str | None = None
+    team_image_url: str | None = None
     data_source: str
     source_timestamp: datetime
     model_version: str
@@ -382,6 +386,10 @@ class BuildTicketResponse(YWPModel):
     quarantined: list[dict[str, str]]
 
 
+class TicketAddLeg(YWPModel):
+    recommendation_id: str
+
+
 class TicketCreate(YWPModel):
     ticket_type: str = Field(min_length=2, max_length=32)
     label: str = Field(min_length=2, max_length=120)
@@ -404,6 +412,8 @@ class TicketLegOut(YWPModel):
     skip_reason: str | None
     status: str
     outcome: str | None
+    image_url: str | None = None
+    team_image_url: str | None = None
 
 
 class TicketOut(YWPModel):
@@ -592,6 +602,15 @@ class PerformanceOut(YWPModel):
     by_sport: list[dict[str, Any]]
     by_market: list[dict[str, Any]]
     confidence_calibration: list[dict[str, Any]]
+
+
+class LearningPulseOut(YWPModel):
+    protocol_runs: int
+    graded_results: int
+    micro_updates: int
+    active_shifts: list[dict[str, Any]]
+    latest_lesson: str | None
+    headline: str
 
 
 class PatternOut(YWPModel):

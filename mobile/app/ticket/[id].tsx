@@ -1,7 +1,8 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
+import { PlayerPortrait } from "@/components/PlayerPortrait";
 import { BrandHeader } from "@/components/BrandHeader";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { LoadingState } from "@/components/LoadingState";
@@ -14,7 +15,7 @@ import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
 import { colors, spacing, type } from "@/theme";
-import type { LockCheck, Ticket } from "@/types";
+import type { LockCheck, Recommendation, Ticket } from "@/types";
 
 export default function TicketDetailScreen() {
   const params = useLocalSearchParams<{ id: string }>();
@@ -22,6 +23,9 @@ export default function TicketDetailScreen() {
   const { request } = useAuth();
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [lock, setLock] = useState<LockCheck | null>(null);
+  const [alternatives, setAlternatives] = useState<Recommendation[]>([]);
+  const [pickerLegId, setPickerLegId] = useState<string | null>(null);
+  const [adding, setAdding] = useState(false);
   const [loading, setLoading] = useState(true);
   const [action, setAction] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -32,6 +36,11 @@ export default function TicketDetailScreen() {
     setError(null);
     try {
       setTicket(await request<Ticket>(`/tickets/${id}`));
+      try {
+        setAlternatives(await request<Recommendation[]>(`/tickets/${id}/alternatives`));
+      } catch {
+        setAlternatives([]);
+      }
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Ticket failed to load");
     } finally {
@@ -98,6 +107,67 @@ export default function TicketDetailScreen() {
     }
   }
 
+  async function restoreLeg(legId: string) {
+    if (!id) return;
+    setAction(legId);
+    try {
+      setTicket(
+        await request<Ticket>(`/tickets/${id}/legs/${legId}`, {
+          method: "PATCH",
+          body: JSON.stringify({ action: "follow" }),
+        }),
+      );
+      setLock(null);
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Leg could not be restored");
+    } finally {
+      setAction(null);
+    }
+  }
+
+  async function replaceLeg(legId: string, recommendationId: string) {
+    if (!id) return;
+    setAction(legId);
+    try {
+      setTicket(
+        await request<Ticket>(`/tickets/${id}/legs/${legId}`, {
+          method: "PATCH",
+          body: JSON.stringify({
+            action: "replace",
+            replacement_recommendation_id: recommendationId,
+          }),
+        }),
+      );
+      setPickerLegId(null);
+      setLock(null);
+      await load();
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Replacement failed");
+    } finally {
+      setAction(null);
+    }
+  }
+
+  async function addLeg(recommendationId: string) {
+    if (!id) return;
+    setAdding(true);
+    try {
+      setTicket(
+        await request<Ticket>(`/tickets/${id}/legs`, {
+          method: "POST",
+          body: JSON.stringify({ recommendation_id: recommendationId }),
+        }),
+      );
+      setPickerLegId(null);
+      setLock(null);
+      await load();
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Could not add that play");
+    } finally {
+      setAdding(false);
+    }
+  }
+
   if (loading) {
     return (
       <Screen>
@@ -119,8 +189,8 @@ export default function TicketDetailScreen() {
   const canEdit = !["placed", "settled", "cancelled"].includes(ticket.status);
 
   return (
-    <Screen refreshing={loading} onRefresh={() => void load()}>
-      <BrandHeader title="LOCK CENTER" subtitle="FINAL SWEEP • NO ASSUMPTIONS" compact />
+    <Screen sport={ticket.sport} refreshing={loading} onRefresh={() => void load()}>
+      <BrandHeader title="LOCK CENTER" subtitle="EDIT • SWAP • FINAL SWEEP" compact sport={ticket.sport} />
       <MetalPanel tone={ticket.last_lock_status === "LOCKED" ? "success" : "gold"}>
         <View style={styles.header}>
           <View style={styles.flex}>
@@ -151,6 +221,12 @@ export default function TicketDetailScreen() {
         <MetalPanel key={leg.id} tone={leg.action === "skip" ? "danger" : "default"}>
           <View style={styles.legRow}>
             <Text style={styles.number}>{leg.position}</Text>
+            <PlayerPortrait
+              imageUrl={leg.image_url}
+              teamImageUrl={leg.team_image_url}
+              sport={ticket.sport}
+              size={44}
+            />
             <View style={styles.flex}>
               <Text style={styles.selection}>{leg.selection}</Text>
               <Text style={type.caption}>
@@ -165,10 +241,25 @@ export default function TicketDetailScreen() {
           {leg.skip_reason ? <Text style={styles.skipReason}>{leg.skip_reason}</Text> : null}
           {leg.outcome ? <StatusPill value={leg.outcome} /> : null}
           {canEdit && leg.action !== "skip" ? (
+            <>
+              <YwpButton
+                label="SWAP THIS LEG"
+                variant="outline"
+                onPress={() => setPickerLegId(leg.id)}
+              />
+              <YwpButton
+                label="REMOVE WEAKEST LEG"
+                variant="danger"
+                onPress={() => void skipLeg(leg.id)}
+                loading={action === leg.id}
+              />
+            </>
+          ) : null}
+          {canEdit && leg.action === "skip" ? (
             <YwpButton
-              label="REMOVE WEAKEST LEG"
-              variant="danger"
-              onPress={() => void skipLeg(leg.id)}
+              label="PUT THIS LEG BACK"
+              variant="outline"
+              onPress={() => void restoreLeg(leg.id)}
               loading={action === leg.id}
             />
           ) : null}
@@ -181,6 +272,15 @@ export default function TicketDetailScreen() {
           ) : null}
         </MetalPanel>
       ))}
+
+      {canEdit ? (
+        <YwpButton
+          label="ADD ANOTHER QUALIFIED PLAY"
+          variant="outline"
+          onPress={() => setPickerLegId("add")}
+          disabled={!alternatives.length}
+        />
+      ) : null}
 
       {canEdit && activeLegs.length ? (
         <YwpButton
@@ -243,6 +343,70 @@ export default function TicketDetailScreen() {
         Live-provider tickets require fresh current-state updates from the server.
         Empty updates are accepted only for clearly labeled demo data.
       </Text>
+
+      <Modal
+        visible={pickerLegId !== null}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setPickerLegId(null)}
+      >
+        <Pressable style={styles.backdrop} onPress={() => setPickerLegId(null)}>
+          <Pressable style={styles.modal} onPress={(event) => event.stopPropagation()}>
+            <Text style={type.eyebrow}>
+              {pickerLegId === "add" ? "ADD A QUALIFIED PLAY" : "SWAP THIS LEG"}
+            </Text>
+            <Text style={styles.modalTitle}>
+              {pickerLegId === "add" ? "Build the ticket yourself" : "Replace from the same slate"}
+            </Text>
+            <Text style={type.caption}>
+              Only plays that still pass gates. This is not a menu of every line on the board.
+            </Text>
+            <ScrollView style={styles.altList}>
+              {alternatives.length ? (
+                alternatives.map((alt) => (
+                  <Pressable
+                    key={alt.id}
+                    style={styles.altRow}
+                    onPress={() => {
+                      void (async () => {
+                        try {
+                          if (pickerLegId === "add") await addLeg(alt.id);
+                          else if (pickerLegId) await replaceLeg(pickerLegId, alt.id);
+                        } catch (err) {
+                          Alert.alert(
+                            "Could not apply that play",
+                            err instanceof Error ? err.message : "Try another.",
+                          );
+                        }
+                      })();
+                    }}
+                  >
+                    <PlayerPortrait
+                      imageUrl={alt.image_url}
+                      teamImageUrl={alt.team_image_url}
+                      sport={alt.sport}
+                      size={48}
+                    />
+                    <View style={styles.flex}>
+                      <Text style={styles.selection}>{alt.selection}</Text>
+                      <Text style={type.caption}>
+                        {alt.event_name} • {alt.market_type.replaceAll("_", " ")}
+                      </Text>
+                    </View>
+                    <Text style={styles.odds}>
+                      {alt.american_odds > 0 ? "+" : ""}
+                      {alt.american_odds}
+                    </Text>
+                  </Pressable>
+                ))
+              ) : (
+                <Text style={type.body}>No other qualified plays remain on this slate.</Text>
+              )}
+            </ScrollView>
+            <YwpButton label="CLOSE" variant="outline" onPress={() => setPickerLegId(null)} />
+          </Pressable>
+        </Pressable>
+      </Modal>
     </Screen>
   );
 }
@@ -289,4 +453,30 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   footer: { ...type.caption, textAlign: "center", padding: spacing.md },
+  backdrop: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.78)",
+    justifyContent: "flex-end",
+  },
+  modal: {
+    width: "100%",
+    maxHeight: "80%",
+    backgroundColor: colors.surface,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderColor: colors.borderGold,
+    borderWidth: 1,
+    padding: spacing.xl,
+    gap: spacing.md,
+  },
+  modalTitle: { color: colors.white, fontSize: 22, fontWeight: "900" },
+  altList: { maxHeight: 420 },
+  altRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.md,
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+  },
 });

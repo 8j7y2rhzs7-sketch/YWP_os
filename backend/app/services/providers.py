@@ -129,6 +129,7 @@ def _demo_mlb(slate_date: date) -> list[CandidateInput]:
             script_key="demo-harbor-metro-home-control",
             reason_codes=["STARTING_PITCHER_EDGE", "HOME_FIELD", "LINEUP_EDGE"],
             reasoning=["Verified starter, lineup, and bullpen inputs favor the home side."],
+            team_image_url="https://midfield.mlbstatic.com/v1/team/147/spots/96",
         ),
         _base(
             slate_date=slate_date,
@@ -148,6 +149,7 @@ def _demo_mlb(slate_date: date) -> list[CandidateInput]:
             script_key="demo-coastal-north-low-scoring",
             reason_codes=["STARTING_PITCHER_EDGE", "BULLPEN_EDGE"],
             reasoning=["Both verified run-prevention paths support the total."],
+            team_image_url="https://midfield.mlbstatic.com/v1/team/121/spots/96",
         ),
         _base(
             slate_date=slate_date,
@@ -168,6 +170,12 @@ def _demo_mlb(slate_date: date) -> list[CandidateInput]:
             player_key="demo-a-carter",
             reason_codes=["PLATOON_EDGE", "CURRENT_FORM"],
             reasoning=["Contact quality and the supplied matchup projection clear the price."],
+            image_url=(
+                "https://img.mlbstatic.com/mlb-photos/image/upload/"
+                "d_people:generic:headshot:67:current.png/w_180,q_auto:best/"
+                "v1/people/0/headshot/silo/current"
+            ),
+            team_image_url="https://midfield.mlbstatic.com/v1/team/119/spots/96",
         ),
         _base(
             slate_date=slate_date,
@@ -311,6 +319,10 @@ def _demo_basketball(sport: str, slate_date: date) -> list[CandidateInput]:
                 "Role, recent distribution, matchup, and expected game script are "
                 "supplied and verified."
             ],
+            team_image_url=(
+                f"https://a.espncdn.com/i/teamlogos/wnba/500/"
+                f"{['ind', 'lv', 'ny', 'sea', 'min', 'chi'][int(key) - 1]}.png"
+            ),
         )
         for key, event, selection, odds, probability, variance, market in rows
     ]

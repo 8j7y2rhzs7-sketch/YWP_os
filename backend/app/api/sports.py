@@ -32,6 +32,7 @@ from app.schemas import (
     SportsAnalyzeRequest,
 )
 from app.services.decision_engine import decision_engine, implied_probability, money
+from app.services.learning import apply_micro_learning, load_feature_weights, record_usage_event
 from app.services.protocols import run_protocol_health_check
 from app.services.providers import demo_slate
 from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate
@@ -175,11 +176,32 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         sport=payload.sport,
         candidates=payload.candidates,
     )
+    weight_cache: dict[tuple[str, str], dict[str, float]] = {}
     evaluations = decision_engine.rank(
         [
-            decision_engine.evaluate(candidate, payload.user_risk_profile)
+            decision_engine.evaluate(
+                candidate,
+                payload.user_risk_profile,
+                learned_weights=weight_cache.setdefault(
+                    (candidate.sport.lower(), candidate.market_type),
+                    load_feature_weights(db, candidate.sport.lower(), candidate.market_type),
+                ),
+            )
             for candidate in payload.candidates
         ]
+    )
+    record_usage_event(
+        db,
+        event_type="PROTOCOL_RUN",
+        sport=payload.sport.lower(),
+        analysis={
+            "analysis_id": analysis_id,
+            "user_id": user.id,
+            "candidate_count": len(payload.candidates),
+            "official_pass": not any(
+                item.decision in {"PLAY", "LEAN"} for item in evaluations
+            ),
+        },
     )
 
     records: list[Recommendation] = []
@@ -483,6 +505,7 @@ def grade_result(payload: ResultCreate, user: SubscribedUser, db: DB) -> ResultO
                 },
             )
         )
+    apply_micro_learning(db, result, recommendation)
     db.commit()
     db.refresh(result)
     return ResultOut.model_validate(result)

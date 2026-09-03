@@ -16,6 +16,8 @@ from app.services.mlb_provider import (
     get_player_game_log,
     get_schedule,
     pitcher_k_stats,
+    player_headshot_url,
+    team_logo_url,
 )
 from app.services.odds_provider import (
     extract_best_odds,
@@ -78,6 +80,7 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
             prob = odds_to_implied_probability(odds_val)
             pitcher = game.get(f"{side}_pitcher")
             pitcher_name = pitcher["name"] if pitcher else "TBD"
+            pitcher_id = pitcher.get("id") if pitcher else None
 
             candidates.append(_build_candidate(
                 candidate_id=f"mlb-ml-{side}-{game['game_pk']}",
@@ -95,6 +98,8 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
                 now=now,
                 game_status=game_status,
                 market_status=market_status,
+                image_url=player_headshot_url(pitcher_id),
+                team_image_url=team_logo_url(game.get(f"{side}_id")),
             ))
 
         # --- Totals (over/under) ---
@@ -120,6 +125,7 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
                 now=now,
                 game_status=game_status,
                 market_status=market_status,
+                team_image_url=team_logo_url(game.get("home_id")),
             ))
         if total_under and total_under.get("point"):
             line_val = Decimal(str(total_under["point"]))
@@ -141,6 +147,7 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
                 now=now,
                 game_status=game_status,
                 market_status=market_status,
+                team_image_url=team_logo_url(game.get("home_id")),
             ))
 
         # --- Spreads (run line) ---
@@ -151,6 +158,7 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
                 continue
             spread_line = Decimal(str(spread["point"]))
             spread_odds = spread["american_odds"]
+            spread_pitcher = game.get(f"{spread_side}_pitcher")
             candidates.append(_build_candidate(
                 candidate_id=f"mlb-rl-{spread_side}-{game['game_pk']}",
                 event_id=event_id,
@@ -168,6 +176,8 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
                 now=now,
                 game_status=game_status,
                 market_status=market_status,
+                image_url=player_headshot_url(spread_pitcher.get("id") if spread_pitcher else None),
+                team_image_url=team_logo_url(game.get(f"{spread_side}_id")),
             ))
 
         # --- Pitcher strikeout props (if we have pitcher data) ---
@@ -211,6 +221,8 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
                     now=now,
                     game_status=game_status,
                     market_status=market_status,
+                    image_url=player_headshot_url(pitcher["id"]),
+                    team_image_url=team_logo_url(game.get(f"{side}_id")),
                     market_is_pitcher_strikeout_over=True,
                     average_cushion=round(k_stats["avg_k"] - float(k_line_dec), 2),
                     recent_hit_rate=k_hit,
@@ -247,6 +259,8 @@ def _build_candidate(
     miss_by_one_count_l10: int = 0,
     game_status: str = "PRE_GAME",
     market_status: str = "OPEN",
+    image_url: str | None = None,
+    team_image_url: str | None = None,
 ) -> CandidateInput:
     prob_clamped = max(0.02, min(0.98, probability))
     return CandidateInput(
@@ -304,6 +318,8 @@ def _build_candidate(
         thesis_key=thesis_key,
         script_key=script_key,
         player_key=player_key,
+        image_url=image_url,
+        team_image_url=team_image_url,
         safer_alternative=f"Safer version of {selection}",
         higher_upside=f"Higher-upside version of {selection}",
         invalidation_conditions=["Material lineup change", "Large adverse price move"],
