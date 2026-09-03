@@ -36,6 +36,14 @@ class Settings(BaseSettings):
     odds_api_key: str | None = Field(default=None, validation_alias="ODDS_API_KEY")
     weather_api_key: str | None = Field(default=None, validation_alias="WEATHER_API_KEY")
 
+    whop_api_key: str | None = Field(default=None, validation_alias="WHOP_API_KEY")
+    whop_webhook_secret: str | None = Field(default=None, validation_alias="WHOP_WEBHOOK_SECRET")
+    whop_product_id: str | None = Field(default=None, validation_alias="WHOP_PRODUCT_ID")
+    whop_checkout_url: str | None = Field(default=None, validation_alias="WHOP_CHECKOUT_URL")
+    whop_subscription_required: bool = Field(
+        default=False, validation_alias="WHOP_SUBSCRIPTION_REQUIRED"
+    )
+
     lock_check_ttl_seconds: int = 300
     odds_warning_move_probability_points: float = 0.03
     odds_blocking_move_probability_points: float = 0.06

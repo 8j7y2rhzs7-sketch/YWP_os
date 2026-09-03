@@ -17,6 +17,7 @@ function icon(name: IconName) {
 export default function TabLayout() {
   const { user, loading } = useAuth();
   if (!loading && !user) return <Redirect href="/(auth)/login" />;
+  if (!loading && user && !user.has_app_access) return <Redirect href="/(auth)/paywall" />;
   return (
     <Tabs
       screenOptions={{

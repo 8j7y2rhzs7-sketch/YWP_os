@@ -16,7 +16,17 @@ export interface User {
   risk_profile: RiskProfile;
   role: string;
   is_active: boolean;
+  subscription_status: string;
+  has_app_access: boolean;
   created_at: string;
+}
+
+export interface SubscriptionStatus {
+  required: boolean;
+  has_access: boolean;
+  status: string;
+  whop_user_id: string | null;
+  checkout_url: string | null;
 }
 
 export interface Bankroll {

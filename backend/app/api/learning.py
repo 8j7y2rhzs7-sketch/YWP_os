@@ -3,7 +3,7 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException
 from sqlalchemy import select
 
-from app.deps import DB, AdminUser, CurrentUser
+from app.deps import DB, AdminUser, SubscribedUser
 from app.models import AuditLog, LearningEvent, Recommendation, WeightChangeProposal
 from app.schemas import (
     ErrorAnalysisRequest,
@@ -27,22 +27,22 @@ router = APIRouter(prefix="/learning", tags=["learning"])
 
 
 @router.get("/performance", response_model=PerformanceOut)
-def performance_report(user: CurrentUser, db: DB) -> PerformanceOut:
+def performance_report(user: SubscribedUser, db: DB) -> PerformanceOut:
     return performance(db, user.id)
 
 
 @router.get("/patterns", response_model=PatternOut)
-def pattern_report(user: CurrentUser, db: DB) -> PatternOut:
+def pattern_report(user: SubscribedUser, db: DB) -> PatternOut:
     return patterns(db, user.id)
 
 
 @router.get("/miss-by-one", response_model=MissByOneOut)
-def miss_by_one(user: CurrentUser, db: DB) -> MissByOneOut:
+def miss_by_one(user: SubscribedUser, db: DB) -> MissByOneOut:
     return miss_by_one_report(db, user.id)
 
 
 @router.post("/error-analysis", response_model=MessageOut)
-def error_analysis(payload: ErrorAnalysisRequest, user: CurrentUser, db: DB) -> MessageOut:
+def error_analysis(payload: ErrorAnalysisRequest, user: SubscribedUser, db: DB) -> MessageOut:
     recommendation = db.scalar(
         select(Recommendation).where(
             Recommendation.id == payload.recommendation_id,

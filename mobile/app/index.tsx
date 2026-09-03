@@ -13,5 +13,5 @@ export default function Index() {
       </Screen>
     );
   }
-  return <Redirect href={user ? "/(tabs)" : "/(auth)/login"} />;
+  return <Redirect href={user ? (user.has_app_access ? "/(tabs)" : "/(auth)/paywall") : "/(auth)/login"} />;
 }

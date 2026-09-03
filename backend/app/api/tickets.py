@@ -10,7 +10,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from app.core.security import utcnow
-from app.deps import DB, CurrentUser
+from app.deps import DB, SubscribedUser
 from app.models import (
     AuditLog,
     BankrollAccount,
@@ -77,7 +77,7 @@ def _aware(value):
 
 
 @router.post("", response_model=TicketOut, status_code=status.HTTP_201_CREATED)
-def create_ticket(payload: TicketCreate, user: CurrentUser, db: DB) -> TicketOut:
+def create_ticket(payload: TicketCreate, user: SubscribedUser, db: DB) -> TicketOut:
     if len(payload.recommendation_ids) != len(set(payload.recommendation_ids)):
         raise HTTPException(status_code=422, detail="Duplicate recommendation IDs are not allowed")
     recommendations = list(
@@ -211,7 +211,7 @@ def create_ticket(payload: TicketCreate, user: CurrentUser, db: DB) -> TicketOut
 
 
 @router.get("", response_model=list[TicketOut])
-def list_tickets(user: CurrentUser, db: DB, limit: int = 100) -> list[TicketOut]:
+def list_tickets(user: SubscribedUser, db: DB, limit: int = 100) -> list[TicketOut]:
     tickets = db.scalars(
         select(Ticket)
         .options(selectinload(Ticket.legs).selectinload(TicketLeg.recommendation))
@@ -223,7 +223,7 @@ def list_tickets(user: CurrentUser, db: DB, limit: int = 100) -> list[TicketOut]
 
 
 @router.get("/{ticket_id}", response_model=TicketOut)
-def get_ticket(ticket_id: str, user: CurrentUser, db: DB) -> TicketOut:
+def get_ticket(ticket_id: str, user: SubscribedUser, db: DB) -> TicketOut:
     return TicketOut.model_validate(_load_ticket(db, ticket_id, user.id))
 
 
@@ -232,7 +232,7 @@ def change_leg(
     ticket_id: str,
     leg_id: str,
     payload: TicketLegAction,
-    user: CurrentUser,
+    user: SubscribedUser,
     db: DB,
 ) -> TicketOut:
     ticket = _load_ticket(db, ticket_id, user.id)
@@ -298,7 +298,7 @@ def change_leg(
 def lock_check(
     ticket_id: str,
     payload: LockCheckRequest,
-    user: CurrentUser,
+    user: SubscribedUser,
     db: DB,
 ) -> LockCheckOut:
     ticket = load_ticket_for_lock(db, ticket_id, user.id)
@@ -312,7 +312,7 @@ def lock_check(
 
 
 @router.post("/{ticket_id}/place", response_model=TicketOut)
-def place_ticket(ticket_id: str, user: CurrentUser, db: DB) -> TicketOut:
+def place_ticket(ticket_id: str, user: SubscribedUser, db: DB) -> TicketOut:
     ticket = _load_ticket(db, ticket_id, user.id)
     if ticket.last_lock_status != "LOCKED" or ticket.last_lock_expires_at is None:
         raise HTTPException(status_code=409, detail="A current LOCKED Lock Check is required")
@@ -335,7 +335,7 @@ def place_ticket(ticket_id: str, user: CurrentUser, db: DB) -> TicketOut:
 
 
 @router.post("/{ticket_id}/cancel", response_model=MessageOut)
-def cancel_ticket(ticket_id: str, user: CurrentUser, db: DB) -> MessageOut:
+def cancel_ticket(ticket_id: str, user: SubscribedUser, db: DB) -> MessageOut:
     ticket = _load_ticket(db, ticket_id, user.id)
     if ticket.status == "settled":
         raise HTTPException(status_code=409, detail="A settled ticket cannot be cancelled")

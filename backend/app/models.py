@@ -45,6 +45,9 @@ class User(Base, TimestampMixin):
     risk_profile: Mapped[str] = mapped_column(String(24), default="balanced")
     role: Mapped[str] = mapped_column(String(24), default="user")
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    whop_user_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    whop_membership_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    subscription_status: Mapped[str] = mapped_column(String(24), default="none")
 
     bankroll: Mapped[BankrollAccount | None] = relationship(
         back_populates="user", cascade="all, delete-orphan", uselist=False
@@ -406,4 +409,25 @@ class AuditLog(Base):
     entity_type: Mapped[str] = mapped_column(String(40))
     entity_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
     details: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class PendingWhopAccess(Base, TimestampMixin):
+    """Access granted via Whop before the user registers in YWP OS."""
+
+    __tablename__ = "pending_whop_access"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    email: Mapped[str] = mapped_column(String(320), index=True)
+    whop_user_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    whop_membership_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    status: Mapped[str] = mapped_column(String(24), default="active")
+
+
+class WhopWebhookDelivery(Base):
+    __tablename__ = "whop_webhook_deliveries"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    webhook_id: Mapped[str] = mapped_column(String(128), unique=True, index=True)
+    event_type: Mapped[str] = mapped_column(String(64))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)

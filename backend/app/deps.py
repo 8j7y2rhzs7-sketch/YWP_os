@@ -44,3 +44,31 @@ def require_admin(user: CurrentUser) -> User:
 
 
 AdminUser = Annotated[User, Depends(require_admin)]
+
+
+def require_subscription(user: CurrentUser, db: DB) -> User:
+    from app.services.whop_access import (
+        apply_pending_access,
+        sync_user_subscription,
+        user_has_app_access,
+    )
+    from app.services.whop import whop_enabled
+
+    if not whop_enabled() or user.role == "admin":
+        return user
+    user = apply_pending_access(db, user)
+    user = sync_user_subscription(db, user)
+    db.commit()
+    db.refresh(user)
+    if not user_has_app_access(user):
+        raise HTTPException(
+            status_code=status.HTTP_402_PAYMENT_REQUIRED,
+            detail=(
+                "Active Whop subscription required. Subscribe on Whop, then tap "
+                "'Sync my access' using the same email."
+            ),
+        )
+    return user
+
+
+SubscribedUser = Annotated[User, Depends(require_subscription)]

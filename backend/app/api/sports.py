@@ -12,7 +12,7 @@ from sqlalchemy import or_, select
 
 from app.core.config import settings
 from app.core.security import utcnow
-from app.deps import DB, CurrentUser
+from app.deps import DB, SubscribedUser
 from app.models import (
     GameSnapshot,
     LearningEvent,
@@ -56,7 +56,7 @@ def _owned_recommendation(db: DB, recommendation_id: str, user_id: str) -> Recom
 
 @router.get("/slate", response_model=SlateResponse)
 def slate(
-    _: CurrentUser,
+    _: SubscribedUser,
     sport_name: str = Query(alias="sport", min_length=2, max_length=24),
     slate_date: date = Query(alias="date"),
 ) -> SlateResponse:
@@ -135,7 +135,7 @@ def slate(
 
 
 @router.post("/analyze", response_model=AnalyzeResponse, status_code=status.HTTP_201_CREATED)
-def analyze(payload: SportsAnalyzeRequest, user: CurrentUser, db: DB) -> AnalyzeResponse:
+def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> AnalyzeResponse:
     analysis_id = str(uuid4())
     protocol_run = run_protocol_health_check(
         db,
@@ -263,12 +263,12 @@ def analyze(payload: SportsAnalyzeRequest, user: CurrentUser, db: DB) -> Analyze
 
 
 @router.get("/recommendations/{recommendation_id}", response_model=RecommendationOut)
-def recommendation(recommendation_id: str, user: CurrentUser, db: DB) -> RecommendationOut:
+def recommendation(recommendation_id: str, user: SubscribedUser, db: DB) -> RecommendationOut:
     return RecommendationOut.model_validate(_owned_recommendation(db, recommendation_id, user.id))
 
 
 @router.post("/build-ticket", response_model=BuildTicketResponse)
-def build_ticket(payload: BuildTicketRequest, user: CurrentUser, db: DB) -> BuildTicketResponse:
+def build_ticket(payload: BuildTicketRequest, user: SubscribedUser, db: DB) -> BuildTicketResponse:
     conditions = [Recommendation.created_by_user_id == user.id]
     source_conditions = []
     if payload.analysis_id:
@@ -337,7 +337,7 @@ def _line_value(
 
 
 @router.post("/result", response_model=ResultOut, status_code=status.HTTP_201_CREATED)
-def grade_result(payload: ResultCreate, user: CurrentUser, db: DB) -> ResultOut:
+def grade_result(payload: ResultCreate, user: SubscribedUser, db: DB) -> ResultOut:
     recommendation = _owned_recommendation(db, payload.recommendation_id, user.id)
     if recommendation.result:
         raise HTTPException(status_code=409, detail="Recommendation is already graded")

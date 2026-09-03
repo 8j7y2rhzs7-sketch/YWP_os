@@ -15,6 +15,7 @@ from app.schemas import (
     RegisterRequest,
     TokenResponse,
 )
+from app.services.whop_access import apply_pending_access, sync_user_subscription
 from app.services.auth import find_refresh_session, issue_tokens, revoke_session
 
 router = APIRouter(prefix="/auth", tags=["authentication"])
@@ -38,6 +39,8 @@ def register(payload: RegisterRequest, db: DB) -> TokenResponse:
     db.add(user)
     db.flush()
     db.add(BankrollAccount(user_id=user.id))
+    user = apply_pending_access(db, user)
+    user = sync_user_subscription(db, user)
     db.add(
         AuditLog(
             user_id=user.id,
@@ -55,6 +58,8 @@ def login(payload: LoginRequest, db: DB) -> TokenResponse:
     user = db.scalar(select(User).where(User.email == payload.email.lower()))
     if not user or not user.is_active or not verify_password(payload.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Incorrect email or password")
+    user = apply_pending_access(db, user)
+    user = sync_user_subscription(db, user)
     db.add(
         AuditLog(
             user_id=user.id,

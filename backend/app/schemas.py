@@ -81,7 +81,23 @@ class UserOut(YWPModel):
     risk_profile: RiskProfile
     role: str
     is_active: bool
+    subscription_status: str = "none"
+    has_app_access: bool = True
     created_at: datetime
+
+
+class SubscriptionOut(YWPModel):
+    required: bool
+    has_access: bool
+    status: str
+    whop_user_id: str | None = None
+    checkout_url: str | None = None
+
+
+class WhopCheckoutOut(YWPModel):
+    checkout_url: str
+    product_id: str | None = None
+    message: str
 
 
 class UserUpdate(YWPModel):
