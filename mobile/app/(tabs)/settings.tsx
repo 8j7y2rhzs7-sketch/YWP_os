@@ -223,6 +223,25 @@ export default function SettingsScreen() {
         ))}
       </MetalPanel>
 
+      <SectionTitle title="Responsible Gaming" subtitle="Your well-being comes first." />
+      <MetalPanel tone="danger">
+        <Text style={styles.rgText}>
+          If gambling is no longer fun, take a break. You are always in control.
+        </Text>
+        <YwpButton
+          label="NATIONAL PROBLEM GAMBLING HELPLINE"
+          variant="outline"
+          onPress={() => {
+            if (typeof window !== "undefined" && window.open) {
+              window.open("tel:1-800-522-4700");
+            } else {
+              Alert.alert("Helpline", "Call 1-800-522-4700 (24/7, confidential).");
+            }
+          }}
+        />
+        <Text style={styles.rgCaption}>1-800-522-4700 — Available 24/7, free & confidential</Text>
+      </MetalPanel>
+
       <YwpButton label="SIGN OUT" variant="danger" onPress={() => void signOut()} />
     </Screen>
   );
@@ -249,6 +268,8 @@ const styles = StyleSheet.create({
   flex: { flex: 1, gap: spacing.xs },
   law: { color: colors.success, fontSize: 13, lineHeight: 20 },
   removed: { color: colors.danger, fontSize: 13, lineHeight: 20 },
+  rgText: { color: colors.danger, fontSize: 14, fontWeight: "700", lineHeight: 20, marginBottom: spacing.sm },
+  rgCaption: { ...type.caption, textAlign: "center", marginTop: spacing.sm },
   txnRow: { flexDirection: "row", gap: spacing.sm, alignItems: "center", flexWrap: "wrap" },
   txnInput: {
     flex: 1,

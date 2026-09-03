@@ -14,11 +14,15 @@ import { useAuth } from "@/context/AuthContext";
 import { colors, spacing, type } from "@/theme";
 import type { Ticket } from "@/types";
 
+const PAGE_SIZE = 25;
+
 export default function TicketsScreen() {
   const { request } = useAuth();
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(
@@ -26,7 +30,9 @@ export default function TicketsScreen() {
       refresh ? setRefreshing(true) : setLoading(true);
       setError(null);
       try {
-        setTickets(await request<Ticket[]>("/tickets?limit=100"));
+        const page = await request<Ticket[]>(`/tickets?limit=${PAGE_SIZE}`);
+        setTickets(page);
+        setHasMore(page.length >= PAGE_SIZE);
       } catch (reason) {
         setError(reason instanceof Error ? reason.message : "Tickets failed to load");
       } finally {
@@ -36,6 +42,22 @@ export default function TicketsScreen() {
     },
     [request],
   );
+
+  async function loadMore() {
+    if (loadingMore || !hasMore) return;
+    setLoadingMore(true);
+    try {
+      const page = await request<Ticket[]>(
+        `/tickets?limit=${PAGE_SIZE}&offset=${tickets.length}`,
+      );
+      setTickets((prev) => [...prev, ...page]);
+      setHasMore(page.length >= PAGE_SIZE);
+    } catch {
+      /* silently fail on load-more */
+    } finally {
+      setLoadingMore(false);
+    }
+  }
 
   useEffect(() => {
     void load();
@@ -90,6 +112,14 @@ export default function TicketsScreen() {
           />
         </MetalPanel>
       ))}
+      {hasMore && tickets.length > 0 ? (
+        <YwpButton
+          label={loadingMore ? "Loading…" : "LOAD MORE TICKETS"}
+          variant="outline"
+          onPress={() => void loadMore()}
+          loading={loadingMore}
+        />
+      ) : null}
     </Screen>
   );
 }
