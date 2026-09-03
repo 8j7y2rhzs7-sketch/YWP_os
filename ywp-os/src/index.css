@@ -602,6 +602,78 @@ main {
   gap: 0.5rem;
 }
 
+.slip-block {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.slip-block h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin-bottom: 0.6rem;
+}
+
+.slip-hint {
+  color: var(--mute);
+  font-size: 0.85rem;
+  margin-bottom: 0.8rem;
+}
+
+.slip-box {
+  background: rgba(18, 17, 15, 0.6);
+  border: 1px solid rgba(212, 160, 23, 0.18);
+  border-radius: 10px;
+  padding: 0.9rem 0.95rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--cream);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin-bottom: 0.75rem;
+}
+
+.checklist {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.checklist h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin-bottom: 0.6rem;
+}
+
+.checklist ol {
+  margin-left: 1.1rem;
+  color: var(--mute);
+}
+
+.checklist li {
+  margin: 0.5rem 0;
+}
+
+.check-pass {
+  color: #7ddea8;
+  font-weight: 700;
+}
+
+.check-fail {
+  color: var(--cut);
+  font-weight: 700;
+}
+
 @media (max-width: 640px) {
   .nav {
     flex-direction: column;

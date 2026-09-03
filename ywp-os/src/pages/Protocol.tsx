@@ -37,6 +37,7 @@ export function Protocol() {
     storage.tickets.load({ A: [], B: [], C: [] }),
   );
   const [active, setActive] = useState<TicketId>("A");
+  const [toast, setToast] = useState<string | null>(null);
   const [form, setForm] = useState(emptyForm);
 
   useEffect(() => {
@@ -57,6 +58,41 @@ export function Protocol() {
   const floorOk =
     ticketLegs.length === 0 ||
     ticketLegs.every((l) => l.yis >= 80 && !l.unresolvedFlag);
+
+  const ticketReadyToPlace = ticketLegs.length > 0 && floorOk;
+  const oddsOk = ticketLegs.length > 0 && ticketLegs.every((l) => l.odds.trim().length > 0);
+
+  const slipText = (() => {
+    if (!ticketReadyToPlace) {
+      return `YWP OS Ticket ${active}\nStatus: NOT READY (floor gate / unresolved P/Q)\n\nAdd/remove legs until every leg clears YIS ≥ 80 and no unresolved P/Q flags.\n`;
+    }
+    const lines = ticketLegs.map(
+      (l) =>
+        `- ${l.player} — ${l.market} ${l.line}   | ${l.verdict} | YIS ${l.yis}`,
+    );
+    return `YWP OS Ticket ${active}\n\n${lines.join("\n")}\n\nFloor gate: YIS ≥ 80 for all legs (no unresolved P/Q).`;
+  })();
+
+  async function copySlip() {
+    try {
+      await navigator.clipboard.writeText(slipText);
+      setToast("Slip copied. Paste into Hard Rock bet slip manually.");
+      window.setTimeout(() => setToast(null), 2500);
+    } catch {
+      setToast("Copy failed (clipboard blocked). Use the text below to copy manually.");
+      window.setTimeout(() => setToast(null), 3200);
+    }
+  }
+
+  function downloadSlip() {
+    const blob = new Blob([slipText], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `ywp-os-ticket-${active}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
 
   const avgYis =
     ticketLegs.length === 0
@@ -439,6 +475,68 @@ export function Protocol() {
                 );
               })}
             </ul>
+          )}
+
+          {ticketLegs.length > 0 && (
+            <div className="slip-block">
+              <h3>Ready-to-place slip (manual)</h3>
+              <p className="slip-hint">
+                This is a copy/paste helper for Hard Rock bet slip. I can’t connect
+                to your Hard Rock account automatically from here.
+              </p>
+              <pre className="slip-box">{slipText}</pre>
+              <div className="row-actions">
+                <button
+                  type="button"
+                  className="btn btn-primary btn-sm"
+                  onClick={copySlip}
+                >
+                  Copy slip
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-sm"
+                  onClick={downloadSlip}
+                >
+                  Download .txt
+                </button>
+              </div>
+              {toast && (
+                <p className="slip-hint" style={{ marginTop: "0.9rem", color: "var(--gold-bright)" }}>
+                  {toast}
+                </p>
+              )}
+            </div>
+          )}
+
+          {scored.length > 0 && (
+            <div className="checklist">
+              <h3>Before you place (manual checklist)</h3>
+              <ol>
+                <li>
+                  Floor gate (Ticket {active}):{" "}
+                  <span className={floorOk ? "check-pass" : "check-fail"}>
+                    {floorOk ? "PASS (YIS ≥ 80)" : "FAIL"}
+                  </span>
+                </li>
+                <li>
+                  No unresolved P/Q flags:{" "}
+                  <span className={ticketLegs.every((l) => !l.unresolvedFlag) ? "check-pass" : "check-fail"}>
+                    {ticketLegs.every((l) => !l.unresolvedFlag) ? "PASS" : "FAIL"}
+                  </span>
+                </li>
+                <li>
+                  Odds captured for every leg:{" "}
+                  <span className={oddsOk ? "check-pass" : "check-fail"}>
+                    {oddsOk ? "PASS" : "FAIL"}
+                  </span>
+                </li>
+                <li>
+                  Never replace CUT legs (payout preservation):{" "}
+                  <span className="check-pass">Manual rule</span>
+                </li>
+              </ol>
+            </div>
           )}
         </section>
       </div>
