@@ -35,6 +35,7 @@ from app.services.decision_engine import decision_engine, implied_probability, m
 from app.services.protocols import run_protocol_health_check
 from app.services.providers import demo_slate
 from app.services.live_mlb_slate import live_mlb_slate
+from app.services.live_wnba_slate import live_wnba_slate
 from app.services.ticket_builder import build_cards
 
 router = APIRouter(prefix="/sports", tags=["sports"])
@@ -77,12 +78,29 @@ def slate(
         except Exception as exc:
             logger.exception("Live MLB slate failed, falling back to demo")
 
-    if not settings.demo_mode and sport_lower != "mlb":
+    if not settings.demo_mode and sport_lower in ("wnba", "basketball") and settings.odds_api_key:
+        try:
+            candidates = live_wnba_slate(slate_date)
+            if candidates:
+                return SlateResponse(
+                    sport=sport_lower,
+                    date=slate_date,
+                    mode="live",
+                    notice=(
+                        "Live WNBA data from The Odds API. "
+                        "Player props and L5/L10 stats require manual verification."
+                    ),
+                    candidates=candidates,
+                )
+        except Exception:
+            logger.exception("Live WNBA slate failed, falling back to demo")
+
+    if not settings.demo_mode and sport_lower not in ("mlb", "wnba", "basketball"):
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=(
-                "Live provider is only available for MLB. Supply licensed provider data through "
-                "POST /sports/analyze or enable demo mode."
+                "Live provider is available for MLB and WNBA. Supply licensed provider data "
+                "through POST /sports/analyze or enable demo mode."
             ),
         )
 
