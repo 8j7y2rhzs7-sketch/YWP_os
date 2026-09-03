@@ -1,7 +1,12 @@
-export const sportLooks: Record<
-  string,
-  { emoji: string; accent: string; field: string; glow: string; label: string }
-> = {
+export type SportLook = {
+  emoji: string;
+  accent: string;
+  field: string;
+  glow: string;
+  label: string;
+};
+
+export const sportLooks: Record<string, SportLook> = {
   mlb: { emoji: "⚾", accent: "#41B6E6", field: "#0E3A2C", glow: "#F5C542", label: "DIAMOND" },
   wnba: { emoji: "🏀", accent: "#FF6B35", field: "#3A1840", glow: "#FFD166", label: "HARDWOOD" },
   basketball: { emoji: "🏀", accent: "#FF6B35", field: "#3A1840", glow: "#FFD166", label: "HARDWOOD" },
@@ -13,6 +18,14 @@ export const sportLooks: Record<
   kbo: { emoji: "⚾", accent: "#F4D35E", field: "#0E3A2C", glow: "#F5C542", label: "KBO" },
 };
 
-export function sportLook(sport?: string) {
-  return sportLooks[(sport ?? "").toLowerCase()] ?? sportLooks.mlb;
+const DEFAULT_SPORT_LOOK: SportLook = {
+  emoji: "⚾",
+  accent: "#41B6E6",
+  field: "#0E3A2C",
+  glow: "#F5C542",
+  label: "DIAMOND",
+};
+
+export function sportLook(sport?: string): SportLook {
+  return sportLooks[(sport ?? "").toLowerCase()] ?? DEFAULT_SPORT_LOOK;
 }

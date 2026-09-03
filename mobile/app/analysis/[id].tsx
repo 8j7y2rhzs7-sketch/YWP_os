@@ -107,11 +107,13 @@ export default function AnalysisScreen() {
 
   const customCard = useMemo<TicketCard | null>(() => {
     if (!customLegs.length) return null;
+    const firstLeg = customLegs[0];
+    if (!firstLeg) return null;
     const riskOrder = ["low", "medium", "medium_high", "high"];
     const risk = customLegs.reduce(
       (worst, item) =>
         riskOrder.indexOf(item.risk) > riskOrder.indexOf(worst) ? item.risk : worst,
-      customLegs[0].risk,
+      firstLeg.risk,
     );
     return {
       key: "custom",
