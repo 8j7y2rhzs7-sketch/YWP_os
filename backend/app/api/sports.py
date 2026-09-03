@@ -34,6 +34,7 @@ from app.schemas import (
 from app.services.decision_engine import decision_engine, implied_probability, money
 from app.services.protocols import run_protocol_health_check
 from app.services.providers import demo_slate
+from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate
 from app.services.live_mlb_slate import live_mlb_slate
 from app.services.live_wnba_slate import live_wnba_slate
 from app.services.ticket_builder import build_cards
@@ -95,11 +96,28 @@ def slate(
         except Exception:
             logger.exception("Live WNBA slate failed, falling back to demo")
 
-    if not settings.demo_mode and sport_lower not in ("mlb", "wnba", "basketball"):
+    if not settings.demo_mode and sport_lower in SPORT_KEYS and settings.odds_api_key:
+        try:
+            candidates = live_generic_slate(sport_lower, slate_date)
+            if candidates:
+                return SlateResponse(
+                    sport=sport_lower,
+                    date=slate_date,
+                    mode="live",
+                    notice=(
+                        f"Live {sport_lower.upper()} data from The Odds API. "
+                        "Verify all inputs before wagering."
+                    ),
+                    candidates=candidates,
+                )
+        except Exception:
+            logger.exception("Live %s slate failed, falling back to demo", sport_lower)
+
+    if not settings.demo_mode and sport_lower not in ("mlb", "wnba", "basketball") and sport_lower not in SPORT_KEYS:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=(
-                "Live provider is available for MLB and WNBA. Supply licensed provider data "
+                "No live provider for this sport. Supply licensed provider data "
                 "through POST /sports/analyze or enable demo mode."
             ),
         )

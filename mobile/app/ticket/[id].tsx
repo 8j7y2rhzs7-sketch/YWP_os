@@ -9,6 +9,7 @@ import { MetalPanel } from "@/components/MetalPanel";
 import { Metric } from "@/components/Metric";
 import { Screen } from "@/components/Screen";
 import { SectionTitle } from "@/components/SectionTitle";
+import { SlipBuilder } from "@/components/SlipBuilder";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
@@ -223,6 +224,21 @@ export default function TicketDetailScreen() {
       {ticket.last_lock_status === "LOCKED" && ticket.status !== "placed" ? (
         <YwpButton label="MARK TICKET PLACED" variant="success" onPress={() => void place()} loading={action === "place"} />
       ) : null}
+      {ticket.legs.length > 0 ? (
+        <SlipBuilder
+          ticketLabel={ticket.label}
+          legs={ticket.legs.map((l) => ({
+            selection: l.selection,
+            american_odds: l.american_odds,
+            thesis_key: l.thesis_key,
+            status: l.action,
+          }))}
+          stake={String(ticket.stake)}
+          potentialPayout={String(ticket.potential_payout)}
+          lockStatus={ticket.last_lock_status}
+        />
+      ) : null}
+
       <Text style={styles.footer}>
         Live-provider tickets require fresh current-state updates from the server.
         Empty updates are accepted only for clearly labeled demo data.

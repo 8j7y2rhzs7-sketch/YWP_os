@@ -1,8 +1,6 @@
 """
-Live WNBA slate builder: merges The Odds API lines into CandidateInput objects.
-WNBA doesn't have a free public stats API like MLB's statsapi.mlb.com,
-so we build candidates from odds data with manual stat entry supported
-through the existing CandidateInput fields.
+Generic live slate builder for any sport supported by The Odds API.
+Covers NFL, NBA, NHL, college football, college basketball, soccer, etc.
 """
 from __future__ import annotations
 
@@ -20,22 +18,48 @@ from app.services.odds_provider import (
 
 logger = logging.getLogger(__name__)
 
-SPORT_KEY = "basketball_wnba"
+SPORT_KEYS: dict[str, str] = {
+    "nfl": "americanfootball_nfl",
+    "nba": "basketball_nba",
+    "nhl": "icehockey_nhl",
+    "ncaaf": "americanfootball_ncaaf",
+    "ncaab": "basketball_ncaab",
+    "soccer": "soccer_usa_mls",
+    "epl": "soccer_epl",
+    "mls": "soccer_usa_mls",
+    "kbo": "baseball_kbo",
+}
+
+SPORT_DISPLAY: dict[str, tuple[str, str]] = {
+    "nfl": ("nfl", "NFL"),
+    "nba": ("nba", "NBA"),
+    "nhl": ("nhl", "NHL"),
+    "ncaaf": ("ncaaf", "NCAAF"),
+    "ncaab": ("ncaab", "NCAAB"),
+    "soccer": ("soccer", "MLS"),
+    "epl": ("soccer", "EPL"),
+    "mls": ("soccer", "MLS"),
+    "kbo": ("kbo", "KBO"),
+}
 
 
-def live_wnba_slate(slate_date: date) -> list[CandidateInput]:
-    """Build live WNBA CandidateInput list from The Odds API."""
+def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
+    sport_lower = sport.lower()
+    odds_key = SPORT_KEYS.get(sport_lower)
+    if not odds_key:
+        logger.warning("No Odds API sport key for %s", sport)
+        return []
+
+    sport_code, league = SPORT_DISPLAY.get(sport_lower, (sport_lower, sport.upper()))
+
     try:
-        odds_events = get_game_odds(
-            sport=SPORT_KEY,
-            markets="h2h,spreads,totals",
-        )
+        odds_events = get_game_odds(sport=odds_key, markets="h2h,spreads,totals")
     except Exception:
-        logger.exception("Failed to fetch WNBA odds")
+        logger.exception("Failed to fetch %s odds", sport)
         return []
 
     if not odds_events:
-        logger.warning("No WNBA events found for %s", slate_date)
+        logger.warning("No %s events found", sport)
         return []
 
     candidates: list[CandidateInput] = []
@@ -51,7 +75,7 @@ def live_wnba_slate(slate_date: date) -> list[CandidateInput]:
         start_str = event.get("commence_time")
         start_time = _parse_start(start_str, slate_date)
 
-        # --- Moneyline (home + away) ---
+        # --- Moneyline ---
         for team in (home, away):
             ml = extract_best_odds(bookmakers, "h2h", team)
             if not ml:
@@ -61,7 +85,9 @@ def live_wnba_slate(slate_date: date) -> list[CandidateInput]:
             side = "home" if team == home else "away"
 
             candidates.append(_build(
-                candidate_id=f"wnba-ml-{side}-{event_id[:12]}",
+                sport=sport_code,
+                league=league,
+                candidate_id=f"{sport_lower}-ml-{side}-{event_id[:12]}",
                 event_id=event_id,
                 event_name=event_name,
                 start_time=start_time,
@@ -69,9 +95,9 @@ def live_wnba_slate(slate_date: date) -> list[CandidateInput]:
                 selection=f"{team} ML",
                 odds=odds_val,
                 probability=prob,
-                thesis_key=f"wnba-{_slug(team)}-ml-{slate_date}",
-                script_key=f"wnba-{_slug(event_name)}-{side}-control",
-                reason_codes=["HOME_FIELD", "CURRENT_FORM"] if side == "home" else ["CURRENT_FORM"],
+                thesis_key=f"{sport_lower}-{_slug(team)}-ml-{slate_date}",
+                script_key=f"{sport_lower}-{_slug(event_name)}-{side}",
+                reason_codes=["MATCHUP_EDGE", "CURRENT_FORM"],
                 reasoning=[f"{team} moneyline."],
                 now=now,
             ))
@@ -86,7 +112,9 @@ def live_wnba_slate(slate_date: date) -> list[CandidateInput]:
             side = "home" if team == home else "away"
 
             candidates.append(_build(
-                candidate_id=f"wnba-spread-{side}-{event_id[:12]}",
+                sport=sport_code,
+                league=league,
+                candidate_id=f"{sport_lower}-spread-{side}-{event_id[:12]}",
                 event_id=event_id,
                 event_name=event_name,
                 start_time=start_time,
@@ -95,63 +123,49 @@ def live_wnba_slate(slate_date: date) -> list[CandidateInput]:
                 line=spread_line,
                 odds=spread_odds,
                 probability=odds_to_implied_probability(spread_odds),
-                thesis_key=f"wnba-{_slug(team)}-spread-{spread_line}-{slate_date}",
-                script_key=f"wnba-{_slug(event_name)}-{side}-margin",
-                reason_codes=["GAME_SCRIPT", "CURRENT_FORM"],
+                thesis_key=f"{sport_lower}-{_slug(team)}-spread-{spread_line}-{slate_date}",
+                script_key=f"{sport_lower}-{_slug(event_name)}-{side}-margin",
+                reason_codes=["GAME_SCRIPT", "MATCHUP_EDGE"],
                 reasoning=[f"{team} spread {spread_line:+}."],
                 now=now,
             ))
 
         # --- Totals ---
-        total_over = extract_best_odds(bookmakers, "totals", "Over")
-        total_under = extract_best_odds(bookmakers, "totals", "Under")
+        for label in ("Over", "Under"):
+            total = extract_best_odds(bookmakers, "totals", label)
+            if not total or total.get("point") is None:
+                continue
+            line_val = Decimal(str(total["point"]))
+            total_odds = total["american_odds"]
+            mtype = "game_total_over" if label == "Over" else "game_total_under"
 
-        if total_over and total_over.get("point"):
-            line_val = Decimal(str(total_over["point"]))
-            over_odds = total_over["american_odds"]
             candidates.append(_build(
-                candidate_id=f"wnba-over-{event_id[:12]}",
+                sport=sport_code,
+                league=league,
+                candidate_id=f"{sport_lower}-{label.lower()}-{event_id[:12]}",
                 event_id=event_id,
                 event_name=event_name,
                 start_time=start_time,
-                market_type="game_total_over",
-                selection=f"Over {line_val}",
+                market_type=mtype,
+                selection=f"{label} {line_val}",
                 line=line_val,
-                odds=over_odds,
-                probability=odds_to_implied_probability(over_odds),
-                thesis_key=f"wnba-{_slug(event_name)}-over-{line_val}-{slate_date}",
-                script_key=f"wnba-{_slug(event_name)}-pace",
-                reason_codes=["GAME_SCRIPT", "L10_CUSHION"],
-                reasoning=[f"Game total Over {line_val}. Pace and scoring environment."],
+                odds=total_odds,
+                probability=odds_to_implied_probability(total_odds),
+                thesis_key=f"{sport_lower}-{_slug(event_name)}-{label.lower()}-{line_val}-{slate_date}",
+                script_key=f"{sport_lower}-{_slug(event_name)}-scoring",
+                reason_codes=["GAME_SCRIPT", "CURRENT_FORM"],
+                reasoning=[f"Game total {label} {line_val}."],
                 now=now,
             ))
 
-        if total_under and total_under.get("point"):
-            line_val = Decimal(str(total_under["point"]))
-            under_odds = total_under["american_odds"]
-            candidates.append(_build(
-                candidate_id=f"wnba-under-{event_id[:12]}",
-                event_id=event_id,
-                event_name=event_name,
-                start_time=start_time,
-                market_type="game_total_under",
-                selection=f"Under {line_val}",
-                line=line_val,
-                odds=under_odds,
-                probability=odds_to_implied_probability(under_odds),
-                thesis_key=f"wnba-{_slug(event_name)}-under-{line_val}-{slate_date}",
-                script_key=f"wnba-{_slug(event_name)}-defense",
-                reason_codes=["GAME_SCRIPT", "ROLE_STABILITY"],
-                reasoning=[f"Game total Under {line_val}. Defensive matchup."],
-                now=now,
-            ))
-
-    logger.info("Built %d live WNBA candidates for %s", len(candidates), slate_date)
+    logger.info("Built %d live %s candidates for %s", len(candidates), sport, slate_date)
     return candidates
 
 
 def _build(
     *,
+    sport: str,
+    league: str,
     candidate_id: str,
     event_id: str,
     event_name: str,
@@ -176,8 +190,8 @@ def _build(
         candidate_id=candidate_id,
         event_id=event_id,
         event_name=event_name,
-        sport="wnba",
-        league="WNBA",
+        sport=sport,
+        league=league,
         start_time=start_time,
         market_type=market_type,
         selection=selection,
@@ -185,11 +199,11 @@ def _build(
         american_odds=odds_clamped,
         estimated_probability=prob_clamped,
         variance=0.32,
-        data_quality=0.82,
-        factors={"matchup": 0.55, "current_form": 0.50, "market_value": 0.42},
+        data_quality=0.80,
+        factors={"matchup": 0.50, "current_form": 0.45, "market_value": 0.40},
         reason_codes=reason_codes,
         reasoning=reasoning,
-        data_source="ODDS_API_WNBA",
+        data_source=f"ODDS_API_{sport.upper()}",
         source_timestamp=now,
         source_status={
             "schedule": "confirmed",
@@ -209,12 +223,12 @@ def _build(
         home_away_verified=True,
         market_movement_verified=True,
         sport_specific_sweep_complete=False,
-        recent_hit_rate=min(0.80, prob_clamped + 0.05),
-        average_cushion=1.2,
-        matchup_score=0.55,
-        script_alignment=0.50,
-        multiple_paths_score=0.55,
-        role_stability=0.65,
+        recent_hit_rate=min(0.80, prob_clamped + 0.04),
+        average_cushion=1.0,
+        matchup_score=0.50,
+        script_alignment=0.48,
+        multiple_paths_score=0.50,
+        role_stability=0.60,
         miss_by_one_count_l10=0,
         ain_checks={
             "recent_form_l5_l10": False,
@@ -226,12 +240,9 @@ def _build(
         player_key=player_key,
         safer_alternative=f"Safer version of {selection}",
         higher_upside=f"Higher-upside version of {selection}",
-        invalidation_conditions=["Starter ruled out", "Large line movement"],
-        live_trigger="Recheck price and lineup before any live entry.",
-        hedge=(
-            "Compare any cash-out offer with current fair remaining value. "
-            "Reduce exposure only after material thesis change."
-        ),
+        invalidation_conditions=["Key player ruled out", "Large line movement"],
+        live_trigger="Recheck price and game state before any live entry.",
+        hedge="Compare cash-out offer with fair remaining value before acting.",
     )
 
 
