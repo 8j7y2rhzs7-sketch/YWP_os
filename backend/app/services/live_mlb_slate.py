@@ -40,10 +40,14 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
         logger.exception("Failed to fetch odds; building slate without book lines")
         odds_events = []
 
+    from app.services.odds_provider import get_last_fetch_status
+
+    odds_status = get_last_fetch_status()
     if not odds_events:
         logger.warning(
-            "Odds API returned no MLB events. Moneyline/total/run-line markets will be missing; "
-            "only pitcher K estimates from MLB.com can be built."
+            "Odds API returned no MLB events (status=%s). Moneyline/total/run-line markets "
+            "will be missing; only pitcher K estimates from MLB.com can be built.",
+            odds_status,
         )
 
     candidates: list[CandidateInput] = []

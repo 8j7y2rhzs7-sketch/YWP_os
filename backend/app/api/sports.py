@@ -37,6 +37,7 @@ from app.services.providers import demo_slate
 from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate
 from app.services.live_mlb_slate import live_mlb_slate
 from app.services.live_wnba_slate import live_wnba_slate
+from app.services.odds_provider import get_last_fetch_status, odds_api_configured
 from app.services.ticket_builder import build_cards
 
 router = APIRouter(prefix="/sports", tags=["sports"])
@@ -62,7 +63,7 @@ def slate(
 ) -> SlateResponse:
     sport_lower = sport_name.lower()
 
-    if not settings.demo_mode and sport_lower == "mlb" and settings.odds_api_key:
+    if not settings.demo_mode and sport_lower == "mlb":
         try:
             candidates = live_mlb_slate(slate_date)
             if candidates:
@@ -71,16 +72,25 @@ def slate(
                     in {"moneyline", "run_line", "game_total_over", "game_total_under"}
                     for item in candidates
                 )
-                notice = (
-                    "Live MLB data from MLB.com Stats API + The Odds API. "
-                    "Verify all inputs before wagering."
-                    if has_book_markets
-                    else (
-                        "Live MLB schedule loaded, but book odds were unavailable. "
-                        "Only pitcher strikeout estimates are shown. "
-                        "Set a valid ODDS_API_KEY on the server and refresh."
+                odds_status = get_last_fetch_status()
+                if has_book_markets:
+                    notice = (
+                        "Live MLB data from MLB.com Stats API + The Odds API. "
+                        "Verify all inputs before wagering."
                     )
-                )
+                elif not odds_api_configured():
+                    notice = (
+                        "Live MLB schedule loaded, but ODDS_API_KEY is missing on the server. "
+                        "Only pitcher strikeout estimates are shown. "
+                        "Set ODDS_API_KEY on Render, redeploy, then refresh."
+                    )
+                else:
+                    detail = odds_status.get("error") or "book_odds_unavailable"
+                    notice = (
+                        "Live MLB schedule loaded, but book odds were unavailable "
+                        f"({detail}). Only pitcher strikeout estimates are shown. "
+                        "Confirm ODDS_API_KEY on Render and check /api/v1/health/providers."
+                    )
                 return SlateResponse(
                     sport=sport_lower,
                     date=slate_date,
@@ -88,7 +98,7 @@ def slate(
                     notice=notice,
                     candidates=candidates,
                 )
-        except Exception as exc:
+        except Exception:
             logger.exception("Live MLB slate failed, falling back to demo")
 
     if not settings.demo_mode and sport_lower in ("wnba", "basketball") and settings.odds_api_key:

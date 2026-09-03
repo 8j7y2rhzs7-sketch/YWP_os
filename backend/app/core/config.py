@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "YWP OS API"
-    app_version: str = "3.0.0"
+    app_version: str = "3.0.1"
     api_prefix: str = "/api/v1"
     env: Literal["development", "test", "staging", "production"] = Field(
         default="development", validation_alias="YWP_ENV"
@@ -64,7 +64,7 @@ class Settings(BaseSettings):
     odds_blocking_move_probability_points: float = 0.06
     minimum_data_quality: float = 0.65
     minimum_edge: float = 0.015
-    model_version: str = "ywp-sports-v3.0.0"
+    model_version: str = "ywp-sports-v3.0.1"
     protocol_version: str = "2026.09.03"
     learning_min_sample_size: int = 30
     learning_min_repeated_pattern: int = 5
@@ -106,8 +106,11 @@ class Settings(BaseSettings):
     def empty_secret_to_none(cls, value: object) -> object:
         if value is None:
             return None
-        if isinstance(value, str) and value.strip() in {"", "-", "null", "None"}:
-            return None
+        if isinstance(value, str):
+            cleaned = value.strip().strip('"').strip("'")
+            if cleaned in {"", "-", "null", "None"}:
+                return None
+            return cleaned
         return value
 
     @property

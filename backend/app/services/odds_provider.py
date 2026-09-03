@@ -27,23 +27,67 @@ PREFERRED_BOOKS = [
     "pointsbetus",
 ]
 
+_last_fetch_status: dict[str, Any] = {
+    "ok": False,
+    "configured": False,
+    "status_code": None,
+    "events": 0,
+    "remaining": None,
+    "error": None,
+}
+
+
+def get_last_fetch_status() -> dict[str, Any]:
+    """Return the most recent Odds API fetch outcome (no secrets)."""
+    return dict(_last_fetch_status)
+
+
+def odds_api_configured() -> bool:
+    return bool(_normalized_key())
+
+
+def _normalized_key() -> str | None:
+    key = settings.odds_api_key
+    if key is None:
+        return None
+    cleaned = key.strip().strip('"').strip("'")
+    if cleaned in {"", "-", "null", "None"}:
+        return None
+    return cleaned
+
 
 def _api_key() -> str:
-    key = settings.odds_api_key
+    key = _normalized_key()
     if not key:
         raise RuntimeError(
             "ODDS_API_KEY is not set. Sign up free at https://the-odds-api.com "
-            "and set the ODDS_API_KEY env var."
+            "and set the ODDS_API_KEY env var on the server."
         )
     return key
+
+
+def _set_status(**kwargs: Any) -> None:
+    _last_fetch_status.update(kwargs)
+    _last_fetch_status["configured"] = odds_api_configured()
 
 
 def _get_sync(path: str, params: dict[str, Any] | None = None) -> dict[str, Any] | list[Any]:
     with httpx.Client(timeout=TIMEOUT) as client:
         all_params = {"apiKey": _api_key(), **(params or {})}
         resp = client.get(f"{BASE}{path}", params=all_params)
-        remaining = resp.headers.get("x-requests-remaining", "?")
-        logger.info("Odds API requests remaining: %s", remaining)
+        remaining = resp.headers.get("x-requests-remaining")
+        _set_status(
+            status_code=resp.status_code,
+            remaining=remaining,
+        )
+        if remaining is not None:
+            logger.info("Odds API requests remaining: %s", remaining)
+        if resp.status_code == 401:
+            _set_status(ok=False, events=0, error="invalid_or_unauthorized_odds_api_key")
+            resp.raise_for_status()
+        if resp.status_code == 429:
+            _set_status(ok=False, events=0, error="odds_api_quota_exceeded")
+            resp.raise_for_status()
         resp.raise_for_status()
         return resp.json()
 
@@ -58,17 +102,45 @@ def get_game_odds(
     regions: str = "us",
 ) -> list[dict[str, Any]]:
     """Fetch current odds for all upcoming games in the sport."""
-    data = _get_sync(
-        f"/v4/sports/{sport}/odds",
-        {
-            "regions": regions,
-            "markets": markets,
-            "oddsFormat": "american",
-        },
-    )
-    if not isinstance(data, list):
+    if not odds_api_configured():
+        _set_status(ok=False, events=0, status_code=None, remaining=None, error="odds_api_key_missing")
+        logger.warning("ODDS_API_KEY missing; skipping Odds API fetch")
         return []
+
+    try:
+        data = _get_sync(
+            f"/v4/sports/{sport}/odds",
+            {
+                "regions": regions,
+                "markets": markets,
+                "oddsFormat": "american",
+            },
+        )
+    except Exception as exc:
+        _set_status(ok=False, events=0, error=str(exc)[:180])
+        logger.exception("Odds API fetch failed")
+        return []
+
+    if not isinstance(data, list):
+        _set_status(ok=False, events=0, error="unexpected_odds_payload")
+        return []
+
+    _set_status(ok=True, events=len(data), error=None)
     return data
+
+
+def probe_odds_api(sport: str = SPORT_KEY) -> dict[str, Any]:
+    """Lightweight connectivity check used by /health/providers."""
+    if not odds_api_configured():
+        _set_status(ok=False, events=0, status_code=None, remaining=None, error="odds_api_key_missing")
+        return get_last_fetch_status()
+
+    events = get_game_odds(sport=sport, markets="h2h", regions="us")
+    status = get_last_fetch_status()
+    status["sample_matchups"] = [
+        f"{item.get('away_team')} @ {item.get('home_team')}" for item in events[:5]
+    ]
+    return status
 
 
 def get_event_odds(
@@ -78,14 +150,20 @@ def get_event_odds(
     regions: str = "us",
 ) -> dict[str, Any] | None:
     """Fetch odds for a single event by event_id."""
-    data = _get_sync(
-        f"/v4/sports/{sport}/events/{event_id}/odds",
-        {
-            "regions": regions,
-            "markets": markets,
-            "oddsFormat": "american",
-        },
-    )
+    if not odds_api_configured():
+        return None
+    try:
+        data = _get_sync(
+            f"/v4/sports/{sport}/events/{event_id}/odds",
+            {
+                "regions": regions,
+                "markets": markets,
+                "oddsFormat": "american",
+            },
+        )
+    except Exception:
+        logger.exception("Odds API event fetch failed for %s", event_id)
+        return None
     if isinstance(data, dict):
         return data
     return None
@@ -102,6 +180,8 @@ def get_player_props(
     regions: str = "us",
 ) -> dict[str, Any] | None:
     """Fetch player prop odds for a single event."""
+    if not odds_api_configured():
+        return None
     try:
         data = _get_sync(
             f"/v4/sports/{sport}/events/{event_id}/odds",
@@ -196,7 +276,10 @@ def _fuzzy_team_match(mlb_name: str, odds_name: str) -> bool:
     odds_parts = odds_name.strip().split()
     if not mlb_parts or not odds_parts:
         return False
-    return mlb_parts[-1] == odds_parts[-1]
+    if mlb_parts[-1] == odds_parts[-1]:
+        return True
+    # Handle nicknames that differ only by city prefix.
+    return mlb_name in odds_name or odds_name in mlb_name
 
 
 def odds_to_implied_probability(american_odds: int) -> float:
