@@ -31,11 +31,12 @@ def test_learning_requires_admin_approval_and_supports_rollback(
             headers=auth_headers,
         )
         assert analysis.status_code == 201
-        recommendation_id = analysis.json()["ranked_picks"][0]["id"]
+        recs = analysis.json()["ranked_picks"] + analysis.json()["stay_away"]
+        target = next(item for item in recs if item["candidate_id"] == "demo-mlb-1")
         result = client.post(
             "/api/v1/sports/result",
             json={
-                "recommendation_id": recommendation_id,
+                "recommendation_id": target["id"],
                 "outcome": "LOSS",
                 "stake": "1.00",
                 "profit_loss": "-1.00",
