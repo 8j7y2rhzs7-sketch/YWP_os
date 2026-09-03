@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.router import api_router
 from app.core.config import settings
+from app.middleware.rate_limit import RateLimitMiddleware
 
 app = FastAPI(
     title=settings.app_name,
@@ -25,6 +26,9 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
     allow_headers=["Authorization", "Content-Type", "Idempotency-Key"],
 )
+
+
+app.add_middleware(RateLimitMiddleware)
 
 
 @app.middleware("http")
