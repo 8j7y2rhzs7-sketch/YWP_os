@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Linking, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { colors, radius, spacing, type } from "@/theme";
 import type { Recommendation } from "@/types";
@@ -23,6 +23,7 @@ export function RecommendationCard({
   onPress?: () => void;
 }) {
   const skip = item.decision === "SKIP";
+  const sourceUrl = item.source_urls?.[0];
   const body = (
     <MetalPanel
       tone={skip ? "danger" : selected ? "gold" : "default"}
@@ -82,6 +83,15 @@ export function RecommendationCard({
           ) : null}
           {item.hedge ? (
             <Text style={styles.hedge}>HEDGE / CASH-OUT: {item.hedge}</Text>
+          ) : null}
+          {sourceUrl ? (
+            <Pressable
+              accessibilityRole="link"
+              onPress={() => void Linking.openURL(sourceUrl)}
+              style={styles.sourceLink}
+            >
+              <Text style={styles.sourceText}>OPEN OFFICIAL SOURCE</Text>
+            </Pressable>
           ) : null}
         </>
       ) : null}
@@ -158,4 +168,13 @@ const styles = StyleSheet.create({
   safer: { color: colors.success, fontSize: 12, fontWeight: "800" },
   live: { color: colors.info, fontSize: 12, lineHeight: 17, fontWeight: "800" },
   hedge: { color: colors.warning, fontSize: 12, lineHeight: 17, fontWeight: "800" },
+  sourceLink: {
+    alignSelf: "flex-start",
+    borderColor: colors.info,
+    borderWidth: 1,
+    borderRadius: radius.pill,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+  sourceText: { color: colors.info, fontSize: 11, fontWeight: "900", letterSpacing: 0.8 },
 });

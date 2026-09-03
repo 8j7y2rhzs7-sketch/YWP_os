@@ -3,6 +3,7 @@ Live odds provider using The Odds API (the-odds-api.com).
 Requires a free API key (500 req/month on free tier).
 Aggregates odds from Hard Rock, DraftKings, FanDuel, BetMGM, etc.
 """
+
 from __future__ import annotations
 
 import logging
@@ -137,6 +138,7 @@ def _get_sync(path: str, params: dict[str, Any] | None = None) -> dict[str, Any]
 # Game odds (moneyline, spread, totals)
 # ---------------------------------------------------------------------------
 
+
 def get_game_odds(
     sport: str = SPORT_KEY,
     markets: str = "h2h,spreads,totals",
@@ -144,7 +146,9 @@ def get_game_odds(
 ) -> list[dict[str, Any]]:
     """Fetch current odds for all upcoming games in the sport."""
     if not odds_api_configured():
-        _set_status(ok=False, events=0, status_code=None, remaining=None, error="odds_api_key_missing")
+        _set_status(
+            ok=False, events=0, status_code=None, remaining=None, error="odds_api_key_missing"
+        )
         logger.warning("ODDS_API_KEY missing; skipping Odds API fetch")
         return []
 
@@ -177,7 +181,9 @@ def get_game_odds(
 def probe_odds_api(sport: str = SPORT_KEY) -> dict[str, Any]:
     """Lightweight connectivity check used by /health/providers."""
     if not odds_api_configured():
-        _set_status(ok=False, events=0, status_code=None, remaining=None, error="odds_api_key_missing")
+        _set_status(
+            ok=False, events=0, status_code=None, remaining=None, error="odds_api_key_missing"
+        )
         return get_last_fetch_status()
 
     events = get_game_odds(sport=sport, markets="h2h", regions="us")
@@ -218,6 +224,7 @@ def get_event_odds(
 # Player props
 # ---------------------------------------------------------------------------
 
+
 def get_player_props(
     event_id: str,
     sport: str = SPORT_KEY,
@@ -250,6 +257,7 @@ def get_player_props(
 # Parsing helpers
 # ---------------------------------------------------------------------------
 
+
 def extract_best_odds(
     bookmakers: list[dict[str, Any]],
     market_key: str,
@@ -270,30 +278,98 @@ def extract_best_odds(
                 continue
             for outcome in market.get("outcomes", []):
                 outcome_name = str(outcome.get("name", ""))
+                match_rank = 0
                 if selection_name and outcome_name.casefold() != selection_name.casefold():
-                    # Soft match: last token (e.g. "Guardians") or containment.
+                    # Exact team names always win. Containment is the next safest
+                    # fallback, followed by a nickname-only match for feeds that
+                    # omit the city. This prevents White Sox/Red Sox cross-matches.
                     sel = selection_name.casefold()
                     out = outcome_name.casefold()
-                    if sel not in out and out not in sel and sel.split()[-1] != out.split()[-1]:
+                    if sel in out or out in sel:
+                        match_rank = 1
+                    elif sel.split() and out.split() and sel.split()[-1] == out.split()[-1]:
+                        match_rank = 2
+                    else:
                         continue
-                candidates.append({
-                    "book": book_key,
-                    "name": outcome_name,
-                    "price": outcome.get("price", 0),
-                    "point": outcome.get("point"),
-                    "preferred_rank": preferred.index(book_key) if book_key in preferred else 999,
-                })
+                price = outcome.get("price")
+                if not isinstance(price, int) or isinstance(price, bool):
+                    continue
+                candidates.append(
+                    {
+                        "book": book_key,
+                        "name": outcome_name,
+                        "price": price,
+                        "point": outcome.get("point"),
+                        "match_rank": match_rank,
+                        "preferred_rank": preferred.index(book_key)
+                        if book_key in preferred
+                        else 999,
+                    }
+                )
 
     if not candidates:
         return None
 
-    candidates.sort(key=lambda c: (c["preferred_rank"], -c["price"]))
+    candidates.sort(key=lambda c: (c["match_rank"], c["preferred_rank"], -c["price"]))
     best = candidates[0]
     return {
         "book": best["book"],
         "name": best["name"],
         "american_odds": best["price"],
         "point": best["point"],
+    }
+
+
+def extract_player_prop(
+    bookmakers: list[dict[str, Any]],
+    market_key: str,
+    player_name: str,
+    outcome_name: str = "Over",
+    preferred_books: list[str] | None = None,
+) -> dict[str, Any] | None:
+    """Return a real player-prop line; never manufacture a line or price.
+
+    The Odds API identifies the player in the outcome description for standard player markets.
+    Some books place it in the outcome name, so both representations are supported.
+    """
+    preferred = preferred_books or PREFERRED_BOOKS
+    wanted_player = player_name.casefold().strip()
+    wanted_outcome = outcome_name.casefold().strip()
+    candidates: list[dict[str, Any]] = []
+    for book in bookmakers:
+        book_key = str(book.get("key", ""))
+        for market in book.get("markets", []):
+            if market.get("key") != market_key:
+                continue
+            for outcome in market.get("outcomes", []):
+                name = str(outcome.get("name", "")).casefold().strip()
+                description = str(outcome.get("description", "")).casefold().strip()
+                player_matches = wanted_player in description or wanted_player in name
+                outcome_matches = name == wanted_outcome or name.endswith(f" {wanted_outcome}")
+                if not player_matches or not outcome_matches:
+                    continue
+                point = outcome.get("point")
+                price = outcome.get("price")
+                if point is None or not isinstance(price, int):
+                    continue
+                candidates.append(
+                    {
+                        "book": book_key,
+                        "american_odds": price,
+                        "point": point,
+                        "preferred_rank": preferred.index(book_key)
+                        if book_key in preferred
+                        else 999,
+                    }
+                )
+    if not candidates:
+        return None
+    candidates.sort(key=lambda item: (item["preferred_rank"], -item["american_odds"]))
+    result = candidates[0]
+    return {
+        "book": result["book"],
+        "american_odds": result["american_odds"],
+        "point": result["point"],
     }
 
 
@@ -307,9 +383,17 @@ def match_game_to_event(
     if not home or not away:
         return None
 
+    # Use exact full team names first. This is essential when both opponents
+    # share the same last token, such as White Sox and Red Sox.
     for event in odds_events:
-        event_home = event.get("home_team", "").lower()
-        event_away = event.get("away_team", "").lower()
+        event_home = str(event.get("home_team", "")).lower().strip()
+        event_away = str(event.get("away_team", "")).lower().strip()
+        if home.strip() == event_home and away.strip() == event_away:
+            return event
+
+    for event in odds_events:
+        event_home = str(event.get("home_team", "")).lower()
+        event_away = str(event.get("away_team", "")).lower()
         if _fuzzy_team_match(home, event_home) and _fuzzy_team_match(away, event_away):
             return event
     return None

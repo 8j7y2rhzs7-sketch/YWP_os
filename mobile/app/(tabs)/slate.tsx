@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Linking, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { PlayerPortrait } from "@/components/PlayerPortrait";
 import { BrandHeader } from "@/components/BrandHeader";
@@ -198,6 +198,18 @@ export default function SlateScreen() {
                 Probability source:{" "}
                 {(candidate.probability_source ?? "model").replaceAll("_", " ")}
               </Text>
+              {Array.isArray(candidate.source_urls) && candidate.source_urls[0] ? (
+                <Pressable
+                  accessibilityRole="link"
+                  onPress={() => {
+                    const sourceUrl = String(candidate.source_urls?.[0] ?? "");
+                    if (sourceUrl) void Linking.openURL(sourceUrl);
+                  }}
+                  style={styles.sourceLink}
+                >
+                  <Text style={styles.sourceLinkText}>OPEN MLB SOURCE</Text>
+                </Pressable>
+              ) : null}
             </MetalPanel>
           ))}
           <YwpButton
@@ -262,5 +274,20 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "800",
     marginTop: spacing.sm,
+  },
+  sourceLink: {
+    alignSelf: "flex-start",
+    borderColor: colors.info,
+    borderWidth: 1,
+    borderRadius: radius.pill,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    marginTop: spacing.sm,
+  },
+  sourceLinkText: {
+    color: colors.info,
+    fontSize: 11,
+    fontWeight: "900",
+    letterSpacing: 0.8,
   },
 });

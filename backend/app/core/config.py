@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "YWP OS API"
-    app_version: str = "3.2.0"
+    app_version: str = "3.2.1"
     api_prefix: str = "/api/v1"
     env: Literal["development", "test", "staging", "production"] = Field(
         default="development", validation_alias="YWP_ENV"
@@ -35,6 +35,13 @@ class Settings(BaseSettings):
     sports_data_api_key: str | None = Field(default=None, validation_alias="SPORTS_DATA_API_KEY")
     odds_api_key: str | None = Field(default=None, validation_alias="ODDS_API_KEY")
     weather_api_key: str | None = Field(default=None, validation_alias="WEATHER_API_KEY")
+    mlb_props_enabled: bool = Field(default=False, validation_alias="YWP_MLB_PROPS_ENABLED")
+    mlb_max_prop_events: int = Field(
+        default=4,
+        ge=0,
+        le=20,
+        validation_alias="YWP_MLB_MAX_PROP_EVENTS",
+    )
 
     whop_api_key: str | None = Field(default=None, validation_alias="WHOP_API_KEY")
     whop_webhook_secret: str | None = Field(default=None, validation_alias="WHOP_WEBHOOK_SECRET")
@@ -64,7 +71,7 @@ class Settings(BaseSettings):
     odds_blocking_move_probability_points: float = 0.06
     minimum_data_quality: float = 0.65
     minimum_edge: float = 0.015
-    model_version: str = "ywp-sports-v3.0.1"
+    model_version: str = "ywp-sports-v3.1.0"
     protocol_version: str = "2026.09.03"
     learning_min_sample_size: int = 30
     learning_min_repeated_pattern: int = 5

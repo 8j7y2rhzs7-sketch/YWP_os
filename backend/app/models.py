@@ -210,6 +210,11 @@ class Recommendation(Base):
     def team_image_url(self) -> str | None:
         return (self.snapshot or {}).get("team_image_url")
 
+    @property
+    def source_urls(self) -> list[str]:
+        value = self.snapshot.get("source_urls", []) if self.snapshot else []
+        return [str(item) for item in value if item]
+
 
 class Ticket(Base, TimestampMixin):
     __tablename__ = "tickets"

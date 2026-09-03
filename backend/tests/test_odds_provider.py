@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 from app.core.config import Settings
+from app.services import odds_provider as odds_mod
 from app.services.odds_provider import (
     extract_best_odds,
+    extract_player_prop,
     key_diagnostics,
     match_game_to_event,
 )
-from app.services import odds_provider as odds_mod
 
 
 def test_empty_odds_secrets_normalize_to_none() -> None:
@@ -46,6 +47,30 @@ def test_match_game_to_event_by_nickname() -> None:
     assert matched["id"] == "evt-1"
 
 
+def test_match_game_to_event_prefers_exact_shared_nickname_sides() -> None:
+    game = {
+        "home_team": "Chicago White Sox",
+        "away_team": "Boston Red Sox",
+    }
+    events = [
+        {
+            "id": "reversed",
+            "home_team": "Boston Red Sox",
+            "away_team": "Chicago White Sox",
+        },
+        {
+            "id": "correct",
+            "home_team": "Chicago White Sox",
+            "away_team": "Boston Red Sox",
+        },
+    ]
+
+    matched = match_game_to_event(game, events)
+
+    assert matched is not None
+    assert matched["id"] == "correct"
+
+
 def test_extract_best_odds_soft_match() -> None:
     bookmakers = [
         {
@@ -64,6 +89,60 @@ def test_extract_best_odds_soft_match() -> None:
     best = extract_best_odds(bookmakers, "h2h", "Cleveland Guardians")
     assert best is not None
     assert best["american_odds"] == -130
+
+
+def test_extract_best_odds_does_not_cross_match_shared_nickname() -> None:
+    bookmakers = [
+        {
+            "key": "draftkings",
+            "markets": [
+                {
+                    "key": "h2h",
+                    "outcomes": [
+                        {"name": "Chicago White Sox", "price": -125},
+                        {"name": "Boston Red Sox", "price": 110},
+                    ],
+                }
+            ],
+        }
+    ]
+
+    white_sox = extract_best_odds(bookmakers, "h2h", "Chicago White Sox")
+
+    assert white_sox is not None
+    assert white_sox["american_odds"] == -125
+
+
+def test_extract_player_prop_requires_a_real_player_line_and_price() -> None:
+    bookmakers = [
+        {
+            "key": "draftkings",
+            "markets": [
+                {
+                    "key": "pitcher_strikeouts",
+                    "outcomes": [
+                        {
+                            "name": "Over",
+                            "description": "Test Pitcher",
+                            "price": -115,
+                            "point": 5.5,
+                        },
+                        {
+                            "name": "Under",
+                            "description": "Test Pitcher",
+                            "price": -105,
+                            "point": 5.5,
+                        },
+                    ],
+                }
+            ],
+        }
+    ]
+
+    prop = extract_player_prop(bookmakers, "pitcher_strikeouts", "Test Pitcher")
+
+    assert prop == {"book": "draftkings", "american_odds": -115, "point": 5.5}
+    assert extract_player_prop(bookmakers, "pitcher_strikeouts", "Missing Pitcher") is None
 
 
 def test_key_diagnostics_never_echoes_secret() -> None:

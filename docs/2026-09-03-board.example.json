@@ -4,6 +4,12 @@
   "sport": "mlb",
   "readiness": "PARTIAL",
   "protocol_status": "WARNING",
+  "calculation_source": "Independent YWP MLB model using official MLB performance inputs",
+  "market_source": "The Odds API supplies the offered line and price only",
+  "official_sources": [
+    "https://statsapi.mlb.com",
+    "https://www.mlb.com"
+  ],
   "final_board": [
     {
       "selection": "Brewers ML",

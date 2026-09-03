@@ -12,7 +12,7 @@ import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
-import { getApiUrl, saveApiUrl } from "@/lib/api";
+import { getApiUrl, PRODUCTION_API_URL } from "@/lib/api";
 import { colors, radius, spacing, type } from "@/theme";
 import type {
   Bankroll,
@@ -39,8 +39,7 @@ export default function SettingsScreen() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
-  const [apiUrl, setApiUrl] = useState(getApiUrl());
-  const [apiSaved, setApiSaved] = useState(false);
+  const apiUrl = getApiUrl() || PRODUCTION_API_URL;
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -153,35 +152,14 @@ export default function SettingsScreen() {
 
       <SectionTitle
         title="API Server"
-        subtitle="Point the Android app at your deployed YWP OS backend."
+        subtitle="This build connects automatically to the live YWP OS backend."
       />
-      <MetalPanel>
-        <FormField
-          label="API URL"
-          value={apiUrl}
-          onChangeText={(value) => {
-            setApiUrl(value);
-            setApiSaved(false);
-          }}
-          autoCapitalize="none"
-          autoCorrect={false}
-          keyboardType="url"
-          placeholder="https://your-api.example.com/api/v1"
-        />
-        <YwpButton
-          label="SAVE API URL"
-          variant="outline"
-          onPress={() => {
-            setError(null);
-            void saveApiUrl(apiUrl)
-              .then(() => setApiSaved(true))
-              .catch((reason) => {
-                setApiSaved(false);
-                setError(reason instanceof Error ? reason.message : "API URL could not be saved");
-              });
-          }}
-        />
-        {apiSaved ? <Text style={styles.saved}>Server URL saved on this device.</Text> : null}
+      <MetalPanel tone="success">
+        <Text style={type.eyebrow}>CONNECTED</Text>
+        <Text style={styles.title}>{apiUrl}</Text>
+        <Text style={type.caption}>
+          No URL entry required. The production address is built into the app.
+        </Text>
       </MetalPanel>
 
       <SectionTitle title="Risk Profile" subtitle="This changes stake sizing, not the official daily card." />

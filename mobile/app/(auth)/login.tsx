@@ -9,14 +9,13 @@ import { MetalPanel } from "@/components/MetalPanel";
 import { Screen } from "@/components/Screen";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
-import { getApiUrl, saveApiUrl } from "@/lib/api";
+import { ensureApiUrl } from "@/lib/api";
 import { colors, spacing, type } from "@/theme";
 
 export default function LoginScreen() {
   const { user, login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [apiUrl, setApiUrl] = useState(getApiUrl());
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,7 +27,7 @@ export default function LoginScreen() {
     setLoading(true);
     setError(null);
     try {
-      await saveApiUrl(apiUrl);
+      await ensureApiUrl();
       await login(nextEmail, nextPassword);
       router.replace("/(tabs)");
     } catch (reason) {
@@ -68,15 +67,6 @@ export default function LoginScreen() {
           secureTextEntry
           autoComplete="current-password"
           placeholder="••••••••••"
-        />
-        <FormField
-          label="API server"
-          value={apiUrl}
-          onChangeText={setApiUrl}
-          autoCapitalize="none"
-          autoCorrect={false}
-          keyboardType="url"
-          placeholder="https://your-api.example.com/api/v1"
         />
         <YwpButton label="ENTER YWP OS" onPress={() => void submit()} loading={loading} />
         <YwpButton

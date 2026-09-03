@@ -3,6 +3,7 @@ from sqlalchemy import text
 
 from app.core.config import settings
 from app.deps import DB
+from app.services.mlb_provider import probe_mlb_api
 from app.services.odds_provider import odds_api_configured, probe_odds_api
 
 router = APIRouter(tags=["health"])
@@ -28,10 +29,12 @@ def health_providers() -> dict[str, object]:
     Probe external providers. Safe for public checks: never returns secret values.
     Uses one Odds API request when a key is configured.
     """
+    mlb = probe_mlb_api()
     odds = probe_odds_api()
     return {
-        "status": "ok" if odds.get("ok") else "degraded",
+        "status": "ok" if mlb.get("ok") and odds.get("ok") else "degraded",
         "version": settings.app_version,
         "demo_mode": settings.demo_mode,
+        "mlb": mlb,
         "odds": odds,
     }

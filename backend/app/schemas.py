@@ -166,6 +166,7 @@ class CandidateInput(YWPModel):
     reasoning: list[str] = Field(default_factory=list)
 
     data_source: str = Field(min_length=2, max_length=64)
+    source_urls: list[str] = Field(default_factory=list, max_length=12)
     source_timestamp: datetime
     missing_fields: list[str] = Field(default_factory=list)
     source_status: dict[str, Literal["confirmed", "probable", "unknown"]] = Field(
@@ -326,6 +327,7 @@ class RecommendationOut(YWPModel):
     image_url: str | None = None
     team_image_url: str | None = None
     data_source: str
+    source_urls: list[str] = Field(default_factory=list)
     source_timestamp: datetime
     model_version: str
     protocol_version: str

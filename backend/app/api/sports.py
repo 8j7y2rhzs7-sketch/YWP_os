@@ -96,13 +96,14 @@ def slate(
                 odds_status = get_last_fetch_status()
                 if has_book_markets:
                     notice = (
-                        "Live MLB data from MLB.com Stats API + The Odds API. "
-                        "Verify all inputs before wagering."
+                        "Live MLB: independent YWP model probability from official MLB Stats API "
+                        "facts, compared against real sportsbook prices from The Odds API. "
+                        "Research gaps still return SKIP under Strict Mode."
                     )
                 elif not odds_api_configured():
                     notice = (
-                        "Live MLB schedule loaded, but ODDS_API_KEY is missing on the server. "
-                        "Only pitcher strikeout estimates are shown. "
+                        "Live MLB schedule and model inputs loaded, but ODDS_API_KEY is missing. "
+                        "No actionable candidates without a real sportsbook price. "
                         "Set ODDS_API_KEY on Render, redeploy, then refresh."
                     )
                 else:
@@ -115,11 +116,11 @@ def slate(
                         else "key is not hex — Odds API keys are 0-9 and a-f only"
                     )
                     notice = (
-                        "Live MLB schedule loaded, but book odds were unavailable "
+                        "Live MLB model inputs loaded, but book odds were unavailable "
                         f"({detail}). Server key fingerprint {fingerprint} "
                         f"({key_len} chars, {hex_note}). "
                         "After changing ODDS_API_KEY on Render, use Manual Deploy, "
-                        "wait for version 3.0.2+, then refresh."
+                        "wait for version 3.2.1+, then refresh."
                     )
                 return _slate_response(
                     sport=sport_lower,

@@ -1,15 +1,18 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const API_URL_KEY = "ywp.os.api_url.v1";
+export const PRODUCTION_API_URL = "https://ywp-os-api.onrender.com/api/v1";
+
 const configuredApiUrl = process.env.EXPO_PUBLIC_API_URL?.trim();
 const DEFAULT_API_URL = (
-  configuredApiUrl || (__DEV__ ? "http://localhost:8000/api/v1" : "")
+  configuredApiUrl ||
+  (__DEV__ ? "http://localhost:8000/api/v1" : PRODUCTION_API_URL)
 ).replace(/\/$/, "");
 
 let currentApiUrl = DEFAULT_API_URL;
 
 export function getApiUrl(): string {
-  return currentApiUrl;
+  return currentApiUrl || PRODUCTION_API_URL;
 }
 
 export const WHOP_CHECKOUT_URL =
@@ -41,17 +44,38 @@ export function normalizeApiUrl(value: string): string {
 export async function loadApiUrl(): Promise<string> {
   try {
     const stored = await AsyncStorage.getItem(API_URL_KEY);
+    // Ignore stale localhost leftovers on production builds.
     if (stored) {
-      currentApiUrl = stored.replace(/\/$/, "");
+      const cleaned = stored.replace(/\/$/, "");
+      const isLocal =
+        cleaned.includes("localhost") ||
+        cleaned.includes("127.0.0.1") ||
+        cleaned.includes("10.0.2.2");
+      if (__DEV__ || !isLocal) {
+        currentApiUrl = cleaned;
+      } else {
+        currentApiUrl = DEFAULT_API_URL || PRODUCTION_API_URL;
+        await AsyncStorage.setItem(API_URL_KEY, currentApiUrl);
+      }
+    } else if (!currentApiUrl) {
+      currentApiUrl = DEFAULT_API_URL || PRODUCTION_API_URL;
     }
   } catch {
-    // keep compiled default
+    currentApiUrl = currentApiUrl || DEFAULT_API_URL || PRODUCTION_API_URL;
   }
-  return currentApiUrl;
+  return getApiUrl();
+}
+
+export async function ensureApiUrl(): Promise<string> {
+  const url = await loadApiUrl();
+  if (!url) {
+    currentApiUrl = PRODUCTION_API_URL;
+  }
+  return getApiUrl();
 }
 
 export async function saveApiUrl(value: string): Promise<string> {
-  const next = normalizeApiUrl(value);
+  const next = normalizeApiUrl(value || PRODUCTION_API_URL);
   currentApiUrl = next;
   await AsyncStorage.setItem(API_URL_KEY, next);
   return next;
@@ -74,12 +98,8 @@ export async function rawRequest<T>(
   init: RequestInit = {},
   accessToken?: string,
 ): Promise<T> {
-  if (!getApiUrl()) {
-    throw new ApiError(
-      "This build has no backend configured. Add EXPO_PUBLIC_API_URL during the build or save the Render /api/v1 address in Settings.",
-      503,
-    );
-  }
+  const apiUrl = getApiUrl() || PRODUCTION_API_URL;
+  currentApiUrl = apiUrl;
   const headers = new Headers(init.headers);
   if (init.body && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");
@@ -87,7 +107,7 @@ export async function rawRequest<T>(
   if (accessToken) {
     headers.set("Authorization", `Bearer ${accessToken}`);
   }
-  const response = await fetch(`${getApiUrl()}${path}`, { ...init, headers });
+  const response = await fetch(`${apiUrl}${path}`, { ...init, headers });
   const contentType = response.headers.get("content-type") ?? "";
   const body = contentType.includes("application/json")
     ? await response.json()

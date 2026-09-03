@@ -55,6 +55,7 @@ export interface CandidateInput {
   american_odds: number;
   estimated_probability: number;
   probability_source?: "model" | "manual_verified" | "market_implied" | "demo";
+  source_urls?: string[];
   variance: number;
   data_quality: number;
   [key: string]: unknown;
@@ -133,6 +134,7 @@ export interface Recommendation {
   image_url?: string | null;
   team_image_url?: string | null;
   data_source: string;
+  source_urls?: string[];
   source_timestamp: string;
   model_version: string;
   protocol_version: string;
