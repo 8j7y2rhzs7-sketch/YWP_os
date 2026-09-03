@@ -193,10 +193,20 @@ export default function AnalysisScreen() {
     );
   }
 
-  const officialPass =
-    analysis.data_quality_summary.official_pass === true ||
-    analysis.ranked_picks.length === 0 ||
-    build?.official_pass === true;
+  const playLeanPicks = useMemo(
+    () =>
+      (analysis?.ranked_picks ?? []).filter((item) =>
+        ["PLAY", "LEAN"].includes(item.decision),
+      ),
+    [analysis],
+  );
+
+  const canBuildCustom = playLeanPicks.length > 0;
+  // True board PASS only when no ticket-eligible picks exist.
+  // Do NOT treat empty official card templates as a board PASS — that blocked
+  // "build your own" whenever diversity/min-leg gates underfilled cards.
+  const boardPass = !canBuildCustom;
+  const hasOfficialCards = orderedCards.length > 0;
 
   return (
     <Screen sport={analysis.ranked_picks[0]?.sport ?? analysis.stay_away[0]?.sport}>
@@ -210,7 +220,9 @@ export default function AnalysisScreen() {
         tone={
           analysis.data_quality_summary.protocol_status === "DOUBLE_CLEARED"
             ? "success"
-            : "danger"
+            : analysis.data_quality_summary.protocol_status === "WARNING"
+              ? "default"
+              : "danger"
         }
       >
         <View style={styles.summaryTop}>
@@ -256,7 +268,7 @@ export default function AnalysisScreen() {
             item={item}
             selected={selectedPickIds.includes(item.id)}
             onPress={
-              officialPass || !["PLAY", "LEAN"].includes(item.decision)
+              !canBuildCustom || !["PLAY", "LEAN"].includes(item.decision)
                 ? undefined
                 : () => togglePick(item.id)
             }
@@ -272,17 +284,17 @@ export default function AnalysisScreen() {
           </Text>
         </MetalPanel>
       )}
-      {!officialPass && customLegs.length ? (
+      {canBuildCustom && customLegs.length ? (
         <YwpButton
           label={`SAVE CUSTOM ${customLegs.length}-LEG TICKET`}
           onPress={() => customCard && setSelectedCard(customCard)}
         />
       ) : null}
-      {!officialPass && analysis.ranked_picks.length ? (
+      {canBuildCustom && analysis.ranked_picks.length ? (
         <Text style={type.caption}>
           {selectedPickIds.length
             ? `${selectedPickIds.length} play${selectedPickIds.length === 1 ? "" : "s"} selected. You are not stuck with the printed cards.`
-            : "Tap plays to assemble a custom ticket, or open an official card below."}
+            : "Tap PLAY or LEAN picks to assemble a custom ticket, or open an official card below."}
         </Text>
       ) : null}
 
@@ -311,7 +323,7 @@ export default function AnalysisScreen() {
       {!loading && !build ? (
         <YwpButton label="RE-RUN TICKET BUILDER" onPress={() => void runBuilder()} />
       ) : null}
-      {officialPass ? (
+      {boardPass ? (
         <MetalPanel tone="danger">
           <StatusPill value="PASS" />
           <Text style={styles.title}>Official PASS. No tickets.</Text>
@@ -320,7 +332,7 @@ export default function AnalysisScreen() {
             board waiting for filler legs.
           </Text>
         </MetalPanel>
-      ) : (
+      ) : hasOfficialCards ? (
         orderedCards.map((card) => (
           <TicketCardView
             key={card.key}
@@ -328,6 +340,16 @@ export default function AnalysisScreen() {
             onPress={card.legs.length ? () => setSelectedCard(card) : undefined}
           />
         ))
+      ) : (
+        <MetalPanel tone="default">
+          <StatusPill value="BUILD YOUR OWN" />
+          <Text style={styles.title}>No official card templates filled.</Text>
+          <Text style={type.body}>
+            Ticket-eligible PLAY/LEAN picks are on the board above. Tap them to
+            build your own ticket — official multi-leg cards stay empty when
+            diversity gates refuse filler legs.
+          </Text>
+        </MetalPanel>
       )}
 
       <SectionTitle
@@ -387,7 +409,7 @@ export default function AnalysisScreen() {
               label="SAVE & OPEN LOCK CENTER"
               onPress={() => void saveTicket()}
               loading={saving}
-              disabled={officialPass || !selectedCard?.legs.length}
+              disabled={!canBuildCustom || !selectedCard?.legs.length}
             />
             <YwpButton
               label="CREATE SHARE GRAPHIC"

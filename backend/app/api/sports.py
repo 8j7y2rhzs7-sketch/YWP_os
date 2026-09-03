@@ -390,7 +390,10 @@ def build_ticket(payload: BuildTicketRequest, user: SubscribedUser, db: DB) -> B
         min_rating=payload.min_rating,
         exposed_thesis_keys=exposed_theses,
     )
-    official_pass = not any(card.legs for card in cards.values())
+    # Official PASS means no PLAY/LEAN survived analysis — not "card templates underfilled".
+    # Eligible picks must remain custom-buildable even when diversity/min-leg gates omit cards.
+    has_play_lean = any(item.decision in {"PLAY", "LEAN"} for item in recommendations)
+    official_pass = not has_play_lean
     return BuildTicketResponse(
         analysis_id=payload.analysis_id,
         official_pass=official_pass,

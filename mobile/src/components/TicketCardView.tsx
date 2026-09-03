@@ -118,7 +118,7 @@ export function TicketCardView({
             <Text style={styles.warning}>{card.weakest_leg_explanation}</Text>
           ) : null}
           {card.warnings
-            .filter((warning) => warning !== card.weakest_leg_explanation)
+            ?.filter((warning) => warning !== card.weakest_leg_explanation)
             .slice(0, 2)
             .map((warning) => (
               <Text key={warning} style={styles.warning}>

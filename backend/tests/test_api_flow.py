@@ -68,6 +68,22 @@ def test_health_and_authenticated_full_flow(
         if key in cards:
             assert len(cards[key]["recommendation_ids"]) >= needed
 
+    # Empty card templates must NOT flip official_pass while PLAY/LEAN still exist.
+    strict = client.post(
+        "/api/v1/sports/build-ticket",
+        json={
+            "analysis_id": analysis["analysis_id"],
+            "max_legs": 5,
+            "min_rating": 10,
+            "risk_profile": "balanced",
+        },
+        headers=auth_headers,
+    )
+    assert strict.status_code == 200, strict.text
+    strict_payload = strict.json()
+    assert any(item["decision"] in {"PLAY", "LEAN"} for item in analysis["ranked_picks"])
+    assert strict_payload["official_pass"] is False
+
     recommendation_ids = (
         cards.get("elite_two", cards["max_bet"])["recommendation_ids"]
     )
