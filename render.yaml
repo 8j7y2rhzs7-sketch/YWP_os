@@ -1,0 +1,48 @@
+# Render Blueprint — deploy the YWP OS API from this GitHub repo.
+# https://dashboard.render.com/blueprints
+
+databases:
+  - name: ywp-os-db
+    plan: free
+
+services:
+  - type: web
+    name: ywp-os-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: YWP_ENV
+        value: production
+      - key: YWP_DEMO_MODE
+        value: "true"
+      - key: WHOP_SUBSCRIPTION_REQUIRED
+        value: "true"
+      - key: WHOP_COMPANY_ID
+        value: biz_bJ27sV6ImlZZmj
+      - key: WHOP_PRODUCT_ID
+        value: prod_NuPQUAGoibkpW
+      - key: WHOP_PLAN_ID
+        value: plan_MwJ2qcFxmvqDY
+      - key: WHOP_CHECKOUT_URL
+        value: https://whop.com/checkout/plan_MwJ2qcFxmvqDY
+      - key: NEXT_PUBLIC_WHOP_CHECKOUT_URL
+        value: https://whop.com/checkout/plan_MwJ2qcFxmvqDY
+      - key: YWP_CORS_ORIGINS
+        value: https://whop.com,http://localhost:8081,http://localhost:19006
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ywp-os-db
+          property: connectionString
+      - key: YWP_JWT_SECRET
+        generateValue: true
+      - key: ODDS_API_KEY
+        sync: false
+      - key: WHOP_API_KEY
+        sync: false
+      - key: NEXT_PUBLIC_WHOP_APP_ID
+        sync: false
+      - key: WHOP_WEBHOOK_SECRET
+        sync: false

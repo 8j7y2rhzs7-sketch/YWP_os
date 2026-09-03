@@ -85,6 +85,15 @@ class Settings(BaseSettings):
             raise ValueError("YWP_JWT_SECRET must be at least 32 bytes")
         return value
 
+    @field_validator("database_url")
+    @classmethod
+    def normalize_database_url(cls, value: str) -> str:
+        if value.startswith("postgres://"):
+            return "postgresql+psycopg://" + value.removeprefix("postgres://")
+        if value.startswith("postgresql://") and "+psycopg" not in value:
+            return "postgresql+psycopg://" + value.removeprefix("postgresql://")
+        return value
+
     @property
     def cors_origins(self) -> list[str]:
         return [item.strip() for item in self.cors_origins_raw.split(",") if item.strip()]
