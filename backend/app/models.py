@@ -434,6 +434,30 @@ class AuditLog(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 
+class ErrorReport(Base):
+    """Client crash / bug reports captured after real app use."""
+
+    __tablename__ = "error_reports"
+    __table_args__ = (Index("ix_error_reports_status_created", "status", "created_at"),)
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    user_id: Mapped[str | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    category: Mapped[str] = mapped_column(String(40), index=True)
+    message: Mapped[str] = mapped_column(Text)
+    screen: Mapped[str | None] = mapped_column(String(120), nullable=True)
+    stack: Mapped[str | None] = mapped_column(Text, nullable=True)
+    app_version: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    platform: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    analysis_id: Mapped[str | None] = mapped_column(String(36), nullable=True, index=True)
+    recommendation_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
+    ticket_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
+    context: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    status: Mapped[str] = mapped_column(String(24), default="open", index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
 class PendingWhopAccess(Base, TimestampMixin):
     """Access granted via Whop before the user registers in YWP OS."""
 

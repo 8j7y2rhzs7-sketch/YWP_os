@@ -1,5 +1,5 @@
-from typing import Annotated
 import logging
+from typing import Annotated
 
 import jwt
 from fastapi import Depends, HTTPException, Request, status
@@ -67,6 +67,23 @@ def get_current_user(
 CurrentUser = Annotated[User, Depends(get_current_user)]
 
 
+def get_optional_user(
+    request: Request,
+    db: DB,
+    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer)],
+) -> User | None:
+    """Resolve the caller when authenticated; never raise 401 for anonymous clients."""
+    try:
+        return get_current_user(request, db, credentials)
+    except HTTPException as error:
+        if error.status_code in {status.HTTP_401_UNAUTHORIZED, status.HTTP_402_PAYMENT_REQUIRED}:
+            return None
+        raise
+
+
+OptionalUser = Annotated[User | None, Depends(get_optional_user)]
+
+
 def require_admin(user: CurrentUser) -> User:
     if user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin role required")
@@ -77,12 +94,12 @@ AdminUser = Annotated[User, Depends(require_admin)]
 
 
 def require_subscription(user: CurrentUser, db: DB) -> User:
+    from app.services.whop import check_user_access, product_id, whop_enabled
     from app.services.whop_access import (
         apply_pending_access,
         sync_user_subscription,
         user_has_app_access,
     )
-    from app.services.whop import product_id, check_user_access, whop_enabled
 
     if not whop_enabled() or user.role == "admin":
         return user

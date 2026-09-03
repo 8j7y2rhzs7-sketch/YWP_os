@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Callable, Iterable
 
 from app.models import Recommendation
-from app.schemas import RecommendationOut, TicketCardOut
+from app.schemas import QuarantineItemOut, RecommendationOut, TicketCardOut
 from app.services.ticket_gates import (
     CASH_CARD_KEYS,
     cap_pitcher_k_overs,
@@ -24,6 +24,29 @@ def _score(recommendation: Recommendation) -> tuple[float, float, float, float, 
     )
 
 
+def _analysis_rank(recommendation: Recommendation) -> int:
+    rank = int(getattr(recommendation, "rank", 0) or 0)
+    return rank if rank > 0 else 10_000
+
+
+def _priority(recommendation: Recommendation) -> tuple:
+    """Prefer analysis board rank so #1 eligible picks surface on Max Bet."""
+    conf, rating, vision, edge, neg_miss, neg_var = _score(recommendation)
+    return (_analysis_rank(recommendation), -conf, -rating, -vision, -edge, -neg_miss, -neg_var)
+
+
+def _quarantine(item: Recommendation, reason: str) -> QuarantineItemOut:
+    rank = int(getattr(item, "rank", 0) or 0)
+    selection = getattr(item, "selection", None)
+    prefix = f"Analysis rank #{rank}: " if rank > 0 else ""
+    return QuarantineItemOut(
+        recommendation_id=item.id,
+        reason=f"{prefix}{reason}",
+        selection=selection,
+        analysis_rank=rank if rank > 0 else None,
+    )
+
+
 def _diverse(
     pool: Iterable[Recommendation],
     count: int,
@@ -35,7 +58,7 @@ def _diverse(
     used_scripts: set[str] = set()
     used_entities = set(existing or set())
     entity = entity or (lambda item: item.player_key or item.event_id)
-    for item in sorted(pool, key=_score, reverse=True):
+    for item in sorted(pool, key=_priority):
         item_entity = entity(item)
         if item.script_key in used_scripts or item_entity in used_entities:
             continue
@@ -64,7 +87,9 @@ def _card(
         risk = max(legs, key=lambda item: risk_order.get(item.risk, 2)).risk
         if len(legs) > 1:
             risk = "medium" if risk == "low" else risk
-        high_near_miss = [item.selection for item in legs if float(item.miss_by_one_risk) >= 0.55]
+        high_near_miss = [
+            item.selection for item in legs if float(item.miss_by_one_risk) >= 0.55
+        ]
         if high_near_miss:
             warnings.append("Elevated miss-by-1 leg(s): " + ", ".join(high_near_miss))
         warnings.append(f"Weakest leg: {weakest_item.selection}")
@@ -85,60 +110,72 @@ def build_cards(
     max_legs: int,
     min_rating: float,
     exposed_thesis_keys: set[str] | None = None,
-) -> tuple[dict[str, TicketCardOut], list[dict[str, str]]]:
+) -> tuple[dict[str, TicketCardOut], list[QuarantineItemOut]]:
     exposed_thesis_keys = exposed_thesis_keys or set()
-    quarantined: list[dict[str, str]] = []
-    eligible: list[Recommendation] = []
+    quarantined: list[QuarantineItemOut] = []
     best_by_thesis: dict[str, Recommendation] = {}
 
     for item in recommendations:
-        if item.decision not in {"PLAY", "LEAN"} or float(item.ywp_rating) < min_rating:
+        if item.decision not in {"PLAY", "LEAN"}:
+            if _analysis_rank(item) <= 10:
+                quarantined.append(
+                    _quarantine(
+                        item,
+                        f"{item.decision} is not ticket-eligible (PLAY/LEAN only).",
+                    )
+                )
+            continue
+        if float(item.ywp_rating) < min_rating:
+            quarantined.append(
+                _quarantine(
+                    item,
+                    f"Below min rating ({float(item.ywp_rating):.2f} < {min_rating}).",
+                )
+            )
             continue
         if item.thesis_key in exposed_thesis_keys:
             quarantined.append(
-                {
-                    "recommendation_id": item.id,
-                    "reason": "Thesis already has active cash exposure on another ticket.",
-                }
+                _quarantine(
+                    item,
+                    "Thesis already has active cash exposure on another ticket.",
+                )
             )
             continue
         if model_edge_quarantine(float(item.edge)):
             quarantined.append(
-                {
-                    "recommendation_id": item.id,
-                    "reason": (
-                        "Model edge exceeds 15 percentage points; quarantined for review."
-                    ),
-                }
+                _quarantine(
+                    item,
+                    "Model edge exceeds 15 percentage points; quarantined for review.",
+                )
             )
             continue
         if float(item.miss_by_one_risk) >= 0.80:
             quarantined.append(
-                {
-                    "recommendation_id": item.id,
-                    "reason": "Critical miss-by-1 risk; remove or use a verified safer line.",
-                }
+                _quarantine(
+                    item,
+                    "Critical miss-by-1 risk; remove or use a verified safer line.",
+                )
             )
             continue
         current = best_by_thesis.get(item.thesis_key)
-        if current is None or _score(item) > _score(current):
+        if current is None or _priority(item) < _priority(current):
             if current is not None:
                 quarantined.append(
-                    {
-                        "recommendation_id": current.id,
-                        "reason": "Duplicate thesis; stronger version retained.",
-                    }
+                    _quarantine(
+                        current,
+                        "Duplicate thesis; higher-ranked / stronger version retained.",
+                    )
                 )
             best_by_thesis[item.thesis_key] = item
         else:
             quarantined.append(
-                {
-                    "recommendation_id": item.id,
-                    "reason": "Duplicate thesis; stronger version retained.",
-                }
+                _quarantine(
+                    item,
+                    "Duplicate thesis; higher-ranked / stronger version retained.",
+                )
             )
 
-    eligible = sorted(best_by_thesis.values(), key=_score, reverse=True)
+    eligible = sorted(best_by_thesis.values(), key=_priority)
     strongest = eligible[:1]
     safe_pool = [item for item in eligible if float(item.miss_by_one_risk) < 0.55]
     cash_pool = sorted(
@@ -146,15 +183,19 @@ def build_cards(
         key=lambda item: (
             float(item.miss_by_one_risk),
             float(item.variance),
+            _analysis_rank(item),
             -item.confidence_score,
         ),
     )
     cash = _diverse(cash_pool, min(2, max_legs))
-    core = _diverse(eligible, min(max(3, min(max_legs, 5)), len(eligible)))
+    core = _diverse(eligible, min(max(3, min(max_legs, 5)), len(eligible) or 1))
     edge_pool = sorted(
         eligible,
-        key=lambda item: (float(item.expected_value), item.confidence_score),
-        reverse=True,
+        key=lambda item: (
+            -float(item.expected_value),
+            -item.confidence_score,
+            _analysis_rank(item),
+        ),
     )
     edge = _diverse(edge_pool, min(3, max_legs))
     elite_two = _diverse(eligible, min(2, max_legs))
@@ -164,18 +205,22 @@ def build_cards(
     fortress = _diverse(safe_pool, min(3, max_legs))
     handicap_pool = sorted(
         eligible,
-        key=lambda item: (float(item.vision_score), float(item.edge), item.confidence_score),
-        reverse=True,
+        key=lambda item: (
+            -float(item.vision_score),
+            -float(item.edge),
+            -item.confidence_score,
+            _analysis_rank(item),
+        ),
     )
     handicap = _diverse(handicap_pool, min(3, max_legs))
     no_stress = _diverse(cash_pool, min(3, max_legs))
     scripted_pool = sorted(
         eligible,
         key=lambda item: (
-            float(item.snapshot.get("script_alignment", 0)),
-            item.confidence_score,
+            -float((item.snapshot or {}).get("script_alignment", 0)),
+            -item.confidence_score,
+            _analysis_rank(item),
         ),
-        reverse=True,
     )
     scripted = _diverse(scripted_pool, min(3, max_legs))
     ghostt_pool = [item for item in edge_pool if float(item.edge) >= 0.03]
@@ -188,7 +233,7 @@ def build_cards(
     a = _diverse(eligible, min(3, max_legs))
     a_entities = {item.player_key or item.event_id for item in a}
     b = _diverse(eligible, min(3, max_legs), existing=a_entities)
-    c_pool = sorted({item.id: item for item in [*a, *b]}.values(), key=_score, reverse=True)
+    c_pool = sorted({item.id: item for item in [*a, *b]}.values(), key=_priority)
     c = _diverse(c_pool, min(3, max_legs))
 
     cards = {
@@ -243,7 +288,7 @@ def _cash_card(
     key: str,
     label: str,
     legs: list[Recommendation],
-    quarantined: list[dict[str, str]],
+    quarantined: list[QuarantineItemOut],
 ) -> TicketCardOut:
     capped, rejected = cap_pitcher_k_overs(legs, max_k=1)
     warnings: list[str] = []
@@ -251,10 +296,10 @@ def _cash_card(
         for item in legs:
             if is_pitcher_k_over(item) and item.id not in {leg.id for leg in capped}:
                 quarantined.append(
-                    {
-                        "recommendation_id": item.id,
-                        "reason": "Cash card rejected extra pitcher strikeout over (max 1).",
-                    }
+                    _quarantine(
+                        item,
+                        "Cash card rejected extra pitcher strikeout over (max 1).",
+                    )
                 )
         warnings.append("Pitcher-K overs per cash card cannot exceed 1.")
         if not cash_card_k_overs_ok(key, capped):

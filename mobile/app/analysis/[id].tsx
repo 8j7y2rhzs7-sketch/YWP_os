@@ -296,11 +296,15 @@ export default function AnalysisScreen() {
 
       {build?.quarantined.length ? (
         <>
-          <SectionTitle title="Quarantine" subtitle="Exposure or Miss-by-1 controls removed these legs." />
+          <SectionTitle
+            title="Quarantine"
+            subtitle="Why a ranked pick did not land on a ticket card."
+          />
           <MetalPanel tone="danger">
             {build.quarantined.map((item) => (
               <Text key={`${item.recommendation_id}-${item.reason}`} style={styles.quarantine}>
-                ⛔ {item.reason}
+                ⛔ {item.selection ? `${item.selection} — ` : ""}
+                {item.reason}
               </Text>
             ))}
           </MetalPanel>

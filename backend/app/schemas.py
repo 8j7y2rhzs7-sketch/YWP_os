@@ -384,12 +384,19 @@ class TicketCardOut(YWPModel):
     warnings: list[str]
 
 
+class QuarantineItemOut(YWPModel):
+    recommendation_id: str
+    reason: str
+    selection: str | None = None
+    analysis_rank: int | None = None
+
+
 class BuildTicketResponse(YWPModel):
     analysis_id: str | None
     official_pass: bool = False
     cards: dict[str, TicketCardOut]
     stay_away: list[RecommendationOut]
-    quarantined: list[dict[str, str]]
+    quarantined: list[QuarantineItemOut]
 
 
 class TicketAddLeg(YWPModel):
@@ -698,3 +705,42 @@ class ProtocolRunOut(YWPModel):
 
 class MessageOut(YWPModel):
     message: str
+
+
+class ErrorReportCreate(YWPModel):
+    category: Literal[
+        "crash",
+        "api",
+        "pick_quality",
+        "ticket_build",
+        "ui",
+        "data",
+        "other",
+    ] = "other"
+    message: str = Field(min_length=3, max_length=4000)
+    screen: str | None = Field(default=None, max_length=120)
+    stack: str | None = Field(default=None, max_length=12000)
+    app_version: str | None = Field(default=None, max_length=32)
+    platform: str | None = Field(default=None, max_length=40)
+    analysis_id: str | None = Field(default=None, max_length=36)
+    recommendation_id: str | None = Field(default=None, max_length=36)
+    ticket_id: str | None = Field(default=None, max_length=36)
+    context: dict[str, Any] = Field(default_factory=dict)
+
+
+class ErrorReportOut(YWPModel):
+    id: str
+    user_id: str | None
+    category: str
+    message: str
+    screen: str | None
+    stack: str | None
+    app_version: str | None
+    platform: str | None
+    analysis_id: str | None
+    recommendation_id: str | None
+    ticket_id: str | None
+    context: dict[str, Any]
+    status: str
+    created_at: datetime
+

@@ -117,7 +117,7 @@ def test_model_edge_over_15_points_is_quarantined() -> None:
     )
     cards, quarantined = build_cards([rec], max_legs=5, min_rating=0)
     assert cards == {}
-    assert any("15 percentage points" in item["reason"] for item in quarantined)
+    assert any("15 percentage points" in item.reason for item in quarantined)
 
 
 def test_cash_card_rejects_second_pitcher_k_over() -> None:
@@ -167,3 +167,125 @@ def test_official_pass_returns_no_tickets() -> None:
     )
     cards, _quarantined = build_cards([skip], max_legs=5, min_rating=7.5)
     assert cards == {}
+
+
+def _play(**changes):
+    base = dict(
+        id="play-x",
+        analysis_id="analysis-1",
+        candidate_id="cand-1",
+        event_id="event-1",
+        event_name="Demo Event",
+        sport="mlb",
+        league="MLB",
+        slate_date=datetime.now(UTC).date(),
+        market_type="moneyline",
+        market_period="full_game",
+        selection="Demo ML",
+        line=None,
+        american_odds=-110,
+        estimated_probability=Decimal("0.60"),
+        implied_probability=Decimal("0.52"),
+        adjusted_probability=Decimal("0.58"),
+        decision="PLAY",
+        ywp_rating=Decimal("8.0"),
+        miss_by_one_risk=Decimal("0.2"),
+        edge=Decimal("0.05"),
+        confidence_score=70,
+        vision_score=Decimal("7.0"),
+        variance=Decimal("0.25"),
+        expected_value=Decimal("0.08"),
+        reliability=Decimal("0.80"),
+        stability=Decimal("0.75"),
+        data_quality=Decimal("0.90"),
+        risk="low",
+        risk_tier="Moderate",
+        variance_rating="Medium",
+        edge_class="Solid",
+        expected_value_label="Positive",
+        suggested_stake_pct=Decimal("0.01"),
+        recommendation_tier="official",
+        rank=1,
+        reason_codes=[],
+        reasoning_summary="Unit test pick",
+        warnings=[],
+        safer_alternative=None,
+        higher_upside=None,
+        invalidation_conditions=[],
+        live_trigger=None,
+        hedge=None,
+        quick_cash=False,
+        chain_reaction_key=None,
+        thesis_key="thesis-a",
+        script_key="script-a",
+        player_key=None,
+        snapshot={},
+        data_source="unit-test",
+        source_timestamp=datetime.now(UTC),
+        model_version="test",
+        protocol_version="test",
+        input_hash="abc",
+        outcome=None,
+        created_at=datetime.now(UTC),
+    )
+    base.update(changes)
+    return SimpleNamespace(**base)
+
+
+def test_analysis_rank_one_lands_on_max_bet() -> None:
+    """Higher board rank must beat a lower-ranked pick with a bigger raw score."""
+    top = _play(
+        id="rank-1",
+        rank=1,
+        thesis_key="thesis-top",
+        event_id="event-top",
+        selection="Board #1 ML",
+        confidence_score=72,
+        ywp_rating=Decimal("8.1"),
+        edge=Decimal("0.04"),
+        script_key="script-top",
+        player_key="player-top",
+    )
+    louder = _play(
+        id="rank-4",
+        rank=4,
+        thesis_key="thesis-loud",
+        event_id="event-loud",
+        selection="Louder score ML",
+        confidence_score=90,
+        ywp_rating=Decimal("9.0"),
+        edge=Decimal("0.09"),
+        script_key="script-loud",
+        player_key="player-loud",
+    )
+    cards, quarantined = build_cards([top, louder], max_legs=5, min_rating=0)
+    assert cards["max_bet"].recommendation_ids == ["rank-1"]
+    assert "rank-1" in cards["ticket_a"].recommendation_ids
+    assert quarantined == []
+
+
+def test_ineligible_top_rank_is_explained() -> None:
+    watch = _play(
+        id="watch-1",
+        rank=1,
+        decision="WATCH",
+        thesis_key="watch-thesis",
+        event_id="event-watch",
+        selection="Watch board #1",
+        ywp_rating=Decimal("6.0"),
+    )
+    play = _play(
+        id="play-2",
+        rank=2,
+        thesis_key="play-thesis",
+        event_id="event-play",
+        selection="Play board #2",
+        player_key="player-play",
+        script_key="script-play",
+    )
+    cards, quarantined = build_cards([watch, play], max_legs=5, min_rating=0)
+    assert cards["max_bet"].recommendation_ids == ["play-2"]
+    assert any(
+        item.recommendation_id == "watch-1" and "not ticket-eligible" in item.reason
+        for item in quarantined
+    )

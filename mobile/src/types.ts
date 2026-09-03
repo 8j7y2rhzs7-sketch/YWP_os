@@ -183,7 +183,12 @@ export interface BuildTicketResponse {
   official_pass?: boolean;
   cards: Record<string, TicketCard>;
   stay_away: Recommendation[];
-  quarantined: Array<{ recommendation_id: string; reason: string }>;
+  quarantined: Array<{
+    recommendation_id: string;
+    reason: string;
+    selection?: string | null;
+    analysis_rank?: number | null;
+  }>;
 }
 
 export interface TicketLeg {

@@ -13,6 +13,7 @@ import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
 import { getApiUrl, PRODUCTION_API_URL } from "@/lib/api";
+import { submitErrorReport } from "@/lib/errorReporting";
 import { colors, radius, spacing, type } from "@/theme";
 import type {
   Bankroll,
@@ -39,6 +40,10 @@ export default function SettingsScreen() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const [reportText, setReportText] = useState("");
+  const [reportCategory, setReportCategory] = useState<"pick_quality" | "ticket_build" | "ui" | "data" | "other">("pick_quality");
+  const [reportLoading, setReportLoading] = useState(false);
+  const [reportMsg, setReportMsg] = useState<string | null>(null);
   const apiUrl = getApiUrl() || PRODUCTION_API_URL;
 
   const load = useCallback(async () => {
@@ -116,6 +121,30 @@ export default function SettingsScreen() {
       setTxnMsg(reason instanceof Error ? reason.message : "Transaction failed");
     } finally {
       setTxnLoading(false);
+    }
+  }
+
+  async function submitReport() {
+    const message = reportText.trim();
+    if (message.length < 3) {
+      setReportMsg("Tell us what looked wrong (at least a few words).");
+      return;
+    }
+    setReportLoading(true);
+    setReportMsg(null);
+    try {
+      await submitErrorReport({
+        category: reportCategory,
+        message,
+        screen: "settings",
+        context: { source: "manual_settings_report" },
+      });
+      setReportText("");
+      setReportMsg("Report sent. We will use it to fix the live app.");
+    } catch (reason) {
+      setReportMsg(reason instanceof Error ? reason.message : "Could not send report");
+    } finally {
+      setReportLoading(false);
     }
   }
 
@@ -254,6 +283,46 @@ export default function SettingsScreen() {
           }}
         />
         <Text style={styles.rgCaption}>1-800-522-4700 — Available 24/7, free & confidential</Text>
+      </MetalPanel>
+
+      <SectionTitle
+        title="Report a Problem"
+        subtitle="After you use the app, tell us what broke or felt wrong so we can fix it."
+      />
+      <MetalPanel>
+        <View style={styles.profileRow}>
+          {(
+            [
+              ["pick_quality", "PICKS"],
+              ["ticket_build", "CARDS"],
+              ["data", "DATA"],
+              ["ui", "UI"],
+              ["other", "OTHER"],
+            ] as const
+          ).map(([value, label]) => (
+            <Pressable
+              key={value}
+              onPress={() => setReportCategory(value)}
+              style={[styles.profile, reportCategory === value && styles.profileActive]}
+            >
+              <Text style={[styles.profileText, reportCategory === value && styles.profileTextActive]}>
+                {label}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+        <FormField
+          label="What went wrong?"
+          value={reportText}
+          onChangeText={setReportText}
+          placeholder="Example: #1 pick never showed on Max Bet / cards looked off"
+        />
+        <YwpButton
+          label="SEND ERROR REPORT"
+          onPress={() => void submitReport()}
+          loading={reportLoading}
+        />
+        {reportMsg ? <Text style={styles.txnMsg}>{reportMsg}</Text> : null}
       </MetalPanel>
 
       <YwpButton label="SIGN OUT" variant="danger" onPress={() => void signOut()} />
