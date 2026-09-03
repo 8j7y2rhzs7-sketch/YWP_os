@@ -8,7 +8,7 @@ import { MetalPanel } from "@/components/MetalPanel";
 import { Screen } from "@/components/Screen";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
-import { ApiError } from "@/lib/api";
+import { ApiError, WHOP_CHECKOUT_URL } from "@/lib/api";
 import type { SubscriptionStatus } from "@/types";
 import { brand, colors, spacing, type } from "@/theme";
 
@@ -23,8 +23,8 @@ export default function PaywallScreen() {
     try {
       const checkout = await request<{ checkout_url: string; message: string }>(
         "/whop/checkout",
-      );
-      const opened = await Linking.openURL(checkout.checkout_url);
+      ).catch(() => ({ checkout_url: WHOP_CHECKOUT_URL, message: "" }));
+      const opened = await Linking.openURL(checkout.checkout_url || WHOP_CHECKOUT_URL);
       if (!opened) {
         setError("Could not open Whop checkout. Copy the link from your browser.");
       }
@@ -66,8 +66,9 @@ export default function PaywallScreen() {
       <MetalPanel style={styles.panel}>
         <Text style={type.section}>Unlock YWP OS</Text>
         <Text style={type.body}>
-          YWP OS is a paid membership. Subscribe on Whop using the same email as your
-          account, then return here and sync your access.
+          YWP OS is Daily Access on Whop — DECISION ENGINE, $25 for 1 day.
+          Pay on Whop with the same email as this account, then sync access.
+          All payments stay on Whop.
         </Text>
         <View style={styles.steps}>
           <Text style={styles.step}>1. Tap Subscribe on Whop</Text>

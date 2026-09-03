@@ -1,4 +1,9 @@
-"""Whop subscription verification, webhooks, and access checks."""
+"""Whop access checks, user-token verification, and webhooks.
+
+Endpoints and helpers come from the official Whop docs / Python SDK
+(`whop-sdk`): GET /users/{id}/access/{resource_id}, verify_user_token,
+POST /experiences, POST /experiences/{id}/attach.
+"""
 from __future__ import annotations
 
 import base64
@@ -9,7 +14,8 @@ import logging
 import time
 from typing import Any
 
-import httpx
+from whop_sdk import Whop
+from whop_sdk.lib.verify_user_token import try_verify_user_token
 
 from app.core.config import settings
 
@@ -17,16 +23,55 @@ logger = logging.getLogger(__name__)
 
 WHOP_API_BASE = "https://api.whop.com/api/v1"
 WEBHOOK_TOLERANCE_SECONDS = 300
+DECISION_ENGINE_PRODUCT_ID = "prod_NuPQUAGoibkpW"
+DECISION_ENGINE_CHECKOUT_URL = "https://whop.com/checkout/plan_MwJ2qcFxmvqDY"
 
 
 class WhopWebhookError(Exception):
     pass
 
 
+def product_id() -> str:
+    return settings.whop_product_id or DECISION_ENGINE_PRODUCT_ID
+
+
+def checkout_url() -> str:
+    return settings.checkout_url or DECISION_ENGINE_CHECKOUT_URL
+
+
 def whop_enabled() -> bool:
     if not settings.whop_subscription_required:
         return False
-    return bool(settings.whop_api_key and settings.whop_product_id)
+    return bool(product_id())
+
+
+def whop_client() -> Whop:
+    if not settings.whop_api_key:
+        raise RuntimeError("WHOP_API_KEY is not set")
+    return Whop(token=settings.whop_api_key, api_version_date=settings.whop_api_version_date)
+
+
+def verify_whop_user_token(headers: Any) -> str | None:
+    """Return the Whop user id from `x-whop-user-token`, or None.
+
+    Official helper: `whop_sdk.lib.verify_user_token.try_verify_user_token`.
+    `app_id` is required and is checked against the token audience.
+    """
+    if not settings.whop_app_id:
+        return None
+    payload = try_verify_user_token(headers, app_id=settings.whop_app_id)
+    if payload is None:
+        return None
+    return payload.user_id
+
+
+def check_user_access(whop_user_id: str, resource_id: str | None = None) -> dict[str, Any]:
+    """Official: users.check_access → GET /users/{id}/access/{resource_id}."""
+    resource = resource_id or product_id()
+    if not settings.whop_api_key:
+        return {"has_access": False, "access_level": "unknown"}
+    result = whop_client().users.check_access(id=whop_user_id, resource_id=resource)
+    return {"has_access": bool(result.has_access), "access_level": result.access_level}
 
 
 def verify_webhook(payload: bytes, headers: dict[str, str], secret: str) -> dict[str, Any]:
@@ -57,23 +102,6 @@ def verify_webhook(payload: bytes, headers: dict[str, str], secret: str) -> dict
         raise WhopWebhookError("Invalid webhook signature")
 
     return json.loads(payload)
-
-
-def check_user_access(whop_user_id: str, resource_id: str | None = None) -> dict[str, Any]:
-    """Call Whop API: GET /users/{id}/access/{resource_id}."""
-    if not settings.whop_api_key:
-        return {"has_access": True, "access_level": "customer"}
-    resource = resource_id or settings.whop_product_id
-    if not resource:
-        return {"has_access": False, "access_level": "no_access"}
-
-    with httpx.Client(timeout=15.0) as client:
-        resp = client.get(
-            f"{WHOP_API_BASE}/users/{whop_user_id}/access/{resource}",
-            headers={"Authorization": f"Bearer {settings.whop_api_key}"},
-        )
-        resp.raise_for_status()
-        return resp.json()
 
 
 def extract_membership_fields(data: dict[str, Any]) -> dict[str, str | None]:

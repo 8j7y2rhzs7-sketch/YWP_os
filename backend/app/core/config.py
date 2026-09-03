@@ -1,7 +1,7 @@
 from functools import lru_cache
 from typing import Literal
 
-from pydantic import Field, field_validator
+from pydantic import AliasChoices, Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -27,7 +27,7 @@ class Settings(BaseSettings):
     database_url: str = Field(default="sqlite:///./ywp.db", validation_alias="DATABASE_URL")
     redis_url: str | None = Field(default=None, validation_alias="REDIS_URL")
     cors_origins_raw: str = Field(
-        default="http://localhost:8081,http://localhost:19006",
+        default="http://localhost:8081,http://localhost:19006,http://localhost:3000,https://whop.com",
         validation_alias="YWP_CORS_ORIGINS",
     )
 
@@ -38,8 +38,23 @@ class Settings(BaseSettings):
 
     whop_api_key: str | None = Field(default=None, validation_alias="WHOP_API_KEY")
     whop_webhook_secret: str | None = Field(default=None, validation_alias="WHOP_WEBHOOK_SECRET")
+    whop_company_id: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices("WHOP_COMPANY_ID", "NEXT_PUBLIC_WHOP_COMPANY_ID"),
+    )
     whop_product_id: str | None = Field(default=None, validation_alias="WHOP_PRODUCT_ID")
-    whop_checkout_url: str | None = Field(default=None, validation_alias="WHOP_CHECKOUT_URL")
+    whop_plan_id: str | None = Field(default=None, validation_alias="WHOP_PLAN_ID")
+    whop_app_id: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices("WHOP_APP_ID", "NEXT_PUBLIC_WHOP_APP_ID"),
+    )
+    whop_checkout_url: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices("WHOP_CHECKOUT_URL", "NEXT_PUBLIC_WHOP_CHECKOUT_URL"),
+    )
+    whop_api_version_date: str = Field(
+        default="2026-09-02-2", validation_alias="WHOP_API_VERSION_DATE"
+    )
     whop_subscription_required: bool = Field(
         default=False, validation_alias="WHOP_SUBSCRIPTION_REQUIRED"
     )
@@ -73,6 +88,10 @@ class Settings(BaseSettings):
     @property
     def cors_origins(self) -> list[str]:
         return [item.strip() for item in self.cors_origins_raw.split(",") if item.strip()]
+
+    @property
+    def checkout_url(self) -> str:
+        return self.whop_checkout_url or "https://whop.com/checkout/plan_MwJ2qcFxmvqDY"
 
 
 @lru_cache

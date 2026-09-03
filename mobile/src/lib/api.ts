@@ -11,7 +11,10 @@ export function getApiUrl(): string {
   return currentApiUrl;
 }
 
-export const API_URL = DEFAULT_API_URL;
+export const WHOP_CHECKOUT_URL =
+  process.env.EXPO_PUBLIC_WHOP_CHECKOUT_URL ??
+  process.env.NEXT_PUBLIC_WHOP_CHECKOUT_URL ??
+  "https://whop.com/checkout/plan_MwJ2qcFxmvqDY";
 
 export function normalizeApiUrl(value: string): string {
   return value.trim().replace(/\/$/, "");
@@ -44,6 +47,7 @@ export class ApiError extends Error {
     message: string,
     public readonly status: number,
     public readonly details?: unknown,
+    public readonly checkoutUrl?: string,
   ) {
     super(message);
     this.name = "ApiError";
@@ -72,11 +76,23 @@ export async function rawRequest<T>(
       typeof body === "object" && body !== null && "detail" in body
         ? body.detail
         : body;
+    const checkoutUrl =
+      typeof detail === "object" &&
+      detail !== null &&
+      "checkout_url" in detail &&
+      typeof detail.checkout_url === "string"
+        ? detail.checkout_url
+        : undefined;
     const message =
       typeof detail === "string"
         ? detail
-        : `Request failed with status ${response.status}`;
-    throw new ApiError(message, response.status, detail);
+        : typeof detail === "object" &&
+            detail !== null &&
+            "message" in detail &&
+            typeof detail.message === "string"
+          ? detail.message
+          : `Request failed with status ${response.status}`;
+    throw new ApiError(message, response.status, detail, checkoutUrl);
   }
   return body as T;
 }

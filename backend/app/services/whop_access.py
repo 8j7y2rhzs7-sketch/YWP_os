@@ -2,12 +2,14 @@
 from __future__ import annotations
 
 import logging
+import secrets
 
 from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
-from app.models import AuditLog, PendingWhopAccess, User
-from app.services.whop import check_user_access, whop_enabled
+from app.core.security import hash_password
+from app.models import AuditLog, BankrollAccount, PendingWhopAccess, User
+from app.services.whop import check_user_access, checkout_url, product_id, whop_enabled
 
 logger = logging.getLogger(__name__)
 
@@ -24,10 +26,12 @@ def serialize_user(user: User):
     from app.schemas import UserOut
 
     base = UserOut.model_validate(user)
+    has_access = user_has_app_access(user)
     return base.model_copy(
         update={
-            "has_app_access": user_has_app_access(user),
+            "has_app_access": has_access,
             "subscription_status": user.subscription_status,
+            "checkout_url": None if has_access else checkout_url(),
         }
     )
 
@@ -52,10 +56,33 @@ def sync_user_subscription(db: Session, user: User) -> User:
         return user
     if user.whop_user_id:
         try:
-            access = check_user_access(user.whop_user_id)
-            user.subscription_status = "active" if access.get("has_access") else "inactive"
+            access = check_user_access(user.whop_user_id, product_id())
+            if access.get("access_level") != "unknown":
+                user.subscription_status = "active" if access.get("has_access") else "inactive"
         except Exception:
             logger.exception("Whop access check failed for user %s", user.id)
+    return user
+
+
+def get_or_create_whop_user(db: Session, whop_user_id: str) -> User:
+    user = db.scalar(select(User).where(User.whop_user_id == whop_user_id))
+    if user:
+        return user
+    email = f"{whop_user_id.lower()}@members.whop.invalid"
+    user = db.scalar(select(User).where(User.email == email))
+    if user:
+        user.whop_user_id = whop_user_id
+        return user
+    user = User(
+        email=email,
+        password_hash=hash_password(secrets.token_urlsafe(48)),
+        name="Whop Member",
+        whop_user_id=whop_user_id,
+        subscription_status="none",
+    )
+    db.add(user)
+    db.flush()
+    db.add(BankrollAccount(user_id=user.id))
     return user
 
 

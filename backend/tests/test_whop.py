@@ -69,3 +69,45 @@ def test_whop_webhook_grants_pending_access(client: TestClient, monkeypatch) -> 
     body = me.json()
     assert body["has_app_access"] is True
     assert body["subscription_status"] == "active"
+
+
+def test_checkout_uses_existing_decision_engine_plan(client: TestClient) -> None:
+    response = client.get("/api/v1/whop/checkout")
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["checkout_url"] == "https://whop.com/checkout/plan_MwJ2qcFxmvqDY"
+    assert body["product_id"] == "prod_NuPQUAGoibkpW"
+
+
+def test_protected_route_sends_unpaid_user_to_whop_checkout(
+    client: TestClient, auth_headers: dict[str, str], monkeypatch
+) -> None:
+    from datetime import date
+
+    from app.core.config import settings
+
+    monkeypatch.setattr(settings, "whop_subscription_required", True)
+    monkeypatch.setattr(settings, "whop_product_id", "prod_NuPQUAGoibkpW")
+    monkeypatch.setattr(
+        settings, "whop_checkout_url", "https://whop.com/checkout/plan_MwJ2qcFxmvqDY"
+    )
+    monkeypatch.setattr(settings, "whop_api_key", None)
+
+    slate = client.get(
+        "/api/v1/sports/slate",
+        params={"sport": "mlb", "date": str(date.today())},
+        headers=auth_headers,
+    )
+    assert slate.status_code == 402, slate.text
+    detail = slate.json()["detail"]
+    assert detail["checkout_url"] == "https://whop.com/checkout/plan_MwJ2qcFxmvqDY"
+
+
+def test_experience_linker_never_sets_is_public() -> None:
+    import inspect
+
+    from app.services import whop_experience
+
+    source = inspect.getsource(whop_experience.link_decision_engine_experience)
+    assert "is_public" not in source
+    assert "prod_NuPQUAGoibkpW" in source or "product_id" in source

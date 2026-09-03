@@ -10,14 +10,19 @@ from app.models import WhopWebhookDelivery
 from app.schemas import MessageOut, SubscriptionOut, WhopCheckoutOut
 from app.services.whop import (
     WhopWebhookError,
+    checkout_url,
     extract_membership_fields,
     membership_grants_access,
+    product_id,
     verify_webhook,
+    verify_whop_user_token,
+    check_user_access,
     whop_enabled,
 )
 from app.services.whop_access import (
     apply_pending_access,
     apply_subscription_from_webhook,
+    get_or_create_whop_user,
     sync_user_subscription,
     user_has_app_access,
 )
@@ -26,17 +31,38 @@ router = APIRouter(prefix="/whop", tags=["whop"])
 
 
 @router.get("/checkout", response_model=WhopCheckoutOut)
-def checkout_url() -> WhopCheckoutOut:
-    if not settings.whop_checkout_url:
-        raise HTTPException(
-            status_code=503,
-            detail="Whop checkout URL is not configured. Set WHOP_CHECKOUT_URL.",
-        )
+def get_checkout_url() -> WhopCheckoutOut:
     return WhopCheckoutOut(
-        checkout_url=settings.whop_checkout_url,
-        product_id=settings.whop_product_id,
-        message="Complete payment on Whop, then return here and sign in with the same email.",
+        checkout_url=checkout_url(),
+        product_id=product_id(),
+        message="Complete Daily Access on Whop, then return and sync with the same email.",
     )
+
+
+@router.get("/gate")
+def access_gate(request: Request, db: DB) -> dict[str, object]:
+    """Verify the iframe user token, then checkAccess on DECISION ENGINE."""
+    url = checkout_url()
+    whop_user_id = verify_whop_user_token(request.headers)
+    if not whop_user_id:
+        return {
+            "has_access": False,
+            "checkout_url": url,
+            "product_id": product_id(),
+            "required": whop_enabled(),
+        }
+    access = check_user_access(whop_user_id, product_id())
+    if access.get("has_access"):
+        user = get_or_create_whop_user(db, whop_user_id)
+        user.subscription_status = "active"
+        db.commit()
+    return {
+        "has_access": bool(access.get("has_access")),
+        "access_level": access.get("access_level"),
+        "checkout_url": url,
+        "product_id": product_id(),
+        "required": True,
+    }
 
 
 @router.get("/subscription", response_model=SubscriptionOut)
@@ -49,7 +75,7 @@ def subscription_status(user: CurrentUser, db: DB) -> SubscriptionOut:
         has_access=user_has_app_access(user),
         status=user.subscription_status,
         whop_user_id=user.whop_user_id,
-        checkout_url=settings.whop_checkout_url,
+        checkout_url=checkout_url(),
     )
 
 
@@ -64,7 +90,7 @@ def sync_subscription(user: CurrentUser, db: DB) -> SubscriptionOut:
         has_access=user_has_app_access(user),
         status=user.subscription_status,
         whop_user_id=user.whop_user_id,
-        checkout_url=settings.whop_checkout_url,
+        checkout_url=checkout_url(),
     )
 
 

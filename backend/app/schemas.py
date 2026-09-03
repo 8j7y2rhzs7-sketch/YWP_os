@@ -83,6 +83,7 @@ class UserOut(YWPModel):
     is_active: bool
     subscription_status: str = "none"
     has_app_access: bool = True
+    checkout_url: str | None = None
     created_at: datetime
 
 

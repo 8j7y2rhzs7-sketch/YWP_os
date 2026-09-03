@@ -10,7 +10,8 @@ htmlcov/
 node_modules/
 .expo/
 dist/
-web-build/
+    "web-build/
+.next/
 *.log
 .DS_Store
 mobile/android/local.properties

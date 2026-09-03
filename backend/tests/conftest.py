@@ -6,6 +6,7 @@ os.environ["YWP_ENV"] = "test"
 os.environ["YWP_DEMO_MODE"] = "true"
 os.environ["YWP_JWT_SECRET"] = "test-secret-that-is-longer-than-thirty-two-bytes"
 os.environ["DATABASE_URL"] = "sqlite:///./test_ywp.db"
+os.environ["WHOP_SUBSCRIPTION_REQUIRED"] = "false"
 
 import pytest
 from fastapi.testclient import TestClient

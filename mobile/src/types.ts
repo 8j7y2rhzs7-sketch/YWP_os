@@ -18,6 +18,7 @@ export interface User {
   is_active: boolean;
   subscription_status: string;
   has_app_access: boolean;
+  checkout_url?: string | null;
   created_at: string;
 }
 
