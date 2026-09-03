@@ -58,8 +58,21 @@ def _active_legs(ticket: Ticket) -> list[TicketLeg]:
     return [leg for leg in ticket.legs if leg.action in {"follow", "replace"}]
 
 
+def _custom_label(leg_count: int) -> str:
+    unit = "leg" if leg_count == 1 else "legs"
+    return f"Custom {leg_count}-{unit}"
+
+
+def _sync_custom_label(ticket: Ticket) -> None:
+    """Keep custom ticket titles honest after add/swap/remove."""
+    if ticket.ticket_type != "custom":
+        return
+    ticket.label = _custom_label(len(_active_legs(ticket)))
+
+
 def _recalculate(ticket: Ticket) -> None:
     active = _active_legs(ticket)
+    _sync_custom_label(ticket)
     if not active:
         ticket.combined_decimal_odds = Decimal("1.0000")
         ticket.potential_payout = Decimal("0.00")
@@ -191,7 +204,11 @@ def create_ticket(payload: TicketCreate, user: SubscribedUser, db: DB) -> Ticket
     ticket = Ticket(
         user_id=user.id,
         ticket_type=payload.ticket_type,
-        label=payload.label,
+        label=(
+            _custom_label(len(recommendations))
+            if payload.ticket_type == "custom"
+            else payload.label
+        ),
         sport=next(iter(sport_names)) if len(sport_names) == 1 else "multi",
         slate_date=recommendations[0].slate_date,
         stake=payload.stake,
@@ -250,19 +267,35 @@ def create_ticket(payload: TicketCreate, user: SubscribedUser, db: DB) -> Ticket
 
 @router.get("", response_model=list[TicketOut])
 def list_tickets(user: SubscribedUser, db: DB, limit: int = 100) -> list[TicketOut]:
-    tickets = db.scalars(
-        select(Ticket)
-        .options(selectinload(Ticket.legs).selectinload(TicketLeg.recommendation))
-        .where(Ticket.user_id == user.id)
-        .order_by(Ticket.created_at.desc())
-        .limit(min(max(limit, 1), 500))
-    ).all()
+    tickets = list(
+        db.scalars(
+            select(Ticket)
+            .options(selectinload(Ticket.legs).selectinload(TicketLeg.recommendation))
+            .where(Ticket.user_id == user.id)
+            .order_by(Ticket.created_at.desc())
+            .limit(min(max(limit, 1), 500))
+        ).all()
+    )
+    healed = False
+    for ticket in tickets:
+        before = ticket.label
+        _sync_custom_label(ticket)
+        if ticket.label != before:
+            healed = True
+    if healed:
+        db.commit()
     return [TicketOut.model_validate(ticket) for ticket in tickets]
 
 
 @router.get("/{ticket_id}", response_model=TicketOut)
 def get_ticket(ticket_id: str, user: SubscribedUser, db: DB) -> TicketOut:
-    return TicketOut.model_validate(_load_ticket(db, ticket_id, user.id))
+    ticket = _load_ticket(db, ticket_id, user.id)
+    before = ticket.label
+    _sync_custom_label(ticket)
+    if ticket.label != before:
+        db.commit()
+        ticket = _load_ticket(db, ticket_id, user.id)
+    return TicketOut.model_validate(ticket)
 
 
 @router.patch("/{ticket_id}/legs/{leg_id}", response_model=TicketOut)

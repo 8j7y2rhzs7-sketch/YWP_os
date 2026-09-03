@@ -85,7 +85,8 @@ export default function TicketsScreen() {
               <Text style={type.eyebrow}>{ticket.ticket_type.replaceAll("_", " ")}</Text>
               <Text style={styles.title}>{ticket.label}</Text>
               <Text style={type.caption}>
-                {ticket.sport.toUpperCase()} • {ticket.slate_date} • {ticket.legs.length} legs
+                {ticket.sport.toUpperCase()} • {ticket.slate_date} • {ticket.legs.length}{" "}
+                {ticket.legs.length === 1 ? "leg" : "legs"}
               </Text>
             </View>
             <StatusPill value={ticket.last_lock_status ?? ticket.status} />

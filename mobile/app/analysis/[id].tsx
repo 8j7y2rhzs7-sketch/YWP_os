@@ -117,7 +117,7 @@ export default function AnalysisScreen() {
     );
     return {
       key: "custom",
-      label: `Custom ${customLegs.length}-leg`,
+      label: `Custom ${customLegs.length}-${customLegs.length === 1 ? "leg" : "legs"}`,
       recommendation_ids: customLegs.map((item) => item.id),
       legs: customLegs,
       risk,
