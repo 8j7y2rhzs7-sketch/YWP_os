@@ -103,9 +103,9 @@ def signal(
     market: str,
     market_scope: str,
     model_version: str,
-    league: str | None = None,
     db: DB,
     current_user: CurrentUser,
+    league: str | None = None,
 ):
     s = get_hive_signal(
         db=db,
