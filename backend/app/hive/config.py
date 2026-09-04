@@ -16,6 +16,8 @@ class HiveSettings:
     enabled: bool = True
     anon_secret: str = ""
     min_sample: int = 40
+    # Eligible settled samples needed before Hive is treated as fully matured.
+    optimal_sample: int = 200
     max_probability_shift: float = 0.035
     require_verified_outcome: bool = True
     require_consent: bool = False
@@ -27,6 +29,7 @@ def get_hive_settings() -> HiveSettings:
         enabled=_bool("YWP_HIVE_ENABLED", True),
         anon_secret=os.getenv("YWP_HIVE_ANON_SECRET", "") or os.getenv("YWP_JWT_SECRET", ""),
         min_sample=int(os.getenv("YWP_HIVE_MIN_SAMPLE", "40")),
+        optimal_sample=int(os.getenv("YWP_HIVE_OPTIMAL_SAMPLE", "200")),
         max_probability_shift=float(os.getenv("YWP_HIVE_MAX_PROBABILITY_SHIFT", "0.035")),
         require_verified_outcome=_bool("YWP_HIVE_REQUIRE_VERIFIED_OUTCOME", True),
         # Product-owned recommendation snapshots do not require a separate user

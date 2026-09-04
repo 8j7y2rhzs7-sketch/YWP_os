@@ -441,6 +441,110 @@ def get_hive_signal(
     )
 
 
+def hive_learning_maturity(
+    *,
+    db: Session,
+    sport: str | None = None,
+) -> dict[str, Any]:
+    """Compute Hive optimum-accuracy readiness from live evidence.
+
+    This is not a cosmetic gauge. The percentage is derived from:
+
+    1. Settled eligible sample volume (piecewise toward optimal_sample)
+       - 0 → min_sample maps to 0–40%  (collecting; blend still locked)
+       - min_sample → optimal_sample maps to 40–85% (calibrating volume)
+    2. Observed calibration quality across buckets with enough samples
+       - contributes the final 0–15% once blend is active
+       - score = 1 - clamp(mean(|calibration_delta|) / 0.15, 0, 1)
+
+    100% means: enough settled outcomes AND tight calibration error.
+    """
+    eligible_q = db.query(HiveLearningEvent).filter(
+        HiveLearningEvent.training_eligible.is_(True)
+    )
+    pending_q = db.query(HiveLearningEvent).filter(HiveLearningEvent.outcome.is_(None))
+    resolved_q = db.query(HiveLearningEvent).filter(
+        HiveLearningEvent.outcome.isnot(None)
+    )
+    agg_q = db.query(HiveAggregate).filter(HiveAggregate.eligible_samples > 0)
+    if sport:
+        sport_n = _norm(sport)
+        eligible_q = eligible_q.filter(HiveLearningEvent.sport == sport_n)
+        pending_q = pending_q.filter(HiveLearningEvent.sport == sport_n)
+        resolved_q = resolved_q.filter(HiveLearningEvent.sport == sport_n)
+        agg_q = agg_q.filter(HiveAggregate.sport == sport_n)
+
+    eligible = int(eligible_q.count())
+    pending = int(pending_q.count())
+    resolved = int(resolved_q.count())
+    min_sample = max(1, int(settings.min_sample))
+    optimal = max(min_sample, int(settings.optimal_sample))
+
+    if eligible < min_sample:
+        volume_score = 0.40 * (eligible / min_sample)
+    else:
+        volume_score = 0.40 + 0.45 * min(
+            1.0, (eligible - min_sample) / max(1, optimal - min_sample)
+        )
+
+    mature_buckets = [
+        agg
+        for agg in agg_q.all()
+        if int(agg.eligible_samples or 0) >= min_sample
+        and agg.calibration_delta is not None
+    ]
+    if mature_buckets:
+        mean_abs_delta = sum(abs(float(agg.calibration_delta)) for agg in mature_buckets) / len(
+            mature_buckets
+        )
+        # |delta| of 0.00 → perfect (1.0); |delta| ≥ 0.15 → no credit.
+        calibration_quality = max(0.0, min(1.0, 1.0 - (mean_abs_delta / 0.15)))
+        calibrated_bucket_count = len(mature_buckets)
+    else:
+        mean_abs_delta = None
+        calibration_quality = 0.0
+        calibrated_bucket_count = 0
+
+    calibration_score = 0.15 * calibration_quality if eligible >= min_sample else 0.0
+    pct = round(min(100.0, (volume_score + calibration_score) * 100.0), 1)
+
+    if pct >= 100.0 - 1e-9:
+        status = "optimal"
+    elif eligible >= min_sample:
+        status = "calibrating"
+    else:
+        status = "collecting"
+
+    wins = sum(int(agg.wins or 0) for agg in mature_buckets) if mature_buckets else 0
+    losses = sum(int(agg.losses or 0) for agg in mature_buckets) if mature_buckets else 0
+
+    return {
+        "eligible_samples": eligible,
+        "pending_samples": pending,
+        "resolved_samples": resolved,
+        "min_sample_for_calibration": min_sample,
+        "optimal_sample": optimal,
+        "volume_score_pct": round(volume_score * 100.0, 1),
+        "calibration_score_pct": round(calibration_score * 100.0, 1),
+        "calibration_quality": round(calibration_quality, 4),
+        "mean_abs_calibration_delta": (
+            round(mean_abs_delta, 6) if mean_abs_delta is not None else None
+        ),
+        "calibrated_bucket_count": calibrated_bucket_count,
+        "wins": wins,
+        "losses": losses,
+        "optimum_accuracy_pct": pct,
+        "calibration_active": eligible >= min_sample,
+        "status": status,
+        "formula": {
+            "volume_weight": "0–40% collecting to min_sample, then 40–85% to optimal_sample",
+            "calibration_weight": "0–15% from 1 - clamp(|Δ|/0.15) once blend is active",
+            "optimal_means": "enough settled samples and tight calibration error",
+        },
+        "release_version": settings.release_version,
+    }
+
+
 def blend_hive_probability(
     *,
     base_probability: float | None,

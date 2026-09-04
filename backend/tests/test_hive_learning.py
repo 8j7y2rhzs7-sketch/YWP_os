@@ -7,6 +7,7 @@ from app.hive.service import (
     HiveSignal,
     blend_hive_probability,
     capture_hive_prediction,
+    hive_learning_maturity,
     rebuild_bucket,
     resolve_hive_outcome,
 )
@@ -351,3 +352,65 @@ def test_aggregate_rebuild_reproduces_stored_aggregate(db_session):
     assert rebuilt.losses == stored.losses == 1
     assert rebuilt.posterior_rate == stored.posterior_rate
     assert rebuilt.mean_predicted_probability == stored.mean_predicted_probability
+
+
+def test_hive_maturity_is_calculated_from_settled_evidence(db_session, monkeypatch):
+    monkeypatch.setenv("YWP_HIVE_MIN_SAMPLE", "4")
+    monkeypatch.setenv("YWP_HIVE_OPTIMAL_SAMPLE", "10")
+
+    empty = hive_learning_maturity(db=db_session, sport="mlb")
+    assert empty["optimum_accuracy_pct"] == 0.0
+    assert empty["status"] == "collecting"
+    assert empty["volume_score_pct"] == 0.0
+    assert empty["calibration_score_pct"] == 0.0
+
+    for idx in range(2):
+        event = _capture(
+            db_session,
+            recommendation_id=f"r-mat-{idx}",
+            user_id=f"u-mat-{idx}",
+            probability=0.58,
+        )
+        db_session.flush()
+        resolve_hive_outcome(
+            db=db_session,
+            source_recommendation_id=event.source_recommendation_id,
+            outcome="WIN" if idx % 2 == 0 else "LOSS",
+            verified=True,
+            result_source="official",
+        )
+    db_session.flush()
+
+    mid = hive_learning_maturity(db=db_session, sport="mlb")
+    # 2/4 of collecting band → 20% volume contribution (0.40 * 0.5 * 100)
+    assert mid["status"] == "collecting"
+    assert mid["eligible_samples"] == 2
+    assert mid["optimum_accuracy_pct"] == 20.0
+    assert mid["calibration_active"] is False
+
+    for idx in range(2, 10):
+        event = _capture(
+            db_session,
+            recommendation_id=f"r-mat-{idx}",
+            user_id=f"u-mat-{idx}",
+            probability=0.62,
+        )
+        db_session.flush()
+        resolve_hive_outcome(
+            db=db_session,
+            source_recommendation_id=event.source_recommendation_id,
+            outcome="WIN" if idx % 2 == 0 else "LOSS",
+            verified=True,
+            result_source="official",
+        )
+    db_session.flush()
+
+    full = hive_learning_maturity(db=db_session, sport="mlb")
+    assert full["eligible_samples"] == 10
+    assert full["calibration_active"] is True
+    # Volume at optimal = 85%; calibration adds 0–15% from |Δ|.
+    assert full["volume_score_pct"] == 85.0
+    assert full["optimum_accuracy_pct"] >= 85.0
+    assert full["optimum_accuracy_pct"] <= 100.0
+    assert full["status"] in {"calibrating", "optimal"}
+    assert "formula" in full

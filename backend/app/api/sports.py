@@ -18,6 +18,7 @@ from app.hive.service import (
     blend_hive_probability,
     capture_hive_prediction,
     get_hive_signal,
+    hive_learning_maturity,
     resolve_hive_outcome,
 )
 from app.models import (
@@ -390,7 +391,9 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
     db.commit()
     for record in records:
         db.refresh(record)
-        if record.decision not in {"PLAY", "LEAN"}:
+        # Log every board-facing pick (PLAY/LEAN/WATCH) — not only placed tickets.
+        # Stay-away SKIP/REVIEW are intentionally excluded from Hive growth data.
+        if record.decision not in {"PLAY", "LEAN", "WATCH"}:
             continue
         # YWP recommendations are product-owned decision artifacts; Hive may use
         # anonymized prediction/outcome rows without a separate consent toggle.
@@ -453,6 +456,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         for value in candidate.source_status.values()
     )
     readiness = slate_readiness(payload.candidates)
+    hive_learning = hive_learning_maturity(db=db, sport=payload.sport)
     return AnalyzeResponse(
         model_version=settings.model_version,
         analysis_id=analysis_id,
@@ -476,6 +480,8 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
                 1 for candidate in payload.candidates if slate_readiness([candidate]) == "VERIFIED"
             ),
             "readiness": readiness,
+            "hive_learning": hive_learning,
+            "hive_optimum_accuracy_pct": hive_learning["optimum_accuracy_pct"],
         },
     )
 

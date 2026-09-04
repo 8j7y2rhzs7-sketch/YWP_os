@@ -58,6 +58,8 @@ services:
         generateValue: true
       - key: YWP_HIVE_MIN_SAMPLE
         value: "40"
+      - key: YWP_HIVE_OPTIMAL_SAMPLE
+        value: "200"
       - key: YWP_HIVE_MAX_PROBABILITY_SHIFT
         value: "0.035"
       - key: YWP_HIVE_REQUIRE_VERIFIED_OUTCOME

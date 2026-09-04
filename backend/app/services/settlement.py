@@ -70,7 +70,64 @@ def settle_user_day(
         as_of = _local_today(timezone_name)
     items = settle_user_placed_tickets(db, user_id, as_of=as_of)
     items.extend(settle_user_board_recommendations(db, user_id, as_of=as_of))
+    # Ensure every board capture with a graded recommendation gets a Hive outcome.
+    sync_hive_outcomes_for_graded(db, user_id)
     return items
+
+
+def sync_hive_outcomes_for_graded(db: Session, user_id: str) -> int:
+    """Map graded board/ticket results onto pending Hive captures for this user.
+
+    Sync must settle the same PLAY/LEAN/WATCH universe Hive captured — not only
+    locked tickets — so optimum-accuracy can advance from live evidence.
+    """
+    from app.hive.models import HiveLearningEvent
+
+    pending = list(
+        db.scalars(
+            select(HiveLearningEvent).where(HiveLearningEvent.outcome.is_(None))
+        ).all()
+    )
+    if not pending:
+        return 0
+
+    by_rec = {event.source_recommendation_id: event for event in pending}
+    recommendations = list(
+        db.scalars(
+            select(Recommendation)
+            .where(
+                Recommendation.created_by_user_id == user_id,
+                Recommendation.id.in_(list(by_rec.keys())),
+                Recommendation.outcome.isnot(None),
+            )
+            .options(joinedload(Recommendation.result))
+        ).unique()
+    )
+    updated = 0
+    for recommendation in recommendations:
+        event = by_rec.get(str(recommendation.id))
+        if event is None or recommendation.outcome is None:
+            continue
+        result = recommendation.result
+        try:
+            resolve_hive_outcome(
+                db=db,
+                source_recommendation_id=str(recommendation.id),
+                outcome=str(recommendation.outcome),
+                verified=True,
+                result_source=(
+                    "official_mlb"
+                    if result is not None
+                    else "board_sync"
+                ),
+                resolved_at=getattr(result, "result_time", None) or utcnow(),
+            )
+            updated += 1
+        except (RuntimeError, ValueError):
+            continue
+    if updated:
+        db.commit()
+    return updated
 
 
 def settle_user_placed_tickets(

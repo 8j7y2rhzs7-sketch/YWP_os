@@ -6,6 +6,7 @@ from .schemas import HiveActionIn, HiveOutcomeIn, HivePredictionIn, HiveSignalOu
 from .service import (
     capture_hive_prediction,
     get_hive_signal,
+    hive_learning_maturity,
     record_hive_action,
     resolve_hive_outcome,
 )
@@ -95,6 +96,16 @@ def outcome(
             event, "training_ineligibility_reason", None
         ),
     }
+
+
+@router.get("/maturity")
+def maturity(
+    db: DB,
+    current_user: CurrentUser,
+    sport: str | None = None,
+):
+    """Live Hive optimum-accuracy calculation for the data meter."""
+    return hive_learning_maturity(db=db, sport=sport)
 
 
 @router.get("/signal", response_model=HiveSignalOut)

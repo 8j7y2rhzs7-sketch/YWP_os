@@ -179,7 +179,28 @@ export interface AnalyzeResponse {
     official_pass?: boolean;
     verified_candidate_count?: number;
     readiness?: Readiness;
+    hive_learning?: HiveLearningSummary;
+    hive_optimum_accuracy_pct?: number;
   };
+}
+
+export interface HiveLearningSummary {
+  eligible_samples: number;
+  pending_samples: number;
+  resolved_samples?: number;
+  min_sample_for_calibration: number;
+  optimal_sample: number;
+  volume_score_pct?: number;
+  calibration_score_pct?: number;
+  calibration_quality?: number;
+  mean_abs_calibration_delta?: number | null;
+  calibrated_bucket_count?: number;
+  wins?: number;
+  losses?: number;
+  optimum_accuracy_pct: number;
+  calibration_active: boolean;
+  status: "collecting" | "calibrating" | "optimal" | string;
+  release_version?: string;
 }
 
 export interface TicketCard {

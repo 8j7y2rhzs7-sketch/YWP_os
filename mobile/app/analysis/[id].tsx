@@ -12,6 +12,7 @@ import {
 import { BrandHeader } from "@/components/BrandHeader";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { FormField } from "@/components/FormField";
+import { HiveAccuracyMeter } from "@/components/HiveAccuracyMeter";
 import { LoadingState } from "@/components/LoadingState";
 import { MetalPanel } from "@/components/MetalPanel";
 import { Metric } from "@/components/Metric";
@@ -272,6 +273,10 @@ export default function AnalysisScreen() {
           Model {analysis.model_version} • Analysis {analysis.analysis_id.slice(0, 8)} •
           unknown source labels {analysis.data_quality_summary.unknown_source_labels}
         </Text>
+        <HiveAccuracyMeter
+          hive={analysis.data_quality_summary.hive_learning}
+          optimumAccuracyPct={analysis.data_quality_summary.hive_optimum_accuracy_pct}
+        />
       </MetalPanel>
       {!selectedCard && error ? <ErrorNotice message={error} /> : null}
 
