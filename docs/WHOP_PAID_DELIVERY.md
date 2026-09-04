@@ -60,7 +60,7 @@ APK:
 https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.8/YWP-OS-3.3.8.apk
 
 SHA-256:
-6be01073c280ecb1c31aababae9431d48a23d6a1f9ab99aa29472bfdae44498b
+fbf04cd8e91ca3a22b71552347e022e20fcf440d0d29622d0d391a50d2f0461f
 
 Unlock in the installed app is email-sync (same email as checkout → Sync my access).
 No license-key screen for v1.
