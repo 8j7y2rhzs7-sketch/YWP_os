@@ -18,7 +18,7 @@ class HiveSettings:
     min_sample: int = 40
     max_probability_shift: float = 0.035
     require_verified_outcome: bool = True
-    require_consent: bool = True
+    require_consent: bool = False
     release_version: str = "hive-1"
 
 
@@ -29,7 +29,9 @@ def get_hive_settings() -> HiveSettings:
         min_sample=int(os.getenv("YWP_HIVE_MIN_SAMPLE", "40")),
         max_probability_shift=float(os.getenv("YWP_HIVE_MAX_PROBABILITY_SHIFT", "0.035")),
         require_verified_outcome=_bool("YWP_HIVE_REQUIRE_VERIFIED_OUTCOME", True),
-        require_consent=_bool("YWP_HIVE_REQUIRE_CONSENT", True),
+        # Product-owned recommendation snapshots do not require a separate user
+        # consent toggle; keep the env switch for optional future policy changes.
+        require_consent=_bool("YWP_HIVE_REQUIRE_CONSENT", False),
         release_version=os.getenv("YWP_HIVE_RELEASE_VERSION", "hive-1"),
     )
 

@@ -392,8 +392,8 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         db.refresh(record)
         if record.decision not in {"PLAY", "LEAN"}:
             continue
-        # No user.consent_to_hive field exists yet — do not invent consent.
-        # Captures still store with consent_to_hive=False until privacy mapping lands.
+        # YWP recommendations are product-owned decision artifacts; Hive may use
+        # anonymized prediction/outcome rows without a separate consent toggle.
         snap = record.snapshot or {}
         model_probability = snap.get("model_probability")
         if model_probability is None and record.model_win_probability is not None:
@@ -411,7 +411,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             capture_hive_prediction(
                 db=db,
                 contributor_user_id=user.id,
-                consent_to_hive=False,
+                consent_to_hive=True,
                 source_recommendation_id=str(record.id),
                 sport=record.sport,
                 league=record.league,

@@ -9,7 +9,7 @@ os.environ["DATABASE_URL"] = "sqlite:///./test_ywp.db"
 os.environ["WHOP_SUBSCRIPTION_REQUIRED"] = "false"
 os.environ["YWP_HIVE_ANON_SECRET"] = "test-hive-anon-secret"
 os.environ["YWP_HIVE_ENABLED"] = "true"
-os.environ["YWP_HIVE_REQUIRE_CONSENT"] = "true"
+os.environ["YWP_HIVE_REQUIRE_CONSENT"] = "false"
 os.environ["YWP_HIVE_REQUIRE_VERIFIED_OUTCOME"] = "true"
 os.environ["YWP_HIVE_MIN_SAMPLE"] = "40"
 

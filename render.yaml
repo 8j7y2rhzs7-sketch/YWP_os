@@ -63,6 +63,6 @@ services:
       - key: YWP_HIVE_REQUIRE_VERIFIED_OUTCOME
         value: "true"
       - key: YWP_HIVE_REQUIRE_CONSENT
-        value: "true"
+        value: "false"
       - key: YWP_HIVE_RELEASE_VERSION
         value: hive-1

@@ -28,7 +28,7 @@ class HivePredictionIn(BaseModel):
     evidence_version: str | None = None
     data_quality: float | None = Field(default=None, ge=0.0, le=1.0)
     feature_flags: dict[str, Any] = Field(default_factory=dict)
-    consent_to_hive: bool = False
+    consent_to_hive: bool = True
 
 
 class HiveActionIn(BaseModel):

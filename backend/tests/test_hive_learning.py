@@ -166,6 +166,21 @@ def test_unverified_outcome_not_eligible_when_required(db_session):
     assert resolved.training_eligible is False
 
 
+def test_product_owned_picks_train_without_consent_gate(db_session, monkeypatch):
+    monkeypatch.setenv("YWP_HIVE_REQUIRE_CONSENT", "false")
+    event = _capture(db_session, recommendation_id="r-no-consent", consent=False)
+    db_session.flush()
+    resolved = resolve_hive_outcome(
+        db=db_session,
+        source_recommendation_id=event.source_recommendation_id,
+        outcome="WIN",
+        verified=True,
+        result_source="official",
+    )
+    assert resolved.training_eligible is True
+    assert resolved.training_ineligibility_reason is None
+
+
 def test_push_and_void_do_not_count_as_wins_losses(db_session):
     push = _capture(db_session, recommendation_id="r-push", user_id="u1")
     void = _capture(db_session, recommendation_id="r-void", user_id="u2")
