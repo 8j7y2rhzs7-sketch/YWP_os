@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 
-import { colors, spacing } from "@/theme";
+import { colors, fonts, radius, spacing } from "@/theme";
 
 export function Metric({
   label,
@@ -20,13 +20,29 @@ export function Metric({
 }
 
 const styles = StyleSheet.create({
-  metric: { minWidth: 84, flex: 1, gap: spacing.xs },
-  value: { fontSize: 22, fontWeight: "900" },
+  metric: {
+    minWidth: 88,
+    flex: 1,
+    gap: 4,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.sm,
+    borderRadius: radius.sm,
+    backgroundColor: "rgba(255,255,255,0.03)",
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: "rgba(255,255,255,0.06)",
+  },
+  value: {
+    fontFamily: fonts.displaySemi,
+    fontSize: 22,
+    fontWeight: "700",
+    letterSpacing: -0.3,
+  },
   label: {
     color: colors.muted,
+    fontFamily: fonts.bodyBold,
     fontSize: 10,
-    fontWeight: "800",
-    letterSpacing: 0.7,
+    fontWeight: "700",
+    letterSpacing: 0.8,
     textTransform: "uppercase",
   },
 });

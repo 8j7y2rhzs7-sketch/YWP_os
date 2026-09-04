@@ -1,50 +1,68 @@
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { useFonts, Syne_700Bold, Syne_800ExtraBold } from "@expo-google-fonts/syne";
+import {
+  DMSans_400Regular,
+  DMSans_500Medium,
+  DMSans_700Bold,
+} from "@expo-google-fonts/dm-sans";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { OfflineNotice } from "@/components/OfflineNotice";
 import { AppDataProvider } from "@/context/AppDataContext";
 import { AuthProvider } from "@/context/AuthContext";
-import { colors } from "@/theme";
+import { colors, fonts } from "@/theme";
+
+SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
 export default function RootLayout() {
+  const [loaded] = useFonts({
+    Syne_700Bold,
+    Syne_800ExtraBold,
+    DMSans_400Regular,
+    DMSans_500Medium,
+    DMSans_700Bold,
+  });
+
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hideAsync().catch(() => undefined);
+    }
+  }, [loaded]);
+
+  if (!loaded) return null;
+
   return (
     <ErrorBoundary>
-    <AuthProvider>
-      <AppDataProvider>
-        <StatusBar style="light" />
-        <OfflineNotice />
-        <Stack
-          screenOptions={{
-            headerStyle: { backgroundColor: colors.backgroundRaised },
-            headerTintColor: colors.gold,
-            headerTitleStyle: { color: colors.white, fontWeight: "800" },
-            contentStyle: { backgroundColor: colors.background },
-            animation: "slide_from_right",
-          }}
-        >
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="experiences/[experienceId]" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="analysis/[id]"
-            options={{ title: "YWP Decision Board" }}
-          />
-          <Stack.Screen
-            name="ticket/[id]"
-            options={{ title: "Ticket Lock Center" }}
-          />
-          <Stack.Screen
-            name="result/[id]"
-            options={{ title: "Result & Process Grade" }}
-          />
-          <Stack.Screen
-            name="share-card"
-            options={{ title: "YWP Graphic Studio" }}
-          />
-        </Stack>
-      </AppDataProvider>
-    </AuthProvider>
+      <AuthProvider>
+        <AppDataProvider>
+          <StatusBar style="light" />
+          <OfflineNotice />
+          <Stack
+            screenOptions={{
+              headerStyle: { backgroundColor: colors.backgroundRaised },
+              headerTintColor: colors.gold,
+              headerTitleStyle: {
+                color: colors.white,
+                fontFamily: fonts.displaySemi,
+                fontWeight: "700",
+              },
+              contentStyle: { backgroundColor: colors.background },
+              animation: "fade_from_bottom",
+            }}
+          >
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="experiences/[experienceId]" options={{ headerShown: false }} />
+            <Stack.Screen name="analysis/[id]" options={{ title: "YWP Decision Board" }} />
+            <Stack.Screen name="ticket/[id]" options={{ title: "Ticket Lock Center" }} />
+            <Stack.Screen name="result/[id]" options={{ title: "Result & Process Grade" }} />
+            <Stack.Screen name="share-card" options={{ title: "YWP Graphic Studio" }} />
+          </Stack>
+        </AppDataProvider>
+      </AuthProvider>
     </ErrorBoundary>
   );
 }

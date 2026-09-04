@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
-import { colors, gradients, radius, spacing } from "@/theme";
+import { colors, fonts, gradients, radius, spacing } from "@/theme";
 
 interface YwpButtonProps {
   label: string;
@@ -89,16 +89,18 @@ const styles = StyleSheet.create({
   success: { borderColor: colors.success },
   goldText: {
     color: colors.background,
-    fontWeight: "900",
-    letterSpacing: 0.8,
+    fontFamily: fonts.displaySemi,
+    fontWeight: "700",
+    letterSpacing: 1.0,
     fontSize: 14,
   },
   outlineText: {
     color: colors.white,
-    fontWeight: "900",
-    letterSpacing: 0.6,
+    fontFamily: fonts.displaySemi,
+    fontWeight: "700",
+    letterSpacing: 0.8,
     fontSize: 14,
   },
-  pressed: { transform: [{ scale: 0.985 }], opacity: 0.92 },
+  pressed: { transform: [{ scale: 0.97 }], opacity: 0.94 },
   disabled: { opacity: 0.5 },
 });

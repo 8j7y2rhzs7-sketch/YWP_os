@@ -1,16 +1,18 @@
 import type { ReactNode } from "react";
+import { useEffect, useRef } from "react";
 import {
+  Animated,
   RefreshControl,
   ScrollView,
   StyleSheet,
   View,
   type ViewStyle,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { AmbientField } from "@/components/AmbientField";
 import { sportLook } from "@/sportVisuals";
-import { colors, gradients, spacing } from "@/theme";
+import { colors, spacing } from "@/theme";
 
 interface ScreenProps {
   children: ReactNode;
@@ -30,12 +32,41 @@ export function Screen({
   sport,
 }: ScreenProps) {
   const look = sportLook(sport);
-  const pageColors = sport
-    ? ([look.field, "#12110A", look.field] as const)
-    : gradients.page;
-  const content = <View style={[styles.content, contentStyle]}>{children}</View>;
+  const enter = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(enter, {
+      toValue: 1,
+      duration: 420,
+      useNativeDriver: true,
+    }).start();
+  }, [enter]);
+
+  const content = (
+    <Animated.View
+      style={[
+        styles.content,
+        contentStyle,
+        {
+          opacity: enter,
+          transform: [
+            {
+              translateY: enter.interpolate({
+                inputRange: [0, 1],
+                outputRange: [10, 0],
+              }),
+            },
+          ],
+        },
+      ]}
+    >
+      {children}
+    </Animated.View>
+  );
+
   return (
-    <LinearGradient colors={pageColors} style={styles.page}>
+    <View style={styles.page}>
+      <AmbientField sportAccent={sport ? look.glow : colors.gold} />
       <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
         {scroll ? (
           <ScrollView
@@ -58,12 +89,12 @@ export function Screen({
           content
         )}
       </SafeAreaView>
-    </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  page: { flex: 1 },
+  page: { flex: 1, backgroundColor: colors.background },
   safe: { flex: 1 },
   scrollContent: { flexGrow: 1 },
   content: {

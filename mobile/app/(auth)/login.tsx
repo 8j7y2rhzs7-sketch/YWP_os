@@ -10,7 +10,7 @@ import { Screen } from "@/components/Screen";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
 import { ensureApiUrl } from "@/lib/api";
-import { colors, spacing, type } from "@/theme";
+import { colors, fonts, spacing, type } from "@/theme";
 
 export default function LoginScreen() {
   const { user, login } = useAuth();
@@ -41,8 +41,9 @@ export default function LoginScreen() {
     <Screen contentStyle={styles.content}>
       <BrandHeader />
       <View style={styles.hero}>
+        <Text style={styles.brandMark}>YWP OS</Text>
         <Text style={type.eyebrow}>DECISION INTELLIGENCE</Text>
-        <Text style={styles.heroTitle}>Measure twice. Cut once.</Text>
+        <Text style={styles.heroTitle}>Measure twice.{"\n"}Cut once.</Text>
         <Text style={styles.heroBody}>
           Full sweeps, honest PASS calls, bankroll discipline, and learning from
           every result.
@@ -90,13 +91,33 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   content: { justifyContent: "center", paddingTop: spacing.xl },
   hero: { gap: spacing.sm, paddingVertical: spacing.xl },
-  heroTitle: { color: colors.white, fontSize: 36, fontWeight: "900" },
+  brandMark: {
+    color: colors.goldBright,
+    fontFamily: fonts.display,
+    fontSize: 18,
+    fontWeight: "800",
+    letterSpacing: 3.2,
+  },
+  heroTitle: {
+    color: colors.white,
+    fontFamily: fonts.display,
+    fontSize: 40,
+    fontWeight: "800",
+    lineHeight: 44,
+    letterSpacing: -0.8,
+  },
   heroBody: { ...type.body, color: colors.silver, maxWidth: 580 },
-  panelTitle: { color: colors.gold, fontSize: 18, fontWeight: "900" },
+  panelTitle: {
+    color: colors.gold,
+    fontFamily: fonts.displaySemi,
+    fontSize: 18,
+    fontWeight: "700",
+  },
   link: {
     color: colors.gold,
     textAlign: "center",
-    fontWeight: "800",
+    fontFamily: fonts.bodyBold,
+    fontWeight: "700",
     padding: spacing.sm,
   },
   disclaimer: { ...type.caption, textAlign: "center", padding: spacing.lg },

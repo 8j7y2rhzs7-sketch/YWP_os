@@ -12,7 +12,7 @@ import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
-import { brand, colors, spacing, type } from "@/theme";
+import { brand, colors, fonts, spacing, type } from "@/theme";
 import type {
   Bankroll,
   LearningPulse,
@@ -81,13 +81,14 @@ export default function CommandCenter() {
     <Screen refreshing={refreshing} onRefresh={() => void load(true)}>
       <BrandHeader />
       <MetalPanel tone="gold" style={styles.hero}>
+        <Text style={styles.brandMark}>YWP OS</Text>
         <View style={styles.heroTop}>
           <View style={styles.heroCopy}>
             <Text style={type.eyebrow}>WELCOME BACK, {user?.name}</Text>
             <Text style={styles.heroTitle}>It learns every time you use it.</Text>
             <Text style={styles.heroText}>
               {pulse?.headline ??
-                "Run a slate, edit a ticket, grade a result. Quiet metal is still the chassis — color, photos, and training are the point."}
+                "Run a slate, lock a ticket, grade a result. Quiet metal is the chassis — edge is the point."}
             </Text>
           </View>
           <StatusPill value={protocol?.status ?? "canonical"} />
@@ -174,21 +175,51 @@ export default function CommandCenter() {
 
 const styles = StyleSheet.create({
   hero: { padding: spacing.xl },
+  brandMark: {
+    color: colors.goldBright,
+    fontFamily: fonts.display,
+    fontSize: 13,
+    fontWeight: "800",
+    letterSpacing: 3,
+  },
   heroTop: { flexDirection: "row", alignItems: "flex-start", gap: spacing.md },
   heroCopy: { flex: 1, gap: spacing.xs },
-  heroTitle: { color: colors.white, fontSize: 34, fontWeight: "900" },
+  heroTitle: {
+    color: colors.white,
+    fontFamily: fonts.display,
+    fontSize: 34,
+    fontWeight: "800",
+    letterSpacing: -0.6,
+    lineHeight: 38,
+  },
   heroText: { ...type.body, color: colors.silver },
   metrics: { flexDirection: "row", flexWrap: "wrap", gap: spacing.md },
   protocolHeader: { flexDirection: "row", alignItems: "center", gap: spacing.md },
-  panelTitle: { color: colors.white, fontSize: 18, fontWeight: "900" },
-  rule: { color: colors.silver, fontSize: 14, lineHeight: 21 },
+  panelTitle: {
+    color: colors.white,
+    fontFamily: fonts.displaySemi,
+    fontSize: 18,
+    fontWeight: "700",
+  },
+  rule: {
+    color: colors.silver,
+    fontFamily: fonts.body,
+    fontSize: 14,
+    lineHeight: 22,
+  },
   ticketRow: { flexDirection: "row", alignItems: "center", gap: spacing.md },
-  ticketTitle: { color: colors.white, fontSize: 17, fontWeight: "900" },
+  ticketTitle: {
+    color: colors.white,
+    fontFamily: fonts.displaySemi,
+    fontSize: 17,
+    fontWeight: "700",
+  },
   footer: {
     color: colors.gold,
     textAlign: "center",
+    fontFamily: fonts.bodyBold,
     fontSize: 12,
-    fontWeight: "900",
+    fontWeight: "700",
     letterSpacing: 2,
   },
   footerMuted: { ...type.caption, textAlign: "center", letterSpacing: 1.4 },

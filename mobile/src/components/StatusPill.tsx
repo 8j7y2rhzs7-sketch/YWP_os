@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 
-import { colors, radius, spacing } from "@/theme";
+import { colors, fonts, radius, spacing } from "@/theme";
 
 const success = new Set(["PLAY", "LOCKED", "DOUBLE_CLEARED", "WIN", "POSITIVE", "SETTLED"]);
 const warning = new Set(["LEAN", "WATCH", "WARNING", "PENDING", "PUSH", "VOID"]);
@@ -29,16 +29,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: spacing.sm,
-    borderRadius: radius.pill,
+    borderRadius: radius.sm,
     borderWidth: 1,
     paddingHorizontal: spacing.md,
-    paddingVertical: 7,
+    paddingVertical: 6,
   },
-  dot: { width: 7, height: 7, borderRadius: 4 },
-  text: { fontSize: 11, fontWeight: "900", letterSpacing: 0.8 },
-  success: { backgroundColor: colors.successDeep, borderColor: colors.success },
-  warning: { backgroundColor: colors.warningDeep, borderColor: colors.warning },
-  danger: { backgroundColor: colors.dangerDeep, borderColor: colors.danger },
+  dot: { width: 6, height: 6, borderRadius: 3 },
+  text: {
+    fontFamily: fonts.bodyBold,
+    fontSize: 10,
+    fontWeight: "700",
+    letterSpacing: 1.0,
+  },
+  success: { backgroundColor: colors.successDeep, borderColor: "rgba(63,219,150,0.55)" },
+  warning: { backgroundColor: colors.warningDeep, borderColor: "rgba(255,184,62,0.55)" },
+  danger: { backgroundColor: colors.dangerDeep, borderColor: "rgba(255,101,119,0.55)" },
   neutral: { backgroundColor: colors.surfaceRaised, borderColor: colors.border },
   successDot: { backgroundColor: colors.success },
   warningDot: { backgroundColor: colors.warning },

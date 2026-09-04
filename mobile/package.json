@@ -1,6 +1,6 @@
 {
   "name": "ywp-os-mobile",
-  "version": "3.2.8",
+  "version": "3.3.0",
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
@@ -13,6 +13,8 @@
     "build:apk": "cd android && ./gradlew assembleRelease -PreactNativeArchitectures=armeabi-v7a,arm64-v8a"
   },
   "dependencies": {
+    "@expo-google-fonts/dm-sans": "^0.4.2",
+    "@expo-google-fonts/syne": "^0.4.2",
     "@expo/vector-icons": "^15.0.3",
     "@react-native-async-storage/async-storage": "^3.1.1",
     "@react-native-community/netinfo": "^12.0.1",

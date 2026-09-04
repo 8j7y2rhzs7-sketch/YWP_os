@@ -26,7 +26,7 @@ export function MetalPanel({
       : tone === "danger"
         ? gradients.danger
         : tone === "gold"
-          ? (["#2D2108", "#120F08", "#090B0F"] as const)
+          ? gradients.panelGold
           : gradients.panel;
   return (
     <LinearGradient
@@ -41,6 +41,7 @@ export function MetalPanel({
         style,
       ]}
     >
+      <View style={styles.edge} />
       <View style={styles.highlight} />
       {children}
     </LinearGradient>
@@ -51,21 +52,30 @@ const styles = StyleSheet.create({
   panel: {
     borderRadius: radius.lg,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: "rgba(255,255,255,0.08)",
     padding: spacing.lg,
     gap: spacing.md,
     overflow: "hidden",
     ...shadow,
   },
+  edge: {
+    position: "absolute",
+    left: 0,
+    top: 14,
+    bottom: 14,
+    width: 2,
+    borderRadius: 2,
+    backgroundColor: colors.goldMute,
+  },
   highlight: {
     position: "absolute",
     top: 0,
-    left: 18,
-    right: 18,
-    height: 1,
-    backgroundColor: "rgba(255,255,255,0.14)",
+    left: 22,
+    right: 22,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: "rgba(255,255,255,0.22)",
   },
-  success: { borderColor: colors.success },
-  danger: { borderColor: colors.danger },
-  gold: { borderColor: colors.borderGold },
+  success: { borderColor: "rgba(63,219,150,0.45)" },
+  danger: { borderColor: "rgba(255,101,119,0.45)" },
+  gold: { borderColor: "rgba(196,152,42,0.55)" },
 });

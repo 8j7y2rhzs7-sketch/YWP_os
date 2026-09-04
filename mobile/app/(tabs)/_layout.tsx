@@ -1,10 +1,10 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Redirect, Tabs } from "expo-router";
 import type { ComponentProps } from "react";
-import type { ColorValue } from "react-native";
+import { StyleSheet, type ColorValue } from "react-native";
 
 import { useAuth } from "@/context/AuthContext";
-import { colors } from "@/theme";
+import { colors, fonts } from "@/theme";
 
 type IconName = ComponentProps<typeof MaterialCommunityIcons>["name"];
 
@@ -25,13 +25,19 @@ export default function TabLayout() {
         tabBarActiveTintColor: colors.gold,
         tabBarInactiveTintColor: colors.dim,
         tabBarStyle: {
-          backgroundColor: colors.backgroundRaised,
-          borderTopColor: colors.borderGold,
-          height: 72,
-          paddingTop: 7,
-          paddingBottom: 8,
+          backgroundColor: "rgba(10,13,18,0.96)",
+          borderTopColor: "rgba(196,152,42,0.35)",
+          borderTopWidth: StyleSheet.hairlineWidth,
+          height: 74,
+          paddingTop: 8,
+          paddingBottom: 10,
         },
-        tabBarLabelStyle: { fontSize: 10, fontWeight: "800" },
+        tabBarLabelStyle: {
+          fontSize: 10,
+          fontFamily: fonts.bodyBold,
+          fontWeight: "700",
+          letterSpacing: 0.4,
+        },
       }}
     >
       <Tabs.Screen
