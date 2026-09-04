@@ -77,9 +77,26 @@ export default function TicketDetailScreen() {
     try {
       const result = await request<Ticket>(`/tickets/${id}/place`, { method: "POST" });
       setTicket(result);
-      Alert.alert("YWP OS", "Ticket marked placed. Grade each result honestly after settlement.");
+      Alert.alert(
+        "YWP OS",
+        "Ticket marked placed. Sync scores after games finish, or grade process later.",
+      );
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Ticket could not be placed");
+    } finally {
+      setAction(null);
+    }
+  }
+
+  async function syncScores() {
+    if (!id) return;
+    setAction("settle");
+    setError(null);
+    try {
+      await request("/sports/settle-day", { method: "POST", body: "{}" });
+      await load();
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Score sync failed");
     } finally {
       setAction(null);
     }
@@ -270,8 +287,26 @@ export default function TicketDetailScreen() {
               onPress={() => router.push(`/result/${leg.recommendation_id}`)}
             />
           ) : null}
+          {ticket.status === "placed" || ticket.status === "settled"
+            ? leg.outcome
+              ? (
+                  <Text style={type.caption}>
+                    Result recorded. Open process grade anytime to complete the audit.
+                  </Text>
+                )
+              : null
+            : null}
         </MetalPanel>
       ))}
+
+      {(ticket.status === "placed" || ticket.status === "settled") &&
+      ticket.legs.some((leg) => leg.action !== "skip" && !leg.outcome) ? (
+        <YwpButton
+          label="SYNC SCORES & RESULTS"
+          onPress={() => void syncScores()}
+          loading={action === "settle"}
+        />
+      ) : null}
 
       {canEdit ? (
         <YwpButton

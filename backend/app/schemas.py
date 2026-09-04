@@ -634,6 +634,26 @@ class ResultOut(YWPModel):
     result_time: datetime
 
 
+class SettlementItemOut(YWPModel):
+    recommendation_id: str
+    ticket_id: str
+    selection: str
+    status: str
+    outcome: str | None = None
+    final_score: str | None = None
+    actual_value: Decimal | None = None
+    detail: str | None = None
+
+
+class SettleDayResponse(YWPModel):
+    graded: int
+    pending: int
+    skipped: int
+    errors: int
+    tickets_settled: int
+    items: list[SettlementItemOut]
+
+
 class PerformanceOut(YWPModel):
     settled: int
     wins: int

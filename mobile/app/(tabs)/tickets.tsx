@@ -30,6 +30,14 @@ export default function TicketsScreen() {
       refresh ? setRefreshing(true) : setLoading(true);
       setError(null);
       try {
+        // Pull MLB finals for placed tickets so vault shows WIN/LOSS without manual grade.
+        if (refresh) {
+          try {
+            await request("/sports/settle-day", { method: "POST", body: "{}" });
+          } catch {
+            /* settlement is best-effort; vault still loads */
+          }
+        }
         const page = await request<Ticket[]>(`/tickets?limit=${PAGE_SIZE}`);
         setTickets(page);
         setHasMore(page.length >= PAGE_SIZE);
@@ -100,6 +108,7 @@ export default function TicketsScreen() {
             <View key={leg.id} style={styles.leg}>
               <Text style={styles.legNumber}>{leg.position}</Text>
               <Text style={styles.selection}>{leg.selection}</Text>
+              {leg.outcome ? <StatusPill value={leg.outcome} /> : null}
               <Text style={styles.odds}>
                 {leg.american_odds > 0 ? "+" : ""}
                 {leg.american_odds}
@@ -114,6 +123,13 @@ export default function TicketsScreen() {
           />
         </MetalPanel>
       ))}
+      {tickets.some((ticket) => ticket.status === "placed") ? (
+        <YwpButton
+          label="SYNC SCORES & RESULTS"
+          onPress={() => void load(true)}
+          loading={refreshing}
+        />
+      ) : null}
       {hasMore && tickets.length > 0 ? (
         <YwpButton
           label={loadingMore ? "Loading…" : "LOAD MORE TICKETS"}

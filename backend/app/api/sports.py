@@ -28,6 +28,8 @@ from app.schemas import (
     RecommendationOut,
     ResultCreate,
     ResultOut,
+    SettleDayResponse,
+    SettlementItemOut,
     SlateResponse,
     SportsAnalyzeRequest,
 )
@@ -40,6 +42,7 @@ from app.services.live_mlb_slate import live_mlb_slate
 from app.services.live_wnba_slate import live_wnba_slate
 from app.services.odds_provider import get_last_fetch_status, odds_api_configured
 from app.services.readiness import slate_readiness, verification_summary
+from app.services.settlement import settle_user_placed_tickets
 from app.services.ticket_builder import build_cards
 
 router = APIRouter(prefix="/sports", tags=["sports"])
@@ -546,3 +549,29 @@ def grade_result(payload: ResultCreate, user: SubscribedUser, db: DB) -> ResultO
     db.commit()
     db.refresh(result)
     return ResultOut.model_validate(result)
+
+
+@router.post("/settle-day", response_model=SettleDayResponse)
+def settle_day(user: SubscribedUser, db: DB) -> SettleDayResponse:
+    """Pull MLB finals for placed tickets and mark legs WIN/LOSS for memory."""
+    items = settle_user_placed_tickets(db, user.id)
+    return SettleDayResponse(
+        graded=sum(1 for item in items if item.status == "graded"),
+        pending=sum(1 for item in items if item.status == "pending"),
+        skipped=sum(1 for item in items if item.status in {"skipped", "already_graded"}),
+        errors=sum(1 for item in items if item.status == "error"),
+        tickets_settled=sum(1 for item in items if item.status == "ticket_settled"),
+        items=[
+            SettlementItemOut(
+                recommendation_id=item.recommendation_id,
+                ticket_id=item.ticket_id,
+                selection=item.selection,
+                status=item.status,
+                outcome=item.outcome,
+                final_score=item.final_score,
+                actual_value=item.actual_value,
+                detail=item.detail,
+            )
+            for item in items
+        ],
+    )
