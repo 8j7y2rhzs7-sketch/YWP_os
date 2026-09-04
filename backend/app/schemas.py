@@ -696,6 +696,8 @@ class SettleDayResponse(YWPModel):
     skipped: int
     errors: int
     tickets_settled: int
+    board_graded: int = 0
+    hive_outcomes_mapped: int = 0
     items: list[SettlementItemOut]
 
 

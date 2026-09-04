@@ -19,6 +19,12 @@ const PAGE_SIZE = 25;
 function summarizeSettle(result: SettleDayResponse): string {
   const parts: string[] = [];
   if (result.graded) parts.push(`${result.graded} graded WIN/LOSS`);
+  if (result.board_graded) {
+    parts.push(`${result.board_graded} board pick(s) settled from finals`);
+  }
+  if (result.hive_outcomes_mapped) {
+    parts.push(`${result.hive_outcomes_mapped} Hive outcome(s) mapped`);
+  }
   if (result.pending) parts.push(`${result.pending} still waiting on finals`);
   if (result.skipped) parts.push(`${result.skipped} skipped (not MLB finals yet or already graded)`);
   if (result.tickets_settled) parts.push(`${result.tickets_settled} ticket(s) marked settled`);
@@ -26,7 +32,7 @@ function summarizeSettle(result: SettleDayResponse): string {
   const boardOnly = result.items.filter(
     (item) => item.status === "graded" && !item.ticket_id,
   ).length;
-  if (boardOnly) {
+  if (boardOnly && !result.board_graded) {
     parts.push(`${boardOnly} unlocked board pick(s) logged for learning`);
   }
   if (!parts.length) {

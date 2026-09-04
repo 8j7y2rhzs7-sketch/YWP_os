@@ -310,6 +310,8 @@ export interface SettleDayResponse {
   skipped: number;
   errors: number;
   tickets_settled: number;
+  board_graded?: number;
+  hive_outcomes_mapped?: number;
   items: SettleDayItem[];
 }
 

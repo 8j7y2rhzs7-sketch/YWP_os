@@ -19,7 +19,7 @@ from decimal import Decimal
 from typing import Any
 from zoneinfo import ZoneInfo
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session, joinedload
 
 from app.core.security import utcnow
@@ -47,6 +47,26 @@ class SettlementItem:
 BOARD_DECISIONS = frozenset({"PLAY", "LEAN", "WATCH"})
 
 
+@dataclass
+class SettleDayResult:
+    """Full Sync Scores payload: tickets + board games + Hive outcome mapping."""
+
+    items: list[SettlementItem]
+    hive_outcomes_mapped: int = 0
+
+    @property
+    def board_graded(self) -> int:
+        return sum(
+            1 for item in self.items if item.status == "graded" and not item.ticket_id
+        )
+
+    @property
+    def ticket_legs_graded(self) -> int:
+        return sum(
+            1 for item in self.items if item.status == "graded" and bool(item.ticket_id)
+        )
+
+
 def _local_today(timezone_name: str | None = None) -> date:
     name = (timezone_name or "America/New_York").strip() or "America/New_York"
     try:
@@ -57,23 +77,45 @@ def _local_today(timezone_name: str | None = None) -> date:
 
 def settle_user_day(
     db: Session, user_id: str, *, as_of: date | None = None, timezone_name: str | None = None
-) -> list[SettlementItem]:
-    """Settle placed tickets, then grade remaining board picks for the user.
+) -> SettleDayResult:
+    """Sync Scores: read finals for locked tickets AND every board-shown pick.
 
-    Future slate dates (tomorrow+) are ignored so Sync stays quiet until those
-    games can actually final.
+    For each PLAY/LEAN/WATCH recommendation (even never locked), pull the game
+    feed, map WIN/LOSS/PUSH/VOID when final, then resolve matching Hive captures
+    so optimum-accuracy can advance from the full board universe.
+    Future slate dates (tomorrow+) are ignored until their calendar day arrives.
     """
+    from app.hive.models import HiveLearningEvent
+
     if as_of is None:
         if timezone_name is None:
             user = db.get(User, user_id)
             timezone_name = user.timezone if user else "America/New_York"
         as_of = _local_today(timezone_name)
+
+    pending_before = int(
+        db.scalar(
+            select(func.count())
+            .select_from(HiveLearningEvent)
+            .where(HiveLearningEvent.outcome.is_(None))
+        )
+        or 0
+    )
     items = settle_user_placed_tickets(db, user_id, as_of=as_of)
     items.extend(settle_user_board_recommendations(db, user_id, as_of=as_of))
-    # Ensure every board capture with a graded recommendation gets a Hive outcome.
     sync_hive_outcomes_for_graded(db, user_id)
-    return items
-
+    pending_after = int(
+        db.scalar(
+            select(func.count())
+            .select_from(HiveLearningEvent)
+            .where(HiveLearningEvent.outcome.is_(None))
+        )
+        or 0
+    )
+    return SettleDayResult(
+        items=items,
+        hive_outcomes_mapped=max(0, pending_before - pending_after),
+    )
 
 def sync_hive_outcomes_for_graded(db: Session, user_id: str) -> int:
     """Map graded board/ticket results onto pending Hive captures for this user.

@@ -872,14 +872,21 @@ def log_external_result(
 
 @router.post("/settle-day", response_model=SettleDayResponse)
 def settle_day(user: SubscribedUser, db: DB) -> SettleDayResponse:
-    """Pull MLB finals and grade placed tickets plus unlocked board picks for memory."""
-    items = settle_user_day(db, user.id, timezone_name=user.timezone)
+    """Pull finals for locked tickets and every board PLAY/LEAN/WATCH pick.
+
+    Maps each settled game outcome onto Hive captures so learning covers the
+    full board universe, not only placed tickets.
+    """
+    result = settle_user_day(db, user.id, timezone_name=user.timezone)
+    items = result.items
     return SettleDayResponse(
         graded=sum(1 for item in items if item.status == "graded"),
         pending=sum(1 for item in items if item.status == "pending"),
         skipped=sum(1 for item in items if item.status in {"skipped", "already_graded"}),
         errors=sum(1 for item in items if item.status == "error"),
         tickets_settled=sum(1 for item in items if item.status == "ticket_settled"),
+        board_graded=result.board_graded,
+        hive_outcomes_mapped=result.hive_outcomes_mapped,
         items=[
             SettlementItemOut(
                 recommendation_id=item.recommendation_id,

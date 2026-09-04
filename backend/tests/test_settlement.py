@@ -404,10 +404,12 @@ def test_settle_user_day_includes_board_and_tickets(monkeypatch) -> None:
 
         monkeypatch.setattr(settlement, "get_live_feed", _feed_for)
 
-        items = settlement.settle_user_day(db, user.id, as_of=date.today())
+        result = settlement.settle_user_day(db, user.id, as_of=date.today())
+        items = result.items
         statuses = [item.status for item in items]
         assert statuses.count("graded") >= 2
         assert "ticket_settled" in statuses
+        assert result.board_graded >= 1
 
         db.refresh(locked)
         db.refresh(unlocked)
@@ -455,9 +457,100 @@ def test_future_slate_board_picks_are_ignored(monkeypatch) -> None:
             settlement, "get_live_feed", lambda game_pk: _feed(abstract="Scheduled")
         )
 
-        items = settlement.settle_user_day(db, user.id, as_of=date.today())
-        assert items == []
+        result = settlement.settle_user_day(db, user.id, as_of=date.today())
+        assert result.items == []
         db.refresh(recommendation)
         assert recommendation.outcome is None
+    finally:
+        db.close()
+
+
+def test_sync_maps_hive_outcomes_for_unlocked_board_watch(monkeypatch) -> None:
+    """Sync must read finals for board WATCH picks and map Hive outcomes."""
+    import os
+
+    os.environ["YWP_HIVE_ANON_SECRET"] = "test-hive-anon-secret-for-board-sync"
+    os.environ["YWP_HIVE_ENABLED"] = "true"
+
+    from app.hive.models import HiveLearningEvent
+    from app.hive.service import capture_hive_prediction
+
+    db = SessionLocal()
+    try:
+        user = User(
+            email="hive-board-sync@example.com",
+            password_hash="x",
+            name="HiveBoard",
+            timezone="America/New_York",
+            subscription_status="active",
+        )
+        db.add(user)
+        db.flush()
+        recommendation = _recommendation(
+            user.id,
+            analysis_id="analysis-hive-watch",
+            candidate_id="mlb-ml-watch-91111",
+            event_id="evt-hive-watch",
+            decision="WATCH",
+            recommendation_tier="WATCH",
+            input_hash="hive-watch-hash",
+            snapshot={
+                "game_pk": 91111,
+                "home_team": "Home Club",
+                "away_team": "Away Club",
+            },
+        )
+        db.add(recommendation)
+        db.flush()
+
+        hive_event = capture_hive_prediction(
+            db=db,
+            contributor_user_id=user.id,
+            consent_to_hive=True,
+            source_recommendation_id=str(recommendation.id),
+            sport=recommendation.sport,
+            league=recommendation.league,
+            event_id=recommendation.event_id,
+            event_start_at=datetime.now(timezone.utc),
+            market=recommendation.market_type,
+            market_scope="full_game",
+            selection=recommendation.selection,
+            line=None,
+            odds_american=recommendation.american_odds,
+            model_probability=0.58,
+            quality_score=72.0,
+            model_version=recommendation.model_version,
+            protocol_version=recommendation.protocol_version,
+            evidence_version=recommendation.input_hash,
+            data_quality=0.9,
+            feature_flags={"data_complete": True},
+        )
+        db.commit()
+        assert hive_event is not None
+        assert hive_event.outcome is None
+
+        monkeypatch.setattr(
+            settlement,
+            "get_live_feed",
+            lambda game_pk: _feed(home_runs=7, away_runs=2),
+        )
+
+        result = settlement.settle_user_day(db, user.id, as_of=date.today())
+        assert result.board_graded >= 1
+        assert result.hive_outcomes_mapped >= 1
+        assert any(
+            item.status == "graded" and item.ticket_id == "" for item in result.items
+        )
+
+        db.refresh(recommendation)
+        assert recommendation.outcome == "WIN"
+
+        hive_row = (
+            db.query(HiveLearningEvent)
+            .filter(HiveLearningEvent.source_recommendation_id == str(recommendation.id))
+            .one()
+        )
+        assert hive_row.outcome == "WIN"
+        assert hive_row.outcome_verified is True
     finally:
         db.close()
