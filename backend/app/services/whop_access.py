@@ -9,7 +9,14 @@ from sqlalchemy.orm import Session
 
 from app.core.security import hash_password
 from app.models import AuditLog, BankrollAccount, PendingWhopAccess, User
-from app.services.whop import check_user_access, checkout_url, product_id, whop_enabled
+from app.services.whop import (
+    app_download_url,
+    check_user_access,
+    checkout_url,
+    find_whop_user_id_by_email,
+    product_id,
+    whop_enabled,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +39,7 @@ def serialize_user(user: User):
             "has_app_access": has_access,
             "subscription_status": user.subscription_status,
             "checkout_url": None if has_access else checkout_url(),
+            "app_download_url": app_download_url(),
         }
     )
 
@@ -54,6 +62,10 @@ def sync_user_subscription(db: Session, user: User) -> User:
         if user.role == "admin":
             user.subscription_status = "active"
         return user
+    if not user.whop_user_id:
+        resolved = find_whop_user_id_by_email(user.email)
+        if resolved:
+            user.whop_user_id = resolved
     if user.whop_user_id:
         try:
             access = check_user_access(user.whop_user_id, product_id())

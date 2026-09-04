@@ -19,6 +19,7 @@ export interface User {
   subscription_status: string;
   has_app_access: boolean;
   checkout_url?: string | null;
+  app_download_url?: string | null;
   created_at: string;
 }
 
@@ -28,6 +29,7 @@ export interface SubscriptionStatus {
   status: string;
   whop_user_id: string | null;
   checkout_url: string | null;
+  app_download_url?: string | null;
 }
 
 export interface Bankroll {

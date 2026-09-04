@@ -77,6 +77,36 @@ def test_checkout_uses_existing_decision_engine_plan(client: TestClient) -> None
     body = response.json()
     assert body["checkout_url"] == "https://whop.com/checkout/plan_MwJ2qcFxmvqDY"
     assert body["product_id"] == "prod_NuPQUAGoibkpW"
+    assert body["app_download_url"].endswith("YWP-OS-3.3.5.apk")
+    assert "same email" in body["message"].lower()
+
+
+def test_sync_resolves_membership_by_email(
+    client: TestClient, auth_headers: dict[str, str], monkeypatch
+) -> None:
+    from app.core.config import settings
+
+    monkeypatch.setattr(settings, "whop_subscription_required", True)
+    monkeypatch.setattr(settings, "whop_product_id", "prod_NuPQUAGoibkpW")
+    monkeypatch.setattr(settings, "whop_api_key", "apik_test")
+    monkeypatch.setattr(settings, "whop_company_id", "biz_test")
+
+    monkeypatch.setattr(
+        "app.services.whop_access.find_whop_user_id_by_email",
+        lambda _email: "user_whop_email_1",
+    )
+    monkeypatch.setattr(
+        "app.services.whop_access.check_user_access",
+        lambda _uid, _product=None: {"has_access": True, "access_level": "customer"},
+    )
+
+    response = client.post("/api/v1/whop/sync", headers=auth_headers)
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["has_access"] is True
+    assert body["status"] == "active"
+    assert body["whop_user_id"] == "user_whop_email_1"
+    assert body["app_download_url"].endswith("YWP-OS-3.3.5.apk")
 
 
 def test_protected_route_sends_unpaid_user_to_whop_checkout(

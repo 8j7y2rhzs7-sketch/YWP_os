@@ -70,6 +70,14 @@ class Settings(BaseSettings):
     whop_subscription_required: bool = Field(
         default=False, validation_alias="WHOP_SUBSCRIPTION_REQUIRED"
     )
+    app_download_url: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices(
+            "YWP_APP_DOWNLOAD_URL",
+            "APP_DOWNLOAD_URL",
+            "EXPO_PUBLIC_APP_DOWNLOAD_URL",
+        ),
+    )
 
     lock_check_ttl_seconds: int = 300
     odds_warning_move_probability_points: float = 0.03

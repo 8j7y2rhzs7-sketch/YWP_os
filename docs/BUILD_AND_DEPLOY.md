@@ -59,6 +59,9 @@ The delivered package was validated with seven backend tests at 82% statement co
 
 ## Native builds
 
+Full iOS / TestFlight checklist: **[docs/IOS.md](./IOS.md)** (when present on the branch).
+Paid Android Whop delivery: **[docs/WHOP_PAID_DELIVERY.md](./WHOP_PAID_DELIVERY.md)**.
+
 1. Change `ios.bundleIdentifier` and `android.package` in `mobile/app.json` if `com.ywpos.app` is not available to the owning developer accounts.
 2. Install and authenticate EAS CLI.
 3. Create a development build:

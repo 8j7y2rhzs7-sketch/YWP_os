@@ -25,6 +25,10 @@ WHOP_API_BASE = "https://api.whop.com/api/v1"
 WEBHOOK_TOLERANCE_SECONDS = 300
 DECISION_ENGINE_PRODUCT_ID = "prod_NuPQUAGoibkpW"
 DECISION_ENGINE_CHECKOUT_URL = "https://whop.com/checkout/plan_MwJ2qcFxmvqDY"
+DEFAULT_APP_DOWNLOAD_URL = (
+    "https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/"
+    "android-v3.3.5/YWP-OS-3.3.5.apk"
+)
 
 
 class WhopWebhookError(Exception):
@@ -37,6 +41,10 @@ def product_id() -> str:
 
 def checkout_url() -> str:
     return settings.checkout_url or DECISION_ENGINE_CHECKOUT_URL
+
+
+def app_download_url() -> str:
+    return settings.app_download_url or DEFAULT_APP_DOWNLOAD_URL
 
 
 def whop_enabled() -> bool:
@@ -72,6 +80,35 @@ def check_user_access(whop_user_id: str, resource_id: str | None = None) -> dict
         return {"has_access": False, "access_level": "unknown"}
     result = whop_client().users.check_access(id=whop_user_id, resource_id=resource)
     return {"has_access": bool(result.has_access), "access_level": result.access_level}
+
+
+def find_whop_user_id_by_email(email: str) -> str | None:
+    """Resolve a Whop user id from exact membership email (member:email:read)."""
+    cleaned = (email or "").strip().lower()
+    if not cleaned or not settings.whop_api_key:
+        return None
+    try:
+        pager = whop_client().members.list(
+            account_id=settings.whop_company_id,
+            query=cleaned,
+            first=5,
+        )
+        for member in pager:
+            user = getattr(member, "user", None)
+            member_email = (
+                (getattr(user, "email", None) if user is not None else None)
+                or getattr(member, "email", None)
+                or ""
+            ).lower()
+            user_id = (
+                (getattr(user, "id", None) if user is not None else None)
+                or getattr(member, "user_id", None)
+            )
+            if user_id and (not member_email or member_email == cleaned):
+                return str(user_id)
+    except Exception:
+        logger.exception("Whop member email lookup failed for %s", cleaned)
+    return None
 
 
 def verify_webhook(payload: bytes, headers: dict[str, str], secret: str) -> dict[str, Any]:

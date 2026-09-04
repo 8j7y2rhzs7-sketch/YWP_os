@@ -10,6 +10,7 @@ from app.models import WhopWebhookDelivery
 from app.schemas import MessageOut, SubscriptionOut, WhopCheckoutOut
 from app.services.whop import (
     WhopWebhookError,
+    app_download_url,
     checkout_url,
     extract_membership_fields,
     membership_grants_access,
@@ -35,7 +36,11 @@ def get_checkout_url() -> WhopCheckoutOut:
     return WhopCheckoutOut(
         checkout_url=checkout_url(),
         product_id=product_id(),
-        message="Complete Daily Access on Whop, then return and sync with the same email.",
+        app_download_url=app_download_url(),
+        message=(
+            "Pay on Whop with the same email as your YWP OS account, download the "
+            "Android APK from Whop (or the backup link), install it, then Sync my access."
+        ),
     )
 
 
@@ -76,6 +81,7 @@ def subscription_status(user: CurrentUser, db: DB) -> SubscriptionOut:
         status=user.subscription_status,
         whop_user_id=user.whop_user_id,
         checkout_url=checkout_url(),
+        app_download_url=app_download_url(),
     )
 
 
@@ -91,6 +97,7 @@ def sync_subscription(user: CurrentUser, db: DB) -> SubscriptionOut:
         status=user.subscription_status,
         whop_user_id=user.whop_user_id,
         checkout_url=checkout_url(),
+        app_download_url=app_download_url(),
     )
 
 

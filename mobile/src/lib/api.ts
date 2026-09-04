@@ -20,6 +20,10 @@ export const WHOP_CHECKOUT_URL =
   process.env.NEXT_PUBLIC_WHOP_CHECKOUT_URL ??
   "https://whop.com/checkout/plan_MwJ2qcFxmvqDY";
 
+export const APP_DOWNLOAD_URL =
+  process.env.EXPO_PUBLIC_APP_DOWNLOAD_URL ??
+  "https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.5/YWP-OS-3.3.5.apk";
+
 export function normalizeApiUrl(value: string): string {
   const normalized = value.trim().replace(/\/$/, "");
   if (!normalized) throw new Error("Enter your deployed YWP OS API URL");

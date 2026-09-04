@@ -115,6 +115,7 @@ class UserOut(YWPModel):
     subscription_status: str = "none"
     has_app_access: bool = True
     checkout_url: str | None = None
+    app_download_url: str | None = None
     created_at: datetime
 
 
@@ -124,11 +125,13 @@ class SubscriptionOut(YWPModel):
     status: str
     whop_user_id: str | None = None
     checkout_url: str | None = None
+    app_download_url: str | None = None
 
 
 class WhopCheckoutOut(YWPModel):
     checkout_url: str
     product_id: str | None = None
+    app_download_url: str | None = None
     message: str
 
 
