@@ -3,6 +3,7 @@ from sqlalchemy import text
 
 from app.core.config import settings
 from app.deps import DB
+from app.services.espn_provider import probe_espn_api
 from app.services.mlb_provider import probe_mlb_api
 from app.services.odds_provider import odds_api_configured, probe_odds_api
 
@@ -31,10 +32,15 @@ def health_providers() -> dict[str, object]:
     """
     mlb = probe_mlb_api()
     odds = probe_odds_api()
+    espn = probe_espn_api("nfl")
+    espn_ok = espn.get("status") == "connected"
+    mlb_ok = bool(mlb.get("ok"))
+    odds_ok = bool(odds.get("ok"))
     return {
-        "status": "ok" if mlb.get("ok") and odds.get("ok") else "degraded",
+        "status": "ok" if mlb_ok and odds_ok and espn_ok else "degraded",
         "version": settings.app_version,
         "demo_mode": settings.demo_mode,
         "mlb": mlb,
+        "espn": espn,
         "odds": odds,
     }

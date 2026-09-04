@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from sqlalchemy import select
 
 from app.deps import DB, SubscribedUser
@@ -16,9 +16,12 @@ def current_protocol(_: SubscribedUser) -> dict:
 
 
 @router.get("/trusted-sources")
-def trusted_sources(_: SubscribedUser) -> dict:
+def trusted_sources(
+    _: SubscribedUser,
+    sport: str | None = Query(default=None),
+) -> dict:
     """Certified sources the research searchers are allowed to pull from."""
-    return trusted_sources_manifest()
+    return trusted_sources_manifest(sport)
 
 
 @router.get("/runs/{analysis_id}", response_model=ProtocolRunOut)

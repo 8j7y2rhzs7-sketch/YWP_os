@@ -31,9 +31,11 @@ function probabilityLabel(source: string | undefined): string {
 const sports = [
   { key: "mlb", label: "MLB", icon: "⚾" },
   { key: "wnba", label: "WNBA", icon: "🏀" },
-  { key: "soccer", label: "SOCCER", icon: "⚽" },
+  { key: "nba", label: "NBA", icon: "🏀" },
   { key: "nfl", label: "NFL", icon: "🏈" },
   { key: "ncaaf", label: "NCAAF", icon: "🏈" },
+  { key: "nhl", label: "NHL", icon: "🏒" },
+  { key: "soccer", label: "SOCCER", icon: "⚽" },
   { key: "kbo", label: "KBO", icon: "⚾" },
 ] as const;
 

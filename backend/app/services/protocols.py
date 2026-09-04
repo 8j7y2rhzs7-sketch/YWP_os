@@ -134,6 +134,13 @@ CURRENT_PROTOCOL = {
             "home_away_park_weather_and_market_movement",
             "f5_full_game_team_total_and_variance_elimination_test",
         ],
+        "nhl": [
+            "schedule_and_starting_goalies_verified",
+            "injuries_rest_travel_and_line_combinations",
+            "recent_form_home_away_and_special_teams",
+            "pace_expected_goals_proxy_and_game_script",
+            "market_value_and_weakest_leg_elimination",
+        ],
     },
     "ticket_system": {
         "official_daily_card": (
@@ -247,9 +254,13 @@ CURRENT_PROTOCOL = {
             "mlb_boxscore_umpire_crew",
             "mlb_roster_availability",
             "mlb_bullpen_workload",
+            "espn_scoreboard_schedule_and_venue",
+            "espn_team_schedule_l5_l10_form",
+            "espn_league_injury_report",
             "open_meteo_backup_weather",
             "odds_api_current_price_and_multi_book_consensus",
             "ywp_mlb_independent_model",
+            "ywp_multi_sport_independent_model",
         ],
         "never_trusted": [
             "Random blogs or tip pages",
