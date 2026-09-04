@@ -102,7 +102,9 @@ Publish `mobile/dist` to the chosen static host and configure `EXPO_PUBLIC_API_U
 
 ## Live provider integration
 
-Demo records are synthetic and explicitly labeled. A live launch requires licensed adapters for schedule, odds/markets, recent logs, lineups, injuries, weather, and settlement. Normalize provider output to `CandidateInput`; do not move provider keys into the client.
+Demo records are synthetic and explicitly labeled. Non-MLB live slates use a
+**multi-source cascade** — see **[docs/DATA_SOURCES.md](./DATA_SOURCES.md)**.
+Odds-priced plays still show when fact feeds (ESPN/NHL) fail; readiness stays PARTIAL.
 
 Every live candidate must explicitly confirm the schedule, universe scan, actual L5/L10, lineup, injuries, weather, starter/role, motivation/rotation, home-away/travel, market movement, and applicable sport-specific sweep. Omitted verification flags default to `false`.
 

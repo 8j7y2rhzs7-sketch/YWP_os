@@ -47,8 +47,64 @@ def espn_path_for(sport: str) -> str | None:
     return ESPN_SPORT_PATHS.get(sport.lower())
 
 
+def get_scoreboard(sport: str, slate_date: date) -> list[dict[str, Any]]:
+    path = espn_path_for(sport)
+    if not path:
+        return []
+    stamp = slate_date.strftime("%Y%m%d")
+    try:
+        data = _get(f"{SOURCE_API}/{path}/scoreboard", params={"dates": stamp}, cache_ttl=120)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("ESPN scoreboard unavailable for %s %s: %s", sport, slate_date, exc)
+        return []
+    games: list[dict[str, Any]] = []
+    for event in data.get("events") or []:
+        parsed = _parse_event(event, sport=sport)
+        if parsed:
+            games.append(parsed)
+    return games
+
+
+def match_odds_event_to_espn(
+    sport: str,
+    slate_date: date,
+    *,
+    home_team: str,
+    away_team: str,
+) -> dict[str, Any] | None:
+    """Best-effort match Odds API event names to an ESPN scoreboard game."""
+    try:
+        games = get_scoreboard(sport, slate_date)
+        # Also try adjacent days for late/early slate timezone drift.
+        if not games:
+            for delta in (-1, 1):
+                games.extend(get_scoreboard(sport, slate_date + timedelta(days=delta)))
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("ESPN match failed for %s: %s", sport, exc)
+        return None
+    best: dict[str, Any] | None = None
+    best_score = 0
+    for game in games:
+        score = _name_overlap(home_team, game.get("home_team", "")) + _name_overlap(
+            away_team, game.get("away_team", "")
+        )
+        if score > best_score:
+            best_score = score
+            best = game
+    if best is None or best_score < 2:
+        return None
+    return best
+
+
 def probe_espn_api(sport: str = "nfl") -> dict[str, Any]:
-    path = espn_path_for(sport) or ESPN_SPORT_PATHS["nfl"]
+    path = espn_path_for(sport)
+    if not path:
+        return {
+            "status": "unsupported",
+            "sport": sport,
+            "error": f"No ESPN path mapped for {sport}",
+            "source_id": SOURCE_ID,
+        }
     try:
         data = _get(f"{SOURCE_API}/{path}/scoreboard", cache_ttl=60)
         return {
@@ -61,20 +117,6 @@ def probe_espn_api(sport: str = "nfl") -> dict[str, Any]:
         return {"status": "unavailable", "sport": sport, "error": str(exc), "source_id": SOURCE_ID}
 
 
-def get_scoreboard(sport: str, slate_date: date) -> list[dict[str, Any]]:
-    path = espn_path_for(sport)
-    if not path:
-        return []
-    stamp = slate_date.strftime("%Y%m%d")
-    data = _get(f"{SOURCE_API}/{path}/scoreboard", params={"dates": stamp}, cache_ttl=120)
-    games: list[dict[str, Any]] = []
-    for event in data.get("events") or []:
-        parsed = _parse_event(event, sport=sport)
-        if parsed:
-            games.append(parsed)
-    return games
-
-
 def get_team_recent_form(
     sport: str,
     team_id: str | int,
@@ -85,7 +127,11 @@ def get_team_recent_form(
     path = espn_path_for(sport)
     if not path:
         return _empty_form()
-    data = _get(f"{SOURCE_API}/{path}/teams/{team_id}/schedule", cache_ttl=300)
+    try:
+        data = _get(f"{SOURCE_API}/{path}/teams/{team_id}/schedule", cache_ttl=300)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("ESPN form unavailable for %s team %s: %s", sport, team_id, exc)
+        return _empty_form()
     games: list[dict[str, Any]] = []
     for event in data.get("events") or []:
         comp = (event.get("competitions") or [{}])[0]
@@ -188,33 +234,6 @@ def get_league_injuries(sport: str) -> dict[str, Any]:
         "source_id": SOURCE_ID,
         "source_url": f"{SOURCE_API}/{path}/injuries",
     }
-
-
-def match_odds_event_to_espn(
-    sport: str,
-    slate_date: date,
-    *,
-    home_team: str,
-    away_team: str,
-) -> dict[str, Any] | None:
-    """Best-effort match Odds API event names to an ESPN scoreboard game."""
-    games = get_scoreboard(sport, slate_date)
-    # Also try adjacent days for late/early slate timezone drift.
-    if not games:
-        for delta in (-1, 1):
-            games.extend(get_scoreboard(sport, slate_date + timedelta(days=delta)))
-    best: dict[str, Any] | None = None
-    best_score = 0
-    for game in games:
-        score = _name_overlap(home_team, game.get("home_team", "")) + _name_overlap(
-            away_team, game.get("away_team", "")
-        )
-        if score > best_score:
-            best_score = score
-            best = game
-    if best is None or best_score < 2:
-        return None
-    return best
 
 
 def injuries_for_teams(

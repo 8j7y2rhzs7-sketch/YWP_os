@@ -11,16 +11,19 @@ from app.services.trusted_sources import sources_for, trusted_sources_manifest
 def test_trusted_sources_include_multi_sport_pool() -> None:
     manifest = trusted_sources_manifest()
     ids = {item["id"] for item in manifest["sources"]}
-    assert "mlb_stats_api" in ids
     assert "espn_site_api" in ids
-    assert "ywp_sport_model" in ids
+    assert "nhl_web_api" in ids
+    assert "mlb_stats_api" in ids
     assert "the_odds_api" in ids
+    assert "ywp_sport_model" in ids
     nfl = trusted_sources_manifest("nfl")
     nfl_ids = {item["id"] for item in nfl["sources"]}
     assert "espn_site_api" in nfl_ids
     assert "mlb_stats_api" not in nfl_ids
     assert sources_for("form", "wnba")
     assert any(item["id"] == "espn_site_api" for item in sources_for("injuries", "nba"))
+    assert any(item["id"] == "nhl_web_api" for item in sources_for("schedule", "nhl"))
+    assert any(item["id"] == "the_odds_api" for item in sources_for("schedule", "soccer"))
 
 
 def test_sport_model_prefers_form_not_coin_flip() -> None:

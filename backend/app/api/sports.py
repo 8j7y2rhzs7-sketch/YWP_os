@@ -48,7 +48,7 @@ from app.services.decision_engine import (
 from app.services.learning import apply_micro_learning, load_feature_weights, record_usage_event
 from app.services.protocols import run_protocol_health_check
 from app.services.providers import demo_slate
-from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate
+from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate, upcoming_odds_dates
 from app.services.live_mlb_slate import live_mlb_slate
 from app.services.live_wnba_slate import live_wnba_slate
 from app.services.odds_provider import get_last_fetch_status, odds_api_configured
@@ -201,10 +201,24 @@ def slate(
                     slate_date=slate_date,
                     mode="live",
                     notice=(
-                        f"Live {sport_lower.upper()} data from The Odds API. "
-                        "Verify all inputs before wagering."
+                        f"Live {sport_lower.upper()} prices from The Odds API with "
+                        "multi-source fact cascade (NHL Web API / ESPN / Open-Meteo). "
+                        "Missing research stays PARTIAL — priced plays are still shown."
                     ),
                     candidates=candidates,
+                )
+            nearby = upcoming_odds_dates(sport_lower)
+            if nearby:
+                return _slate_response(
+                    sport=sport_lower,
+                    slate_date=slate_date,
+                    mode="live",
+                    notice=(
+                        f"No {sport_lower.upper()} Odds events on {slate_date.isoformat()}. "
+                        f"Nearest dates with prices: {', '.join(nearby)}. "
+                        "Change the slate date and refresh — demo data is not substituted."
+                    ),
+                    candidates=[],
                 )
         except Exception:
             logger.exception("Live %s slate failed", sport_lower)
@@ -214,8 +228,9 @@ def slate(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=(
                 "No verified live slate is available. The server will not silently substitute "
-                "demo data in production. Check provider configuration or submit verified "
-                "candidate data through POST /sports/analyze."
+                "demo data in production. Check provider configuration or pick a date that "
+                "has Odds API events, then refresh. You can still submit verified candidates "
+                "through POST /sports/analyze."
             ),
         )
 

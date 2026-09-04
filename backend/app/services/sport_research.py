@@ -12,11 +12,9 @@ from app.schemas import CandidateInput
 from app.services.espn_provider import (
     SOURCE_ID,
     WEATHER_SPORTS,
-    get_league_injuries,
-    get_team_recent_form,
     injuries_for_teams,
-    match_odds_event_to_espn,
 )
+from app.services.facts_cascade import league_injuries, match_schedule_game, team_recent_form
 from app.services.research_searchers import search_market_consensus, search_open_meteo_weather
 from app.services.sport_model import SportProjection, project_matchup
 from app.services.team_art import logo_for_play
@@ -34,31 +32,55 @@ def build_event_research(
     bookmakers: list[dict[str, Any]],
     injury_feed: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Pull ESPN form/injuries/venue and Odds consensus for one matchup."""
+    """Pull facts from the sport cascade + Odds consensus for one matchup.
+
+    Fact-source failures never raise — priced Odds plays must still be buildable.
+    """
     sport_l = sport.lower()
-    espn_game = match_odds_event_to_espn(
-        sport_l, slate_date, home_team=home_team, away_team=away_team
-    )
-    feed = injury_feed if injury_feed is not None else get_league_injuries(sport_l)
+    try:
+        espn_game = match_schedule_game(
+            sport_l, slate_date, home_team=home_team, away_team=away_team
+        )
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Schedule cascade failed for %s: %s", sport_l, exc)
+        espn_game = None
+    try:
+        feed = injury_feed if injury_feed is not None else league_injuries(sport_l)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Injury cascade failed for %s: %s", sport_l, exc)
+        feed = {"verified": False, "by_team": {}}
     home_name = (espn_game or {}).get("home_team") or home_team
     away_name = (espn_game or {}).get("away_team") or away_team
     home_id = (espn_game or {}).get("home_id")
     away_id = (espn_game or {}).get("away_id")
+    home_abbrev = (espn_game or {}).get("home_abbrev")
+    away_abbrev = (espn_game or {}).get("away_abbrev")
 
     home_form: dict[str, Any] = {"verified": False}
     away_form: dict[str, Any] = {"verified": False}
-    if home_id and away_id:
-        with ThreadPoolExecutor(max_workers=2, thread_name_prefix="espn-form") as pool:
-            home_fut = pool.submit(get_team_recent_form, sport_l, home_id, slate_date)
-            away_fut = pool.submit(get_team_recent_form, sport_l, away_id, slate_date)
-            try:
-                home_form = home_fut.result()
-            except Exception as exc:  # noqa: BLE001
-                logger.warning("Home form failed: %s", exc)
-            try:
-                away_form = away_fut.result()
-            except Exception as exc:  # noqa: BLE001
-                logger.warning("Away form failed: %s", exc)
+    with ThreadPoolExecutor(max_workers=2, thread_name_prefix="fact-form") as pool:
+        home_fut = pool.submit(
+            team_recent_form,
+            sport_l,
+            home_id,
+            slate_date,
+            team_abbrev=home_abbrev,
+        )
+        away_fut = pool.submit(
+            team_recent_form,
+            sport_l,
+            away_id,
+            slate_date,
+            team_abbrev=away_abbrev,
+        )
+        try:
+            home_form = home_fut.result()
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Home form failed: %s", exc)
+        try:
+            away_form = away_fut.result()
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Away form failed: %s", exc)
 
     injury_detail = injuries_for_teams(feed, home_name, away_name)
     indoor = bool((espn_game or {}).get("indoor"))
@@ -138,13 +160,8 @@ def build_event_research(
             "lineup": "probable" if schedule_verified else "unknown",
             "weather": "confirmed" if weather_verified else "unknown",
             "venue": "confirmed" if venue_verified else "unknown",
-            # Bullpen only applies to baseball; mark N/A elsewhere so readiness
-            # does not treat an unknown bullpen as a hard gap for NBA/NFL/soccer.
-            "bullpen": (
-                "unknown"
-                if sport.lower() in {"mlb", "baseball", "kbo"}
-                else "na"
-            ),
+            # Bullpen is only a hard readiness key for baseball (see readiness.py).
+            "bullpen": "unknown",
         },
         "source_urls": [
             url
@@ -289,7 +306,7 @@ def build_verified_candidate(
             *projection.notes,
             "Strict Mode incomplete until confirmed lineups/starters clear the sweep.",
         ],
-        data_source="ESPN_SITE_API+THE_ODDS_API",
+        data_source="FACT_CASCADE+THE_ODDS_API",
         source_urls=list(research.get("source_urls") or []),
         source_timestamp=now,
         source_status=source_status,  # type: ignore[arg-type]

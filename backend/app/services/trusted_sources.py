@@ -72,7 +72,7 @@ TRUSTED_SOURCES: list[dict[str, Any]] = [
     {
         "id": "espn_site_api",
         "name": "ESPN Site API",
-        "tier": "primary",
+        "tier": "secondary",
         "sports": [
             "wnba",
             "nba",
@@ -97,9 +97,19 @@ TRUSTED_SOURCES: list[dict[str, Any]] = [
         ],
         "auth": "none",
         "notes": (
-            "Structured ESPN Site JSON API (not HTML scrape). Primary facts for "
-            "WNBA/NBA/NFL/NHL/NCAAF/soccer/KBO: schedule, L5/L10 form, injuries, venue."
+            "Structured ESPN Site JSON API (not HTML scrape). Secondary fact source — "
+            "Render/host egress may 403; cascade continues with Odds-priced plays."
         ),
+    },
+    {
+        "id": "nhl_web_api",
+        "name": "NHL Web API",
+        "tier": "primary",
+        "sports": ["nhl"],
+        "base_url": "https://api-web.nhle.com/v1",
+        "categories": ["schedule", "form", "park"],
+        "auth": "none",
+        "notes": "Official NHL public Web API for schedule and club form.",
     },
     {
         "id": "the_odds_api",
@@ -107,9 +117,12 @@ TRUSTED_SOURCES: list[dict[str, Any]] = [
         "tier": "market",
         "sports": ALL_SPORTS,
         "base_url": "https://api.the-odds-api.com",
-        "categories": ["market_price", "market_movement"],
+        "categories": ["market_price", "market_movement", "schedule"],
         "auth": "ODDS_API_KEY",
-        "notes": "Certified sportsbook prices and multi-book consensus only.",
+        "notes": (
+            "Certified sportsbook prices and the schedule backbone for non-MLB slates. "
+            "Priced plays are shown even when fact sources are incomplete (PARTIAL)."
+        ),
     },
     {
         "id": "open_meteo",
@@ -151,7 +164,7 @@ TRUSTED_SOURCES: list[dict[str, Any]] = [
         "categories": ["model"],
         "auth": "none",
         "notes": (
-            "Internal projection from ESPN form, injuries, and venue context. "
+            "Internal projection from cascaded form/injury/venue facts. "
             "Never uses sportsbook implied probability as the model output."
         ),
     },

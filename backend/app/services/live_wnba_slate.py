@@ -8,7 +8,7 @@ from datetime import UTC, date, datetime
 from decimal import Decimal
 
 from app.schemas import CandidateInput
-from app.services.espn_provider import get_league_injuries
+from app.services.facts_cascade import league_injuries
 from app.services.odds_provider import extract_best_odds, get_game_odds
 from app.services.sport_research import build_event_research, build_verified_candidate
 
@@ -28,7 +28,7 @@ def live_wnba_slate(slate_date: date) -> list[CandidateInput]:
         logger.warning("No WNBA events found for %s", slate_date)
         return []
 
-    injury_feed = get_league_injuries("wnba")
+    injury_feed = league_injuries("wnba")
     candidates: list[CandidateInput] = []
     now = datetime.now(UTC)
 
