@@ -1,3 +1,25 @@
+import type { Metadata } from "next";
+import { Bebas_Neue, Manrope } from "next/font/google";
+
+import "./globals.css";
+
+const display = Bebas_Neue({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-display",
+});
+
+const body = Manrope({
+  subsets: ["latin"],
+  variable: "--font-body",
+});
+
+export const metadata: Metadata = {
+  title: "YWP OS · Decision Engine",
+  description:
+    "Discipline. Data. Edge. Live protocol sweeps and lock-checked tickets.",
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -5,16 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        style={{
-          margin: 0,
-          background: "#050608",
-          color: "#F8F9FB",
-          fontFamily: "system-ui, sans-serif",
-        }}
-      >
-        {children}
-      </body>
+      <body className={`${display.variable} ${body.variable}`}>{children}</body>
     </html>
   );
 }

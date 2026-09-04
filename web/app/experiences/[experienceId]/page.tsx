@@ -1,6 +1,8 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { DecisionEngineStage } from "../../components/DecisionEngineStage";
+
 const CHECKOUT =
   process.env.NEXT_PUBLIC_WHOP_CHECKOUT_URL ??
   "https://whop.com/checkout/plan_MwJ2qcFxmvqDY";
@@ -27,16 +29,12 @@ export default async function ExperiencePage({
   if (!gate.has_access) {
     redirect(gate.checkout_url || CHECKOUT);
   }
+
   return (
-    <main style={{ padding: 32, maxWidth: 720 }}>
-      <p style={{ color: "#F5C542", letterSpacing: 2, fontWeight: 800 }}>
-        YWP SPORTS PICKS
-      </p>
-      <h1>DECISION ENGINE</h1>
-      <p>
-        Daily Access is active for product {PRODUCT_ID}. Experience{" "}
-        {experienceId}.
-      </p>
-    </main>
+    <DecisionEngineStage
+      experienceId={experienceId}
+      productId={PRODUCT_ID}
+      hasAccess={true}
+    />
   );
 }
