@@ -418,3 +418,46 @@ def test_settle_user_day_includes_board_and_tickets(monkeypatch) -> None:
         assert "NOT_LOCKED" in unlocked.result.root_cause_tags
     finally:
         db.close()
+
+
+def test_future_slate_board_picks_are_ignored(monkeypatch) -> None:
+    db = SessionLocal()
+    try:
+        user = User(
+            email="future-settle@example.com",
+            password_hash="x",
+            name="Future",
+            timezone="America/New_York",
+            subscription_status="active",
+        )
+        db.add(user)
+        db.flush()
+        from datetime import timedelta
+
+        tomorrow = date.today() + timedelta(days=1)
+        recommendation = _recommendation(
+            user.id,
+            analysis_id="analysis-future",
+            candidate_id="mlb-ml-future-90001",
+            event_id="evt-future",
+            slate_date=tomorrow,
+            input_hash="future-hash",
+            snapshot={
+                "game_pk": 90001,
+                "home_team": "Home Club",
+                "away_team": "Away Club",
+            },
+        )
+        db.add(recommendation)
+        db.commit()
+
+        monkeypatch.setattr(
+            settlement, "get_live_feed", lambda game_pk: _feed(abstract="Scheduled")
+        )
+
+        items = settlement.settle_user_day(db, user.id, as_of=date.today())
+        assert items == []
+        db.refresh(recommendation)
+        assert recommendation.outcome is None
+    finally:
+        db.close()

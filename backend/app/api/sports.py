@@ -698,7 +698,7 @@ def log_external_result(
 @router.post("/settle-day", response_model=SettleDayResponse)
 def settle_day(user: SubscribedUser, db: DB) -> SettleDayResponse:
     """Pull MLB finals and grade placed tickets plus unlocked board picks for memory."""
-    items = settle_user_day(db, user.id)
+    items = settle_user_day(db, user.id, timezone_name=user.timezone)
     return SettleDayResponse(
         graded=sum(1 for item in items if item.status == "graded"),
         pending=sum(1 for item in items if item.status == "pending"),

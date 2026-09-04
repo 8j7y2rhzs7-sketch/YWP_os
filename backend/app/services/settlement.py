@@ -14,14 +14,16 @@ from __future__ import annotations
 import logging
 import re
 from dataclasses import dataclass
+from datetime import date, datetime
 from decimal import Decimal
 from typing import Any
+from zoneinfo import ZoneInfo
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
 
 from app.core.security import utcnow
-from app.models import LearningEvent, Recommendation, Result, Ticket, TicketLeg
+from app.models import LearningEvent, Recommendation, Result, Ticket, TicketLeg, User
 from app.services.learning import apply_micro_learning
 from app.services.lock_refresh import _game_pk
 from app.services.mlb_provider import get_live_feed
@@ -44,14 +46,35 @@ class SettlementItem:
 BOARD_DECISIONS = frozenset({"PLAY", "LEAN", "WATCH"})
 
 
-def settle_user_day(db: Session, user_id: str) -> list[SettlementItem]:
-    """Settle placed tickets, then grade remaining board picks for the user."""
-    items = settle_user_placed_tickets(db, user_id)
-    items.extend(settle_user_board_recommendations(db, user_id))
+def _local_today(timezone_name: str | None = None) -> date:
+    name = (timezone_name or "America/New_York").strip() or "America/New_York"
+    try:
+        return datetime.now(ZoneInfo(name)).date()
+    except Exception:  # noqa: BLE001 — fall back if timezone string is invalid
+        return datetime.now(ZoneInfo("America/New_York")).date()
+
+
+def settle_user_day(
+    db: Session, user_id: str, *, as_of: date | None = None, timezone_name: str | None = None
+) -> list[SettlementItem]:
+    """Settle placed tickets, then grade remaining board picks for the user.
+
+    Future slate dates (tomorrow+) are ignored so Sync stays quiet until those
+    games can actually final.
+    """
+    if as_of is None:
+        if timezone_name is None:
+            user = db.get(User, user_id)
+            timezone_name = user.timezone if user else "America/New_York"
+        as_of = _local_today(timezone_name)
+    items = settle_user_placed_tickets(db, user_id, as_of=as_of)
+    items.extend(settle_user_board_recommendations(db, user_id, as_of=as_of))
     return items
 
 
-def settle_user_placed_tickets(db: Session, user_id: str) -> list[SettlementItem]:
+def settle_user_placed_tickets(
+    db: Session, user_id: str, *, as_of: date | None = None
+) -> list[SettlementItem]:
     """Settle ungraded active legs on placed tickets for one user."""
     tickets = list(
         db.scalars(
@@ -67,29 +90,35 @@ def settle_user_placed_tickets(db: Session, user_id: str) -> list[SettlementItem
     )
     items: list[SettlementItem] = []
     for ticket in tickets:
+        if as_of is not None and ticket.slate_date > as_of:
+            continue
         items.extend(_settle_ticket(db, ticket))
     db.commit()
     return items
 
 
-def settle_user_board_recommendations(db: Session, user_id: str) -> list[SettlementItem]:
+def settle_user_board_recommendations(
+    db: Session, user_id: str, *, as_of: date | None = None
+) -> list[SettlementItem]:
     """Grade ungraded PLAY/LEAN/WATCH board picks even if never locked into a ticket.
 
     Locked tickets still matter for exposure/P&L, but every pick the protocol
     surfaced for the day is training data for the next day.
+    Future slate dates are skipped until their calendar day arrives.
     """
-    recommendations = list(
-        db.scalars(
-            select(Recommendation)
-            .where(
-                Recommendation.created_by_user_id == user_id,
-                Recommendation.outcome.is_(None),
-                Recommendation.decision.in_(BOARD_DECISIONS),
-            )
-            .options(joinedload(Recommendation.result))
-            .order_by(Recommendation.slate_date.desc(), Recommendation.rank.asc())
-        ).unique()
+    query = (
+        select(Recommendation)
+        .where(
+            Recommendation.created_by_user_id == user_id,
+            Recommendation.outcome.is_(None),
+            Recommendation.decision.in_(BOARD_DECISIONS),
+        )
+        .options(joinedload(Recommendation.result))
+        .order_by(Recommendation.slate_date.desc(), Recommendation.rank.asc())
     )
+    if as_of is not None:
+        query = query.where(Recommendation.slate_date <= as_of)
+    recommendations = list(db.scalars(query).unique())
     items: list[SettlementItem] = []
     for recommendation in recommendations:
         if recommendation.result:
