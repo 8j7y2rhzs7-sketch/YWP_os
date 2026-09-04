@@ -654,6 +654,65 @@ class SettleDayResponse(YWPModel):
     items: list[SettlementItemOut]
 
 
+class ExternalResultCreate(YWPModel):
+    """Log a sportsbook pick that never locked in-app so WIN/LOSS memory still learns."""
+
+    sport: str = Field(default="mlb", min_length=2, max_length=24)
+    league: str = Field(default="MLB", min_length=2, max_length=40)
+    slate_date: date
+    event_name: str = Field(min_length=3, max_length=180)
+    market_type: str = Field(min_length=2, max_length=50)
+    market_period: str = Field(default="full_game", max_length=32)
+    selection: str = Field(min_length=2, max_length=180)
+    line: Decimal | None = None
+    american_odds: int = Field(ge=-10000, le=10000)
+    outcome: Literal["WIN", "LOSS", "PUSH", "VOID"]
+    final_score: str | None = Field(default=None, max_length=120)
+    actual_value: Decimal | None = None
+    stake: Decimal = Field(default=Decimal("0.00"), ge=0, max_digits=14, decimal_places=2)
+    profit_loss: Decimal = Field(default=Decimal("0.00"), max_digits=14, decimal_places=2)
+    killed_ticket: bool = False
+    last_losing_leg: bool = False
+    process_grade: Literal["A", "B", "C", "D", "F"] = "C"
+    variance_grade: Literal["LOW", "MEDIUM", "HIGH"] = "MEDIUM"
+    process_outcome_class: Literal[
+        "GOOD_PROCESS_GOOD_OUTCOME",
+        "GOOD_PROCESS_BAD_OUTCOME",
+        "BAD_PROCESS_GOOD_OUTCOME",
+        "BAD_PROCESS_BAD_OUTCOME",
+        "UNCLASSIFIED",
+    ] = "UNCLASSIFIED"
+    error_category: (
+        Literal[
+            "BAD_DATA",
+            "BAD_WEIGHTING",
+            "BAD_SCRIPT",
+            "BAD_TIMING",
+            "BAD_PRICE",
+            "ROLE_WORKLOAD",
+            "INJURY_AVAILABILITY",
+            "CORRELATION_EXPOSURE",
+            "LINE_ESCALATION",
+            "VARIANCE",
+            "UNKNOWN",
+        ]
+        | None
+    ) = None
+    root_cause_tags: list[str] = Field(default_factory=list)
+    lesson: str | None = Field(default=None, max_length=2000)
+    player_key: str | None = Field(default=None, max_length=120)
+    thesis_key: str | None = Field(default=None, max_length=160)
+    script_key: str | None = Field(default=None, max_length=160)
+
+
+class ExternalResultOut(YWPModel):
+    recommendation_id: str
+    result: ResultOut
+    selection: str
+    market_type: str
+    outcome: str
+
+
 class PerformanceOut(YWPModel):
     settled: int
     wins: int

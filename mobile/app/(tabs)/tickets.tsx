@@ -23,8 +23,14 @@ function summarizeSettle(result: SettleDayResponse): string {
   if (result.skipped) parts.push(`${result.skipped} skipped (not MLB finals yet or already graded)`);
   if (result.tickets_settled) parts.push(`${result.tickets_settled} ticket(s) marked settled`);
   if (result.errors) parts.push(`${result.errors} failed`);
+  const boardOnly = result.items.filter(
+    (item) => item.status === "graded" && !item.ticket_id,
+  ).length;
+  if (boardOnly) {
+    parts.push(`${boardOnly} unlocked board pick(s) logged for learning`);
+  }
   if (!parts.length) {
-    return "No placed MLB legs were ready to grade. Games must be Final, and the ticket must be Placed.";
+    return "No MLB board picks or placed legs were ready to grade. Games must be Final.";
   }
   const details = result.items
     .filter((item) => item.status === "pending" || item.status === "skipped" || item.status === "error")
@@ -120,6 +126,15 @@ export default function TicketsScreen() {
           <Text style={type.body}>{syncNote}</Text>
         </MetalPanel>
       ) : null}
+      <YwpButton
+        label="LOG BOOK-ONLY RESULT"
+        variant="outline"
+        onPress={() => router.push("/log-result")}
+      />
+      <Text style={[type.caption, { marginBottom: spacing.sm }]}>
+        Sync grades placed tickets and unlocked board picks. Use Log Book-Only for sportsbook
+        legs that never appeared on today’s board (like a K ticket you didn’t lock).
+      </Text>
       {loading ? <LoadingState label="Loading protected tickets…" /> : null}
       {!loading && !tickets.length ? (
         <MetalPanel tone="gold">
@@ -215,13 +230,21 @@ export default function TicketsScreen() {
           onPress={() => void load(true, true)}
           loading={refreshing}
         />
-      ) : tickets.length ? (
+      ) : (
+        <YwpButton
+          label="SYNC BOARD & SCORES"
+          onPress={() => void load(true, true)}
+          loading={refreshing}
+          variant={tickets.length ? "outline" : undefined}
+        />
+      )}
+      {!placedCount && tickets.length ? (
         <MetalPanel>
           <Text style={styles.title}>No placed tickets yet</Text>
           <Text style={type.body}>
             {lockedDraftCount
-              ? "Open a ticket, run Lock Check, then Place it. Sync only grades placed tickets after games go Final."
-              : "Save and place a ticket before scores can sync."}
+              ? "Open a ticket, run Lock Check, then Place it for vault P&L. Sync still grades unlocked board picks after Finals."
+              : "Save and place a ticket for vault P&L. Sync still grades today’s board picks after Finals."}
           </Text>
         </MetalPanel>
       ) : null}

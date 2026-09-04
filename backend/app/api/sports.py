@@ -25,6 +25,8 @@ from app.schemas import (
     AnalyzeResponse,
     BuildTicketRequest,
     BuildTicketResponse,
+    ExternalResultCreate,
+    ExternalResultOut,
     RecommendationOut,
     ResultCreate,
     ResultOut,
@@ -33,7 +35,12 @@ from app.schemas import (
     SlateResponse,
     SportsAnalyzeRequest,
 )
-from app.services.decision_engine import decision_engine, implied_probability, money
+from app.services.decision_engine import (
+    decision_engine,
+    implied_probability,
+    input_hash,
+    money,
+)
 from app.services.learning import apply_micro_learning, load_feature_weights, record_usage_event
 from app.services.protocols import run_protocol_health_check
 from app.services.providers import demo_slate
@@ -42,7 +49,7 @@ from app.services.live_mlb_slate import live_mlb_slate
 from app.services.live_wnba_slate import live_wnba_slate
 from app.services.odds_provider import get_last_fetch_status, odds_api_configured
 from app.services.readiness import slate_readiness, verification_summary
-from app.services.settlement import settle_user_placed_tickets
+from app.services.settlement import settle_user_day
 from app.services.ticket_builder import build_cards
 
 router = APIRouter(prefix="/sports", tags=["sports"])
@@ -432,9 +439,13 @@ def _line_value(
     return closing_line - bet_line
 
 
-@router.post("/result", response_model=ResultOut, status_code=status.HTTP_201_CREATED)
-def grade_result(payload: ResultCreate, user: SubscribedUser, db: DB) -> ResultOut:
-    recommendation = _owned_recommendation(db, payload.recommendation_id, user.id)
+def _persist_graded_result(
+    db: DB,
+    recommendation: Recommendation,
+    payload: ResultCreate,
+    *,
+    commit: bool = True,
+) -> Result:
     if recommendation.result:
         raise HTTPException(status_code=409, detail="Recommendation is already graded")
 
@@ -521,6 +532,7 @@ def grade_result(payload: ResultCreate, user: SubscribedUser, db: DB) -> ResultO
                 "variance_grade": payload.variance_grade,
                 "root_cause_tags": payload.root_cause_tags,
                 "lesson": payload.lesson,
+                "external_log": "EXTERNAL_BOOK_LOG" in (payload.root_cause_tags or []),
             },
         )
     )
@@ -546,15 +558,147 @@ def grade_result(payload: ResultCreate, user: SubscribedUser, db: DB) -> ResultO
             )
         )
     apply_micro_learning(db, result, recommendation)
-    db.commit()
-    db.refresh(result)
+    if commit:
+        db.commit()
+        db.refresh(result)
+    return result
+
+
+@router.post("/result", response_model=ResultOut, status_code=status.HTTP_201_CREATED)
+def grade_result(payload: ResultCreate, user: SubscribedUser, db: DB) -> ResultOut:
+    recommendation = _owned_recommendation(db, payload.recommendation_id, user.id)
+    result = _persist_graded_result(db, recommendation, payload)
     return ResultOut.model_validate(result)
+
+
+@router.post(
+    "/log-external",
+    response_model=ExternalResultOut,
+    status_code=status.HTTP_201_CREATED,
+)
+def log_external_result(
+    payload: ExternalResultCreate, user: SubscribedUser, db: DB
+) -> ExternalResultOut:
+    """Create + grade a recommendation for a sportsbook pick never locked in-app."""
+    now = utcnow()
+    sport = payload.sport.lower().strip()
+    analysis_id = str(uuid4())
+    event_slug = "".join(ch if ch.isalnum() else "-" for ch in payload.event_name.lower())[:80]
+    selection_slug = "".join(ch if ch.isalnum() else "-" for ch in payload.selection.lower())[
+        :60
+    ]
+    candidate_id = f"external:{sport}:{payload.slate_date}:{event_slug}:{selection_slug}"
+    implied = implied_probability(payload.american_odds)
+    thesis = payload.thesis_key or f"external:{sport}:{payload.market_type}"
+    script = payload.script_key or f"external:{payload.market_type}:{payload.market_period}"
+    tags = list(dict.fromkeys([*(payload.root_cause_tags or []), "EXTERNAL_BOOK_LOG"]))
+    recommendation = Recommendation(
+        analysis_id=analysis_id,
+        created_by_user_id=user.id,
+        candidate_id=candidate_id[:100],
+        event_id=f"external:{event_slug}"[:100],
+        event_name=payload.event_name,
+        sport=sport,
+        league=payload.league,
+        slate_date=payload.slate_date,
+        mode="external",
+        market_type=payload.market_type,
+        market_period=payload.market_period,
+        selection=payload.selection,
+        line=payload.line,
+        american_odds=payload.american_odds,
+        estimated_probability=money(implied),
+        implied_probability=money(implied),
+        adjusted_probability=money(implied),
+        edge=money(0.0),
+        expected_value=money(0.0),
+        confidence_score=50,
+        ywp_rating=money(5.0, "0.01"),
+        vision_score=money(0.0, "0.01"),
+        miss_by_one_risk=money(0.0, "0.0001"),
+        reliability=money(0.5, "0.0001"),
+        stability=money(0.5, "0.0001"),
+        variance=money(0.5, "0.0001"),
+        data_quality=money(0.5, "0.0001"),
+        risk="Moderate",
+        risk_tier="Moderate",
+        variance_rating="Medium",
+        edge_class="No Edge",
+        expected_value_label="Neutral",
+        suggested_stake_pct=money(0.0, "0.0001"),
+        decision="PLAY",
+        recommendation_tier="EXTERNAL_LOG",
+        rank=0,
+        reason_codes=["EXTERNAL_BOOK_LOG"],
+        reasoning_summary=(
+            "Sportsbook pick logged after the fact because it was never locked in YWP OS."
+        ),
+        warnings=["EXTERNAL_BACKFILL"],
+        safer_alternative=None,
+        higher_upside=None,
+        invalidation_conditions=[],
+        live_trigger=None,
+        hedge=None,
+        quick_cash=False,
+        chain_reaction_key=None,
+        thesis_key=thesis[:160],
+        script_key=script[:160],
+        player_key=payload.player_key,
+        data_source="EXTERNAL_BOOK_LOG",
+        source_timestamp=now,
+        model_version=settings.model_version,
+        protocol_version=settings.protocol_version,
+        input_hash=input_hash(
+            {
+                "source": "EXTERNAL_BOOK_LOG",
+                "user_id": user.id,
+                "candidate_id": candidate_id,
+                "outcome": payload.outcome,
+                "odds": payload.american_odds,
+                "line": str(payload.line) if payload.line is not None else None,
+            }
+        ),
+        snapshot={
+            "external_log": True,
+            "book_logged": True,
+            "probability_source": "book_implied_only",
+        },
+    )
+    db.add(recommendation)
+    db.flush()
+
+    grade_payload = ResultCreate(
+        recommendation_id=recommendation.id,
+        outcome=payload.outcome,
+        final_score=payload.final_score,
+        stake=payload.stake,
+        profit_loss=payload.profit_loss,
+        actual_value=payload.actual_value,
+        bet_line=payload.line,
+        killed_ticket=payload.killed_ticket,
+        last_losing_leg=payload.last_losing_leg,
+        process_outcome_class=payload.process_outcome_class,
+        error_category=payload.error_category,
+        process_grade=payload.process_grade,
+        variance_grade=payload.variance_grade,
+        root_cause_tags=tags,
+        lesson=payload.lesson
+        or "Logged from sportsbook because the ticket was never locked in-app.",
+    )
+    result = _persist_graded_result(db, recommendation, grade_payload)
+    return ExternalResultOut(
+        recommendation_id=recommendation.id,
+        result=ResultOut.model_validate(result),
+        selection=recommendation.selection,
+        market_type=recommendation.market_type,
+        outcome=result.outcome,
+    )
 
 
 @router.post("/settle-day", response_model=SettleDayResponse)
 def settle_day(user: SubscribedUser, db: DB) -> SettleDayResponse:
-    """Pull MLB finals for placed tickets and mark legs WIN/LOSS for memory."""
-    items = settle_user_placed_tickets(db, user.id)
+    """Pull MLB finals and grade placed tickets plus unlocked board picks for memory."""
+    items = settle_user_day(db, user.id)
     return SettleDayResponse(
         graded=sum(1 for item in items if item.status == "graded"),
         pending=sum(1 for item in items if item.status == "pending"),

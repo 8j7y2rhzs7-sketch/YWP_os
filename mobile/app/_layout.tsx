@@ -59,6 +59,7 @@ export default function RootLayout() {
             <Stack.Screen name="analysis/[id]" options={{ title: "YWP Decision Board" }} />
             <Stack.Screen name="ticket/[id]" options={{ title: "Ticket Lock Center" }} />
             <Stack.Screen name="result/[id]" options={{ title: "Result & Process Grade" }} />
+            <Stack.Screen name="log-result" options={{ title: "Log Book Result" }} />
             <Stack.Screen name="share-card" options={{ title: "YWP Graphic Studio" }} />
           </Stack>
         </AppDataProvider>

@@ -95,7 +95,7 @@ export default function LearningScreen() {
         </View>
         <Text style={type.body}>
           {pulse?.headline ??
-            "Grade a result or run a slate. Tiny weight shifts land immediately; big production changes still need a sample and human approval."}
+            "Sync Scores grades board picks and locked tickets. Tiny weight shifts land immediately; big production changes still need a sample and human approval."}
         </Text>
         {pulse?.latest_lesson ? (
           <Text style={type.caption}>Latest lesson: {pulse.latest_lesson}</Text>

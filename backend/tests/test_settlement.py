@@ -277,3 +277,144 @@ def test_settle_skips_non_final_games(monkeypatch) -> None:
         assert recommendation.outcome is None
     finally:
         db.close()
+
+
+def test_settle_board_grades_unlocked_play(monkeypatch) -> None:
+    """Board PLAY/LEAN/WATCH train memory even when never locked into a ticket."""
+    db = SessionLocal()
+    try:
+        user = User(
+            email="board-settle@example.com",
+            password_hash="x",
+            name="Board",
+            timezone="America/New_York",
+            subscription_status="active",
+        )
+        db.add(user)
+        db.flush()
+        recommendation = _recommendation(
+            user.id,
+            analysis_id="analysis-board",
+            candidate_id="mlb-ml-board-77777",
+            event_id="evt-board",
+            input_hash="board-hash",
+            snapshot={
+                "game_pk": 77777,
+                "home_team": "Home Club",
+                "away_team": "Away Club",
+            },
+        )
+        db.add(recommendation)
+        db.commit()
+
+        monkeypatch.setattr(
+            settlement, "get_live_feed", lambda game_pk: _feed(home_runs=5, away_runs=2)
+        )
+
+        items = settlement.settle_user_board_recommendations(db, user.id)
+        assert any(item.status == "graded" for item in items)
+        assert all(item.ticket_id == "" for item in items if item.status == "graded")
+
+        db.refresh(recommendation)
+        assert recommendation.outcome == "WIN"
+        assert recommendation.result is not None
+        assert "BOARD_SETTLED" in recommendation.result.root_cause_tags
+        assert "NOT_LOCKED" in recommendation.result.root_cause_tags
+        assert recommendation.result.stake == Decimal("0.00")
+    finally:
+        db.close()
+
+
+def test_settle_user_day_includes_board_and_tickets(monkeypatch) -> None:
+    db = SessionLocal()
+    try:
+        user = User(
+            email="day-settle@example.com",
+            password_hash="x",
+            name="Day",
+            timezone="America/New_York",
+            subscription_status="active",
+        )
+        db.add(user)
+        db.flush()
+        locked = _recommendation(
+            user.id,
+            analysis_id="analysis-day-locked",
+            candidate_id="mlb-ml-day-1",
+            event_id="evt-day-1",
+            input_hash="day-1",
+            snapshot={
+                "game_pk": 80001,
+                "home_team": "Home Club",
+                "away_team": "Away Club",
+            },
+        )
+        unlocked = _recommendation(
+            user.id,
+            analysis_id="analysis-day-board",
+            candidate_id="mlb-ml-day-2",
+            event_id="evt-day-2",
+            selection="Away Club ML",
+            thesis_key="thesis-away",
+            script_key="script-away",
+            input_hash="day-2",
+            snapshot={
+                "game_pk": 80002,
+                "home_team": "Home Club",
+                "away_team": "Away Club",
+            },
+        )
+        db.add_all([locked, unlocked])
+        db.flush()
+        ticket = Ticket(
+            user_id=user.id,
+            ticket_type="custom",
+            label="Locked one",
+            sport="mlb",
+            slate_date=date.today(),
+            status="placed",
+            stake=Decimal("10.00"),
+            potential_payout=Decimal("18.33"),
+            confidence_score=72,
+            risk="medium",
+            intentional_correlation=False,
+            intentional_thesis_exposure=False,
+        )
+        db.add(ticket)
+        db.flush()
+        db.add(
+            TicketLeg(
+                ticket_id=ticket.id,
+                recommendation_id=locked.id,
+                position=1,
+                action="follow",
+                selection=locked.selection,
+                american_odds=locked.american_odds,
+                thesis_key=locked.thesis_key,
+                script_key=locked.script_key,
+                status="placed",
+            )
+        )
+        db.commit()
+
+        def _feed_for(game_pk: int) -> dict:
+            if game_pk == 80001:
+                return _feed(home_runs=4, away_runs=1)
+            return _feed(home_runs=1, away_runs=6)
+
+        monkeypatch.setattr(settlement, "get_live_feed", _feed_for)
+
+        items = settlement.settle_user_day(db, user.id)
+        statuses = [item.status for item in items]
+        assert statuses.count("graded") >= 2
+        assert "ticket_settled" in statuses
+
+        db.refresh(locked)
+        db.refresh(unlocked)
+        db.refresh(ticket)
+        assert locked.outcome == "WIN"
+        assert unlocked.outcome == "WIN"
+        assert ticket.status == "settled"
+        assert "NOT_LOCKED" in unlocked.result.root_cause_tags
+    finally:
+        db.close()

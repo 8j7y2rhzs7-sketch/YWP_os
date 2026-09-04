@@ -1,4 +1,8 @@
-"""Pull final scores/stats and settle placed ticket legs.
+"""Pull final scores/stats and settle recommendations for memory.
+
+Grades:
+1. Placed ticket legs (vault settle)
+2. Board picks the user was shown (PLAY/LEAN/WATCH) even if never locked
 
 Outcome settlement is automatic for memory (WIN/LOSS/PUSH/VOID).
 Process audit grades stay UNCLASSIFIED until the user completes a full
@@ -37,6 +41,16 @@ class SettlementItem:
     detail: str | None = None
 
 
+BOARD_DECISIONS = frozenset({"PLAY", "LEAN", "WATCH"})
+
+
+def settle_user_day(db: Session, user_id: str) -> list[SettlementItem]:
+    """Settle placed tickets, then grade remaining board picks for the user."""
+    items = settle_user_placed_tickets(db, user_id)
+    items.extend(settle_user_board_recommendations(db, user_id))
+    return items
+
+
 def settle_user_placed_tickets(db: Session, user_id: str) -> list[SettlementItem]:
     """Settle ungraded active legs on placed tickets for one user."""
     tickets = list(
@@ -54,6 +68,74 @@ def settle_user_placed_tickets(db: Session, user_id: str) -> list[SettlementItem
     items: list[SettlementItem] = []
     for ticket in tickets:
         items.extend(_settle_ticket(db, ticket))
+    db.commit()
+    return items
+
+
+def settle_user_board_recommendations(db: Session, user_id: str) -> list[SettlementItem]:
+    """Grade ungraded PLAY/LEAN/WATCH board picks even if never locked into a ticket.
+
+    Locked tickets still matter for exposure/P&L, but every pick the protocol
+    surfaced for the day is training data for the next day.
+    """
+    recommendations = list(
+        db.scalars(
+            select(Recommendation)
+            .where(
+                Recommendation.created_by_user_id == user_id,
+                Recommendation.outcome.is_(None),
+                Recommendation.decision.in_(BOARD_DECISIONS),
+            )
+            .options(joinedload(Recommendation.result))
+            .order_by(Recommendation.slate_date.desc(), Recommendation.rank.asc())
+        ).unique()
+    )
+    items: list[SettlementItem] = []
+    for recommendation in recommendations:
+        if recommendation.result:
+            continue
+        try:
+            graded = _grade_recommendation(
+                db,
+                recommendation,
+                stake=Decimal("0.00"),
+                extra_tags=["BOARD_SETTLED", "NOT_LOCKED"],
+                lesson=(
+                    "Auto-settled board pick (never locked). "
+                    "Outcome still trains next-day weights."
+                ),
+            )
+        except Exception as exc:  # noqa: BLE001 — keep batch settling resilient
+            logger.exception("Board settlement failed for %s", recommendation.id)
+            items.append(
+                SettlementItem(
+                    recommendation_id=recommendation.id,
+                    ticket_id="",
+                    selection=recommendation.selection,
+                    status="error",
+                    detail=str(exc),
+                )
+            )
+            continue
+        if graded["status"] == "already_graded":
+            continue
+        items.append(
+            SettlementItem(
+                recommendation_id=recommendation.id,
+                ticket_id="",
+                selection=recommendation.selection,
+                status=graded["status"],
+                outcome=graded.get("outcome"),
+                final_score=graded.get("final_score"),
+                actual_value=graded.get("actual_value"),
+                detail=graded.get("detail")
+                or (
+                    "Board pick graded for memory (not on a locked ticket)."
+                    if graded["status"] == "graded"
+                    else None
+                ),
+            )
+        )
     db.commit()
     return items
 
@@ -137,7 +219,12 @@ def _settle_ticket(db: Session, ticket: Ticket) -> list[SettlementItem]:
 
 
 def _grade_recommendation(
-    db: Session, recommendation: Recommendation, *, stake: Decimal
+    db: Session,
+    recommendation: Recommendation,
+    *,
+    stake: Decimal,
+    extra_tags: list[str] | None = None,
+    lesson: str | None = None,
 ) -> dict[str, Any]:
     if recommendation.result or recommendation.outcome:
         return {"status": "already_graded", "outcome": recommendation.outcome}
@@ -149,8 +236,8 @@ def _grade_recommendation(
             "detail": "Automatic settlement currently supports MLB finals only.",
         }
 
-    if recommendation.data_source == "YWP_DEMO_PROVIDER":
-        return {"status": "skipped", "detail": "Demo picks are graded manually."}
+    if recommendation.data_source in {"YWP_DEMO_PROVIDER", "EXTERNAL_BOOK_LOG"}:
+        return {"status": "skipped", "detail": "Demo/external picks are graded manually."}
 
     game_pk = _game_pk(recommendation)
     if game_pk is None:
@@ -182,6 +269,11 @@ def _grade_recommendation(
     bet_line = recommendation.line
     miss_distance = _signed_margin(recommendation, actual_value, bet_line)
     profit_loss = _american_profit(stake, recommendation.american_odds, outcome)
+    tags = list(dict.fromkeys(["AUTO_SETTLED", *(extra_tags or [])]))
+    lesson_text = (
+        lesson
+        or "Auto-settled from MLB final score/stats. Complete process audit when ready."
+    )
 
     result = Result(
         recommendation_id=recommendation.id,
@@ -211,8 +303,8 @@ def _grade_recommendation(
         cashout_time=None,
         process_grade="C",
         variance_grade="MEDIUM",
-        root_cause_tags=["AUTO_SETTLED"],
-        lesson="Auto-settled from MLB final score/stats. Complete process audit when ready.",
+        root_cause_tags=tags,
+        lesson=lesson_text,
         result_time=utcnow(),
     )
     recommendation.outcome = outcome
@@ -232,10 +324,12 @@ def _grade_recommendation(
                 "miss_distance": str(miss_distance) if miss_distance is not None else None,
                 "final_score": final_score,
                 "auto_settled": True,
+                "board_settled": "BOARD_SETTLED" in tags,
+                "not_locked": "NOT_LOCKED" in tags,
                 "process_outcome_class": "UNCLASSIFIED",
                 "process_grade": "C",
                 "variance_grade": "MEDIUM",
-                "root_cause_tags": ["AUTO_SETTLED"],
+                "root_cause_tags": tags,
             },
         )
     )
