@@ -404,7 +404,7 @@ def test_settle_user_day_includes_board_and_tickets(monkeypatch) -> None:
 
         monkeypatch.setattr(settlement, "get_live_feed", _feed_for)
 
-        items = settlement.settle_user_day(db, user.id)
+        items = settlement.settle_user_day(db, user.id, as_of=date.today())
         statuses = [item.status for item in items]
         assert statuses.count("graded") >= 2
         assert "ticket_settled" in statuses
