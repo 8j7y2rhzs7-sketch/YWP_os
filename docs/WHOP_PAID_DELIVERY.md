@@ -21,6 +21,23 @@ No new Whop app shell. No fake login page. No separate license-key database.
   - webhook / pending access (email match), then
   - Whop member email lookup + `users.check_access` on the DECISION ENGINE product
 
+## Day-pass expiry (no overstay)
+
+Whop auto-expires the 1-day membership. YWP OS does **not** cache a permanent unlock:
+
+- `/users/me`, login/register, protected routes, and `/whop/sync` re-hit Whop `checkAccess` on a TTL (default **5 minutes**)
+- Local hard ceiling: without a fresh confirming check within **24 hours** of grant, access is revoked
+- App foreground + every 5 minutes while open → force `/whop/sync`
+- API `402` clears client `has_app_access` and returns the user to the paywall
+- Re-pay → webhook `payment.succeeded` / `membership.activated` **or** Sync `checkAccess` → access restored
+
+Optional env:
+
+```bash
+WHOP_ACCESS_RECHECK_SECONDS=300
+WHOP_DAY_PASS_SECONDS=86400
+```
+
 ## What you still do in Whop (dashboard / Whop support)
 
 Whop must attach the APK to the **paid** product so buyers see download after payment.
@@ -62,6 +79,8 @@ No license-key screen for v1.
 ```bash
 YWP_APP_DOWNLOAD_URL=https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.5/YWP-OS-3.3.5.apk
 EXPO_PUBLIC_APP_DOWNLOAD_URL=https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.5/YWP-OS-3.3.5.apk
+WHOP_ACCESS_RECHECK_SECONDS=300
+WHOP_DAY_PASS_SECONDS=86400
 ```
 
 ## Out of scope here

@@ -107,8 +107,9 @@ export default function PaywallScreen() {
         <Text style={type.section}>Unlock YWP OS</Text>
         <Text style={type.body}>
           Daily Access is billed on Whop — DECISION ENGINE, $25 for 1 day. Whop
-          handles payment. This app unlocks when that membership is active for
-          the same email as your YWP OS account.
+          auto-expires the membership after 24 hours. This app re-checks Whop
+          regularly; unlock is never permanent. After it expires, pay again with
+          the same email and Sync to reopen.
         </Text>
         <View style={styles.steps}>
           <Text style={styles.step}>1. Subscribe on Whop (use {user.email})</Text>

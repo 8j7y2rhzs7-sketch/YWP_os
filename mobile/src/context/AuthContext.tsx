@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { AppState, type AppStateStatus } from "react-native";
 
 import { ApiError, loadApiUrl, rawRequest } from "@/lib/api";
 import {
@@ -15,7 +16,7 @@ import {
   getStoredTokens,
   setStoredTokens,
 } from "@/lib/storage";
-import type { Tokens, User } from "@/types";
+import type { SubscriptionStatus, Tokens, User } from "@/types";
 
 interface RegisterInput {
   email: string;
@@ -36,6 +37,9 @@ interface AuthValue {
 }
 
 const AuthContext = createContext<AuthValue | null>(null);
+
+/** Re-check day-pass access while the app is open (matches server recheck TTL). */
+const ACCESS_RESYNC_MS = 5 * 60 * 1000;
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [tokens, setTokens] = useState<Tokens | null>(null);
@@ -66,23 +70,50 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return next;
   }, [saveTokens]);
 
+  const applyAccessLoss = useCallback((checkoutUrl?: string) => {
+    setUser((current) => {
+      if (!current) return current;
+      return {
+        ...current,
+        has_app_access: false,
+        subscription_status:
+          current.subscription_status === "active"
+            ? "inactive"
+            : current.subscription_status,
+        checkout_url: checkoutUrl ?? current.checkout_url ?? null,
+      };
+    });
+  }, []);
+
   const request = useCallback(
     async <T,>(path: string, init: RequestInit = {}): Promise<T> => {
       const current = tokenRef.current;
       if (!current) {
         throw new ApiError("Sign in is required", 401);
       }
+      const run = (accessToken: string) => rawRequest<T>(path, init, accessToken);
       try {
-        return await rawRequest<T>(path, init, current.access_token);
+        return await run(current.access_token);
       } catch (error) {
+        if (error instanceof ApiError && error.status === 402) {
+          applyAccessLoss(error.checkoutUrl);
+          throw error;
+        }
         if (!(error instanceof ApiError) || error.status !== 401) {
           throw error;
         }
         const next = await rotate();
-        return rawRequest<T>(path, init, next.access_token);
+        try {
+          return await run(next.access_token);
+        } catch (retryError) {
+          if (retryError instanceof ApiError && retryError.status === 402) {
+            applyAccessLoss(retryError.checkoutUrl);
+          }
+          throw retryError;
+        }
       }
     },
-    [rotate],
+    [applyAccessLoss, rotate],
   );
 
   const reloadUser = useCallback(async (): Promise<User> => {
@@ -90,6 +121,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(profile);
     return profile;
   }, [request]);
+
+  const syncAccess = useCallback(async (): Promise<User | null> => {
+    if (!tokenRef.current) return null;
+    try {
+      const status = await request<SubscriptionStatus>("/whop/sync", {
+        method: "POST",
+      });
+      const profile = await request<User>("/users/me");
+      const merged: User = {
+        ...profile,
+        has_app_access: status.has_access,
+        subscription_status: status.status,
+        checkout_url: status.checkout_url,
+        app_download_url: status.app_download_url ?? profile.app_download_url,
+      };
+      setUser(merged);
+      return merged;
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 402) {
+        applyAccessLoss(error.checkoutUrl);
+        return null;
+      }
+      // Fall back to profile refresh (server still TTL-checks on /users/me).
+      try {
+        return await reloadUser();
+      } catch {
+        return null;
+      }
+    }
+  }, [applyAccessLoss, reloadUser, request]);
 
   const establish = useCallback(
     async (next: Tokens) => {
@@ -186,6 +247,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       active = false;
     };
   }, [rotate, saveTokens]);
+
+  useEffect(() => {
+    if (!tokens) return;
+
+    const onState = (state: AppStateStatus) => {
+      if (state === "active") {
+        void syncAccess();
+      }
+    };
+    const sub = AppState.addEventListener("change", onState);
+    const timer = setInterval(() => {
+      if (AppState.currentState === "active") {
+        void syncAccess();
+      }
+    }, ACCESS_RESYNC_MS);
+
+    return () => {
+      sub.remove();
+      clearInterval(timer);
+    };
+  }, [syncAccess, tokens]);
 
   const value = useMemo<AuthValue>(
     () => ({

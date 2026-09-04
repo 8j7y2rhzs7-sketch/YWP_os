@@ -48,7 +48,12 @@ class User(Base, TimestampMixin):
     whop_user_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
     whop_membership_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
     subscription_status: Mapped[str] = mapped_column(String(24), default="none")
-
+    subscription_checked_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    subscription_granted_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
     bankroll: Mapped[BankrollAccount | None] = relationship(
         back_populates="user", cascade="all, delete-orphan", uselist=False
     )

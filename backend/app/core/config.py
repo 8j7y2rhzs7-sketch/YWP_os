@@ -70,6 +70,21 @@ class Settings(BaseSettings):
     whop_subscription_required: bool = Field(
         default=False, validation_alias="WHOP_SUBSCRIPTION_REQUIRED"
     )
+    # How often to re-hit Whop checkAccess while the user is active.
+    whop_access_recheck_seconds: int = Field(
+        default=300,
+        ge=30,
+        le=86_400,
+        validation_alias="WHOP_ACCESS_RECHECK_SECONDS",
+    )
+    # Hard local ceiling for a day pass: without a fresh confirming checkAccess,
+    # access is revoked so users cannot overstay a 24h membership.
+    whop_day_pass_seconds: int = Field(
+        default=86_400,
+        ge=3_600,
+        le=604_800,
+        validation_alias="WHOP_DAY_PASS_SECONDS",
+    )
     app_download_url: str | None = Field(
         default=None,
         validation_alias=AliasChoices(

@@ -1,4 +1,3 @@
-import logging
 from typing import Annotated
 
 import jwt
@@ -94,31 +93,18 @@ AdminUser = Annotated[User, Depends(require_admin)]
 
 
 def require_subscription(user: CurrentUser, db: DB) -> User:
-    from app.services.whop import check_user_access, product_id, whop_enabled
-    from app.services.whop_access import (
-        apply_pending_access,
-        sync_user_subscription,
-        user_has_app_access,
-    )
+    from app.services.whop import whop_enabled
+    from app.services.whop_access import ensure_fresh_subscription, user_has_app_access
 
     if not whop_enabled() or user.role == "admin":
         return user
-    user = apply_pending_access(db, user)
-    if user.whop_user_id:
-        try:
-            access = check_user_access(user.whop_user_id, product_id())
-            if access.get("access_level") != "unknown":
-                user.subscription_status = "active" if access.get("has_access") else "inactive"
-        except Exception:
-            logging.getLogger(__name__).exception(
-                "Whop checkAccess failed for user %s", user.id
-            )
-    else:
-        user = sync_user_subscription(db, user)
+    user = ensure_fresh_subscription(db, user, force=False)
     db.commit()
     db.refresh(user)
     if not user_has_app_access(user):
-        raise payment_required()
+        raise payment_required(
+            "Daily Access expired or inactive. Pay again on Whop with this email, then Sync."
+        )
     return user
 
 
