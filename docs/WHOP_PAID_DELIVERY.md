@@ -12,10 +12,10 @@ No new Whop app shell. No fake login page. No separate license-key database.
 ## What this repo already does
 
 - Checkout URL: `https://whop.com/checkout/plan_MwJ2qcFxmvqDY` (`prod_NuPQUAGoibkpW`)
-- Paywall steps: Subscribe → Download APK → Sync my access
-- Backup APK URL (also returned by `/api/v1/whop/checkout` as `app_download_url`):
+- In-app paywall (already installed): Subscribe → Sync my access
+- First-time APK delivery stays on Whop after payment (backup link also from `/api/v1/whop/checkout` as `app_download_url`):
 
-  `https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.7/YWP-OS-3.3.7.apk`
+  `https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.8/YWP-OS-3.3.8.apk`
 
 - Sync resolves membership by:
   - webhook / pending access (email match), then
@@ -57,7 +57,7 @@ Please wire:
 payment → Software/Files experience with this APK download → done
 
 APK:
-https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.7/YWP-OS-3.3.7.apk
+https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.8/YWP-OS-3.3.8.apk
 
 SHA-256:
 6be01073c280ecb1c31aababae9431d48a23d6a1f9ab99aa29472bfdae44498b
@@ -77,8 +77,8 @@ No license-key screen for v1.
 ## Env overrides (optional)
 
 ```bash
-YWP_APP_DOWNLOAD_URL=https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.7/YWP-OS-3.3.7.apk
-EXPO_PUBLIC_APP_DOWNLOAD_URL=https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.7/YWP-OS-3.3.7.apk
+YWP_APP_DOWNLOAD_URL=https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.8/YWP-OS-3.3.8.apk
+EXPO_PUBLIC_APP_DOWNLOAD_URL=https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.8/YWP-OS-3.3.8.apk
 WHOP_ACCESS_RECHECK_SECONDS=300
 WHOP_DAY_PASS_SECONDS=86400
 ```

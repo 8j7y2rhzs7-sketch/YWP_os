@@ -1,6 +1,6 @@
 import * as Clipboard from "expo-clipboard";
 import { useCallback, useState } from "react";
-import { Linking, StyleSheet, Text, View } from "react-native";
+import { Linking, Pressable, StyleSheet, Text, View } from "react-native";
 import { Redirect } from "expo-router";
 
 import { BrandHeader } from "@/components/BrandHeader";
@@ -11,7 +11,7 @@ import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
 import { ApiError, APP_DOWNLOAD_URL, WHOP_CHECKOUT_URL } from "@/lib/api";
 import type { SubscriptionStatus } from "@/types";
-import { brand, colors, spacing, type } from "@/theme";
+import { brand, colors, fonts, spacing, type } from "@/theme";
 
 export default function PaywallScreen() {
   const { user, loading, logout, reloadUser, request } = useAuth();
@@ -39,7 +39,7 @@ export default function PaywallScreen() {
       if (!opened) {
         setError("Could not open Whop checkout. Copy the link from your browser.");
       } else {
-        setNote("After paying on Whop, download the APK there, then return and sync.");
+        setNote("After paying on Whop with this email, return here and Sync my access.");
       }
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Checkout link unavailable");
@@ -61,9 +61,9 @@ export default function PaywallScreen() {
       const opened = await Linking.openURL(url);
       if (!opened) {
         await Clipboard.setStringAsync(url);
-        setNote("Download link copied. Paste it in your browser to get the APK.");
+        setNote("APK link copied. Use it to update or reinstall, then open this app again.");
       } else {
-        setNote("Install the APK, then come back and tap Sync my access.");
+        setNote("APK link opened. Use it only for update/reinstall — you already have the app.");
       }
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Download link unavailable");
@@ -113,8 +113,7 @@ export default function PaywallScreen() {
         </Text>
         <View style={styles.steps}>
           <Text style={styles.step}>1. Subscribe on Whop (use {user.email})</Text>
-          <Text style={styles.step}>2. Download the Android APK from Whop</Text>
-          <Text style={styles.step}>3. Install, sign in with that email, Sync my access</Text>
+          <Text style={styles.step}>2. Return here and Sync my access</Text>
         </View>
         {error ? <ErrorNotice message={error} /> : null}
         {note ? <Text style={styles.note}>{note}</Text> : null}
@@ -124,21 +123,26 @@ export default function PaywallScreen() {
           loading={busy === "checkout"}
         />
         <YwpButton
-          label="2. Download Android APK"
-          variant="outline"
-          onPress={() => void openDownload()}
-          loading={busy === "download"}
-        />
-        <YwpButton
-          label="3. Sync my access"
+          label="2. Sync my access"
           variant="outline"
           onPress={() => void syncAccess()}
           loading={busy === "sync"}
         />
+        <Pressable
+          onPress={() => void openDownload()}
+          disabled={busy === "download"}
+          accessibilityRole="link"
+        >
+          <Text style={styles.secondaryLink}>
+            {busy === "download" ? "Opening APK link…" : "Need an update or reinstall? Get APK"}
+          </Text>
+        </Pressable>
         <YwpButton label="Sign out" variant="outline" onPress={() => void logout()} />
         <Text style={type.caption}>
           Signed in as {user.email}. Status: {user.subscription_status}. No
-          separate license key — membership email must match this login.
+          separate license key — membership email must match this login. First-time
+          buyers get the APK from Whop after payment; this screen is for unlock after
+          install.
         </Text>
       </MetalPanel>
     </Screen>
@@ -150,4 +154,12 @@ const styles = StyleSheet.create({
   steps: { gap: spacing.sm },
   step: { ...type.body, color: colors.silver },
   note: { ...type.caption, color: colors.gold },
+  secondaryLink: {
+    ...type.caption,
+    color: colors.gold,
+    textAlign: "center",
+    fontFamily: fonts.bodyBold,
+    fontWeight: "700",
+    paddingVertical: spacing.sm,
+  },
 });

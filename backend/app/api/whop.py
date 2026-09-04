@@ -37,8 +37,9 @@ def get_checkout_url() -> WhopCheckoutOut:
         product_id=product_id(),
         app_download_url=app_download_url(),
         message=(
-            "Pay on Whop with the same email as your YWP OS account, download the "
-            "Android APK from Whop (or the backup link), install it, then Sync my access."
+            "Pay on Whop with the same email as your YWP OS login. "
+            "If you already have the app installed, return and Sync my access. "
+            "First-time buyers: download the Android APK from Whop (or the backup link), install, then Sync."
         ),
     )
 

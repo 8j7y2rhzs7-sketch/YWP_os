@@ -27,7 +27,7 @@ DECISION_ENGINE_PRODUCT_ID = "prod_NuPQUAGoibkpW"
 DECISION_ENGINE_CHECKOUT_URL = "https://whop.com/checkout/plan_MwJ2qcFxmvqDY"
 DEFAULT_APP_DOWNLOAD_URL = (
     "https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/"
-    "android-v3.3.7/YWP-OS-3.3.7.apk"
+    "android-v3.3.8/YWP-OS-3.3.8.apk"
 )
 
 
