@@ -99,6 +99,14 @@ export default function AnalysisScreen() {
     [build],
   );
 
+  const playLeanPicks = useMemo(
+    () =>
+      (analysis?.ranked_picks ?? []).filter((item) =>
+        ["PLAY", "LEAN"].includes(item.decision),
+      ),
+    [analysis],
+  );
+
   const customLegs = useMemo(
     () =>
       (analysis?.ranked_picks ?? []).filter((item) => selectedPickIds.includes(item.id)),
@@ -152,11 +160,22 @@ export default function AnalysisScreen() {
     );
   }
 
+  function openTicketComposer(card: TicketCard) {
+    setError(null);
+    setIntentionalCorrelation(false);
+    setIntentionalThesis(false);
+    setSelectedCard(card);
+  }
+
   async function saveTicket() {
     if (!selectedCard || !id) return;
     const numericStake = Number(stake);
-    if (!Number.isFinite(numericStake) || numericStake < 0) {
-      setError("Enter a valid stake amount");
+    if (!Number.isFinite(numericStake) || numericStake <= 0) {
+      setError("Enter a valid stake amount greater than 0");
+      return;
+    }
+    if (!selectedCard.legs.length) {
+      setError("Select at least one PLAY or LEAN pick before saving");
       return;
     }
     setSaving(true);
@@ -175,9 +194,12 @@ export default function AnalysisScreen() {
         }),
       });
       setSelectedCard(null);
+      setError(null);
       router.push(`/ticket/${ticket.id}`);
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "Ticket could not be saved");
+      const message =
+        reason instanceof Error ? reason.message : "Ticket could not be saved";
+      setError(message);
     } finally {
       setSaving(false);
     }
@@ -192,14 +214,6 @@ export default function AnalysisScreen() {
       </Screen>
     );
   }
-
-  const playLeanPicks = useMemo(
-    () =>
-      (analysis?.ranked_picks ?? []).filter((item) =>
-        ["PLAY", "LEAN"].includes(item.decision),
-      ),
-    [analysis],
-  );
 
   const canBuildCustom = playLeanPicks.length > 0;
   // True board PASS only when no ticket-eligible picks exist.
@@ -255,7 +269,7 @@ export default function AnalysisScreen() {
           unknown source labels {analysis.data_quality_summary.unknown_source_labels}
         </Text>
       </MetalPanel>
-      {error ? <ErrorNotice message={error} /> : null}
+      {!selectedCard && error ? <ErrorNotice message={error} /> : null}
 
       <SectionTitle
         title="Ranked Plays"
@@ -287,7 +301,7 @@ export default function AnalysisScreen() {
       {canBuildCustom && customLegs.length ? (
         <YwpButton
           label={`SAVE CUSTOM ${customLegs.length}-LEG TICKET`}
-          onPress={() => customCard && setSelectedCard(customCard)}
+          onPress={() => customCard && openTicketComposer(customCard)}
         />
       ) : null}
       {canBuildCustom && analysis.ranked_picks.length ? (
@@ -337,7 +351,7 @@ export default function AnalysisScreen() {
           <TicketCardView
             key={card.key}
             card={card}
-            onPress={card.legs.length ? () => setSelectedCard(card) : undefined}
+            onPress={card.legs.length ? () => openTicketComposer(card) : undefined}
           />
         ))
       ) : (
@@ -364,16 +378,40 @@ export default function AnalysisScreen() {
         visible={Boolean(selectedCard)}
         transparent
         animationType="slide"
-        onRequestClose={() => setSelectedCard(null)}
+        onRequestClose={() => {
+          setSelectedCard(null);
+          setError(null);
+        }}
       >
-        <Pressable style={styles.backdrop} onPress={() => setSelectedCard(null)}>
-          <Pressable style={styles.modal} onPress={(event) => event.stopPropagation()}>
+        <View style={styles.backdrop}>
+          <Pressable
+            style={StyleSheet.absoluteFill}
+            onPress={() => {
+              setSelectedCard(null);
+              setError(null);
+            }}
+            accessibilityLabel="Dismiss ticket composer"
+          />
+          <View style={styles.modal}>
             <Text style={type.eyebrow}>SAVE DRAFT TICKET</Text>
             <Text style={styles.modalTitle}>{selectedCard?.label}</Text>
             <Text style={type.caption}>
               Saving is not placement. Lock Check is still mandatory immediately
               before any wager.
             </Text>
+            {error ? <ErrorNotice message={error} /> : null}
+            {error?.toLowerCase().includes("intentional_correlation") ||
+            error?.toLowerCase().includes("correlated") ? (
+              <Text style={type.caption}>
+                Turn on Intentional correlation below, then save again.
+              </Text>
+            ) : null}
+            {error?.toLowerCase().includes("thesis exposure") ||
+            error?.toLowerCase().includes("intentional_thesis") ? (
+              <Text style={type.caption}>
+                Turn on Cross-ticket thesis exposure below, then save again.
+              </Text>
+            ) : null}
             <FormField
               label="Stake"
               value={stake}
@@ -409,7 +447,7 @@ export default function AnalysisScreen() {
               label="SAVE & OPEN LOCK CENTER"
               onPress={() => void saveTicket()}
               loading={saving}
-              disabled={!canBuildCustom || !selectedCard?.legs.length}
+              disabled={!selectedCard?.legs.length || saving}
             />
             <YwpButton
               label="CREATE SHARE GRAPHIC"
@@ -417,15 +455,23 @@ export default function AnalysisScreen() {
               onPress={() => {
                 if (!selectedCard || !id) return;
                 setSelectedCard(null);
+                setError(null);
                 router.push({
                   pathname: "/share-card",
                   params: { analysisId: id, cardKey: selectedCard.key },
                 });
               }}
             />
-            <YwpButton label="CANCEL" variant="danger" onPress={() => setSelectedCard(null)} />
-          </Pressable>
-        </Pressable>
+            <YwpButton
+              label="CANCEL"
+              variant="danger"
+              onPress={() => {
+                setSelectedCard(null);
+                setError(null);
+              }}
+            />
+          </View>
+        </View>
       </Modal>
     </Screen>
   );
