@@ -270,6 +270,26 @@ export interface LockCheck {
   created_at: string;
 }
 
+export interface SettleDayItem {
+  recommendation_id: string;
+  ticket_id: string;
+  selection: string;
+  status: string;
+  outcome: string | null;
+  final_score: string | null;
+  actual_value: string | null;
+  detail: string | null;
+}
+
+export interface SettleDayResponse {
+  graded: number;
+  pending: number;
+  skipped: number;
+  errors: number;
+  tickets_settled: number;
+  items: SettleDayItem[];
+}
+
 export interface Performance {
   settled: number;
   wins: number;

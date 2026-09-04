@@ -15,7 +15,7 @@ import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
 import { colors, spacing, type } from "@/theme";
-import type { LockCheck, Recommendation, Ticket } from "@/types";
+import type { LockCheck, Recommendation, SettleDayResponse, Ticket } from "@/types";
 
 export default function TicketDetailScreen() {
   const params = useLocalSearchParams<{ id: string }>();
@@ -93,8 +93,26 @@ export default function TicketDetailScreen() {
     setAction("settle");
     setError(null);
     try {
-      await request("/sports/settle-day", { method: "POST", body: "{}" });
+      const settle = await request<SettleDayResponse>("/sports/settle-day", {
+        method: "POST",
+        body: "{}",
+      });
       await load();
+      const parts: string[] = [];
+      if (settle.graded) parts.push(`${settle.graded} graded`);
+      if (settle.pending) parts.push(`${settle.pending} waiting on finals`);
+      if (settle.skipped) parts.push(`${settle.skipped} skipped`);
+      if (settle.errors) parts.push(`${settle.errors} failed`);
+      const detail = settle.items
+        .slice(0, 5)
+        .map((item) => `${item.selection || "ticket"}: ${item.detail || item.status}`)
+        .join("\n");
+      Alert.alert(
+        "Score sync",
+        parts.length
+          ? `${parts.join(" · ")}${detail ? `\n\n${detail}` : ""}`
+          : "No placed MLB legs were ready. Games must be Final first.",
+      );
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Score sync failed");
     } finally {

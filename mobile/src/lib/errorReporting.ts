@@ -23,7 +23,7 @@ export interface ErrorReportInput {
   context?: Record<string, unknown>;
 }
 
-const APP_VERSION = "3.3.0";
+const APP_VERSION = "3.3.1";
 
 export async function submitErrorReport(input: ErrorReportInput): Promise<void> {
   let accessToken: string | undefined;

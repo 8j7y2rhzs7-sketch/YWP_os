@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 
 import { BrandHeader } from "@/components/BrandHeader";
 import { ErrorNotice } from "@/components/ErrorNotice";
@@ -12,9 +12,27 @@ import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
 import { colors, spacing, type } from "@/theme";
-import type { Ticket } from "@/types";
+import type { SettleDayResponse, Ticket } from "@/types";
 
 const PAGE_SIZE = 25;
+
+function summarizeSettle(result: SettleDayResponse): string {
+  const parts: string[] = [];
+  if (result.graded) parts.push(`${result.graded} graded WIN/LOSS`);
+  if (result.pending) parts.push(`${result.pending} still waiting on finals`);
+  if (result.skipped) parts.push(`${result.skipped} skipped (not MLB finals yet or already graded)`);
+  if (result.tickets_settled) parts.push(`${result.tickets_settled} ticket(s) marked settled`);
+  if (result.errors) parts.push(`${result.errors} failed`);
+  if (!parts.length) {
+    return "No placed MLB legs were ready to grade. Games must be Final, and the ticket must be Placed.";
+  }
+  const details = result.items
+    .filter((item) => item.status === "pending" || item.status === "skipped" || item.status === "error")
+    .slice(0, 4)
+    .map((item) => `• ${item.selection || item.status}: ${item.detail || item.status}`)
+    .join("\n");
+  return details ? `${parts.join(" · ")}\n\n${details}` : parts.join(" · ");
+}
 
 export default function TicketsScreen() {
   const { request } = useAuth();
@@ -24,23 +42,39 @@ export default function TicketsScreen() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [syncNote, setSyncNote] = useState<string | null>(null);
 
   const load = useCallback(
-    async (refresh = false) => {
+    async (refresh = false, announce = false) => {
       refresh ? setRefreshing(true) : setLoading(true);
       setError(null);
       try {
-        // Pull MLB finals for placed tickets so vault shows WIN/LOSS without manual grade.
+        let settle: SettleDayResponse | null = null;
         if (refresh) {
           try {
-            await request("/sports/settle-day", { method: "POST", body: "{}" });
-          } catch {
-            /* settlement is best-effort; vault still loads */
+            settle = await request<SettleDayResponse>("/sports/settle-day", {
+              method: "POST",
+              body: "{}",
+            });
+          } catch (reason) {
+            const message =
+              reason instanceof Error ? reason.message : "Score sync failed";
+            setSyncNote(message);
+            if (announce) {
+              Alert.alert("Score sync", message);
+            }
           }
         }
         const page = await request<Ticket[]>(`/tickets?limit=${PAGE_SIZE}`);
         setTickets(page);
         setHasMore(page.length >= PAGE_SIZE);
+        if (settle) {
+          const summary = summarizeSettle(settle);
+          setSyncNote(summary);
+          if (announce) {
+            Alert.alert("Score sync", summary);
+          }
+        }
       } catch (reason) {
         setError(reason instanceof Error ? reason.message : "Tickets failed to load");
       } finally {
@@ -71,10 +105,21 @@ export default function TicketsScreen() {
     void load();
   }, [load]);
 
+  const placedCount = tickets.filter((ticket) => ticket.status === "placed").length;
+  const lockedDraftCount = tickets.filter((ticket) =>
+    ["draft", "locked"].includes(ticket.status),
+  ).length;
+
   return (
-    <Screen refreshing={refreshing} onRefresh={() => void load(true)}>
+    <Screen refreshing={refreshing} onRefresh={() => void load(true, true)}>
       <BrandHeader title="TICKET VAULT" subtitle="EXPOSURE • LOCKS • DECISIONS" compact />
       {error ? <ErrorNotice message={error} /> : null}
+      {syncNote ? (
+        <MetalPanel tone="gold">
+          <Text style={type.eyebrow}>LAST SCORE SYNC</Text>
+          <Text style={type.body}>{syncNote}</Text>
+        </MetalPanel>
+      ) : null}
       {loading ? <LoadingState label="Loading protected tickets…" /> : null}
       {!loading && !tickets.length ? (
         <MetalPanel tone="gold">
@@ -87,7 +132,12 @@ export default function TicketsScreen() {
         </MetalPanel>
       ) : null}
       {tickets.map((ticket) => (
-        <MetalPanel key={ticket.id} tone={ticket.status === "placed" ? "success" : "default"}>
+        <MetalPanel
+          key={ticket.id}
+          tone={
+            ticket.status === "placed" || ticket.status === "settled" ? "success" : "default"
+          }
+        >
           <View style={styles.row}>
             <View style={styles.flex}>
               <Text style={type.eyebrow}>{ticket.ticket_type.replaceAll("_", " ")}</Text>
@@ -123,12 +173,21 @@ export default function TicketsScreen() {
           />
         </MetalPanel>
       ))}
-      {tickets.some((ticket) => ticket.status === "placed") ? (
+      {placedCount ? (
         <YwpButton
           label="SYNC SCORES & RESULTS"
-          onPress={() => void load(true)}
+          onPress={() => void load(true, true)}
           loading={refreshing}
         />
+      ) : tickets.length ? (
+        <MetalPanel>
+          <Text style={styles.title}>No placed tickets yet</Text>
+          <Text style={type.body}>
+            {lockedDraftCount
+              ? "Open a ticket, run Lock Check, then Place it. Sync only grades placed tickets after games go Final."
+              : "Save and place a ticket before scores can sync."}
+          </Text>
+        </MetalPanel>
       ) : null}
       {hasMore && tickets.length > 0 ? (
         <YwpButton
