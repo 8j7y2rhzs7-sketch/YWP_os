@@ -60,9 +60,10 @@ class LoginRequest(YWPModel):
 
 class ProvisionTesterRequest(YWPModel):
     email: EmailStr
-    password: str = Field(min_length=10, max_length=128)
+    password: str = Field(min_length=8, max_length=128)
     name: str = Field(min_length=2, max_length=120)
     timezone: str = Field(default="America/New_York", min_length=3, max_length=64)
+    role: Literal["user", "admin"] = "user"
 
     @field_validator("password")
     @classmethod
@@ -83,6 +84,7 @@ class ProvisionTesterOut(YWPModel):
     name: str
     created: bool
     subscription_status: str
+    role: str
     message: str
 
 

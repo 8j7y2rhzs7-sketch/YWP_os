@@ -99,6 +99,7 @@ def provision_tester(
         password=payload.password,
         name=payload.name,
         timezone=payload.timezone,
+        role=payload.role,
     )
     db.commit()
     return ProvisionTesterOut(
@@ -106,10 +107,9 @@ def provision_tester(
         name=user.name,
         created=created,
         subscription_status=user.subscription_status,
+        role=user.role,
         message=(
-            "Tester account created with active access"
-            if created
-            else "Tester account updated with active access"
+            f"{'Created' if created else 'Updated'} {user.role} account with active access"
         ),
     )
 

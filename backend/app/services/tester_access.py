@@ -16,8 +16,12 @@ def upsert_tester(
     password: str,
     name: str,
     timezone: str = "America/New_York",
+    role: str = "user",
 ) -> tuple[User, bool]:
     email = email.lower().strip()
+    role = (role or "user").strip().lower()
+    if role not in {"user", "admin"}:
+        role = "user"
     user = db.scalar(select(User).where(User.email == email))
     created = False
     if user is None:
@@ -27,7 +31,7 @@ def upsert_tester(
             name=name.strip() or "YWP Tester",
             timezone=timezone or "America/New_York",
             risk_profile="balanced",
-            role="user",
+            role=role,
             subscription_status="active",
         )
         db.add(user)
@@ -38,6 +42,7 @@ def upsert_tester(
         user.password_hash = hash_password(password)
         user.subscription_status = "active"
         user.is_active = True
+        user.role = role
         if name.strip():
             user.name = name.strip()
         if timezone:
@@ -45,10 +50,14 @@ def upsert_tester(
     db.add(
         AuditLog(
             user_id=user.id,
-            action="TESTER_PROVISIONED",
+            action="TESTER_PROVISIONED" if role == "user" else "ADMIN_PROVISIONED",
             entity_type="user",
             entity_id=user.id,
-            details={"created": created, "subscription_status": "active"},
+            details={
+                "created": created,
+                "subscription_status": "active",
+                "role": role,
+            },
         )
     )
     return user, created
