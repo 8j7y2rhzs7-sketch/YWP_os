@@ -390,7 +390,9 @@ def run_protocol_health_check(
         ],
         "injuries_and_rest": [candidate.injuries_verified for candidate in candidates],
         "pace_or_tempo": [
-            0.0 <= float(candidate.script_alignment) <= 1.0 for candidate in candidates
+            candidate.script_alignment is not None
+            and 0.0 <= float(candidate.script_alignment) <= 1.0
+            for candidate in candidates
         ],
         "h2h_context": [candidate.ain_checks.get("h2h_context") for candidate in candidates],
         "market_value": [
@@ -455,12 +457,20 @@ def run_protocol_health_check(
             _check(
                 "miss_by_one",
                 "Miss-by-1 inputs",
-                [candidate.miss_by_one_count_l10 >= 0 for candidate in candidates],
+                [
+                    candidate.miss_by_one_count_l10 is not None
+                    and candidate.miss_by_one_count_l10 >= 0
+                    for candidate in candidates
+                ],
             ),
             _check(
                 "multiple_paths",
                 "Multiple independent cashing paths",
-                [candidate.multiple_paths_score >= 0.35 for candidate in candidates],
+                [
+                    candidate.multiple_paths_score is not None
+                    and candidate.multiple_paths_score >= 0.35
+                    for candidate in candidates
+                ],
             ),
             _check(
                 "pre_game_only",

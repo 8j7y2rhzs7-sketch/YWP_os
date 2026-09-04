@@ -41,6 +41,8 @@ SPORT_DISPLAY: dict[str, tuple[str, str]] = {
     "kbo": ("kbo", "KBO"),
 }
 
+SOCCER_KEYS = {"soccer", "epl", "mls"}
+
 
 def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
     sport_lower = sport.lower()
@@ -108,11 +110,46 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
                     thesis_key=f"{sport_lower}-{_slug(team)}-ml-{slate_date}",
                     script_key=f"{sport_lower}-{_slug(event_name)}-{side}",
                     reason_codes=["MATCHUP_EDGE", "CURRENT_FORM"],
-                    reasoning=[f"{team} moneyline from ESPN form + trusted market price."],
+                    reasoning=[
+                        f"{team} moneyline from ESPN form + trusted market price.",
+                        *(
+                            ["Modeled as 90-minute 1X2 (home/draw/away)."]
+                            if sport_lower in SOCCER_KEYS
+                            else []
+                        ),
+                    ],
                     research=research,
                     now=now,
                 )
             )
+
+        if sport_lower in SOCCER_KEYS:
+            draw = extract_best_odds(bookmakers, "h2h", "Draw")
+            if draw:
+                candidates.append(
+                    build_verified_candidate(
+                        sport=sport_code,
+                        league=league,
+                        candidate_id=f"{sport_lower}-ml-draw-{event_id[:12]}",
+                        event_id=event_id,
+                        event_name=event_name,
+                        home_team=home,
+                        away_team=away,
+                        start_time=start_time,
+                        market_type="moneyline_draw",
+                        selection="Draw (90 min)",
+                        odds=draw["american_odds"],
+                        line=None,
+                        thesis_key=f"{sport_lower}-{_slug(event_name)}-draw-{slate_date}",
+                        script_key=f"{sport_lower}-{_slug(event_name)}-draw",
+                        reason_codes=["MATCHUP_EDGE", "CURRENT_FORM"],
+                        reasoning=[
+                            "Regulation draw priced as a 1X2 outcome (not ET/pens).",
+                        ],
+                        research=research,
+                        now=now,
+                    )
+                )
 
         for team in (home, away):
             spread = extract_best_odds(bookmakers, "spreads", team)

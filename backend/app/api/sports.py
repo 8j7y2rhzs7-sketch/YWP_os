@@ -25,6 +25,7 @@ from app.models import (
 from app.schemas import (
     AnalyzeResponse,
     BuildTicketRequest,
+    CustomCardPreviewRequest,
     BuildTicketResponse,
     CandidateInput,
     ExternalResultCreate,
@@ -36,6 +37,7 @@ from app.schemas import (
     SettlementItemOut,
     SlateResponse,
     SportsAnalyzeRequest,
+    TicketCardOut,
 )
 from app.services.decision_engine import (
     decision_engine,
@@ -52,7 +54,7 @@ from app.services.live_wnba_slate import live_wnba_slate
 from app.services.odds_provider import get_last_fetch_status, odds_api_configured
 from app.services.readiness import slate_readiness, verification_summary
 from app.services.settlement import settle_user_day
-from app.services.ticket_builder import build_cards
+from app.services.ticket_builder import build_cards, preview_custom_card
 
 router = APIRouter(prefix="/sports", tags=["sports"])
 
@@ -395,6 +397,27 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
 @router.get("/recommendations/{recommendation_id}", response_model=RecommendationOut)
 def recommendation(recommendation_id: str, user: SubscribedUser, db: DB) -> RecommendationOut:
     return RecommendationOut.model_validate(_owned_recommendation(db, recommendation_id, user.id))
+
+
+@router.post("/preview-custom-card", response_model=TicketCardOut)
+def preview_custom_card_endpoint(
+    payload: CustomCardPreviewRequest, user: SubscribedUser, db: DB
+) -> TicketCardOut:
+    recommendations = list(
+        db.scalars(
+            select(Recommendation)
+            .where(
+                Recommendation.created_by_user_id == user.id,
+                Recommendation.id.in_(payload.recommendation_ids),
+            )
+            .order_by(Recommendation.rank)
+        ).all()
+    )
+    by_id = {item.id: item for item in recommendations}
+    ordered = [by_id[item_id] for item_id in payload.recommendation_ids if item_id in by_id]
+    if len(ordered) != len(payload.recommendation_ids):
+        raise HTTPException(status_code=404, detail="One or more recommendations were not found")
+    return preview_custom_card(ordered, label=payload.label)
 
 
 @router.post("/build-ticket", response_model=BuildTicketResponse)

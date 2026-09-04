@@ -101,6 +101,7 @@ export async function rawRequest<T>(
   path: string,
   init: RequestInit = {},
   accessToken?: string,
+  timeoutMs = 25_000,
 ): Promise<T> {
   const apiUrl = getApiUrl() || PRODUCTION_API_URL;
   currentApiUrl = apiUrl;
@@ -111,7 +112,27 @@ export async function rawRequest<T>(
   if (accessToken) {
     headers.set("Authorization", `Bearer ${accessToken}`);
   }
-  const response = await fetch(`${apiUrl}${path}`, { ...init, headers });
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  let response: Response;
+  try {
+    response = await fetch(`${apiUrl}${path}`, {
+      ...init,
+      headers,
+      signal: init.signal ?? controller.signal,
+    });
+  } catch (error) {
+    clearTimeout(timer);
+    if (error instanceof Error && error.name === "AbortError") {
+      throw new ApiError("Request timed out — check connectivity and retry", 408);
+    }
+    throw new ApiError(
+      error instanceof Error ? error.message : "Network request failed",
+      0,
+    );
+  } finally {
+    clearTimeout(timer);
+  }
   const contentType = response.headers.get("content-type") ?? "";
   const body = contentType.includes("application/json")
     ? await response.json()

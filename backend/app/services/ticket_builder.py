@@ -75,6 +75,22 @@ def _diverse(
     return selected
 
 
+def preview_custom_card(
+    recommendations: list[Recommendation],
+    *,
+    key: str = "custom",
+    label: str | None = None,
+) -> TicketCardOut:
+    """Build a custom card with the same risk/weakest metrics as official cards."""
+    unit = "leg" if len(recommendations) == 1 else "legs"
+    return _card(
+        key,
+        label or f"Custom {len(recommendations)}-{unit}",
+        recommendations,
+        warnings=[],
+    )
+
+
 def _card(
     key: str, label: str, legs: list[Recommendation], warnings: list[str] | None = None
 ) -> TicketCardOut:

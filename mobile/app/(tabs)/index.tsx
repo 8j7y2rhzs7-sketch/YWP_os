@@ -138,7 +138,9 @@ export default function CommandCenter() {
             <Text style={styles.panelTitle}>{protocol?.name ?? "YWP OS Protocol"}</Text>
             <Text style={type.caption}>VERSION {protocol?.version ?? brand.protocolVersion}</Text>
           </View>
-          <StatusPill value="DOUBLE_CLEARED" />
+          <StatusPill
+            value={(protocol?.status ?? "standby").toUpperCase().replace(/_/g, " ")}
+          />
         </View>
         <Text style={styles.rule}>✓ AIN seven-angle sweep</Text>
         <Text style={styles.rule}>✓ Strict sport-specific verification</Text>

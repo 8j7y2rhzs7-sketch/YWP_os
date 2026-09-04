@@ -4,19 +4,91 @@ import { LinearGradient } from "expo-linear-gradient";
 
 import { brandAssets } from "@/brandAssets";
 import { brand, colors } from "@/theme";
-import type { TicketCard } from "@/types";
+import type { Readiness, TicketCard } from "@/types";
+
+export type ShareTruthState =
+  | "DEMO"
+  | "RESEARCH_INCOMPLETE"
+  | "DRAFT"
+  | "VERIFIED"
+  | "PASS"
+  | "CUSTOM";
+
+function resolveTruth(input: {
+  card: TicketCard;
+  readiness?: Readiness | null;
+  protocolStatus?: string | null;
+  isCustom?: boolean;
+}): ShareTruthState {
+  if (input.isCustom || input.card.key === "custom") return "CUSTOM";
+  if (input.readiness === "DEMO") return "DEMO";
+  if (input.card.legs.length === 0) return "PASS";
+  if (input.readiness === "PARTIAL") return "RESEARCH_INCOMPLETE";
+  if (input.protocolStatus === "DOUBLE_CLEARED" && input.readiness === "VERIFIED") {
+    return "VERIFIED";
+  }
+  if (input.readiness === "VERIFIED") return "VERIFIED";
+  return "DRAFT";
+}
 
 export const ShareCard = forwardRef<
   View,
-  { card: TicketCard; slateDate: string; sport?: string }
->(function ShareCard({ card, slateDate, sport = "MULTI" }, ref) {
-  const isPass = card.legs.length === 0;
+  {
+    card: TicketCard;
+    slateDate: string;
+    sport?: string;
+    readiness?: Readiness | null;
+    protocolStatus?: string | null;
+    isCustom?: boolean;
+  }
+>(function ShareCard(
+  { card, slateDate, sport = "MULTI", readiness, protocolStatus, isCustom },
+  ref,
+) {
+  const truth = resolveTruth({ card, readiness, protocolStatus, isCustom });
+  const isPass = truth === "PASS";
+  const official =
+    truth === "VERIFIED" && card.legs.length > 0 && !isCustom;
+
+  const headerLine =
+    truth === "DEMO"
+      ? "YWP OS • DEMO BUILD — NOT LIVE EVIDENCE"
+      : truth === "RESEARCH_INCOMPLETE"
+        ? "YWP OS • RESEARCH INCOMPLETE"
+        : truth === "CUSTOM"
+          ? "YWP OS • CUSTOM CARD DRAFT"
+          : truth === "VERIFIED"
+            ? "YWP OS • VERIFIED-AS-OF THIS ANALYSIS"
+            : truth === "PASS"
+              ? "YWP OS • OFFICIAL PASS"
+              : "YWP OS • DRAFT BOARD EXPORT";
+
+  const statusLabel =
+    truth === "DEMO"
+      ? "DEMO • NOT OFFICIAL"
+      : truth === "RESEARCH_INCOMPLETE"
+        ? "PARTIAL • GATES OPEN"
+        : truth === "CUSTOM"
+          ? `${card.legs.length} CUSTOM LEG${card.legs.length === 1 ? "" : "S"}`
+          : isPass
+            ? "PASS • NO PLAY"
+            : official
+              ? `${card.legs.length} OFFICIAL ${card.legs.length === 1 ? "PLAY" : "PLAYS"}`
+              : `${card.legs.length} DRAFT LEG${card.legs.length === 1 ? "" : "S"}`;
+
+  const controlDefault =
+    truth === "DEMO"
+      ? "Demo fixtures cannot claim live verification."
+      : truth === "RESEARCH_INCOMPLETE"
+        ? "Missing research remains visible — not cleared."
+        : truth === "CUSTOM"
+          ? "Custom card uses backend risk metrics; not an auto-verified play."
+          : official
+            ? "Legs cleared gates in this analysis snapshot."
+            : "Export reflects saved board state only.";
+
   return (
-    <View
-      ref={ref}
-      style={styles.canvas}
-      collapsable={false}
-    >
+    <View ref={ref} style={styles.canvas} collapsable={false}>
       <LinearGradient
         colors={["#070A0F", "#0C121A", "#050608"]}
         style={StyleSheet.absoluteFill}
@@ -24,14 +96,10 @@ export const ShareCard = forwardRef<
       <View style={styles.cornerOne} />
       <View style={styles.cornerTwo} />
       <View style={styles.header}>
-        <Image
-          source={brandAssets.crest}
-          style={styles.logo}
-          resizeMode="contain"
-        />
+        <Image source={brandAssets.crest} style={styles.logo} resizeMode="contain" />
         <View style={styles.headerCopy}>
           <Text style={styles.eyebrow}>{brand.descriptor}</Text>
-          <Text style={styles.protocol}>YWP OS • FINAL PROTOCOL RERUN</Text>
+          <Text style={styles.protocol}>{headerLine}</Text>
         </View>
         <View style={styles.dateWrap}>
           <Text style={styles.date}>{slateDate}</Text>
@@ -46,10 +114,31 @@ export const ShareCard = forwardRef<
             {sport.toUpperCase()} • CUSHION • VALUE • SCRIPT • MISS-BY-1
           </Text>
         </View>
-        <View style={[styles.status, isPass ? styles.statusDanger : styles.statusSuccess]}>
-          <View style={[styles.dot, isPass ? styles.dotDanger : styles.dotSuccess]} />
-          <Text style={[styles.statusText, isPass ? styles.dangerText : styles.successText]}>
-            {isPass ? "PASS • NO PLAY" : `${card.legs.length} OFFICIAL ${card.legs.length === 1 ? "PLAY" : "PLAYS"}`}
+        <View
+          style={[
+            styles.status,
+            truth === "VERIFIED" || (!isPass && official)
+              ? styles.statusSuccess
+              : styles.statusDanger,
+          ]}
+        >
+          <View
+            style={[
+              styles.dot,
+              truth === "VERIFIED" || (!isPass && official)
+                ? styles.dotSuccess
+                : styles.dotDanger,
+            ]}
+          />
+          <Text
+            style={[
+              styles.statusText,
+              truth === "VERIFIED" || (!isPass && official)
+                ? styles.successText
+                : styles.dangerText,
+            ]}
+          >
+            {statusLabel}
           </Text>
         </View>
       </View>
@@ -65,7 +154,7 @@ export const ShareCard = forwardRef<
             </Text>
           </View>
         ) : (
-          card.legs.map((leg, index) => (
+          card.legs.slice(0, 5).map((leg, index) => (
             <View key={leg.id} style={styles.leg}>
               <View style={styles.number}>
                 <Text style={styles.numberText}>{index + 1}</Text>
@@ -73,6 +162,7 @@ export const ShareCard = forwardRef<
               <View style={styles.legCopy}>
                 <Text style={styles.legMeta}>
                   {leg.sport.toUpperCase()} • {leg.edge_class.toUpperCase()} EDGE
+                  {leg.event_name ? ` • ${leg.event_name}` : ""}
                 </Text>
                 <Text style={styles.selection}>{leg.selection.toUpperCase()}</Text>
                 <Text style={styles.playTo}>
@@ -88,16 +178,21 @@ export const ShareCard = forwardRef<
         )}
       </View>
 
-      <View style={[styles.control, isPass ? styles.dangerBorder : styles.successBorder]}>
-        <Text style={[styles.controlTitle, isPass ? styles.dangerText : styles.successText]}>
+      <View style={[styles.control, isPass || truth === "DEMO" ? styles.dangerBorder : styles.successBorder]}>
+        <Text
+          style={[
+            styles.controlTitle,
+            isPass || truth === "DEMO" ? styles.dangerText : styles.successText,
+          ]}
+        >
           FINAL CONTROL
         </Text>
         <Text style={styles.controlBody}>
-          CONFIDENCE {card.confidence_score}/100 • RISK {card.risk.toUpperCase()} • NO
-          FORCING
+          YWP SCORE {card.quality_score ?? card.confidence_score}/100 • RISK{" "}
+          {card.risk.toUpperCase()} • NO FORCING
         </Text>
         <Text style={styles.controlBody}>
-          {card.warnings[0] ?? "Every leg independently cleared YWP protocol gates."}
+          {card.warnings[0] ?? controlDefault}
         </Text>
       </View>
 

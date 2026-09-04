@@ -28,19 +28,25 @@ def health(db: DB) -> dict[str, str | bool]:
 def health_providers() -> dict[str, object]:
     """
     Probe external providers. Safe for public checks: never returns secret values.
-    Uses one Odds API request when a key is configured.
+    ESPN is probed per sport — one league 403 does not imply all ESPN sports are down.
     """
     mlb = probe_mlb_api()
     odds = probe_odds_api()
-    espn = probe_espn_api("nfl")
-    espn_ok = espn.get("status") == "connected"
+    espn_by_sport = {
+        sport: probe_espn_api(sport) for sport in ("mlb", "nba", "nfl", "soccer")
+    }
+    espn_any_ok = any(item.get("status") == "connected" for item in espn_by_sport.values())
     mlb_ok = bool(mlb.get("ok"))
     odds_ok = bool(odds.get("ok"))
     return {
-        "status": "ok" if mlb_ok and odds_ok and espn_ok else "degraded",
+        "status": "ok" if mlb_ok and odds_ok and espn_any_ok else "degraded",
         "version": settings.app_version,
         "demo_mode": settings.demo_mode,
         "mlb": mlb,
-        "espn": espn,
+        "espn": espn_by_sport,
         "odds": odds,
+        "coverage_note": (
+            "Selectable sports are not fully supported merely because prices load. "
+            "Check per-sport ESPN status and research readiness on each slate."
+        ),
     }

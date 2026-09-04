@@ -123,9 +123,11 @@ def build_event_research(
             "starter_confirmed": starter_confirmed,
             "motivation_rotation_verified": motivation_verified,
             "home_away_verified": schedule_verified,
-            "market_movement_verified": market_verified,
+            # Price consensus is not historical line movement.
+            "market_movement_verified": False,
             "sport_specific_sweep_complete": sport_sweep,
             "venue_verified": venue_verified,
+            "market_consensus_available": market_verified,
         },
         "source_status": {
             "schedule": "confirmed" if schedule_verified else "unknown",
@@ -136,7 +138,13 @@ def build_event_research(
             "lineup": "probable" if schedule_verified else "unknown",
             "weather": "confirmed" if weather_verified else "unknown",
             "venue": "confirmed" if venue_verified else "unknown",
-            "bullpen": "unknown",
+            # Bullpen only applies to baseball; mark N/A elsewhere so readiness
+            # does not treat an unknown bullpen as a hard gap for NBA/NFL/soccer.
+            "bullpen": (
+                "unknown"
+                if sport.lower() in {"mlb", "baseball", "kbo"}
+                else "na"
+            ),
         },
         "source_urls": [
             url
@@ -159,12 +167,19 @@ def project_from_research(
     selection: str,
     line: float | None,
     home_team: str,
+    sport: str | None = None,
 ) -> SportProjection:
     espn_game = research.get("espn_game") or {}
     home_name = espn_game.get("home_team") or home_team
     is_home = home_name.lower() in (selection or "").lower()
     injuries = research.get("injuries") or {}
     side_markets = "ml" in selection.lower() or "spread" in market_type or "moneyline" in market_type
+    sport_l = (sport or "").lower()
+    include_draw = sport_l in {"soccer", "mls", "epl"} and (
+        "moneyline" in (market_type or "").lower()
+        or "draw" in (selection or "").lower()
+        or (market_type or "").lower() in {"h2h", "ml", "moneyline_draw"}
+    )
     return project_matchup(
         home_form=research.get("home_form") or {},
         away_form=research.get("away_form") or {},
@@ -173,7 +188,10 @@ def project_from_research(
         line=line,
         home_out=int(injuries.get("home_out") or 0),
         away_out=int(injuries.get("away_out") or 0),
-        is_home_selection=is_home if side_markets else None,
+        is_home_selection=is_home if side_markets and "draw" not in selection.lower() else (
+            None if "draw" in selection.lower() else (is_home if side_markets else None)
+        ),
+        include_draw=include_draw,
     )
 
 
@@ -205,6 +223,7 @@ def build_verified_candidate(
         selection=selection,
         line=float(line) if line is not None else None,
         home_team=home_team,
+        sport=sport,
     )
     flags = research.get("flags") or {}
     source_status = research.get("source_status") or {}
@@ -225,11 +244,14 @@ def build_verified_candidate(
             ("lineup_confirmed", "confirmed lineup/starters"),
             ("starter_confirmed", "confirmed starters/roles"),
             ("motivation_rotation_verified", "rotation/workload"),
-            ("market_movement_verified", "market consensus"),
+            ("market_movement_verified", "historical market/line movement"),
             ("sport_specific_sweep_complete", "sport-specific strict-mode sweep"),
         ]
         if not flags.get(key)
     ]
+    market_period = "90_min" if sport.lower() in {"soccer", "mls", "epl"} and (
+        "moneyline" in market_type.lower() or "draw" in selection.lower()
+    ) else "full_game"
     return CandidateInput(
         candidate_id=candidate_id,
         event_id=event_id,
@@ -240,6 +262,7 @@ def build_verified_candidate(
         home_team=home_team,
         away_team=away_team,
         market_type=market_type,
+        market_period=market_period,
         selection=selection,
         line=line,
         american_odds=odds_clamped,
@@ -282,18 +305,27 @@ def build_verified_candidate(
         home_away_verified=bool(flags.get("home_away_verified")),
         market_movement_verified=bool(flags.get("market_movement_verified")),
         sport_specific_sweep_complete=bool(flags.get("sport_specific_sweep_complete")),
-        recent_hit_rate=min(
-            0.85,
-            float(((research.get("home_form") or {}).get("l10") or {}).get("win_pct") or 0.5)
+        recent_hit_rate=(
+            (
+                float(((research.get("home_form") or {}).get("l10") or {}).get("win_pct"))
+                if ((research.get("home_form") or {}).get("l10") or {}).get("win_pct") is not None
+                else None
+            )
             if home_team.lower() in selection.lower()
-            else float(((research.get("away_form") or {}).get("l10") or {}).get("win_pct") or 0.5),
+            else (
+                float(((research.get("away_form") or {}).get("l10") or {}).get("win_pct"))
+                if ((research.get("away_form") or {}).get("l10") or {}).get("win_pct") is not None
+                else None
+            )
         ),
-        average_cushion=1.1,
+        # Unknown market-specific cushion / script / role stay null — never invent
+        # convincing constants that look like verified research.
+        average_cushion=None,
         matchup_score=max(0.0, min(1.0, projection.home_strength)),
-        script_alignment=0.45,
-        multiple_paths_score=0.45,
-        role_stability=0.45,
-        miss_by_one_count_l10=0,
+        script_alignment=None,
+        multiple_paths_score=None,
+        role_stability=None,
+        miss_by_one_count_l10=None,
         ain_checks={
             "recent_form_l5_l10": bool(flags.get("l5_l10_verified")),
             "situational_angles": bool(flags.get("injuries_verified")),

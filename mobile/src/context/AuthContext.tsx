@@ -46,6 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const tokenRef = useRef<Tokens | null>(null);
+  const rotateInFlight = useRef<Promise<Tokens> | null>(null);
 
   const saveTokens = useCallback(async (next: Tokens | null) => {
     tokenRef.current = next;
@@ -58,16 +59,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const rotate = useCallback(async (): Promise<Tokens> => {
+    if (rotateInFlight.current) return rotateInFlight.current;
     const current = tokenRef.current;
     if (!current) {
       throw new ApiError("No refresh session is available", 401);
     }
-    const next = await rawRequest<Tokens>("/auth/refresh", {
-      method: "POST",
-      body: JSON.stringify({ refresh_token: current.refresh_token }),
-    });
-    await saveTokens(next);
-    return next;
+    const pending = (async () => {
+      const next = await rawRequest<Tokens>("/auth/refresh", {
+        method: "POST",
+        body: JSON.stringify({ refresh_token: current.refresh_token }),
+      });
+      await saveTokens(next);
+      return next;
+    })();
+    rotateInFlight.current = pending;
+    try {
+      return await pending;
+    } finally {
+      if (rotateInFlight.current === pending) rotateInFlight.current = null;
+    }
   }, [saveTokens]);
 
   const applyAccessLoss = useCallback((checkoutUrl?: string) => {
@@ -225,16 +235,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           );
           if (active) setUser(profile);
         } catch (error) {
-          if (!(error instanceof ApiError) || error.status !== 401) throw error;
-          const next = await rotate();
-          const profile = await rawRequest<User>(
-            "/users/me",
-            {},
-            next.access_token,
-          );
-          if (active) setUser(profile);
+          if (error instanceof ApiError && error.status === 401) {
+            try {
+              const next = await rotate();
+              const profile = await rawRequest<User>(
+                "/users/me",
+                {},
+                next.access_token,
+              );
+              if (active) setUser(profile);
+              return;
+            } catch (refreshError) {
+              if (
+                refreshError instanceof ApiError &&
+                refreshError.status === 401
+              ) {
+                if (active) {
+                  setUser(null);
+                  await saveTokens(null);
+                }
+                return;
+              }
+              // Offline / timeout during refresh — keep stored session.
+              if (active) setTokens(restored);
+              return;
+            }
+          }
+          // Network/timeout while offline — retain tokens for retry.
+          if (active) setTokens(restored);
         }
       } catch {
+        // Corrupt storage only.
         if (active) {
           setUser(null);
           await saveTokens(null);

@@ -25,22 +25,23 @@ COMMON_REQUIRED_CHECKS: tuple[tuple[str, str], ...] = (
 def candidate_verification_gaps(candidate: CandidateInput) -> list[str]:
     gaps = [label for field, label in COMMON_REQUIRED_CHECKS if not bool(getattr(candidate, field))]
 
-    if (
-        candidate.sport.lower() in {"mlb", "nfl", "ncaaf", "soccer", "kbo"}
-        and not candidate.weather_verified
-    ):
+    sport_l = candidate.sport.lower()
+    if sport_l in {"mlb", "nfl", "ncaaf", "soccer", "mls", "epl", "kbo"} and not candidate.weather_verified:
         gaps.append("weather/venue conditions")
 
     # Only unknown labels on hard research channels block readiness.
     # "probable" is allowed for pregame lineups/umpires while certified feeds catch up.
+    # Bullpen is baseball-only — never block NBA/NFL/soccer for a missing bullpen source.
     hard_source_keys = {
         "schedule",
         "market",
         "current_form",
         "injuries",
         "starter",
-        "bullpen",
     }
+    if sport_l in {"mlb", "baseball", "kbo"}:
+        hard_source_keys.add("bullpen")
+
     unknown_sources = [
         label
         for label, state in candidate.source_status.items()

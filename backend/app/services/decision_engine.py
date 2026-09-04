@@ -162,8 +162,27 @@ class DecisionEngine:
         )
         reliability = clamp(0.70 * quality + 0.30 * source_reliability, 0, 1)
         verification_rate = sum(verification_checks.values()) / len(verification_checks)
+        role_stability = (
+            0.5 if candidate.role_stability is None else float(candidate.role_stability)
+        )
+        matchup_score = (
+            0.5 if candidate.matchup_score is None else float(candidate.matchup_score)
+        )
+        script_alignment = (
+            0.5 if candidate.script_alignment is None else float(candidate.script_alignment)
+        )
+        multiple_paths = (
+            0.5
+            if candidate.multiple_paths_score is None
+            else float(candidate.multiple_paths_score)
+        )
+        miss_by_one_count = (
+            0
+            if candidate.miss_by_one_count_l10 is None
+            else int(candidate.miss_by_one_count_l10)
+        )
         stability = clamp(
-            0.35 * candidate.role_stability
+            0.35 * role_stability
             + 0.30 * verification_rate
             + 0.20 * (1 - candidate.variance)
             + 0.15 * quality,
@@ -180,12 +199,12 @@ class DecisionEngine:
         vision_score = 10 * (
             0.30 * hit_rate
             + 0.25 * cushion_component
-            + 0.20 * candidate.matchup_score
-            + 0.15 * candidate.script_alignment
-            + 0.10 * candidate.multiple_paths_score
+            + 0.20 * matchup_score
+            + 0.15 * script_alignment
+            + 0.10 * multiple_paths
         )
 
-        miss_rate = candidate.miss_by_one_count_l10 / 10
+        miss_rate = miss_by_one_count / 10
         cushion_risk = (
             0.5
             if candidate.average_cushion is None
@@ -195,8 +214,8 @@ class DecisionEngine:
             0.35 * miss_rate
             + 0.30 * cushion_risk
             + 0.15 * candidate.variance
-            + 0.10 * (1 - candidate.role_stability)
-            + 0.10 * (1 - candidate.multiple_paths_score)
+            + 0.10 * (1 - role_stability)
+            + 0.10 * (1 - multiple_paths)
             + min(0.20, candidate.ticket_killer_count * 0.04),
             0,
             1,

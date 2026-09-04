@@ -52,7 +52,7 @@ export default function AnalysisScreen() {
   const params = useLocalSearchParams<{ id: string }>();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
   const { request } = useAuth();
-  const { analyses, builds, saveBuild } = useAppData();
+  const { analyses, builds, saveBuild, ready } = useAppData();
   const analysis = id ? analyses[id] : undefined;
   const build = id ? builds[id] : undefined;
   const [loading, setLoading] = useState(!build);
@@ -63,6 +63,8 @@ export default function AnalysisScreen() {
   const [intentionalCorrelation, setIntentionalCorrelation] = useState(false);
   const [intentionalThesis, setIntentionalThesis] = useState(false);
   const [selectedPickIds, setSelectedPickIds] = useState<string[]>([]);
+  const [customCard, setCustomCard] = useState<TicketCard | null>(null);
+  const [customPreviewBusy, setCustomPreviewBusy] = useState(false);
 
   const runBuilder = useCallback(async () => {
     if (!id || !analysis) return;
@@ -113,46 +115,40 @@ export default function AnalysisScreen() {
     [analysis, selectedPickIds],
   );
 
-  const customCard = useMemo<TicketCard | null>(() => {
-    if (!customLegs.length) return null;
-    const firstLeg = customLegs[0];
-    if (!firstLeg) return null;
-    const riskOrder = ["low", "medium", "medium_high", "high"];
-    const risk = customLegs.reduce(
-      (worst, item) =>
-        riskOrder.indexOf(item.risk) > riskOrder.indexOf(worst) ? item.risk : worst,
-      firstLeg.risk,
-    );
-    return {
-      key: "custom",
-      label: `Custom ${customLegs.length}-${customLegs.length === 1 ? "leg" : "legs"}`,
-      recommendation_ids: customLegs.map((item) => item.id),
-      legs: customLegs,
-      risk,
-      confidence_score: Math.round(
-        customLegs.reduce((sum, item) => sum + item.confidence_score, 0) / customLegs.length,
-      ),
-      quality_score: Math.round(
-        customLegs.reduce((sum, item) => sum + item.confidence_score, 0) / customLegs.length,
-      ),
-      quality_score_note:
-        "Card score is average YWP quality (0-100), not a win probability.",
-      joint_win_probability: null,
-      joint_probability_status: "unavailable",
-      joint_probability_note:
-        "Custom cards do not invent a joint win probability from quality scores.",
-      weakest_leg_id: [...customLegs].sort((a, b) => {
-        const qa = a.quality_score ?? a.confidence_score;
-        const qb = b.quality_score ?? b.confidence_score;
-        if (qa !== qb) return qa - qb;
-        return Number(a.ywp_rating) - Number(b.ywp_rating);
-      })[0]?.id ?? null,
-      weakest_leg_criterion: "lowest_quality_then_yis",
-      weakest_leg_explanation:
-        "Weakest custom leg uses lowest quality score, then lowest YIS (not list order).",
-      warnings: [],
+  useEffect(() => {
+    if (!customLegs.length) {
+      setCustomCard(null);
+      return;
+    }
+    let cancelled = false;
+    const ids = customLegs.map((item) => item.id);
+    const key = ids.join("|");
+    setCustomPreviewBusy(true);
+    void (async () => {
+      try {
+        const preview = await request<TicketCard>("/sports/preview-custom-card", {
+          method: "POST",
+          body: JSON.stringify({
+            recommendation_ids: ids,
+            label: `Custom ${ids.length}-${ids.length === 1 ? "leg" : "legs"}`,
+          }),
+        });
+        if (!cancelled) setCustomCard(preview);
+      } catch {
+        if (!cancelled) {
+          // Keep selection usable if preview fails — still do not invent risk locally.
+          setCustomCard(null);
+          setError("Custom card metrics unavailable — retry selection.");
+        }
+      } finally {
+        if (!cancelled) setCustomPreviewBusy(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+      void key;
     };
-  }, [customLegs]);
+  }, [customLegs, request]);
 
   function togglePick(id: string) {
     setSelectedPickIds((current) =>
@@ -203,6 +199,14 @@ export default function AnalysisScreen() {
     } finally {
       setSaving(false);
     }
+  }
+
+  if (!ready) {
+    return (
+      <Screen>
+        <LoadingState label="Restoring saved board…" />
+      </Screen>
+    );
   }
 
   if (!analysis) {
@@ -300,8 +304,15 @@ export default function AnalysisScreen() {
       )}
       {canBuildCustom && customLegs.length ? (
         <YwpButton
-          label={`SAVE CUSTOM ${customLegs.length}-LEG TICKET`}
+          label={
+            customPreviewBusy
+              ? "LOADING CUSTOM CARD METRICS…"
+              : customCard
+                ? `SAVE CUSTOM ${customLegs.length}-LEG TICKET`
+                : "CUSTOM METRICS UNAVAILABLE"
+          }
           onPress={() => customCard && openTicketComposer(customCard)}
+          loading={customPreviewBusy}
         />
       ) : null}
       {canBuildCustom && analysis.ranked_picks.length ? (

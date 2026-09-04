@@ -7,16 +7,21 @@ import {
   DMSans_700Bold,
 } from "@expo-google-fonts/dm-sans";
 import * as SplashScreen from "expo-splash-screen";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 
 import { BootSequence } from "@/components/BootSequence";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { OfflineNotice } from "@/components/OfflineNotice";
 import { AppDataProvider } from "@/context/AppDataContext";
-import { AuthProvider } from "@/context/AuthContext";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { colors, fonts } from "@/theme";
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
+
+function ScopedAppData({ children }: { children: ReactNode }) {
+  const { user } = useAuth();
+  return <AppDataProvider userId={user?.id ?? null}>{children}</AppDataProvider>;
+}
 
 export default function RootLayout() {
   const [loaded, fontError] = useFonts({
@@ -48,7 +53,7 @@ export default function RootLayout() {
   return (
     <ErrorBoundary>
       <AuthProvider>
-        <AppDataProvider>
+        <ScopedAppData>
           <StatusBar style="light" />
           <OfflineNotice />
           <Stack
@@ -73,7 +78,7 @@ export default function RootLayout() {
             <Stack.Screen name="log-result" options={{ title: "Log Book Result" }} />
             <Stack.Screen name="share-card" options={{ title: "YWP Graphic Studio" }} />
           </Stack>
-        </AppDataProvider>
+        </ScopedAppData>
       </AuthProvider>
     </ErrorBoundary>
   );

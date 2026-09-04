@@ -30,6 +30,7 @@ def project_matchup(
     home_out: int = 0,
     away_out: int = 0,
     is_home_selection: bool | None = None,
+    include_draw: bool = False,
 ) -> SportProjection:
     home_l10 = home_form.get("l10") or {}
     away_l10 = away_form.get("l10") or {}
@@ -74,16 +75,13 @@ def project_matchup(
         if line is None or not expected_total:
             prob = 0.5
         else:
-            # Soft logistic around the independent total.
             gap = expected_total - float(line)
-            # ~1.5 scoring units → meaningful edge.
             base = 0.5 + max(-0.22, min(0.22, gap / 12.0))
             if "under" in selection_l or "under" in market:
                 prob = 1.0 - base
             else:
                 prob = base
         quality = 0.55 if home_form.get("verified") and away_form.get("verified") else 0.40
-        # Shrink toward coin-flip until totals model is calibrated.
         prob = 0.5 + (prob - 0.5) * 0.55
         return SportProjection(
             win_probability=float(max(0.08, min(0.92, prob))),
@@ -94,7 +92,31 @@ def project_matchup(
             notes=notes,
         )
 
-    # Moneyline / spread: prefer explicit side, else infer from selection text.
+    # Soccer / 90-minute 1X2: allocate an explicit draw mass before side selection.
+    draw_prob = 0.0
+    if include_draw:
+        disparity = abs(home_prob - away_prob)
+        draw_prob = max(0.15, min(0.32, 0.28 - disparity * 0.25))
+        remain = max(0.01, 1.0 - draw_prob)
+        pair = home_prob + away_prob
+        if pair > 0:
+            home_prob = home_prob / pair * remain
+            away_prob = away_prob / pair * remain
+        notes.append(f"90-minute 1X2 draw mass {draw_prob:.3f}")
+
+    if "draw" in selection_l or market in {"moneyline_draw", "draw"}:
+        quality = 0.52 if home_form.get("verified") and away_form.get("verified") else 0.40
+        side_prob = draw_prob if include_draw else 0.25
+        side_prob = 0.5 + (side_prob - 0.5) * 0.55
+        return SportProjection(
+            win_probability=float(max(0.08, min(0.92, side_prob))),
+            expected_total=expected_total,
+            home_strength=home_prob,
+            away_strength=away_prob,
+            quality=quality,
+            notes=[*notes, "Draw priced as regulation 1X2 outcome"],
+        )
+
     if is_home_selection is True:
         side_prob = home_prob
     elif is_home_selection is False:
@@ -103,15 +125,11 @@ def project_matchup(
         side_prob = home_prob
 
     if "spread" in market or "run_line" in market or "handicap" in market:
-        # Spread still anchored on win probability with a mild line adjustment.
-        # American convention: negative line = favorite (harder to cover),
-        # positive line = dog (easier). Adding line/scale raises cover odds for dogs.
         if line is not None:
             side_prob = side_prob + (float(line) / 40.0)
         side_prob = max(0.05, min(0.95, side_prob))
 
     quality = 0.58 if home_form.get("verified") and away_form.get("verified") else 0.42
-    # Shrink raw form probability toward 0.5 — L10 win% is not a playable edge alone.
     side_prob = 0.5 + (side_prob - 0.5) * 0.55
     return SportProjection(
         win_probability=float(max(0.08, min(0.92, side_prob))),

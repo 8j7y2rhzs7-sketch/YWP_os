@@ -240,11 +240,11 @@ class CandidateInput(YWPModel):
     recent_hit_rate: float | None = Field(default=None, ge=0, le=1)
     average_cushion: float | None = None
     cushion_scale: float = Field(default=3.0, gt=0, le=100)
-    matchup_score: float = Field(default=0.5, ge=0, le=1)
-    script_alignment: float = Field(default=0.5, ge=0, le=1)
-    multiple_paths_score: float = Field(default=0.5, ge=0, le=1)
-    role_stability: float = Field(default=0.5, ge=0, le=1)
-    miss_by_one_count_l10: int = Field(default=0, ge=0, le=10)
+    matchup_score: float | None = Field(default=None, ge=0, le=1)
+    script_alignment: float | None = Field(default=None, ge=0, le=1)
+    multiple_paths_score: float | None = Field(default=None, ge=0, le=1)
+    role_stability: float | None = Field(default=None, ge=0, le=1)
+    miss_by_one_count_l10: int | None = Field(default=None, ge=0, le=10)
     ticket_killer_count: int = Field(default=0, ge=0, le=100)
     ain_checks: dict[str, bool | None] = Field(default_factory=dict)
 
@@ -408,6 +408,11 @@ class SlateResponse(YWPModel):
     notice: str
     verification_summary: dict[str, Any]
     candidates: list[CandidateInput]
+
+
+class CustomCardPreviewRequest(YWPModel):
+    recommendation_ids: list[str] = Field(min_length=1, max_length=12)
+    label: str | None = Field(default=None, max_length=120)
 
 
 class BuildTicketRequest(YWPModel):
