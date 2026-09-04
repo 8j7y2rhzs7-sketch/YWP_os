@@ -59,25 +59,38 @@ The delivered package was validated with seven backend tests at 82% statement co
 
 ## Native builds
 
-Full iOS / TestFlight checklist: **[docs/IOS.md](./IOS.md)** (when present on the branch).
-Paid Android Whop delivery: **[docs/WHOP_PAID_DELIVERY.md](./WHOP_PAID_DELIVERY.md)**.
+Keep Android and iOS release pipelines separate: **[docs/RELEASE_CHANNELS.md](./RELEASE_CHANNELS.md)**.
 
-1. Change `ios.bundleIdentifier` and `android.package` in `mobile/app.json` if `com.ywpos.app` is not available to the owning developer accounts.
-2. Install and authenticate EAS CLI.
-3. Create a development build:
+- iOS / Expo Go / TestFlight: **[docs/IOS.md](./IOS.md)**
+- Paid Android Whop delivery: **[docs/WHOP_PAID_DELIVERY.md](./WHOP_PAID_DELIVERY.md)**
 
-   ```bash
-   cd mobile
-   npx eas build --profile development --platform all
-   ```
+### Try on a phone now (Expo Go, free)
 
-4. Test login, token rotation, slate run, PASS state, cards, ticket edits, Lock Check, graphic export, result grading, and account controls on real devices.
-5. Build production binaries only after the production checklist is complete:
+```bash
+cd mobile
+npm ci
+npm run start:phone
+```
 
-   ```bash
-   npx eas build --profile production --platform all
-   ```
+Scan the QR with Expo Go. Uses the production API from `.env.production`.
 
+### Android APK (Whop sideload)
+
+```bash
+cd mobile
+npm run build:apk
+```
+
+Publish only under GitHub tag `android-vX.Y.Z`. Do not use EAS for Android in this repo.
+
+### iOS TestFlight (needs Apple Developer + EAS login)
+
+1. Change `ios.bundleIdentifier` / `android.package` in `mobile/app.json` only if `com.ywpos.app` is unavailable.
+2. `npx eas-cli login` then `npx eas-cli init` and `npx eas-cli credentials -p ios`.
+3. `npm run build:ios:preview` then TestFlight.
+4. Production: `npm run build:ios:production` then `npm run submit:ios`.
+
+Test login, token rotation, slate run, PASS state, cards, ticket edits, Lock Check, graphic export, result grading, paywall Sync, and account controls on real devices before store submission.
 ## Web deployment
 
 ```bash
