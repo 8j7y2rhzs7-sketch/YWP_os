@@ -270,7 +270,7 @@ class Recommendation(Base):
     def market_scope_label(self) -> str:
         from app.services.board_metrics import market_scope_label
 
-        return market_scope_label(self.market_type, self.market_period)
+        return market_scope_label(self.market_type, self.market_period, sport=self.sport)
 
     @property
     def verification_status(self) -> str:
@@ -329,6 +329,10 @@ class Ticket(Base, TimestampMixin):
     last_lock_expires_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
+    settled_outcome: Mapped[str | None] = mapped_column(String(24), nullable=True)
+    settled_payout: Mapped[Decimal | None] = mapped_column(Numeric(14, 2), nullable=True)
+    settled_profit_loss: Mapped[Decimal | None] = mapped_column(Numeric(14, 2), nullable=True)
+    settled_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
     user: Mapped[User] = relationship(back_populates="tickets")
     legs: Mapped[list[TicketLeg]] = relationship(

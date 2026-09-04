@@ -104,9 +104,10 @@ def project_matchup(
 
     if "spread" in market or "run_line" in market or "handicap" in market:
         # Spread still anchored on win probability with a mild line adjustment.
+        # American convention: negative line = favorite (harder to cover),
+        # positive line = dog (easier). Adding line/scale raises cover odds for dogs.
         if line is not None:
-            # Favorite (negative line) needs more margin; underdog gets lift.
-            side_prob = side_prob - (float(line) / 40.0)
+            side_prob = side_prob + (float(line) / 40.0)
         side_prob = max(0.05, min(0.95, side_prob))
 
     quality = 0.58 if home_form.get("verified") and away_form.get("verified") else 0.42

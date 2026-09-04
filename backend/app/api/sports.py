@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import logging
-from datetime import date
+from datetime import UTC, date, datetime
 from decimal import Decimal
 from uuid import uuid4
+from zoneinfo import ZoneInfo
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +26,7 @@ from app.schemas import (
     AnalyzeResponse,
     BuildTicketRequest,
     BuildTicketResponse,
+    CandidateInput,
     ExternalResultCreate,
     ExternalResultOut,
     RecommendationOut,
@@ -84,6 +86,35 @@ def _owned_recommendation(db: DB, recommendation_id: str, user_id: str) -> Recom
     if not recommendation:
         raise HTTPException(status_code=404, detail="Recommendation not found")
     return recommendation
+
+
+def _candidate_event_local_date(
+    candidate: CandidateInput, *, timezone_name: str = "America/New_York"
+) -> date:
+    start = candidate.start_time
+    if start.tzinfo is None:
+        start = start.replace(tzinfo=UTC)
+    try:
+        zone = ZoneInfo(timezone_name)
+    except Exception:  # noqa: BLE001
+        zone = ZoneInfo("America/New_York")
+    return start.astimezone(zone).date()
+
+
+def _assert_candidates_match_slate_date(payload: SportsAnalyzeRequest) -> None:
+    mismatched = [
+        candidate.candidate_id
+        for candidate in payload.candidates
+        if _candidate_event_local_date(candidate) != payload.date
+    ]
+    if mismatched:
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "Candidate events do not match the requested slate date. "
+                "Reload the slate for that date before analyzing."
+            ),
+        )
 
 
 @router.get("/slate", response_model=SlateResponse)
@@ -201,6 +232,7 @@ def slate(
 
 @router.post("/analyze", response_model=AnalyzeResponse, status_code=status.HTTP_201_CREATED)
 def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> AnalyzeResponse:
+    _assert_candidates_match_slate_date(payload)
     analysis_id = str(uuid4())
     protocol_run = run_protocol_health_check(
         db,

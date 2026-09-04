@@ -84,6 +84,8 @@ class Settings(BaseSettings):
     learning_micro_delta: float = 0.008
     learning_weight_floor: float = 0.02
     learning_weight_ceiling: float = 0.25
+    # Immediate bounded micro-updates vs large structural proposals.
+    learning_allow_micro_updates: bool = True
     learning_requires_human_approval: bool = True
 
     model_config = SettingsConfigDict(

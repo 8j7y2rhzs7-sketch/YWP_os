@@ -504,6 +504,10 @@ class TicketOut(YWPModel):
     override_acknowledged: bool
     last_lock_status: str | None
     last_lock_expires_at: datetime | None
+    settled_outcome: str | None = None
+    settled_payout: Decimal | None = None
+    settled_profit_loss: Decimal | None = None
+    settled_at: datetime | None = None
     legs: list[TicketLegOut]
     created_at: datetime
     updated_at: datetime

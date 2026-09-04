@@ -21,9 +21,12 @@ def _implied_probability(odds: int) -> float:
         return 100 / (odds + 100)
     return abs(odds) / (abs(odds) + 100)
 
-def market_scope_label(market_type: str, market_period: str = "full_game") -> str:
+def market_scope_label(
+    market_type: str, market_period: str = "full_game", *, sport: str | None = None
+) -> str:
     period = (market_period or "full_game").lower()
     market = (market_type or "").lower()
+    sport_l = (sport or "").lower()
     period_label = {
         "full_game": "Full game",
         "f5": "First 5 innings",
@@ -40,8 +43,15 @@ def market_scope_label(market_type: str, market_period: str = "full_game") -> st
         kind = "Team total"
     elif "total" in market:
         kind = "Game total"
-    elif "spread" in market or "run_line" in market or "handicap" in market:
+    elif "run_line" in market or (
+        ("spread" in market or "handicap" in market)
+        and sport_l in {"mlb", "baseball", "kbo"}
+    ):
         kind = "Run line"
+    elif "handicap" in market and sport_l in {"soccer", "mls", "epl", "football"}:
+        kind = "Goal handicap"
+    elif "spread" in market or "handicap" in market:
+        kind = "Point spread"
     elif "moneyline" in market or market in {"h2h", "ml"}:
         kind = "Moneyline"
     else:

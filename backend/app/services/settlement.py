@@ -179,19 +179,29 @@ def _settle_ticket(db: Session, ticket: Ticket) -> list[SettlementItem]:
     ]
     if not ungraded:
         if active and all(leg.recommendation and leg.recommendation.outcome for leg in active):
+            money = _finalize_ticket_wager(ticket)
             if ticket.status != "settled":
                 ticket.status = "settled"
-                items.append(
-                    SettlementItem(
-                        recommendation_id="",
-                        ticket_id=ticket.id,
-                        selection=ticket.label,
-                        status="ticket_settled",
-                        detail="All active legs already graded; ticket marked settled.",
-                    )
+            items.append(
+                SettlementItem(
+                    recommendation_id="",
+                    ticket_id=ticket.id,
+                    selection=ticket.label,
+                    status="ticket_settled",
+                    detail=(
+                        "All active legs already graded; ticket marked settled."
+                        + (
+                            f" Wager P&L {money}."
+                            if money is not None
+                            else ""
+                        )
+                    ),
                 )
+            )
         return items
 
+    # Recommendation Results stay research-memory (0 stake on multi-leg).
+    # Actual bankroll P&L is finalized once on the ticket.
     stake_per_leg = (
         Decimal(str(ticket.stake)).quantize(Decimal("0.01"))
         if len(active) == 1
@@ -234,6 +244,7 @@ def _settle_ticket(db: Session, ticket: Ticket) -> list[SettlementItem]:
     if active_after and all(
         leg.recommendation and leg.recommendation.outcome for leg in active_after
     ):
+        money = _finalize_ticket_wager(ticket)
         ticket.status = "settled"
         items.append(
             SettlementItem(
@@ -241,11 +252,60 @@ def _settle_ticket(db: Session, ticket: Ticket) -> list[SettlementItem]:
                 ticket_id=ticket.id,
                 selection=ticket.label,
                 status="ticket_settled",
-                detail="Ticket marked settled after all active legs graded.",
+                detail=(
+                    "Ticket marked settled after all active legs graded."
+                    + (f" Wager P&L {money}." if money is not None else "")
+                ),
             )
         )
     return items
 
+
+def _american_decimal(odds: int) -> Decimal:
+    if odds > 0:
+        return Decimal("1") + (Decimal(odds) / Decimal("100"))
+    return Decimal("1") + (Decimal("100") / Decimal(abs(odds)))
+
+
+def _finalize_ticket_wager(ticket: Ticket) -> Decimal | None:
+    """Idempotently record ticket-level payout/P&L from active leg outcomes."""
+    if ticket.settled_profit_loss is not None and ticket.settled_at is not None:
+        return ticket.settled_profit_loss
+
+    active = [leg for leg in ticket.legs if leg.action in {"follow", "replace"}]
+    if not active:
+        return None
+    if any(not leg.recommendation or not leg.recommendation.outcome for leg in active):
+        return None
+
+    stake = Decimal(str(ticket.stake or 0)).quantize(Decimal("0.01"))
+    outcomes = [leg.recommendation.outcome for leg in active]  # type: ignore[union-attr]
+
+    if any(outcome == "LOSS" for outcome in outcomes):
+        ticket.settled_outcome = "LOSS"
+        ticket.settled_payout = Decimal("0.00")
+        ticket.settled_profit_loss = (-stake).quantize(Decimal("0.01"))
+    else:
+        scoring = [
+            leg
+            for leg in active
+            if leg.recommendation and leg.recommendation.outcome == "WIN"
+        ]
+        if not scoring:
+            ticket.settled_outcome = "PUSH" if "PUSH" in outcomes else "VOID"
+            ticket.settled_payout = stake
+            ticket.settled_profit_loss = Decimal("0.00")
+        else:
+            combined = Decimal("1")
+            for leg in scoring:
+                combined *= _american_decimal(int(leg.american_odds))
+            payout = (stake * combined).quantize(Decimal("0.01"))
+            ticket.settled_outcome = "WIN"
+            ticket.settled_payout = payout
+            ticket.settled_profit_loss = (payout - stake).quantize(Decimal("0.01"))
+
+    ticket.settled_at = utcnow()
+    return ticket.settled_profit_loss
 
 def _grade_recommendation(
     db: Session,

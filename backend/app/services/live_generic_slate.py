@@ -66,12 +66,17 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
     now = datetime.now(UTC)
 
     for event in odds_events:
+        start_time = _parse_start(event.get("commence_time"))
+        if start_time is None:
+            logger.info("Skipping %s event without commence_time", sport)
+            continue
+        if start_time.astimezone(UTC).date() != slate_date and _event_local_date(start_time) != slate_date:
+            continue
         event_id = event.get("id", "")
         home = event.get("home_team", "")
         away = event.get("away_team", "")
         event_name = f"{away} @ {home}"
         bookmakers = event.get("bookmakers", [])
-        start_time = _parse_start(event.get("commence_time"), slate_date)
         research = build_event_research(
             sport=sport_code,
             slate_date=slate_date,
@@ -171,13 +176,21 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
     return candidates
 
 
-def _parse_start(commence_time: str | None, slate_date: date) -> datetime:
-    if commence_time:
-        try:
-            return datetime.fromisoformat(commence_time.replace("Z", "+00:00"))
-        except (ValueError, TypeError):
-            pass
-    return datetime(slate_date.year, slate_date.month, slate_date.day, 23, 0, tzinfo=UTC)
+def _parse_start(commence_time: str | None) -> datetime | None:
+    if not commence_time:
+        return None
+    try:
+        return datetime.fromisoformat(commence_time.replace("Z", "+00:00"))
+    except (ValueError, TypeError):
+        return None
+
+
+def _event_local_date(start_time: datetime) -> date:
+    from zoneinfo import ZoneInfo
+
+    if start_time.tzinfo is None:
+        start_time = start_time.replace(tzinfo=UTC)
+    return start_time.astimezone(ZoneInfo("America/New_York")).date()
 
 
 def _slug(text: str) -> str:

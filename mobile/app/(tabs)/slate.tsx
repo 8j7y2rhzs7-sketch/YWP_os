@@ -56,31 +56,46 @@ export default function SlateScreen() {
   const [error, setError] = useState<string | null>(null);
 
   async function loadSlate() {
+    const requestSport = sport;
+    const requestDate = date;
     setLoadingSlate(true);
     setError(null);
+    setSlate(null);
     try {
       const response = await request<SlateResponse>(
-        `/sports/slate?sport=${encodeURIComponent(sport)}&date=${encodeURIComponent(date)}`,
+        `/sports/slate?sport=${encodeURIComponent(requestSport)}&date=${encodeURIComponent(requestDate)}`,
       );
+      if (requestSport !== sport || requestDate !== date) {
+        return;
+      }
       setSlate(response);
     } catch (reason) {
+      if (requestSport !== sport || requestDate !== date) {
+        return;
+      }
       setSlate(null);
       setError(reason instanceof Error ? reason.message : "Slate failed to load");
     } finally {
-      setLoadingSlate(false);
+      if (requestSport === sport && requestDate === date) {
+        setLoadingSlate(false);
+      }
     }
   }
 
   async function analyze() {
     if (!slate) return;
+    if (slate.sport.toLowerCase() !== sport || slate.date !== date) {
+      setError("Slate is out of date — reload before analyzing.");
+      return;
+    }
     setAnalyzing(true);
     setError(null);
     try {
       const response = await request<AnalyzeResponse>("/sports/analyze", {
         method: "POST",
         body: JSON.stringify({
-          sport,
-          date,
+          sport: slate.sport,
+          date: slate.date,
           mode: "pregame",
           user_risk_profile: user?.risk_profile ?? "balanced",
           candidates: slate.candidates,
@@ -97,9 +112,9 @@ export default function SlateScreen() {
 
   useEffect(() => {
     void loadSlate();
-    // Reload only when the chosen sport changes. Date changes apply after pressing refresh.
+    // Reload whenever sport or date changes so analysis cannot use a stale slate.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sport]);
+  }, [sport, date]);
 
   return (
     <Screen sport={sport}>

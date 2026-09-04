@@ -31,11 +31,35 @@ def performance(db: Session, user_id: str) -> PerformanceOut:
     wins = sum(1 for result, _ in rows if result.outcome == "WIN")
     losses = sum(1 for result, _ in rows if result.outcome == "LOSS")
     pushes = sum(1 for result, _ in rows if result.outcome in {"PUSH", "VOID"})
-    profit_loss = sum((result.profit_loss for result, _ in rows), start=Decimal("0.00"))
-    wagered = sum(
-        (result.stake for result, _ in rows if result.outcome in {"WIN", "LOSS", "PUSH"}),
-        start=Decimal("0.00"),
+
+    # Money totals come from settled tickets (actual wagers), not zero-stake board grades.
+    tickets = list(
+        db.scalars(
+            select(Ticket).where(
+                Ticket.user_id == user_id,
+                Ticket.settled_profit_loss.is_not(None),
+            )
+        )
     )
+    if tickets:
+        profit_loss = sum(
+            (ticket.settled_profit_loss for ticket in tickets if ticket.settled_profit_loss is not None),
+            start=Decimal("0.00"),
+        )
+        wagered = sum(
+            (
+                Decimal(str(ticket.stake))
+                for ticket in tickets
+                if ticket.settled_outcome in {"WIN", "LOSS", "PUSH"}
+            ),
+            start=Decimal("0.00"),
+        )
+    else:
+        profit_loss = sum((result.profit_loss for result, _ in rows), start=Decimal("0.00"))
+        wagered = sum(
+            (result.stake for result, _ in rows if result.outcome in {"WIN", "LOSS", "PUSH"}),
+            start=Decimal("0.00"),
+        )
 
     by_sport: dict[str, dict[str, Any]] = defaultdict(
         lambda: {"settled": 0, "wins": 0, "profit_loss": Decimal("0")}
@@ -436,7 +460,27 @@ def record_usage_event(
 
 
 def apply_micro_learning(db: Session, result: Result, recommendation: Recommendation) -> None:
-    """Every graded result trains a tiny, bounded weight shift immediately."""
+    """Apply a tiny, bounded weight shift when micro-learning is enabled.
+
+    Large structural weight proposals still require human approval separately
+    via learning_requires_human_approval. Outcome memory is always preserved.
+    """
+    if not settings.learning_allow_micro_updates:
+        record_usage_event(
+            db,
+            event_type="RESULT_GRADED_MICRO_DISABLED",
+            sport=recommendation.sport,
+            market_type=recommendation.market_type,
+            recommendation_id=recommendation.id,
+            analysis={
+                "outcome": result.outcome,
+                "lesson": result.lesson,
+                "policy": "learning_allow_micro_updates=false",
+                "human_approval_required": settings.learning_requires_human_approval,
+            },
+        )
+        return
+
     feature = ERROR_FEATURE_MAP.get(result.error_category or "", "market_value")
     if result.outcome == "WIN":
         delta = settings.learning_micro_delta
