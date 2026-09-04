@@ -7,11 +7,17 @@ os.environ["YWP_DEMO_MODE"] = "true"
 os.environ["YWP_JWT_SECRET"] = "test-secret-that-is-longer-than-thirty-two-bytes"
 os.environ["DATABASE_URL"] = "sqlite:///./test_ywp.db"
 os.environ["WHOP_SUBSCRIPTION_REQUIRED"] = "false"
+os.environ["YWP_HIVE_ANON_SECRET"] = "test-hive-anon-secret"
+os.environ["YWP_HIVE_ENABLED"] = "true"
+os.environ["YWP_HIVE_REQUIRE_CONSENT"] = "true"
+os.environ["YWP_HIVE_REQUIRE_VERIFIED_OUTCOME"] = "true"
+os.environ["YWP_HIVE_MIN_SAMPLE"] = "40"
 
 import pytest
 from fastapi.testclient import TestClient
 
-from app.core.database import Base, engine
+from app.core.database import Base, SessionLocal, engine
+from app.hive import models as hive_models  # noqa: F401
 from app.main import app
 
 
@@ -26,6 +32,16 @@ def clean_database():
 @pytest.fixture
 def client() -> TestClient:
     return TestClient(app)
+
+
+@pytest.fixture
+def db_session():
+    session = SessionLocal()
+    try:
+        yield session
+        session.commit()
+    finally:
+        session.close()
 
 
 @pytest.fixture

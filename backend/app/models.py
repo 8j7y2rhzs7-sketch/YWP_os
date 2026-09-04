@@ -294,6 +294,26 @@ class Recommendation(Base):
         )
 
     @property
+    def model_probability(self) -> float | None:
+        snap = self.snapshot or {}
+        value = snap.get("model_probability")
+        if value is not None:
+            return float(value)
+        return self.model_win_probability
+
+    @property
+    def hive_adjusted_probability(self) -> float | None:
+        snap = self.snapshot or {}
+        value = snap.get("hive_adjusted_probability")
+        return float(value) if value is not None else None
+
+    @property
+    def hive(self) -> dict[str, Any] | None:
+        snap = self.snapshot or {}
+        value = snap.get("hive")
+        return value if isinstance(value, dict) else None
+
+    @property
     def probability_available(self) -> bool:
         return self.model_win_probability is not None
 

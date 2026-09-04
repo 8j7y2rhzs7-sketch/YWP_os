@@ -14,6 +14,12 @@ from sqlalchemy import or_, select
 from app.core.config import settings
 from app.core.security import utcnow
 from app.deps import DB, SubscribedUser
+from app.hive.service import (
+    blend_hive_probability,
+    capture_hive_prediction,
+    get_hive_signal,
+    resolve_hive_outcome,
+)
 from app.models import (
     GameSnapshot,
     LearningEvent,
@@ -259,19 +265,39 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         candidates=payload.candidates,
     )
     weight_cache: dict[tuple[str, str], dict[str, float]] = {}
-    evaluations = decision_engine.rank(
-        [
-            decision_engine.evaluate(
-                candidate,
-                payload.user_risk_profile,
-                learned_weights=weight_cache.setdefault(
-                    (candidate.sport.lower(), candidate.market_type),
-                    load_feature_weights(db, candidate.sport.lower(), candidate.market_type),
-                ),
-            )
-            for candidate in payload.candidates
-        ]
-    )
+    raw_evaluations = []
+    for candidate in payload.candidates:
+        evaluation = decision_engine.evaluate(
+            candidate,
+            payload.user_risk_profile,
+            learned_weights=weight_cache.setdefault(
+                (candidate.sport.lower(), candidate.market_type),
+                load_feature_weights(db, candidate.sport.lower(), candidate.market_type),
+            ),
+        )
+        # Hive may only adjust an existing independent model probability; never invent one.
+        base_probability = (
+            float(evaluation.adjusted_probability)
+            if candidate.probability_source in {"model", "manual_verified"}
+            else None
+        )
+        hive_signal = get_hive_signal(
+            db=db,
+            sport=candidate.sport,
+            league=candidate.league,
+            market=candidate.market_type,
+            market_scope=candidate.market_period,
+            model_version=settings.model_version,
+        )
+        hive_adjusted, hive_meta = blend_hive_probability(
+            base_probability=base_probability,
+            hive_signal=hive_signal,
+        )
+        evaluation.payload["model_probability"] = base_probability
+        evaluation.payload["hive_adjusted_probability"] = hive_adjusted
+        evaluation.payload["hive"] = hive_meta
+        raw_evaluations.append(evaluation)
+    evaluations = decision_engine.rank(raw_evaluations)
     record_usage_event(
         db,
         event_type="PROTOCOL_RUN",
@@ -364,6 +390,51 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
     db.commit()
     for record in records:
         db.refresh(record)
+        if record.decision not in {"PLAY", "LEAN"}:
+            continue
+        # No user.consent_to_hive field exists yet — do not invent consent.
+        # Captures still store with consent_to_hive=False until privacy mapping lands.
+        snap = record.snapshot or {}
+        model_probability = snap.get("model_probability")
+        if model_probability is None and record.model_win_probability is not None:
+            model_probability = record.model_win_probability
+        feature_flags = {
+            "l5_support": bool(snap.get("l5_l10_verified")),
+            "lineup_verified": bool(snap.get("lineup_confirmed")),
+            "starter_verified": bool(snap.get("starter_confirmed")),
+            "injury_check": bool(snap.get("injuries_verified")),
+            "weather_edge": bool(snap.get("weather_verified")),
+            "market_value": bool(snap.get("market_movement_verified")),
+            "data_complete": float(record.data_quality) >= 0.85,
+        }
+        try:
+            capture_hive_prediction(
+                db=db,
+                contributor_user_id=user.id,
+                consent_to_hive=False,
+                source_recommendation_id=str(record.id),
+                sport=record.sport,
+                league=record.league,
+                event_id=record.event_id,
+                event_start_at=_coerce_event_start(record),
+                market=record.market_type,
+                market_scope=record.market_period,
+                selection=record.selection,
+                line=float(record.line) if record.line is not None else None,
+                odds_american=record.american_odds,
+                model_probability=(
+                    float(model_probability) if model_probability is not None else None
+                ),
+                quality_score=float(record.quality_score),
+                model_version=record.model_version,
+                protocol_version=record.protocol_version,
+                evidence_version=record.input_hash,
+                data_quality=float(record.data_quality),
+                feature_flags=feature_flags,
+            )
+        except RuntimeError as exc:
+            logger.warning("Hive capture skipped for %s: %s", record.id, exc)
+    db.commit()
 
     ranked = [
         RecommendationOut.model_validate(record)
@@ -509,6 +580,21 @@ def _line_value(
     return closing_line - bet_line
 
 
+def _coerce_event_start(recommendation: Recommendation) -> datetime | None:
+    value = recommendation.start_time
+    if value is None:
+        return None
+    if isinstance(value, datetime):
+        return value if value.tzinfo else value.replace(tzinfo=UTC)
+    if isinstance(value, str):
+        try:
+            parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        except ValueError:
+            return None
+        return parsed if parsed.tzinfo else parsed.replace(tzinfo=UTC)
+    return None
+
+
 def _persist_graded_result(
     db: DB,
     recommendation: Recommendation,
@@ -628,6 +714,19 @@ def _persist_graded_result(
             )
         )
     apply_micro_learning(db, result, recommendation)
+    # Resolve Hive only when a prior capture exists (external backfill without
+    # a pre-event YWP prediction is a no-op and never trains).
+    try:
+        resolve_hive_outcome(
+            db=db,
+            source_recommendation_id=str(recommendation.id),
+            outcome=payload.outcome,
+            verified=True,
+            result_source="graded_result",
+            resolved_at=result.result_time,
+        )
+    except (RuntimeError, ValueError) as exc:
+        logger.warning("Hive resolve skipped for %s: %s", recommendation.id, exc)
     if commit:
         db.commit()
         db.refresh(result)

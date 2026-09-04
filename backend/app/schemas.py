@@ -331,6 +331,9 @@ class RecommendationOut(YWPModel):
     estimated_probability: Decimal
     implied_probability: Decimal
     adjusted_probability: Decimal
+    model_probability: float | None = None
+    hive_adjusted_probability: float | None = None
+    hive: dict[str, Any] | None = None
     edge: Decimal
     expected_value: Decimal
     confidence_score: int

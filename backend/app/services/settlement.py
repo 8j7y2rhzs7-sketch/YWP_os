@@ -24,6 +24,7 @@ from sqlalchemy.orm import Session, joinedload
 
 from app.core.security import utcnow
 from app.models import LearningEvent, Recommendation, Result, Ticket, TicketLeg, User
+from app.hive.service import resolve_hive_outcome
 from app.services.learning import apply_micro_learning
 from app.services.lock_refresh import _game_pk
 from app.services.mlb_provider import get_live_feed
@@ -423,6 +424,17 @@ def _grade_recommendation(
         )
     )
     apply_micro_learning(db, result, recommendation)
+    try:
+        resolve_hive_outcome(
+            db=db,
+            source_recommendation_id=str(recommendation.id),
+            outcome=outcome,
+            verified=True,
+            result_source="official_mlb",
+            resolved_at=result.result_time,
+        )
+    except (RuntimeError, ValueError):
+        pass
     db.flush()
     return {
         "status": "graded",
