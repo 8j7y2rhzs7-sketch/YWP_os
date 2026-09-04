@@ -171,6 +171,42 @@ export default function TicketsScreen() {
             onPress={() => router.push(`/ticket/${ticket.id}`)}
             disabled={ticket.legs.length === 0}
           />
+          {["draft", "locked"].includes(ticket.status) ? (
+            <YwpButton
+              label="DISCARD STUCK TICKET"
+              variant="danger"
+              onPress={() => {
+                Alert.alert(
+                  "Discard this ticket?",
+                  "It never completed Lock → Place, so it cannot grade. This removes it from the vault.",
+                  [
+                    { text: "Keep", style: "cancel" },
+                    {
+                      text: "Discard",
+                      style: "destructive",
+                      onPress: () => {
+                        void (async () => {
+                          try {
+                            await request(`/tickets/${ticket.id}/cancel`, {
+                              method: "POST",
+                            });
+                            setSyncNote(`Discarded “${ticket.label}”.`);
+                            await load();
+                          } catch (reason) {
+                            setError(
+                              reason instanceof Error
+                                ? reason.message
+                                : "Could not discard ticket",
+                            );
+                          }
+                        })();
+                      },
+                    },
+                  ],
+                );
+              }}
+            />
+          ) : null}
         </MetalPanel>
       ))}
       {placedCount ? (

@@ -266,16 +266,22 @@ def create_ticket(payload: TicketCreate, user: SubscribedUser, db: DB) -> Ticket
 
 
 @router.get("", response_model=list[TicketOut])
-def list_tickets(user: SubscribedUser, db: DB, limit: int = 100) -> list[TicketOut]:
-    tickets = list(
-        db.scalars(
-            select(Ticket)
-            .options(selectinload(Ticket.legs).selectinload(TicketLeg.recommendation))
-            .where(Ticket.user_id == user.id)
-            .order_by(Ticket.created_at.desc())
-            .limit(min(max(limit, 1), 500))
-        ).all()
+def list_tickets(
+    user: SubscribedUser,
+    db: DB,
+    limit: int = 100,
+    include_cancelled: bool = False,
+) -> list[TicketOut]:
+    query = (
+        select(Ticket)
+        .options(selectinload(Ticket.legs).selectinload(TicketLeg.recommendation))
+        .where(Ticket.user_id == user.id)
+        .order_by(Ticket.created_at.desc())
+        .limit(min(max(limit, 1), 500))
     )
+    if not include_cancelled:
+        query = query.where(Ticket.status != "cancelled")
+    tickets = list(db.scalars(query).all())
     healed = False
     for ticket in tickets:
         before = ticket.label

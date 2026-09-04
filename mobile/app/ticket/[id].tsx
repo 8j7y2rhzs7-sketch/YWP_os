@@ -120,6 +120,35 @@ export default function TicketDetailScreen() {
     }
   }
 
+  async function discardTicket() {
+    if (!id) return;
+    Alert.alert(
+      "Discard this ticket?",
+      "Use this for tickets that never locked or you are not placing. They leave the vault and cannot be graded.",
+      [
+        { text: "Keep", style: "cancel" },
+        {
+          text: "Discard",
+          style: "destructive",
+          onPress: () => {
+            void (async () => {
+              setAction("cancel");
+              setError(null);
+              try {
+                await request(`/tickets/${id}/cancel`, { method: "POST" });
+                router.replace("/(tabs)/tickets");
+              } catch (reason) {
+                setError(reason instanceof Error ? reason.message : "Could not discard ticket");
+              } finally {
+                setAction(null);
+              }
+            })();
+          },
+        },
+      ],
+    );
+  }
+
   async function skipLeg(legId: string) {
     if (!id) return;
     setAction(legId);
@@ -376,6 +405,24 @@ export default function TicketDetailScreen() {
 
       {ticket.last_lock_status === "LOCKED" && ticket.status !== "placed" ? (
         <YwpButton label="MARK TICKET PLACED" variant="success" onPress={() => void place()} loading={action === "place"} />
+      ) : null}
+      {ticket.status !== "settled" && ticket.status !== "cancelled" ? (
+        <YwpButton
+          label={
+            ["draft", "locked"].includes(ticket.status)
+              ? "DISCARD STUCK TICKET"
+              : "CANCEL TICKET"
+          }
+          variant="danger"
+          onPress={() => void discardTicket()}
+          loading={action === "cancel"}
+        />
+      ) : null}
+      {["draft", "locked"].includes(ticket.status) ? (
+        <Text style={type.caption}>
+          Draft/locked tickets cannot sync scores. Discard ones that never locked,
+          or finish Lock Check → Place if you still want them graded later.
+        </Text>
       ) : null}
       {ticket.legs.length > 0 ? (
         <SlipBuilder
