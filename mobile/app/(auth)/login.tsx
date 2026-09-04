@@ -23,13 +23,13 @@ export default function LoginScreen() {
     return <Redirect href={user.has_app_access ? "/(tabs)" : "/(auth)/paywall"} />;
   }
 
-  async function submit(nextEmail = email, nextPassword = password) {
+  async function submit() {
     setLoading(true);
     setError(null);
     try {
       await ensureApiUrl();
-      await login(nextEmail, nextPassword);
-      router.replace("/(tabs)");
+      const profile = await login(email, password);
+      router.replace(profile.has_app_access ? "/(tabs)" : "/(auth)/paywall");
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Sign-in failed");
     } finally {
@@ -70,12 +70,6 @@ export default function LoginScreen() {
           placeholder="••••••••••"
         />
         <YwpButton label="ENTER YWP OS" onPress={() => void submit()} loading={loading} />
-        <YwpButton
-          label="USE SAFE DEMO ACCOUNT"
-          variant="outline"
-          onPress={() => void submit("demo@ywp-os.com", "YwpDemo!2026")}
-          disabled={loading}
-        />
         <Link href="/(auth)/register" style={styles.link}>
           Create a protected account
         </Link>

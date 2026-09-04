@@ -99,7 +99,8 @@ export default function LogExternalResultScreen() {
 
       <MetalPanel>
         <Text style={styles.hint}>
-          Use this for today’s K ticket (Wacha / Quantrill) and any other book-only legs.
+          Use this for sportsbook legs that never appeared on today's board
+          (strikeouts, F5, book-only parlays).
         </Text>
         <FormField label="EVENT" value={eventName} onChangeText={setEventName} placeholder="Cardinals @ Dodgers" />
         <FormField label="SELECTION" value={selection} onChangeText={setSelection} placeholder="Michael Wacha Over 4.5 Strikeouts" />

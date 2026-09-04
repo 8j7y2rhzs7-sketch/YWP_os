@@ -1,6 +1,6 @@
 {
   "name": "ywp-os-mobile",
-  "version": "3.3.3",
+  "version": "3.3.4",
   "private": true,
   "main": "expo-router/entry",
   "scripts": {

@@ -50,3 +50,5 @@ services:
         sync: false
       - key: WHOP_WEBHOOK_SECRET
         sync: false
+      - key: YWP_PROVISION_SECRET
+        sync: false

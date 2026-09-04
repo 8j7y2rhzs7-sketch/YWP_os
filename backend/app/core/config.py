@@ -7,12 +7,12 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "YWP OS API"
-    app_version: str = "3.3.3"
+    app_version: str = "3.3.4"
     api_prefix: str = "/api/v1"
     env: Literal["development", "test", "staging", "production"] = Field(
         default="development", validation_alias="YWP_ENV"
     )
-    demo_mode: bool = Field(default=True, validation_alias="YWP_DEMO_MODE")
+    demo_mode: bool = Field(default=False, validation_alias="YWP_DEMO_MODE")
 
     jwt_secret: str = Field(
         default="local-development-secret-change-before-production-12345",
@@ -35,6 +35,11 @@ class Settings(BaseSettings):
     sports_data_api_key: str | None = Field(default=None, validation_alias="SPORTS_DATA_API_KEY")
     odds_api_key: str | None = Field(default=None, validation_alias="ODDS_API_KEY")
     weather_api_key: str | None = Field(default=None, validation_alias="WEATHER_API_KEY")
+    provision_secret: str | None = Field(
+        default=None,
+        validation_alias="YWP_PROVISION_SECRET",
+        description="One-time/ops secret for POST /auth/provision-tester",
+    )
     mlb_props_enabled: bool = Field(default=False, validation_alias="YWP_MLB_PROPS_ENABLED")
     mlb_max_prop_events: int = Field(
         default=4,

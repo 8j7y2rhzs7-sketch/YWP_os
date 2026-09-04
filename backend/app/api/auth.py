@@ -1,9 +1,12 @@
 from datetime import UTC
 
+import hmac
+
 import jwt
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Header, HTTPException, status
 from sqlalchemy import select
 
+from app.core.config import settings
 from app.core.security import decode_token, hash_password, utcnow, verify_password
 from app.deps import DB
 from app.models import AuditLog, BankrollAccount, User
@@ -11,12 +14,15 @@ from app.schemas import (
     LoginRequest,
     LogoutRequest,
     MessageOut,
+    ProvisionTesterOut,
+    ProvisionTesterRequest,
     RefreshRequest,
     RegisterRequest,
     TokenResponse,
 )
 from app.services.whop_access import apply_pending_access, sync_user_subscription
 from app.services.auth import find_refresh_session, issue_tokens, revoke_session
+from app.services.tester_access import upsert_tester
 
 router = APIRouter(prefix="/auth", tags=["authentication"])
 
@@ -70,6 +76,42 @@ def login(payload: LoginRequest, db: DB) -> TokenResponse:
     )
     db.commit()
     return issue_tokens(db, user)
+
+
+@router.post(
+    "/provision-tester",
+    response_model=ProvisionTesterOut,
+    status_code=status.HTTP_201_CREATED,
+)
+def provision_tester(
+    payload: ProvisionTesterRequest,
+    db: DB,
+    x_ywp_provision_secret: str | None = Header(default=None),
+) -> ProvisionTesterOut:
+    """Create/activate a tester account with subscription access (ops only)."""
+    expected = (settings.provision_secret or "").strip()
+    provided = (x_ywp_provision_secret or "").strip()
+    if not expected or not provided or not hmac.compare_digest(expected, provided):
+        raise HTTPException(status_code=403, detail="Provision secret rejected")
+    user, created = upsert_tester(
+        db,
+        email=str(payload.email),
+        password=payload.password,
+        name=payload.name,
+        timezone=payload.timezone,
+    )
+    db.commit()
+    return ProvisionTesterOut(
+        email=user.email,
+        name=user.name,
+        created=created,
+        subscription_status=user.subscription_status,
+        message=(
+            "Tester account created with active access"
+            if created
+            else "Tester account updated with active access"
+        ),
+    )
 
 
 @router.post("/refresh", response_model=TokenResponse)

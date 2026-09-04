@@ -28,8 +28,8 @@ interface AuthValue {
   user: User | null;
   tokens: Tokens | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (input: RegisterInput) => Promise<void>;
+  login: (email: string, password: string) => Promise<User>;
+  register: (input: RegisterInput) => Promise<User>;
   logout: () => Promise<void>;
   reloadUser: () => Promise<User>;
   request: <T>(path: string, init?: RequestInit) => Promise<T>;
@@ -100,6 +100,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         next.access_token,
       );
       setUser(profile);
+      return profile;
     },
     [saveTokens],
   );
@@ -110,7 +111,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         method: "POST",
         body: JSON.stringify({ email: email.trim().toLowerCase(), password }),
       });
-      await establish(next);
+      return establish(next);
     },
     [establish],
   );
@@ -125,7 +126,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           timezone: input.timezone ?? "America/New_York",
         }),
       });
-      await establish(next);
+      return establish(next);
     },
     [establish],
   );

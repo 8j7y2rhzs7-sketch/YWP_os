@@ -2,7 +2,7 @@
   "expo": {
     "name": "YWP OS",
     "slug": "ywp-os",
-    "version": "3.3.3",
+    "version": "3.3.4",
     "orientation": "portrait",
     "scheme": "ywpos",
     "userInterfaceStyle": "dark",

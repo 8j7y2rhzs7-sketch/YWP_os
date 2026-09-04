@@ -454,6 +454,18 @@ export default function AnalysisScreen() {
               variant="outline"
               onPress={() => {
                 if (!selectedCard || !id) return;
+                const existing = builds[id];
+                const nextBuild = {
+                  analysis_id: existing?.analysis_id ?? id,
+                  official_pass: existing?.official_pass ?? false,
+                  cards: {
+                    ...(existing?.cards ?? {}),
+                    [selectedCard.key]: selectedCard,
+                  },
+                  stay_away: existing?.stay_away ?? analysis?.stay_away ?? [],
+                  quarantined: existing?.quarantined ?? [],
+                };
+                saveBuild(id, nextBuild);
                 setSelectedCard(null);
                 setError(null);
                 router.push({

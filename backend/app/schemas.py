@@ -58,6 +58,34 @@ class LoginRequest(YWPModel):
     password: str = Field(min_length=1, max_length=128)
 
 
+class ProvisionTesterRequest(YWPModel):
+    email: EmailStr
+    password: str = Field(min_length=10, max_length=128)
+    name: str = Field(min_length=2, max_length=120)
+    timezone: str = Field(default="America/New_York", min_length=3, max_length=64)
+
+    @field_validator("password")
+    @classmethod
+    def password_strength(cls, value: str) -> str:
+        groups = [
+            any(char.islower() for char in value),
+            any(char.isupper() for char in value),
+            any(char.isdigit() for char in value),
+            any(not char.isalnum() for char in value),
+        ]
+        if sum(groups) < 3:
+            raise ValueError("Password must use at least three character groups")
+        return value
+
+
+class ProvisionTesterOut(YWPModel):
+    email: EmailStr
+    name: str
+    created: bool
+    subscription_status: str
+    message: str
+
+
 class RefreshRequest(YWPModel):
     refresh_token: str
 
