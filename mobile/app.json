@@ -10,13 +10,36 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ywpos.app",
+      "buildNumber": "15",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSPhotoLibraryAddUsageDescription": "YWP OS saves share graphics to your photo library when you export a decision card.",
+        "NSPhotoLibraryUsageDescription": "YWP OS needs photo access only when you choose to save an exported decision card.",
+        "CFBundleDisplayName": "YWP OS"
+      },
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "privacyManifests": {
+        "NSPrivacyAccessedAPITypes": [
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+            "NSPrivacyAccessedAPITypeReasons": ["C617.1", "0A2A.1"]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryDiskSpace",
+            "NSPrivacyAccessedAPITypeReasons": ["E174.1"]
+          }
+        ]
       }
     },
     "android": {
       "package": "com.ywpos.app",
-      "usesCleartextTraffic": true,
+      "versionCode": 15,
       "adaptiveIcon": {
         "foregroundImage": "./assets/brand/app-icon.png",
         "backgroundColor": "#050505"
@@ -42,7 +65,18 @@
           }
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          },
+          "ios": {
+            "deploymentTarget": "16.4"
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

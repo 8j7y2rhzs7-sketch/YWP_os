@@ -59,20 +59,39 @@ The delivered package was validated with seven backend tests at 82% statement co
 
 ## Native builds
 
-1. Change `ios.bundleIdentifier` and `android.package` in `mobile/app.json` if `com.ywpos.app` is not available to the owning developer accounts.
-2. Install and authenticate EAS CLI.
-3. Create a development build:
+1. Confirm `ios.bundleIdentifier` / `android.package` in `mobile/app.json` (`com.ywpos.app`).
+2. Install and authenticate EAS CLI (`npx eas-cli login`).
+3. One-time: from `mobile/`, run `npx eas-cli init` so `extra.eas.projectId` is written into app config.
+4. Apple requirements for device/TestFlight builds: Apple Developer Program membership, App Store Connect app record for `com.ywpos.app`, and EAS credentials (`npx eas-cli credentials -p ios`).
+
+### Android APK (current sideload path)
+
+```bash
+cd mobile
+npm run build:apk
+```
+
+### iOS / TestFlight
+
+Full checklist: **[docs/IOS.md](./IOS.md)**.
+
+```bash
+cd mobile
+npm run build:ios:preview
+```
+
+Install the resulting build on a registered iPhone, or submit to TestFlight after App Store Connect is linked:
+
+```bash
+npm run build:ios:production
+npm run submit:ios
+```
+
+5. On a real iPhone verify: splash/font fallback, login restore, offline startup, tab safe-area, keyboard, deep links (`ywpos://`), slate → analyze → lock → place, graphic share sheet, result logging, and Whop/paywall only for non-provisioned accounts.
+6. Production store binaries only after the production checklist is complete:
 
    ```bash
-   cd mobile
-   npx eas build --profile development --platform all
-   ```
-
-4. Test login, token rotation, slate run, PASS state, cards, ticket edits, Lock Check, graphic export, result grading, and account controls on real devices.
-5. Build production binaries only after the production checklist is complete:
-
-   ```bash
-   npx eas build --profile production --platform all
+   npx eas-cli build --profile production --platform all
    ```
 
 ## Web deployment
