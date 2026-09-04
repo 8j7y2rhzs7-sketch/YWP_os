@@ -52,3 +52,17 @@ services:
         sync: false
       - key: YWP_PROVISION_SECRET
         sync: false
+      - key: YWP_HIVE_ENABLED
+        value: "true"
+      - key: YWP_HIVE_ANON_SECRET
+        generateValue: true
+      - key: YWP_HIVE_MIN_SAMPLE
+        value: "40"
+      - key: YWP_HIVE_MAX_PROBABILITY_SHIFT
+        value: "0.035"
+      - key: YWP_HIVE_REQUIRE_VERIFIED_OUTCOME
+        value: "true"
+      - key: YWP_HIVE_REQUIRE_CONSENT
+        value: "true"
+      - key: YWP_HIVE_RELEASE_VERSION
+        value: hive-1
