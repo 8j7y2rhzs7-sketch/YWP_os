@@ -22,7 +22,7 @@ export const WHOP_CHECKOUT_URL =
 
 export const APP_DOWNLOAD_URL =
   process.env.EXPO_PUBLIC_APP_DOWNLOAD_URL ??
-  "https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.5/YWP-OS-3.3.5.apk";
+  "https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.6/YWP-OS-3.3.6.apk";
 
 export function normalizeApiUrl(value: string): string {
   const normalized = value.trim().replace(/\/$/, "");

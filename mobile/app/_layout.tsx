@@ -7,8 +7,9 @@ import {
   DMSans_700Bold,
 } from "@expo-google-fonts/dm-sans";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
+import { BootSequence } from "@/components/BootSequence";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { OfflineNotice } from "@/components/OfflineNotice";
 import { AppDataProvider } from "@/context/AppDataContext";
@@ -18,21 +19,31 @@ import { colors, fonts } from "@/theme";
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
 export default function RootLayout() {
-  const [loaded] = useFonts({
+  const [loaded, fontError] = useFonts({
     Syne_700Bold,
     Syne_800ExtraBold,
     DMSans_400Regular,
     DMSans_500Medium,
     DMSans_700Bold,
   });
+  const [bootDone, setBootDone] = useState(false);
+  const fontsReady = loaded || Boolean(fontError);
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync().catch(() => undefined);
-    }
-  }, [loaded]);
+    SplashScreen.hideAsync().catch(() => undefined);
+  }, []);
 
-  if (!loaded) return null;
+  const finishBoot = useCallback(() => setBootDone(true), []);
+
+  if (!bootDone) {
+    return (
+      <BootSequence
+        ready={fontsReady}
+        fontError={fontError ?? null}
+        onDone={finishBoot}
+      />
+    );
+  }
 
   return (
     <ErrorBoundary>

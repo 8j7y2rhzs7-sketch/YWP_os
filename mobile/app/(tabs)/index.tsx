@@ -1,7 +1,8 @@
 import { router } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 
+import { brandAssets } from "@/brandAssets";
 import { BrandHeader } from "@/components/BrandHeader";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { LoadingState } from "@/components/LoadingState";
@@ -80,12 +81,23 @@ export default function CommandCenter() {
   return (
     <Screen refreshing={refreshing} onRefresh={() => void load(true)}>
       <BrandHeader />
+      <View style={styles.engineHero}>
+        <Image
+          source={brandAssets.decisionEngine}
+          style={styles.engineArt}
+          resizeMode="cover"
+          accessibilityLabel="YWP Decision Engine brand artwork"
+        />
+        <View style={styles.engineScrim} />
+        <View style={styles.engineCopy}>
+          <Text style={styles.brandMark}>YWP OS</Text>
+          <Text style={type.eyebrow}>WELCOME BACK, {user?.name}</Text>
+          <Text style={styles.heroTitle}>It learns every time you use it.</Text>
+        </View>
+      </View>
       <MetalPanel tone="gold" style={styles.hero}>
-        <Text style={styles.brandMark}>YWP OS</Text>
         <View style={styles.heroTop}>
           <View style={styles.heroCopy}>
-            <Text style={type.eyebrow}>WELCOME BACK, {user?.name}</Text>
-            <Text style={styles.heroTitle}>It learns every time you use it.</Text>
             <Text style={styles.heroText}>
               {pulse?.headline ??
                 "Run a slate, lock a ticket, grade a result. Quiet metal is the chassis — edge is the point."}
@@ -174,6 +186,30 @@ export default function CommandCenter() {
 }
 
 const styles = StyleSheet.create({
+  engineHero: {
+    height: 220,
+    borderRadius: 18,
+    overflow: "hidden",
+    marginBottom: spacing.md,
+    borderWidth: 1,
+    borderColor: "rgba(196,152,42,0.35)",
+    backgroundColor: colors.backgroundRaised,
+  },
+  engineArt: {
+    ...StyleSheet.absoluteFill,
+    width: "100%",
+    height: "100%",
+  },
+  engineScrim: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: "rgba(5,5,5,0.55)",
+  },
+  engineCopy: {
+    flex: 1,
+    justifyContent: "flex-end",
+    padding: spacing.lg,
+    gap: spacing.xs,
+  },
   hero: { padding: spacing.xl },
   brandMark: {
     color: colors.goldBright,

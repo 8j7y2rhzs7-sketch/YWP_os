@@ -77,7 +77,7 @@ def test_checkout_uses_existing_decision_engine_plan(client: TestClient) -> None
     body = response.json()
     assert body["checkout_url"] == "https://whop.com/checkout/plan_MwJ2qcFxmvqDY"
     assert body["product_id"] == "prod_NuPQUAGoibkpW"
-    assert body["app_download_url"].endswith("YWP-OS-3.3.5.apk")
+    assert body["app_download_url"].endswith("YWP-OS-3.3.6.apk")
     assert "same email" in body["message"].lower()
 
 
@@ -106,7 +106,7 @@ def test_sync_resolves_membership_by_email(
     assert body["has_access"] is True
     assert body["status"] == "active"
     assert body["whop_user_id"] == "user_whop_email_1"
-    assert body["app_download_url"].endswith("YWP-OS-3.3.5.apk")
+    assert body["app_download_url"].endswith("YWP-OS-3.3.6.apk")
 
 
 def test_day_pass_expires_without_fresh_checkaccess(

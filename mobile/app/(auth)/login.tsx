@@ -1,7 +1,8 @@
 import { Link, Redirect, router } from "expo-router";
 import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 
+import { brandAssets } from "@/brandAssets";
 import { BrandHeader } from "@/components/BrandHeader";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { FormField } from "@/components/FormField";
@@ -40,6 +41,14 @@ export default function LoginScreen() {
   return (
     <Screen contentStyle={styles.content}>
       <BrandHeader />
+      <View style={styles.bannerWrap}>
+        <Image
+          source={brandAssets.controlBanner}
+          style={styles.banner}
+          resizeMode="cover"
+          accessibilityLabel="YWP OS metallic control banner"
+        />
+      </View>
       <View style={styles.hero}>
         <Text style={styles.brandMark}>YWP OS</Text>
         <Text style={type.eyebrow}>DECISION INTELLIGENCE</Text>
@@ -84,6 +93,15 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   content: { justifyContent: "center", paddingTop: spacing.xl },
+  bannerWrap: {
+    height: 110,
+    borderRadius: 14,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "rgba(196,152,42,0.35)",
+    marginBottom: spacing.md,
+  },
+  banner: { width: "100%", height: "100%" },
   hero: { gap: spacing.sm, paddingVertical: spacing.xl },
   brandMark: {
     color: colors.goldBright,

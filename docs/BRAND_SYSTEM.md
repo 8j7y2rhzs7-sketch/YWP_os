@@ -8,6 +8,10 @@ This file is the implementation contract for every screen, exported decision car
 |---|---|---|
 | Metallic crown crest | `mobile/assets/brand/ywp-crest.png` | App icon, splash, dark UI header, decision graphics |
 | Minimal YWP os mark | `mobile/assets/brand/ywp-minimal.png` | Light documents, monochrome/light surfaces, partner material |
+| Boot sequence GIF | `mobile/assets/brand/boot-sequence.gif` | Short app entrance (artwork only — not live progress) |
+| Boot still frame | `mobile/assets/brand/boot-frame.png` | Reduced-motion / static fallback for boot |
+| Decision engine poster | `mobile/assets/brand/decision-engine.png` | Command Center brand hero |
+| Control banner | `mobile/assets/brand/control-banner.png` | Login brand strip |
 | App icon copy | `mobile/assets/brand/app-icon.png` | Expo iOS/Android icon configuration |
 | Splash copy | `mobile/assets/brand/splash-logo.png` | Expo Splash Screen plugin |
 | Original design references | `mobile/assets/brand/reference-cards/` | Visual QA for panels, hierarchy, PASS/PLAY status, card density |
