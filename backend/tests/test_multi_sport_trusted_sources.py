@@ -53,7 +53,7 @@ def test_sport_model_prefers_form_not_coin_flip() -> None:
     assert total.win_probability >= 0.5
 
 
-def test_build_verified_candidate_uses_model_not_market() -> None:
+def test_build_verified_candidate_stays_partial_without_lineups() -> None:
     research = {
         "espn_game": {
             "home_team": "Home Club",
@@ -78,21 +78,22 @@ def test_build_verified_candidate_uses_model_not_market() -> None:
             "schedule_verified": True,
             "current_form_verified": True,
             "l5_l10_verified": True,
-            "lineup_confirmed": True,
+            "lineup_confirmed": False,
             "injuries_verified": True,
             "weather_verified": True,
-            "starter_confirmed": True,
-            "motivation_rotation_verified": True,
+            "starter_confirmed": False,
+            "motivation_rotation_verified": False,
+            "home_away_verified": True,
             "market_movement_verified": True,
-            "sport_specific_sweep_complete": True,
+            "sport_specific_sweep_complete": False,
         },
         "source_status": {
             "schedule": "confirmed",
             "market": "confirmed",
             "current_form": "confirmed",
             "injuries": "confirmed",
-            "starter": "confirmed",
-            "lineup": "confirmed",
+            "starter": "probable",
+            "lineup": "probable",
             "weather": "confirmed",
         },
         "source_urls": ["https://example.test"],
@@ -117,11 +118,27 @@ def test_build_verified_candidate_uses_model_not_market() -> None:
         research=research,
     )
     assert candidate.probability_source == "model"
-    assert candidate.schedule_verified is True
-    assert candidate.current_form_verified is True
-    assert candidate.sport_specific_sweep_complete is True
-    assert "DEMO" not in candidate.data_source
-    assert candidate.estimated_probability != 0.5 or candidate.data_quality >= 0.55
+    assert candidate.lineup_confirmed is False
+    assert candidate.sport_specific_sweep_complete is False
+    from app.services.readiness import candidate_readiness, candidate_verification_gaps
+
+    assert candidate_readiness(candidate) == "PARTIAL"
+    gaps = candidate_verification_gaps(candidate)
+    assert any("lineup" in gap.lower() for gap in gaps)
+    assert any("sweep" in gap.lower() or "starter" in gap.lower() for gap in gaps)
+
+
+def test_injuries_require_both_teams_matched() -> None:
+    feed = {
+        "verified": True,
+        "by_team": {"Home Club": [{"status": "Out", "name": "Star"}]},
+    }
+    both = espn_provider.injuries_for_teams(feed, "Home Club", "Away Club")
+    assert both["verified"] is False
+    feed["by_team"]["Away Club"] = []
+    both = espn_provider.injuries_for_teams(feed, "Home Club", "Away Club")
+    assert both["verified"] is True
+    assert both["home_out"] == 1
 
 
 def test_espn_form_parses_completed_games(monkeypatch) -> None:

@@ -223,8 +223,14 @@ def injuries_for_teams(
     by_team = injury_feed.get("by_team") or {}
     home = _lookup_team_injuries(by_team, home_team)
     away = _lookup_team_injuries(by_team, away_team)
+    home_matched = _team_matched(by_team, home_team)
+    away_matched = _team_matched(by_team, away_team)
+    # Feed HTTP success alone is not enough — both clubs must resolve in the report.
+    verified = bool(injury_feed.get("verified")) and home_matched and away_matched
     return {
-        "verified": bool(injury_feed.get("verified")),
+        "verified": verified,
+        "home_matched": home_matched,
+        "away_matched": away_matched,
         "home": home,
         "away": away,
         "home_out": sum(1 for item in home if _is_out(item.get("status", ""))),
@@ -233,16 +239,36 @@ def injuries_for_teams(
     }
 
 
+def _team_matched(by_team: dict[str, list], team_name: str) -> bool:
+    if not team_name:
+        return False
+    if team_name in by_team:
+        return True
+    needle = _norm(team_name)
+    stop = {"fc", "sc", "the", "club", "city", "town", "university", "univ", "team"}
+    tokens = [t for t in needle.split() if t not in stop]
+    for name in by_team:
+        hay = _norm(name)
+        if needle and (hay in needle or needle in hay):
+            return True
+        hay_tokens = [t for t in hay.split() if t not in stop]
+        if tokens and hay_tokens and set(tokens) & set(hay_tokens):
+            return True
+    return False
+
+
 def _lookup_team_injuries(by_team: dict[str, list], team_name: str) -> list[dict[str, Any]]:
     if team_name in by_team:
         return list(by_team[team_name])
     needle = _norm(team_name)
+    stop = {"fc", "sc", "the", "club", "city", "town", "university", "univ", "team"}
+    tokens = [t for t in needle.split() if t not in stop]
     for name, entries in by_team.items():
-        if needle and (_norm(name) in needle or needle in _norm(name)):
+        hay = _norm(name)
+        if needle and (hay in needle or needle in hay):
             return list(entries)
-        # last token match (Dream, Colts, etc.)
-        last = needle.split()[-1] if needle else ""
-        if last and last in _norm(name):
+        hay_tokens = [t for t in hay.split() if t not in stop]
+        if tokens and hay_tokens and set(tokens) & set(hay_tokens):
             return list(entries)
     return []
 

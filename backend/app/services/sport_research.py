@@ -98,19 +98,13 @@ def build_event_research(
     weather_verified = bool(weather.get("verified"))
     market_verified = bool(market.get("verified"))
 
-    lineup_confirmed = schedule_verified and injuries_verified
-    starter_confirmed = injuries_verified
-    motivation_verified = form_verified
-    sport_sweep = all(
-        [
-            schedule_verified,
-            form_verified,
-            injuries_verified,
-            lineup_confirmed,
-            market_verified,
-            weather_verified if sport_l in WEATHER_SPORTS else True,
-        ]
-    )
+    # Honest Strict Mode: schedule + injury feed is research progress, not a cleared
+    # lineup/starter sweep. Without confirmed starters/lineups these stay false so
+    # readiness remains PARTIAL and the engine hard-SKIPs official PLAY/LEAN.
+    lineup_confirmed = False
+    starter_confirmed = False
+    motivation_verified = False
+    sport_sweep = False
 
     return {
         "espn_game": espn_game,
@@ -128,7 +122,7 @@ def build_event_research(
             "weather_verified": weather_verified,
             "starter_confirmed": starter_confirmed,
             "motivation_rotation_verified": motivation_verified,
-            "home_away_verified": True,
+            "home_away_verified": schedule_verified,
             "market_movement_verified": market_verified,
             "sport_specific_sweep_complete": sport_sweep,
             "venue_verified": venue_verified,
@@ -138,12 +132,11 @@ def build_event_research(
             "market": "confirmed" if market_verified else "unknown",
             "current_form": "confirmed" if form_verified else "unknown",
             "injuries": "confirmed" if injuries_verified else "unknown",
-            "starter": "confirmed" if starter_confirmed else "unknown",
-            "lineup": "confirmed"
-            if lineup_confirmed
-            else ("probable" if schedule_verified else "unknown"),
+            "starter": "probable" if schedule_verified else "unknown",
+            "lineup": "probable" if schedule_verified else "unknown",
             "weather": "confirmed" if weather_verified else "unknown",
             "venue": "confirmed" if venue_verified else "unknown",
+            "bullpen": "unknown",
         },
         "source_urls": [
             url
@@ -220,6 +213,23 @@ def build_verified_candidate(
         odds_clamped = -100 if odds < 0 else 100
     game_status, market_status = event_market_status(start_time, now)
     espn_game = research.get("espn_game") or {}
+    # Cap quality while lineup/starter/sweep remain incomplete — form alone is not PLAY-grade.
+    quality_cap = 0.62 if not flags.get("sport_specific_sweep_complete") else 0.88
+    data_quality = max(0.45, min(quality_cap, projection.quality * 0.75))
+    missing = [
+        label
+        for key, label in [
+            ("schedule_verified", "schedule"),
+            ("current_form_verified", "current form / L5-L10"),
+            ("injuries_verified", "injuries for both teams"),
+            ("lineup_confirmed", "confirmed lineup/starters"),
+            ("starter_confirmed", "confirmed starters/roles"),
+            ("motivation_rotation_verified", "rotation/workload"),
+            ("market_movement_verified", "market consensus"),
+            ("sport_specific_sweep_complete", "sport-specific strict-mode sweep"),
+        ]
+        if not flags.get(key)
+    ]
     return CandidateInput(
         candidate_id=candidate_id,
         event_id=event_id,
@@ -235,17 +245,27 @@ def build_verified_candidate(
         american_odds=odds_clamped,
         estimated_probability=projection.win_probability,
         probability_source="model",
-        variance=0.30,
-        data_quality=max(0.55, min(0.94, projection.quality)),
+        variance=0.36,
+        data_quality=data_quality,
         factors={
-            "matchup": projection.home_strength
-            if home_team.lower() in selection.lower()
-            else projection.away_strength,
-            "current_form": projection.quality,
-            "market_value": 0.45,
+            "matchup": max(
+                -1.0,
+                min(
+                    1.0,
+                    (projection.home_strength - 0.5) * 2
+                    if home_team.lower() in selection.lower()
+                    else (projection.away_strength - 0.5) * 2,
+                ),
+            ),
+            "current_form": max(-1.0, min(1.0, (projection.win_probability - 0.5) * 2)),
+            "market_value": 0.0,
         },
         reason_codes=reason_codes,
-        reasoning=[*reasoning, *projection.notes],
+        reasoning=[
+            *reasoning,
+            *projection.notes,
+            "Strict Mode incomplete until confirmed lineups/starters clear the sweep.",
+        ],
         data_source="ESPN_SITE_API+THE_ODDS_API",
         source_urls=list(research.get("source_urls") or []),
         source_timestamp=now,
@@ -259,7 +279,7 @@ def build_verified_candidate(
         weather_verified=bool(flags.get("weather_verified")),
         starter_confirmed=bool(flags.get("starter_confirmed")),
         motivation_rotation_verified=bool(flags.get("motivation_rotation_verified")),
-        home_away_verified=True,
+        home_away_verified=bool(flags.get("home_away_verified")),
         market_movement_verified=bool(flags.get("market_movement_verified")),
         sport_specific_sweep_complete=bool(flags.get("sport_specific_sweep_complete")),
         recent_hit_rate=min(
@@ -269,10 +289,10 @@ def build_verified_candidate(
             else float(((research.get("away_form") or {}).get("l10") or {}).get("win_pct") or 0.5),
         ),
         average_cushion=1.1,
-        matchup_score=projection.quality,
-        script_alignment=0.55,
-        multiple_paths_score=0.55,
-        role_stability=0.70 if flags.get("injuries_verified") else 0.50,
+        matchup_score=max(0.0, min(1.0, projection.home_strength)),
+        script_alignment=0.45,
+        multiple_paths_score=0.45,
+        role_stability=0.45,
         miss_by_one_count_l10=0,
         ain_checks={
             "recent_form_l5_l10": bool(flags.get("l5_l10_verified")),
@@ -289,16 +309,7 @@ def build_verified_candidate(
         hedge="Compare cash-out offer with fair remaining value before acting.",
         game_status=game_status,
         market_status=market_status,
-        missing_fields=[
-            label
-            for key, label in [
-                ("schedule_verified", "schedule"),
-                ("current_form_verified", "current form"),
-                ("injuries_verified", "injuries"),
-                ("market_movement_verified", "market consensus"),
-            ]
-            if not flags.get(key)
-        ],
+        missing_fields=missing,
     )
 
 

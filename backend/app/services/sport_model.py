@@ -82,9 +82,11 @@ def project_matchup(
                 prob = 1.0 - base
             else:
                 prob = base
-        quality = 0.72 if home_form.get("verified") and away_form.get("verified") else 0.55
+        quality = 0.55 if home_form.get("verified") and away_form.get("verified") else 0.40
+        # Shrink toward coin-flip until totals model is calibrated.
+        prob = 0.5 + (prob - 0.5) * 0.55
         return SportProjection(
-            win_probability=float(max(0.05, min(0.95, prob))),
+            win_probability=float(max(0.08, min(0.92, prob))),
             expected_total=expected_total,
             home_strength=home_prob,
             away_strength=away_prob,
@@ -107,9 +109,11 @@ def project_matchup(
             side_prob = side_prob - (float(line) / 40.0)
         side_prob = max(0.05, min(0.95, side_prob))
 
-    quality = 0.78 if home_form.get("verified") and away_form.get("verified") else 0.58
+    quality = 0.58 if home_form.get("verified") and away_form.get("verified") else 0.42
+    # Shrink raw form probability toward 0.5 — L10 win% is not a playable edge alone.
+    side_prob = 0.5 + (side_prob - 0.5) * 0.55
     return SportProjection(
-        win_probability=float(max(0.05, min(0.95, side_prob))),
+        win_probability=float(max(0.08, min(0.92, side_prob))),
         expected_total=expected_total,
         home_strength=home_prob,
         away_strength=away_prob,

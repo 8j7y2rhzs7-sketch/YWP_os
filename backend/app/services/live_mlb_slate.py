@@ -464,18 +464,18 @@ def _build_candidate(
     park_verified = bool(context.get("park_verified") or context.get("venue") or game.get("venue"))
     umpire_verified = bool(context.get("umpire_verified") or game.get("officials"))
     market_search = research.get("market_search") or {}
-    # Pregame cards often publish before batting orders. Probable starters + roster
-    # availability are enough to clear the lineup gate; still prefer posted orders.
-    lineup_gate = lineups_confirmed or (starters_confirmed and availability_verified)
+    # Posted batting orders clear the lineup gate. Probable starters alone stay PARTIAL.
+    lineup_gate = lineups_confirmed
     # Official bullpen workload + both listed starters cover rotation/workload intent.
     motivation_rotation_verified = bullpen_verified and starters_confirmed
-    # Trusted sportsbook quotes verify the current market. Multi-book consensus is bonus.
-    market_movement_verified = bool(market_search.get("verified", True))
+    # Trusted sportsbook quotes verify the current market. Never default True.
+    market_movement_verified = bool(market_search.get("verified", False))
     sport_specific_sweep_complete = bool(
         form_verified
         and availability_verified
         and starters_confirmed
-        and (weather_verified or park_verified)
+        and lineups_confirmed
+        and weather_verified
         and motivation_rotation_verified
         and market_movement_verified
         and (umpire_verified or park_verified)
@@ -483,7 +483,7 @@ def _build_candidate(
 
     missing_fields = []
     if not lineups_confirmed:
-        missing_fields.append("confirmed batting orders (using probable starters)")
+        missing_fields.append("confirmed batting orders")
     if not availability_verified:
         missing_fields.append("official roster availability")
     if not weather_verified:
@@ -500,6 +500,8 @@ def _build_candidate(
         + " + The Odds API.",
         "opening-to-current line history not stored; current sportsbook price verified",
     ]
+    if not lineups_confirmed and starters_confirmed:
+        soft_notes.append("Probable starters listed; batting orders not yet confirmed.")
     if market_search.get("book_count"):
         soft_notes.append(str(market_search.get("detail")))
 
@@ -534,7 +536,7 @@ def _build_candidate(
 
     source_status: dict[str, str] = {
         "schedule": "confirmed",
-        "market": "confirmed",
+        "market": "confirmed" if market_movement_verified else "unknown",
         "current_form": "confirmed" if form_verified else "unknown",
         "lineup": "confirmed" if lineups_confirmed else ("probable" if starters_confirmed else "unknown"),
         "injuries": "confirmed" if availability_verified else "unknown",
@@ -545,15 +547,10 @@ def _build_candidate(
         "umpire_park": "confirmed"
         if umpire_verified and park_verified
         else ("probable" if park_verified else "unknown"),
-        "market_movement": "confirmed",
+        "market_movement": "confirmed" if market_movement_verified else "unknown",
     }
-    hard_missing = [
-        field
-        for field in missing_fields
-        if not field.startswith("confirmed batting orders")
-        and not field.startswith("umpire assignment")
-        and not (field.startswith("official weather") and park_verified)
-    ]
+    # Keep all research gaps visible — do not silently drop batting-order / weather soft notes.
+    hard_missing = list(missing_fields)
     return CandidateInput(
         candidate_id=candidate_id,
         event_id=event_id,
@@ -588,7 +585,7 @@ def _build_candidate(
         l5_l10_verified=form_verified,
         lineup_confirmed=lineup_gate,
         injuries_verified=availability_verified,
-        weather_verified=weather_verified or park_verified,
+        weather_verified=weather_verified,
         starter_confirmed=starters_confirmed,
         motivation_rotation_verified=motivation_rotation_verified,
         home_away_verified=True,
