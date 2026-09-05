@@ -17,13 +17,20 @@ import httpx
 
 logger = logging.getLogger(__name__)
 
-SOURCE_API = "https://site.api.espn.com/apis/site/v2/sports"
+# site.api.espn.com is often Akamai-blocked from cloud egress (403 Access Denied).
+# site.web.api.espn.com serves the same Site JSON paths and works from Render/VMs.
+SOURCE_API = "https://site.web.api.espn.com/apis/site/v2/sports"
+SOURCE_API_FALLBACK = "https://site.api.espn.com/apis/site/v2/sports"
 SOURCE_ID = "espn_site_api"
 TIMEOUT = 15.0
 _CACHE: dict[str, tuple[float, Any]] = {}
 _HEADERS = {
-    "User-Agent": "Mozilla/5.0 YWP-OS/3.3 trusted-research",
-    "Accept": "application/json",
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    ),
+    "Accept": "application/json,text/plain,*/*",
+    "Accept-Language": "en-US,en;q=0.9",
 }
 
 # sport code -> ESPN path segment
@@ -383,11 +390,30 @@ def _get(url: str, params: dict[str, Any] | None = None, *, cache_ttl: int = 120
     now = time.time()
     if cached and now - cached[0] < cache_ttl:
         return cached[1]
-    response = httpx.get(url, params=params, timeout=TIMEOUT, headers=_HEADERS)
-    response.raise_for_status()
-    data = response.json()
-    _CACHE[key] = (now, data)
-    return data
+
+    urls = [url]
+    if url.startswith(SOURCE_API):
+        urls.append(url.replace(SOURCE_API, SOURCE_API_FALLBACK, 1))
+    elif url.startswith(SOURCE_API_FALLBACK):
+        urls.append(url.replace(SOURCE_API_FALLBACK, SOURCE_API, 1))
+
+    last_error: Exception | None = None
+    for candidate in urls:
+        try:
+            response = httpx.get(
+                candidate, params=params, timeout=TIMEOUT, headers=_HEADERS
+            )
+            response.raise_for_status()
+            data = response.json()
+            if not isinstance(data, dict):
+                raise ValueError("unexpected ESPN payload")
+            _CACHE[key] = (now, data)
+            return data
+        except Exception as exc:  # noqa: BLE001 — try fallback host before failing
+            last_error = exc
+            logger.warning("ESPN fetch failed for %s: %s", candidate, exc)
+    assert last_error is not None
+    raise last_error
 
 
 def utc_now() -> datetime:

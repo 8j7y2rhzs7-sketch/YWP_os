@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import httpx
+
 from datetime import date
 from decimal import Decimal
 from types import SimpleNamespace
@@ -180,3 +182,37 @@ def test_espn_form_parses_completed_games(monkeypatch) -> None:
     assert form["verified"] is True
     assert form["l10"]["games"] >= 5
     assert form["l10"]["wins"] == form["l10"]["games"]
+
+
+def test_espn_get_falls_back_when_primary_host_403(monkeypatch) -> None:
+    espn_provider._CACHE.clear()
+    calls: list[str] = []
+
+    class _Resp:
+        def __init__(self, code: int, payload: dict | None = None):
+            self.status_code = code
+            self._payload = payload or {}
+
+        def raise_for_status(self) -> None:
+            if self.status_code >= 400:
+                raise httpx.HTTPStatusError(
+                    "denied",
+                    request=httpx.Request("GET", "https://example.com"),
+                    response=httpx.Response(self.status_code),
+                )
+
+        def json(self) -> dict:
+            return self._payload
+
+    def fake_get(url: str, **kwargs):
+        calls.append(url)
+        if "site.web.api.espn.com" in url:
+            return _Resp(403)
+        return _Resp(200, {"events": [{"id": "1"}]})
+
+    import httpx
+    monkeypatch.setattr(espn_provider.httpx, "get", fake_get)
+    data = espn_provider._get(f"{espn_provider.SOURCE_API}/football/nfl/scoreboard")
+    assert data["events"][0]["id"] == "1"
+    assert any("site.web.api.espn.com" in u for u in calls)
+    assert any("site.api.espn.com" in u for u in calls)

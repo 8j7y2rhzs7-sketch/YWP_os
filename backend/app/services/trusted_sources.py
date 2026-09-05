@@ -85,7 +85,7 @@ TRUSTED_SOURCES: list[dict[str, Any]] = [
             "epl",
             "kbo",
         ],
-        "base_url": "https://site.api.espn.com/apis/site/v2/sports",
+        "base_url": "https://site.web.api.espn.com/apis/site/v2/sports",
         "categories": [
             "schedule",
             "form",

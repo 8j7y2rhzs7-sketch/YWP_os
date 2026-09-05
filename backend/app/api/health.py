@@ -50,7 +50,8 @@ def health_providers() -> dict[str, object]:
         "odds": odds,
         "coverage_note": (
             "Odds health uses the free /v4/sports catalog (0 credits). "
-            "Non-MLB slates show Odds-priced plays even when ESPN/NHL fact feeds are down. "
+            "ESPN facts use site.web.api.espn.com (site.api is often Akamai-blocked from cloud IPs). "
+            "Non-MLB slates still show Odds-priced plays if a fact feed degrades. "
             "Out-of-season sports are gated before paid /odds calls. "
             "Empty dates mean no Odds events that day — try a nearby date from the slate notice."
         ),
