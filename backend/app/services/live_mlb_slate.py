@@ -145,28 +145,40 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
             )
         )
 
-        if settings.mlb_props_enabled and prop_events_used < settings.mlb_max_prop_events:
-            # Count the attempted event request so a slate refresh can never exceed
-            # the configured request budget, including events with no posted props.
-            prop_events_used += 1
-            prop_payload = get_player_props(
-                event_id,
-                sport="baseball_mlb",
-                markets="pitcher_strikeouts",
-            )
-            if prop_payload:
-                candidates.extend(
-                    _pitcher_strikeout_candidates(
-                        game=game,
-                        research=research,
-                        bookmakers=prop_payload.get("bookmakers", []),
-                        event_id=event_id,
-                        event_name=event_name,
-                        start_time=start_time,
-                        slate_date=slate_date,
-                        now=now,
-                    )
+        # Props are source-first: free MLB research must surface a gated intent
+        # before we spend Odds credits on event-level player-prop markets.
+        if (
+            settings.mlb_props_enabled
+            and prop_events_used < settings.mlb_max_prop_events
+            and _research_ready_for_props(research)
+        ):
+            prop_intents = _pitcher_k_prop_intents(game, research)
+            if not prop_intents:
+                logger.info(
+                    "Skipping Odds props for %s — free sources found no gated K intent",
+                    event_id,
                 )
+            else:
+                prop_events_used += 1
+                prop_payload = get_player_props(
+                    event_id,
+                    sport="baseball_mlb",
+                    markets="pitcher_strikeouts",
+                )
+                if prop_payload:
+                    candidates.extend(
+                        _pitcher_strikeout_candidates(
+                            game=game,
+                            research=research,
+                            bookmakers=prop_payload.get("bookmakers", []),
+                            event_id=event_id,
+                            event_name=event_name,
+                            start_time=start_time,
+                            slate_date=slate_date,
+                            now=now,
+                            allowed_sides=set(prop_intents),
+                        )
+                    )
 
     logger.info("Built %d independent-model MLB candidates for %s", len(candidates), slate_date)
     return candidates
@@ -321,6 +333,65 @@ def _game_market_candidates(
     return candidates
 
 
+
+def _research_ready_for_props(research: dict[str, Any]) -> bool:
+    """True when free MLB sources cleared the checks props still need later.
+
+    Without these, Odds prop prices would only create RESEARCH_INCOMPLETE skips —
+    spending credits for nothing.
+    """
+    context = research.get("context") or {}
+    weather = context.get("weather") or {}
+    market = research.get("market_search") or {}
+    return bool(
+        research.get("home_form", {}).get("verified")
+        and research.get("away_form", {}).get("verified")
+        and research.get("home_availability", {}).get("verified")
+        and research.get("away_availability", {}).get("verified")
+        and research.get("home_bullpen", {}).get("verified")
+        and research.get("away_bullpen", {}).get("verified")
+        and (context.get("home") or {}).get("lineup_confirmed")
+        and (context.get("away") or {}).get("lineup_confirmed")
+        and weather.get("verified")
+        and market.get("verified")
+    )
+
+
+def _pitcher_k_prop_intents(game: dict[str, Any], research: dict[str, Any]) -> list[str]:
+    """Return home/away sides worth pricing after free-source K gates.
+
+    Uses official MLB logs only — no Odds credits. Pitchers that would later
+    hard-skip (thin sample, short duration, first start back) never trigger a
+    paid props pull.
+    """
+    intents: list[str] = []
+    for side in ("home", "away"):
+        pitcher = game.get(f"{side}_pitcher") or {}
+        if not pitcher.get("id") or not pitcher.get("name"):
+            continue
+        logs = research.get(f"{side}_pitcher_log") or []
+        if len(logs) < 5:
+            continue
+        summary = research.get(f"{side}_pitcher_l5") or {}
+        k_stats = pitcher_k_stats(logs)
+        first_start_back = _listed_unavailable(
+            int(pitcher["id"]), research.get(f"{side}_availability") or {}
+        )
+        if first_start_back:
+            continue
+        duration_verified = (
+            float(k_stats.get("avg_ip", 0) or 0) >= 4.5
+            and float(summary.get("avg_pitches", 0) or 0) >= 70
+        )
+        if not duration_verified:
+            continue
+        # Soft volume screen: only spend credits when free form suggests a live Over.
+        if float(k_stats.get("avg_k", 0) or 0) < 4.5:
+            continue
+        intents.append(side)
+    return intents
+
+
 def _pitcher_strikeout_candidates(
     *,
     game: dict[str, Any],
@@ -331,9 +402,12 @@ def _pitcher_strikeout_candidates(
     start_time: datetime,
     slate_date: date,
     now: datetime,
+    allowed_sides: set[str] | None = None,
 ) -> list[CandidateInput]:
     candidates: list[CandidateInput] = []
     for side in ("home", "away"):
+        if allowed_sides is not None and side not in allowed_sides:
+            continue
         pitcher = game.get(f"{side}_pitcher")
         if not pitcher or not pitcher.get("id") or not pitcher.get("name"):
             continue
