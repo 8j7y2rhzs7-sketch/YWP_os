@@ -34,8 +34,8 @@ EAS profiles are **iOS-only**. There is no committed `ios/` folder; EAS prebuild
 When both platforms ship the same product cut:
 
 1. Set `expo.version` = Android `versionName` (e.g. `3.3.9`)
-2. Set Android `versionCode` and iOS `buildNumber` to the same integer (e.g. `18`)
-3. Tag releases `android-v3.3.9` and (later) `ios-v3.3.8` separately
+2. Set Android `versionCode` and iOS `buildNumber` to the same integer (e.g. `19`)
+3. Tag releases `android-v3.3.9` and (later) `ios-v3.3.9` separately
 
 ## Env
 
