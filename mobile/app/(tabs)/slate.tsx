@@ -15,7 +15,14 @@ import { YwpButton } from "@/components/YwpButton";
 import { useAppData } from "@/context/AppDataContext";
 import { useAuth } from "@/context/AuthContext";
 import { colors, radius, spacing, type } from "@/theme";
-import type { AnalyzeResponse, Readiness, SlateResponse } from "@/types";
+import type {
+  AnalyzeResponse,
+  OddsPrefetchResponse,
+  Readiness,
+  SlateResponse,
+  SportCatalogItem,
+  SportsCatalogResponse,
+} from "@/types";
 
 function slateReadiness(slate: SlateResponse): Readiness {
   return slate.readiness ?? (slate.mode === "demo" ? "DEMO" : "PARTIAL");
@@ -54,10 +61,54 @@ export default function SlateScreen() {
   const [loadingSlate, setLoadingSlate] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [catalogByKey, setCatalogByKey] = useState<Record<string, SportCatalogItem>>({});
+  const [prefetchNote, setPrefetchNote] = useState<string | null>(null);
+  const [prefetching, setPrefetching] = useState(false);
+
+  async function loadCatalog() {
+    try {
+      const response = await request<SportsCatalogResponse>("/sports/catalog");
+      const next: Record<string, SportCatalogItem> = {};
+      for (const item of response.sports) {
+        next[item.key] = item;
+      }
+      setCatalogByKey(next);
+    } catch {
+      // Catalog is advisory — slate still works without in-season badges.
+    }
+  }
+
+  async function warmInSeasonOdds() {
+    setPrefetching(true);
+    setPrefetchNote(null);
+    try {
+      const response = await request<OddsPrefetchResponse>("/sports/prefetch-odds", {
+        method: "POST",
+        body: "{}",
+      });
+      setPrefetchNote(
+        `Warmed ${response.warmed.length} sport(s), ${response.credits_spent} credits. ` +
+          `Category switches reuse cache for ~${Math.round(response.cache_ttl_seconds / 60)} min.`,
+      );
+    } catch (reason) {
+      setPrefetchNote(reason instanceof Error ? reason.message : "Prefetch failed");
+    } finally {
+      setPrefetching(false);
+    }
+  }
 
   async function loadSlate() {
     const requestSport = sport;
     const requestDate = date;
+    const catalog = catalogByKey[requestSport];
+    if (requestSport !== "mlb" && catalog?.in_season === false) {
+      setSlate(null);
+      setLoadingSlate(false);
+      setError(
+        `${catalog.label} is out of season — paid Odds refresh skipped. Pick an in-season sport.`,
+      );
+      return;
+    }
     setLoadingSlate(true);
     setError(null);
     setSlate(null);
@@ -111,10 +162,15 @@ export default function SlateScreen() {
   }
 
   useEffect(() => {
+    void loadCatalog();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     void loadSlate();
     // Reload whenever sport or date changes so analysis cannot use a stale slate.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sport, date]);
+  }, [sport, date, catalogByKey]);
 
   return (
     <Screen sport={sport}>
@@ -122,23 +178,33 @@ export default function SlateScreen() {
       <MetalPanel tone="gold">
         <Text style={type.eyebrow}>SELECT SPORT</Text>
         <View style={styles.sports}>
-          {sports.map((item) => (
-            <Pressable
-              key={item.key}
-              onPress={() => setSport(item.key)}
-              style={[styles.sport, sport === item.key && styles.sportActive]}
-            >
-              <Text style={styles.sportIcon}>{item.icon}</Text>
-              <Text
+          {sports.map((item) => {
+            const catalog = catalogByKey[item.key];
+            const outOfSeason = catalog?.in_season === false;
+            return (
+              <Pressable
+                key={item.key}
+                onPress={() => setSport(item.key)}
                 style={[
-                  styles.sportLabel,
-                  sport === item.key && styles.sportLabelActive,
+                  styles.sport,
+                  sport === item.key && styles.sportActive,
+                  outOfSeason && styles.sportOutOfSeason,
                 ]}
               >
-                {item.label}
-              </Text>
-            </Pressable>
-          ))}
+                <Text style={styles.sportIcon}>{item.icon}</Text>
+                <Text
+                  style={[
+                    styles.sportLabel,
+                    sport === item.key && styles.sportLabelActive,
+                    outOfSeason && styles.sportLabelOutOfSeason,
+                  ]}
+                >
+                  {item.label}
+                </Text>
+                {outOfSeason ? <Text style={styles.oosBadge}>OOS</Text> : null}
+              </Pressable>
+            );
+          })}
         </View>
         <FormField
           label="Slate date (YYYY-MM-DD)"
@@ -153,6 +219,13 @@ export default function SlateScreen() {
           onPress={() => void loadSlate()}
           loading={loadingSlate}
         />
+        <YwpButton
+          label="WARM ALL IN-SEASON (USES CREDITS)"
+          variant="outline"
+          onPress={() => void warmInSeasonOdds()}
+          loading={prefetching}
+        />
+        {prefetchNote ? <Text style={styles.prefetchNote}>{prefetchNote}</Text> : null}
       </MetalPanel>
 
       {error ? <ErrorNotice message={error} /> : null}
@@ -259,9 +332,22 @@ const styles = StyleSheet.create({
     backgroundColor: colors.backgroundRaised,
   },
   sportActive: { borderColor: colors.gold, backgroundColor: colors.surfaceGold },
+  sportOutOfSeason: { opacity: 0.45 },
   sportIcon: { fontSize: 26 },
   sportLabel: { color: colors.muted, fontWeight: "900", fontSize: 11 },
   sportLabelActive: { color: colors.gold },
+  sportLabelOutOfSeason: { color: colors.muted },
+  oosBadge: {
+    color: colors.danger,
+    fontSize: 9,
+    fontWeight: "900",
+    letterSpacing: 0.6,
+  },
+  prefetchNote: {
+    ...type.caption,
+    color: colors.muted,
+    marginTop: spacing.sm,
+  },
   noticeHeader: { flexDirection: "row", alignItems: "center", gap: spacing.md },
   noticeTitle: { flex: 1, color: colors.white, fontSize: 16, fontWeight: "900" },
   candidate: { padding: spacing.md },

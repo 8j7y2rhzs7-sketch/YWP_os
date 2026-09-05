@@ -128,12 +128,16 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
 
 
 def upcoming_odds_dates(sport: str, *, limit: int = 5) -> list[str]:
-    """Nearest UTC slate dates that currently have Odds events for this sport."""
+    """Nearest UTC slate dates that currently have Odds events for this sport.
+
+    Uses the same market bundle as the live slate so a prior paid fetch can be
+    served from the short Odds TTL cache (0 extra credits).
+    """
     odds_key = SPORT_KEYS.get(sport.lower())
     if not odds_key:
         return []
     try:
-        events = get_game_odds(sport=odds_key, markets="h2h")
+        events = get_game_odds(sport=odds_key, markets="h2h,spreads,totals")
     except Exception:
         return []
     dates: list[str] = []

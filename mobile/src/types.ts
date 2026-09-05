@@ -74,6 +74,31 @@ export interface VerificationSummary {
   gaps_by_candidate: Record<string, string[]>;
 }
 
+export interface SportCatalogItem {
+  key: string;
+  label: string;
+  odds_key: string | null;
+  in_season: boolean | null;
+  priced_slate_available: boolean;
+  note: string;
+}
+
+export interface SportsCatalogResponse {
+  sports: SportCatalogItem[];
+  credit_cost: number;
+  source: string;
+  in_season_count: number;
+  note: string;
+}
+
+export interface OddsPrefetchResponse {
+  warmed: string[];
+  skipped_out_of_season_or_unmapped: string[];
+  credits_spent: number;
+  cache_ttl_seconds: number;
+  note: string;
+}
+
 export interface SlateResponse {
   sport: string;
   date: string;

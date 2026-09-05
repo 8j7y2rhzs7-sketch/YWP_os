@@ -38,6 +38,35 @@ _last_fetch_status: dict[str, Any] = {
     "error": None,
 }
 
+# App sport key → Odds API sport key
+APP_SPORT_TO_ODDS_KEY: dict[str, str] = {
+    "mlb": "baseball_mlb",
+    "wnba": "basketball_wnba",
+    "nba": "basketball_nba",
+    "nfl": "americanfootball_nfl",
+    "ncaaf": "americanfootball_ncaaf",
+    "ncaab": "basketball_ncaab",
+    "nhl": "icehockey_nhl",
+    "soccer": "soccer_usa_mls",
+    "mls": "soccer_usa_mls",
+    "epl": "soccer_epl",
+    "kbo": "baseball_kbo",
+}
+
+# Free /v4/sports cache — endpoint does not consume usage credits.
+_SPORTS_CACHE_TTL_SECONDS = 6 * 60 * 60
+_sports_cache: dict[str, Any] = {
+    "fetched_at": 0.0,
+    "in_season": [],
+    "all": [],
+    "error": None,
+}
+
+# Short TTL for paid /odds responses so empty-date follow-ups, category
+# switching, and double refreshes reuse the same payload without a second bill.
+_ODDS_CACHE_TTL_SECONDS = 5 * 60
+_odds_response_cache: dict[str, dict[str, Any]] = {}
+
 
 def get_last_fetch_status() -> dict[str, Any]:
     """Return the most recent Odds API fetch outcome (no secrets)."""
@@ -124,18 +153,166 @@ def _get_sync(path: str, params: dict[str, Any] | None = None) -> dict[str, Any]
         )
         if remaining is not None:
             logger.info("Odds API requests remaining: %s", remaining)
-        if resp.status_code == 401:
-            _set_status(ok=False, events=0, error="invalid_or_unauthorized_odds_api_key")
-            resp.raise_for_status()
-        if resp.status_code == 429:
-            _set_status(ok=False, events=0, error="odds_api_quota_exceeded")
+        if resp.status_code in {401, 429}:
+            body_text = ""
+            try:
+                body_text = resp.text.lower()
+            except Exception:  # noqa: BLE001
+                body_text = ""
+            if (
+                "out_of_usage" in body_text
+                or "usage quota" in body_text
+                or "out_of_usage_credits" in body_text
+                or resp.status_code == 429
+            ):
+                _set_status(ok=False, events=0, error="odds_api_quota_exceeded")
+            else:
+                _set_status(ok=False, events=0, error="invalid_or_unauthorized_odds_api_key")
             resp.raise_for_status()
         resp.raise_for_status()
         return resp.json()
 
 
+def list_odds_sports(
+    *,
+    include_out_of_season: bool = False,
+    force_refresh: bool = False,
+) -> list[dict[str, Any]]:
+    """Return Odds API sport objects via GET /v4/sports.
+
+    This endpoint does **not** count against the usage quota. One `all=true`
+    call yields both catalogs (filter on `active`). Results are cached for
+    several hours so we can gate paid odds calls without burning credits.
+    """
+    import time
+
+    now = time.time()
+    cache_age = now - float(_sports_cache.get("fetched_at") or 0.0)
+    if (
+        not force_refresh
+        and float(_sports_cache.get("fetched_at") or 0.0) > 0
+        and cache_age < _SPORTS_CACHE_TTL_SECONDS
+        and _sports_cache.get("error") is None
+    ):
+        cached = _sports_cache["all"] if include_out_of_season else _sports_cache["in_season"]
+        return list(cached or [])
+
+    if not odds_api_configured():
+        _sports_cache.update(
+            {"fetched_at": now, "in_season": [], "all": [], "error": "odds_api_key_missing"}
+        )
+        return []
+
+    try:
+        # Single free call: all=true + active flag covers in/out of season.
+        all_raw = _get_sync("/v4/sports/", params={"all": "true"})
+    except Exception as exc:
+        logger.exception("Free Odds /sports catalog fetch failed")
+        _sports_cache.update(
+            {
+                "fetched_at": now,
+                "in_season": list(_sports_cache.get("in_season") or []),
+                "all": list(_sports_cache.get("all") or []),
+                "error": _safe_error_message(exc),
+            }
+        )
+        cached = _sports_cache["all"] if include_out_of_season else _sports_cache["in_season"]
+        return list(cached or [])
+
+    all_sports = [item for item in all_raw if isinstance(item, dict)] if isinstance(all_raw, list) else []
+    in_season = [item for item in all_sports if item.get("active") is True]
+    # If the API omits `active` on a row, treat default (no all=true semantics) as in-season.
+    if not in_season and all_sports and all(item.get("active") is None for item in all_sports):
+        in_season = list(all_sports)
+    _sports_cache.update(
+        {
+            "fetched_at": now,
+            "in_season": in_season,
+            "all": all_sports,
+            "error": None,
+        }
+    )
+    _set_status(
+        ok=True,
+        events=len(in_season),
+        error=None,
+        catalog_in_season=len(in_season),
+        catalog_total=len(all_sports),
+        credit_cost=0,
+    )
+    return list(all_sports if include_out_of_season else in_season)
+
+
+def in_season_odds_keys(*, force_refresh: bool = False) -> set[str]:
+    """Odds API keys currently marked in-season (free catalog)."""
+    rows = list_odds_sports(include_out_of_season=False, force_refresh=force_refresh)
+    return {
+        str(item.get("key") or "").strip()
+        for item in rows
+        if str(item.get("key") or "").strip()
+    }
+
+
+def odds_key_for_app_sport(app_sport: str) -> str | None:
+    return APP_SPORT_TO_ODDS_KEY.get((app_sport or "").strip().lower())
+
+
+def app_sport_in_season(app_sport: str, *, force_refresh: bool = False) -> bool | None:
+    """True/False when mapped; None when the app sport has no Odds key mapping."""
+    odds_key = odds_key_for_app_sport(app_sport)
+    if not odds_key:
+        return None
+    if not odds_api_configured():
+        return None
+    return odds_key in in_season_odds_keys(force_refresh=force_refresh)
+
+
+def build_app_sports_catalog(*, force_refresh: bool = False) -> list[dict[str, Any]]:
+    """App-facing sport catalog enriched with free Odds in-season flags."""
+    in_season = in_season_odds_keys(force_refresh=force_refresh)
+    catalog_error = _sports_cache.get("error")
+    rows: list[dict[str, Any]] = []
+    labels = {
+        "mlb": "MLB",
+        "wnba": "WNBA",
+        "nba": "NBA",
+        "nfl": "NFL",
+        "ncaaf": "NCAAF",
+        "ncaab": "NCAAB",
+        "nhl": "NHL",
+        "soccer": "SOCCER",
+        "kbo": "KBO",
+    }
+    for app_key, label in labels.items():
+        odds_key = odds_key_for_app_sport(app_key)
+        active = bool(odds_key and odds_key in in_season) if odds_api_configured() else None
+        rows.append(
+            {
+                "key": app_key,
+                "label": label,
+                "odds_key": odds_key,
+                "in_season": active,
+                "priced_slate_available": active is True,
+                "note": (
+                    "In season — priced slate uses credits"
+                    if active is True
+                    else (
+                        "Out of season — refresh skipped to save Odds credits"
+                        if active is False
+                        else (
+                            "Odds catalog unavailable"
+                            if catalog_error
+                            else "Odds key not configured"
+                        )
+                    )
+                ),
+            }
+        )
+    return rows
+
+
 # ---------------------------------------------------------------------------
-# Game odds (moneyline, spread, totals)
+# Game odds (moneyline, spread, totals) — PAID: markets × regions credits
 # ---------------------------------------------------------------------------
 
 
@@ -143,14 +320,61 @@ def get_game_odds(
     sport: str = SPORT_KEY,
     markets: str = "h2h,spreads,totals",
     regions: str = "us",
+    *,
+    allow_out_of_season: bool = False,
 ) -> list[dict[str, Any]]:
-    """Fetch current odds for all upcoming games in the sport."""
+    """Fetch current odds for all upcoming games in the sport.
+
+    Paid call. Skips automatically when the free /sports catalog says this
+    Odds sport key is out of season, unless allow_out_of_season=True.
+    Successful responses are cached briefly so nearby-date helpers and sport
+    switching reuse the same credit spend.
+    """
+    import time
+
     if not odds_api_configured():
         _set_status(
             ok=False, events=0, status_code=None, remaining=None, error="odds_api_key_missing"
         )
         logger.warning("ODDS_API_KEY missing; skipping Odds API fetch")
         return []
+
+    if not allow_out_of_season:
+        try:
+            active_keys = in_season_odds_keys()
+            # If catalog failed empty due to auth/quota, don't mask that as OOS.
+            if active_keys and sport not in active_keys:
+                _set_status(
+                    ok=True,
+                    events=0,
+                    error="sport_out_of_season",
+                    skipped_paid_call=True,
+                    sport=sport,
+                    credit_cost=0,
+                )
+                logger.info(
+                    "Skipping paid Odds fetch for out-of-season sport %s (free catalog gate)",
+                    sport,
+                )
+                return []
+        except Exception:  # noqa: BLE001 — never block paid path on catalog issues
+            logger.exception("In-season catalog gate failed for %s; continuing paid fetch", sport)
+
+    cache_key = f"{sport}|{markets}|{regions}"
+    now = time.time()
+    cached = _odds_response_cache.get(cache_key)
+    if cached and now - float(cached.get("fetched_at") or 0.0) < _ODDS_CACHE_TTL_SECONDS:
+        data = cached.get("data") or []
+        _set_status(
+            ok=True,
+            events=len(data),
+            error=None,
+            skipped_paid_call=False,
+            cache_hit=True,
+            credit_cost=0,
+            sport=sport,
+        )
+        return list(data)
 
     try:
         data = _get_sync(
@@ -174,23 +398,93 @@ def get_game_odds(
         _set_status(ok=False, events=0, error="unexpected_odds_payload")
         return []
 
-    _set_status(ok=True, events=len(data), error=None)
+    market_count = len([part for part in markets.split(",") if part.strip()])
+    region_count = len([part for part in regions.split(",") if part.strip()])
+    credit_cost = market_count * max(1, region_count)
+    _odds_response_cache[cache_key] = {"fetched_at": now, "data": data}
+    _set_status(
+        ok=True,
+        events=len(data),
+        error=None,
+        skipped_paid_call=False,
+        cache_hit=False,
+        credit_cost=credit_cost,
+        sport=sport,
+    )
     return data
 
 
+def prefetch_in_season_app_odds(
+    *,
+    markets: str = "h2h,spreads,totals",
+    regions: str = "us",
+) -> dict[str, Any]:
+    """Optionally warm paid odds for every in-season app sport (uses credits).
+
+    Cost ≈ 3 credits × number of in-season mapped sports that are not already
+    cached. Prefer this only when the user will browse multiple sports; a single
+    sport refresh remains cheaper.
+    """
+    catalog = build_app_sports_catalog()
+    warmed: list[str] = []
+    skipped: list[str] = []
+    credits_spent = 0
+    for row in catalog:
+        if row.get("in_season") is not True:
+            skipped.append(str(row.get("key")))
+            continue
+        odds_key = row.get("odds_key")
+        if not odds_key:
+            skipped.append(str(row.get("key")))
+            continue
+        before = get_last_fetch_status()
+        get_game_odds(sport=str(odds_key), markets=markets, regions=regions)
+        after = get_last_fetch_status()
+        spent = int(after.get("credit_cost") or 0)
+        credits_spent += spent
+        if after.get("cache_hit"):
+            warmed.append(f"{row['key']}:cache")
+        else:
+            warmed.append(f"{row['key']}:{spent}c")
+        # Preserve last status for health; keep loop quiet.
+        _ = before
+    return {
+        "warmed": warmed,
+        "skipped_out_of_season_or_unmapped": [s for s in skipped if s],
+        "credits_spent": credits_spent,
+        "cache_ttl_seconds": _ODDS_CACHE_TTL_SECONDS,
+        "note": (
+            "Prefetch spends credits once per sport then category switches are free "
+            f"for ~{_ODDS_CACHE_TTL_SECONDS // 60} minutes. Skip prefetch if you only use one sport."
+        ),
+    }
+
+
 def probe_odds_api(sport: str = SPORT_KEY) -> dict[str, Any]:
-    """Lightweight connectivity check used by /health/providers."""
+    """Connectivity check using the FREE /v4/sports catalog (0 credits)."""
     if not odds_api_configured():
         _set_status(
             ok=False, events=0, status_code=None, remaining=None, error="odds_api_key_missing"
         )
         return get_last_fetch_status()
 
-    events = get_game_odds(sport=sport, markets="h2h", regions="us")
+    sports = list_odds_sports(include_out_of_season=False, force_refresh=True)
     status = get_last_fetch_status()
-    status["sample_matchups"] = [
-        f"{item.get('away_team')} @ {item.get('home_team')}" for item in events[:5]
+    status["probe_mode"] = "free_sports_catalog"
+    status["credit_cost"] = 0
+    status["in_season_count"] = len(sports)
+    status["sample_sports"] = [
+        f"{item.get('title') or item.get('key')} ({item.get('key')})" for item in sports[:8]
     ]
+    status["target_sport_in_season"] = any(item.get("key") == sport for item in sports)
+    # Keep backward-compatible sample_matchups empty; this probe does not fetch odds.
+    status["sample_matchups"] = []
+    if _sports_cache.get("error"):
+        status["ok"] = False
+        status["error"] = _sports_cache.get("error")
+    else:
+        status["ok"] = True
+        status["error"] = None
     return status
 
 

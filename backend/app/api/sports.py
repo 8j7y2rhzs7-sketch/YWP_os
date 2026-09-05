@@ -58,12 +58,48 @@ from app.services.providers import demo_slate
 from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate, upcoming_odds_dates
 from app.services.live_mlb_slate import live_mlb_slate
 from app.services.live_wnba_slate import live_wnba_slate
-from app.services.odds_provider import get_last_fetch_status, odds_api_configured
+from app.services.odds_provider import (
+    app_sport_in_season,
+    build_app_sports_catalog,
+    get_last_fetch_status,
+    odds_api_configured,
+    prefetch_in_season_app_odds,
+)
 from app.services.readiness import slate_readiness, verification_summary
 from app.services.settlement import settle_user_day
 from app.services.ticket_builder import build_cards, preview_custom_card
 
 router = APIRouter(prefix="/sports", tags=["sports"])
+
+
+@router.get("/catalog")
+def sports_catalog(
+    _: SubscribedUser,
+    force_refresh: bool = Query(default=False),
+) -> dict[str, object]:
+    """App sport list enriched with free Odds /v4/sports in-season flags (0 credits)."""
+    sports = build_app_sports_catalog(force_refresh=force_refresh)
+    return {
+        "sports": sports,
+        "credit_cost": 0,
+        "source": "odds_api_free_sports_catalog",
+        "in_season_count": sum(1 for row in sports if row.get("in_season") is True),
+        "note": (
+            "In-season flags come from the free Odds /sports catalog. "
+            "Priced slate refresh still costs markets×regions credits per sport."
+        ),
+    }
+
+
+@router.post("/prefetch-odds")
+def prefetch_odds(_: SubscribedUser) -> dict[str, object]:
+    """Warm paid odds for all in-season app sports (uses credits once, then TTL cache)."""
+    if not odds_api_configured():
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="ODDS_API_KEY is not configured",
+        )
+    return prefetch_in_season_app_odds()
 
 
 def _slate_response(
@@ -134,6 +170,21 @@ def slate(
 ) -> SlateResponse:
     sport_lower = sport_name.lower()
 
+    # Odds-only sports: skip paid refresh when free catalog says out of season.
+    # MLB still loads schedule/model facts even without book prices.
+    if sport_lower != "mlb" and app_sport_in_season(sport_lower) is False:
+        return _slate_response(
+            sport=sport_lower,
+            slate_date=slate_date,
+            mode="live",
+            notice=(
+                f"{sport_lower.upper()} is out of season on The Odds API free sports catalog. "
+                "Paid odds refresh was skipped to save credits. Pick an in-season sport "
+                "(see /sports/catalog) or wait until books list games again."
+            ),
+            candidates=[],
+        )
+
     if not settings.demo_mode and sport_lower == "mlb":
         try:
             candidates = live_mlb_slate(slate_date)
@@ -149,6 +200,12 @@ def slate(
                         "Live MLB: independent YWP model from official MLB Stats API facts, "
                         "filled by the trusted-source research searchers, compared against "
                         "real sportsbook prices from The Odds API."
+                    )
+                elif odds_status.get("error") == "sport_out_of_season":
+                    notice = (
+                        "Live MLB schedule and model inputs loaded, but baseball_mlb is "
+                        "out of season on the free Odds sports catalog — paid book odds "
+                        "were skipped to save credits."
                     )
                 elif not odds_api_configured():
                     notice = (
