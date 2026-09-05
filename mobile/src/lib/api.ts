@@ -97,11 +97,52 @@ export class ApiError extends Error {
   }
 }
 
+const DEFAULT_TIMEOUT_MS = 25_000;
+/** Slate + analyze pull Odds + research; Render cold starts often exceed 25s. */
+const HEAVY_TIMEOUT_MS = 90_000;
+
+export function timeoutMsForPath(path: string, override?: number): number {
+  if (typeof override === "number" && override > 0) return override;
+  const route = path.split("?")[0] ?? path;
+  if (
+    route.startsWith("/sports/slate") ||
+    route.startsWith("/sports/analyze") ||
+    route.startsWith("/sports/prefetch-odds")
+  ) {
+    return HEAVY_TIMEOUT_MS;
+  }
+  return DEFAULT_TIMEOUT_MS;
+}
+
+function isCanceledFetchError(error: unknown): boolean {
+  if (!(error instanceof Error)) return false;
+  if (error.name === "AbortError") return true;
+  const message = error.message.toLowerCase();
+  if (
+    message.includes("aborted") ||
+    message.includes("canceled") ||
+    message.includes("cancelled")
+  ) {
+    return true;
+  }
+  const cause = (error as Error & { cause?: unknown }).cause;
+  if (cause instanceof Error) {
+    const causeMessage = cause.message.toLowerCase();
+    return (
+      cause.name === "AbortError" ||
+      causeMessage.includes("aborted") ||
+      causeMessage.includes("canceled") ||
+      causeMessage.includes("cancelled")
+    );
+  }
+  return false;
+}
+
 export async function rawRequest<T>(
   path: string,
   init: RequestInit = {},
   accessToken?: string,
-  timeoutMs = 25_000,
+  timeoutMs?: number,
 ): Promise<T> {
   const apiUrl = getApiUrl() || PRODUCTION_API_URL;
   currentApiUrl = apiUrl;
@@ -112,8 +153,9 @@ export async function rawRequest<T>(
   if (accessToken) {
     headers.set("Authorization", `Bearer ${accessToken}`);
   }
+  const waitMs = timeoutMsForPath(path, timeoutMs);
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  const timer = setTimeout(() => controller.abort(), waitMs);
   let response: Response;
   try {
     response = await fetch(`${apiUrl}${path}`, {
@@ -123,8 +165,11 @@ export async function rawRequest<T>(
     });
   } catch (error) {
     clearTimeout(timer);
-    if (error instanceof Error && error.name === "AbortError") {
-      throw new ApiError("Request timed out — check connectivity and retry", 408);
+    if (controller.signal.aborted || isCanceledFetchError(error)) {
+      throw new ApiError(
+        `Request timed out after ${Math.round(waitMs / 1000)}s — check connectivity and retry`,
+        408,
+      );
     }
     throw new ApiError(
       error instanceof Error ? error.message : "Network request failed",

@@ -62,6 +62,7 @@ export default function SlateScreen() {
   const [analyzing, setAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [catalogByKey, setCatalogByKey] = useState<Record<string, SportCatalogItem>>({});
+  const [catalogReady, setCatalogReady] = useState(false);
   const [prefetchNote, setPrefetchNote] = useState<string | null>(null);
   const [prefetching, setPrefetching] = useState(false);
 
@@ -75,6 +76,8 @@ export default function SlateScreen() {
       setCatalogByKey(next);
     } catch {
       // Catalog is advisory — slate still works without in-season badges.
+    } finally {
+      setCatalogReady(true);
     }
   }
 
@@ -167,10 +170,11 @@ export default function SlateScreen() {
   }, []);
 
   useEffect(() => {
+    if (!catalogReady) return;
     void loadSlate();
-    // Reload whenever sport or date changes so analysis cannot use a stale slate.
+    // Wait for catalog so OOS sports skip paid Odds; do not re-fetch when catalog object identity changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sport, date, catalogByKey]);
+  }, [sport, date, catalogReady]);
 
   return (
     <Screen sport={sport}>
