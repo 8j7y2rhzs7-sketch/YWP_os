@@ -220,6 +220,7 @@ def test_props_skip_odds_when_no_gated_intent(monkeypatch) -> None:
     )
     monkeypatch.setattr(slate_module.settings, "mlb_props_enabled", True)
     monkeypatch.setattr(slate_module.settings, "mlb_max_prop_events", 4)
+    monkeypatch.setattr(slate_module, "get_player_game_log", lambda *args, **kwargs: [])
 
     def _boom(*args, **kwargs):
         raise AssertionError("Odds props must not run without gated free-source intents")
@@ -228,6 +229,7 @@ def test_props_skip_odds_when_no_gated_intent(monkeypatch) -> None:
     candidates = slate_module.live_mlb_slate(date(2026, 9, 3))
     assert candidates
     assert not any(c.market_is_pitcher_strikeout_over for c in candidates)
+    assert not any(c.market_type == "player_hits_over" for c in candidates)
 
 
 def test_props_pull_odds_only_after_gated_intent(monkeypatch) -> None:
@@ -290,11 +292,13 @@ def test_props_pull_odds_only_after_gated_intent(monkeypatch) -> None:
     )
     monkeypatch.setattr(slate_module.settings, "mlb_props_enabled", True)
     monkeypatch.setattr(slate_module.settings, "mlb_max_prop_events", 4)
+    monkeypatch.setattr(slate_module, "get_player_game_log", lambda *args, **kwargs: [])
 
     calls: list[str] = []
 
     def fake_props(event_id, **kwargs):
         calls.append(str(event_id))
+        assert "pitcher_strikeouts" in str(kwargs.get("markets") or "")
         return {
             "id": event_id,
             "bookmakers": [
@@ -329,3 +333,136 @@ def test_props_pull_odds_only_after_gated_intent(monkeypatch) -> None:
     k_picks = [c for c in candidates if c.market_is_pitcher_strikeout_over]
     assert len(k_picks) == 1
     assert "Ace Arm" in k_picks[0].selection
+    status = slate_module.get_last_props_status()
+    assert status["k_candidates"] == 1
+    assert status["enabled"] is True
+
+
+def test_batter_hit_prop_intents_use_free_logs(monkeypatch) -> None:
+    research = _research()
+    research["context"]["home"] = {
+        "lineup_confirmed": True,
+        "lineup": [
+            {"id": 501, "name": "Top Hitter"},
+            {"id": 502, "name": "Cold Bat"},
+        ],
+        "pitchers": [],
+        "bullpen": [],
+    }
+    research["context"]["away"] = {
+        "lineup_confirmed": True,
+        "lineup": [{"id": 601, "name": "Away Lead"}],
+        "pitchers": [],
+        "bullpen": [],
+    }
+
+    def fake_logs(player_id: int, last_n: int = 8):
+        if player_id == 501:
+            return [{"hits": 2, "at_bats": 4} for _ in range(6)]
+        if player_id == 502:
+            return [{"hits": 0, "at_bats": 4} for _ in range(6)]
+        return [{"hits": 0, "at_bats": 1} for _ in range(6)]
+
+    monkeypatch.setattr(slate_module, "get_player_game_log", fake_logs)
+    intents = slate_module._batter_hit_prop_intents(research)
+    assert [row["player_id"] for row in intents] == [501]
+    assert intents[0]["name"] == "Top Hitter"
+
+
+def test_props_pull_batter_hits_when_intent_clears(monkeypatch) -> None:
+    game = {
+        "game_pk": 123,
+        "game_date": "2026-09-03T23:00:00Z",
+        "home_team": "Home Club",
+        "home_id": 10,
+        "home_pitcher": {"id": 100, "name": "Home Starter"},
+        "away_team": "Away Club",
+        "away_id": 20,
+        "away_pitcher": {"id": 200, "name": "Away Starter"},
+        "venue": "Test Park",
+        "venue_id": 31,
+        "weather": {"condition": "Clear", "temp": "72", "wind": "5 mph"},
+        "mlb_game_url": "https://www.mlb.com/gameday/123",
+    }
+    event = {
+        "id": "real-odds-event",
+        "home_team": "Home Club",
+        "away_team": "Away Club",
+        "bookmakers": [
+            {
+                "key": "draftkings",
+                "markets": [
+                    {
+                        "key": "h2h",
+                        "outcomes": [
+                            {"name": "Home Club", "price": -125},
+                            {"name": "Away Club", "price": 110},
+                        ],
+                    }
+                ],
+            }
+        ],
+    }
+    research = _research()
+    research["context"]["home"] = {
+        "lineup_confirmed": True,
+        "lineup": [{"id": 501, "name": "Top Hitter"}],
+        "pitchers": [],
+        "bullpen": [],
+    }
+    monkeypatch.setattr(slate_module, "get_schedule", lambda slate_date: [game])
+    monkeypatch.setattr(slate_module, "get_game_odds", lambda **kwargs: [event])
+    monkeypatch.setattr(slate_module, "_game_research", lambda game, slate_date: research)
+    monkeypatch.setattr(
+        slate_module,
+        "run_mlb_research_searchers",
+        lambda **kwargs: {
+            "umpires": {"verified": True, "source_id": "mlb_stats_api", "crew": []},
+            "park": {"verified": True, "source_id": "mlb_stats_api", "venue": "Test Park"},
+            "weather_backup": {"verified": False},
+            "market": {"verified": True, "book_count": 2, "detail": "2 books"},
+            "sources_used": ["mlb_stats_api", "the_odds_api"],
+        },
+    )
+    monkeypatch.setattr(slate_module.settings, "mlb_props_enabled", True)
+    monkeypatch.setattr(slate_module.settings, "mlb_max_prop_events", 4)
+    monkeypatch.setattr(
+        slate_module,
+        "get_player_game_log",
+        lambda *args, **kwargs: [{"hits": 2, "at_bats": 4} for _ in range(6)],
+    )
+
+    markets_requested: list[str] = []
+
+    def fake_props(event_id, **kwargs):
+        markets_requested.append(str(kwargs.get("markets") or ""))
+        return {
+            "id": event_id,
+            "bookmakers": [
+                {
+                    "key": "draftkings",
+                    "markets": [
+                        {
+                            "key": "batter_hits",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "description": "Top Hitter",
+                                    "price": -120,
+                                    "point": 0.5,
+                                }
+                            ],
+                        }
+                    ],
+                }
+            ],
+        }
+
+    monkeypatch.setattr(slate_module, "get_player_props", fake_props)
+    candidates = slate_module.live_mlb_slate(date(2026, 9, 3))
+    assert any("batter_hits" in row for row in markets_requested)
+    hits = [c for c in candidates if c.market_type == "player_hits_over"]
+    assert len(hits) == 1
+    assert "Top Hitter" in hits[0].selection
+    assert slate_module.get_last_props_status()["hits_candidates"] == 1
+    assert "batter hits" in slate_module.props_slate_notice().lower()

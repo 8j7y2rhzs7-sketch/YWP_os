@@ -43,9 +43,9 @@ services:
       - key: ODDS_API_KEY
         sync: false
       - key: YWP_MLB_PROPS_ENABLED
-        value: "false"
+        value: "true"
       - key: YWP_MLB_MAX_PROP_EVENTS
-        value: "4"
+        value: "6"
       - key: WHOP_API_KEY
         sync: false
       - key: NEXT_PUBLIC_WHOP_APP_ID

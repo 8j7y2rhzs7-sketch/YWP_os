@@ -32,7 +32,11 @@ def _feed(*, home_runs: int = 5, away_runs: int = 3, abstract: str = "Final") ->
                             "ID1001": {
                                 "person": {"id": 1001, "fullName": "Ace Pitcher"},
                                 "stats": {"pitching": {"strikeOuts": 8, "inningsPitched": "6.0"}},
-                            }
+                            },
+                            "ID2001": {
+                                "person": {"id": 2001, "fullName": "Top Hitter"},
+                                "stats": {"batting": {"hits": 2, "atBats": 4}},
+                            },
                         }
                     },
                     "away": {"players": {}},
@@ -92,6 +96,16 @@ def test_final_box_and_market_outcomes() -> None:
         player_key="mlb-pitcher-1001",
     )
     assert settlement._derive_outcome(k, box)["outcome"] == "WIN"
+
+    hits = SimpleNamespace(
+        market_type="player_hits_over",
+        selection="Top Hitter Over 0.5 hits",
+        line=Decimal("0.5"),
+        snapshot={},
+        player_key="mlb-batter-2001",
+    )
+    assert settlement._derive_outcome(hits, box)["outcome"] == "WIN"
+    assert box["batters"][2001]["hits"] == 2
 
 
 def _recommendation(user_id: str, **overrides: object) -> Recommendation:

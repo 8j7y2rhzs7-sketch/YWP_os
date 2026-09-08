@@ -33,7 +33,7 @@ function marketOrder(market: string): number {
   if (key.includes("run_line") || key.includes("spread")) return 1;
   if (key.includes("total_over") || key === "over") return 2;
   if (key.includes("total_under") || key === "under") return 3;
-  if (key.includes("strikeout") || key.includes("prop")) return 4;
+  if (key.includes("strikeout") || key.includes("hits") || key.includes("prop")) return 4;
   return 5;
 }
 

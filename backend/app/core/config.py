@@ -41,11 +41,12 @@ class Settings(BaseSettings):
         description="One-time/ops secret for POST /auth/provision-tester",
     )
     mlb_props_enabled: bool = Field(
-        default=False,
+        default=True,
         validation_alias="YWP_MLB_PROPS_ENABLED",
         description=(
             "When true, MLB player props use a source-first path: free MLB research "
-            "must surface a gated intent before Odds event-prop credits are spent."
+            "must surface a gated intent before Odds event-prop credits are spent. "
+            "Default on so Sheet/Run can show pitcher Ks and batter hits when research is ready."
         ),
     )
     mlb_max_prop_events: int = Field(

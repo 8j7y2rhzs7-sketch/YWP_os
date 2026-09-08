@@ -595,6 +595,7 @@ def _final_box(feed: dict[str, Any]) -> dict[str, Any] | None:
                     away_runs = int(runs)
 
     pitchers: dict[int, dict[str, Any]] = {}
+    batters: dict[int, dict[str, Any]] = {}
     for side in ("home", "away"):
         players = (boxscore.get(side) or {}).get("players") or {}
         for record in players.values():
@@ -602,16 +603,25 @@ def _final_box(feed: dict[str, Any]) -> dict[str, Any] | None:
             pid = person.get("id")
             if not isinstance(pid, int):
                 continue
-            pitching = ((record.get("stats") or {}).get("pitching")) or {}
-            if not pitching:
-                continue
-            pitchers[pid] = {
-                "id": pid,
-                "name": person.get("fullName") or "",
-                "strikeouts": int(pitching.get("strikeOuts") or 0),
-                "innings_pitched": pitching.get("inningsPitched"),
-                "side": side,
-            }
+            stats = record.get("stats") or {}
+            pitching = stats.get("pitching") or {}
+            if pitching:
+                pitchers[pid] = {
+                    "id": pid,
+                    "name": person.get("fullName") or "",
+                    "strikeouts": int(pitching.get("strikeOuts") or 0),
+                    "innings_pitched": pitching.get("inningsPitched"),
+                    "side": side,
+                }
+            batting = stats.get("batting") or {}
+            if batting:
+                batters[pid] = {
+                    "id": pid,
+                    "name": person.get("fullName") or "",
+                    "hits": int(batting.get("hits") or 0),
+                    "at_bats": int(batting.get("atBats") or 0),
+                    "side": side,
+                }
 
     return {
         "home_team": home_team,
@@ -621,6 +631,7 @@ def _final_box(feed: dict[str, Any]) -> dict[str, Any] | None:
         "total_runs": home_runs + away_runs,
         "final_score": f"{away_team} {away_runs} @ {home_team} {home_runs}",
         "pitchers": pitchers,
+        "batters": batters,
         "boxscore": boxscore,
     }
 
@@ -698,7 +709,7 @@ def _derive_outcome(
             "detail": f"{team} {team_runs} with line {line:+} vs {opp_runs}.",
         }
 
-    if "strikeout" in market or "pitcher" in market:
+    if "strikeout" in market or ("pitcher" in market and "hits" not in market):
         if line is None:
             return None
         pitcher = _match_pitcher(recommendation, box)
@@ -722,6 +733,32 @@ def _derive_outcome(
             "actual_value": actual,
             "final_score": f"{final_score} • {pitcher['name']} {actual} K",
             "detail": f"{pitcher['name']} struck out {actual} vs line {line} ({direction}).",
+        }
+
+    if "hits" in market:
+        if line is None:
+            return None
+        batter = _match_batter(recommendation, box)
+        if batter is None:
+            return {
+                "outcome": "VOID",
+                "actual_value": None,
+                "final_score": final_score,
+                "detail": "Batter hits total not found in final boxscore.",
+            }
+        actual = Decimal(int(batter["hits"]))
+        direction = "under" if "under" in selection_l else "over"
+        if actual == line:
+            outcome = "PUSH"
+        elif direction == "over":
+            outcome = "WIN" if actual > line else "LOSS"
+        else:
+            outcome = "WIN" if actual < line else "LOSS"
+        return {
+            "outcome": outcome,
+            "actual_value": actual,
+            "final_score": f"{final_score} • {batter['name']} {actual} H",
+            "detail": f"{batter['name']} had {actual} hits vs line {line} ({direction}).",
         }
 
     return None
@@ -782,6 +819,35 @@ def _match_pitcher(recommendation: Recommendation, box: dict[str, Any]) -> dict[
             name_guess.lower() in full.lower() or full.lower() in name_guess.lower()
         ):
             return pitcher
+    return None
+
+
+def _match_batter(recommendation: Recommendation, box: dict[str, Any]) -> dict[str, Any] | None:
+    player_key = recommendation.player_key or ""
+    batter_id = None
+    match = re.search(r"(\d+)$", player_key)
+    if match:
+        batter_id = int(match.group(1))
+    batters: dict[int, dict[str, Any]] = box.get("batters") or {}
+    if batter_id and batter_id in batters:
+        return batters[batter_id]
+
+    selection = recommendation.selection or ""
+    name_guess = re.sub(
+        r"\b(over|under)\b.*$",
+        "",
+        selection,
+        flags=re.IGNORECASE,
+    ).strip()
+    name_guess = re.sub(r"\bhits?\b.*$", "", name_guess, flags=re.IGNORECASE).strip()
+    for batter in batters.values():
+        full = str(batter.get("name") or "")
+        if full and full.lower() in selection.lower():
+            return batter
+        if name_guess and full and (
+            name_guess.lower() in full.lower() or full.lower() in name_guess.lower()
+        ):
+            return batter
     return None
 
 

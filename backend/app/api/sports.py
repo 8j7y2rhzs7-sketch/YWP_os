@@ -56,7 +56,7 @@ from app.services.learning import apply_micro_learning, load_feature_weights, re
 from app.services.protocols import run_protocol_health_check
 from app.services.providers import demo_slate
 from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate, upcoming_odds_dates
-from app.services.live_mlb_slate import live_mlb_slate
+from app.services.live_mlb_slate import live_mlb_slate, props_slate_notice
 from app.services.live_wnba_slate import live_wnba_slate
 from app.services.odds_provider import (
     app_sport_in_season,
@@ -199,7 +199,8 @@ def slate(
                     notice = (
                         "Live MLB: independent YWP model from official MLB Stats API facts, "
                         "filled by the trusted-source research searchers, compared against "
-                        "real sportsbook prices from The Odds API."
+                        "real sportsbook prices from The Odds API. "
+                        + props_slate_notice()
                     )
                 elif odds_status.get("error") == "sport_out_of_season":
                     notice = (
