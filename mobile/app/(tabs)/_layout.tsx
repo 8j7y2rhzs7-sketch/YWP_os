@@ -1,8 +1,9 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Redirect, Tabs } from "expo-router";
 import type { ComponentProps } from "react";
-import { StyleSheet, type ColorValue } from "react-native";
+import { Image, StyleSheet, type ColorValue } from "react-native";
 
+import { brandAssets } from "@/brandAssets";
 import { useAuth } from "@/context/AuthContext";
 import { colors, fonts } from "@/theme";
 
@@ -12,6 +13,17 @@ function icon(name: IconName) {
   return function TabIcon({ color, size }: { color: ColorValue; size: number }) {
     return <MaterialCommunityIcons name={name} color={color as string} size={size} />;
   };
+}
+
+function HomeLogoIcon({ focused }: { color: ColorValue; size: number; focused: boolean }) {
+  return (
+    <Image
+      source={brandAssets.crest}
+      style={[styles.homeLogo, focused && styles.homeLogoActive]}
+      resizeMode="contain"
+      accessibilityLabel="Home"
+    />
+  );
 }
 
 export default function TabLayout() {
@@ -42,7 +54,11 @@ export default function TabLayout() {
     >
       <Tabs.Screen
         name="index"
-        options={{ title: "Command", tabBarIcon: icon("shield-crown-outline") }}
+        options={{
+          title: "Home",
+          tabBarLabel: "Home",
+          tabBarIcon: HomeLogoIcon,
+        }}
       />
       <Tabs.Screen
         name="slate"
@@ -67,3 +83,17 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  homeLogo: {
+    width: 28,
+    height: 28,
+    borderRadius: 6,
+    opacity: 0.72,
+  },
+  homeLogoActive: {
+    opacity: 1,
+    borderWidth: 1,
+    borderColor: colors.circuitBlue,
+  },
+});
