@@ -8,6 +8,7 @@
     "start:phone": "node ../scripts/mobile-start-phone.mjs",
     "android": "expo run:android",
     "ios": "expo run:ios",
+    "ios:device:free": "bash ../scripts/ios-free-device.sh",
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
     "doctor": "npx expo-doctor@latest",
