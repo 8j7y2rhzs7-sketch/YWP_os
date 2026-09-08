@@ -81,23 +81,21 @@ export default function CommandCenter() {
   return (
     <Screen refreshing={refreshing} onRefresh={() => void load(true)}>
       <BrandHeader />
+      {/* Vision art alone — no copy over the poster */}
       <View style={styles.engineHero}>
         <Image
-          source={brandAssets.decisionEngine}
+          source={brandAssets.decisionEngineEmblem}
           style={styles.engineArt}
-          resizeMode="cover"
+          resizeMode="contain"
           accessibilityLabel="YWP Decision Engine brand artwork"
         />
-        <View style={styles.engineScrim} />
-        <View style={styles.engineCopy}>
-          <Text style={styles.brandMark}>YWP OS</Text>
-          <Text style={type.eyebrow}>WELCOME BACK, {user?.name}</Text>
-          <Text style={styles.heroTitle}>It learns every time you use it.</Text>
-        </View>
       </View>
       <MetalPanel tone="gold" style={styles.hero}>
         <View style={styles.heroTop}>
           <View style={styles.heroCopy}>
+            <Text style={styles.brandMark}>{brand.product}</Text>
+            <Text style={type.eyebrow}>WELCOME BACK, {user?.name}</Text>
+            <Text style={styles.heroTitle}>Your winning process.</Text>
             <Text style={styles.heroText}>
               {pulse?.headline ??
                 "Run a slate, lock a ticket, grade a result. Quiet metal is the chassis — edge is the point."}
@@ -189,61 +187,54 @@ export default function CommandCenter() {
 
 const styles = StyleSheet.create({
   engineHero: {
-    height: 220,
-    borderRadius: 18,
+    height: 268,
+    borderRadius: 20,
     overflow: "hidden",
-    marginBottom: spacing.md,
-    borderWidth: 1,
-    borderColor: "rgba(196,152,42,0.35)",
-    backgroundColor: colors.backgroundRaised,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: "rgba(26,168,240,0.38)",
+    backgroundColor: colors.background,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: spacing.md,
   },
   engineArt: {
-    ...StyleSheet.absoluteFill,
-    width: "100%",
+    width: "92%",
     height: "100%",
   },
-  engineScrim: {
-    ...StyleSheet.absoluteFill,
-    backgroundColor: "rgba(5,5,5,0.55)",
-  },
-  engineCopy: {
-    flex: 1,
-    justifyContent: "flex-end",
-    padding: spacing.lg,
-    gap: spacing.xs,
-  },
-  hero: { padding: spacing.xl },
+  hero: { gap: spacing.lg },
   brandMark: {
     color: colors.goldBright,
     fontFamily: fonts.display,
-    fontSize: 13,
+    fontSize: 26,
     fontWeight: "800",
-    letterSpacing: 3,
+    letterSpacing: -0.7,
   },
   heroTop: { flexDirection: "row", alignItems: "flex-start", gap: spacing.md },
-  heroCopy: { flex: 1, gap: spacing.xs },
+  heroCopy: { flex: 1, gap: spacing.sm },
   heroTitle: {
     color: colors.white,
     fontFamily: fonts.display,
-    fontSize: 34,
+    fontSize: 26,
     fontWeight: "800",
-    letterSpacing: -0.6,
-    lineHeight: 38,
+    letterSpacing: -0.8,
+    lineHeight: 30,
   },
   heroText: { ...type.body, color: colors.silver },
-  metrics: { flexDirection: "row", flexWrap: "wrap", gap: spacing.md },
+  metrics: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
   protocolHeader: { flexDirection: "row", alignItems: "center", gap: spacing.md },
   panelTitle: {
     color: colors.white,
     fontFamily: fonts.displaySemi,
     fontSize: 18,
     fontWeight: "700",
+    letterSpacing: -0.3,
   },
   rule: {
     color: colors.silver,
     fontFamily: fonts.body,
-    fontSize: 14,
-    lineHeight: 22,
+    fontSize: 15,
+    lineHeight: 23,
+    letterSpacing: -0.1,
   },
   ticketRow: { flexDirection: "row", alignItems: "center", gap: spacing.md },
   ticketTitle: {
@@ -251,6 +242,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.displaySemi,
     fontSize: 17,
     fontWeight: "700",
+    letterSpacing: -0.25,
   },
   footer: {
     color: colors.gold,
@@ -258,7 +250,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bodyBold,
     fontSize: 12,
     fontWeight: "700",
-    letterSpacing: 2,
+    letterSpacing: 1.2,
   },
-  footerMuted: { ...type.caption, textAlign: "center", letterSpacing: 1.4 },
+  footerMuted: { ...type.caption, textAlign: "center", letterSpacing: 0.6 },
 });

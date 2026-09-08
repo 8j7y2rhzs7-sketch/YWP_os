@@ -40,12 +40,12 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.gold,
+        tabBarActiveTintColor: colors.circuitBlueBright,
         tabBarInactiveTintColor: colors.dim,
         tabBarHideOnKeyboard: true,
         tabBarStyle: {
-          backgroundColor: "rgba(10,13,18,0.98)",
-          borderTopColor: "rgba(196,152,42,0.35)",
+          backgroundColor: "rgba(2,5,10,0.98)",
+          borderTopColor: "rgba(26,168,240,0.28)",
           borderTopWidth: StyleSheet.hairlineWidth,
           height: tabBarHeight,
           paddingTop: 6,
@@ -110,6 +110,6 @@ const styles = StyleSheet.create({
   homeLogoActive: {
     opacity: 1,
     borderWidth: 1,
-    borderColor: colors.gold,
+    borderColor: colors.circuitBlueBright,
   },
 });

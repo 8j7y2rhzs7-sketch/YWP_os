@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     transform: [{ rotate: "45deg" }],
   },
   header: { flexDirection: "row", alignItems: "center", gap: 10 },
-  logo: { width: 46, height: 46, borderRadius: 23 },
+  logo: { width: 46, height: 46, borderRadius: 10 },
   headerCopy: { flex: 1, gap: 3 },
   eyebrow: { color: colors.gold, fontSize: 8, fontWeight: "900", letterSpacing: 2 },
   protocol: { color: colors.silver, fontSize: 9, fontWeight: "700" },

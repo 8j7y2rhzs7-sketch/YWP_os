@@ -14,7 +14,8 @@ import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAppData } from "@/context/AppDataContext";
 import { useAuth } from "@/context/AuthContext";
-import { colors, radius, spacing, type } from "@/theme";
+import { sportLook } from "@/sportVisuals";
+import { colors, fonts, radius, spacing, type } from "@/theme";
 import type {
   AnalyzeResponse,
   OddsPrefetchResponse,
@@ -186,21 +187,27 @@ export default function SlateScreen() {
           {sports.map((item) => {
             const catalog = catalogByKey[item.key];
             const outOfSeason = catalog?.in_season === false;
+            const look = sportLook(item.key);
+            const active = sport === item.key;
             return (
               <Pressable
                 key={item.key}
                 onPress={() => setSport(item.key)}
                 style={[
                   styles.sport,
-                  sport === item.key && styles.sportActive,
+                  active && {
+                    borderColor: look.accent,
+                    backgroundColor: look.accentSoft,
+                  },
                   outOfSeason && styles.sportOutOfSeason,
                 ]}
               >
+                <View style={[styles.sportStripe, { backgroundColor: look.accent }]} />
                 <Text style={styles.sportIcon}>{item.icon}</Text>
                 <Text
                   style={[
                     styles.sportLabel,
-                    sport === item.key && styles.sportLabelActive,
+                    active && { color: look.stripe },
                     outOfSeason && styles.sportLabelOutOfSeason,
                   ]}
                 >
@@ -265,9 +272,9 @@ export default function SlateScreen() {
             subtitle="Raw list appears before YWP scoring, eliminations, and card building."
           />
           {slate.candidates.map((candidate, index) => (
-            <MetalPanel key={candidate.candidate_id} style={styles.candidate}>
+            <MetalPanel key={candidate.candidate_id} style={styles.candidate} accent={sportLook(sport).accent}>
               <View style={styles.candidateTop}>
-                <Text style={styles.number}>{index + 1}</Text>
+                <Text style={[styles.number, { backgroundColor: sportLook(sport).accent }]}>{index + 1}</Text>
                 <PlayerPortrait
                   imageUrl={String(candidate.image_url ?? "") || null}
                   teamImageUrl={String(candidate.team_image_url ?? "") || null}
@@ -327,26 +334,42 @@ const styles = StyleSheet.create({
   sports: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
   sport: {
     flex: 1,
-    minWidth: 92,
+    minWidth: 96,
     alignItems: "center",
-    gap: spacing.xs,
-    padding: spacing.md,
-    borderWidth: 1,
-    borderColor: colors.border,
+    gap: spacing.sm,
+    paddingVertical: spacing.lg,
+    paddingHorizontal: spacing.md,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: "rgba(255,255,255,0.12)",
     borderRadius: radius.md,
-    backgroundColor: colors.backgroundRaised,
+    backgroundColor: "rgba(8,16,24,0.9)",
+    overflow: "hidden",
+    minHeight: 88,
   },
-  sportActive: { borderColor: colors.gold, backgroundColor: colors.surfaceGold },
-  sportOutOfSeason: { opacity: 0.45 },
-  sportIcon: { fontSize: 26 },
-  sportLabel: { color: colors.muted, fontWeight: "900", fontSize: 11 },
-  sportLabelActive: { color: colors.gold },
+  sportStripe: {
+    position: "absolute",
+    left: 0,
+    top: 10,
+    bottom: 10,
+    width: 3,
+    borderRadius: 2,
+    opacity: 0.9,
+  },
+  sportOutOfSeason: { opacity: 0.42 },
+  sportIcon: { fontSize: 28 },
+  sportLabel: {
+    color: colors.silver,
+    fontFamily: fonts.bodyBold,
+    fontWeight: "700",
+    fontSize: 12,
+    letterSpacing: 0.3,
+  },
   sportLabelOutOfSeason: { color: colors.muted },
   oosBadge: {
     color: colors.danger,
-    fontSize: 9,
-    fontWeight: "900",
-    letterSpacing: 0.6,
+    fontSize: 10,
+    fontWeight: "700",
+    letterSpacing: 0.5,
   },
   prefetchNote: {
     ...type.caption,
@@ -354,33 +377,55 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   noticeHeader: { flexDirection: "row", alignItems: "center", gap: spacing.md },
-  noticeTitle: { flex: 1, color: colors.white, fontSize: 16, fontWeight: "900" },
-  candidate: { padding: spacing.md },
+  noticeTitle: {
+    flex: 1,
+    color: colors.white,
+    fontFamily: fonts.displaySemi,
+    fontSize: 17,
+    fontWeight: "700",
+    letterSpacing: -0.25,
+  },
+  candidate: { padding: spacing.lg },
   candidateTop: { flexDirection: "row", alignItems: "center", gap: spacing.md },
   number: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    lineHeight: 30,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    lineHeight: 32,
     textAlign: "center",
     color: colors.background,
     backgroundColor: colors.gold,
-    fontWeight: "900",
+    fontFamily: fonts.displaySemi,
+    fontWeight: "700",
+    overflow: "hidden",
   },
-  candidateCopy: { flex: 1, gap: 2 },
-  selection: { color: colors.white, fontSize: 16, fontWeight: "800" },
-  odds: { color: colors.gold, fontSize: 16, fontWeight: "900" },
+  candidateCopy: { flex: 1, gap: 3 },
+  selection: {
+    color: colors.white,
+    fontFamily: fonts.displaySemi,
+    fontSize: 16,
+    fontWeight: "700",
+    letterSpacing: -0.2,
+  },
+  odds: {
+    color: colors.gold,
+    fontFamily: fonts.displaySemi,
+    fontSize: 16,
+    fontWeight: "700",
+    letterSpacing: -0.2,
+  },
   market: {
     color: colors.success,
-    fontSize: 10,
-    fontWeight: "800",
+    fontSize: 11,
+    fontWeight: "700",
+    letterSpacing: 0.7,
     textTransform: "uppercase",
   },
   footer: { ...type.caption, textAlign: "center", padding: spacing.md },
   verificationWarning: {
     color: colors.danger,
-    fontSize: 12,
-    fontWeight: "800",
+    fontSize: 13,
+    fontWeight: "700",
     marginTop: spacing.sm,
   },
   sourceLink: {
@@ -388,14 +433,14 @@ const styles = StyleSheet.create({
     borderColor: colors.info,
     borderWidth: 1,
     borderRadius: radius.pill,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: 10,
     marginTop: spacing.sm,
   },
   sourceLinkText: {
     color: colors.info,
-    fontSize: 11,
-    fontWeight: "900",
-    letterSpacing: 0.8,
+    fontSize: 12,
+    fontWeight: "700",
+    letterSpacing: 0.4,
   },
 });
