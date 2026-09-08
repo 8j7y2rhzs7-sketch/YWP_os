@@ -11,7 +11,7 @@ import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
 import { useAuth } from "@/context/AuthContext";
 import { colors, spacing, type } from "@/theme";
-import type { LearningPulse, MissByOneReport, Performance, ProtocolDefinition } from "@/types";
+import type { HiveProgressReport, LearningPulse, MissByOneReport, Performance, ProtocolDefinition } from "@/types";
 
 interface Patterns {
   root_cause_tags: Array<{ tag: string; count: number }>;
@@ -36,6 +36,7 @@ export default function LearningScreen() {
   const [patterns, setPatterns] = useState<Patterns | null>(null);
   const [protocol, setProtocol] = useState<ProtocolDefinition | null>(null);
   const [pulse, setPulse] = useState<LearningPulse | null>(null);
+  const [hiveReports, setHiveReports] = useState<HiveProgressReport[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -45,19 +46,21 @@ export default function LearningScreen() {
       refresh ? setRefreshing(true) : setLoading(true);
       setError(null);
       try {
-        const [nextPerformance, nextMiss, nextPatterns, nextProtocol, nextPulse] =
+        const [nextPerformance, nextMiss, nextPatterns, nextProtocol, nextPulse, nextHive] =
           await Promise.all([
             request<Performance>("/learning/performance"),
             request<MissByOneReport>("/learning/miss-by-one"),
             request<Patterns>("/learning/patterns"),
             request<ProtocolDefinition>("/protocol/current"),
             request<LearningPulse>("/learning/pulse"),
+            request<{ reports: HiveProgressReport[] }>("/hive/progress-reports?limit=12"),
           ]);
         setPerformance(nextPerformance);
         setMiss(nextMiss);
         setPatterns(nextPatterns);
         setProtocol(nextProtocol);
         setPulse(nextPulse);
+        setHiveReports(nextHive.reports ?? []);
       } catch (reason) {
         setError(reason instanceof Error ? reason.message : "Learning data failed to load");
       } finally {
@@ -109,6 +112,40 @@ export default function LearningScreen() {
             accent={colors.success}
           />
         </View>
+      </MetalPanel>
+
+      <SectionTitle
+        title="Hive Progress Reports"
+        subtitle="Automatic snapshots after Sync Scores — living evidence growth, not slogans."
+      />
+      <MetalPanel tone={hiveReports.length ? "success" : "default"}>
+        {hiveReports.length ? (
+          hiveReports.slice(0, 8).map((report) => {
+            const maturity = (report.maturity ?? {}) as Record<string, unknown>;
+            const pct = Number(maturity.optimum_accuracy_pct ?? 0);
+            const status = String(maturity.status ?? "collecting");
+            return (
+              <View key={report.id} style={styles.dataRow}>
+                <View style={styles.flex}>
+                  <Text style={styles.dataName}>
+                    {report.trigger ?? "report"} • {report.created_at?.slice(0, 16) ?? "—"}
+                  </Text>
+                  <Text style={type.caption}>
+                    {report.notes ?? `${report.sample_count} eligible samples`}
+                  </Text>
+                </View>
+                <Text style={styles.dataValue}>
+                  {pct.toFixed(1)}% • {status}
+                </Text>
+              </View>
+            );
+          })
+        ) : (
+          <Text style={type.body}>
+            No automatic Hive reports yet. Run boards, place/lock tickets, then Sync Scores —
+            each graded outcome writes a progress snapshot and strengthens tomorrow’s blends.
+          </Text>
+        )}
       </MetalPanel>
 
       {(pulse?.active_shifts ?? []).length ? (

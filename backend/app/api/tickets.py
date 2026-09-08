@@ -31,6 +31,7 @@ from app.schemas import (
 from app.services.decision_engine import american_to_decimal
 from app.services.lock_check import load_ticket_for_lock, run_lock_check
 from app.services.learning import record_usage_event
+from app.hive.service import record_hive_action
 from app.services.ticket_gates import (
     cash_card_k_overs_ok,
     game_status_ok,
@@ -513,6 +514,12 @@ def place_ticket(ticket_id: str, user: SubscribedUser, db: DB) -> TicketOut:
     ticket.status = "placed"
     for leg in _active_legs(ticket):
         leg.status = "placed"
+        if leg.recommendation_id:
+            record_hive_action(
+                db=db,
+                source_recommendation_id=leg.recommendation_id,
+                action="accepted",
+            )
     db.add(
         AuditLog(
             user_id=user.id,

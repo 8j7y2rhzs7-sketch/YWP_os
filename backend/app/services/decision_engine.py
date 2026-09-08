@@ -485,6 +485,144 @@ class DecisionEngine:
             input_hash=input_hash(payload),
         )
 
+    def apply_hive_calibration(
+        self,
+        evaluation: Evaluation,
+        hive_probability: float,
+        *,
+        shift_applied: float,
+    ) -> Evaluation:
+        """Apply a bounded Hive calibration to a finished evaluation.
+
+        Fail-closed: never undoes research / independent-probability hard skips.
+        May only change edge/EV/decision among candidates that already had a
+        usable independent model probability.
+        """
+        blocked = {
+            "RESEARCH_INCOMPLETE",
+            "NO_INDEPENDENT_PROBABILITY",
+            "DATA_QUALITY_BAD",
+            "DATA_ANOMALY",
+            "PREVIOUS_GAME_RECENCY_BLOCK",
+            "EXTRA_TIME_TRAP",
+        }
+        if any(code in evaluation.reason_codes for code in blocked):
+            return evaluation
+
+        implied = evaluation.implied_probability
+        adjusted = clamp(float(hive_probability), 0.01, 0.99)
+        edge = adjusted - implied
+        expected_value = adjusted * american_to_decimal(evaluation.candidate.american_odds) - 1
+        confidence = evaluation.confidence_score
+
+        # Drop edge-only skip reasons so we can re-evaluate them from the Hive probability.
+        soft_edge_codes = {"NO_CLEAN_EDGE", "ODDS_TOO_EXPENSIVE", "CONFIDENCE_BELOW_THRESHOLD"}
+        reasons = [code for code in evaluation.reason_codes if code not in soft_edge_codes]
+        warnings = list(evaluation.warnings)
+
+        if "HIVE_CALIBRATION" not in reasons:
+            reasons.append("HIVE_CALIBRATION")
+        warnings.append(
+            f"Hive calibration shifted model probability by {shift_applied:+.3%} "
+            f"(bounded living evidence)."
+        )
+
+        hard_skip = False
+        if edge < settings.minimum_edge or expected_value <= 0:
+            hard_skip = True
+            reasons.extend(["NO_CLEAN_EDGE", "ODDS_TOO_EXPENSIVE"])
+
+        if hard_skip:
+            decision = Decision.skip.value
+            confidence = min(confidence, 69)
+        elif evaluation.decision == Decision.review.value or "MODEL_EDGE_QUARANTINE" in reasons:
+            decision = Decision.review.value
+            confidence = min(confidence, 80)
+        elif confidence >= 85 and edge >= 0.03:
+            decision = Decision.play.value
+        elif confidence >= 75 and edge >= settings.minimum_edge:
+            decision = Decision.lean.value
+        elif confidence >= 70:
+            decision = Decision.watch.value
+        else:
+            decision = Decision.skip.value
+            reasons.append("CONFIDENCE_BELOW_THRESHOLD")
+
+        if edge >= 0.08 and confidence >= 90:
+            edge_class = "Elite"
+        elif edge >= 0.05:
+            edge_class = "Strong"
+        elif edge >= 0.03:
+            edge_class = "Moderate"
+        elif edge >= settings.minimum_edge:
+            edge_class = "Marginal"
+        else:
+            edge_class = "No Edge"
+        expected_value_label = (
+            "Positive"
+            if expected_value > 0.01
+            else "Negative"
+            if expected_value < -0.01
+            else "Neutral"
+        )
+
+        quality = clamp(evaluation.candidate.data_quality, 0, 1)
+        yis = 10 * (
+            0.30 * (confidence / 100)
+            + 0.20 * (evaluation.vision_score / 10)
+            + 0.15 * evaluation.reliability
+            + 0.15 * evaluation.stability
+            + 0.10 * quality
+            + 0.10 * clamp((expected_value + 0.02) / 0.18, 0, 1)
+        )
+        if decision == Decision.skip.value:
+            yis = min(yis, 5.9)
+            tier = "stay_away"
+            suggested_stake_pct = 0.0
+        elif decision == Decision.review.value:
+            yis = min(yis, 6.5)
+            tier = "review"
+            suggested_stake_pct = 0.0
+        elif confidence >= 90 and evaluation.risk == "low":
+            tier = "cash_builder"
+            suggested_stake_pct = evaluation.suggested_stake_pct
+        elif confidence >= 88:
+            tier = "core_parlay"
+            suggested_stake_pct = evaluation.suggested_stake_pct
+        elif expected_value >= 0.08:
+            tier = "edge_play"
+            suggested_stake_pct = evaluation.suggested_stake_pct
+        else:
+            tier = "support"
+            suggested_stake_pct = evaluation.suggested_stake_pct
+
+        summary = evaluation.reasoning_summary
+        hive_note = (
+            f" Living Hive calibration applied ({shift_applied:+.3%}); "
+            f"working probability {adjusted:.1%} vs {implied:.1%} implied."
+        )
+        if "Living Hive calibration" not in summary:
+            summary = f"{summary}{hive_note}".strip()
+
+        evaluation.adjusted_probability = adjusted
+        evaluation.edge = edge
+        evaluation.expected_value = expected_value
+        evaluation.confidence_score = confidence
+        evaluation.decision = decision
+        evaluation.recommendation_tier = tier
+        evaluation.edge_class = edge_class
+        evaluation.expected_value_label = expected_value_label
+        evaluation.ywp_intelligence_score = round(yis, 2)
+        evaluation.suggested_stake_pct = round(suggested_stake_pct, 4)
+        evaluation.reason_codes = list(dict.fromkeys(reasons))
+        evaluation.warnings = list(dict.fromkeys(warnings))
+        evaluation.reasoning_summary = summary
+        evaluation.payload["hive_working_probability"] = adjusted
+        evaluation.payload["pre_hive_probability"] = evaluation.payload.get(
+            "model_probability", evaluation.payload.get("pre_hive_probability")
+        )
+        return evaluation
+
     def rank(self, evaluations: list[Evaluation]) -> list[Evaluation]:
         gated = self.apply_slate_integrity_gates(evaluations)
         priority = {

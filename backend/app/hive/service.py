@@ -545,6 +545,99 @@ def hive_learning_maturity(
     }
 
 
+def record_hive_progress_report(
+    *,
+    db: Session,
+    trigger: str,
+    sport: str | None = None,
+    extra: dict[str, Any] | None = None,
+) -> HiveModelSnapshot:
+    """Persist an automatic Hive growth snapshot after real evidence moves."""
+    from app.hive.models import HiveModelSnapshot
+
+    maturity = hive_learning_maturity(db=db, sport=sport)
+    aggregates = (
+        db.query(HiveAggregate)
+        .filter(HiveAggregate.eligible_samples > 0)
+        .order_by(HiveAggregate.eligible_samples.desc())
+        .limit(12)
+        .all()
+    )
+    top_buckets = [
+        {
+            "sport": agg.sport,
+            "league": agg.league,
+            "market": agg.market,
+            "market_scope": agg.market_scope,
+            "eligible_samples": int(agg.eligible_samples or 0),
+            "wins": int(agg.wins or 0),
+            "losses": int(agg.losses or 0),
+            "posterior_rate": agg.posterior_rate,
+            "calibration_delta": agg.calibration_delta,
+            "blend_active": int(agg.eligible_samples or 0) >= int(settings.min_sample),
+        }
+        for agg in aggregates
+    ]
+    stamp = _utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+    snapshot = HiveModelSnapshot(
+        release_version=f"{settings.release_version}:{stamp}",
+        snapshot_type="progress_report",
+        parameters={
+            "trigger": trigger,
+            "sport": sport,
+            "maturity": maturity,
+            "top_buckets": top_buckets,
+            "living_effect": (
+                "Hive blend adjusts edge/EV/decision on analyze once a bucket "
+                "reaches min_sample; Strict Mode research skips stay fail-closed."
+            ),
+            **(extra or {}),
+        },
+        sample_count=int(maturity.get("eligible_samples") or 0),
+        notes=(
+            f"Hive {maturity.get('status')} at "
+            f"{maturity.get('optimum_accuracy_pct', maturity.get('pct', 0))}%"
+        ),
+    )
+    db.add(snapshot)
+    db.flush()
+    return snapshot
+
+
+def list_hive_progress_reports(
+    *,
+    db: Session,
+    limit: int = 20,
+) -> list[dict[str, Any]]:
+    from app.hive.models import HiveModelSnapshot
+
+    rows = (
+        db.query(HiveModelSnapshot)
+        .filter(HiveModelSnapshot.snapshot_type == "progress_report")
+        .order_by(HiveModelSnapshot.created_at.desc())
+        .limit(max(1, min(limit, 50)))
+        .all()
+    )
+    out: list[dict[str, Any]] = []
+    for row in rows:
+        params = row.parameters if isinstance(row.parameters, dict) else {}
+        maturity = params.get("maturity") if isinstance(params.get("maturity"), dict) else {}
+        out.append(
+            {
+                "id": row.id,
+                "created_at": row.created_at.isoformat() if row.created_at else None,
+                "trigger": params.get("trigger"),
+                "sport": params.get("sport"),
+                "sample_count": row.sample_count,
+                "notes": row.notes,
+                "maturity": maturity,
+                "top_buckets": params.get("top_buckets") or [],
+                "living_effect": params.get("living_effect"),
+            }
+        )
+    return out
+
+
 def blend_hive_probability(
     *,
     base_probability: float | None,

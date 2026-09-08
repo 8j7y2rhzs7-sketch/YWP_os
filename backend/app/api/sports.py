@@ -354,6 +354,18 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         evaluation.payload["model_probability"] = base_probability
         evaluation.payload["hive_adjusted_probability"] = hive_adjusted
         evaluation.payload["hive"] = hive_meta
+        # Living Hive: when evidence is mature, the bounded blend must affect
+        # edge/EV/decision — not only the maturity meter payload.
+        if (
+            hive_meta.get("used")
+            and hive_adjusted is not None
+            and base_probability is not None
+        ):
+            evaluation = decision_engine.apply_hive_calibration(
+                evaluation,
+                float(hive_adjusted),
+                shift_applied=float(hive_meta.get("shift_applied") or 0.0),
+            )
         raw_evaluations.append(evaluation)
     evaluations = decision_engine.rank(raw_evaluations)
     record_usage_event(

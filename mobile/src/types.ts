@@ -228,6 +228,18 @@ export interface HiveLearningSummary {
   release_version?: string;
 }
 
+export interface HiveProgressReport {
+  id: string;
+  created_at: string | null;
+  trigger: string | null;
+  sport: string | null;
+  sample_count: number;
+  notes: string | null;
+  maturity: HiveLearningSummary | Record<string, unknown>;
+  top_buckets: Array<Record<string, unknown>>;
+  living_effect?: string | null;
+}
+
 export interface TicketCard {
   key: string;
   label: string;

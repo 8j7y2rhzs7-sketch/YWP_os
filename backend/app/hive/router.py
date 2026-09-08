@@ -7,6 +7,7 @@ from .service import (
     capture_hive_prediction,
     get_hive_signal,
     hive_learning_maturity,
+    list_hive_progress_reports,
     record_hive_action,
     resolve_hive_outcome,
 )
@@ -106,6 +107,22 @@ def maturity(
 ):
     """Live Hive optimum-accuracy calculation for the data meter."""
     return hive_learning_maturity(db=db, sport=sport)
+
+
+@router.get("/progress-reports")
+def progress_reports(
+    db: DB,
+    current_user: CurrentUser,
+    limit: int = 20,
+):
+    """Automatic Hive growth reports written after Sync Scores / settle."""
+    return {
+        "reports": list_hive_progress_reports(db=db, limit=limit),
+        "note": (
+            "Reports are created automatically when graded outcomes strengthen Hive. "
+            "They track living sample growth — not cosmetic status."
+        ),
+    }
 
 
 @router.get("/signal", response_model=HiveSignalOut)

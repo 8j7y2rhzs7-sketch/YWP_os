@@ -112,9 +112,18 @@ def settle_user_day(
         )
         or 0
     )
+    mapped = max(0, pending_before - pending_after)
+    if mapped > 0:
+        from app.hive.service import record_hive_progress_report
+
+        record_hive_progress_report(
+            db=db,
+            trigger="settle_day",
+            extra={"hive_outcomes_mapped": mapped, "settled_items": len(items)},
+        )
     return SettleDayResult(
         items=items,
-        hive_outcomes_mapped=max(0, pending_before - pending_after),
+        hive_outcomes_mapped=mapped,
     )
 
 def sync_hive_outcomes_for_graded(db: Session, user_id: str) -> int:
