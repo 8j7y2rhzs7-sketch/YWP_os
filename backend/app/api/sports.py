@@ -320,11 +320,11 @@ def market_board(
     slate_date: date = Query(alias="date"),
     include_props: bool = Query(default=True),
     overlay_model: bool = Query(
-        default=True,
+        default=False,
         description=(
             "When true, matching markets from the model slate replace market-implied "
-            "probabilities so Check can still clear PLAY/LEAN. Non-matching book markets "
-            "stay selectable and grade as SKIP / NO PLAY."
+            "probabilities so Check can still clear PLAY/LEAN. Default false so the "
+            "sportsbook menu returns quickly; non-matching book markets still grade."
         ),
     ),
 ) -> SlateResponse:
