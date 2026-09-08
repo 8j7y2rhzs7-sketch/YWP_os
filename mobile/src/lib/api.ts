@@ -100,13 +100,48 @@ export class ApiError extends Error {
 const DEFAULT_TIMEOUT_MS = 25_000;
 /** Slate + analyze pull Odds + research; Render cold starts often exceed 25s. */
 const HEAVY_TIMEOUT_MS = 90_000;
+/** Full NCAAF cards can be 250–400 candidates and need a longer analyze window. */
+const ANALYZE_TIMEOUT_MS = 180_000;
+
+function formatApiDetail(detail: unknown, status: number): string {
+  if (typeof detail === "string" && detail.trim()) return detail;
+  if (Array.isArray(detail) && detail.length) {
+    const parts = detail.map((item) => {
+      if (typeof item === "string") return item;
+      if (item && typeof item === "object") {
+        const row = item as { msg?: unknown; loc?: unknown; type?: unknown };
+        const where = Array.isArray(row.loc)
+          ? row.loc
+              .filter((part) => part !== "body")
+              .map(String)
+              .join(".")
+          : "";
+        const msg = typeof row.msg === "string" ? row.msg : "Invalid request";
+        return where ? `${where}: ${msg}` : msg;
+      }
+      return "Invalid request";
+    });
+    return parts.slice(0, 3).join(" · ");
+  }
+  if (
+    detail &&
+    typeof detail === "object" &&
+    "message" in detail &&
+    typeof (detail as { message: unknown }).message === "string"
+  ) {
+    return (detail as { message: string }).message;
+  }
+  return `Request failed with status ${status}`;
+}
 
 export function timeoutMsForPath(path: string, override?: number): number {
   if (typeof override === "number" && override > 0) return override;
   const route = path.split("?")[0] ?? path;
+  if (route.startsWith("/sports/analyze")) {
+    return ANALYZE_TIMEOUT_MS;
+  }
   if (
     route.startsWith("/sports/slate") ||
-    route.startsWith("/sports/analyze") ||
     route.startsWith("/sports/prefetch-odds")
   ) {
     return HEAVY_TIMEOUT_MS;
@@ -194,15 +229,7 @@ export async function rawRequest<T>(
       typeof detail.checkout_url === "string"
         ? detail.checkout_url
         : undefined;
-    const message =
-      typeof detail === "string"
-        ? detail
-        : typeof detail === "object" &&
-            detail !== null &&
-            "message" in detail &&
-            typeof detail.message === "string"
-          ? detail.message
-          : `Request failed with status ${response.status}`;
+    const message = formatApiDetail(detail, response.status);
     throw new ApiError(message, response.status, detail, checkoutUrl);
   }
   return body as T;

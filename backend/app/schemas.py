@@ -301,7 +301,8 @@ class SportsAnalyzeRequest(YWPModel):
     mode: Literal["pregame", "live"] = "pregame"
     user_risk_profile: RiskProfile = RiskProfile.balanced
     bankroll: Decimal | None = Field(default=None, ge=0)
-    candidates: list[CandidateInput] = Field(min_length=1, max_length=250)
+    # NCAAF Saturdays routinely exceed 250 priced sides (ML/spread/total × games).
+    candidates: list[CandidateInput] = Field(min_length=1, max_length=500)
 
     @model_validator(mode="after")
     def candidates_match_sport(self) -> SportsAnalyzeRequest:
