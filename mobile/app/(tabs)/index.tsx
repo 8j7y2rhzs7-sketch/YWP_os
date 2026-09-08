@@ -81,23 +81,21 @@ export default function CommandCenter() {
   return (
     <Screen refreshing={refreshing} onRefresh={() => void load(true)}>
       <BrandHeader />
+      {/* Vision art alone — no copy over the poster */}
       <View style={styles.engineHero}>
         <Image
-          source={brandAssets.decisionEngine}
+          source={brandAssets.decisionEngineEmblem}
           style={styles.engineArt}
-          resizeMode="cover"
+          resizeMode="contain"
           accessibilityLabel="YWP Decision Engine brand artwork"
         />
-        <View style={styles.engineScrim} />
-        <View style={styles.engineCopy}>
-          <Text style={styles.brandMark}>YWP OS</Text>
-          <Text style={type.eyebrow}>WELCOME BACK, {user?.name}</Text>
-          <Text style={styles.heroTitle}>Broadcast edge. Jersey energy.</Text>
-        </View>
       </View>
       <MetalPanel tone="gold" style={styles.hero}>
         <View style={styles.heroTop}>
           <View style={styles.heroCopy}>
+            <Text style={styles.brandMark}>{brand.product}</Text>
+            <Text style={type.eyebrow}>WELCOME BACK, {user?.name}</Text>
+            <Text style={styles.heroTitle}>Your winning process.</Text>
             <Text style={styles.heroText}>
               {pulse?.headline ??
                 "Run a slate, lock a ticket, grade a result. Quiet metal is the chassis — edge is the point."}
@@ -189,29 +187,20 @@ export default function CommandCenter() {
 
 const styles = StyleSheet.create({
   engineHero: {
-    height: 248,
-    borderRadius: 0,
+    height: 280,
+    borderRadius: 18,
     overflow: "hidden",
-    marginHorizontal: -spacing.lg,
-    marginBottom: spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: "rgba(240,193,74,0.4)",
-    backgroundColor: colors.backgroundRaised,
+    marginBottom: spacing.sm,
+    borderWidth: 1,
+    borderColor: "rgba(240,193,74,0.4)",
+    backgroundColor: colors.background,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: spacing.md,
   },
   engineArt: {
-    ...StyleSheet.absoluteFill,
-    width: "100%",
+    width: "92%",
     height: "100%",
-  },
-  engineScrim: {
-    ...StyleSheet.absoluteFill,
-    backgroundColor: "rgba(2,4,6,0.48)",
-  },
-  engineCopy: {
-    flex: 1,
-    justifyContent: "flex-end",
-    padding: spacing.xl,
-    gap: spacing.xs,
   },
   hero: { padding: spacing.xl },
   brandMark: {
@@ -219,17 +208,17 @@ const styles = StyleSheet.create({
     fontFamily: fonts.display,
     fontSize: 28,
     fontWeight: "800",
-    letterSpacing: 1.2,
+    letterSpacing: -0.3,
   },
   heroTop: { flexDirection: "row", alignItems: "flex-start", gap: spacing.md },
   heroCopy: { flex: 1, gap: spacing.xs },
   heroTitle: {
     color: colors.white,
     fontFamily: fonts.display,
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: "800",
-    letterSpacing: -0.5,
-    lineHeight: 32,
+    letterSpacing: -0.4,
+    lineHeight: 30,
   },
   heroText: { ...type.body, color: colors.silver },
   metrics: { flexDirection: "row", flexWrap: "wrap", gap: spacing.md },

@@ -68,7 +68,7 @@ export function BrandHeader({
           </Text>
         ) : !compact ? (
           <Text style={styles.sportChip}>
-            {brand.skin} · PROTOCOL {brand.protocolVersion}
+            {brand.tagline} · {brand.skin}
           </Text>
         ) : null}
       </View>

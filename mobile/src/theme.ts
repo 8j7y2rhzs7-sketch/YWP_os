@@ -124,6 +124,7 @@ export const brand = {
   primaryLine: "DISCIPLINE. DATA. EDGE.",
   secondaryLine: "WE DON'T GUESS, WE ANALYZE.",
   footer: "GRIND EVERYDAY. LONGTERM PAYDAY.",
+  tagline: "YOUR WINNING PROCESS",
   protocolVersion: "2026.09.03",
-  skin: "BROADCAST JERSEY",
+  skin: "DECISION ENGINE",
 } as const;
