@@ -298,7 +298,7 @@ export default function PickSheetScreen() {
         <>
           <SectionTitle
             title={`${games.length} Games · ${board.candidates.length} Markets`}
-            subtitle="Tap prices like a sportsbook. Model-backed markets can clear; book-only markets still show and grade."
+            subtitle="Tap prices like a sportsbook — hits, runs, RBIs, HRs, Ks, totals, and more. Model-backed markets can clear; book-only markets still show and grade."
           />
           {games.map((game) => (
             <MetalPanel key={game.eventId} style={styles.game}>

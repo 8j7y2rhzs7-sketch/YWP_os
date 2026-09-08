@@ -31,11 +31,16 @@ from app.services.ticket_gates import event_market_status
 logger = logging.getLogger(__name__)
 
 _PROP_MARKETS_BY_SPORT: dict[str, str] = {
-    "mlb": "pitcher_strikeouts,batter_hits,batter_total_bases,batter_home_runs,batter_rbis",
-    "nba": "player_points,player_rebounds,player_assists,player_threes",
-    "wnba": "player_points,player_rebounds,player_assists",
-    "nfl": "player_pass_yds,player_rush_yds,player_reception_yds,player_pass_tds",
-    "nhl": "player_points,player_shots_on_goal,player_goals",
+    # Full DK/Hard-Rock-style MLB prop board (credits scale with markets×events).
+    "mlb": (
+        "pitcher_strikeouts,pitcher_outs,pitcher_hits_allowed,pitcher_earned_runs,"
+        "batter_hits,batter_runs_scored,batter_rbis,batter_home_runs,batter_total_bases,"
+        "batter_hits_runs_rbis,batter_stolen_bases,batter_walks"
+    ),
+    "nba": "player_points,player_rebounds,player_assists,player_threes,player_blocks,player_steals",
+    "wnba": "player_points,player_rebounds,player_assists,player_threes,player_points_rebounds_assists",
+    "nfl": "player_pass_yds,player_rush_yds,player_reception_yds,player_pass_tds,player_receptions,player_anytime_td",
+    "nhl": "player_points,player_shots_on_goal,player_goals,player_assists",
 }
 
 _LEAGUE: dict[str, str] = {
@@ -351,25 +356,32 @@ def _flatten_prop_markets(
 
 def _prop_market_meta(market_key: str, *, is_over: bool) -> tuple[str, str, bool]:
     key = market_key.casefold()
-    is_k = "strikeout" in key
+    is_k = "strikeout" in key and "batter" not in key
     if is_k:
         return (
             "player_strikeouts_over" if is_over else "player_strikeouts_under",
             "strikeouts",
             True,
         )
-    if "hits" in key:
-        return ("player_hits_over" if is_over else "player_hits_under", "hits", False)
-    if "total_bases" in key or "bases" in key:
-        return (
-            "player_total_bases_over" if is_over else "player_total_bases_under",
-            "total bases",
-            False,
-        )
-    if "home_run" in key:
-        return ("player_hr_over" if is_over else "player_hr_under", "home runs", False)
-    if "rbi" in key:
-        return ("player_rbi_over" if is_over else "player_rbi_under", "RBIs", False)
+    labels = {
+        "batter_hits": ("player_hits", "hits"),
+        "batter_runs_scored": ("player_runs", "runs"),
+        "batter_rbis": ("player_rbi", "RBIs"),
+        "batter_home_runs": ("player_hr", "home runs"),
+        "batter_total_bases": ("player_total_bases", "total bases"),
+        "batter_hits_runs_rbis": ("player_hrr", "hits+runs+RBIs"),
+        "batter_stolen_bases": ("player_sb", "stolen bases"),
+        "batter_walks": ("player_walks", "walks"),
+        "batter_strikeouts": ("batter_strikeouts", "strikeouts"),
+        "pitcher_outs": ("pitcher_outs", "outs"),
+        "pitcher_hits_allowed": ("pitcher_hits_allowed", "hits allowed"),
+        "pitcher_earned_runs": ("pitcher_earned_runs", "earned runs"),
+        "pitcher_walks": ("pitcher_walks", "walks"),
+    }
+    for market, (prefix, label) in labels.items():
+        if key == market or key.startswith(market):
+            suffix = "over" if is_over else "under"
+            return (f"{prefix}_{suffix}"[:50], label, False)
     suffix = "over" if is_over else "under"
     safe = re.sub(r"[^a-z0-9]+", "_", key).strip("_") or "player_prop"
     return (f"{safe}_{suffix}"[:50], key.replace("_", " "), False)

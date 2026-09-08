@@ -546,13 +546,18 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
     db.commit()
     for record in records:
         db.refresh(record)
-        # Log every board-facing pick (PLAY/LEAN/WATCH) — not only placed tickets.
-        # Stay-away SKIP/REVIEW are intentionally excluded from Hive growth data.
-        if record.decision not in {"PLAY", "LEAN", "WATCH"}:
+        # Official board picks (PLAY/LEAN/WATCH) always feed Hive.
+        # Customer Pick Sheet sportsbook-menu legs also feed Hive even when SKIP —
+        # that is how "they picked something we didn't like and it won" becomes data
+        # without letting SKIP become an official card play.
+        snap = record.snapshot or {}
+        sheet_menu = "SPORTSBOOK_MENU" in (snap.get("reason_codes") or []) or snap.get(
+            "data_source"
+        ) == "THE_ODDS_API_BOARD"
+        if record.decision not in {"PLAY", "LEAN", "WATCH"} and not sheet_menu:
             continue
         # YWP recommendations are product-owned decision artifacts; Hive may use
         # anonymized prediction/outcome rows without a separate consent toggle.
-        snap = record.snapshot or {}
         model_probability = snap.get("model_probability")
         if model_probability is None and record.model_win_probability is not None:
             model_probability = record.model_win_probability
@@ -564,6 +569,8 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             "weather_edge": bool(snap.get("weather_verified")),
             "market_value": bool(snap.get("market_movement_verified")),
             "data_complete": float(record.data_quality) >= 0.85,
+            "customer_sheet_selection": sheet_menu,
+            "official_play": record.decision in {"PLAY", "LEAN"},
         }
         try:
             capture_hive_prediction(

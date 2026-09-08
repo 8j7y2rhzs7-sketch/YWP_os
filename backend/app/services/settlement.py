@@ -610,15 +610,31 @@ def _final_box(feed: dict[str, Any]) -> dict[str, Any] | None:
                     "id": pid,
                     "name": person.get("fullName") or "",
                     "strikeouts": int(pitching.get("strikeOuts") or 0),
+                    "outs": int(pitching.get("outs") or 0),
+                    "hits_allowed": int(pitching.get("hits") or 0),
+                    "earned_runs": int(pitching.get("earnedRuns") or 0),
+                    "walks": int(pitching.get("baseOnBalls") or 0),
                     "innings_pitched": pitching.get("inningsPitched"),
                     "side": side,
                 }
             batting = stats.get("batting") or {}
             if batting:
+                hits = int(batting.get("hits") or 0)
+                runs = int(batting.get("runs") or 0)
+                rbi = int(batting.get("rbi") or 0)
+                hr = int(batting.get("homeRuns") or 0)
+                tb = int(batting.get("totalBases") or 0)
                 batters[pid] = {
                     "id": pid,
                     "name": person.get("fullName") or "",
-                    "hits": int(batting.get("hits") or 0),
+                    "hits": hits,
+                    "runs": runs,
+                    "rbi": rbi,
+                    "home_runs": hr,
+                    "total_bases": tb,
+                    "hits_runs_rbis": hits + runs + rbi,
+                    "stolen_bases": int(batting.get("stolenBases") or 0),
+                    "walks": int(batting.get("baseOnBalls") or 0),
                     "at_bats": int(batting.get("atBats") or 0),
                     "side": side,
                 }
@@ -709,7 +725,7 @@ def _derive_outcome(
             "detail": f"{team} {team_runs} with line {line:+} vs {opp_runs}.",
         }
 
-    if "strikeout" in market or ("pitcher" in market and "hits" not in market):
+    if "strikeout" in market and "batter" not in market:
         if line is None:
             return None
         pitcher = _match_pitcher(recommendation, box)
@@ -735,18 +751,29 @@ def _derive_outcome(
             "detail": f"{pitcher['name']} struck out {actual} vs line {line} ({direction}).",
         }
 
-    if "hits" in market:
+    if "pitcher" in market:
         if line is None:
             return None
-        batter = _match_batter(recommendation, box)
-        if batter is None:
+        pitcher = _match_pitcher(recommendation, box)
+        if pitcher is None:
             return {
                 "outcome": "VOID",
                 "actual_value": None,
                 "final_score": final_score,
-                "detail": "Batter hits total not found in final boxscore.",
+                "detail": "Pitcher prop total not found in final boxscore.",
             }
-        actual = Decimal(int(batter["hits"]))
+        if "outs" in market:
+            actual = Decimal(int(pitcher.get("outs") or 0))
+            label = "outs"
+        elif "earned" in market:
+            actual = Decimal(int(pitcher.get("earned_runs") or 0))
+            label = "ER"
+        elif "walks" in market:
+            actual = Decimal(int(pitcher.get("walks") or 0))
+            label = "BB"
+        else:
+            actual = Decimal(int(pitcher.get("hits_allowed") or 0))
+            label = "HA"
         direction = "under" if "under" in selection_l else "over"
         if actual == line:
             outcome = "PUSH"
@@ -757,11 +784,65 @@ def _derive_outcome(
         return {
             "outcome": outcome,
             "actual_value": actual,
-            "final_score": f"{final_score} • {batter['name']} {actual} H",
-            "detail": f"{batter['name']} had {actual} hits vs line {line} ({direction}).",
+            "final_score": f"{final_score} • {pitcher['name']} {actual} {label}",
+            "detail": f"{pitcher['name']} {label} {actual} vs line {line} ({direction}).",
+        }
+
+    if (
+        "hits" in market
+        or "rbi" in market
+        or "runs" in market
+        or "hr" in market
+        or "bases" in market
+        or "hrr" in market
+        or "stolen" in market
+        or "walks" in market
+    ):
+        if line is None:
+            return None
+        batter = _match_batter(recommendation, box)
+        if batter is None:
+            return {
+                "outcome": "VOID",
+                "actual_value": None,
+                "final_score": final_score,
+                "detail": "Batter prop total not found in final boxscore.",
+            }
+        stat_key, label = _batter_stat_for_market(market, selection_l)
+        actual = Decimal(int(batter.get(stat_key) or 0))
+        direction = "under" if "under" in selection_l else "over"
+        if actual == line:
+            outcome = "PUSH"
+        elif direction == "over":
+            outcome = "WIN" if actual > line else "LOSS"
+        else:
+            outcome = "WIN" if actual < line else "LOSS"
+        return {
+            "outcome": outcome,
+            "actual_value": actual,
+            "final_score": f"{final_score} • {batter['name']} {actual} {label}",
+            "detail": f"{batter['name']} had {actual} {label} vs line {line} ({direction}).",
         }
 
     return None
+
+
+def _batter_stat_for_market(market: str, selection_l: str) -> tuple[str, str]:
+    if "hrr" in market or "hits_runs_rbis" in market or "hits+runs" in selection_l:
+        return "hits_runs_rbis", "H+R+RBI"
+    if "total_bases" in market or "total bases" in selection_l:
+        return "total_bases", "TB"
+    if "home_run" in market or "hr" in market or "home runs" in selection_l:
+        return "home_runs", "HR"
+    if "rbi" in market:
+        return "rbi", "RBI"
+    if "stolen" in market or "sb" in market:
+        return "stolen_bases", "SB"
+    if "walks" in market:
+        return "walks", "BB"
+    if "runs" in market and "hits" not in market:
+        return "runs", "R"
+    return "hits", "H"
 
 
 def _selected_team(
