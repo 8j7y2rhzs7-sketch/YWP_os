@@ -13,12 +13,14 @@ interface MetalPanelProps {
   children: ReactNode;
   style?: StyleProp<ViewStyle>;
   tone?: "default" | "success" | "danger" | "gold";
+  accent?: string;
 }
 
 export function MetalPanel({
   children,
   style,
   tone = "default",
+  accent,
 }: MetalPanelProps) {
   const palette =
     tone === "success"
@@ -28,6 +30,14 @@ export function MetalPanel({
         : tone === "gold"
           ? gradients.panelGold
           : gradients.panel;
+  const edgeColor =
+    tone === "success"
+      ? colors.success
+      : tone === "danger"
+        ? colors.danger
+        : tone === "gold"
+          ? colors.gold
+          : accent ?? colors.goldMute;
   return (
     <LinearGradient
       colors={palette}
@@ -41,8 +51,9 @@ export function MetalPanel({
         style,
       ]}
     >
-      <View style={styles.edge} />
+      <View style={[styles.edge, { backgroundColor: edgeColor }]} />
       <View style={styles.highlight} />
+      <View style={styles.glassSheen} />
       {children}
     </LinearGradient>
   );
@@ -52,7 +63,7 @@ const styles = StyleSheet.create({
   panel: {
     borderRadius: radius.lg,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.08)",
+    borderColor: "rgba(255,255,255,0.1)",
     padding: spacing.lg,
     gap: spacing.md,
     overflow: "hidden",
@@ -61,21 +72,29 @@ const styles = StyleSheet.create({
   edge: {
     position: "absolute",
     left: 0,
-    top: 14,
-    bottom: 14,
-    width: 2,
+    top: 12,
+    bottom: 12,
+    width: 3,
     borderRadius: 2,
-    backgroundColor: colors.goldMute,
+    opacity: 0.9,
   },
   highlight: {
     position: "absolute",
     top: 0,
-    left: 22,
-    right: 22,
+    left: 18,
+    right: 18,
     height: StyleSheet.hairlineWidth,
-    backgroundColor: "rgba(255,255,255,0.22)",
+    backgroundColor: "rgba(255,255,255,0.28)",
   },
-  success: { borderColor: "rgba(63,219,150,0.45)" },
-  danger: { borderColor: "rgba(255,101,119,0.45)" },
-  gold: { borderColor: "rgba(196,152,42,0.55)" },
+  glassSheen: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 42,
+    backgroundColor: colors.glass,
+  },
+  success: { borderColor: "rgba(46,229,154,0.45)" },
+  danger: { borderColor: "rgba(255,77,106,0.45)" },
+  gold: { borderColor: "rgba(196,152,42,0.6)" },
 });

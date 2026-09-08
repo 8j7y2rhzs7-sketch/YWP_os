@@ -1,5 +1,7 @@
+import { useEffect, useRef } from "react";
 import {
   ActivityIndicator,
+  Animated,
   Pressable,
   StyleSheet,
   Text,
@@ -27,6 +29,26 @@ export function YwpButton({
   style,
 }: YwpButtonProps) {
   const inactive = disabled || loading;
+  const sweep = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (variant !== "gold" || inactive) return;
+    const loop = Animated.loop(
+      Animated.timing(sweep, {
+        toValue: 1,
+        duration: 2400,
+        useNativeDriver: true,
+      }),
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [inactive, sweep, variant]);
+
+  const sweepX = sweep.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-140, 280],
+  });
+
   return (
     <Pressable
       onPress={onPress}
@@ -42,6 +64,17 @@ export function YwpButton({
     >
       {variant === "gold" ? (
         <LinearGradient colors={gradients.gold} style={styles.inner}>
+          <Animated.View
+            pointerEvents="none"
+            style={[styles.energy, { transform: [{ translateX: sweepX }] }]}
+          >
+            <LinearGradient
+              colors={["transparent", "rgba(255,255,255,0.55)", "transparent"]}
+              start={{ x: 0, y: 0.5 }}
+              end={{ x: 1, y: 0.5 }}
+              style={StyleSheet.absoluteFill}
+            />
+          </Animated.View>
           {loading ? (
             <ActivityIndicator color={colors.background} />
           ) : (
@@ -78,11 +111,18 @@ export function YwpButton({
 const styles = StyleSheet.create({
   pressable: { borderRadius: radius.md, overflow: "hidden" },
   inner: {
-    minHeight: 50,
+    minHeight: 52,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
     alignItems: "center",
     justifyContent: "center",
+    overflow: "hidden",
+  },
+  energy: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    width: 70,
   },
   outline: { borderWidth: 1, borderColor: colors.borderGold },
   danger: { borderColor: colors.danger },
@@ -91,7 +131,7 @@ const styles = StyleSheet.create({
     color: colors.background,
     fontFamily: fonts.displaySemi,
     fontWeight: "700",
-    letterSpacing: 1.0,
+    letterSpacing: 1.1,
     fontSize: 14,
   },
   outlineText: {

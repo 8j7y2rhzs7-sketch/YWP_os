@@ -22,13 +22,14 @@ export function BrandHeader({
   const enter = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    enter.setValue(0);
     Animated.spring(enter, {
       toValue: 1,
       friction: 8,
-      tension: 60,
+      tension: 58,
       useNativeDriver: true,
     }).start();
-  }, [enter]);
+  }, [enter, sport]);
 
   return (
     <Animated.View
@@ -41,13 +42,14 @@ export function BrandHeader({
             {
               translateY: enter.interpolate({
                 inputRange: [0, 1],
-                outputRange: [8, 0],
+                outputRange: [10, 0],
               }),
             },
           ],
         },
       ]}
     >
+      {sport ? <View style={[styles.sportStripe, { backgroundColor: look.accent }]} /> : null}
       <View style={styles.crestGlow}>
         <Image
           source={brandAssets.crest}
@@ -62,10 +64,12 @@ export function BrandHeader({
         {sport ? (
           <Text style={[styles.sportChip, { color: look.accent }]}>
             {look.label}
-            {!compact ? `  ·  PROTOCOL ${brand.protocolVersion}` : ""}
+            {!compact ? `  ·  ${brand.skin}` : ""}
           </Text>
         ) : !compact ? (
-          <Text style={styles.sportChip}>PROTOCOL {brand.protocolVersion}</Text>
+          <Text style={styles.sportChip}>
+            {brand.skin} · PROTOCOL {brand.protocolVersion}
+          </Text>
         ) : null}
       </View>
     </Animated.View>
@@ -79,26 +83,35 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     paddingTop: spacing.sm,
     paddingBottom: spacing.md,
-    borderBottomColor: "rgba(196,152,42,0.35)",
+    borderBottomColor: "rgba(196,152,42,0.4)",
     borderBottomWidth: StyleSheet.hairlineWidth,
+    overflow: "hidden",
   },
   wrapCompact: { paddingTop: 0, paddingBottom: spacing.sm },
+  sportStripe: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: 3,
+    opacity: 0.95,
+  },
   crestGlow: {
     borderRadius: 40,
     padding: 2,
-    backgroundColor: "rgba(240,193,74,0.12)",
+    backgroundColor: "rgba(240,193,74,0.14)",
     borderWidth: 1,
-    borderColor: "rgba(240,193,74,0.28)",
+    borderColor: "rgba(240,193,74,0.34)",
   },
-  logo: { width: 72, height: 72, borderRadius: 36 },
-  logoCompact: { width: 46, height: 46, borderRadius: 23 },
+  logo: { width: 76, height: 76, borderRadius: 38 },
+  logoCompact: { width: 48, height: 48, borderRadius: 24 },
   copy: { flex: 1, gap: 3 },
   title: {
     color: colors.white,
     fontFamily: fonts.display,
-    fontSize: 34,
+    fontSize: 36,
     fontWeight: "800",
-    letterSpacing: -0.4,
+    letterSpacing: -0.5,
   },
   titleCompact: { fontSize: 24 },
   sportChip: {
@@ -106,7 +119,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bodyBold,
     fontSize: 11,
     fontWeight: "700",
-    letterSpacing: 1.6,
+    letterSpacing: 1.7,
     textTransform: "uppercase",
   },
 });

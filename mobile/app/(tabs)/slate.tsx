@@ -14,6 +14,7 @@ import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAppData } from "@/context/AppDataContext";
 import { useAuth } from "@/context/AuthContext";
+import { sportLook } from "@/sportVisuals";
 import { colors, radius, spacing, type } from "@/theme";
 import type {
   AnalyzeResponse,
@@ -186,21 +187,27 @@ export default function SlateScreen() {
           {sports.map((item) => {
             const catalog = catalogByKey[item.key];
             const outOfSeason = catalog?.in_season === false;
+            const look = sportLook(item.key);
+            const active = sport === item.key;
             return (
               <Pressable
                 key={item.key}
                 onPress={() => setSport(item.key)}
                 style={[
                   styles.sport,
-                  sport === item.key && styles.sportActive,
+                  active && {
+                    borderColor: look.accent,
+                    backgroundColor: look.accentSoft,
+                  },
                   outOfSeason && styles.sportOutOfSeason,
                 ]}
               >
+                <View style={[styles.sportStripe, { backgroundColor: look.accent }]} />
                 <Text style={styles.sportIcon}>{item.icon}</Text>
                 <Text
                   style={[
                     styles.sportLabel,
-                    sport === item.key && styles.sportLabelActive,
+                    active && { color: look.stripe },
                     outOfSeason && styles.sportLabelOutOfSeason,
                   ]}
                 >
@@ -265,9 +272,9 @@ export default function SlateScreen() {
             subtitle="Raw list appears before YWP scoring, eliminations, and card building."
           />
           {slate.candidates.map((candidate, index) => (
-            <MetalPanel key={candidate.candidate_id} style={styles.candidate}>
+            <MetalPanel key={candidate.candidate_id} style={styles.candidate} accent={sportLook(sport).accent}>
               <View style={styles.candidateTop}>
-                <Text style={styles.number}>{index + 1}</Text>
+                <Text style={[styles.number, { backgroundColor: sportLook(sport).accent }]}>{index + 1}</Text>
                 <PlayerPortrait
                   imageUrl={String(candidate.image_url ?? "") || null}
                   teamImageUrl={String(candidate.team_image_url ?? "") || null}
@@ -335,12 +342,19 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderRadius: radius.md,
     backgroundColor: colors.backgroundRaised,
+    overflow: "hidden",
   },
-  sportActive: { borderColor: colors.gold, backgroundColor: colors.surfaceGold },
+  sportStripe: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: 3,
+    opacity: 0.85,
+  },
   sportOutOfSeason: { opacity: 0.45 },
   sportIcon: { fontSize: 26 },
   sportLabel: { color: colors.muted, fontWeight: "900", fontSize: 11 },
-  sportLabelActive: { color: colors.gold },
   sportLabelOutOfSeason: { color: colors.muted },
   oosBadge: {
     color: colors.danger,

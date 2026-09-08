@@ -34,10 +34,14 @@ const styles = StyleSheet.create({
     minHeight: 18,
   },
   dot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
+    width: 7,
+    height: 7,
+    borderRadius: 3.5,
     backgroundColor: colors.goldBright,
+    shadowColor: colors.gold,
+    shadowOpacity: 0.55,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 0 },
   },
   copy: { flex: 1, gap: 3 },
 });

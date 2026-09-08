@@ -22,21 +22,21 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.gold,
+        tabBarActiveTintColor: colors.goldBright,
         tabBarInactiveTintColor: colors.dim,
         tabBarStyle: {
-          backgroundColor: "rgba(10,13,18,0.96)",
-          borderTopColor: "rgba(196,152,42,0.35)",
+          backgroundColor: "rgba(2,4,6,0.97)",
+          borderTopColor: "rgba(240,193,74,0.42)",
           borderTopWidth: StyleSheet.hairlineWidth,
-          height: 74,
+          height: 76,
           paddingTop: 8,
-          paddingBottom: 10,
+          paddingBottom: 11,
         },
         tabBarLabelStyle: {
           fontSize: 10,
           fontFamily: fonts.bodyBold,
           fontWeight: "700",
-          letterSpacing: 0.4,
+          letterSpacing: 0.55,
         },
       }}
     >

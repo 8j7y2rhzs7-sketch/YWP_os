@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
+import { useEffect, useRef } from "react";
+import { Animated, StyleSheet, Text, View } from "react-native";
 
 import { colors, fonts, radius, spacing } from "@/theme";
 
@@ -15,11 +16,39 @@ export function StatusPill({ value }: { value: string }) {
       : warning.has(normalized)
         ? "warning"
         : "neutral";
+  const stamp = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    stamp.setValue(0);
+    Animated.spring(stamp, {
+      toValue: 1,
+      friction: 6,
+      tension: 120,
+      useNativeDriver: true,
+    }).start();
+  }, [normalized, stamp]);
+
   return (
-    <View style={[styles.pill, styles[tone]]}>
+    <Animated.View
+      style={[
+        styles.pill,
+        styles[tone],
+        {
+          opacity: stamp,
+          transform: [
+            {
+              scale: stamp.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0.86, 1],
+              }),
+            },
+          ],
+        },
+      ]}
+    >
       <View style={[styles.dot, styles[`${tone}Dot`]]} />
       <Text style={[styles.text, styles[`${tone}Text`]]}>{normalized}</Text>
-    </View>
+    </Animated.View>
   );
 }
 
@@ -39,11 +68,11 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bodyBold,
     fontSize: 10,
     fontWeight: "700",
-    letterSpacing: 1.0,
+    letterSpacing: 1.1,
   },
-  success: { backgroundColor: colors.successDeep, borderColor: "rgba(63,219,150,0.55)" },
-  warning: { backgroundColor: colors.warningDeep, borderColor: "rgba(255,184,62,0.55)" },
-  danger: { backgroundColor: colors.dangerDeep, borderColor: "rgba(255,101,119,0.55)" },
+  success: { backgroundColor: colors.successDeep, borderColor: "rgba(46,229,154,0.65)" },
+  warning: { backgroundColor: colors.warningDeep, borderColor: "rgba(255,176,32,0.65)" },
+  danger: { backgroundColor: colors.dangerDeep, borderColor: "rgba(255,77,106,0.65)" },
   neutral: { backgroundColor: colors.surfaceRaised, borderColor: colors.border },
   successDot: { backgroundColor: colors.success },
   warningDot: { backgroundColor: colors.warning },

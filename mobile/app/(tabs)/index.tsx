@@ -92,7 +92,7 @@ export default function CommandCenter() {
         <View style={styles.engineCopy}>
           <Text style={styles.brandMark}>YWP OS</Text>
           <Text style={type.eyebrow}>WELCOME BACK, {user?.name}</Text>
-          <Text style={styles.heroTitle}>It learns every time you use it.</Text>
+          <Text style={styles.heroTitle}>Broadcast edge. Jersey energy.</Text>
         </View>
       </View>
       <MetalPanel tone="gold" style={styles.hero}>
@@ -189,12 +189,13 @@ export default function CommandCenter() {
 
 const styles = StyleSheet.create({
   engineHero: {
-    height: 220,
-    borderRadius: 18,
+    height: 248,
+    borderRadius: 0,
     overflow: "hidden",
+    marginHorizontal: -spacing.lg,
     marginBottom: spacing.md,
-    borderWidth: 1,
-    borderColor: "rgba(196,152,42,0.35)",
+    borderBottomWidth: 1,
+    borderBottomColor: "rgba(240,193,74,0.4)",
     backgroundColor: colors.backgroundRaised,
   },
   engineArt: {
@@ -204,31 +205,31 @@ const styles = StyleSheet.create({
   },
   engineScrim: {
     ...StyleSheet.absoluteFill,
-    backgroundColor: "rgba(5,5,5,0.55)",
+    backgroundColor: "rgba(2,4,6,0.48)",
   },
   engineCopy: {
     flex: 1,
     justifyContent: "flex-end",
-    padding: spacing.lg,
+    padding: spacing.xl,
     gap: spacing.xs,
   },
   hero: { padding: spacing.xl },
   brandMark: {
     color: colors.goldBright,
     fontFamily: fonts.display,
-    fontSize: 13,
+    fontSize: 28,
     fontWeight: "800",
-    letterSpacing: 3,
+    letterSpacing: 1.2,
   },
   heroTop: { flexDirection: "row", alignItems: "flex-start", gap: spacing.md },
   heroCopy: { flex: 1, gap: spacing.xs },
   heroTitle: {
     color: colors.white,
     fontFamily: fonts.display,
-    fontSize: 34,
+    fontSize: 28,
     fontWeight: "800",
-    letterSpacing: -0.6,
-    lineHeight: 38,
+    letterSpacing: -0.5,
+    lineHeight: 32,
   },
   heroText: { ...type.body, color: colors.silver },
   metrics: { flexDirection: "row", flexWrap: "wrap", gap: spacing.md },

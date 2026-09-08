@@ -35,12 +35,13 @@ export function Screen({
   const enter = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    enter.setValue(0);
     Animated.timing(enter, {
       toValue: 1,
-      duration: 420,
+      duration: 480,
       useNativeDriver: true,
     }).start();
-  }, [enter]);
+  }, [enter, sport]);
 
   const content = (
     <Animated.View
@@ -53,7 +54,7 @@ export function Screen({
             {
               translateY: enter.interpolate({
                 inputRange: [0, 1],
-                outputRange: [10, 0],
+                outputRange: [14, 0],
               }),
             },
           ],
@@ -66,7 +67,10 @@ export function Screen({
 
   return (
     <View style={styles.page}>
-      <AmbientField sportAccent={sport ? look.glow : colors.gold} />
+      <AmbientField
+        sportAccent={sport ? look.glow : colors.gold}
+        pageColors={sport ? look.page : undefined}
+      />
       <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
         {scroll ? (
           <ScrollView
