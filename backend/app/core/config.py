@@ -55,6 +55,16 @@ class Settings(BaseSettings):
         le=20,
         validation_alias="YWP_MLB_MAX_PROP_EVENTS",
     )
+    mlb_board_max_prop_events: int = Field(
+        default=8,
+        ge=0,
+        le=30,
+        validation_alias="YWP_MLB_BOARD_MAX_PROP_EVENTS",
+        description=(
+            "Pick Sheet sportsbook menu: max events to price player props for. "
+            "Higher than model-slate gating because Sheet is a full selectable board."
+        ),
+    )
 
     whop_api_key: str | None = Field(default=None, validation_alias="WHOP_API_KEY")
     whop_webhook_secret: str | None = Field(default=None, validation_alias="WHOP_WEBHOOK_SECRET")

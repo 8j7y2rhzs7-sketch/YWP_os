@@ -46,6 +46,8 @@ services:
         value: "true"
       - key: YWP_MLB_MAX_PROP_EVENTS
         value: "6"
+      - key: YWP_MLB_BOARD_MAX_PROP_EVENTS
+        value: "8"
       - key: WHOP_API_KEY
         sync: false
       - key: NEXT_PUBLIC_WHOP_APP_ID

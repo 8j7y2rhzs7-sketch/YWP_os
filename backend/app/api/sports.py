@@ -58,6 +58,7 @@ from app.services.providers import demo_slate
 from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate, upcoming_odds_dates
 from app.services.live_mlb_slate import live_mlb_slate, props_slate_notice
 from app.services.live_wnba_slate import live_wnba_slate
+from app.services.market_board import build_market_board
 from app.services.odds_provider import (
     app_sport_in_season,
     build_app_sports_catalog,
@@ -308,6 +309,78 @@ def slate(
             "Synthetic demonstration data only. It is intentionally not a live slate and must "
             "not be used for wagering."
         ),
+        candidates=candidates,
+    )
+
+
+@router.get("/market-board", response_model=SlateResponse)
+def market_board(
+    _: SubscribedUser,
+    sport_name: str = Query(alias="sport", min_length=2, max_length=24),
+    slate_date: date = Query(alias="date"),
+    include_props: bool = Query(default=True),
+    overlay_model: bool = Query(
+        default=True,
+        description=(
+            "When true, matching markets from the model slate replace market-implied "
+            "probabilities so Check can still clear PLAY/LEAN. Non-matching book markets "
+            "stay selectable and grade as SKIP / NO PLAY."
+        ),
+    ),
+) -> SlateResponse:
+    """Full sportsbook-style menu for Pick Sheet (not the model-filtered Run slate)."""
+    sport_lower = sport_name.lower()
+    if sport_lower != "mlb" and app_sport_in_season(sport_lower) is False:
+        return _slate_response(
+            sport=sport_lower,
+            slate_date=slate_date,
+            mode="live",
+            notice=(
+                f"{sport_lower.upper()} is out of season — sportsbook menu skipped to save credits."
+            ),
+            candidates=[],
+        )
+
+    if settings.demo_mode:
+        candidates = demo_slate(sport_name, slate_date)
+        return _slate_response(
+            sport=sport_lower,
+            slate_date=slate_date,
+            mode="demo",
+            notice=(
+                "Demo sportsbook menu (synthetic). Live Pick Sheet uses The Odds API full board."
+            ),
+            candidates=candidates,
+        )
+
+    try:
+        candidates, notice = build_market_board(
+            sport_lower,
+            slate_date,
+            include_props=include_props,
+            overlay_model=overlay_model,
+        )
+    except Exception:
+        logger.exception("Market board failed for %s", sport_lower)
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Sportsbook menu failed to load. Try again or use Run for the model slate.",
+        ) from None
+
+    if not candidates:
+        return _slate_response(
+            sport=sport_lower,
+            slate_date=slate_date,
+            mode="live",
+            notice=notice or "No priced markets on the sportsbook menu for this date.",
+            candidates=[],
+        )
+
+    return _slate_response(
+        sport=sport_lower,
+        slate_date=slate_date,
+        mode="live",
+        notice=notice,
         candidates=candidates,
     )
 
