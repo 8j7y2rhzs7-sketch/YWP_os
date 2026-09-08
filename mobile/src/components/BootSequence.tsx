@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: spacing.sm,
   },
-  crest: { width: 88, height: 88, borderRadius: 44 },
+  crest: { width: 96, height: 96, borderRadius: 16 },
   product: {
     color: colors.goldBright,
     fontFamily: fonts.display,

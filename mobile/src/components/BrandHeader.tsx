@@ -99,12 +99,12 @@ const styles = StyleSheet.create({
   crestGlow: {
     borderRadius: 40,
     padding: 2,
-    backgroundColor: "rgba(240,193,74,0.14)",
+    backgroundColor: "rgba(26,168,240,0.14)",
     borderWidth: 1,
-    borderColor: "rgba(240,193,74,0.34)",
+    borderColor: "rgba(26,168,240,0.4)",
   },
-  logo: { width: 76, height: 76, borderRadius: 38 },
-  logoCompact: { width: 48, height: 48, borderRadius: 24 },
+  logo: { width: 76, height: 76, borderRadius: 18 },
+  logoCompact: { width: 48, height: 48, borderRadius: 12 },
   copy: { flex: 1, gap: 3 },
   title: {
     color: colors.white,

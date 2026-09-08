@@ -8,24 +8,34 @@ export const fonts = {
   bodyBold: "DMSans_700Bold",
 } as const;
 
-/** Broadcast Jersey OS — stadium night base, gold brand, jersey decision tones. */
+/**
+ * Decision Engine identity:
+ * black chassis + metallic gold + signature circuit blue from the logo brain.
+ */
 export const colors = {
-  background: "#020406",
-  backgroundRaised: "#070B10",
-  surface: "#0C1219",
-  surfaceRaised: "#141C26",
+  background: "#02050A",
+  backgroundRaised: "#071018",
+  surface: "#0B1520",
+  surfaceRaised: "#122030",
   surfaceGold: "#2A1F08",
+  surfaceBlue: "#061828",
   gold: "#F0C14A",
   goldBright: "#FFE7A0",
   goldDark: "#8A6412",
   goldMute: "rgba(240,193,74,0.16)",
+  /** Signature YWP circuit blue (logo LED / cybernetic half) */
+  circuitBlue: "#1AA8F0",
+  circuitBlueBright: "#48C4FF",
+  circuitBlueDeep: "#0048B0",
+  circuitBlueMute: "rgba(26,168,240,0.22)",
   silver: "#D0D6DE",
   white: "#F7F5F0",
   text: "#F1EEE6",
   muted: "#9AA3B0",
   dim: "#6A7484",
-  border: "#243040",
+  border: "#1E3348",
   borderGold: "#C4982A",
+  borderBlue: "rgba(26,168,240,0.45)",
   /** PLAY / win — field green */
   success: "#2EE59A",
   successDeep: "#06281C",
@@ -35,7 +45,7 @@ export const colors = {
   /** PASS / fail — signal red */
   danger: "#FF4D6A",
   dangerDeep: "#3A0D16",
-  info: "#4DB8FF",
+  info: "#1AA8F0",
   purple: "#A987FF",
   transparent: "transparent",
   ink: "#05070A",
@@ -45,15 +55,17 @@ export const colors = {
 } as const;
 
 export const gradients = {
-  page: ["#041510", "#05080C", "#120E06"] as const,
-  pageDeep: ["#010304", "#061018", "#0C1408"] as const,
-  panel: ["#152028", "#0E141C", "#090D12"] as const,
+  page: ["#041018", "#05080C", "#120E06"] as const,
+  /** Left circuit blue → night → gold gear warmth (logo split) */
+  pageDeep: ["#031526", "#05080C", "#161008"] as const,
+  panel: ["#122636", "#0E1822", "#090D12"] as const,
   panelGold: ["#3C2C0A", "#1A160C", "#0A0E12"] as const,
+  panelBlue: ["#0A2A44", "#081420", "#090D12"] as const,
   gold: ["#FFE58D", "#E2AD26", "#8B5D08"] as const,
   success: ["#0A3D2C", "#071812"] as const,
   danger: ["#3F121C", "#14080C"] as const,
-  ambient: ["rgba(240,193,74,0.22)", "rgba(240,193,74,0.0)"] as const,
-  scan: ["rgba(255,255,255,0)", "rgba(240,193,74,0.35)", "rgba(255,255,255,0)"] as const,
+  ambient: ["rgba(240,193,74,0.2)", "rgba(26,168,240,0.0)"] as const,
+  scan: ["rgba(26,168,240,0)", "rgba(26,168,240,0.4)", "rgba(240,193,74,0.35)", "rgba(240,193,74,0)"] as const,
 } as const;
 
 export const spacing = {

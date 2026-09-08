@@ -4,7 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 
 import { colors, gradients } from "@/theme";
 
-/** Stadium-night atmosphere with a slow broadcast scan beam. */
+/** Stadium night: circuit-blue left + gold right — matches the Decision Engine logo split. */
 export function AmbientField({
   sportAccent,
   pageColors,
@@ -47,11 +47,15 @@ export function AmbientField({
 
   const scale = pulse.interpolate({
     inputRange: [0, 1],
-    outputRange: [1, 1.1],
+    outputRange: [1, 1.12],
   });
-  const opacity = pulse.interpolate({
+  const blueOpacity = pulse.interpolate({
     inputRange: [0, 1],
-    outputRange: [0.28, 0.5],
+    outputRange: [0.34, 0.62],
+  });
+  const goldOpacity = pulse.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.22, 0.42],
   });
   const scanY = scan.interpolate({
     inputRange: [0, 1],
@@ -64,23 +68,39 @@ export function AmbientField({
         colors={pageColors ?? gradients.pageDeep}
         style={StyleSheet.absoluteFill}
       />
+      {/* Circuit-blue orb — logo cybernetic half */}
       <Animated.View
         style={[
-          styles.orbA,
+          styles.orbBlue,
           {
-            backgroundColor: sportAccent ?? colors.gold,
-            opacity,
+            opacity: blueOpacity,
             transform: [{ scale }],
           },
         ]}
       />
-      <View style={[styles.orbB, { backgroundColor: sportAccent ?? colors.gold }]} />
+      {/* Gold orb — logo gear half / sport override */}
+      <Animated.View
+        style={[
+          styles.orbGold,
+          {
+            backgroundColor: sportAccent ?? colors.gold,
+            opacity: goldOpacity,
+            transform: [{ scale }],
+          },
+        ]}
+      />
+      <View style={styles.blueWash} />
       <View style={[styles.fieldWash, { backgroundColor: sportAccent ?? colors.gold }]} />
       <Animated.View style={[styles.scanWrap, { transform: [{ translateY: scanY }] }]}>
-        <LinearGradient colors={gradients.scan} start={{ x: 0, y: 0.5 }} end={{ x: 1, y: 0.5 }} style={styles.scan} />
+        <LinearGradient
+          colors={gradients.scan}
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 1, y: 0.5 }}
+          style={styles.scan}
+        />
       </Animated.View>
       <LinearGradient
-        colors={["transparent", "rgba(2,4,6,0.45)", "rgba(2,4,6,0.94)"]}
+        colors={["transparent", "rgba(2,5,10,0.42)", "rgba(2,5,10,0.94)"]}
         style={styles.vignette}
       />
       <View style={styles.grain} />
@@ -89,22 +109,31 @@ export function AmbientField({
 }
 
 const styles = StyleSheet.create({
-  orbA: {
+  orbBlue: {
     position: "absolute",
-    top: -100,
-    right: -70,
-    width: 300,
-    height: 300,
-    borderRadius: 150,
+    top: -60,
+    left: -90,
+    width: 320,
+    height: 320,
+    borderRadius: 160,
+    backgroundColor: colors.circuitBlue,
   },
-  orbB: {
+  orbGold: {
     position: "absolute",
-    bottom: 100,
-    left: -110,
-    width: 260,
-    height: 260,
-    borderRadius: 130,
-    opacity: 0.14,
+    top: -80,
+    right: -70,
+    width: 280,
+    height: 280,
+    borderRadius: 140,
+  },
+  blueWash: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: "48%",
+    backgroundColor: colors.circuitBlue,
+    opacity: 0.07,
   },
   fieldWash: {
     position: "absolute",
@@ -122,7 +151,7 @@ const styles = StyleSheet.create({
   },
   scan: {
     flex: 1,
-    opacity: 0.55,
+    opacity: 0.65,
   },
   vignette: {
     ...StyleSheet.absoluteFill,

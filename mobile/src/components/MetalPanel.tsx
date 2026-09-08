@@ -37,7 +37,7 @@ export function MetalPanel({
         ? colors.danger
         : tone === "gold"
           ? colors.gold
-          : accent ?? colors.goldMute;
+          : accent ?? colors.circuitBlue;
   return (
     <LinearGradient
       colors={palette}
