@@ -544,7 +544,15 @@ def get_player_props(
         if exc.response.status_code == 422:
             logger.warning("Props not available for event %s", event_id)
             return None
-        raise
+        logger.warning(
+            "Props HTTP %s for event %s — skipping",
+            exc.response.status_code,
+            event_id,
+        )
+        return None
+    except Exception:
+        logger.exception("Props fetch failed for event %s", event_id)
+        return None
 
 
 # ---------------------------------------------------------------------------

@@ -119,17 +119,26 @@ export default function PickSheetScreen() {
     setLoadingBoard(true);
     setError(null);
     try {
+      // Book menu first (fast). Model overlay is optional — it re-runs research and
+      // was timing out / 503'ing the whole Sheet load on Render.
       const response = await request<SlateResponse>(
-        `/sports/market-board?sport=${encodeURIComponent(sport)}&date=${encodeURIComponent(date)}&include_props=true&overlay_model=true`,
+        `/sports/market-board?sport=${encodeURIComponent(sport)}&date=${encodeURIComponent(date)}&include_props=true&overlay_model=false`,
       );
       saveMarketBoard(response);
       setSelectedIds([]);
       setGrades([]);
-      setNote(
-        response.candidates.length
-          ? `Loaded ${response.candidates.length} sportsbook markets for ${response.sport.toUpperCase()} ${response.date}.`
-          : response.notice,
-      );
+      if (!response.candidates.length) {
+        setNote(response.notice);
+        setError(
+          response.notice.includes("temporary error") || response.notice.includes("Could not fetch")
+            ? response.notice
+            : null,
+        );
+      } else {
+        setNote(
+          `Loaded ${response.candidates.length} sportsbook markets for ${response.sport.toUpperCase()} ${response.date}.`,
+        );
+      }
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Market board failed");
     } finally {

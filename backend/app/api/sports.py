@@ -362,10 +362,17 @@ def market_board(
         )
     except Exception:
         logger.exception("Market board failed for %s", sport_lower)
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Sportsbook menu failed to load. Try again or use Run for the model slate.",
-        ) from None
+        # Prefer an empty board + honest notice over a hard 503 — Sheet can still retry.
+        return _slate_response(
+            sport=sport_lower,
+            slate_date=slate_date,
+            mode="live",
+            notice=(
+                "Sportsbook menu hit a temporary error while loading prices. "
+                "Try Load again (props load in smaller chunks), or use Run for the model slate."
+            ),
+            candidates=[],
+        )
 
     if not candidates:
         return _slate_response(

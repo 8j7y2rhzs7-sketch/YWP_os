@@ -13,6 +13,8 @@ import re
 from datetime import UTC, date, datetime
 from decimal import Decimal
 from typing import Any
+
+from pydantic import ValidationError
 from zoneinfo import ZoneInfo
 
 from app.core.config import settings
@@ -73,7 +75,14 @@ def build_market_board(
     if not odds_api_configured() and not settings.demo_mode:
         return [], "ODDS_API_KEY is not configured — cannot load a sportsbook menu."
 
-    odds_events = get_game_odds(sport=odds_key, markets="h2h,spreads,totals")
+    try:
+        odds_events = get_game_odds(sport=odds_key, markets="h2h,spreads,totals")
+    except Exception:
+        logger.exception("Market board odds fetch failed for %s", sport_lower)
+        return [], (
+            f"Could not fetch {sport_lower.upper()} sportsbook prices right now. "
+            "Try again in a minute, or use Run for the model slate."
+        )
     if not odds_events:
         return [], (
             f"No priced {sport_lower.upper()} events on {slate_date.isoformat()}. "
@@ -90,20 +99,33 @@ def build_market_board(
         if not _on_slate_date(start_time, slate_date):
             continue
         matched_events += 1
-        board.extend(
-            _flatten_game_markets(
-                event=event,
-                sport=sport_lower,
-                start_time=start_time,
-                now=now,
+        try:
+            board.extend(
+                _flatten_game_markets(
+                    event=event,
+                    sport=sport_lower,
+                    start_time=start_time,
+                    now=now,
+                )
             )
-        )
+        except Exception:
+            logger.exception("Flatten game markets failed for %s", event.get("id"))
 
     props_priced = 0
+    props_errors = 0
     if include_props and matched_events:
         prop_markets = _PROP_MARKETS_BY_SPORT.get(sport_lower)
-        max_events = max(0, int(settings.mlb_board_max_prop_events))
+        max_events = max(
+            0,
+            int(
+                getattr(settings, "mlb_board_max_prop_events", None)
+                or settings.mlb_max_prop_events
+                or 0
+            ),
+        )
         if prop_markets and max_events:
+            # Chunk markets — one giant MLB props request often 422s / times out on Render.
+            market_chunks = _chunk_csv(prop_markets, size=4)
             priced = 0
             for event in odds_events:
                 if priced >= max_events:
@@ -114,31 +136,54 @@ def build_market_board(
                 event_id = str(event.get("id") or "")
                 if not event_id:
                     continue
-                payload = get_player_props(event_id, sport=odds_key, markets=prop_markets)
-                if not payload:
+                merged_books: list[dict[str, Any]] = []
+                got_any = False
+                for chunk in market_chunks:
+                    try:
+                        payload = get_player_props(event_id, sport=odds_key, markets=chunk)
+                    except Exception:
+                        props_errors += 1
+                        logger.warning(
+                            "Props chunk failed for %s (%s)", event_id, chunk, exc_info=True
+                        )
+                        continue
+                    if not payload:
+                        continue
+                    got_any = True
+                    merged_books.extend(payload.get("bookmakers") or [])
+                if not got_any:
                     continue
                 priced += 1
                 props_priced += 1
-                # Merge prop bookmakers onto the event shape used by flatten.
                 merged = dict(event)
-                merged["bookmakers"] = payload.get("bookmakers") or []
-                board.extend(
-                    _flatten_prop_markets(
-                        event=merged,
-                        sport=sport_lower,
-                        start_time=start_time,
-                        now=now,
+                merged["bookmakers"] = merged_books
+                try:
+                    board.extend(
+                        _flatten_prop_markets(
+                            event=merged,
+                            sport=sport_lower,
+                            start_time=start_time,
+                            now=now,
+                        )
                     )
-                )
+                except Exception:
+                    logger.exception("Flatten prop markets failed for %s", event_id)
 
     overlay_count = 0
     if overlay_model and board:
-        board, overlay_count = _overlay_model_candidates(sport_lower, slate_date, board)
+        try:
+            board, overlay_count = _overlay_model_candidates(sport_lower, slate_date, board)
+        except Exception:
+            logger.exception(
+                "Model overlay crashed for %s board — returning book prices only",
+                sport_lower,
+            )
 
     notice = (
         f"Sportsbook menu for {sport_lower.upper()} {slate_date.isoformat()}: "
         f"{matched_events} game(s), {len(board)} selectable market(s)"
         + (f", props priced on {props_priced} event(s)" if props_priced else "")
+        + (f", {props_errors} prop fetch warning(s)" if props_errors else "")
         + (
             f", {overlay_count} upgraded with independent YWP model probability"
             if overlay_count
@@ -147,6 +192,13 @@ def build_market_board(
         + ". Select anything — Check grades each leg; only PLAY/LEAN can build a ticket."
     )
     return board, notice
+
+
+def _chunk_csv(value: str, *, size: int) -> list[str]:
+    parts = [part.strip() for part in value.split(",") if part.strip()]
+    if size <= 0:
+        return [value]
+    return [",".join(parts[i : i + size]) for i in range(0, len(parts), size)]
 
 
 def _overlay_model_candidates(
@@ -266,24 +318,27 @@ def _flatten_game_markets(
                 continue
         else:
             continue
-        rows.append(
-            _board_candidate(
-                sport=sport,
-                event_id=event_id,
-                event_name=event_name,
-                start_time=start_time,
-                home_team=home or None,
-                away_team=away or None,
-                market_type=market_type,
-                selection=selection,
-                line=line,
-                odds=price,
-                bookmaker=book,
-                now=now,
-                player_key=None,
-                market_is_pitcher_strikeout_over=False,
+        try:
+            rows.append(
+                _board_candidate(
+                    sport=sport,
+                    event_id=event_id,
+                    event_name=event_name,
+                    start_time=start_time,
+                    home_team=home or None,
+                    away_team=away or None,
+                    market_type=market_type,
+                    selection=selection,
+                    line=line,
+                    odds=price,
+                    bookmaker=book,
+                    now=now,
+                    player_key=None,
+                    market_is_pitcher_strikeout_over=False,
+                )
             )
-        )
+        except (ValidationError, ValueError) as exc:
+            logger.debug("Skip invalid board market %s: %s", selection, exc)
     return rows
 
 
@@ -333,24 +388,27 @@ def _flatten_prop_markets(
         market_type, label, is_k = _prop_market_meta(market_key, is_over=is_over)
         selection = f"{player} {'Over' if is_over else 'Under'} {line} {label}"
         player_slug = re.sub(r"[^a-z0-9]+", "-", player.casefold()).strip("-")
-        rows.append(
-            _board_candidate(
-                sport=sport,
-                event_id=event_id,
-                event_name=event_name,
-                start_time=start_time,
-                home_team=home or None,
-                away_team=away or None,
-                market_type=market_type,
-                selection=selection,
-                line=line,
-                odds=price,
-                bookmaker=book,
-                now=now,
-                player_key=f"{sport}-prop-{player_slug}"[:120],
-                market_is_pitcher_strikeout_over=is_k and is_over,
+        try:
+            rows.append(
+                _board_candidate(
+                    sport=sport,
+                    event_id=event_id,
+                    event_name=event_name,
+                    start_time=start_time,
+                    home_team=home or None,
+                    away_team=away or None,
+                    market_type=market_type,
+                    selection=selection[:180],
+                    line=line,
+                    odds=price,
+                    bookmaker=book,
+                    now=now,
+                    player_key=f"{sport}-prop-{player_slug}"[:120],
+                    market_is_pitcher_strikeout_over=is_k and is_over,
+                )
             )
-        )
+        except (ValidationError, ValueError) as exc:
+            logger.debug("Skip invalid prop market %s: %s", selection, exc)
     return rows
 
 
