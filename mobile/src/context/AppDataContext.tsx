@@ -11,16 +11,18 @@ import {
 } from "react";
 
 import { getApiUrl } from "@/lib/api";
-import type { AnalyzeResponse, BuildTicketResponse } from "@/types";
+import type { AnalyzeResponse, BuildTicketResponse, SlateResponse } from "@/types";
 
-const CACHE_SCHEMA = "v4";
+const CACHE_SCHEMA = "v5";
 const MAX_CACHED = 20;
 
 interface AppDataValue {
   analyses: Record<string, AnalyzeResponse>;
   builds: Record<string, BuildTicketResponse>;
+  lastSlate: SlateResponse | null;
   saveAnalysis: (analysis: AnalyzeResponse) => void;
   saveBuild: (analysisId: string, build: BuildTicketResponse) => void;
+  saveSlate: (slate: SlateResponse) => void;
   clearCache: () => Promise<void>;
   ready: boolean;
 }
@@ -38,7 +40,7 @@ function trimToRecent<T>(record: Record<string, T>, max: number): Record<string,
   return trimmed;
 }
 
-function scopeKey(kind: "analyses" | "builds", userId: string | null): string {
+function scopeKey(kind: "analyses" | "builds" | "slate", userId: string | null): string {
   const api = getApiUrl().replace(/\/$/, "");
   const user = userId ?? "anonymous";
   return `ywp.os.${kind}.${CACHE_SCHEMA}.${user}.${api}`;
@@ -53,6 +55,7 @@ export function AppDataProvider({
 }) {
   const [analyses, setAnalyses] = useState<Record<string, AnalyzeResponse>>({});
   const [builds, setBuilds] = useState<Record<string, BuildTicketResponse>>({});
+  const [lastSlate, setLastSlate] = useState<SlateResponse | null>(null);
   const [ready, setReady] = useState(false);
   const hydrateGen = useRef(0);
 
@@ -61,15 +64,18 @@ export function AppDataProvider({
     setReady(false);
     setAnalyses({});
     setBuilds({});
+    setLastSlate(null);
     void (async () => {
       try {
-        const [rawA, rawB] = await Promise.all([
+        const [rawA, rawB, rawS] = await Promise.all([
           AsyncStorage.getItem(scopeKey("analyses", userId)),
           AsyncStorage.getItem(scopeKey("builds", userId)),
+          AsyncStorage.getItem(scopeKey("slate", userId)),
         ]);
         if (gen !== hydrateGen.current) return;
         if (rawA) setAnalyses(JSON.parse(rawA));
         if (rawB) setBuilds(JSON.parse(rawB));
+        if (rawS) setLastSlate(JSON.parse(rawS));
       } catch {
         /* first launch or corrupt data — start fresh */
       }
@@ -111,20 +117,50 @@ export function AppDataProvider({
     [userId],
   );
 
+  const saveSlate = useCallback(
+    (slate: SlateResponse) => {
+      setLastSlate(slate);
+      AsyncStorage.setItem(scopeKey("slate", userId), JSON.stringify(slate)).catch(
+        () => {},
+      );
+    },
+    [userId],
+  );
+
   const clearCache = useCallback(async () => {
     hydrateGen.current += 1;
     setAnalyses({});
     setBuilds({});
+    setLastSlate(null);
     await Promise.all([
       AsyncStorage.removeItem(scopeKey("analyses", userId)),
       AsyncStorage.removeItem(scopeKey("builds", userId)),
+      AsyncStorage.removeItem(scopeKey("slate", userId)),
     ]).catch(() => undefined);
     setReady(true);
   }, [userId]);
 
   const value = useMemo(
-    () => ({ analyses, builds, saveAnalysis, saveBuild, clearCache, ready }),
-    [analyses, builds, saveAnalysis, saveBuild, clearCache, ready],
+    () => ({
+      analyses,
+      builds,
+      lastSlate,
+      saveAnalysis,
+      saveBuild,
+      saveSlate,
+      clearCache,
+      ready,
+    }),
+    [
+      analyses,
+      builds,
+      lastSlate,
+      saveAnalysis,
+      saveBuild,
+      saveSlate,
+      clearCache,
+      ready,
+    ],
   );
   return (
     <AppDataContext.Provider value={value}>{children}</AppDataContext.Provider>

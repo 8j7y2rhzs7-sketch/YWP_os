@@ -49,6 +49,10 @@ export default function TabLayout() {
         options={{ title: "Run", tabBarIcon: icon("chart-timeline-variant-shimmer") }}
       />
       <Tabs.Screen
+        name="sheet"
+        options={{ title: "Sheet", tabBarIcon: icon("view-grid-plus-outline") }}
+      />
+      <Tabs.Screen
         name="tickets"
         options={{ title: "Tickets", tabBarIcon: icon("ticket-confirmation-outline") }}
       />

@@ -54,7 +54,7 @@ function localDate(): string {
 
 export default function SlateScreen() {
   const { user, request } = useAuth();
-  const { saveAnalysis } = useAppData();
+  const { saveAnalysis, saveSlate } = useAppData();
   const [sport, setSport] = useState<(typeof sports)[number]["key"]>("mlb");
   const [date, setDate] = useState(localDate());
   const [slate, setSlate] = useState<SlateResponse | null>(null);
@@ -123,6 +123,7 @@ export default function SlateScreen() {
         return;
       }
       setSlate(response);
+      saveSlate(response);
     } catch (reason) {
       if (requestSport !== sport || requestDate !== date) {
         return;
