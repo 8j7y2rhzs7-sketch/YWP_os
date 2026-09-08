@@ -330,6 +330,10 @@ def market_board(
 ) -> SlateResponse:
     """Full sportsbook-style menu for Pick Sheet (not the model-filtered Run slate)."""
     sport_lower = sport_name.lower()
+    # Force book-only board for reliability. Model overlay re-runs live research and
+    # was 503/timing-out Sheet on Render while Run still worked. Clients may still
+    # send overlay_model=true from older APKs — ignore it here.
+    overlay_model = False
     if sport_lower != "mlb" and app_sport_in_season(sport_lower) is False:
         return _slate_response(
             sport=sport_lower,
