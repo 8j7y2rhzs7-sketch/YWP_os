@@ -2,35 +2,40 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   AccessibilityInfo,
   Animated,
+  Dimensions,
   Image,
   Pressable,
   StyleSheet,
   Text,
   View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 import { brandAssets } from "@/brandAssets";
-import { brand, colors, fonts, spacing } from "@/theme";
+import { brand, colors, fonts, gradients, spacing } from "@/theme";
 
 interface BootSequenceProps {
-  /** True once fonts loaded or failed — real init, not GIF artwork status. */
   ready: boolean;
   fontError?: Error | null;
   onDone: () => void;
 }
 
-const MIN_VISIBLE_MS = 700;
-const MAX_VISIBLE_MS = 2200;
+const MIN_VISIBLE_MS = 2400;
+const MAX_VISIBLE_MS = 4200;
 
 /**
- * Short branded entrance using the recovered boot GIF / engine still.
- * Baked-in GIF percentages are artwork only — labels come from real init state.
+ * Full-screen Decision Engine entrance — emblem on stadium night,
+ * slow fade/scale (no tiny landscape GIF).
  */
 export function BootSequence({ ready, fontError, onDone }: BootSequenceProps) {
   const [reduceMotion, setReduceMotion] = useState(false);
   const opacity = useRef(new Animated.Value(0)).current;
+  const scale = useRef(new Animated.Value(0.88)).current;
+  const glow = useRef(new Animated.Value(0)).current;
   const startedAt = useRef(Date.now());
   const finished = useRef(false);
+  const { width: screenW, height: screenH } = Dimensions.get("window");
+  const emblemSize = Math.min(screenW * 0.86, screenH * 0.52, 420);
 
   useEffect(() => {
     let alive = true;
@@ -50,12 +55,41 @@ export function BootSequence({ ready, fontError, onDone }: BootSequenceProps) {
   }, []);
 
   useEffect(() => {
-    Animated.timing(opacity, {
-      toValue: 1,
-      duration: reduceMotion ? 120 : 320,
-      useNativeDriver: true,
-    }).start();
-  }, [opacity, reduceMotion]);
+    if (reduceMotion) {
+      opacity.setValue(1);
+      scale.setValue(1);
+      return;
+    }
+    Animated.parallel([
+      Animated.timing(opacity, {
+        toValue: 1,
+        duration: 900,
+        useNativeDriver: true,
+      }),
+      Animated.spring(scale, {
+        toValue: 1,
+        friction: 8,
+        tension: 42,
+        useNativeDriver: true,
+      }),
+    ]).start();
+    const pulse = Animated.loop(
+      Animated.sequence([
+        Animated.timing(glow, {
+          toValue: 1,
+          duration: 1800,
+          useNativeDriver: true,
+        }),
+        Animated.timing(glow, {
+          toValue: 0,
+          duration: 1800,
+          useNativeDriver: true,
+        }),
+      ]),
+    );
+    pulse.start();
+    return () => pulse.stop();
+  }, [glow, opacity, reduceMotion, scale]);
 
   const finish = useMemo(
     () => () => {
@@ -67,48 +101,60 @@ export function BootSequence({ ready, fontError, onDone }: BootSequenceProps) {
   );
 
   useEffect(() => {
-    const maxTimer = setTimeout(finish, reduceMotion ? MIN_VISIBLE_MS : MAX_VISIBLE_MS);
+    const maxTimer = setTimeout(
+      finish,
+      reduceMotion ? MIN_VISIBLE_MS : MAX_VISIBLE_MS,
+    );
     return () => clearTimeout(maxTimer);
   }, [finish, reduceMotion]);
 
   useEffect(() => {
     if (!ready) return;
     const elapsed = Date.now() - startedAt.current;
-    const wait = Math.max(0, (reduceMotion ? 200 : MIN_VISIBLE_MS) - elapsed);
+    const wait = Math.max(0, (reduceMotion ? 900 : MIN_VISIBLE_MS) - elapsed);
     const timer = setTimeout(finish, wait);
     return () => clearTimeout(timer);
   }, [finish, ready, reduceMotion]);
 
   const status = fontError
-    ? "Fonts unavailable — continuing with system type"
+    ? "Continuing with system type"
     : ready
-      ? "Systems ready"
-      : "Loading type and session…";
+      ? "Decision Engine online"
+      : "Initializing…";
+
+  const glowOpacity = glow.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.25, 0.55],
+  });
 
   return (
     <View style={styles.root} accessibilityLabel="YWP OS boot sequence">
-      <Animated.View style={[styles.stage, { opacity }]}>
+      <LinearGradient colors={gradients.pageDeep} style={StyleSheet.absoluteFill} />
+      <View style={styles.blueGlow} />
+      <View style={styles.goldGlow} />
+
+      <Animated.View
+        style={[
+          styles.stage,
+          {
+            opacity,
+            transform: [{ scale }],
+          },
+        ]}
+      >
+        <Animated.View style={[styles.emblemAura, { opacity: glowOpacity, width: emblemSize + 48, height: emblemSize + 48 }]} />
         <Image
-          source={reduceMotion ? brandAssets.bootFrame : brandAssets.bootSequence}
-          style={styles.bootArt}
+          source={brandAssets.decisionEngineEmblem}
+          style={{ width: emblemSize, height: emblemSize }}
           resizeMode="contain"
+          accessibilityLabel="YWP Decision Engine"
           accessibilityIgnoresInvertColors
         />
-        <View style={styles.badge}>
-          <Image
-            source={brandAssets.crest}
-            style={styles.crest}
-            resizeMode="contain"
-            accessibilityLabel="YWP OS crown emblem"
-          />
-          <Text style={styles.product}>{brand.product}</Text>
-          <Text style={styles.descriptor}>{brand.descriptor}</Text>
-          <Text style={styles.status}>{status}</Text>
-          <Text style={styles.note}>
-            Boot art is brand reference — not live verification or progress.
-          </Text>
-        </View>
+        <Text style={styles.product}>{brand.product}</Text>
+        <Text style={styles.tagline}>{brand.tagline}</Text>
+        <Text style={styles.status}>{status}</Text>
       </Animated.View>
+
       <Pressable
         onPress={finish}
         style={styles.skip}
@@ -126,51 +172,66 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
     justifyContent: "center",
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.xl,
-  },
-  stage: { flex: 1, justifyContent: "center", gap: spacing.lg },
-  bootArt: {
-    width: "100%",
-    height: 220,
-    alignSelf: "center",
-  },
-  badge: {
     alignItems: "center",
-    gap: spacing.sm,
   },
-  crest: { width: 96, height: 96, borderRadius: 16 },
+  blueGlow: {
+    position: "absolute",
+    top: -80,
+    left: -100,
+    width: 340,
+    height: 340,
+    borderRadius: 170,
+    backgroundColor: colors.circuitBlue,
+    opacity: 0.28,
+  },
+  goldGlow: {
+    position: "absolute",
+    bottom: 80,
+    right: -90,
+    width: 300,
+    height: 300,
+    borderRadius: 150,
+    backgroundColor: colors.gold,
+    opacity: 0.16,
+  },
+  stage: {
+    alignItems: "center",
+    justifyContent: "center",
+    gap: spacing.md,
+    paddingHorizontal: spacing.lg,
+    width: "100%",
+  },
+  emblemAura: {
+    position: "absolute",
+    borderRadius: 999,
+    backgroundColor: colors.circuitBlue,
+    top: "12%",
+  },
   product: {
     color: colors.goldBright,
     fontFamily: fonts.display,
-    fontSize: 22,
+    fontSize: 36,
     fontWeight: "800",
-    letterSpacing: 3,
+    letterSpacing: 1,
+    marginTop: spacing.md,
   },
-  descriptor: {
-    color: colors.silver,
-    fontFamily: fonts.bodyMedium,
+  tagline: {
+    color: colors.circuitBlueBright,
+    fontFamily: fonts.bodyBold,
     fontSize: 12,
-    letterSpacing: 1.4,
-    textTransform: "uppercase",
+    fontWeight: "700",
+    letterSpacing: 2.6,
   },
   status: {
-    color: colors.white,
-    fontFamily: fonts.bodyBold,
+    color: colors.silver,
+    fontFamily: fonts.bodyMedium,
     fontSize: 14,
-    fontWeight: "700",
     marginTop: spacing.sm,
     textAlign: "center",
   },
-  note: {
-    color: colors.dim,
-    fontFamily: fonts.body,
-    fontSize: 11,
-    textAlign: "center",
-    maxWidth: 320,
-    lineHeight: 15,
-  },
   skip: {
+    position: "absolute",
+    bottom: 48,
     alignSelf: "center",
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.xl,
@@ -180,6 +241,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bodyBold,
     fontSize: 12,
     fontWeight: "700",
-    letterSpacing: 1.6,
+    letterSpacing: 1.8,
   },
 });
