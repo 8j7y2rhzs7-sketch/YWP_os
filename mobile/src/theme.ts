@@ -11,6 +11,9 @@ export const fonts = {
 /**
  * Decision Engine identity:
  * black chassis + metallic gold + signature circuit blue from the logo brain.
+ *
+ * Layout tokens follow 2025–26 consumer-app conventions (DraftKings / Hard Rock /
+ * Instagram-class): 8pt grid, 48–56pt controls, tight display tracking, soft cards.
  */
 export const colors = {
   background: "#02050A",
@@ -51,7 +54,7 @@ export const colors = {
   ink: "#05070A",
   fieldMist: "rgba(12, 48, 34, 0.55)",
   beam: "rgba(255,255,255,0.08)",
-  glass: "rgba(255,255,255,0.04)",
+  glass: "rgba(255,255,255,0.045)",
 } as const;
 
 export const gradients = {
@@ -68,66 +71,97 @@ export const gradients = {
   scan: ["rgba(26,168,240,0)", "rgba(26,168,240,0.4)", "rgba(240,193,74,0.35)", "rgba(240,193,74,0)"] as const,
 } as const;
 
+/** Strict 8pt grid — matches modern betting / social apps */
 export const spacing = {
   xs: 4,
   sm: 8,
   md: 12,
   lg: 16,
-  xl: 24,
-  xxl: 32,
-  huge: 48,
+  xl: 20,
+  xxl: 28,
+  huge: 40,
+  screen: 20,
+  section: 24,
+  bottomChrome: 128,
 } as const;
 
 export const radius = {
-  sm: 10,
-  md: 14,
-  lg: 18,
+  sm: 12,
+  md: 16,
+  lg: 20,
+  xl: 24,
   pill: 999,
 } as const;
 
+/** Minimum interactive height used across buttons / inputs / chips */
+export const touch = {
+  min: 48,
+  comfortable: 56,
+} as const;
+
 export const type = {
+  /** Small uppercase labels — moderate tracking (not 2018-wide) */
   eyebrow: {
     color: colors.gold,
     fontFamily: fonts.bodyBold,
     fontSize: 11,
     fontWeight: "700",
-    letterSpacing: 2.6,
+    letterSpacing: 1.35,
     textTransform: "uppercase",
   } satisfies TextStyle,
   title: {
     color: colors.white,
     fontFamily: fonts.display,
-    fontSize: 34,
+    fontSize: 32,
     fontWeight: "800",
-    letterSpacing: -0.7,
+    letterSpacing: -1,
+    lineHeight: 36,
   } satisfies TextStyle,
   section: {
     color: colors.white,
     fontFamily: fonts.displaySemi,
-    fontSize: 20,
+    fontSize: 19,
     fontWeight: "700",
-    letterSpacing: 0.1,
+    letterSpacing: -0.35,
+    lineHeight: 24,
   } satisfies TextStyle,
   body: {
     color: colors.text,
     fontFamily: fonts.body,
-    fontSize: 15,
-    lineHeight: 23,
+    fontSize: 16,
+    lineHeight: 24,
+    letterSpacing: -0.1,
   } satisfies TextStyle,
   caption: {
     color: colors.muted,
     fontFamily: fonts.bodyMedium,
+    fontSize: 13,
+    lineHeight: 18,
+    letterSpacing: 0.1,
+  } satisfies TextStyle,
+  button: {
+    fontFamily: fonts.displaySemi,
+    fontSize: 15,
+    fontWeight: "700",
+    letterSpacing: 0.4,
+  } satisfies TextStyle,
+  label: {
+    color: colors.silver,
+    fontFamily: fonts.bodyBold,
     fontSize: 12,
-    lineHeight: 17,
+    fontWeight: "700",
+    letterSpacing: 0.9,
+    textTransform: "uppercase",
   } satisfies TextStyle,
 } as const;
 
+/** Soft elevation — modern apps avoid heavy drop shadows */
 export const shadow: ViewStyle = {
   shadowColor: "#000000",
-  shadowOffset: { width: 0, height: 12 },
-  shadowOpacity: 0.48,
-  shadowRadius: 24,
-  elevation: 12,
+  shadowOffset: { width: 0, height: 8 },
+  shadowOpacity: 0.28,
+  shadowRadius: 16,
+  elevation: 6,
 };
 
 export const brand = {

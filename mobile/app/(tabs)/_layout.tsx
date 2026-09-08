@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Redirect, Tabs } from "expo-router";
 import type { ComponentProps } from "react";
-import { Image, StyleSheet, type ColorValue } from "react-native";
+import { Image, Platform, StyleSheet, type ColorValue } from "react-native";
 
 import { brandAssets } from "@/brandAssets";
 import { useAuth } from "@/context/AuthContext";
@@ -36,19 +36,27 @@ export default function TabLayout() {
         headerShown: false,
         tabBarActiveTintColor: colors.circuitBlueBright,
         tabBarInactiveTintColor: colors.dim,
+        tabBarHideOnKeyboard: true,
         tabBarStyle: {
-          backgroundColor: "rgba(2,5,10,0.97)",
-          borderTopColor: "rgba(26,168,240,0.35)",
+          backgroundColor: "rgba(2,5,10,0.96)",
+          borderTopColor: "rgba(26,168,240,0.28)",
           borderTopWidth: StyleSheet.hairlineWidth,
-          height: 76,
+          height: Platform.OS === "ios" ? 88 : 72,
           paddingTop: 8,
-          paddingBottom: 11,
+          paddingBottom: Platform.OS === "ios" ? 26 : 10,
+        },
+        tabBarItemStyle: {
+          paddingVertical: 2,
         },
         tabBarLabelStyle: {
           fontSize: 10,
           fontFamily: fonts.bodyBold,
           fontWeight: "700",
-          letterSpacing: 0.55,
+          letterSpacing: 0.2,
+          marginTop: 2,
+        },
+        tabBarIconStyle: {
+          marginTop: 2,
         },
       }}
     >
@@ -86,14 +94,14 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   homeLogo: {
-    width: 28,
-    height: 28,
-    borderRadius: 6,
-    opacity: 0.72,
+    width: 26,
+    height: 26,
+    borderRadius: 7,
+    opacity: 0.7,
   },
   homeLogoActive: {
     opacity: 1,
-    borderWidth: 1,
-    borderColor: colors.circuitBlue,
+    borderWidth: 1.5,
+    borderColor: colors.circuitBlueBright,
   },
 });

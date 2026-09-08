@@ -38,7 +38,7 @@ export function Screen({
     enter.setValue(0);
     Animated.timing(enter, {
       toValue: 1,
-      duration: 480,
+      duration: 420,
       useNativeDriver: true,
     }).start();
   }, [enter, sport]);
@@ -54,7 +54,7 @@ export function Screen({
             {
               translateY: enter.interpolate({
                 inputRange: [0, 1],
-                outputRange: [14, 0],
+                outputRange: [12, 0],
               }),
             },
           ],
@@ -105,8 +105,9 @@ const styles = StyleSheet.create({
     width: "100%",
     maxWidth: 920,
     alignSelf: "center",
-    paddingHorizontal: spacing.lg,
-    paddingBottom: 120,
-    gap: spacing.lg,
+    paddingHorizontal: spacing.screen,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.bottomChrome,
+    gap: spacing.xl,
   },
 });

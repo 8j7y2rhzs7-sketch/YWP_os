@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
-import { colors, fonts, gradients, radius, spacing } from "@/theme";
+import { colors, gradients, radius, spacing, touch, type } from "@/theme";
 
 interface YwpButtonProps {
   label: string;
@@ -36,7 +36,7 @@ export function YwpButton({
     const loop = Animated.loop(
       Animated.timing(sweep, {
         toValue: 1,
-        duration: 2400,
+        duration: 2800,
         useNativeDriver: true,
       }),
     );
@@ -69,7 +69,7 @@ export function YwpButton({
             style={[styles.energy, { transform: [{ translateX: sweepX }] }]}
           >
             <LinearGradient
-              colors={["transparent", "rgba(255,255,255,0.55)", "transparent"]}
+              colors={["transparent", "rgba(255,255,255,0.42)", "transparent"]}
               start={{ x: 0, y: 0.5 }}
               end={{ x: 1, y: 0.5 }}
               style={StyleSheet.absoluteFill}
@@ -111,8 +111,8 @@ export function YwpButton({
 const styles = StyleSheet.create({
   pressable: { borderRadius: radius.md, overflow: "hidden" },
   inner: {
-    minHeight: 52,
-    paddingHorizontal: spacing.lg,
+    minHeight: touch.comfortable,
+    paddingHorizontal: spacing.xl,
     paddingVertical: spacing.md,
     alignItems: "center",
     justifyContent: "center",
@@ -122,25 +122,19 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     bottom: 0,
-    width: 70,
+    width: 64,
   },
-  outline: { borderWidth: 1, borderColor: colors.borderGold },
+  outline: { borderWidth: 1.5, borderColor: "rgba(196,152,42,0.55)" },
   danger: { borderColor: colors.danger },
   success: { borderColor: colors.success },
   goldText: {
+    ...type.button,
     color: colors.background,
-    fontFamily: fonts.displaySemi,
-    fontWeight: "700",
-    letterSpacing: 1.1,
-    fontSize: 14,
   },
   outlineText: {
+    ...type.button,
     color: colors.white,
-    fontFamily: fonts.displaySemi,
-    fontWeight: "700",
-    letterSpacing: 0.8,
-    fontSize: 14,
   },
-  pressed: { transform: [{ scale: 0.97 }], opacity: 0.94 },
-  disabled: { opacity: 0.5 },
+  pressed: { transform: [{ scale: 0.985 }], opacity: 0.92 },
+  disabled: { opacity: 0.45 },
 });

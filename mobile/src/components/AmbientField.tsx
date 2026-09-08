@@ -131,9 +131,9 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
     bottom: 0,
-    width: "48%",
+    width: "52%",
     backgroundColor: colors.circuitBlue,
-    opacity: 0.07,
+    opacity: 0.1,
   },
   fieldWash: {
     position: "absolute",
@@ -147,17 +147,17 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     right: 0,
-    height: 48,
+    height: 40,
   },
   scan: {
     flex: 1,
-    opacity: 0.65,
+    opacity: 0.55,
   },
   vignette: {
     ...StyleSheet.absoluteFill,
   },
   grain: {
     ...StyleSheet.absoluteFill,
-    backgroundColor: "rgba(255,255,255,0.018)",
+    backgroundColor: "rgba(255,255,255,0.014)",
   },
 });

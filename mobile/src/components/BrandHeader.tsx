@@ -59,8 +59,10 @@ export function BrandHeader({
         />
       </View>
       <View style={styles.copy}>
-        <Text style={type.eyebrow}>{subtitle}</Text>
-        <Text style={[styles.title, compact && styles.titleCompact]}>{title}</Text>
+        <Text style={[type.eyebrow, styles.eyebrow]}>{subtitle}</Text>
+        <Text style={[styles.title, compact && styles.titleCompact]} numberOfLines={2}>
+          {title}
+        </Text>
         {sport ? (
           <Text style={[styles.sportChip, { color: look.accent }]}>
             {look.label}
@@ -80,46 +82,50 @@ const styles = StyleSheet.create({
   wrap: {
     flexDirection: "row",
     alignItems: "center",
-    gap: spacing.md,
+    gap: spacing.lg,
     paddingTop: spacing.sm,
-    paddingBottom: spacing.md,
-    borderBottomColor: "rgba(196,152,42,0.4)",
+    paddingBottom: spacing.lg,
+    borderBottomColor: "rgba(255,255,255,0.08)",
     borderBottomWidth: StyleSheet.hairlineWidth,
     overflow: "hidden",
   },
-  wrapCompact: { paddingTop: 0, paddingBottom: spacing.sm },
+  wrapCompact: { paddingTop: 0, paddingBottom: spacing.md },
   sportStripe: {
     position: "absolute",
     left: 0,
-    top: 0,
-    bottom: 0,
+    top: 4,
+    bottom: 4,
     width: 3,
+    borderRadius: 2,
     opacity: 0.95,
   },
   crestGlow: {
-    borderRadius: 40,
-    padding: 2,
-    backgroundColor: "rgba(26,168,240,0.14)",
+    borderRadius: 18,
+    padding: 3,
+    backgroundColor: "rgba(26,168,240,0.12)",
     borderWidth: 1,
-    borderColor: "rgba(26,168,240,0.4)",
+    borderColor: "rgba(26,168,240,0.38)",
   },
-  logo: { width: 76, height: 76, borderRadius: 18 },
-  logoCompact: { width: 48, height: 48, borderRadius: 12 },
-  copy: { flex: 1, gap: 3 },
+  logo: { width: 64, height: 64, borderRadius: 14 },
+  logoCompact: { width: 44, height: 44, borderRadius: 11 },
+  copy: { flex: 1, gap: 4 },
+  eyebrow: { letterSpacing: 1.2 },
   title: {
     color: colors.white,
     fontFamily: fonts.display,
-    fontSize: 36,
+    fontSize: 30,
     fontWeight: "800",
-    letterSpacing: -0.5,
+    letterSpacing: -0.9,
+    lineHeight: 34,
   },
-  titleCompact: { fontSize: 24 },
+  titleCompact: { fontSize: 22, lineHeight: 26, letterSpacing: -0.6 },
   sportChip: {
     color: colors.gold,
     fontFamily: fonts.bodyBold,
     fontSize: 11,
     fontWeight: "700",
-    letterSpacing: 1.7,
+    letterSpacing: 1.1,
     textTransform: "uppercase",
+    marginTop: 2,
   },
 });

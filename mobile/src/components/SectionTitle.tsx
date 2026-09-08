@@ -17,7 +17,7 @@ export function SectionTitle({
       </View>
       <View style={styles.copy}>
         <Text style={type.section}>{title}</Text>
-        {subtitle ? <Text style={type.caption}>{subtitle}</Text> : null}
+        {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
       </View>
     </View>
   );
@@ -25,23 +25,25 @@ export function SectionTitle({
 
 const styles = StyleSheet.create({
   wrap: { flexDirection: "row", alignItems: "stretch", gap: spacing.md },
-  mark: { width: 10, alignItems: "center", justifyContent: "center", gap: 4 },
+  mark: { width: 10, alignItems: "center", justifyContent: "center", gap: 5 },
   line: {
     flex: 1,
     width: 2,
     borderRadius: 2,
-    backgroundColor: colors.gold,
-    minHeight: 18,
+    backgroundColor: colors.circuitBlue,
+    minHeight: 16,
+    opacity: 0.9,
   },
   dot: {
-    width: 7,
-    height: 7,
-    borderRadius: 3.5,
-    backgroundColor: colors.goldBright,
-    shadowColor: colors.gold,
-    shadowOpacity: 0.55,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: colors.circuitBlueBright,
+    shadowColor: colors.circuitBlue,
+    shadowOpacity: 0.5,
     shadowRadius: 6,
     shadowOffset: { width: 0, height: 0 },
   },
-  copy: { flex: 1, gap: 3 },
+  copy: { flex: 1, gap: 4, paddingVertical: 2 },
+  subtitle: { ...type.caption, color: colors.muted },
 });
