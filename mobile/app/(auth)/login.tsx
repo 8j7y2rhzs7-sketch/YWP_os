@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
 import { brandAssets } from "@/brandAssets";
-import { BrandHeader } from "@/components/BrandHeader";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { FormField } from "@/components/FormField";
 import { MetalPanel } from "@/components/MetalPanel";
@@ -11,7 +10,7 @@ import { Screen } from "@/components/Screen";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
 import { ensureApiUrl } from "@/lib/api";
-import { colors, fonts, spacing, type } from "@/theme";
+import { brand, colors, fonts, spacing, type } from "@/theme";
 
 export default function LoginScreen() {
   const { user, login } = useAuth();
@@ -40,24 +39,27 @@ export default function LoginScreen() {
 
   return (
     <Screen contentStyle={styles.content}>
-      <BrandHeader />
-      <View style={styles.bannerWrap}>
+      {/* Art alone — no UI text on top of the emblem */}
+      <View style={styles.emblemStage}>
         <Image
-          source={brandAssets.controlBanner}
-          style={styles.banner}
-          resizeMode="cover"
-          accessibilityLabel="YWP OS metallic control banner"
+          source={brandAssets.decisionEngineEmblem}
+          style={styles.emblem}
+          resizeMode="contain"
+          accessibilityLabel="YWP Decision Engine emblem"
         />
       </View>
-      <View style={styles.hero}>
-        <Text style={styles.brandMark}>YWP OS</Text>
-        <Text style={type.eyebrow}>DECISION INTELLIGENCE</Text>
+
+      {/* Clear type on solid stadium night — never over the poster */}
+      <View style={styles.copyStage}>
+        <Text style={styles.brandMark}>{brand.product}</Text>
+        <Text style={styles.tagline}>YOUR WINNING PROCESS</Text>
         <Text style={styles.heroTitle}>Measure twice.{"\n"}Cut once.</Text>
         <Text style={styles.heroBody}>
           Full sweeps, honest PASS calls, bankroll discipline, and learning from
           every result.
         </Text>
       </View>
+
       <MetalPanel tone="gold">
         <Text style={styles.panelTitle}>COMMAND CENTER LOGIN</Text>
         {error ? <ErrorNotice message={error} /> : null}
@@ -92,31 +94,49 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  content: { justifyContent: "center", paddingTop: spacing.xl },
-  bannerWrap: {
-    height: 110,
-    borderRadius: 14,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "rgba(196,152,42,0.35)",
-    marginBottom: spacing.md,
+  content: { justifyContent: "center", paddingTop: spacing.md, gap: spacing.xl },
+  emblemStage: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.background,
+    borderRadius: 20,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: "rgba(26,168,240,0.38)",
+    paddingVertical: spacing.xl,
+    paddingHorizontal: spacing.lg,
   },
-  banner: { width: "100%", height: "100%" },
-  hero: { gap: spacing.sm, paddingVertical: spacing.xl },
+  emblem: {
+    width: "100%",
+    maxWidth: 320,
+    height: 268,
+  },
+  copyStage: {
+    gap: spacing.sm,
+    paddingVertical: spacing.sm,
+    backgroundColor: "transparent",
+  },
   brandMark: {
     color: colors.goldBright,
     fontFamily: fonts.display,
-    fontSize: 18,
+    fontSize: 40,
     fontWeight: "800",
-    letterSpacing: 3.2,
+    letterSpacing: -1,
+  },
+  tagline: {
+    color: colors.gold,
+    fontFamily: fonts.bodyBold,
+    fontSize: 12,
+    fontWeight: "700",
+    letterSpacing: 1.3,
   },
   heroTitle: {
     color: colors.white,
     fontFamily: fonts.display,
-    fontSize: 40,
+    fontSize: 32,
     fontWeight: "800",
-    lineHeight: 44,
-    letterSpacing: -0.8,
+    lineHeight: 36,
+    letterSpacing: -0.9,
+    marginTop: spacing.xs,
   },
   heroBody: { ...type.body, color: colors.silver, maxWidth: 580 },
   panelTitle: {
@@ -124,13 +144,15 @@ const styles = StyleSheet.create({
     fontFamily: fonts.displaySemi,
     fontSize: 18,
     fontWeight: "700",
+    letterSpacing: -0.25,
   },
   link: {
     color: colors.gold,
     textAlign: "center",
     fontFamily: fonts.bodyBold,
     fontWeight: "700",
-    padding: spacing.sm,
+    padding: spacing.md,
+    letterSpacing: 0.2,
   },
   disclaimer: { ...type.caption, textAlign: "center", padding: spacing.lg },
 });
