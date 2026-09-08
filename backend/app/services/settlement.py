@@ -121,6 +121,18 @@ def settle_user_day(
             trigger="settle_day",
             extra={"hive_outcomes_mapped": mapped, "settled_items": len(items)},
         )
+        # Second loop: after fresh evidence lands, Hive invents/tests tactics.
+        from app.hive.config import settings as hive_settings
+        from app.hive.self_improve import run_self_improvement_cycle
+
+        if (
+            hive_settings.self_improve_enabled
+            and mapped >= int(hive_settings.self_improve_min_mapped)
+        ):
+            run_self_improvement_cycle(
+                db=db,
+                trigger="settle_day",
+            )
     return SettleDayResult(
         items=items,
         hive_outcomes_mapped=mapped,

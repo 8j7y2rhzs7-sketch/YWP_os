@@ -98,6 +98,17 @@ def _bucket_key(
     )
 
 
+def hive_bucket_key(
+    sport: str,
+    league: str | None,
+    market: str,
+    market_scope: str,
+    model_version: str,
+) -> str:
+    """Public bucket identity used by analyze + self-improvement inhibit lists."""
+    return _bucket_key(sport, league, market, market_scope, model_version)
+
+
 def _training_eligibility(event: HiveLearningEvent) -> tuple[bool, str | None]:
     if not settings.enabled:
         return False, "hive_disabled"
@@ -642,48 +653,20 @@ def blend_hive_probability(
     *,
     base_probability: float | None,
     hive_signal: HiveSignal,
+    policy: dict[str, Any] | None = None,
+    bucket_key: str | None = None,
 ) -> tuple[float | None, dict[str, Any]]:
-    meta = {
-        "eligible_samples": hive_signal.eligible_samples,
-        "wins": hive_signal.wins,
-        "losses": hive_signal.losses,
-        "posterior_rate": hive_signal.posterior_rate,
-        "release_version": hive_signal.release_version,
-        "shift_applied": 0.0,
-        "used": False,
-        "reason": None,
-    }
+    """Bounded Hive calibration blend.
 
-    if base_probability is None:
-        meta["reason"] = "base_probability_unavailable"
-        return None, meta
+    Optional ``policy`` comes from the self-improvement loop (active policy).
+    When omitted, env defaults are used so older callers keep working.
+    """
+    from .self_improve import HivePolicy, blend_with_policy, default_policy
 
-    base = max(0.0, min(1.0, float(base_probability)))
-
-    if hive_signal.eligible_samples < settings.min_sample:
-        meta["reason"] = "insufficient_hive_sample"
-        return base, meta
-
-    if hive_signal.posterior_rate is None:
-        meta["reason"] = "hive_rate_unavailable"
-        return base, meta
-
-    # Calibration-style adjustment: compare aggregate posterior outcome rate
-    # with the average probability the model historically assigned in this bucket.
-    if (
-        hive_signal.mean_predicted_probability is not None
-        and hive_signal.calibration_delta is not None
-    ):
-        desired_shift = hive_signal.calibration_delta
-    else:
-        # Conservative fallback: move only 25% toward observed posterior.
-        desired_shift = (hive_signal.posterior_rate - base) * 0.25
-
-    bound = abs(settings.max_probability_shift)
-    shift = max(-bound, min(bound, desired_shift))
-    adjusted = max(0.0, min(1.0, base + shift))
-
-    meta["shift_applied"] = round(adjusted - base, 8)
-    meta["used"] = True
-    meta["reason"] = "bounded_hive_calibration"
-    return adjusted, meta
+    active = HivePolicy.from_dict(policy) if policy is not None else default_policy()
+    return blend_with_policy(
+        base_probability=base_probability,
+        hive_signal=hive_signal,
+        policy=active,
+        bucket_key=bucket_key,
+    )

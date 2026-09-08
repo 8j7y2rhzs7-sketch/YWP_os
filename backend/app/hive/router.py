@@ -11,6 +11,11 @@ from .service import (
     record_hive_action,
     resolve_hive_outcome,
 )
+from .self_improve import (
+    get_active_policy,
+    list_self_improvement_cycles,
+    run_self_improvement_cycle,
+)
 
 from app.deps import CurrentUser, DB
 
@@ -158,3 +163,44 @@ def signal(
         raw_rate=s.raw_rate,
         release_version=s.release_version,
     )
+
+
+@router.get("/self-improve/policy")
+def self_improve_policy(db: DB, current_user: CurrentUser):
+    """Active Hive learning tactics promoted by the self-improvement loop."""
+    policy = get_active_policy(db=db)
+    return {
+        "policy": policy.to_dict(),
+        "note": (
+            "Policy bounds how Hive blends evidence. The self-improvement loop may "
+            "replace it only after beating the current policy on settled history."
+        ),
+    }
+
+
+@router.get("/self-improve/cycles")
+def self_improve_cycles(
+    db: DB,
+    current_user: CurrentUser,
+    limit: int = 20,
+):
+    """Recent invent → simulate → promote cycles (Hive figuring out better tactics)."""
+    return {
+        "cycles": list_self_improvement_cycles(db=db, limit=limit),
+        "note": (
+            "Each cycle tries bounded ideas, scores them with leave-one-out Brier on "
+            "settled eligible picks, and promotes only clear winners."
+        ),
+    }
+
+
+@router.post("/self-improve/run")
+def self_improve_run(
+    db: DB,
+    current_user: CurrentUser,
+    sport: str | None = None,
+):
+    """Manually run one Hive self-improvement reflection cycle."""
+    result = run_self_improvement_cycle(db=db, sport=sport, trigger="manual_api")
+    db.commit()
+    return result
