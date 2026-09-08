@@ -71,13 +71,31 @@ export default function RootLayout() {
           >
             <Stack.Screen name="index" options={{ headerShown: false }} />
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="(tabs)"
+              options={{ headerShown: false, title: "Home" }}
+            />
             <Stack.Screen name="experiences/[experienceId]" options={{ headerShown: false }} />
-            <Stack.Screen name="analysis/[id]" options={{ title: "YWP Decision Board" }} />
-            <Stack.Screen name="ticket/[id]" options={{ title: "Ticket Lock Center" }} />
-            <Stack.Screen name="result/[id]" options={{ title: "Result & Process Grade" }} />
-            <Stack.Screen name="log-result" options={{ title: "Log Book Result" }} />
-            <Stack.Screen name="share-card" options={{ title: "YWP Graphic Studio" }} />
+            <Stack.Screen
+              name="analysis/[id]"
+              options={{ title: "YWP Decision Board", headerBackTitle: "Home" }}
+            />
+            <Stack.Screen
+              name="ticket/[id]"
+              options={{ title: "Ticket Lock Center", headerBackTitle: "Home" }}
+            />
+            <Stack.Screen
+              name="result/[id]"
+              options={{ title: "Result & Process Grade", headerBackTitle: "Home" }}
+            />
+            <Stack.Screen
+              name="log-result"
+              options={{ title: "Log Book Result", headerBackTitle: "Home" }}
+            />
+            <Stack.Screen
+              name="share-card"
+              options={{ title: "YWP Graphic Studio", headerBackTitle: "Home" }}
+            />
           </Stack>
         </ScopedAppData>
       </AuthProvider>
