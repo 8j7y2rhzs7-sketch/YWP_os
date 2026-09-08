@@ -323,7 +323,8 @@ export default function PickSheetScreen() {
             />
             <Text style={type.caption}>
               Runs the same AIN / Strict Mode gates as official tickets, then opens Lock Check.
-              Blocked legs stay off the ticket.
+              Blocked legs stay off the ticket. Every protocol run and placed ticket feeds Hive —
+              Sync Scores grades outcomes so tomorrow’s blends get stronger.
             </Text>
           </MetalPanel>
         </>
