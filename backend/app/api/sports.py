@@ -324,6 +324,10 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
     )
     weight_cache: dict[tuple[str, str], dict[str, float]] = {}
     raw_evaluations = []
+    from app.hive.self_improve import get_active_policy
+    from app.hive.service import hive_bucket_key
+
+    hive_policy = get_active_policy(db=db)
     for candidate in payload.candidates:
         evaluation = decision_engine.evaluate(
             candidate,
@@ -350,6 +354,14 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         hive_adjusted, hive_meta = blend_hive_probability(
             base_probability=base_probability,
             hive_signal=hive_signal,
+            policy=hive_policy.to_dict(),
+            bucket_key=hive_bucket_key(
+                candidate.sport,
+                candidate.league,
+                candidate.market_type,
+                candidate.market_period,
+                settings.model_version,
+            ),
         )
         evaluation.payload["model_probability"] = base_probability
         evaluation.payload["hive_adjusted_probability"] = hive_adjusted

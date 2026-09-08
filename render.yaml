@@ -68,3 +68,7 @@ services:
         value: "false"
       - key: YWP_HIVE_RELEASE_VERSION
         value: hive-1
+      - key: YWP_HIVE_SELF_IMPROVE_ENABLED
+        value: "true"
+      - key: YWP_HIVE_SELF_IMPROVE_MIN_MAPPED
+        value: "5"

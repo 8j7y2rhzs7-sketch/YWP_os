@@ -22,6 +22,9 @@ class HiveSettings:
     require_verified_outcome: bool = True
     require_consent: bool = False
     release_version: str = "hive-1"
+    # Second loop: invent/simulate/promote better Hive tactics after settles.
+    self_improve_enabled: bool = True
+    self_improve_min_mapped: int = 5
 
 
 def get_hive_settings() -> HiveSettings:
@@ -36,8 +39,9 @@ def get_hive_settings() -> HiveSettings:
         # consent toggle; keep the env switch for optional future policy changes.
         require_consent=_bool("YWP_HIVE_REQUIRE_CONSENT", False),
         release_version=os.getenv("YWP_HIVE_RELEASE_VERSION", "hive-1"),
+        self_improve_enabled=_bool("YWP_HIVE_SELF_IMPROVE_ENABLED", True),
+        self_improve_min_mapped=int(os.getenv("YWP_HIVE_SELF_IMPROVE_MIN_MAPPED", "5")),
     )
-
 
 class _SettingsProxy:
     """Read env on each access so tests can monkeypatch before calls."""
