@@ -53,7 +53,7 @@ export function BrandHeader({
           source={brandAssets.crest}
           style={[styles.logo, compact && styles.logoCompact]}
           resizeMode="contain"
-          accessibilityLabel="YWP OS crown emblem"
+          accessibilityLabel="YWP OS Decision Engine emblem"
         />
       </View>
       <View style={styles.copy}>
@@ -83,15 +83,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   wrapCompact: { paddingTop: 0, paddingBottom: spacing.sm },
+  logo: { width: 72, height: 72, borderRadius: 14 },
+  logoCompact: { width: 46, height: 46, borderRadius: 10 },
   crestGlow: {
-    borderRadius: 40,
+    borderRadius: 16,
     padding: 2,
     backgroundColor: "rgba(240,193,74,0.12)",
     borderWidth: 1,
     borderColor: "rgba(240,193,74,0.28)",
   },
-  logo: { width: 72, height: 72, borderRadius: 36 },
-  logoCompact: { width: 46, height: 46, borderRadius: 23 },
   copy: { flex: 1, gap: 3 },
   title: {
     color: colors.white,

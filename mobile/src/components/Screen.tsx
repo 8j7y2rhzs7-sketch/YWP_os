@@ -8,7 +8,7 @@ import {
   View,
   type ViewStyle,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { AmbientField } from "@/components/AmbientField";
 import { sportLook } from "@/sportVisuals";
@@ -33,6 +33,9 @@ export function Screen({
 }: ScreenProps) {
   const look = sportLook(sport);
   const enter = useRef(new Animated.Value(0)).current;
+  const insets = useSafeAreaInsets();
+  // Tab bar is absolute + uses safe-area padding; keep scroll content above both.
+  const bottomPad = 72 + Math.max(insets.bottom, 8);
 
   useEffect(() => {
     Animated.timing(enter, {
@@ -46,6 +49,7 @@ export function Screen({
     <Animated.View
       style={[
         styles.content,
+        { paddingBottom: bottomPad },
         contentStyle,
         {
           opacity: enter,
@@ -102,7 +106,6 @@ const styles = StyleSheet.create({
     maxWidth: 920,
     alignSelf: "center",
     paddingHorizontal: spacing.lg,
-    paddingBottom: 120,
     gap: spacing.lg,
   },
 });
