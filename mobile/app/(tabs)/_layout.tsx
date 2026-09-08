@@ -1,8 +1,10 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Redirect, Tabs } from "expo-router";
 import type { ComponentProps } from "react";
-import { StyleSheet, type ColorValue } from "react-native";
+import { Image, StyleSheet, type ColorValue } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { brandAssets } from "@/brandAssets";
 import { useAuth } from "@/context/AuthContext";
 import { colors, fonts } from "@/theme";
 
@@ -14,8 +16,24 @@ function icon(name: IconName) {
   };
 }
 
+function HomeLogoIcon({ focused }: { color: ColorValue; size: number; focused: boolean }) {
+  return (
+    <Image
+      source={brandAssets.crest}
+      style={[styles.homeLogo, focused && styles.homeLogoActive]}
+      resizeMode="contain"
+      accessibilityLabel="Home"
+    />
+  );
+}
+
 export default function TabLayout() {
   const { user, loading } = useAuth();
+  const insets = useSafeAreaInsets();
+  // Keep tab labels clear of Android 3-button / gesture system nav.
+  const bottomInset = Math.max(insets.bottom, 8);
+  const tabBarHeight = 56 + bottomInset;
+
   if (!loading && !user) return <Redirect href="/(auth)/login" />;
   if (!loading && user && !user.has_app_access) return <Redirect href="/(auth)/paywall" />;
   return (
@@ -24,25 +42,39 @@ export default function TabLayout() {
         headerShown: false,
         tabBarActiveTintColor: colors.gold,
         tabBarInactiveTintColor: colors.dim,
+        tabBarHideOnKeyboard: true,
         tabBarStyle: {
-          backgroundColor: "rgba(10,13,18,0.96)",
+          backgroundColor: "rgba(10,13,18,0.98)",
           borderTopColor: "rgba(196,152,42,0.35)",
           borderTopWidth: StyleSheet.hairlineWidth,
-          height: 74,
-          paddingTop: 8,
-          paddingBottom: 10,
+          height: tabBarHeight,
+          paddingTop: 6,
+          paddingBottom: bottomInset,
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          elevation: 0,
+        },
+        tabBarItemStyle: {
+          paddingVertical: 2,
         },
         tabBarLabelStyle: {
           fontSize: 10,
           fontFamily: fonts.bodyBold,
           fontWeight: "700",
-          letterSpacing: 0.4,
+          letterSpacing: 0.3,
+          marginBottom: 2,
         },
       }}
     >
       <Tabs.Screen
         name="index"
-        options={{ title: "Command", tabBarIcon: icon("shield-crown-outline") }}
+        options={{
+          title: "Home",
+          tabBarLabel: "Home",
+          tabBarIcon: HomeLogoIcon,
+        }}
       />
       <Tabs.Screen
         name="slate"
@@ -67,3 +99,17 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  homeLogo: {
+    width: 26,
+    height: 26,
+    borderRadius: 6,
+    opacity: 0.72,
+  },
+  homeLogoActive: {
+    opacity: 1,
+    borderWidth: 1,
+    borderColor: colors.gold,
+  },
+});
