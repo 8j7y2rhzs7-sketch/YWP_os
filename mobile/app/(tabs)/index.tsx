@@ -90,7 +90,18 @@ export default function CommandCenter() {
       {/* First viewport: motion-led composition — engine graphic first, copy cascades in */}
       <View style={styles.heroViewport}>
         <MotionReveal delay={0} fromY={28}>
-          <EngineStage size={248} tone="idle" intensity="hero" />
+          <EngineStage
+            size={248}
+            tone="idle"
+            intensity="hero"
+            calloutsActive
+            callouts={[
+              { id: "ain", label: "AIN", side: "left", top: 56 },
+              { id: "strict", label: "STRICT", side: "right", top: 72 },
+              { id: "hive", label: "HIVE", side: "left", top: 140 },
+              { id: "lock", label: "LOCK", side: "right", top: 156 },
+            ]}
+          />
         </MotionReveal>
         <MotionReveal delay={160}>
           <Text style={styles.brandMark}>{brand.product}</Text>

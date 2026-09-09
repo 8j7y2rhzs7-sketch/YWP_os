@@ -2,8 +2,10 @@ import { useEffect, useRef } from "react";
 import { Animated, Easing, StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
+import { EngineCallouts } from "@/components/EngineCallouts";
 import { EngineOrbit, type OrbitTone } from "@/components/EngineOrbit";
 import { useReduceMotion } from "@/hooks/useReduceMotion";
+import { colors } from "@/theme";
 
 interface EngineStageProps {
   tone?: OrbitTone;
@@ -11,6 +13,9 @@ interface EngineStageProps {
   intensity?: "standard" | "hero";
   size?: number;
   style?: StyleProp<ViewStyle>;
+  /** Draw callout nodes around the engine (reel technique). */
+  callouts?: { id: string; label: string; side: "left" | "right"; top: number }[];
+  calloutsActive?: boolean;
 }
 
 /**
@@ -23,6 +28,8 @@ export function EngineStage({
   intensity = "standard",
   size = 220,
   style,
+  callouts,
+  calloutsActive = false,
 }: EngineStageProps) {
   const reduceMotion = useReduceMotion();
   const scan = useRef(new Animated.Value(0)).current;
@@ -111,7 +118,22 @@ export function EngineStage({
           />
         </Animated.View>
       </View>
-      <EngineOrbit size={size} tone={tone} label={label} intensity={intensity} />
+      <View style={styles.orbitWrap}>
+        {callouts?.length ? (
+          <EngineCallouts
+            active={calloutsActive}
+            accent={
+              tone === "verified"
+                ? colors.success
+                : tone === "loading"
+                  ? colors.goldBright
+                  : colors.circuitBlueBright
+            }
+            items={callouts}
+          />
+        ) : null}
+        <EngineOrbit size={size} tone={tone} label={label} intensity={intensity} />
+      </View>
     </View>
   );
 }
@@ -122,6 +144,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%",
     paddingBottom: 8,
+  },
+  orbitWrap: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: 220,
   },
   floorWrap: {
     position: "absolute",

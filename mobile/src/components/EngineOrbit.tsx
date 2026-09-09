@@ -448,11 +448,21 @@ export function EngineOrbit({
         style={[
           styles.coreGlow,
           {
-            width: emblem + 36,
-            height: emblem + 36,
-            borderRadius: (emblem + 36) / 2,
+            width: emblem + (fast ? 52 : 36),
+            height: emblem + (fast ? 52 : 36),
+            borderRadius: (emblem + (fast ? 52 : 36)) / 2,
             opacity: glowOpacity,
-            transform: [{ translateY: floatY }],
+            backgroundColor:
+              tone === "loading"
+                ? "rgba(240,193,74,0.28)"
+                : tone === "verified"
+                  ? "rgba(46,229,154,0.2)"
+                  : "rgba(26,168,240,0.18)",
+            borderColor:
+              tone === "loading"
+                ? "rgba(240,193,74,0.55)"
+                : "rgba(240,193,74,0.35)",
+            transform: [{ translateY: floatY }, { scale: ringScale }],
           },
         ]}
       />
@@ -550,9 +560,7 @@ const styles = StyleSheet.create({
   },
   coreGlow: {
     position: "absolute",
-    backgroundColor: "rgba(26,168,240,0.18)",
     borderWidth: 1,
-    borderColor: "rgba(240,193,74,0.35)",
   },
   labelWrap: {
     position: "absolute",

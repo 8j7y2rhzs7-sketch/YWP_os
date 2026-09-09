@@ -224,6 +224,33 @@ export default function SlateScreen() {
             tone={tone}
             label={orbitLabel(loadingSlate || analyzing, slate)}
             intensity="hero"
+            calloutsActive={Boolean(slate) && !loadingSlate}
+            callouts={[
+              {
+                id: "sport",
+                label: sport.toUpperCase(),
+                side: "left",
+                top: 48,
+              },
+              {
+                id: "state",
+                label: orbitLabel(loadingSlate || analyzing, slate) ?? "STANDBY",
+                side: "right",
+                top: 72,
+              },
+              {
+                id: "count",
+                label: slate ? `${slate.candidates.length} RAW` : "0 RAW",
+                side: "left",
+                top: 128,
+              },
+              {
+                id: "mode",
+                label: analyzing ? "AIN" : "STRICT",
+                side: "right",
+                top: 148,
+              },
+            ]}
           />
         </MotionReveal>
         <MotionReveal delay={120} replayKey={`${sport}-${slate?.candidates.length ?? 0}`}>
