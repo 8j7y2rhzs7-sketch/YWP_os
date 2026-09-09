@@ -1,5 +1,7 @@
-import { StyleSheet, Text, View } from "react-native";
+import { useEffect, useRef } from "react";
+import { Animated, StyleSheet, Text } from "react-native";
 
+import { useReduceMotion } from "@/hooks/useReduceMotion";
 import { colors, fonts, radius, spacing } from "@/theme";
 
 export function Metric({
@@ -11,13 +13,45 @@ export function Metric({
   value: string | number;
   accent?: string;
 }) {
+  const reduceMotion = useReduceMotion();
+  const pop = useRef(new Animated.Value(reduceMotion ? 1 : 0)).current;
+
+  useEffect(() => {
+    if (reduceMotion) {
+      pop.setValue(1);
+      return;
+    }
+    pop.setValue(0);
+    Animated.spring(pop, {
+      toValue: 1,
+      friction: 6,
+      tension: 140,
+      useNativeDriver: true,
+    }).start();
+  }, [pop, reduceMotion, value]);
+
   return (
-    <View style={styles.metric}>
+    <Animated.View
+      style={[
+        styles.metric,
+        {
+          opacity: pop,
+          transform: [
+            {
+              scale: pop.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0.86, 1],
+              }),
+            },
+          ],
+        },
+      ]}
+    >
       <Text style={[styles.value, { color: accent }]} numberOfLines={1}>
         {value}
       </Text>
       <Text style={styles.label}>{label}</Text>
-    </View>
+    </Animated.View>
   );
 }
 

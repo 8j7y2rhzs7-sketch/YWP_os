@@ -2,10 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { BrandHeader } from "@/components/BrandHeader";
+import { EngineStage } from "@/components/EngineStage";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { LoadingState } from "@/components/LoadingState";
 import { MetalPanel } from "@/components/MetalPanel";
 import { Metric } from "@/components/Metric";
+import { MotionReveal } from "@/components/MotionReveal";
 import { Screen } from "@/components/Screen";
 import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
@@ -87,6 +89,21 @@ export default function LearningScreen() {
   return (
     <Screen refreshing={refreshing} onRefresh={() => void load(true)}>
       <BrandHeader title="ADAPTIVE LEARNING" subtitle="EVERY GRADE TRAINS THE ENGINE" compact />
+      <MotionReveal fromY={20}>
+        <EngineStage
+          size={168}
+          tone="idle"
+          intensity="standard"
+          label="Hive"
+          calloutsActive
+          callouts={[
+            { id: "grades", label: `${pulse?.graded_results ?? 0} GRADES`, side: "left", top: 40 },
+            { id: "shifts", label: `${pulse?.micro_updates ?? 0} SHIFTS`, side: "right", top: 56 },
+            { id: "runs", label: `${pulse?.protocol_runs ?? 0} RUNS`, side: "left", top: 110 },
+            { id: "train", label: "TRAINING", side: "right", top: 126 },
+          ]}
+        />
+      </MotionReveal>
       {error ? <ErrorNotice message={error} /> : null}
       <MetalPanel tone="gold">
         <View style={styles.row}>

@@ -1,25 +1,30 @@
 import { StyleSheet, Text, View } from "react-native";
 
+import { MotionReveal } from "@/components/MotionReveal";
 import { colors, spacing, type } from "@/theme";
 
 export function SectionTitle({
   title,
   subtitle,
+  delay = 0,
 }: {
   title: string;
   subtitle?: string;
+  delay?: number;
 }) {
   return (
-    <View style={styles.wrap}>
-      <View style={styles.mark}>
-        <View style={styles.line} />
-        <View style={styles.dot} />
+    <MotionReveal delay={delay} fromY={10}>
+      <View style={styles.wrap}>
+        <View style={styles.mark}>
+          <View style={styles.line} />
+          <View style={styles.dot} />
+        </View>
+        <View style={styles.copy}>
+          <Text style={type.section}>{title}</Text>
+          {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
+        </View>
       </View>
-      <View style={styles.copy}>
-        <Text style={type.section}>{title}</Text>
-        {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
-      </View>
-    </View>
+    </MotionReveal>
   );
 }
 

@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Animated, Image, StyleSheet, Text, View } from "react-native";
 
 import { brandAssets } from "@/brandAssets";
+import { MetalShimmer } from "@/components/MetalShimmer";
 import { sportLook } from "@/sportVisuals";
 import { brand, colors, fonts, spacing, type } from "@/theme";
 
@@ -25,11 +26,11 @@ export function BrandHeader({
     enter.setValue(0);
     Animated.spring(enter, {
       toValue: 1,
-      friction: 8,
-      tension: 58,
+      friction: 7,
+      tension: 64,
       useNativeDriver: true,
     }).start();
-  }, [enter, sport]);
+  }, [enter, sport, title]);
 
   return (
     <Animated.View
@@ -42,7 +43,7 @@ export function BrandHeader({
             {
               translateY: enter.interpolate({
                 inputRange: [0, 1],
-                outputRange: [10, 0],
+                outputRange: [12, 0],
               }),
             },
           ],
@@ -50,14 +51,14 @@ export function BrandHeader({
       ]}
     >
       {sport ? <View style={[styles.sportStripe, { backgroundColor: look.accent }]} /> : null}
-      <View style={styles.crestGlow}>
+      <MetalShimmer intensity="soft" periodMs={3600} style={styles.crestGlow}>
         <Image
           source={brandAssets.crest}
           style={[styles.logo, compact && styles.logoCompact]}
           resizeMode="contain"
           accessibilityLabel="YWP OS crown emblem"
         />
-      </View>
+      </MetalShimmer>
       <View style={styles.copy}>
         <Text style={[type.eyebrow, styles.eyebrow]}>{subtitle}</Text>
         <Text style={[styles.title, compact && styles.titleCompact]} numberOfLines={2}>

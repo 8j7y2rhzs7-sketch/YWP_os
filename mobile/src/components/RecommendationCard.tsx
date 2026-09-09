@@ -57,6 +57,7 @@ export function RecommendationCard({
         tone={skip ? "danger" : selected ? "gold" : "default"}
         accent={look.accent}
         style={styles.panel}
+        animate={false}
       >
         <View style={styles.top}>
           <View style={[styles.rank, { backgroundColor: look.accent }]}>

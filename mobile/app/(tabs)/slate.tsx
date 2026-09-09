@@ -363,41 +363,40 @@ export default function SlateScreen() {
             subtitle="Raw list appears before YWP scoring, eliminations, and card building."
           />
           {slate.candidates.map((candidate, index) => (
-            <MotionReveal
+            <MetalPanel
               key={candidate.candidate_id}
-              delay={Math.min(index, 8) * 55}
-              replayKey={slate.date + sport}
+              style={styles.candidate}
+              accent={sportLook(sport).accent}
+              motionDelay={Math.min(index, 8) * 45}
             >
-              <MetalPanel style={styles.candidate} accent={sportLook(sport).accent}>
-                <View style={styles.candidateTop}>
-                  <Text style={[styles.number, { backgroundColor: sportLook(sport).accent }]}>{index + 1}</Text>
-                  <PlayerPortrait
-                    imageUrl={String(candidate.image_url ?? "") || null}
-                    teamImageUrl={String(candidate.team_image_url ?? "") || null}
-                    sport={sport}
-                    size={46}
-                  />
-                  <View style={styles.candidateCopy}>
-                    <Text style={styles.selection}>{candidate.selection}</Text>
-                    <Text style={type.caption}>{candidate.event_name}</Text>
-                  </View>
-                  <Text style={styles.odds}>
-                    {candidate.american_odds > 0 ? "+" : ""}
-                    {candidate.american_odds}
-                  </Text>
+              <View style={styles.candidateTop}>
+                <Text style={[styles.number, { backgroundColor: sportLook(sport).accent }]}>{index + 1}</Text>
+                <PlayerPortrait
+                  imageUrl={String(candidate.image_url ?? "") || null}
+                  teamImageUrl={String(candidate.team_image_url ?? "") || null}
+                  sport={sport}
+                  size={46}
+                />
+                <View style={styles.candidateCopy}>
+                  <Text style={styles.selection}>{candidate.selection}</Text>
+                  <Text style={type.caption}>{candidate.event_name}</Text>
                 </View>
-                <Text style={styles.market}>
-                  {candidate.market_type.replaceAll("_", " ")} •{" "}
-                  {probabilityLabel(candidate.probability_source)}{" "}
-                  {(candidate.estimated_probability * 100).toFixed(1)}% • DATA{" "}
-                  {(candidate.data_quality * 100).toFixed(0)}%
+                <Text style={styles.odds}>
+                  {candidate.american_odds > 0 ? "+" : ""}
+                  {candidate.american_odds}
                 </Text>
-                <Text style={type.caption}>
-                  Probability source:{" "}
-                  {(candidate.probability_source ?? "model").replaceAll("_", " ")}
-                </Text>
-              </MetalPanel>
-            </MotionReveal>
+              </View>
+              <Text style={styles.market}>
+                {candidate.market_type.replaceAll("_", " ")} •{" "}
+                {probabilityLabel(candidate.probability_source)}{" "}
+                {(candidate.estimated_probability * 100).toFixed(1)}% • DATA{" "}
+                {(candidate.data_quality * 100).toFixed(0)}%
+              </Text>
+              <Text style={type.caption}>
+                Probability source:{" "}
+                {(candidate.probability_source ?? "model").replaceAll("_", " ")}
+              </Text>
+            </MetalPanel>
           ))}
           <YwpButton
             label="RUN AIN + STRICT MODE + MISS-BY-1"

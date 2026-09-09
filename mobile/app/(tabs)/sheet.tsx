@@ -3,10 +3,12 @@ import { useMemo, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { BrandHeader } from "@/components/BrandHeader";
+import { EngineStage } from "@/components/EngineStage";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { FormField } from "@/components/FormField";
 import { LoadingState } from "@/components/LoadingState";
 import { MetalPanel } from "@/components/MetalPanel";
+import { MotionReveal } from "@/components/MotionReveal";
 import { Screen } from "@/components/Screen";
 import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
@@ -266,6 +268,36 @@ export default function PickSheetScreen() {
         compact
         sport={board?.sport || sport}
       />
+      <MotionReveal fromY={16} replayKey={sport}>
+        <EngineStage
+          size={168}
+          tone={loadingBoard ? "loading" : board ? "partial" : "idle"}
+          intensity="standard"
+          label={loadingBoard ? "Loading" : board ? "Board" : "Sheet"}
+          calloutsActive={Boolean(board)}
+          callouts={[
+            { id: "sport", label: sport.toUpperCase(), side: "left", top: 44 },
+            {
+              id: "games",
+              label: board ? `${games.length} GAMES` : "LOAD",
+              side: "right",
+              top: 60,
+            },
+            {
+              id: "mkts",
+              label: board ? `${board.candidates.length} MKTS` : "MENU",
+              side: "left",
+              top: 112,
+            },
+            {
+              id: "slip",
+              label: `${selectedIds.length} SLIP`,
+              side: "right",
+              top: 128,
+            },
+          ]}
+        />
+      </MotionReveal>
 
       <MetalPanel tone="gold">
         <Text style={type.eyebrow}>BOARD</Text>
@@ -312,8 +344,8 @@ export default function PickSheetScreen() {
             title={`${games.length} Games · ${board.candidates.length} Markets`}
             subtitle="Tap prices like a sportsbook — hits, runs, RBIs, HRs, Ks, totals, and more. Model-backed markets can clear; book-only markets still show and grade."
           />
-          {games.map((game) => (
-            <MetalPanel key={game.eventId} style={styles.game}>
+          {games.map((game, index) => (
+            <MetalPanel key={game.eventId} style={styles.game} motionDelay={Math.min(index, 10) * 40}>
               <Text style={styles.gameTitle}>{game.eventName}</Text>
               {game.startTime ? (
                 <Text style={type.caption}>{new Date(game.startTime).toLocaleString()}</Text>
