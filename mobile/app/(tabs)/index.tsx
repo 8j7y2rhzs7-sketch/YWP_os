@@ -2,11 +2,12 @@ import { router } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-import { EngineOrbit } from "@/components/EngineOrbit";
+import { EngineStage } from "@/components/EngineStage";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { LoadingState } from "@/components/LoadingState";
 import { MetalPanel } from "@/components/MetalPanel";
 import { Metric } from "@/components/Metric";
+import { MotionReveal } from "@/components/MotionReveal";
 import { Screen } from "@/components/Screen";
 import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
@@ -72,7 +73,7 @@ export default function CommandCenter() {
     return (
       <Screen>
         <View style={styles.heroViewport}>
-          <EngineOrbit size={200} tone="loading" label="Booting" />
+          <EngineStage size={210} tone="loading" label="Booting" intensity="hero" />
           <Text style={styles.brandMark}>{brand.product}</Text>
           <LoadingState label="Decision Engine warming…" />
         </View>
@@ -86,15 +87,23 @@ export default function CommandCenter() {
 
   return (
     <Screen refreshing={refreshing} onRefresh={() => void load(true)}>
-      {/* First viewport: one composition — brand, headline, support, CTA, focal engine */}
+      {/* First viewport: motion-led composition — engine graphic first, copy cascades in */}
       <View style={styles.heroViewport}>
-        <EngineOrbit size={236} tone="idle" />
-        <Text style={styles.brandMark}>{brand.product}</Text>
-        <Text style={styles.heroTitle}>Your winning process.</Text>
-        <Text style={styles.heroSupport} numberOfLines={2}>
-          {support}
-        </Text>
-        <View style={styles.ctaGroup}>
+        <MotionReveal delay={0} fromY={28}>
+          <EngineStage size={248} tone="idle" intensity="hero" />
+        </MotionReveal>
+        <MotionReveal delay={160}>
+          <Text style={styles.brandMark}>{brand.product}</Text>
+        </MotionReveal>
+        <MotionReveal delay={280}>
+          <Text style={styles.heroTitle}>Your winning process.</Text>
+        </MotionReveal>
+        <MotionReveal delay={400}>
+          <Text style={styles.heroSupport} numberOfLines={2}>
+            {support}
+          </Text>
+        </MotionReveal>
+        <MotionReveal delay={520} style={styles.ctaGroup}>
           <YwpButton
             label="RUN TODAY'S FULL PROTOCOL"
             onPress={() => router.push("/(tabs)/slate")}
@@ -102,7 +111,7 @@ export default function CommandCenter() {
           <Text style={styles.welcome}>
             Welcome back, {user?.name ?? "operator"} · {brand.skin}
           </Text>
-        </View>
+        </MotionReveal>
       </View>
 
       {error ? <ErrorNotice message={error} /> : null}
@@ -194,7 +203,7 @@ export default function CommandCenter() {
 
 const styles = StyleSheet.create({
   heroViewport: {
-    minHeight: 520,
+    minHeight: 560,
     alignItems: "center",
     justifyContent: "center",
     gap: spacing.md,

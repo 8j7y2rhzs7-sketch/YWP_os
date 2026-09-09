@@ -33,12 +33,21 @@ export function YwpButton({
 
   useEffect(() => {
     if (variant !== "gold" || inactive) return;
+    sweep.setValue(0);
     const loop = Animated.loop(
-      Animated.timing(sweep, {
-        toValue: 1,
-        duration: 2800,
-        useNativeDriver: true,
-      }),
+      Animated.sequence([
+        Animated.timing(sweep, {
+          toValue: 1,
+          duration: 1600,
+          useNativeDriver: true,
+        }),
+        Animated.delay(900),
+        Animated.timing(sweep, {
+          toValue: 0,
+          duration: 0,
+          useNativeDriver: true,
+        }),
+      ]),
     );
     loop.start();
     return () => loop.stop();
@@ -46,7 +55,7 @@ export function YwpButton({
 
   const sweepX = sweep.interpolate({
     inputRange: [0, 1],
-    outputRange: [-140, 280],
+    outputRange: [-160, 320],
   });
 
   return (
@@ -122,7 +131,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     bottom: 0,
-    width: 64,
+    width: 88,
   },
   outline: { borderWidth: 1.5, borderColor: "rgba(196,152,42,0.55)" },
   danger: { borderColor: colors.danger },

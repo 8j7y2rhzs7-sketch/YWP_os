@@ -4,11 +4,12 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { PlayerPortrait } from "@/components/PlayerPortrait";
 import { BrandHeader } from "@/components/BrandHeader";
-import { EngineOrbit } from "@/components/EngineOrbit";
+import { EngineStage } from "@/components/EngineStage";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { FormField } from "@/components/FormField";
 import { LoadingState } from "@/components/LoadingState";
 import { MetalPanel } from "@/components/MetalPanel";
+import { MotionReveal } from "@/components/MotionReveal";
 import { Screen } from "@/components/Screen";
 import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
@@ -212,23 +213,37 @@ export default function SlateScreen() {
     <Screen sport={sport}>
       <BrandHeader title="FULL PROTOCOL RUN" subtitle="AIN • STRICT MODE • ALL ANGLES" compact sport={sport} />
 
-      {/* Focal engine — readiness / load state lives here, not in a crowded banner */}
+      {/* Focal engine — shockwaves + radar track load / readiness */}
       <View style={styles.engineStage}>
-        <EngineOrbit size={188} tone={tone} label={orbitLabel(loadingSlate || analyzing, slate)} />
-        <Text style={styles.engineHeadline}>
-          {analyzing
-            ? "Running AIN + Strict Mode"
-            : loadingSlate
-              ? "Pulling live candidates"
-              : slate
-                ? `${sport.toUpperCase()} slate · ${slate.candidates.length} candidates`
-                : "Select sport · load slate"}
-        </Text>
-        <Text style={styles.engineSupport}>
-          {slate?.notice
-            ? slate.notice
-            : "Quiet chassis. Verification first. No forced ticket."}
-        </Text>
+        <MotionReveal
+          replayKey={`${sport}-${tone}-${loadingSlate}-${analyzing}`}
+          fromY={24}
+        >
+          <EngineStage
+            size={200}
+            tone={tone}
+            label={orbitLabel(loadingSlate || analyzing, slate)}
+            intensity="hero"
+          />
+        </MotionReveal>
+        <MotionReveal delay={120} replayKey={`${sport}-${slate?.candidates.length ?? 0}`}>
+          <Text style={styles.engineHeadline}>
+            {analyzing
+              ? "Running AIN + Strict Mode"
+              : loadingSlate
+                ? "Pulling live candidates"
+                : slate
+                  ? `${sport.toUpperCase()} slate · ${slate.candidates.length} candidates`
+                  : "Select sport · load slate"}
+          </Text>
+        </MotionReveal>
+        <MotionReveal delay={220} replayKey={`${sport}-${slate?.notice ?? "idle"}`}>
+          <Text style={styles.engineSupport}>
+            {slate?.notice
+              ? slate.notice
+              : "Quiet chassis. Verification first. No forced ticket."}
+          </Text>
+        </MotionReveal>
       </View>
 
       <MetalPanel tone="gold" accent={look.accent}>
@@ -321,35 +336,41 @@ export default function SlateScreen() {
             subtitle="Raw list appears before YWP scoring, eliminations, and card building."
           />
           {slate.candidates.map((candidate, index) => (
-            <MetalPanel key={candidate.candidate_id} style={styles.candidate} accent={sportLook(sport).accent}>
-              <View style={styles.candidateTop}>
-                <Text style={[styles.number, { backgroundColor: sportLook(sport).accent }]}>{index + 1}</Text>
-                <PlayerPortrait
-                  imageUrl={String(candidate.image_url ?? "") || null}
-                  teamImageUrl={String(candidate.team_image_url ?? "") || null}
-                  sport={sport}
-                  size={46}
-                />
-                <View style={styles.candidateCopy}>
-                  <Text style={styles.selection}>{candidate.selection}</Text>
-                  <Text style={type.caption}>{candidate.event_name}</Text>
+            <MotionReveal
+              key={candidate.candidate_id}
+              delay={Math.min(index, 8) * 55}
+              replayKey={slate.date + sport}
+            >
+              <MetalPanel style={styles.candidate} accent={sportLook(sport).accent}>
+                <View style={styles.candidateTop}>
+                  <Text style={[styles.number, { backgroundColor: sportLook(sport).accent }]}>{index + 1}</Text>
+                  <PlayerPortrait
+                    imageUrl={String(candidate.image_url ?? "") || null}
+                    teamImageUrl={String(candidate.team_image_url ?? "") || null}
+                    sport={sport}
+                    size={46}
+                  />
+                  <View style={styles.candidateCopy}>
+                    <Text style={styles.selection}>{candidate.selection}</Text>
+                    <Text style={type.caption}>{candidate.event_name}</Text>
+                  </View>
+                  <Text style={styles.odds}>
+                    {candidate.american_odds > 0 ? "+" : ""}
+                    {candidate.american_odds}
+                  </Text>
                 </View>
-                <Text style={styles.odds}>
-                  {candidate.american_odds > 0 ? "+" : ""}
-                  {candidate.american_odds}
+                <Text style={styles.market}>
+                  {candidate.market_type.replaceAll("_", " ")} •{" "}
+                  {probabilityLabel(candidate.probability_source)}{" "}
+                  {(candidate.estimated_probability * 100).toFixed(1)}% • DATA{" "}
+                  {(candidate.data_quality * 100).toFixed(0)}%
                 </Text>
-              </View>
-              <Text style={styles.market}>
-                {candidate.market_type.replaceAll("_", " ")} •{" "}
-                {probabilityLabel(candidate.probability_source)}{" "}
-                {(candidate.estimated_probability * 100).toFixed(1)}% • DATA{" "}
-                {(candidate.data_quality * 100).toFixed(0)}%
-              </Text>
-              <Text style={type.caption}>
-                Probability source:{" "}
-                {(candidate.probability_source ?? "model").replaceAll("_", " ")}
-              </Text>
-            </MetalPanel>
+                <Text style={type.caption}>
+                  Probability source:{" "}
+                  {(candidate.probability_source ?? "model").replaceAll("_", " ")}
+                </Text>
+              </MetalPanel>
+            </MotionReveal>
           ))}
           <YwpButton
             label="RUN AIN + STRICT MODE + MISS-BY-1"
