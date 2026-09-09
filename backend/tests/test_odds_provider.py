@@ -200,10 +200,13 @@ def test_soccer_maps_multiple_leagues_and_in_season_any(monkeypatch) -> None:
 
     monkeypatch.setattr(odds_mod, "settings", _Fake())
     keys = odds_mod.odds_keys_for_app_sport("soccer")
+    assert keys[0] == "soccer_uefa_champs_league"
     assert "soccer_epl" in keys
     assert "soccer_spain_la_liga" in keys
-    assert "soccer_uefa_champs_league" in keys
+    assert "soccer_france_ligue_one" in keys
     assert "soccer_usa_mls" in keys
+    assert odds_mod.soccer_odds_regions("soccer") == "us,uk"
+    assert odds_mod.soccer_odds_regions("mlb") == "us"
 
     monkeypatch.setattr(
         odds_mod,

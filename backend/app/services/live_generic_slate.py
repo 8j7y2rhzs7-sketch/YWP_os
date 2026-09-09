@@ -19,6 +19,7 @@ from app.services.odds_provider import (
     extract_best_odds,
     get_game_odds,
     soccer_league_label,
+    soccer_odds_regions,
 )
 from app.services.sport_research import build_event_research, build_verified_candidate
 
@@ -67,9 +68,12 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
 
     odds_events: list[dict] = []
     leagues_fetched: list[str] = []
+    regions = soccer_odds_regions(sport_lower)
     for odds_key in odds_keys:
         try:
-            batch = get_game_odds(sport=odds_key, markets="h2h,spreads,totals")
+            batch = get_game_odds(
+                sport=odds_key, markets="h2h,spreads,totals", regions=regions
+            )
         except Exception:
             logger.exception("Failed to fetch %s odds (%s)", sport, odds_key)
             continue
@@ -168,9 +172,12 @@ def upcoming_odds_dates(sport: str, *, limit: int = 5) -> list[str]:
     if not odds_keys:
         return []
     dates: list[str] = []
+    regions = soccer_odds_regions(sport_lower)
     for odds_key in odds_keys:
         try:
-            events = get_game_odds(sport=odds_key, markets="h2h,spreads,totals")
+            events = get_game_odds(
+                sport=odds_key, markets="h2h,spreads,totals", regions=regions
+            )
         except Exception:
             continue
         for event in events:

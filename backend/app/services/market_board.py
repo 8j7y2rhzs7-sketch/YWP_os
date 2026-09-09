@@ -30,6 +30,7 @@ from app.services.odds_provider import (
     get_player_props,
     odds_api_configured,
     soccer_league_label,
+    soccer_odds_regions,
 )
 from app.services.ticket_gates import event_market_status
 
@@ -83,9 +84,12 @@ def build_market_board(
 
     odds_events: list[dict[str, Any]] = []
     leagues_hit: list[str] = []
+    regions = soccer_odds_regions(sport_lower)
     try:
         for odds_key in odds_keys:
-            batch = get_game_odds(sport=odds_key, markets="h2h,spreads,totals")
+            batch = get_game_odds(
+                sport=odds_key, markets="h2h,spreads,totals", regions=regions
+            )
             if not batch:
                 continue
             label = (

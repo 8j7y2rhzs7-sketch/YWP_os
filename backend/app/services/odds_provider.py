@@ -56,17 +56,19 @@ APP_SPORT_TO_ODDS_KEY: dict[str, str] = {
     "kbo": "baseball_kbo",
 }
 
-# Major soccer competitions under the app "soccer" chip (Barcelona=La Liga/UCL,
-# Liverpool=EPL/UCL, etc.). Paid cost ≈ 3 credits × in-season keys fetched.
+# Major soccer competitions under the app "soccer" chip.
+# Order matters: midweek UCL/UEL often hosts the clubs users look for on Hard Rock
+# (Arsenal, PSG, Liverpool, Barcelona) while domestic leagues are quieter.
+# Paid cost ≈ markets×regions credits × in-season keys fetched.
 SOCCER_ODDS_LEAGUES: list[tuple[str, str]] = [
-    ("soccer_epl", "EPL"),
-    ("soccer_spain_la_liga", "La Liga"),
-    ("soccer_italy_serie_a", "Serie A"),
-    ("soccer_germany_bundesliga", "Bundesliga"),
-    ("soccer_france_ligue_one", "Ligue 1"),
     ("soccer_uefa_champs_league", "UCL"),
     ("soccer_uefa_europa_league", "UEL"),
     ("soccer_uefa_europa_conference_league", "UECL"),
+    ("soccer_epl", "EPL"),
+    ("soccer_spain_la_liga", "La Liga"),
+    ("soccer_france_ligue_one", "Ligue 1"),
+    ("soccer_italy_serie_a", "Serie A"),
+    ("soccer_germany_bundesliga", "Bundesliga"),
     ("soccer_usa_mls", "MLS"),
     ("soccer_efl_champ", "EFL Championship"),
     ("soccer_portugal_primeira_liga", "Primeira Liga"),
@@ -75,8 +77,18 @@ SOCCER_ODDS_LEAGUES: list[tuple[str, str]] = [
 ]
 
 # Soft cap so one SOCCER refresh cannot burn the whole Odds quota.
-SOCCER_MAX_LEAGUES_PER_FETCH = 8
+SOCCER_MAX_LEAGUES_PER_FETCH = 10
 
+# US-only regions often under-cover European soccer vs Hard Rock / DK.
+# us+uk keeps Hard Rock while picking up EPL/UCL books (credits = markets×2).
+SOCCER_ODDS_REGIONS = "us,uk"
+
+
+def soccer_odds_regions(app_sport: str | None = None) -> str:
+    key = (app_sport or "").strip().lower()
+    if key in {"soccer", "epl", "mls"}:
+        return SOCCER_ODDS_REGIONS
+    return "us"
 
 def soccer_league_label(odds_key: str) -> str:
     for key, label in SOCCER_ODDS_LEAGUES:
