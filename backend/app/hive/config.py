@@ -40,7 +40,7 @@ def get_hive_settings() -> HiveSettings:
         require_consent=_bool("YWP_HIVE_REQUIRE_CONSENT", False),
         release_version=os.getenv("YWP_HIVE_RELEASE_VERSION", "hive-1"),
         self_improve_enabled=_bool("YWP_HIVE_SELF_IMPROVE_ENABLED", True),
-        self_improve_min_mapped=int(os.getenv("YWP_HIVE_SELF_IMPROVE_MIN_MAPPED", "5")),
+        self_improve_min_mapped=int(os.getenv("YWP_HIVE_SELF_IMPROVE_MIN_MAPPED", "20")),
     )
 
 class _SettingsProxy:

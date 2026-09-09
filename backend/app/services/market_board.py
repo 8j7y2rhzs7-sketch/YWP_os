@@ -25,6 +25,7 @@ from app.services.odds_provider import (
     APP_SPORT_TO_ODDS_KEY,
     PREFERRED_BOOKS,
     get_game_odds,
+    get_last_fetch_status,
     get_player_props,
     odds_api_configured,
 )
@@ -179,6 +180,11 @@ def build_market_board(
                 sport_lower,
             )
 
+    remaining = get_last_fetch_status().get("remaining")
+    credit_note = ""
+    if remaining is not None and str(remaining).strip() != "":
+        credit_note = f" Odds credits remaining ≈ {remaining}."
+
     notice = (
         f"Sportsbook menu for {sport_lower.upper()} {slate_date.isoformat()}: "
         f"{matched_events} game(s), {len(board)} selectable market(s)"
@@ -190,6 +196,7 @@ def build_market_board(
             else ""
         )
         + ". Select anything — Check grades each leg; only PLAY/LEAN can build a ticket."
+        + credit_note
     )
     return board, notice
 
@@ -232,11 +239,35 @@ def _overlay_model_candidates(
                 "american_odds": row.american_odds,
                 "line": row.line if row.line is not None else twin.line,
                 "price_timestamp": row.price_timestamp or twin.price_timestamp,
+                # Preserve Sheet provenance so Hive/settle still recognize menu legs.
+                "data_source": row.data_source or twin.data_source,
+                "reason_codes": sorted(
+                    set((twin.reason_codes or []) + (row.reason_codes or []) + ["SPORTSBOOK_MENU"])
+                ),
             }
         )
         out.append(merged)
         upgraded += 1
     return out, upgraded
+
+
+def overlay_selected_with_model(
+    sport: str,
+    slate_date: date,
+    selected: list[CandidateInput],
+) -> tuple[list[CandidateInput], int]:
+    """Check-path overlay: upgrade only the customer's selected Sheet legs.
+
+    Soft-fails to the original book-implied candidates if model research is slow
+    or errors — never blocks grading.
+    """
+    if not selected:
+        return selected, 0
+    try:
+        return _overlay_model_candidates(sport, slate_date, selected)
+    except Exception:
+        logger.exception("Selected-leg model overlay crashed for %s", sport)
+        return selected, 0
 
 
 def _load_model_slate(sport: str, slate_date: date) -> list[CandidateInput]:

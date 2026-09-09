@@ -303,6 +303,16 @@ class SportsAnalyzeRequest(YWPModel):
     bankroll: Decimal | None = Field(default=None, ge=0)
     # NCAAF Saturdays routinely exceed 250 priced sides (ML/spread/total × games).
     candidates: list[CandidateInput] = Field(min_length=1, max_length=500)
+    # Sheet Check path: upgrade selected sportsbook-menu legs with model twins.
+    # Default on so older APKs get model grades without a new client build.
+    # Load board still keeps overlay forced off for reliability.
+    overlay_model_on_sheet: bool = Field(
+        default=True,
+        description=(
+            "When true, sportsbook-menu candidates are soft-overlaid with matching "
+            "model-slate projections before grading (selected legs only)."
+        ),
+    )
 
     @model_validator(mode="after")
     def candidates_match_sport(self) -> SportsAnalyzeRequest:

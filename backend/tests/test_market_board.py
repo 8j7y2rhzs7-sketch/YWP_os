@@ -175,3 +175,75 @@ def test_build_market_board_overlays_model(monkeypatch) -> None:
     assert home.estimated_probability == 0.61
     assert away.probability_source == "market_implied"
     assert "upgraded" in notice.lower()
+
+
+def test_overlay_selected_with_model_preserves_sheet_provenance(monkeypatch) -> None:
+    now = datetime(2026, 9, 8, 12, 0, tzinfo=UTC)
+    board_leg = board_module._board_candidate(
+        sport="mlb",
+        event_id="evt-sel",
+        event_name="Away Club @ Home Club",
+        start_time=datetime(2026, 9, 8, 23, 0, tzinfo=UTC),
+        home_team="Home Club",
+        away_team="Away Club",
+        market_type="moneyline",
+        selection="Home Club ML",
+        line=None,
+        odds=-120,
+        bookmaker="draftkings",
+        now=now,
+        player_key=None,
+        market_is_pitcher_strikeout_over=False,
+    )
+    model = board_leg.model_copy(
+        update={
+            "probability_source": "model",
+            "estimated_probability": 0.62,
+            "data_quality": 0.91,
+            "data_source": "MLB_STATS_API+THE_ODDS_API",
+            "reason_codes": ["MODEL"],
+            "independent_value_verified": True,
+            "missing_fields": [],
+        }
+    )
+    monkeypatch.setattr(board_module, "_load_model_slate", lambda sport, slate_date: [model])
+
+    upgraded, count = board_module.overlay_selected_with_model(
+        "mlb", date(2026, 9, 8), [board_leg]
+    )
+    assert count == 1
+    assert upgraded[0].probability_source == "model"
+    assert upgraded[0].estimated_probability == 0.62
+    assert upgraded[0].data_source == "THE_ODDS_API_BOARD"
+    assert "SPORTSBOOK_MENU" in upgraded[0].reason_codes
+    assert upgraded[0].candidate_id == board_leg.candidate_id
+
+
+def test_overlay_selected_soft_fails(monkeypatch) -> None:
+    now = datetime(2026, 9, 8, 12, 0, tzinfo=UTC)
+    board_leg = board_module._board_candidate(
+        sport="mlb",
+        event_id="evt-fail",
+        event_name="Away Club @ Home Club",
+        start_time=datetime(2026, 9, 8, 23, 0, tzinfo=UTC),
+        home_team="Home Club",
+        away_team="Away Club",
+        market_type="moneyline",
+        selection="Home Club ML",
+        line=None,
+        odds=-120,
+        bookmaker="draftkings",
+        now=now,
+        player_key=None,
+        market_is_pitcher_strikeout_over=False,
+    )
+
+    def _boom(sport, slate_date):
+        raise RuntimeError("model timeout")
+
+    monkeypatch.setattr(board_module, "_overlay_model_candidates", _boom)
+    upgraded, count = board_module.overlay_selected_with_model(
+        "mlb", date(2026, 9, 8), [board_leg]
+    )
+    assert count == 0
+    assert upgraded[0].probability_source == "market_implied"

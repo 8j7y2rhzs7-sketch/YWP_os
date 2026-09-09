@@ -31,7 +31,7 @@ services:
       - key: NEXT_PUBLIC_WHOP_CHECKOUT_URL
         value: https://whop.com/checkout/plan_MwJ2qcFxmvqDY
       - key: YWP_APP_DOWNLOAD_URL
-        value: https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.13/YWP-OS-3.3.13.apk
+        value: https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.14/YWP-OS-3.3.14.apk
       - key: YWP_CORS_ORIGINS
         value: https://whop.com,http://localhost:8081,http://localhost:19006
       - key: DATABASE_URL
@@ -75,4 +75,4 @@ services:
       - key: YWP_HIVE_SELF_IMPROVE_ENABLED
         value: "true"
       - key: YWP_HIVE_SELF_IMPROVE_MIN_MAPPED
-        value: "5"
+        value: "20"

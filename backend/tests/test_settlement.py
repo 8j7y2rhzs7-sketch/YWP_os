@@ -368,6 +368,98 @@ def test_settle_board_grades_unlocked_play(monkeypatch) -> None:
         db.close()
 
 
+def test_settle_sheet_menu_skip_grades_for_hive(monkeypatch) -> None:
+    """Pick Sheet SKIP legs must settle so Hive customer-selection can learn."""
+    db = SessionLocal()
+    try:
+        user = User(
+            email="sheet-skip-settle@example.com",
+            password_hash="x",
+            name="SheetSkip",
+            timezone="America/New_York",
+            subscription_status="active",
+        )
+        db.add(user)
+        db.flush()
+        recommendation = _recommendation(
+            user.id,
+            analysis_id="analysis-sheet-skip",
+            candidate_id="board-mlb-sheet-skip-88888",
+            event_id="evt-sheet-skip",
+            decision="SKIP",
+            recommendation_tier="SKIP",
+            input_hash="sheet-skip-hash",
+            data_source="THE_ODDS_API_BOARD",
+            reason_codes=["SPORTSBOOK_MENU", "MARKET_IMPLIED", "NO_INDEPENDENT_PROBABILITY"],
+            snapshot={
+                "game_pk": 88888,
+                "home_team": "Home Club",
+                "away_team": "Away Club",
+                "data_source": "THE_ODDS_API_BOARD",
+                "reason_codes": ["SPORTSBOOK_MENU", "MARKET_IMPLIED"],
+            },
+        )
+        db.add(recommendation)
+        db.commit()
+
+        monkeypatch.setattr(
+            settlement, "get_live_feed", lambda game_pk: _feed(home_runs=5, away_runs=2)
+        )
+
+        items = settlement.settle_user_board_recommendations(db, user.id)
+        assert any(item.status == "graded" for item in items)
+
+        db.refresh(recommendation)
+        assert recommendation.outcome == "WIN"
+        assert recommendation.result is not None
+        assert "SHEET_MENU_SETTLED" in recommendation.result.root_cause_tags
+        assert "BOARD_SETTLED" in recommendation.result.root_cause_tags
+    finally:
+        db.close()
+
+
+def test_settle_skips_non_sheet_skip_decisions(monkeypatch) -> None:
+    """Run-slate SKIP without sportsbook-menu provenance must not auto-settle."""
+    db = SessionLocal()
+    try:
+        user = User(
+            email="run-skip-nosettle@example.com",
+            password_hash="x",
+            name="RunSkip",
+            timezone="America/New_York",
+            subscription_status="active",
+        )
+        db.add(user)
+        db.flush()
+        recommendation = _recommendation(
+            user.id,
+            analysis_id="analysis-run-skip",
+            candidate_id="mlb-ml-run-skip-99999",
+            event_id="evt-run-skip",
+            decision="SKIP",
+            recommendation_tier="SKIP",
+            input_hash="run-skip-hash",
+            snapshot={
+                "game_pk": 99999,
+                "home_team": "Home Club",
+                "away_team": "Away Club",
+            },
+        )
+        db.add(recommendation)
+        db.commit()
+
+        monkeypatch.setattr(
+            settlement, "get_live_feed", lambda game_pk: _feed(home_runs=5, away_runs=2)
+        )
+
+        items = settlement.settle_user_board_recommendations(db, user.id)
+        assert items == []
+        db.refresh(recommendation)
+        assert recommendation.outcome is None
+    finally:
+        db.close()
+
+
 def test_settle_user_day_includes_board_and_tickets(monkeypatch) -> None:
     db = SessionLocal()
     try:

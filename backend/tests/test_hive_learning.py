@@ -73,6 +73,40 @@ def test_feature_flags_are_allowlisted(db_session):
     assert event.contributor_key != "user-123"
 
 
+def test_sheet_calibration_flags_are_persisted(db_session):
+    event = capture_hive_prediction(
+        db=db_session,
+        contributor_user_id="user-sheet",
+        consent_to_hive=True,
+        source_recommendation_id="sheet-rec-1",
+        sport="mlb",
+        league="MLB",
+        event_id="game-sheet",
+        event_start_at=datetime.now(timezone.utc),
+        market="moneyline",
+        market_scope="full_game",
+        selection="TEAM_A",
+        line=None,
+        odds_american=-110,
+        model_probability=0.55,
+        quality_score=70.0,
+        model_version="3.3.14",
+        protocol_version="ywp-current",
+        evidence_version="snap-sheet",
+        data_quality=0.9,
+        feature_flags={
+            "customer_sheet_selection": True,
+            "official_play": False,
+            "data_complete": True,
+            "private_note": "drop-me",
+        },
+    )
+    assert event.feature_flags["customer_sheet_selection"] is True
+    assert event.feature_flags["official_play"] is False
+    assert event.feature_flags["data_complete"] is True
+    assert "private_note" not in event.feature_flags
+
+
 def test_verified_outcome_becomes_eligible(db_session):
     event = _capture(db_session)
     db_session.flush()

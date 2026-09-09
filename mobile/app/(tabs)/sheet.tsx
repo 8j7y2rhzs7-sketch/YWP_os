@@ -172,6 +172,9 @@ export default function PickSheetScreen() {
           date: board.date,
           mode: "pregame",
           user_risk_profile: user?.risk_profile ?? "balanced",
+          // Soft-overlay selected Sheet legs with model twins on Check only
+          // (Load keeps overlay off for sportsbook-menu speed).
+          overlay_model_on_sheet: true,
           candidates: selected,
         }),
       });

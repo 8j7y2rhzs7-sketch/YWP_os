@@ -163,6 +163,16 @@ def _assert_candidates_match_slate_date(payload: SportsAnalyzeRequest) -> None:
         )
 
 
+def _candidates_look_like_sheet_menu(candidates: list[CandidateInput]) -> bool:
+    """True when any candidate came from Pick Sheet sportsbook menu."""
+    for candidate in candidates:
+        if candidate.data_source == "THE_ODDS_API_BOARD":
+            return True
+        if "SPORTSBOOK_MENU" in (candidate.reason_codes or []):
+            return True
+    return False
+
+
 @router.get("/slate", response_model=SlateResponse)
 def slate(
     _: SubscribedUser,
@@ -400,12 +410,29 @@ def market_board(
 def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> AnalyzeResponse:
     _assert_candidates_match_slate_date(payload)
     analysis_id = str(uuid4())
+    candidates = list(payload.candidates)
+    overlay_upgraded = 0
+    if payload.overlay_model_on_sheet and _candidates_look_like_sheet_menu(candidates):
+        from app.services.market_board import overlay_selected_with_model
+
+        candidates, overlay_upgraded = overlay_selected_with_model(
+            payload.sport, payload.date, candidates
+        )
+        if overlay_upgraded:
+            logger.info(
+                "Sheet Check overlay upgraded %s/%s selected legs for %s %s",
+                overlay_upgraded,
+                len(candidates),
+                payload.sport,
+                payload.date,
+            )
+
     protocol_run = run_protocol_health_check(
         db,
         analysis_id=analysis_id,
         user_id=user.id,
         sport=payload.sport,
-        candidates=payload.candidates,
+        candidates=candidates,
     )
     weight_cache: dict[tuple[str, str], dict[str, float]] = {}
     raw_evaluations = []
@@ -413,7 +440,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
     from app.hive.service import hive_bucket_key
 
     hive_policy = get_active_policy(db=db)
-    for candidate in payload.candidates:
+    for candidate in candidates:
         evaluation = decision_engine.evaluate(
             candidate,
             payload.user_risk_profile,
@@ -472,7 +499,8 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         analysis={
             "analysis_id": analysis_id,
             "user_id": user.id,
-            "candidate_count": len(payload.candidates),
+            "candidate_count": len(candidates),
+            "sheet_overlay_upgraded": overlay_upgraded,
             "official_pass": not any(
                 item.decision in {"PLAY", "LEAN"} for item in evaluations
             ),
@@ -622,13 +650,13 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         for record in records
         if record.decision in {"SKIP", "REVIEW"}
     ]
-    qualities = [candidate.data_quality for candidate in payload.candidates]
+    qualities = [candidate.data_quality for candidate in candidates]
     unknowns = sum(
         value == "unknown"
-        for candidate in payload.candidates
+        for candidate in candidates
         for value in candidate.source_status.values()
     )
-    readiness = slate_readiness(payload.candidates)
+    readiness = slate_readiness(candidates)
     hive_learning = hive_learning_maturity(db=db, sport=payload.sport)
     return AnalyzeResponse(
         model_version=settings.model_version,
@@ -642,15 +670,16 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             "protocol_run_id": protocol_run.id,
             "average_data_quality": round(sum(qualities) / len(qualities), 4),
             "missing_field_count": sum(
-                len(candidate.missing_fields) for candidate in payload.candidates
+                len(candidate.missing_fields) for candidate in candidates
             ),
             "unknown_source_labels": unknowns,
-            "candidate_count": len(payload.candidates),
+            "candidate_count": len(candidates),
+            "sheet_overlay_upgraded": overlay_upgraded,
             "official_pass_count": len(ranked),
             "official_skip_count": len(stay_away),
             "official_pass": len(ranked) == 0,
             "verified_candidate_count": sum(
-                1 for candidate in payload.candidates if slate_readiness([candidate]) == "VERIFIED"
+                1 for candidate in candidates if slate_readiness([candidate]) == "VERIFIED"
             ),
             "readiness": readiness,
             "hive_learning": hive_learning,
@@ -1045,10 +1074,10 @@ def log_external_result(
 
 @router.post("/settle-day", response_model=SettleDayResponse)
 def settle_day(user: SubscribedUser, db: DB) -> SettleDayResponse:
-    """Pull finals for locked tickets and every board PLAY/LEAN/WATCH pick.
+    """Pull finals for locked tickets, board PLAY/LEAN/WATCH, and Sheet-menu legs.
 
     Maps each settled game outcome onto Hive captures so learning covers the
-    full board universe, not only placed tickets.
+    full board/Sheet universe, not only placed tickets.
     """
     result = settle_user_day(db, user.id, timezone_name=user.timezone)
     items = result.items

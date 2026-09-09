@@ -28,6 +28,9 @@ ALLOWED_FLAGS = {
     "draw_et_trap",
     "minutes_restriction",
     "data_complete",
+    # Pick Sheet vs official Run calibration (analyze sets these deliberately).
+    "customer_sheet_selection",
+    "official_play",
 }
 
 
