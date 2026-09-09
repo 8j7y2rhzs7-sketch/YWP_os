@@ -219,21 +219,25 @@ export function EngineOrbit({
     inputRange: [0, 1],
     outputRange: ["0deg", "360deg"],
   });
-  const waveScale = wave.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0.55, hero ? 1.35 : 1.22],
-  });
-  const waveOpacity = wave.interpolate({
-    inputRange: [0, 0.15, 1],
-    outputRange: [0.55, 0.35, 0],
-  });
   const floatY = emblemFloat.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, -6],
+    outputRange: [0, hero ? -14 : -8],
+  });
+  const floatScale = emblemFloat.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, hero ? 1.04 : 1.02],
   });
   const glowOpacity = breathe.interpolate({
     inputRange: [0, 1],
-    outputRange: [0.35, 0.85],
+    outputRange: [0.4, 0.95],
+  });
+  const waveScale = wave.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.5, hero ? 1.55 : 1.32],
+  });
+  const waveOpacity = wave.interpolate({
+    inputRange: [0, 0.12, 1],
+    outputRange: [0.7, 0.4, 0],
   });
 
   const ticks = useMemo(() => {
@@ -411,16 +415,16 @@ export function EngineOrbit({
         />
       </Animated.View>
 
-      {/* Orbiting signal dots */}
-      {[0, 120, 240].map((offset) => (
+      {/* Orbiting signal dots — denser swarm */}
+      {[0, 45, 90, 135, 180, 225, 270, 315].map((offset) => (
         <Animated.View
           key={offset}
           pointerEvents="none"
           style={[
             styles.dotOrbit,
             {
-              width: core,
-              height: core,
+              width: core * (offset % 90 === 0 ? 1 : 0.86),
+              height: core * (offset % 90 === 0 ? 1 : 0.86),
               transform: [
                 {
                   rotate: spinA.interpolate({
@@ -436,8 +440,11 @@ export function EngineOrbit({
             style={[
               styles.dot,
               {
-                backgroundColor: offset === 0 ? colors.goldBright : ringColor,
-                shadowColor: offset === 0 ? colors.gold : ringColor,
+                width: offset % 90 === 0 ? 8 : 5,
+                height: offset % 90 === 0 ? 8 : 5,
+                borderRadius: 4,
+                backgroundColor: offset % 90 === 0 ? colors.goldBright : ringColor,
+                shadowColor: offset % 90 === 0 ? colors.gold : ringColor,
               },
             ]}
           />
@@ -462,7 +469,7 @@ export function EngineOrbit({
               tone === "loading"
                 ? "rgba(240,193,74,0.55)"
                 : "rgba(240,193,74,0.35)",
-            transform: [{ translateY: floatY }, { scale: ringScale }],
+            transform: [{ translateY: floatY }, { scale: Animated.multiply(ringScale, floatScale) }],
           },
         ]}
       />
@@ -472,7 +479,7 @@ export function EngineOrbit({
           width: emblem,
           height: emblem,
           borderRadius: emblem * 0.22,
-          transform: [{ translateY: floatY }],
+          transform: [{ translateY: floatY }, { scale: floatScale }],
         }}
         resizeMode="contain"
         accessibilityLabel="YWP Decision Engine"

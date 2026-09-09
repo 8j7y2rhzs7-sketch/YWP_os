@@ -68,19 +68,19 @@ export function AmbientField({
 
   const scale = pulse.interpolate({
     inputRange: [0, 1],
-    outputRange: [1, 1.12],
+    outputRange: [1, 1.22],
   });
   const blueOpacity = pulse.interpolate({
     inputRange: [0, 1],
-    outputRange: [0.22, 0.42],
+    outputRange: [0.28, 0.58],
   });
   const goldOpacity = pulse.interpolate({
     inputRange: [0, 1],
-    outputRange: [0.14, 0.3],
+    outputRange: [0.2, 0.48],
   });
   const scanY = scan.interpolate({
     inputRange: [0, 1],
-    outputRange: [-80, 720],
+    outputRange: [-120, 820],
   });
 
   return (
@@ -120,6 +120,29 @@ export function AmbientField({
           style={styles.scan}
         />
       </Animated.View>
+      <Animated.View
+        style={[
+          styles.scanWrap,
+          styles.scanWrapAlt,
+          {
+            transform: [
+              {
+                translateY: scan.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [640, -100],
+                }),
+              },
+            ],
+          },
+        ]}
+      >
+        <LinearGradient
+          colors={["rgba(240,193,74,0)", "rgba(240,193,74,0.28)", "rgba(26,168,240,0)", "transparent"]}
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 1, y: 0.5 }}
+          style={styles.scan}
+        />
+      </Animated.View>
       <LinearGradient
         colors={["transparent", "rgba(2,5,10,0.42)", "rgba(2,5,10,0.94)"]}
         style={styles.vignette}
@@ -132,47 +155,50 @@ export function AmbientField({
 const styles = StyleSheet.create({
   orbBlue: {
     position: "absolute",
-    top: -60,
-    left: -90,
-    width: 320,
-    height: 320,
-    borderRadius: 160,
+    top: -90,
+    left: -120,
+    width: 380,
+    height: 380,
+    borderRadius: 190,
     backgroundColor: colors.circuitBlue,
   },
   orbGold: {
     position: "absolute",
-    top: -80,
-    right: -70,
-    width: 280,
-    height: 280,
-    borderRadius: 140,
+    top: -100,
+    right: -90,
+    width: 340,
+    height: 340,
+    borderRadius: 170,
   },
   blueWash: {
     position: "absolute",
     left: 0,
     top: 0,
     bottom: 0,
-    width: "52%",
+    width: "55%",
     backgroundColor: colors.circuitBlue,
-    opacity: 0.1,
+    opacity: 0.14,
   },
   fieldWash: {
     position: "absolute",
     left: 0,
     right: 0,
-    top: "38%",
-    height: 180,
-    opacity: 0.05,
+    top: "32%",
+    height: 220,
+    opacity: 0.08,
   },
   scanWrap: {
     position: "absolute",
     left: 0,
     right: 0,
-    height: 40,
+    height: 56,
+  },
+  scanWrapAlt: {
+    opacity: 0.7,
   },
   scan: {
     flex: 1,
-    opacity: 0.28,
+    opacity: 0.42,
   },
   vignette: {
     ...StyleSheet.absoluteFill,

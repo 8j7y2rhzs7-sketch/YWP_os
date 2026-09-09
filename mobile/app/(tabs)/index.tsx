@@ -92,7 +92,7 @@ export default function CommandCenter() {
       <View style={styles.heroViewport}>
         <MotionReveal delay={0} fromY={28}>
           <EngineStage
-            size={248}
+            size={268}
             tone="idle"
             intensity="hero"
             calloutsActive
@@ -217,7 +217,7 @@ export default function CommandCenter() {
 
 const styles = StyleSheet.create({
   heroViewport: {
-    minHeight: 560,
+    minHeight: 620,
     alignItems: "center",
     justifyContent: "center",
     gap: spacing.md,

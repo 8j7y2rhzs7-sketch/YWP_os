@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
-import { Animated, StyleSheet, Text } from "react-native";
+import { Animated, StyleSheet, Text, View } from "react-native";
 
+import { CountUp } from "@/components/CountUp";
 import { useReduceMotion } from "@/hooks/useReduceMotion";
 import { colors, fonts, radius, spacing } from "@/theme";
 
@@ -15,6 +16,7 @@ export function Metric({
 }) {
   const reduceMotion = useReduceMotion();
   const pop = useRef(new Animated.Value(reduceMotion ? 1 : 0)).current;
+  const numeric = typeof value === "number" ? value : null;
 
   useEffect(() => {
     if (reduceMotion) {
@@ -24,8 +26,8 @@ export function Metric({
     pop.setValue(0);
     Animated.spring(pop, {
       toValue: 1,
-      friction: 6,
-      tension: 140,
+      friction: 5,
+      tension: 160,
       useNativeDriver: true,
     }).start();
   }, [pop, reduceMotion, value]);
@@ -40,16 +42,26 @@ export function Metric({
             {
               scale: pop.interpolate({
                 inputRange: [0, 1],
-                outputRange: [0.86, 1],
+                outputRange: [0.78, 1],
+              }),
+            },
+            {
+              translateY: pop.interpolate({
+                inputRange: [0, 1],
+                outputRange: [10, 0],
               }),
             },
           ],
         },
       ]}
     >
-      <Text style={[styles.value, { color: accent }]} numberOfLines={1}>
-        {value}
-      </Text>
+      {numeric === null ? (
+        <Text style={[styles.value, { color: accent }]} numberOfLines={1}>
+          {value}
+        </Text>
+      ) : (
+        <CountUp value={numeric} style={{ ...styles.value, color: accent }} />
+      )}
       <Text style={styles.label}>{label}</Text>
     </Animated.View>
   );
