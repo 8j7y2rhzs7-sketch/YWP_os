@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, type ReactNode } from "react";
 import {
   Animated,
   Easing,
-  Image,
   StyleSheet,
   Text,
   View,
@@ -13,6 +12,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 
 import { brandAssets } from "@/brandAssets";
+import { EngineHeroLoop } from "@/components/EngineHeroLoop";
 import { useReduceMotion } from "@/hooks/useReduceMotion";
 import { colors, fonts, spacing } from "@/theme";
 
@@ -473,17 +473,17 @@ export function EngineOrbit({
           },
         ]}
       />
-      <Animated.Image
-        source={source}
+      <Animated.View
         style={{
-          width: emblem,
-          height: emblem,
-          borderRadius: emblem * 0.22,
           transform: [{ translateY: floatY }, { scale: floatScale }],
         }}
-        resizeMode="contain"
-        accessibilityLabel="YWP Decision Engine"
-      />
+      >
+        <EngineHeroLoop
+          size={emblem}
+          shape="circle"
+          sourceStill={source}
+        />
+      </Animated.View>
       {label ? (
         <Animated.View style={[styles.labelWrap, { opacity: settle }]}>
           <Text style={styles.label}>{label}</Text>
