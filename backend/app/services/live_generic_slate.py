@@ -93,7 +93,9 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
         return []
 
     injury_feed = (
-        league_injuries(sport_code) if espn_path_for(sport_code) else {"verified": False}
+        league_injuries(sport_code)
+        if (espn_path_for(sport_code) or sport_lower == "kbo")
+        else {"verified": False}
     )
     candidates: list[CandidateInput] = []
     now = datetime.now(UTC)
