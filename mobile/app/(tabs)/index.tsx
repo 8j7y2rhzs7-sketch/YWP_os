@@ -1,9 +1,8 @@
 import { router } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
-import { brandAssets } from "@/brandAssets";
-import { BrandHeader } from "@/components/BrandHeader";
+import { EngineOrbit } from "@/components/EngineOrbit";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { LoadingState } from "@/components/LoadingState";
 import { MetalPanel } from "@/components/MetalPanel";
@@ -72,37 +71,47 @@ export default function CommandCenter() {
   if (loading) {
     return (
       <Screen>
-        <BrandHeader />
-        <LoadingState label="Loading command center…" />
+        <View style={styles.heroViewport}>
+          <EngineOrbit size={200} tone="loading" label="Booting" />
+          <Text style={styles.brandMark}>{brand.product}</Text>
+          <LoadingState label="Decision Engine warming…" />
+        </View>
       </Screen>
     );
   }
 
+  const support =
+    pulse?.headline ??
+    "Run a slate, lock a ticket, grade a result. Edge over noise.";
+
   return (
     <Screen refreshing={refreshing} onRefresh={() => void load(true)}>
-      <BrandHeader />
-      {/* Vision art alone — no copy over the poster */}
-      <View style={styles.engineHero}>
-        <Image
-          source={brandAssets.decisionEngineEmblem}
-          style={styles.engineArt}
-          resizeMode="contain"
-          accessibilityLabel="YWP Decision Engine brand artwork"
-        />
-      </View>
-      <MetalPanel tone="gold" style={styles.hero}>
-        <View style={styles.heroTop}>
-          <View style={styles.heroCopy}>
-            <Text style={styles.brandMark}>{brand.product}</Text>
-            <Text style={type.eyebrow}>WELCOME BACK, {user?.name}</Text>
-            <Text style={styles.heroTitle}>Your winning process.</Text>
-            <Text style={styles.heroText}>
-              {pulse?.headline ??
-                "Run a slate, lock a ticket, grade a result. Quiet metal is the chassis — edge is the point."}
-            </Text>
-          </View>
-          <StatusPill value={protocol?.status ?? "canonical"} />
+      {/* First viewport: one composition — brand, headline, support, CTA, focal engine */}
+      <View style={styles.heroViewport}>
+        <EngineOrbit size={236} tone="idle" />
+        <Text style={styles.brandMark}>{brand.product}</Text>
+        <Text style={styles.heroTitle}>Your winning process.</Text>
+        <Text style={styles.heroSupport} numberOfLines={2}>
+          {support}
+        </Text>
+        <View style={styles.ctaGroup}>
+          <YwpButton
+            label="RUN TODAY'S FULL PROTOCOL"
+            onPress={() => router.push("/(tabs)/slate")}
+          />
+          <Text style={styles.welcome}>
+            Welcome back, {user?.name ?? "operator"} · {brand.skin}
+          </Text>
         </View>
+      </View>
+
+      {error ? <ErrorNotice message={error} /> : null}
+
+      <SectionTitle
+        title="Session pulse"
+        subtitle="Bankroll and Hive signals sit below the engine — not on top of it."
+      />
+      <MetalPanel tone="gold">
         <View style={styles.metrics}>
           <Metric label="Bankroll" value={`$${Number(bankroll?.balance ?? 0).toFixed(2)}`} />
           <Metric
@@ -122,9 +131,7 @@ export default function CommandCenter() {
             }
           />
         </View>
-        <YwpButton label="RUN TODAY'S FULL PROTOCOL" onPress={() => router.push("/(tabs)/slate")} />
       </MetalPanel>
-      {error ? <ErrorNotice message={error} /> : null}
 
       <SectionTitle
         title="Protocol State"
@@ -186,40 +193,51 @@ export default function CommandCenter() {
 }
 
 const styles = StyleSheet.create({
-  engineHero: {
-    height: 268,
-    borderRadius: 20,
-    overflow: "hidden",
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: "rgba(26,168,240,0.38)",
-    backgroundColor: colors.background,
+  heroViewport: {
+    minHeight: 520,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: spacing.md,
+    gap: spacing.md,
+    paddingTop: spacing.xl,
+    paddingBottom: spacing.xxl,
   },
-  engineArt: {
-    width: "92%",
-    height: "100%",
-  },
-  hero: { gap: spacing.lg },
   brandMark: {
     color: colors.goldBright,
     fontFamily: fonts.display,
-    fontSize: 26,
+    fontSize: 42,
     fontWeight: "800",
-    letterSpacing: -0.7,
+    letterSpacing: -1.4,
+    textAlign: "center",
+    marginTop: spacing.sm,
   },
-  heroTop: { flexDirection: "row", alignItems: "flex-start", gap: spacing.md },
-  heroCopy: { flex: 1, gap: spacing.sm },
   heroTitle: {
     color: colors.white,
     fontFamily: fonts.display,
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: "800",
-    letterSpacing: -0.8,
-    lineHeight: 30,
+    letterSpacing: -0.6,
+    lineHeight: 28,
+    textAlign: "center",
   },
-  heroText: { ...type.body, color: colors.silver },
+  heroSupport: {
+    ...type.body,
+    color: colors.silver,
+    textAlign: "center",
+    maxWidth: 340,
+    paddingHorizontal: spacing.md,
+  },
+  ctaGroup: {
+    width: "100%",
+    gap: spacing.sm,
+    marginTop: spacing.md,
+  },
+  welcome: {
+    ...type.caption,
+    textAlign: "center",
+    color: colors.dim,
+    letterSpacing: 0.4,
+  },
+  heroCopy: { flex: 1, gap: spacing.sm },
   metrics: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
   protocolHeader: { flexDirection: "row", alignItems: "center", gap: spacing.md },
   panelTitle: {

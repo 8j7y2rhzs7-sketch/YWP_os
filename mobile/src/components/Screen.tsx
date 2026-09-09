@@ -34,8 +34,8 @@ export function Screen({
   const look = sportLook(sport);
   const enter = useRef(new Animated.Value(0)).current;
   const insets = useSafeAreaInsets();
-  // Tab bar is absolute + uses safe-area padding; keep scroll content above both.
-  const bottomPad = 72 + Math.max(insets.bottom, 8);
+  // Floating dock sits 8px above safe area; keep scroll clear of dock + margin.
+  const bottomPad = 86 + Math.max(insets.bottom, 10);
 
   useEffect(() => {
     Animated.timing(enter, {

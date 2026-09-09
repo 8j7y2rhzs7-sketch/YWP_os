@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { Animated, StyleSheet, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { AccessibilityInfo, Animated, StyleSheet, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { colors, gradients } from "@/theme";
@@ -12,20 +12,41 @@ export function AmbientField({
   sportAccent?: string;
   pageColors?: readonly [string, string, string];
 }) {
+  const [reduceMotion, setReduceMotion] = useState(false);
   const pulse = useRef(new Animated.Value(0)).current;
   const scan = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    let alive = true;
+    AccessibilityInfo.isReduceMotionEnabled().then((value) => {
+      if (alive) setReduceMotion(value);
+    });
+    const sub = AccessibilityInfo.addEventListener(
+      "reduceMotionChanged",
+      setReduceMotion,
+    );
+    return () => {
+      alive = false;
+      sub.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (reduceMotion) {
+      pulse.setValue(0.45);
+      scan.setValue(0.35);
+      return;
+    }
     const breathe = Animated.loop(
       Animated.sequence([
         Animated.timing(pulse, {
           toValue: 1,
-          duration: 4800,
+          duration: 5200,
           useNativeDriver: true,
         }),
         Animated.timing(pulse, {
           toValue: 0,
-          duration: 4800,
+          duration: 5200,
           useNativeDriver: true,
         }),
       ]),
@@ -33,7 +54,7 @@ export function AmbientField({
     const beam = Animated.loop(
       Animated.timing(scan, {
         toValue: 1,
-        duration: 5600,
+        duration: 7800,
         useNativeDriver: true,
       }),
     );
@@ -43,7 +64,7 @@ export function AmbientField({
       breathe.stop();
       beam.stop();
     };
-  }, [pulse, scan]);
+  }, [pulse, reduceMotion, scan]);
 
   const scale = pulse.interpolate({
     inputRange: [0, 1],
@@ -51,11 +72,11 @@ export function AmbientField({
   });
   const blueOpacity = pulse.interpolate({
     inputRange: [0, 1],
-    outputRange: [0.34, 0.62],
+    outputRange: [0.22, 0.42],
   });
   const goldOpacity = pulse.interpolate({
     inputRange: [0, 1],
-    outputRange: [0.22, 0.42],
+    outputRange: [0.14, 0.3],
   });
   const scanY = scan.interpolate({
     inputRange: [0, 1],
@@ -151,7 +172,7 @@ const styles = StyleSheet.create({
   },
   scan: {
     flex: 1,
-    opacity: 0.55,
+    opacity: 0.28,
   },
   vignette: {
     ...StyleSheet.absoluteFill,

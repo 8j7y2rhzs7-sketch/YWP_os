@@ -1,12 +1,12 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Redirect, Tabs } from "expo-router";
 import type { ComponentProps } from "react";
-import { Image, StyleSheet, type ColorValue } from "react-native";
+import { Image, Platform, StyleSheet, type ColorValue } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { brandAssets } from "@/brandAssets";
 import { useAuth } from "@/context/AuthContext";
-import { colors, fonts } from "@/theme";
+import { colors, fonts, radius } from "@/theme";
 
 type IconName = ComponentProps<typeof MaterialCommunityIcons>["name"];
 
@@ -30,9 +30,9 @@ function HomeLogoIcon({ focused }: { color: ColorValue; size: number; focused: b
 export default function TabLayout() {
   const { user, loading } = useAuth();
   const insets = useSafeAreaInsets();
-  // Keep tab labels clear of Android 3-button / gesture system nav.
-  const bottomInset = Math.max(insets.bottom, 8);
-  const tabBarHeight = 56 + bottomInset;
+  // Floating dock: clear of Android system nav, inset from screen edges.
+  const bottomInset = Math.max(insets.bottom, 10);
+  const tabBarHeight = 58 + bottomInset;
 
   if (!loading && !user) return <Redirect href="/(auth)/login" />;
   if (!loading && user && !user.has_app_access) return <Redirect href="/(auth)/paywall" />;
@@ -40,21 +40,32 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.circuitBlueBright,
+        tabBarActiveTintColor: colors.goldBright,
         tabBarInactiveTintColor: colors.dim,
         tabBarHideOnKeyboard: true,
         tabBarStyle: {
-          backgroundColor: "rgba(2,5,10,0.98)",
-          borderTopColor: "rgba(26,168,240,0.28)",
-          borderTopWidth: StyleSheet.hairlineWidth,
+          backgroundColor: "rgba(7,14,22,0.94)",
+          borderTopWidth: 0,
+          borderWidth: StyleSheet.hairlineWidth,
+          borderColor: "rgba(240,193,74,0.28)",
+          borderRadius: radius.xl,
           height: tabBarHeight,
-          paddingTop: 6,
+          paddingTop: 8,
           paddingBottom: bottomInset,
           position: "absolute",
-          left: 0,
-          right: 0,
-          bottom: 0,
-          elevation: 0,
+          left: 12,
+          right: 12,
+          bottom: 8,
+          elevation: 12,
+          ...Platform.select({
+            ios: {
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 10 },
+              shadowOpacity: 0.35,
+              shadowRadius: 18,
+            },
+            default: {},
+          }),
         },
         tabBarItemStyle: {
           paddingVertical: 2,
@@ -110,6 +121,6 @@ const styles = StyleSheet.create({
   homeLogoActive: {
     opacity: 1,
     borderWidth: 1,
-    borderColor: colors.circuitBlueBright,
+    borderColor: colors.goldBright,
   },
 });
