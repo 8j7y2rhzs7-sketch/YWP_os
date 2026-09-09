@@ -6,6 +6,7 @@ import { EngineStage } from "@/components/EngineStage";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { LoadingState } from "@/components/LoadingState";
 import { MetalPanel } from "@/components/MetalPanel";
+import { MetalShimmer } from "@/components/MetalShimmer";
 import { Metric } from "@/components/Metric";
 import { MotionReveal } from "@/components/MotionReveal";
 import { Screen } from "@/components/Screen";
@@ -104,7 +105,9 @@ export default function CommandCenter() {
           />
         </MotionReveal>
         <MotionReveal delay={160}>
-          <Text style={styles.brandMark}>{brand.product}</Text>
+          <MetalShimmer intensity="bright" periodMs={3200} style={styles.brandShimmer}>
+            <Text style={styles.brandMark}>{brand.product}</Text>
+          </MetalShimmer>
         </MotionReveal>
         <MotionReveal delay={280}>
           <Text style={styles.heroTitle}>Your winning process.</Text>
@@ -220,6 +223,10 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     paddingTop: spacing.xl,
     paddingBottom: spacing.xxl,
+  },
+  brandShimmer: {
+    alignSelf: "center",
+    borderRadius: 8,
   },
   brandMark: {
     color: colors.goldBright,
