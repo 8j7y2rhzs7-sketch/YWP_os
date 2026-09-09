@@ -12,6 +12,7 @@ import { MetalPanel } from "@/components/MetalPanel";
 import { MotionReveal } from "@/components/MotionReveal";
 import { Screen } from "@/components/Screen";
 import { SectionTitle } from "@/components/SectionTitle";
+import { SportBallIcon } from "@/components/SportBallIcon";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAppData } from "@/context/AppDataContext";
@@ -295,7 +296,11 @@ export default function SlateScreen() {
                 ]}
               >
                 <View style={[styles.sportStripe, { backgroundColor: itemLook.accent }]} />
-                <Text style={styles.sportIcon}>{item.icon}</Text>
+                <SportBallIcon
+                  icon={item.icon}
+                  spinning={active && (loadingSlate || analyzing)}
+                  size={28}
+                />
                 <Text
                   style={[
                     styles.sportLabel,
@@ -460,7 +465,6 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   sportOutOfSeason: { opacity: 0.42 },
-  sportIcon: { fontSize: 28 },
   sportLabel: {
     color: colors.silver,
     fontFamily: fonts.bodyBold,
