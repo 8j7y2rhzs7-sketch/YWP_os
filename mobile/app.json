@@ -2,7 +2,7 @@
   "expo": {
     "name": "YWP OS",
     "slug": "ywp-os",
-    "version": "3.3.24",
+    "version": "3.3.25",
     "orientation": "portrait",
     "scheme": "ywpos",
     "userInterfaceStyle": "dark",
@@ -10,7 +10,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ywpos.app",
-      "buildNumber": "34",
+      "buildNumber": "35",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "NSPhotoLibraryAddUsageDescription": "YWP OS saves share graphics to your photo library when you export a decision card.",
@@ -46,7 +46,7 @@
     },
     "android": {
       "package": "com.ywpos.app",
-      "versionCode": 34,
+      "versionCode": 35,
       "usesCleartextTraffic": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/brand/vision/decision-engine-emblem-square.png",
