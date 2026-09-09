@@ -14,7 +14,12 @@ from decimal import Decimal
 from app.schemas import CandidateInput
 from app.services.espn_provider import espn_path_for
 from app.services.facts_cascade import league_injuries
-from app.services.odds_provider import extract_best_odds, get_game_odds
+from app.services.odds_provider import (
+    active_odds_keys_for_app_sport,
+    extract_best_odds,
+    get_game_odds,
+    soccer_league_label,
+)
 from app.services.sport_research import build_event_research, build_verified_candidate
 
 logger = logging.getLogger(__name__)
@@ -25,7 +30,9 @@ SPORT_KEYS: dict[str, str] = {
     "nhl": "icehockey_nhl",
     "ncaaf": "americanfootball_ncaaf",
     "ncaab": "basketball_ncaab",
-    "soccer": "soccer_usa_mls",
+    # soccer primary key retained for SPORT_KEYS membership; multi-league via
+    # active_odds_keys_for_app_sport("soccer").
+    "soccer": "soccer_epl",
     "epl": "soccer_epl",
     "mls": "soccer_usa_mls",
     "kbo": "baseball_kbo",
@@ -37,7 +44,7 @@ SPORT_DISPLAY: dict[str, tuple[str, str]] = {
     "nhl": ("nhl", "NHL"),
     "ncaaf": ("ncaaf", "NCAAF"),
     "ncaab": ("ncaab", "NCAAB"),
-    "soccer": ("soccer", "MLS"),
+    "soccer": ("soccer", "Soccer"),
     "epl": ("soccer", "EPL"),
     "mls": ("soccer", "MLS"),
     "kbo": ("kbo", "KBO"),
@@ -48,21 +55,37 @@ SOCCER_KEYS = {"soccer", "epl", "mls"}
 
 def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
     sport_lower = sport.lower()
-    odds_key = SPORT_KEYS.get(sport_lower)
-    if not odds_key:
+    if sport_lower not in SPORT_KEYS:
         logger.warning("No Odds API sport key for %s", sport)
         return []
 
-    sport_code, league = SPORT_DISPLAY.get(sport_lower, (sport_lower, sport.upper()))
+    sport_code, default_league = SPORT_DISPLAY.get(sport_lower, (sport_lower, sport.upper()))
+    odds_keys = active_odds_keys_for_app_sport(sport_lower)
+    if not odds_keys:
+        # Fall back to legacy single mapping when catalog filtering returned nothing.
+        odds_keys = [SPORT_KEYS[sport_lower]]
 
-    try:
-        odds_events = get_game_odds(sport=odds_key, markets="h2h,spreads,totals")
-    except Exception:
-        logger.exception("Failed to fetch %s odds", sport)
-        return []
+    odds_events: list[dict] = []
+    leagues_fetched: list[str] = []
+    for odds_key in odds_keys:
+        try:
+            batch = get_game_odds(sport=odds_key, markets="h2h,spreads,totals")
+        except Exception:
+            logger.exception("Failed to fetch %s odds (%s)", sport, odds_key)
+            continue
+        if not batch:
+            continue
+        leagues_fetched.append(soccer_league_label(odds_key) if sport_lower in SOCCER_KEYS else default_league)
+        for event in batch:
+            enriched = dict(event)
+            enriched["_ywp_odds_key"] = odds_key
+            enriched["_ywp_league"] = (
+                soccer_league_label(odds_key) if sport_lower in SOCCER_KEYS else default_league
+            )
+            odds_events.append(enriched)
 
     if not odds_events:
-        logger.warning("No %s events found", sport)
+        logger.warning("No %s events found across keys %s", sport, odds_keys)
         return []
 
     injury_feed = (
@@ -82,7 +105,10 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
         event_id = event.get("id", "")
         home = event.get("home_team", "")
         away = event.get("away_team", "")
+        league = str(event.get("_ywp_league") or default_league)
         event_name = f"{away} @ {home}"
+        if sport_lower == "soccer" and league and league != "Soccer":
+            event_name = f"{away} @ {home} ({league})"
         bookmakers = event.get("bookmakers", [])
         try:
             research = build_event_research(
@@ -117,12 +143,13 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
             logger.exception("Failed building candidates for %s %s", sport, event_name)
 
     logger.info(
-        "Built %d live %s candidates from %d Odds events on %s (%d date-matched)",
+        "Built %d live %s candidates from %d Odds events on %s (%d date-matched; leagues=%s)",
         len(candidates),
         sport,
         len(odds_events),
         slate_date,
         matched_events,
+        ",".join(leagues_fetched) or default_league,
     )
     return candidates
 
@@ -133,23 +160,28 @@ def upcoming_odds_dates(sport: str, *, limit: int = 5) -> list[str]:
     Uses the same market bundle as the live slate so a prior paid fetch can be
     served from the short Odds TTL cache (0 extra credits).
     """
-    odds_key = SPORT_KEYS.get(sport.lower())
-    if not odds_key:
-        return []
-    try:
-        events = get_game_odds(sport=odds_key, markets="h2h,spreads,totals")
-    except Exception:
+    sport_lower = sport.lower()
+    odds_keys = active_odds_keys_for_app_sport(sport_lower)
+    if not odds_keys:
+        odds_key = SPORT_KEYS.get(sport_lower)
+        odds_keys = [odds_key] if odds_key else []
+    if not odds_keys:
         return []
     dates: list[str] = []
-    for event in events:
-        start = _parse_start(event.get("commence_time"))
-        if start is None:
+    for odds_key in odds_keys:
+        try:
+            events = get_game_odds(sport=odds_key, markets="h2h,spreads,totals")
+        except Exception:
             continue
-        stamp = start.astimezone(UTC).date().isoformat()
-        if stamp not in dates:
-            dates.append(stamp)
-        if len(dates) >= limit:
-            break
+        for event in events:
+            start = _parse_start(event.get("commence_time"))
+            if start is None:
+                continue
+            stamp = start.astimezone(UTC).date().isoformat()
+            if stamp not in dates:
+                dates.append(stamp)
+            if len(dates) >= limit:
+                return sorted(dates)[:limit]
     return sorted(dates)[:limit]
 
 

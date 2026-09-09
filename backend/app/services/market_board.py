@@ -24,10 +24,12 @@ from app.services.decision_engine import implied_probability
 from app.services.odds_provider import (
     APP_SPORT_TO_ODDS_KEY,
     PREFERRED_BOOKS,
+    active_odds_keys_for_app_sport,
     get_game_odds,
     get_last_fetch_status,
     get_player_props,
     odds_api_configured,
+    soccer_league_label,
 )
 from app.services.ticket_gates import event_market_status
 
@@ -54,7 +56,7 @@ _LEAGUE: dict[str, str] = {
     "ncaaf": "NCAAF",
     "ncaab": "NCAAB",
     "nhl": "NHL",
-    "soccer": "MLS",
+    "soccer": "Soccer",
     "mls": "MLS",
     "epl": "EPL",
     "kbo": "KBO",
@@ -70,14 +72,34 @@ def build_market_board(
 ) -> tuple[list[CandidateInput], str]:
     """Return (candidates, notice) for a DraftKings-style selectable board."""
     sport_lower = sport.lower().strip()
-    odds_key = APP_SPORT_TO_ODDS_KEY.get(sport_lower)
-    if not odds_key:
+    odds_keys = active_odds_keys_for_app_sport(sport_lower)
+    if not odds_keys:
+        legacy = APP_SPORT_TO_ODDS_KEY.get(sport_lower)
+        odds_keys = [legacy] if legacy else []
+    if not odds_keys:
         return [], f"No Odds sport mapping for {sport_lower}."
     if not odds_api_configured() and not settings.demo_mode:
         return [], "ODDS_API_KEY is not configured — cannot load a sportsbook menu."
 
+    odds_events: list[dict[str, Any]] = []
+    leagues_hit: list[str] = []
     try:
-        odds_events = get_game_odds(sport=odds_key, markets="h2h,spreads,totals")
+        for odds_key in odds_keys:
+            batch = get_game_odds(sport=odds_key, markets="h2h,spreads,totals")
+            if not batch:
+                continue
+            label = (
+                soccer_league_label(odds_key)
+                if sport_lower in {"soccer", "epl", "mls"}
+                else _LEAGUE.get(sport_lower, sport_lower.upper())
+            )
+            if label not in leagues_hit:
+                leagues_hit.append(label)
+            for event in batch:
+                enriched = dict(event)
+                enriched["_ywp_odds_key"] = odds_key
+                enriched["_ywp_league"] = label
+                odds_events.append(enriched)
     except Exception:
         logger.exception("Market board odds fetch failed for %s", sport_lower)
         return [], (
@@ -100,6 +122,7 @@ def build_market_board(
         if not _on_slate_date(start_time, slate_date):
             continue
         matched_events += 1
+        league = str(event.get("_ywp_league") or _LEAGUE.get(sport_lower, sport_lower.upper()))
         try:
             board.extend(
                 _flatten_game_markets(
@@ -107,6 +130,7 @@ def build_market_board(
                     sport=sport_lower,
                     start_time=start_time,
                     now=now,
+                    league=league,
                 )
             )
         except Exception:
@@ -137,6 +161,10 @@ def build_market_board(
                 event_id = str(event.get("id") or "")
                 if not event_id:
                     continue
+                odds_key = str(event.get("_ywp_odds_key") or odds_keys[0])
+                league = str(
+                    event.get("_ywp_league") or _LEAGUE.get(sport_lower, sport_lower.upper())
+                )
                 merged_books: list[dict[str, Any]] = []
                 got_any = False
                 for chunk in market_chunks:
@@ -165,6 +193,7 @@ def build_market_board(
                             sport=sport_lower,
                             start_time=start_time,
                             now=now,
+                            league=league,
                         )
                     )
                 except Exception:
@@ -184,6 +213,9 @@ def build_market_board(
     credit_note = ""
     if remaining is not None and str(remaining).strip() != "":
         credit_note = f" Odds credits remaining ≈ {remaining}."
+    league_note = ""
+    if leagues_hit:
+        league_note = f" Leagues: {', '.join(leagues_hit)}."
 
     notice = (
         f"Sportsbook menu for {sport_lower.upper()} {slate_date.isoformat()}: "
@@ -195,7 +227,9 @@ def build_market_board(
             if overlay_count
             else ""
         )
-        + ". Select anything — Check grades each leg; only PLAY/LEAN can build a ticket."
+        + "."
+        + league_note
+        + " Select anything — Check grades each leg; only PLAY/LEAN can build a ticket."
         + credit_note
     )
     return board, notice
@@ -304,6 +338,7 @@ def _flatten_game_markets(
     sport: str,
     start_time: datetime,
     now: datetime,
+    league: str | None = None,
 ) -> list[CandidateInput]:
     bookmakers = event.get("bookmakers") or []
     if not bookmakers:
@@ -311,7 +346,10 @@ def _flatten_game_markets(
     event_id = str(event.get("id") or "")
     home = str(event.get("home_team") or "")
     away = str(event.get("away_team") or "")
+    league_label = league or _LEAGUE.get(sport, sport.upper())
     event_name = f"{away} @ {home}" if away and home else event_id
+    if sport == "soccer" and league_label and league_label not in {"Soccer", "MLS"}:
+        event_name = f"{event_name} ({league_label})"
     rows: list[CandidateInput] = []
 
     for offer in _best_outcomes(bookmakers, market_keys={"h2h", "spreads", "totals"}):
@@ -366,6 +404,7 @@ def _flatten_game_markets(
                     now=now,
                     player_key=None,
                     market_is_pitcher_strikeout_over=False,
+                    league=league_label,
                 )
             )
         except (ValidationError, ValueError) as exc:
@@ -379,6 +418,7 @@ def _flatten_prop_markets(
     sport: str,
     start_time: datetime,
     now: datetime,
+    league: str | None = None,
 ) -> list[CandidateInput]:
     bookmakers = event.get("bookmakers") or []
     if not bookmakers:
@@ -386,6 +426,7 @@ def _flatten_prop_markets(
     event_id = str(event.get("id") or "")
     home = str(event.get("home_team") or "")
     away = str(event.get("away_team") or "")
+    league_label = league or _LEAGUE.get(sport, sport.upper())
     event_name = f"{away} @ {home}" if away and home else event_id
     rows: list[CandidateInput] = []
 
@@ -436,6 +477,7 @@ def _flatten_prop_markets(
                     now=now,
                     player_key=f"{sport}-prop-{player_slug}"[:120],
                     market_is_pitcher_strikeout_over=is_k and is_over,
+                    league=league_label,
                 )
             )
         except (ValidationError, ValueError) as exc:
@@ -537,6 +579,7 @@ def _board_candidate(
     now: datetime,
     player_key: str | None,
     market_is_pitcher_strikeout_over: bool,
+    league: str | None = None,
 ) -> CandidateInput:
     implied = implied_probability(odds)
     implied = max(0.02, min(0.98, float(implied)))
@@ -549,7 +592,7 @@ def _board_candidate(
         event_id=event_id[:100],
         event_name=event_name[:180],
         sport=sport,
-        league=_LEAGUE.get(sport, sport.upper()),
+        league=(league or _LEAGUE.get(sport, sport.upper()))[:40],
         start_time=start_time,
         home_team=home_team,
         away_team=away_team,
