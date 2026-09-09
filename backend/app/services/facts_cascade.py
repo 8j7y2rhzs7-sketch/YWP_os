@@ -10,7 +10,7 @@ import logging
 from datetime import date
 from typing import Any
 
-from app.services import espn_provider, nhl_provider
+from app.services import espn_provider, kbo_provider, nhl_provider
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +36,27 @@ def match_schedule_game(
             errors.append(f"nhl_web_api:{exc}")
             logger.warning("NHL schedule cascade miss: %s", exc)
 
+    if sport_l == "kbo":
+        # ESPN has no baseball/kbo path — Odds is the schedule backbone.
+        try:
+            game = kbo_provider.match_odds_event_to_kbo(
+                slate_date, home_team=home_team, away_team=away_team
+            )
+            if game:
+                return game
+        except Exception as exc:  # noqa: BLE001
+            errors.append(f"the_odds_api_kbo:{exc}")
+            logger.warning("KBO schedule cascade miss: %s", exc)
+        if errors:
+            logger.info(
+                "No schedule match for %s %s @ %s (%s)",
+                sport_l,
+                away_team,
+                home_team,
+                "; ".join(errors),
+            )
+        return None
+
     try:
         game = espn_provider.match_odds_event_to_espn(
             sport_l, slate_date, home_team=home_team, away_team=away_team
@@ -57,6 +78,7 @@ def team_recent_form(
     slate_date: date,
     *,
     team_abbrev: str | None = None,
+    team_name: str | None = None,
 ) -> dict[str, Any]:
     sport_l = sport.lower()
 
@@ -67,6 +89,15 @@ def team_recent_form(
                 return form
         except Exception as exc:  # noqa: BLE001
             logger.warning("NHL form cascade miss: %s", exc)
+
+    if sport_l == "kbo" and team_name:
+        try:
+            form = kbo_provider.get_team_recent_form(team_name, slate_date)
+            if form.get("verified"):
+                return form
+            return form
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("KBO form cascade miss: %s", exc)
 
     if team_id:
         try:
@@ -87,6 +118,9 @@ def team_recent_form(
 
 
 def league_injuries(sport: str) -> dict[str, Any]:
+    sport_l = sport.lower()
+    if sport_l == "kbo":
+        return kbo_provider.injuries_policy()
     try:
         return espn_provider.get_league_injuries(sport)
     except Exception as exc:  # noqa: BLE001

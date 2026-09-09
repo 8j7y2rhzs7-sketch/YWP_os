@@ -615,6 +615,39 @@ def get_event_odds(
     return None
 
 
+def get_scores(
+    sport: str,
+    *,
+    days_from: int = 3,
+) -> list[dict[str, Any]]:
+    """Fetch live/recent scores for a sport (used for KBO form when ESPN is absent).
+
+    Odds API allows daysFrom up to 3. Cached briefly like paid odds.
+    """
+    import time
+
+    if not odds_api_configured():
+        return []
+    days = max(1, min(3, int(days_from)))
+    cache_key = f"scores|{sport}|{days}"
+    now = time.time()
+    cached = _odds_response_cache.get(cache_key)
+    if cached and now - float(cached.get("fetched_at") or 0.0) < _ODDS_CACHE_TTL_SECONDS:
+        return list(cached.get("data") or [])
+    try:
+        data = _get_sync(
+            f"/v4/sports/{sport}/scores",
+            {"daysFrom": str(days)},
+        )
+    except Exception:
+        logger.exception("Odds scores fetch failed for %s", sport)
+        return []
+    if not isinstance(data, list):
+        return []
+    _odds_response_cache[cache_key] = {"fetched_at": now, "data": data}
+    return data
+
+
 # ---------------------------------------------------------------------------
 # Player props
 # ---------------------------------------------------------------------------

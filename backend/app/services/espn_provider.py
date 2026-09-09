@@ -34,6 +34,7 @@ _HEADERS = {
 }
 
 # sport code -> ESPN path segment
+# KBO is intentionally omitted — ESPN has no baseball/kbo league (400 invalid).
 ESPN_SPORT_PATHS: dict[str, str] = {
     "wnba": "basketball/wnba",
     "nba": "basketball/nba",
@@ -44,7 +45,6 @@ ESPN_SPORT_PATHS: dict[str, str] = {
     "soccer": "soccer/usa.1",
     "mls": "soccer/usa.1",
     "epl": "soccer/eng.1",
-    "kbo": "baseball/kbo",
 }
 
 WEATHER_SPORTS = {"nfl", "ncaaf", "soccer", "mls", "epl", "kbo"}

@@ -272,15 +272,23 @@ def slate(
         try:
             candidates = live_generic_slate(sport_lower, slate_date)
             if candidates:
+                if sport_lower == "kbo":
+                    notice = (
+                        "Live KBO prices from The Odds API. Research uses Odds scores + "
+                        "Open-Meteo (ESPN has no baseball/kbo path). Full-game markets can "
+                        "clear when schedule, recent form, weather, and price consensus verify."
+                    )
+                else:
+                    notice = (
+                        f"Live {sport_lower.upper()} prices from The Odds API with "
+                        "multi-source fact cascade (NHL Web API / ESPN / Open-Meteo). "
+                        "Missing research stays PARTIAL — priced plays are still shown."
+                    )
                 return _slate_response(
                     sport=sport_lower,
                     slate_date=slate_date,
                     mode="live",
-                    notice=(
-                        f"Live {sport_lower.upper()} prices from The Odds API with "
-                        "multi-source fact cascade (NHL Web API / ESPN / Open-Meteo). "
-                        "Missing research stays PARTIAL — priced plays are still shown."
-                    ),
+                    notice=notice,
                     candidates=candidates,
                 )
             nearby = upcoming_odds_dates(sport_lower)
