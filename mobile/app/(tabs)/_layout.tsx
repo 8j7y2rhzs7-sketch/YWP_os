@@ -1,30 +1,36 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Redirect, Tabs } from "expo-router";
-import type { ComponentProps } from "react";
-import { Image, Platform, StyleSheet, type ColorValue } from "react-native";
+import { Image, Platform, StyleSheet, type ColorValue, type ImageSourcePropType } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { brandAssets } from "@/brandAssets";
 import { useAuth } from "@/context/AuthContext";
 import { colors, fonts, radius } from "@/theme";
 
-type IconName = ComponentProps<typeof MaterialCommunityIcons>["name"];
-
-function icon(name: IconName) {
-  return function TabIcon({ color, size }: { color: ColorValue; size: number }) {
-    return <MaterialCommunityIcons name={name} color={color as string} size={size} />;
-  };
-}
-
-function HomeLogoIcon({ focused }: { color: ColorValue; size: number; focused: boolean }) {
+function BrandTabIcon({
+  source,
+  label,
+  focused,
+}: {
+  source: ImageSourcePropType;
+  label: string;
+  color: ColorValue;
+  size: number;
+  focused: boolean;
+}) {
   return (
     <Image
-      source={brandAssets.crest}
-      style={[styles.homeLogo, focused && styles.homeLogoActive]}
+      source={source}
+      style={[styles.tabEmblem, focused && styles.tabEmblemActive]}
       resizeMode="contain"
-      accessibilityLabel="Home"
+      accessibilityLabel={label}
     />
   );
+}
+
+function tabIcon(source: ImageSourcePropType, label: string) {
+  return function TabEmblemIcon(props: { color: ColorValue; size: number; focused: boolean }) {
+    return <BrandTabIcon {...props} source={source} label={label} />;
+  };
 }
 
 export default function TabLayout() {
@@ -84,43 +90,40 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarLabel: "Home",
-          tabBarIcon: HomeLogoIcon,
+          tabBarIcon: tabIcon(brandAssets.crest, "Home"),
         }}
       />
       <Tabs.Screen
         name="slate"
-        options={{ title: "Run", tabBarIcon: icon("chart-timeline-variant-shimmer") }}
+        options={{ title: "Run", tabBarIcon: tabIcon(brandAssets.tabRun, "Run") }}
       />
       <Tabs.Screen
         name="sheet"
-        options={{ title: "Sheet", tabBarIcon: icon("view-grid-plus-outline") }}
+        options={{ title: "Sheet", tabBarIcon: tabIcon(brandAssets.tabSheet, "Sheet") }}
       />
       <Tabs.Screen
         name="tickets"
-        options={{ title: "Tickets", tabBarIcon: icon("ticket-confirmation-outline") }}
+        options={{ title: "Tickets", tabBarIcon: tabIcon(brandAssets.tabTickets, "Tickets") }}
       />
       <Tabs.Screen
         name="learning"
-        options={{ title: "Learning", tabBarIcon: icon("brain") }}
+        options={{ title: "Learning", tabBarIcon: tabIcon(brandAssets.tabLearning, "Learning") }}
       />
       <Tabs.Screen
         name="settings"
-        options={{ title: "Controls", tabBarIcon: icon("tune-variant") }}
+        options={{ title: "Controls", tabBarIcon: tabIcon(brandAssets.tabControls, "Controls") }}
       />
     </Tabs>
   );
 }
 
 const styles = StyleSheet.create({
-  homeLogo: {
-    width: 26,
-    height: 26,
-    borderRadius: 6,
-    opacity: 0.72,
+  tabEmblem: {
+    width: 28,
+    height: 28,
+    opacity: 0.7,
   },
-  homeLogoActive: {
+  tabEmblemActive: {
     opacity: 1,
-    borderWidth: 1,
-    borderColor: colors.goldBright,
   },
 });

@@ -27,6 +27,12 @@ export const brandAssets = {
   ywpOsPoster: require("../assets/brand/vision/ywp-os-poster.jpg"),
   ywpOsControlEmblem: require("../assets/brand/vision/ywp-os-control-emblem.jpg"),
   crownLegacy: require("../assets/brand/ywp-crest.png"),
+  /** Tab dock emblems — same metallic crest language as the logo */
+  tabRun: require("../assets/brand/tabs/run.png"),
+  tabSheet: require("../assets/brand/tabs/sheet.png"),
+  tabTickets: require("../assets/brand/tabs/tickets.png"),
+  tabLearning: require("../assets/brand/tabs/learning.png"),
+  tabControls: require("../assets/brand/tabs/controls.png"),
   mlbProtocolReference: require("../assets/brand/reference-cards/mlb-protocol.png"),
   mlbFinalReference: require("../assets/brand/reference-cards/mlb-final.png"),
   ghosttReference: require("../assets/brand/reference-cards/ghostt.png"),
