@@ -782,6 +782,24 @@ class PerformanceOut(YWPModel):
     by_sport: list[dict[str, Any]]
     by_market: list[dict[str, Any]]
     confidence_calibration: list[dict[str, Any]]
+    # Packaging diagnostics: board/leg accuracy vs full-ticket accuracy.
+    leg_settled: int = 0
+    leg_wins: int = 0
+    leg_losses: int = 0
+    leg_pushes: int = 0
+    leg_win_rate: float | None = None
+    ticket_settled: int = 0
+    ticket_wins: int = 0
+    ticket_losses: int = 0
+    ticket_pushes: int = 0
+    ticket_win_rate: float | None = None
+    locked_leg_settled: int = 0
+    locked_leg_wins: int = 0
+    locked_leg_losses: int = 0
+    locked_leg_win_rate: float | None = None
+    packaging_gap: float | None = None
+    by_ticket_type: list[dict[str, Any]] = Field(default_factory=list)
+    packaging_note: str | None = None
 
 
 class LearningPulseOut(YWPModel):

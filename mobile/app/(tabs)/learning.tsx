@@ -189,20 +189,74 @@ export default function LearningScreen() {
         </>
       ) : null}
 
-      <SectionTitle title="Performance" subtitle="Outcome metrics never replace process grading." />
+      <SectionTitle
+        title="Performance"
+        subtitle="Leg hit rate ≠ ticket hit rate. Packaging is tracked separately."
+      />
       <MetalPanel>
+        <Text style={type.eyebrow}>LEG / BOARD PICKS</Text>
         <View style={styles.metrics}>
-          <Metric label="Settled" value={performance?.settled ?? 0} />
-          <Metric label="Wins" value={performance?.wins ?? 0} accent={colors.success} />
-          <Metric label="Losses" value={performance?.losses ?? 0} accent={colors.danger} />
+          <Metric label="Legs settled" value={performance?.leg_settled ?? performance?.settled ?? 0} />
           <Metric
-            label="Win rate"
+            label="Leg wins"
+            value={performance?.leg_wins ?? performance?.wins ?? 0}
+            accent={colors.success}
+          />
+          <Metric
+            label="Leg losses"
+            value={performance?.leg_losses ?? performance?.losses ?? 0}
+            accent={colors.danger}
+          />
+          <Metric
+            label="Leg hit rate"
             value={
-              performance?.win_rate === null || performance?.win_rate === undefined
+              (performance?.leg_win_rate ?? performance?.win_rate) == null
                 ? "—"
-                : `${(performance.win_rate * 100).toFixed(1)}%`
+                : `${(((performance?.leg_win_rate ?? performance?.win_rate) as number) * 100).toFixed(1)}%`
             }
           />
+        </View>
+        <Text style={[type.eyebrow, { marginTop: spacing.md }]}>FULL TICKETS</Text>
+        <View style={styles.metrics}>
+          <Metric label="Tickets settled" value={performance?.ticket_settled ?? 0} />
+          <Metric label="Ticket wins" value={performance?.ticket_wins ?? 0} accent={colors.success} />
+          <Metric label="Ticket losses" value={performance?.ticket_losses ?? 0} accent={colors.danger} />
+          <Metric
+            label="Ticket hit rate"
+            value={
+              performance?.ticket_win_rate == null
+                ? "—"
+                : `${(performance.ticket_win_rate * 100).toFixed(1)}%`
+            }
+          />
+          <Metric
+            label="Packaging gap"
+            value={
+              performance?.packaging_gap == null
+                ? "—"
+                : `${performance.packaging_gap >= 0 ? "+" : ""}${(performance.packaging_gap * 100).toFixed(1)}%`
+            }
+            accent={
+              performance?.packaging_gap == null
+                ? undefined
+                : performance.packaging_gap >= 0.08
+                  ? colors.danger
+                  : colors.success
+            }
+          />
+          <Metric
+            label="Locked-leg rate"
+            value={
+              performance?.locked_leg_win_rate == null
+                ? "—"
+                : `${(performance.locked_leg_win_rate * 100).toFixed(1)}%`
+            }
+          />
+        </View>
+        {performance?.packaging_note ? (
+          <Text style={[type.caption, { marginTop: spacing.sm }]}>{performance.packaging_note}</Text>
+        ) : null}
+        <View style={[styles.metrics, { marginTop: spacing.md }]}>
           <Metric
             label="P/L"
             value={`$${Number(performance?.profit_loss ?? 0).toFixed(2)}`}
@@ -210,9 +264,29 @@ export default function LearningScreen() {
           />
           <Metric
             label="ROI"
-            value={performance?.roi === null || performance?.roi === undefined ? "—" : `${(performance.roi * 100).toFixed(1)}%`}
+            value={
+              performance?.roi === null || performance?.roi === undefined
+                ? "—"
+                : `${(performance.roi * 100).toFixed(1)}%`
+            }
           />
         </View>
+        {(performance?.by_ticket_type ?? []).length ? (
+          <>
+            <Text style={[type.eyebrow, { marginTop: spacing.md }]}>BY TICKET TYPE</Text>
+            {(performance?.by_ticket_type ?? []).map((row, index) => (
+              <View key={`${String(row.ticket_type)}-${index}`} style={styles.dataRow}>
+                <Text style={styles.dataName}>
+                  {String(row.ticket_type ?? "unknown").replaceAll("_", " ")}
+                </Text>
+                <Text style={styles.dataValue}>
+                  {row.win_rate == null ? "—" : `${(Number(row.win_rate) * 100).toFixed(0)}%`} •{" "}
+                  {String(row.wins ?? 0)}/{String(row.settled ?? 0)}
+                </Text>
+              </View>
+            ))}
+          </>
+        ) : null}
       </MetalPanel>
 
       <SectionTitle

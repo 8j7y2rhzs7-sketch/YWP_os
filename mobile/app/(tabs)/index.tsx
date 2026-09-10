@@ -138,11 +138,18 @@ export default function CommandCenter() {
         <View style={styles.metrics}>
           <Metric label="Bankroll" value={`$${Number(bankroll?.balance ?? 0).toFixed(2)}`} />
           <Metric
-            label="Win rate"
-            value={percent(performance?.win_rate ?? null)}
+            label="Leg hit"
+            value={percent(performance?.leg_win_rate ?? performance?.win_rate ?? null)}
             accent={colors.success}
           />
-          <Metric label="Settled" value={performance?.settled ?? 0} />
+          <Metric
+            label="Ticket hit"
+            value={percent(performance?.ticket_win_rate ?? null)}
+            accent={
+              (performance?.packaging_gap ?? 0) >= 0.08 ? colors.danger : colors.success
+            }
+          />
+          <Metric label="Legs" value={performance?.leg_settled ?? performance?.settled ?? 0} />
           <Metric label="Trained" value={pulse?.micro_updates ?? 0} accent={colors.gold} />
           <Metric
             label="P/L"
