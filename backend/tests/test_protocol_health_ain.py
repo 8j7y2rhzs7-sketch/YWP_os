@@ -105,3 +105,37 @@ def test_two_sided_slate_does_not_fail_matchup_or_pace_ain() -> None:
         assert by_key["pace_or_tempo"] != "FAIL"
     finally:
         db.close()
+
+
+def test_sheet_menu_props_with_null_matchup_do_not_500() -> None:
+    """Sportsbook Sheet props omit research scores; Check must still grade them."""
+    db = SessionLocal()
+    try:
+        prop = _candidate(
+            candidate_id="sheet-k",
+            market_type="player_strikeouts_over",
+            selection="Ace Pitcher Over 4.5 strikeouts",
+            matchup_score=None,
+            script_alignment=None,
+            ain_checks={},
+            current_form_verified=False,
+            injuries_verified=False,
+            probability_source="market_implied",
+            data_source="THE_ODDS_API_BOARD",
+        )
+        run = run_protocol_health_check(
+            db,
+            analysis_id="sheet-null-matchup",
+            user_id=None,
+            sport="mlb",
+            candidates=[prop],
+        )
+        by_key = {item["key"]: item["status"] for item in run.checks}
+        assert by_key["matchup_edge"] != "PASS"
+        assert by_key["pace_or_tempo"] != "PASS"
+        # Health may be PARTIAL/FAILED for unverified Sheet props, but the sweep
+        # must complete without crashing into an Internal Server Error.
+        assert run.status in {"PASS", "PARTIAL", "FAIL", "FAILED", "WARN"}
+        assert isinstance(run.checks, list) and run.checks
+    finally:
+        db.close()

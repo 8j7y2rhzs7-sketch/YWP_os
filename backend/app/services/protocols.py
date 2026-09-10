@@ -378,8 +378,14 @@ def run_protocol_health_check(
     # the decision engine, not the slate health sweep — otherwise every live MLB
     # board falsely FAILS the final protocol check.
     inferred: dict[str, list[bool | None]] = {
+        # Sheet sportsbook-menu legs often omit research scores (None). Treat
+        # missing as incomplete — never crash float(None) into a 500 on Check.
         "matchup_edge": [
-            0.0 <= float(candidate.matchup_score) <= 1.0 for candidate in candidates
+            (
+                candidate.matchup_score is not None
+                and 0.0 <= float(candidate.matchup_score) <= 1.0
+            )
+            for candidate in candidates
         ],
         "recent_form_l5_l10": [
             candidate.ain_checks.get("recent_form_l5_l10", candidate.current_form_verified)
@@ -396,7 +402,9 @@ def run_protocol_health_check(
         ],
         "h2h_context": [candidate.ain_checks.get("h2h_context") for candidate in candidates],
         "market_value": [
-            candidate.estimated_probability > 0 and candidate.american_odds != 0
+            candidate.estimated_probability is not None
+            and float(candidate.estimated_probability) > 0
+            and candidate.american_odds != 0
             for candidate in candidates
         ],
     }
