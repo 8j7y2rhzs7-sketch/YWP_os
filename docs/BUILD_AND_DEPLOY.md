@@ -59,41 +59,38 @@ The delivered package was validated with seven backend tests at 82% statement co
 
 ## Native builds
 
-1. Confirm `ios.bundleIdentifier` / `android.package` in `mobile/app.json` (`com.ywpos.app`).
-2. Install and authenticate EAS CLI (`npx eas-cli login`).
-3. One-time: from `mobile/`, run `npx eas-cli init` so `extra.eas.projectId` is written into app config.
-4. Apple requirements for device/TestFlight builds: Apple Developer Program membership, App Store Connect app record for `com.ywpos.app`, and EAS credentials (`npx eas-cli credentials -p ios`).
+Keep Android and iOS release pipelines separate: **[docs/RELEASE_CHANNELS.md](./RELEASE_CHANNELS.md)**.
 
-### Android APK (current sideload path)
+- iOS / Expo Go / TestFlight: **[docs/IOS.md](./IOS.md)**
+- Paid Android Whop delivery: **[docs/WHOP_PAID_DELIVERY.md](./WHOP_PAID_DELIVERY.md)**
+
+### Try on a phone now (Expo Go, free)
+
+```bash
+cd mobile
+npm ci
+npm run start:phone
+```
+
+Scan the QR with Expo Go. Uses the production API from `.env.production`.
+
+### Android APK (Whop sideload)
 
 ```bash
 cd mobile
 npm run build:apk
 ```
 
-### iOS / TestFlight
+Publish only under GitHub tag `android-vX.Y.Z`. Do not use EAS for Android in this repo.
 
-Full checklist: **[docs/IOS.md](./IOS.md)**.
+### iOS TestFlight (needs Apple Developer + EAS login)
 
-```bash
-cd mobile
-npm run build:ios:preview
-```
+1. Change `ios.bundleIdentifier` / `android.package` in `mobile/app.json` only if `com.ywpos.app` is unavailable.
+2. `npx eas-cli login` then `npx eas-cli init` and `npx eas-cli credentials -p ios`.
+3. `npm run build:ios:preview` then TestFlight.
+4. Production: `npm run build:ios:production` then `npm run submit:ios`.
 
-Install the resulting build on a registered iPhone, or submit to TestFlight after App Store Connect is linked:
-
-```bash
-npm run build:ios:production
-npm run submit:ios
-```
-
-5. On a real iPhone verify: splash/font fallback, login restore, offline startup, tab safe-area, keyboard, deep links (`ywpos://`), slate → analyze → lock → place, graphic share sheet, result logging, and Whop/paywall only for non-provisioned accounts.
-6. Production store binaries only after the production checklist is complete:
-
-   ```bash
-   npx eas-cli build --profile production --platform all
-   ```
-
+Test login, token rotation, slate run, PASS state, cards, ticket edits, Lock Check, graphic export, result grading, paywall Sync, and account controls on real devices before store submission.
 ## Web deployment
 
 ```bash
@@ -105,7 +102,9 @@ Publish `mobile/dist` to the chosen static host and configure `EXPO_PUBLIC_API_U
 
 ## Live provider integration
 
-Demo records are synthetic and explicitly labeled. A live launch requires licensed adapters for schedule, odds/markets, recent logs, lineups, injuries, weather, and settlement. Normalize provider output to `CandidateInput`; do not move provider keys into the client.
+Demo records are synthetic and explicitly labeled. Non-MLB live slates use a
+**multi-source cascade** — see **[docs/DATA_SOURCES.md](./DATA_SOURCES.md)**.
+Odds-priced plays still show when fact feeds (ESPN/NHL) fail; readiness stays PARTIAL.
 
 Every live candidate must explicitly confirm the schedule, universe scan, actual L5/L10, lineup, injuries, weather, starter/role, motivation/rotation, home-away/travel, market movement, and applicable sport-specific sweep. Omitted verification flags default to `false`.
 

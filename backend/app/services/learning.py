@@ -21,6 +21,11 @@ from app.models import (
 from app.schemas import MissByOneOut, PatternOut, PerformanceOut
 
 
+def _rate(wins: int, losses: int) -> float | None:
+    total = wins + losses
+    return round(wins / total, 4) if total else None
+
+
 def performance(db: Session, user_id: str) -> PerformanceOut:
     rows = db.execute(
         select(Result, Recommendation)
@@ -31,6 +36,7 @@ def performance(db: Session, user_id: str) -> PerformanceOut:
     wins = sum(1 for result, _ in rows if result.outcome == "WIN")
     losses = sum(1 for result, _ in rows if result.outcome == "LOSS")
     pushes = sum(1 for result, _ in rows if result.outcome in {"PUSH", "VOID"})
+    leg_win_rate = _rate(wins, losses)
 
     # Money totals come from settled tickets (actual wagers), not zero-stake board grades.
     tickets = list(
@@ -41,6 +47,56 @@ def performance(db: Session, user_id: str) -> PerformanceOut:
             )
         )
     )
+    graded_tickets = [
+        ticket
+        for ticket in tickets
+        if (ticket.settled_outcome or "").upper() in {"WIN", "LOSS", "PUSH", "VOID"}
+    ]
+    ticket_wins = sum(1 for ticket in graded_tickets if (ticket.settled_outcome or "").upper() == "WIN")
+    ticket_losses = sum(
+        1 for ticket in graded_tickets if (ticket.settled_outcome or "").upper() == "LOSS"
+    )
+    ticket_pushes = sum(
+        1
+        for ticket in graded_tickets
+        if (ticket.settled_outcome or "").upper() in {"PUSH", "VOID"}
+    )
+    ticket_settled = len(graded_tickets)
+    ticket_win_rate = _rate(ticket_wins, ticket_losses)
+
+    # Legs that actually rode on a placed/settled ticket (packaging sample).
+    locked_rows = db.execute(
+        select(Result, Recommendation, Ticket)
+        .join(Recommendation, Recommendation.id == Result.recommendation_id)
+        .join(TicketLeg, TicketLeg.recommendation_id == Recommendation.id)
+        .join(Ticket, Ticket.id == TicketLeg.ticket_id)
+        .where(
+            Recommendation.created_by_user_id == user_id,
+            Ticket.user_id == user_id,
+            Ticket.status.in_(("placed", "settled")),
+            TicketLeg.action.in_(("follow", "replace")),
+        )
+    ).all()
+    # Deduplicate if a recommendation appears on multiple tickets.
+    locked_by_rec: dict[str, str] = {}
+    for result, recommendation, _ticket in locked_rows:
+        locked_by_rec[recommendation.id] = result.outcome
+    locked_leg_wins = sum(1 for outcome in locked_by_rec.values() if outcome == "WIN")
+    locked_leg_losses = sum(1 for outcome in locked_by_rec.values() if outcome == "LOSS")
+    locked_leg_settled = len(locked_by_rec)
+    locked_leg_win_rate = _rate(locked_leg_wins, locked_leg_losses)
+
+    by_ticket_type: dict[str, dict[str, Any]] = defaultdict(
+        lambda: {"settled": 0, "wins": 0, "losses": 0, "pushes": 0}
+    )
+    for ticket in graded_tickets:
+        outcome = (ticket.settled_outcome or "").upper()
+        bucket = by_ticket_type[ticket.ticket_type or "unknown"]
+        bucket["settled"] += 1
+        bucket["wins"] += int(outcome == "WIN")
+        bucket["losses"] += int(outcome == "LOSS")
+        bucket["pushes"] += int(outcome in {"PUSH", "VOID"})
+
     if tickets:
         profit_loss = sum(
             (ticket.settled_profit_loss for ticket in tickets if ticket.settled_profit_loss is not None),
@@ -95,6 +151,20 @@ def performance(db: Session, user_id: str) -> PerformanceOut:
             )
         return output
 
+    ticket_type_rows = []
+    for key, values in sorted(by_ticket_type.items()):
+        decided = int(values["wins"]) + int(values["losses"])
+        ticket_type_rows.append(
+            {
+                "ticket_type": key,
+                "settled": values["settled"],
+                "wins": values["wins"],
+                "losses": values["losses"],
+                "pushes": values["pushes"],
+                "win_rate": round(values["wins"] / decided, 4) if decided else None,
+            }
+        )
+
     calibration_rows = [
         {
             "confidence_band": band,
@@ -103,17 +173,59 @@ def performance(db: Session, user_id: str) -> PerformanceOut:
         }
         for band, values in sorted(calibration.items())
     ]
+    packaging_gap = None
+    if leg_win_rate is not None and ticket_win_rate is not None:
+        packaging_gap = round(leg_win_rate - ticket_win_rate, 4)
+
+    if ticket_settled == 0:
+        packaging_note = (
+            "Leg hit rate is board/pick accuracy. No settled tickets yet — "
+            "ticket hit rate appears after Sync Scores grades placed parlays."
+        )
+    elif packaging_gap is not None and packaging_gap >= 0.08:
+        packaging_note = (
+            f"Legs hit more often than full tickets (+{packaging_gap:.0%} gap). "
+            "Packaging is the leak — shorten cards and keep weak markets off core parlays."
+        )
+    elif packaging_gap is not None and packaging_gap <= -0.08:
+        packaging_note = (
+            f"Tickets are outrunning raw leg hit rate ({abs(packaging_gap):.0%} edge). "
+            "Keep using the card shapes that are clearing."
+        )
+    else:
+        packaging_note = (
+            "Leg hit rate and ticket hit rate are tracked separately so packaging "
+            "quality is never confused with pick quality."
+        )
+
     return PerformanceOut(
         settled=settled,
         wins=wins,
         losses=losses,
         pushes=pushes,
-        win_rate=round(wins / (wins + losses), 4) if wins + losses else None,
+        win_rate=leg_win_rate,
         profit_loss=profit_loss,
         roi=round(float(profit_loss / wagered), 4) if wagered else None,
         by_sport=summarize(by_sport, "sport"),
         by_market=summarize(by_market, "market_type"),
         confidence_calibration=calibration_rows,
+        leg_settled=settled,
+        leg_wins=wins,
+        leg_losses=losses,
+        leg_pushes=pushes,
+        leg_win_rate=leg_win_rate,
+        ticket_settled=ticket_settled,
+        ticket_wins=ticket_wins,
+        ticket_losses=ticket_losses,
+        ticket_pushes=ticket_pushes,
+        ticket_win_rate=ticket_win_rate,
+        locked_leg_settled=locked_leg_settled,
+        locked_leg_wins=locked_leg_wins,
+        locked_leg_losses=locked_leg_losses,
+        locked_leg_win_rate=locked_leg_win_rate,
+        packaging_gap=packaging_gap,
+        by_ticket_type=ticket_type_rows,
+        packaging_note=packaging_note,
     )
 
 

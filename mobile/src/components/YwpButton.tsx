@@ -1,5 +1,7 @@
+import { useEffect, useRef } from "react";
 import {
   ActivityIndicator,
+  Animated,
   Pressable,
   StyleSheet,
   Text,
@@ -7,7 +9,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
-import { colors, fonts, gradients, radius, spacing } from "@/theme";
+import { colors, gradients, radius, spacing, touch, type } from "@/theme";
 
 interface YwpButtonProps {
   label: string;
@@ -27,6 +29,35 @@ export function YwpButton({
   style,
 }: YwpButtonProps) {
   const inactive = disabled || loading;
+  const sweep = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (variant !== "gold" || inactive) return;
+    sweep.setValue(0);
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(sweep, {
+          toValue: 1,
+          duration: 1600,
+          useNativeDriver: true,
+        }),
+        Animated.delay(900),
+        Animated.timing(sweep, {
+          toValue: 0,
+          duration: 0,
+          useNativeDriver: true,
+        }),
+      ]),
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [inactive, sweep, variant]);
+
+  const sweepX = sweep.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-160, 320],
+  });
+
   return (
     <Pressable
       onPress={onPress}
@@ -42,6 +73,17 @@ export function YwpButton({
     >
       {variant === "gold" ? (
         <LinearGradient colors={gradients.gold} style={styles.inner}>
+          <Animated.View
+            pointerEvents="none"
+            style={[styles.energy, { transform: [{ translateX: sweepX }] }]}
+          >
+            <LinearGradient
+              colors={["transparent", "rgba(255,255,255,0.42)", "transparent"]}
+              start={{ x: 0, y: 0.5 }}
+              end={{ x: 1, y: 0.5 }}
+              style={StyleSheet.absoluteFill}
+            />
+          </Animated.View>
           {loading ? (
             <ActivityIndicator color={colors.background} />
           ) : (
@@ -78,29 +120,30 @@ export function YwpButton({
 const styles = StyleSheet.create({
   pressable: { borderRadius: radius.md, overflow: "hidden" },
   inner: {
-    minHeight: 50,
-    paddingHorizontal: spacing.lg,
+    minHeight: touch.comfortable,
+    paddingHorizontal: spacing.xl,
     paddingVertical: spacing.md,
     alignItems: "center",
     justifyContent: "center",
+    overflow: "hidden",
   },
-  outline: { borderWidth: 1, borderColor: colors.borderGold },
+  energy: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    width: 88,
+  },
+  outline: { borderWidth: 1.5, borderColor: "rgba(196,152,42,0.55)" },
   danger: { borderColor: colors.danger },
   success: { borderColor: colors.success },
   goldText: {
+    ...type.button,
     color: colors.background,
-    fontFamily: fonts.displaySemi,
-    fontWeight: "700",
-    letterSpacing: 1.0,
-    fontSize: 14,
   },
   outlineText: {
+    ...type.button,
     color: colors.white,
-    fontFamily: fonts.displaySemi,
-    fontWeight: "700",
-    letterSpacing: 0.8,
-    fontSize: 14,
   },
-  pressed: { transform: [{ scale: 0.97 }], opacity: 0.94 },
-  disabled: { opacity: 0.5 },
+  pressed: { transform: [{ scale: 0.985 }], opacity: 0.92 },
+  disabled: { opacity: 0.45 },
 });

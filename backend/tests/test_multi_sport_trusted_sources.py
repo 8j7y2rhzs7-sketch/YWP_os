@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import httpx
+
 from datetime import date
 from decimal import Decimal
 from types import SimpleNamespace
@@ -11,16 +13,19 @@ from app.services.trusted_sources import sources_for, trusted_sources_manifest
 def test_trusted_sources_include_multi_sport_pool() -> None:
     manifest = trusted_sources_manifest()
     ids = {item["id"] for item in manifest["sources"]}
-    assert "mlb_stats_api" in ids
     assert "espn_site_api" in ids
-    assert "ywp_sport_model" in ids
+    assert "nhl_web_api" in ids
+    assert "mlb_stats_api" in ids
     assert "the_odds_api" in ids
+    assert "ywp_sport_model" in ids
     nfl = trusted_sources_manifest("nfl")
     nfl_ids = {item["id"] for item in nfl["sources"]}
     assert "espn_site_api" in nfl_ids
     assert "mlb_stats_api" not in nfl_ids
     assert sources_for("form", "wnba")
     assert any(item["id"] == "espn_site_api" for item in sources_for("injuries", "nba"))
+    assert any(item["id"] == "nhl_web_api" for item in sources_for("schedule", "nhl"))
+    assert any(item["id"] == "the_odds_api" for item in sources_for("schedule", "soccer"))
 
 
 def test_sport_model_prefers_form_not_coin_flip() -> None:
@@ -177,3 +182,37 @@ def test_espn_form_parses_completed_games(monkeypatch) -> None:
     assert form["verified"] is True
     assert form["l10"]["games"] >= 5
     assert form["l10"]["wins"] == form["l10"]["games"]
+
+
+def test_espn_get_falls_back_when_primary_host_403(monkeypatch) -> None:
+    espn_provider._CACHE.clear()
+    calls: list[str] = []
+
+    class _Resp:
+        def __init__(self, code: int, payload: dict | None = None):
+            self.status_code = code
+            self._payload = payload or {}
+
+        def raise_for_status(self) -> None:
+            if self.status_code >= 400:
+                raise httpx.HTTPStatusError(
+                    "denied",
+                    request=httpx.Request("GET", "https://example.com"),
+                    response=httpx.Response(self.status_code),
+                )
+
+        def json(self) -> dict:
+            return self._payload
+
+    def fake_get(url: str, **kwargs):
+        calls.append(url)
+        if "site.web.api.espn.com" in url:
+            return _Resp(403)
+        return _Resp(200, {"events": [{"id": "1"}]})
+
+    import httpx
+    monkeypatch.setattr(espn_provider.httpx, "get", fake_get)
+    data = espn_provider._get(f"{espn_provider.SOURCE_API}/football/nfl/scoreboard")
+    assert data["events"][0]["id"] == "1"
+    assert any("site.web.api.espn.com" in u for u in calls)
+    assert any("site.api.espn.com" in u for u in calls)

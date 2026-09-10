@@ -17,16 +17,24 @@ import httpx
 
 logger = logging.getLogger(__name__)
 
-SOURCE_API = "https://site.api.espn.com/apis/site/v2/sports"
+# site.api.espn.com is often Akamai-blocked from cloud egress (403 Access Denied).
+# site.web.api.espn.com serves the same Site JSON paths and works from Render/VMs.
+SOURCE_API = "https://site.web.api.espn.com/apis/site/v2/sports"
+SOURCE_API_FALLBACK = "https://site.api.espn.com/apis/site/v2/sports"
 SOURCE_ID = "espn_site_api"
 TIMEOUT = 15.0
 _CACHE: dict[str, tuple[float, Any]] = {}
 _HEADERS = {
-    "User-Agent": "Mozilla/5.0 YWP-OS/3.3 trusted-research",
-    "Accept": "application/json",
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    ),
+    "Accept": "application/json,text/plain,*/*",
+    "Accept-Language": "en-US,en;q=0.9",
 }
 
 # sport code -> ESPN path segment
+# KBO is intentionally omitted — ESPN has no baseball/kbo league (400 invalid).
 ESPN_SPORT_PATHS: dict[str, str] = {
     "wnba": "basketball/wnba",
     "nba": "basketball/nba",
@@ -37,7 +45,6 @@ ESPN_SPORT_PATHS: dict[str, str] = {
     "soccer": "soccer/usa.1",
     "mls": "soccer/usa.1",
     "epl": "soccer/eng.1",
-    "kbo": "baseball/kbo",
 }
 
 WEATHER_SPORTS = {"nfl", "ncaaf", "soccer", "mls", "epl", "kbo"}
@@ -47,8 +54,64 @@ def espn_path_for(sport: str) -> str | None:
     return ESPN_SPORT_PATHS.get(sport.lower())
 
 
+def get_scoreboard(sport: str, slate_date: date) -> list[dict[str, Any]]:
+    path = espn_path_for(sport)
+    if not path:
+        return []
+    stamp = slate_date.strftime("%Y%m%d")
+    try:
+        data = _get(f"{SOURCE_API}/{path}/scoreboard", params={"dates": stamp}, cache_ttl=120)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("ESPN scoreboard unavailable for %s %s: %s", sport, slate_date, exc)
+        return []
+    games: list[dict[str, Any]] = []
+    for event in data.get("events") or []:
+        parsed = _parse_event(event, sport=sport)
+        if parsed:
+            games.append(parsed)
+    return games
+
+
+def match_odds_event_to_espn(
+    sport: str,
+    slate_date: date,
+    *,
+    home_team: str,
+    away_team: str,
+) -> dict[str, Any] | None:
+    """Best-effort match Odds API event names to an ESPN scoreboard game."""
+    try:
+        games = get_scoreboard(sport, slate_date)
+        # Also try adjacent days for late/early slate timezone drift.
+        if not games:
+            for delta in (-1, 1):
+                games.extend(get_scoreboard(sport, slate_date + timedelta(days=delta)))
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("ESPN match failed for %s: %s", sport, exc)
+        return None
+    best: dict[str, Any] | None = None
+    best_score = 0
+    for game in games:
+        score = _name_overlap(home_team, game.get("home_team", "")) + _name_overlap(
+            away_team, game.get("away_team", "")
+        )
+        if score > best_score:
+            best_score = score
+            best = game
+    if best is None or best_score < 2:
+        return None
+    return best
+
+
 def probe_espn_api(sport: str = "nfl") -> dict[str, Any]:
-    path = espn_path_for(sport) or ESPN_SPORT_PATHS["nfl"]
+    path = espn_path_for(sport)
+    if not path:
+        return {
+            "status": "unsupported",
+            "sport": sport,
+            "error": f"No ESPN path mapped for {sport}",
+            "source_id": SOURCE_ID,
+        }
     try:
         data = _get(f"{SOURCE_API}/{path}/scoreboard", cache_ttl=60)
         return {
@@ -61,20 +124,6 @@ def probe_espn_api(sport: str = "nfl") -> dict[str, Any]:
         return {"status": "unavailable", "sport": sport, "error": str(exc), "source_id": SOURCE_ID}
 
 
-def get_scoreboard(sport: str, slate_date: date) -> list[dict[str, Any]]:
-    path = espn_path_for(sport)
-    if not path:
-        return []
-    stamp = slate_date.strftime("%Y%m%d")
-    data = _get(f"{SOURCE_API}/{path}/scoreboard", params={"dates": stamp}, cache_ttl=120)
-    games: list[dict[str, Any]] = []
-    for event in data.get("events") or []:
-        parsed = _parse_event(event, sport=sport)
-        if parsed:
-            games.append(parsed)
-    return games
-
-
 def get_team_recent_form(
     sport: str,
     team_id: str | int,
@@ -85,7 +134,11 @@ def get_team_recent_form(
     path = espn_path_for(sport)
     if not path:
         return _empty_form()
-    data = _get(f"{SOURCE_API}/{path}/teams/{team_id}/schedule", cache_ttl=300)
+    try:
+        data = _get(f"{SOURCE_API}/{path}/teams/{team_id}/schedule", cache_ttl=300)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("ESPN form unavailable for %s team %s: %s", sport, team_id, exc)
+        return _empty_form()
     games: list[dict[str, Any]] = []
     for event in data.get("events") or []:
         comp = (event.get("competitions") or [{}])[0]
@@ -188,33 +241,6 @@ def get_league_injuries(sport: str) -> dict[str, Any]:
         "source_id": SOURCE_ID,
         "source_url": f"{SOURCE_API}/{path}/injuries",
     }
-
-
-def match_odds_event_to_espn(
-    sport: str,
-    slate_date: date,
-    *,
-    home_team: str,
-    away_team: str,
-) -> dict[str, Any] | None:
-    """Best-effort match Odds API event names to an ESPN scoreboard game."""
-    games = get_scoreboard(sport, slate_date)
-    # Also try adjacent days for late/early slate timezone drift.
-    if not games:
-        for delta in (-1, 1):
-            games.extend(get_scoreboard(sport, slate_date + timedelta(days=delta)))
-    best: dict[str, Any] | None = None
-    best_score = 0
-    for game in games:
-        score = _name_overlap(home_team, game.get("home_team", "")) + _name_overlap(
-            away_team, game.get("away_team", "")
-        )
-        if score > best_score:
-            best_score = score
-            best = game
-    if best is None or best_score < 2:
-        return None
-    return best
 
 
 def injuries_for_teams(
@@ -364,11 +390,30 @@ def _get(url: str, params: dict[str, Any] | None = None, *, cache_ttl: int = 120
     now = time.time()
     if cached and now - cached[0] < cache_ttl:
         return cached[1]
-    response = httpx.get(url, params=params, timeout=TIMEOUT, headers=_HEADERS)
-    response.raise_for_status()
-    data = response.json()
-    _CACHE[key] = (now, data)
-    return data
+
+    urls = [url]
+    if url.startswith(SOURCE_API):
+        urls.append(url.replace(SOURCE_API, SOURCE_API_FALLBACK, 1))
+    elif url.startswith(SOURCE_API_FALLBACK):
+        urls.append(url.replace(SOURCE_API_FALLBACK, SOURCE_API, 1))
+
+    last_error: Exception | None = None
+    for candidate in urls:
+        try:
+            response = httpx.get(
+                candidate, params=params, timeout=TIMEOUT, headers=_HEADERS
+            )
+            response.raise_for_status()
+            data = response.json()
+            if not isinstance(data, dict):
+                raise ValueError("unexpected ESPN payload")
+            _CACHE[key] = (now, data)
+            return data
+        except Exception as exc:  # noqa: BLE001 — try fallback host before failing
+            last_error = exc
+            logger.warning("ESPN fetch failed for %s: %s", candidate, exc)
+    assert last_error is not None
+    raise last_error
 
 
 def utc_now() -> datetime:

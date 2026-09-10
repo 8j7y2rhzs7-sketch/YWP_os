@@ -30,6 +30,8 @@ services:
         value: https://whop.com/checkout/plan_MwJ2qcFxmvqDY
       - key: NEXT_PUBLIC_WHOP_CHECKOUT_URL
         value: https://whop.com/checkout/plan_MwJ2qcFxmvqDY
+      - key: YWP_APP_DOWNLOAD_URL
+        value: https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.27/YWP-OS-3.3.27.apk
       - key: YWP_CORS_ORIGINS
         value: https://whop.com,http://localhost:8081,http://localhost:19006
       - key: DATABASE_URL
@@ -41,9 +43,11 @@ services:
       - key: ODDS_API_KEY
         sync: false
       - key: YWP_MLB_PROPS_ENABLED
-        value: "false"
+        value: "true"
       - key: YWP_MLB_MAX_PROP_EVENTS
-        value: "4"
+        value: "6"
+      - key: YWP_MLB_BOARD_MAX_PROP_EVENTS
+        value: "8"
       - key: WHOP_API_KEY
         sync: false
       - key: NEXT_PUBLIC_WHOP_APP_ID
@@ -52,3 +56,23 @@ services:
         sync: false
       - key: YWP_PROVISION_SECRET
         sync: false
+      - key: YWP_HIVE_ENABLED
+        value: "true"
+      - key: YWP_HIVE_ANON_SECRET
+        generateValue: true
+      - key: YWP_HIVE_MIN_SAMPLE
+        value: "40"
+      - key: YWP_HIVE_OPTIMAL_SAMPLE
+        value: "200"
+      - key: YWP_HIVE_MAX_PROBABILITY_SHIFT
+        value: "0.035"
+      - key: YWP_HIVE_REQUIRE_VERIFIED_OUTCOME
+        value: "true"
+      - key: YWP_HIVE_REQUIRE_CONSENT
+        value: "false"
+      - key: YWP_HIVE_RELEASE_VERSION
+        value: hive-1
+      - key: YWP_HIVE_SELF_IMPROVE_ENABLED
+        value: "true"
+      - key: YWP_HIVE_SELF_IMPROVE_MIN_MAPPED
+        value: "20"

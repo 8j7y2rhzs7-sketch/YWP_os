@@ -2,14 +2,17 @@ from fastapi import APIRouter
 
 from app.deps import DB, CurrentUser
 from app.models import AuditLog
-from app.services.whop_access import serialize_user
+from app.services.whop_access import ensure_fresh_subscription, serialize_user
 from app.schemas import UserOut, UserUpdate
 
 router = APIRouter(prefix="/users", tags=["users"])
 
 
 @router.get("/me", response_model=UserOut)
-def me(user: CurrentUser) -> UserOut:
+def me(user: CurrentUser, db: DB) -> UserOut:
+    user = ensure_fresh_subscription(db, user, force=False)
+    db.commit()
+    db.refresh(user)
     return serialize_user(user)
 
 
@@ -27,6 +30,7 @@ def update_me(payload: UserUpdate, user: CurrentUser, db: DB) -> UserOut:
             details={"fields": sorted(changes)},
         )
     )
+    user = ensure_fresh_subscription(db, user, force=False)
     db.commit()
     db.refresh(user)
     return serialize_user(user)

@@ -52,8 +52,11 @@ def market_scope_label(
         kind = "Goal handicap"
     elif "spread" in market or "handicap" in market:
         kind = "Point spread"
-    elif "moneyline" in market or market in {"h2h", "ml"}:
-        kind = "Moneyline"
+    elif "moneyline" in market or market in {"h2h", "ml", "moneyline_draw"}:
+        if sport_l in {"soccer", "mls", "epl"} or period in {"90_min", "regulation"}:
+            kind = "1X2 moneyline"
+        else:
+            kind = "Moneyline"
     else:
         kind = market.replace("_", " ").title() or "Market"
     return f"{period_label} · {kind}"

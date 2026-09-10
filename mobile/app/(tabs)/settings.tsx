@@ -3,10 +3,12 @@ import { useCallback, useEffect, useState } from "react";
 import { Alert, Platform, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 import { BrandHeader } from "@/components/BrandHeader";
+import { EngineStage } from "@/components/EngineStage";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { FormField } from "@/components/FormField";
 import { LoadingState } from "@/components/LoadingState";
 import { MetalPanel } from "@/components/MetalPanel";
+import { MotionReveal } from "@/components/MotionReveal";
 import { Screen } from "@/components/Screen";
 import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
@@ -164,6 +166,9 @@ export default function SettingsScreen() {
   return (
     <Screen>
       <BrandHeader title="SYSTEM CONTROLS" subtitle="BANKROLL • PROTOCOL • ACCOUNT" compact />
+      <MotionReveal fromY={16}>
+        <EngineStage size={150} tone="idle" intensity="standard" label="Controls" />
+      </MotionReveal>
       {error ? <ErrorNotice message={error} /> : null}
       {saved ? (
         <MetalPanel tone="success">

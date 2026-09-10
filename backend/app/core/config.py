@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "YWP OS API"
-    app_version: str = "3.3.5"
+    app_version: str = "3.3.17"
     api_prefix: str = "/api/v1"
     env: Literal["development", "test", "staging", "production"] = Field(
         default="development", validation_alias="YWP_ENV"
@@ -40,12 +40,30 @@ class Settings(BaseSettings):
         validation_alias="YWP_PROVISION_SECRET",
         description="One-time/ops secret for POST /auth/provision-tester",
     )
-    mlb_props_enabled: bool = Field(default=False, validation_alias="YWP_MLB_PROPS_ENABLED")
+    mlb_props_enabled: bool = Field(
+        default=True,
+        validation_alias="YWP_MLB_PROPS_ENABLED",
+        description=(
+            "When true, MLB player props use a source-first path: free MLB research "
+            "must surface a gated intent before Odds event-prop credits are spent. "
+            "Default on so Sheet/Run can show pitcher Ks and batter hits when research is ready."
+        ),
+    )
     mlb_max_prop_events: int = Field(
         default=4,
         ge=0,
         le=20,
         validation_alias="YWP_MLB_MAX_PROP_EVENTS",
+    )
+    mlb_board_max_prop_events: int = Field(
+        default=8,
+        ge=0,
+        le=30,
+        validation_alias="YWP_MLB_BOARD_MAX_PROP_EVENTS",
+        description=(
+            "Pick Sheet sportsbook menu: max events to price player props for. "
+            "Higher than model-slate gating because Sheet is a full selectable board."
+        ),
     )
 
     whop_api_key: str | None = Field(default=None, validation_alias="WHOP_API_KEY")
@@ -69,6 +87,29 @@ class Settings(BaseSettings):
     )
     whop_subscription_required: bool = Field(
         default=False, validation_alias="WHOP_SUBSCRIPTION_REQUIRED"
+    )
+    # How often to re-hit Whop checkAccess while the user is active.
+    whop_access_recheck_seconds: int = Field(
+        default=300,
+        ge=30,
+        le=86_400,
+        validation_alias="WHOP_ACCESS_RECHECK_SECONDS",
+    )
+    # Hard local ceiling for a day pass: without a fresh confirming checkAccess,
+    # access is revoked so users cannot overstay a 24h membership.
+    whop_day_pass_seconds: int = Field(
+        default=86_400,
+        ge=3_600,
+        le=604_800,
+        validation_alias="WHOP_DAY_PASS_SECONDS",
+    )
+    app_download_url: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices(
+            "YWP_APP_DOWNLOAD_URL",
+            "APP_DOWNLOAD_URL",
+            "EXPO_PUBLIC_APP_DOWNLOAD_URL",
+        ),
     )
 
     lock_check_ttl_seconds: int = 300

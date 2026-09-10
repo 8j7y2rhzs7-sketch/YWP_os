@@ -20,7 +20,7 @@ from app.schemas import (
     RegisterRequest,
     TokenResponse,
 )
-from app.services.whop_access import apply_pending_access, sync_user_subscription
+from app.services.whop_access import apply_pending_access, ensure_fresh_subscription
 from app.services.auth import find_refresh_session, issue_tokens, revoke_session
 from app.services.tester_access import upsert_tester
 
@@ -46,7 +46,7 @@ def register(payload: RegisterRequest, db: DB) -> TokenResponse:
     db.flush()
     db.add(BankrollAccount(user_id=user.id))
     user = apply_pending_access(db, user)
-    user = sync_user_subscription(db, user)
+    user = ensure_fresh_subscription(db, user, force=True)
     db.add(
         AuditLog(
             user_id=user.id,
@@ -65,7 +65,7 @@ def login(payload: LoginRequest, db: DB) -> TokenResponse:
     if not user or not user.is_active or not verify_password(payload.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Incorrect email or password")
     user = apply_pending_access(db, user)
-    user = sync_user_subscription(db, user)
+    user = ensure_fresh_subscription(db, user, force=True)
     db.add(
         AuditLog(
             user_id=user.id,

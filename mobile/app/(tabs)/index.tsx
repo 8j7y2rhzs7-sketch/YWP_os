@@ -1,12 +1,17 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-import { BrandHeader } from "@/components/BrandHeader";
+import { DayForgeChamber } from "@/components/DayForgeChamber";
+import { DayForgeReveal } from "@/components/DayForgeReveal";
+import { EngineStage } from "@/components/EngineStage";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { LoadingState } from "@/components/LoadingState";
 import { MetalPanel } from "@/components/MetalPanel";
+import { MetalShimmer } from "@/components/MetalShimmer";
 import { Metric } from "@/components/Metric";
+import { MotionReveal } from "@/components/MotionReveal";
 import { Screen } from "@/components/Screen";
 import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
@@ -15,6 +20,7 @@ import { useAuth } from "@/context/AuthContext";
 import { brand, colors, fonts, spacing, type } from "@/theme";
 import type {
   Bankroll,
+  DayForgeResponse,
   LearningPulse,
   Performance,
   ProtocolDefinition,
@@ -25,6 +31,11 @@ function percent(value: number | null): string {
   return value === null ? "—" : `${(value * 100).toFixed(1)}%`;
 }
 
+function forgeRevealKey(forge: DayForgeResponse): string {
+  const id = forge.play?.id ?? forge.analysis_id ?? forge.status;
+  return `ywp.dayforge.revealed.${forge.date}.${forge.sport}.${id}`;
+}
+
 export default function CommandCenter() {
   const { user, request } = useAuth();
   const [bankroll, setBankroll] = useState<Bankroll | null>(null);
@@ -32,9 +43,42 @@ export default function CommandCenter() {
   const [performance, setPerformance] = useState<Performance | null>(null);
   const [protocol, setProtocol] = useState<ProtocolDefinition | null>(null);
   const [pulse, setPulse] = useState<LearningPulse | null>(null);
+  const [forge, setForge] = useState<DayForgeResponse | null>(null);
+  const [revealOpen, setRevealOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const lastStatus = useRef<string | null>(null);
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const maybeAutoReveal = useCallback(async (next: DayForgeResponse) => {
+    if (next.status !== "ready" && next.status !== "pass") return;
+    const key = forgeRevealKey(next);
+    try {
+      const seen = await AsyncStorage.getItem(key);
+      if (seen) return;
+      await AsyncStorage.setItem(key, "1");
+      setRevealOpen(true);
+    } catch {
+      setRevealOpen(true);
+    }
+  }, []);
+
+  const loadForge = useCallback(async () => {
+    try {
+      const next = await request<DayForgeResponse>("/sports/day-forge");
+      const previous = lastStatus.current;
+      setForge(next);
+      lastStatus.current = next.status;
+      const flipped =
+        previous === "cooking" && (next.status === "ready" || next.status === "pass");
+      if (flipped || next.status === "ready" || next.status === "pass") {
+        await maybeAutoReveal(next);
+      }
+    } catch {
+      // Keep Home usable if forge is still warming / cold-starting.
+    }
+  }, [maybeAutoReveal, request]);
 
   const load = useCallback(
     async (refresh = false) => {
@@ -54,6 +98,7 @@ export default function CommandCenter() {
         setPerformance(nextPerformance);
         setProtocol(nextProtocol);
         setPulse(nextPulse);
+        void loadForge();
       } catch (reason) {
         setError(reason instanceof Error ? reason.message : "Dashboard failed to load");
       } finally {
@@ -61,46 +106,104 @@ export default function CommandCenter() {
         setRefreshing(false);
       }
     },
-    [request],
+    [loadForge, request],
   );
 
   useEffect(() => {
     void load();
   }, [load]);
 
+  useEffect(() => {
+    if (pollRef.current) clearInterval(pollRef.current);
+    if (forge?.status === "cooking" || !forge) {
+      pollRef.current = setInterval(() => {
+        void loadForge();
+      }, 28_000);
+    }
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current);
+    };
+  }, [forge?.status, loadForge]);
+
   if (loading) {
     return (
       <Screen>
-        <BrandHeader />
-        <LoadingState label="Loading command center…" />
+        <View style={styles.heroViewport}>
+          <EngineStage size={210} tone="loading" label="Booting" intensity="hero" />
+          <Text style={styles.brandMark}>{brand.product}</Text>
+          <LoadingState label="Decision Engine warming…" />
+        </View>
       </Screen>
     );
   }
 
+  const support =
+    pulse?.headline ??
+    "Run a slate, lock a ticket, grade a result. Edge over noise.";
+
   return (
     <Screen refreshing={refreshing} onRefresh={() => void load(true)}>
-      <BrandHeader />
-      <MetalPanel tone="gold" style={styles.hero}>
-        <Text style={styles.brandMark}>YWP OS</Text>
-        <View style={styles.heroTop}>
-          <View style={styles.heroCopy}>
-            <Text style={type.eyebrow}>WELCOME BACK, {user?.name}</Text>
-            <Text style={styles.heroTitle}>It learns every time you use it.</Text>
-            <Text style={styles.heroText}>
-              {pulse?.headline ??
-                "Run a slate, lock a ticket, grade a result. Quiet metal is the chassis — edge is the point."}
-            </Text>
-          </View>
-          <StatusPill value={protocol?.status ?? "canonical"} />
-        </View>
+      <View style={styles.heroViewport}>
+        <MotionReveal delay={0} fromY={28}>
+          <EngineStage
+            size={268}
+            tone="idle"
+            intensity="hero"
+            calloutsActive
+            callouts={[
+              { id: "ain", label: "AIN", side: "left", top: 56 },
+              { id: "strict", label: "STRICT", side: "right", top: 72 },
+              { id: "hive", label: "HIVE", side: "left", top: 140 },
+              { id: "lock", label: "LOCK", side: "right", top: 156 },
+            ]}
+          />
+        </MotionReveal>
+        <MotionReveal delay={160}>
+          <MetalShimmer intensity="bright" periodMs={3200} style={styles.brandShimmer}>
+            <Text style={styles.brandMark}>{brand.product}</Text>
+          </MetalShimmer>
+        </MotionReveal>
+        <MotionReveal delay={280}>
+          <Text style={styles.heroTitle}>Your winning process.</Text>
+        </MotionReveal>
+        <MotionReveal delay={400}>
+          <Text style={styles.heroSupport} numberOfLines={2}>
+            {support}
+          </Text>
+        </MotionReveal>
+        <MotionReveal delay={520} style={styles.ctaGroup}>
+          <YwpButton
+            label="RUN TODAY'S FULL PROTOCOL"
+            onPress={() => router.push("/(tabs)/slate")}
+          />
+          <Text style={styles.welcome}>
+            Welcome back, {user?.name ?? "operator"} · {brand.skin}
+          </Text>
+        </MotionReveal>
+      </View>
+
+      {error ? <ErrorNotice message={error} /> : null}
+
+      <SectionTitle
+        title="Session pulse"
+        subtitle="Bankroll and Hive signals sit below the engine — not on top of it."
+      />
+      <MetalPanel tone="gold">
         <View style={styles.metrics}>
           <Metric label="Bankroll" value={`$${Number(bankroll?.balance ?? 0).toFixed(2)}`} />
           <Metric
-            label="Win rate"
-            value={percent(performance?.win_rate ?? null)}
+            label="Leg hit"
+            value={percent(performance?.leg_win_rate ?? performance?.win_rate ?? null)}
             accent={colors.success}
           />
-          <Metric label="Settled" value={performance?.settled ?? 0} />
+          <Metric
+            label="Ticket hit"
+            value={percent(performance?.ticket_win_rate ?? null)}
+            accent={
+              (performance?.packaging_gap ?? 0) >= 0.08 ? colors.danger : colors.success
+            }
+          />
+          <Metric label="Legs" value={performance?.leg_settled ?? performance?.settled ?? 0} />
           <Metric label="Trained" value={pulse?.micro_updates ?? 0} accent={colors.gold} />
           <Metric
             label="P/L"
@@ -112,9 +215,7 @@ export default function CommandCenter() {
             }
           />
         </View>
-        <YwpButton label="RUN TODAY'S FULL PROTOCOL" onPress={() => router.push("/(tabs)/slate")} />
       </MetalPanel>
-      {error ? <ErrorNotice message={error} /> : null}
 
       <SectionTitle
         title="Protocol State"
@@ -126,7 +227,9 @@ export default function CommandCenter() {
             <Text style={styles.panelTitle}>{protocol?.name ?? "YWP OS Protocol"}</Text>
             <Text style={type.caption}>VERSION {protocol?.version ?? brand.protocolVersion}</Text>
           </View>
-          <StatusPill value="DOUBLE_CLEARED" />
+          <StatusPill
+            value={(protocol?.status ?? "standby").toUpperCase().replace(/_/g, " ")}
+          />
         </View>
         <Text style={styles.rule}>✓ AIN seven-angle sweep</Text>
         <Text style={styles.rule}>✓ Strict sport-specific verification</Text>
@@ -167,6 +270,30 @@ export default function CommandCenter() {
         </MetalPanel>
       )}
 
+      <SectionTitle
+        title="Day Forge"
+        subtitle="One cash-band play when the data is cooked — never forced juice."
+      />
+      <MotionReveal delay={80} fromY={24}>
+        <DayForgeChamber
+          forge={forge}
+          onPress={() => {
+            if (forge?.status === "ready" || forge?.status === "pass") {
+              setRevealOpen(true);
+            } else {
+              void loadForge();
+            }
+          }}
+        />
+      </MotionReveal>
+
+      <DayForgeReveal
+        visible={revealOpen}
+        forge={forge}
+        onClose={() => setRevealOpen(false)}
+        onRunProtocol={() => router.push("/(tabs)/slate")}
+      />
+
       <Text style={styles.footer}>{brand.primaryLine}</Text>
       <Text style={styles.footerMuted}>{brand.secondaryLine}</Text>
     </Screen>
@@ -174,38 +301,70 @@ export default function CommandCenter() {
 }
 
 const styles = StyleSheet.create({
-  hero: { padding: spacing.xl },
+  heroViewport: {
+    minHeight: 620,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: spacing.md,
+    paddingTop: spacing.xl,
+    paddingBottom: spacing.xxl,
+  },
+  brandShimmer: {
+    alignSelf: "center",
+    borderRadius: 8,
+  },
   brandMark: {
     color: colors.goldBright,
     fontFamily: fonts.display,
-    fontSize: 13,
+    fontSize: 42,
     fontWeight: "800",
-    letterSpacing: 3,
+    letterSpacing: -1.4,
+    textAlign: "center",
+    marginTop: spacing.sm,
   },
-  heroTop: { flexDirection: "row", alignItems: "flex-start", gap: spacing.md },
-  heroCopy: { flex: 1, gap: spacing.xs },
   heroTitle: {
     color: colors.white,
     fontFamily: fonts.display,
-    fontSize: 34,
+    fontSize: 24,
     fontWeight: "800",
     letterSpacing: -0.6,
-    lineHeight: 38,
+    lineHeight: 28,
+    textAlign: "center",
   },
-  heroText: { ...type.body, color: colors.silver },
-  metrics: { flexDirection: "row", flexWrap: "wrap", gap: spacing.md },
+  heroSupport: {
+    ...type.body,
+    color: colors.silver,
+    textAlign: "center",
+    maxWidth: 340,
+    paddingHorizontal: spacing.md,
+  },
+  ctaGroup: {
+    width: "100%",
+    gap: spacing.sm,
+    marginTop: spacing.md,
+  },
+  welcome: {
+    ...type.caption,
+    textAlign: "center",
+    color: colors.dim,
+    letterSpacing: 0.4,
+  },
+  heroCopy: { flex: 1, gap: spacing.sm },
+  metrics: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
   protocolHeader: { flexDirection: "row", alignItems: "center", gap: spacing.md },
   panelTitle: {
     color: colors.white,
     fontFamily: fonts.displaySemi,
     fontSize: 18,
     fontWeight: "700",
+    letterSpacing: -0.3,
   },
   rule: {
     color: colors.silver,
     fontFamily: fonts.body,
-    fontSize: 14,
-    lineHeight: 22,
+    fontSize: 15,
+    lineHeight: 23,
+    letterSpacing: -0.1,
   },
   ticketRow: { flexDirection: "row", alignItems: "center", gap: spacing.md },
   ticketTitle: {
@@ -213,6 +372,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.displaySemi,
     fontSize: 17,
     fontWeight: "700",
+    letterSpacing: -0.25,
   },
   footer: {
     color: colors.gold,
@@ -220,7 +380,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bodyBold,
     fontSize: 12,
     fontWeight: "700",
-    letterSpacing: 2,
+    letterSpacing: 1.2,
   },
-  footerMuted: { ...type.caption, textAlign: "center", letterSpacing: 1.4 },
+  footerMuted: { ...type.caption, textAlign: "center", letterSpacing: 0.6 },
 });

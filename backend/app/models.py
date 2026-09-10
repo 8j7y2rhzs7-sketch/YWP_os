@@ -48,7 +48,12 @@ class User(Base, TimestampMixin):
     whop_user_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
     whop_membership_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
     subscription_status: Mapped[str] = mapped_column(String(24), default="none")
-
+    subscription_checked_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    subscription_granted_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
     bankroll: Mapped[BankrollAccount | None] = relationship(
         back_populates="user", cascade="all, delete-orphan", uselist=False
     )
@@ -287,6 +292,26 @@ class Recommendation(Base):
             adjusted_probability=float(self.adjusted_probability),
             probability_source=str(snap.get("probability_source") or ""),
         )
+
+    @property
+    def model_probability(self) -> float | None:
+        snap = self.snapshot or {}
+        value = snap.get("model_probability")
+        if value is not None:
+            return float(value)
+        return self.model_win_probability
+
+    @property
+    def hive_adjusted_probability(self) -> float | None:
+        snap = self.snapshot or {}
+        value = snap.get("hive_adjusted_probability")
+        return float(value) if value is not None else None
+
+    @property
+    def hive(self) -> dict[str, Any] | None:
+        snap = self.snapshot or {}
+        value = snap.get("hive")
+        return value if isinstance(value, dict) else None
 
     @property
     def probability_available(self) -> bool:

@@ -10,6 +10,7 @@ from app.models import WhopWebhookDelivery
 from app.schemas import MessageOut, SubscriptionOut, WhopCheckoutOut
 from app.services.whop import (
     WhopWebhookError,
+    app_download_url,
     checkout_url,
     extract_membership_fields,
     membership_grants_access,
@@ -20,10 +21,9 @@ from app.services.whop import (
     whop_enabled,
 )
 from app.services.whop_access import (
-    apply_pending_access,
     apply_subscription_from_webhook,
+    ensure_fresh_subscription,
     get_or_create_whop_user,
-    sync_user_subscription,
     user_has_app_access,
 )
 
@@ -35,7 +35,12 @@ def get_checkout_url() -> WhopCheckoutOut:
     return WhopCheckoutOut(
         checkout_url=checkout_url(),
         product_id=product_id(),
-        message="Complete Daily Access on Whop, then return and sync with the same email.",
+        app_download_url=app_download_url(),
+        message=(
+            "Pay on Whop with the same email as your YWP OS login. "
+            "If you already have the app installed, return and Sync my access. "
+            "First-time buyers: download the Android APK from Whop (or the backup link), install, then Sync."
+        ),
     )
 
 
@@ -54,7 +59,13 @@ def access_gate(request: Request, db: DB) -> dict[str, object]:
     access = check_user_access(whop_user_id, product_id())
     if access.get("has_access"):
         user = get_or_create_whop_user(db, whop_user_id)
-        user.subscription_status = "active"
+        apply_subscription_from_webhook(
+            db,
+            email=user.email if not user.email.endswith("@members.whop.invalid") else None,
+            whop_user_id=whop_user_id,
+            membership_id=user.whop_membership_id,
+            active=True,
+        )
         db.commit()
     return {
         "has_access": bool(access.get("has_access")),
@@ -67,7 +78,7 @@ def access_gate(request: Request, db: DB) -> dict[str, object]:
 
 @router.get("/subscription", response_model=SubscriptionOut)
 def subscription_status(user: CurrentUser, db: DB) -> SubscriptionOut:
-    user = sync_user_subscription(db, user)
+    user = ensure_fresh_subscription(db, user, force=False)
     db.commit()
     db.refresh(user)
     return SubscriptionOut(
@@ -76,13 +87,13 @@ def subscription_status(user: CurrentUser, db: DB) -> SubscriptionOut:
         status=user.subscription_status,
         whop_user_id=user.whop_user_id,
         checkout_url=checkout_url(),
+        app_download_url=app_download_url(),
     )
 
 
 @router.post("/sync", response_model=SubscriptionOut)
 def sync_subscription(user: CurrentUser, db: DB) -> SubscriptionOut:
-    user = apply_pending_access(db, user)
-    user = sync_user_subscription(db, user)
+    user = ensure_fresh_subscription(db, user, force=True)
     db.commit()
     db.refresh(user)
     return SubscriptionOut(
@@ -91,6 +102,7 @@ def sync_subscription(user: CurrentUser, db: DB) -> SubscriptionOut:
         status=user.subscription_status,
         whop_user_id=user.whop_user_id,
         checkout_url=checkout_url(),
+        app_download_url=app_download_url(),
     )
 
 
@@ -118,33 +130,28 @@ async def whop_webhook(request: Request, db: DB) -> MessageOut:
     event_type = event.get("type", "")
     data = event.get("data") or {}
     fields = extract_membership_fields(data)
+    status = (fields.get("status") or "").lower()
 
-    if event_type == "membership.activated":
-        apply_subscription_from_webhook(
-            db,
-            email=fields["email"],
-            whop_user_id=fields["whop_user_id"],
-            membership_id=fields["membership_id"],
-            active=membership_grants_access(fields["status"]),
-        )
-    elif event_type in {"membership.deactivated", "membership.cancel_at_period_end_changed"}:
-        active = event_type != "membership.deactivated" and fields.get("status") == "active"
-        if event_type == "membership.deactivated":
+    active: bool | None = None
+    if event_type in {"membership.activated", "payment.succeeded"}:
+        active = True
+    elif event_type in {"membership.deactivated", "membership.expired"}:
+        active = False
+    elif event_type == "membership.cancel_at_period_end_changed":
+        active = status == "active"
+    elif event_type.startswith("membership."):
+        if membership_grants_access(status):
+            active = True
+        elif status in {"expired", "canceled", "cancelled", "inactive"}:
             active = False
+
+    if active is not None:
         apply_subscription_from_webhook(
             db,
             email=fields["email"],
             whop_user_id=fields["whop_user_id"],
             membership_id=fields["membership_id"],
             active=active,
-        )
-    elif event_type == "payment.succeeded":
-        apply_subscription_from_webhook(
-            db,
-            email=fields["email"],
-            whop_user_id=fields["whop_user_id"],
-            membership_id=fields["membership_id"],
-            active=True,
         )
 
     if webhook_id:

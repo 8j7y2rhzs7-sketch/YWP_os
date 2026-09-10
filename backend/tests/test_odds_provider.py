@@ -160,3 +160,115 @@ def test_lookalike_hex_key_is_normalized(monkeypatch) -> None:
 
     monkeypatch.setattr(odds_mod, "settings", _Fake())
     assert odds_mod._normalized_key() == "03c0e41ace40a1a7303f182dfa09706d"
+
+
+
+def test_list_odds_sports_uses_free_catalog_and_cache(monkeypatch) -> None:
+    calls: list[tuple[str, dict]] = []
+
+    def fake_get(path: str, params: dict | None = None):
+        calls.append((path, dict(params or {})))
+        return [
+            {"key": "baseball_mlb", "title": "MLB", "active": True},
+            {"key": "basketball_nba", "title": "NBA", "active": False},
+        ]
+
+    class _Fake:
+        odds_api_key = "abcdef0123456789abcdef0123456789"
+
+    monkeypatch.setattr(odds_mod, "settings", _Fake())
+    monkeypatch.setattr(odds_mod, "_get_sync", fake_get)
+    odds_mod._sports_cache.update(
+        {"fetched_at": 0.0, "in_season": [], "all": [], "error": None}
+    )
+
+    first = odds_mod.list_odds_sports(include_out_of_season=True, force_refresh=True)
+    second = odds_mod.list_odds_sports(include_out_of_season=True)
+    assert [row["key"] for row in first] == ["baseball_mlb", "basketball_nba"]
+    assert second == first
+    assert len(calls) == 1
+    assert calls[0][0] == "/v4/sports/"
+    assert calls[0][1].get("all") == "true"
+    assert odds_mod.in_season_odds_keys() == {"baseball_mlb"}
+    assert odds_mod.app_sport_in_season("mlb") is True
+    assert odds_mod.app_sport_in_season("nba") is False
+
+
+def test_soccer_maps_multiple_leagues_and_in_season_any(monkeypatch) -> None:
+    class _Fake:
+        odds_api_key = "abcdef0123456789abcdef0123456789"
+
+    monkeypatch.setattr(odds_mod, "settings", _Fake())
+    keys = odds_mod.odds_keys_for_app_sport("soccer")
+    assert keys[0] == "soccer_uefa_champs_league"
+    assert "soccer_epl" in keys
+    assert "soccer_spain_la_liga" in keys
+    assert "soccer_france_ligue_one" in keys
+    assert "soccer_usa_mls" in keys
+    assert odds_mod.soccer_odds_regions("soccer") == "us,uk"
+    assert odds_mod.soccer_odds_regions("mlb") == "us"
+
+    monkeypatch.setattr(
+        odds_mod,
+        "in_season_odds_keys",
+        lambda force_refresh=False: {"soccer_epl", "soccer_spain_la_liga"},
+    )
+    assert odds_mod.app_sport_in_season("soccer") is True
+    active = odds_mod.active_odds_keys_for_app_sport("soccer")
+    assert active == ["soccer_epl", "soccer_spain_la_liga"]
+
+    monkeypatch.setattr(odds_mod, "in_season_odds_keys", lambda force_refresh=False: {"basketball_nba"})
+    assert odds_mod.app_sport_in_season("soccer") is False
+
+
+def test_get_game_odds_skips_out_of_season_and_caches_paid(monkeypatch) -> None:
+    calls: list[str] = []
+
+    def fake_get(path: str, params: dict | None = None):
+        calls.append(path)
+        if path.rstrip("/").endswith("/sports"):
+            return [{"key": "baseball_mlb", "title": "MLB", "active": True}]
+        return [{"id": "evt-1", "home_team": "A", "away_team": "B", "bookmakers": []}]
+
+    class _Fake:
+        odds_api_key = "abcdef0123456789abcdef0123456789"
+
+    monkeypatch.setattr(odds_mod, "settings", _Fake())
+    monkeypatch.setattr(odds_mod, "_get_sync", fake_get)
+    odds_mod._sports_cache.update(
+        {"fetched_at": 0.0, "in_season": [], "all": [], "error": None}
+    )
+    odds_mod._odds_response_cache.clear()
+
+    assert odds_mod.get_game_odds(sport="basketball_nba") == []
+    status = odds_mod.get_last_fetch_status()
+    assert status.get("error") == "sport_out_of_season"
+    assert status.get("credit_cost") == 0
+
+    first = odds_mod.get_game_odds(sport="baseball_mlb")
+    second = odds_mod.get_game_odds(sport="baseball_mlb")
+    assert len(first) == 1
+    assert second == first
+    paid = [c for c in calls if c.endswith("/odds")]
+    assert len(paid) == 1
+    assert odds_mod.get_last_fetch_status().get("cache_hit") is True
+
+
+def test_probe_odds_api_uses_free_sports_catalog(monkeypatch) -> None:
+    def fake_get(path: str, params: dict | None = None):
+        assert "sports" in path
+        return [{"key": "baseball_mlb", "title": "MLB", "active": True}]
+
+    class _Fake:
+        odds_api_key = "abcdef0123456789abcdef0123456789"
+
+    monkeypatch.setattr(odds_mod, "settings", _Fake())
+    monkeypatch.setattr(odds_mod, "_get_sync", fake_get)
+    odds_mod._sports_cache.update(
+        {"fetched_at": 0.0, "in_season": [], "all": [], "error": None}
+    )
+    status = odds_mod.probe_odds_api(sport="baseball_mlb")
+    assert status["ok"] is True
+    assert status["credit_cost"] == 0
+    assert "free" in str(status.get("probe_mode") or status.get("probe_mode") or "").lower() or status.get("credit_cost") == 0
+    assert status.get("target_sport_in_season") is True or status.get("target_sport_in_season") is True

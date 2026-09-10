@@ -12,10 +12,12 @@ import {
 import { captureRef } from "react-native-view-shot";
 
 import { ErrorNotice } from "@/components/ErrorNotice";
+import { LoadingState } from "@/components/LoadingState";
 import { Screen } from "@/components/Screen";
 import { ShareCard } from "@/components/ShareCard";
 import { YwpButton } from "@/components/YwpButton";
 import { useAppData } from "@/context/AppDataContext";
+import { useAuth } from "@/context/AuthContext";
 import { colors, spacing, type } from "@/theme";
 
 export default function ShareCardScreen() {
@@ -24,7 +26,8 @@ export default function ShareCardScreen() {
     ? params.analysisId[0]
     : params.analysisId;
   const cardKey = Array.isArray(params.cardKey) ? params.cardKey[0] : params.cardKey;
-  const { analyses, builds } = useAppData();
+  const { analyses, builds, ready } = useAppData();
+  const { user, loading: authLoading } = useAuth();
   const analysis = analysisId ? analyses[analysisId] : undefined;
   const card = analysisId && cardKey ? builds[analysisId]?.cards[cardKey] : undefined;
   const cardRef = useRef<View>(null);
@@ -74,6 +77,23 @@ export default function ShareCardScreen() {
     }
   }
 
+  if (authLoading || !ready) {
+    return (
+      <Screen>
+        <LoadingState label="Loading graphic studio…" />
+      </Screen>
+    );
+  }
+
+  if (!user) {
+    return (
+      <Screen>
+        <ErrorNotice message="Sign in required to export decision graphics." />
+        <YwpButton label="SIGN IN" onPress={() => router.replace("/(auth)/login")} />
+      </Screen>
+    );
+  }
+
   if (!analysis || !card) {
     return (
       <Screen>
@@ -98,6 +118,9 @@ export default function ShareCardScreen() {
           card={card}
           slateDate={analysis.date}
           sport={card.legs[0]?.sport ?? "multi"}
+          readiness={analysis.readiness ?? analysis.data_quality_summary?.readiness}
+          protocolStatus={analysis.data_quality_summary?.protocol_status}
+          isCustom={card.key === "custom"}
         />
       </View>
       <YwpButton label="EXPORT / SHARE 1080 × 1350 PNG" onPress={() => void exportCard()} loading={exporting} />

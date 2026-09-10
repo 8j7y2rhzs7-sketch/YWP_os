@@ -22,6 +22,7 @@ from app.services.mlb_provider import (
     get_bullpen_usage,
     get_game_context,
     get_pitcher_game_log,
+    get_player_game_log,
     get_schedule,
     get_team_availability,
     get_team_recent_form,
@@ -43,12 +44,68 @@ from app.services.board_metrics import bookmaker_display_name
 
 logger = logging.getLogger(__name__)
 
+# Last live MLB props pass — used for slate notice (not ranking).
+_last_props_status: dict[str, Any] = {
+    "enabled": False,
+    "events_priced": 0,
+    "k_candidates": 0,
+    "hits_candidates": 0,
+    "skipped_disabled": False,
+    "skipped_research": 0,
+    "skipped_no_intent": 0,
+}
+
+
+def get_last_props_status() -> dict[str, Any]:
+    return dict(_last_props_status)
+
+
+def props_slate_notice(status: dict[str, Any] | None = None) -> str:
+    """Short Sheet/Run notice explaining why Ks/hits may be missing from the raw list."""
+    status = status or get_last_props_status()
+    if status.get("skipped_disabled") or not status.get("enabled"):
+        return (
+            "Player props (pitcher Ks / batter hits) are off — set YWP_MLB_PROPS_ENABLED=true "
+            "and redeploy to price them into the raw slate."
+        )
+    k_n = int(status.get("k_candidates") or 0)
+    hits_n = int(status.get("hits_candidates") or 0)
+    priced = int(status.get("events_priced") or 0)
+    skipped_research = int(status.get("skipped_research") or 0)
+    skipped_intent = int(status.get("skipped_no_intent") or 0)
+    parts = [
+        f"Props priced on {priced} game(s): {k_n} pitcher K over(s), {hits_n} batter hits over(s)."
+    ]
+    if skipped_research:
+        parts.append(
+            f"{skipped_research} game(s) skipped props until lineups/form/bullpen/weather/market "
+            "research finishes (unfinished research never spends Odds credits)."
+        )
+    if skipped_intent and priced == 0:
+        parts.append(
+            f"{skipped_intent} researched game(s) had no free-source K/hits volume intent yet."
+        )
+    if k_n == 0 and hits_n == 0 and priced == 0 and not skipped_research:
+        parts.append("No gated K/hits intents cleared free-source screens for this slate.")
+    return " ".join(parts)
+
 
 def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
     """Return a complete real-market MLB candidate universe for one date."""
     games = get_schedule(slate_date)
     if not games:
         logger.warning("No eligible MLB games found for %s", slate_date)
+        _last_props_status.update(
+            {
+                "enabled": bool(settings.mlb_props_enabled),
+                "events_priced": 0,
+                "k_candidates": 0,
+                "hits_candidates": 0,
+                "skipped_disabled": not bool(settings.mlb_props_enabled),
+                "skipped_research": 0,
+                "skipped_no_intent": 0,
+            }
+        )
         return []
 
     odds_events = get_game_odds(sport="baseball_mlb", markets="h2h,spreads,totals")
@@ -61,115 +118,209 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
         return []
 
     now = datetime.now(UTC)
-    candidates: list[CandidateInput] = []
-    prop_events_used = 0
-
+    matched_games: list[tuple[dict[str, Any], dict[str, Any]]] = []
     for game in games:
         matched_event = match_game_to_event(game, odds_events)
         if not matched_event:
             logger.info("No sportsbook event match for MLB game %s", game.get("game_pk"))
             continue
-
-        bookmakers = matched_event.get("bookmakers", [])
-        if not bookmakers:
+        if not matched_event.get("bookmakers"):
             continue
+        matched_games.append((game, matched_event))
 
-        research = _game_research(game, slate_date)
-        # Seed context with schedule-level weather/officials/venue before searchers.
-        context = research["context"]
-        if game.get("weather") and not context.get("weather", {}).get("verified"):
-            weather = game.get("weather") or {}
-            context["weather"] = {
-                "verified": bool(weather),
-                "condition": weather.get("condition"),
-                "temperature_f": weather.get("temp"),
-                "wind": weather.get("wind"),
-            }
-        if game.get("venue") and not context.get("venue"):
-            context["venue"] = game.get("venue")
-            context["park_verified"] = True
-        if game.get("officials") and not context.get("umpire_verified"):
-            context["officials"] = game.get("officials")
-            context["umpire_verified"] = True
-        searchers = run_mlb_research_searchers(
-            game=game,
-            context=context,
-            slate_date=slate_date,
-            bookmakers=bookmakers,
+    # Research games in parallel — sequential full-slate research often exceeds the
+    # mobile client's historical 25s abort window on a full MLB card.
+    bundles: list[dict[str, Any]] = []
+    workers = min(4, max(1, len(matched_games)))
+    with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="mlb-game") as pool:
+        futures = [
+            pool.submit(_build_matched_game_bundle, game, matched_event, slate_date, now)
+            for game, matched_event in matched_games
+        ]
+        for future in futures:
+            try:
+                bundle = future.result()
+            except Exception:
+                logger.exception("MLB game bundle failed")
+                continue
+            if bundle:
+                bundles.append(bundle)
+
+    candidates: list[CandidateInput] = []
+    for bundle in bundles:
+        candidates.extend(bundle["market_candidates"])
+
+    # Props stay sequential so mlb_max_prop_events credit gating stays deterministic.
+    prop_events_used = 0
+    skipped_research = 0
+    skipped_no_intent = 0
+    k_built = 0
+    hits_built = 0
+    for bundle in bundles:
+        if not settings.mlb_props_enabled:
+            break
+        if prop_events_used >= settings.mlb_max_prop_events:
+            break
+        if not _research_ready_for_props(bundle["research"]):
+            skipped_research += 1
+            continue
+        game = bundle["game"]
+        research = bundle["research"]
+        event_id = bundle["event_id"]
+        prop_intents = _pitcher_k_prop_intents(game, research)
+        hit_intents = _batter_hit_prop_intents(research)
+        if not prop_intents and not hit_intents:
+            skipped_no_intent += 1
+            logger.info(
+                "Skipping Odds props for %s — free sources found no gated K/hits intent",
+                event_id,
+            )
+            continue
+        markets: list[str] = []
+        if prop_intents:
+            markets.append("pitcher_strikeouts")
+        if hit_intents:
+            markets.append("batter_hits")
+        prop_events_used += 1
+        prop_payload = get_player_props(
+            event_id,
+            sport="baseball_mlb",
+            markets=",".join(markets),
         )
-        research["searchers"] = searchers
-        if searchers["umpires"].get("verified"):
-            context["umpire_verified"] = True
-            context["officials"] = searchers["umpires"].get("crew") or context.get("officials")
-        if searchers["park"].get("verified"):
-            context["park_verified"] = True
-            context["venue"] = searchers["park"].get("venue") or context.get("venue")
-        if (
-            not context.get("weather", {}).get("verified")
-            and searchers["weather_backup"].get("verified")
-        ):
-            context["weather"] = {
-                "verified": True,
-                "condition": searchers["weather_backup"].get("condition"),
-                "temperature_f": searchers["weather_backup"].get("temperature_c"),
-                "wind": searchers["weather_backup"].get("wind_kph"),
-                "source": "open_meteo",
-            }
-        research["context"] = context
-        research["market_search"] = searchers.get("market") or {}
-
-        projection = project_mlb_game(
-            home_form=research["home_form"],
-            away_form=research["away_form"],
-            home_pitcher_l5=research["home_pitcher_l5"],
-            away_pitcher_l5=research["away_pitcher_l5"],
-            home_bullpen=research["home_bullpen"],
-            away_bullpen=research["away_bullpen"],
-        )
-
-        event_id = str(matched_event.get("id") or game["game_pk"])
-        event_name = f"{game['away_team']} @ {game['home_team']}"
-        start_time = _parse_start(game.get("game_date"), slate_date)
-
-        candidates.extend(
-            _game_market_candidates(
+        if not prop_payload:
+            continue
+        bookmakers = prop_payload.get("bookmakers", [])
+        if prop_intents:
+            k_rows = _pitcher_strikeout_candidates(
                 game=game,
                 research=research,
-                projection=projection,
                 bookmakers=bookmakers,
                 event_id=event_id,
-                event_name=event_name,
-                start_time=start_time,
+                event_name=bundle["event_name"],
+                start_time=bundle["start_time"],
                 slate_date=slate_date,
                 now=now,
+                allowed_sides=set(prop_intents),
             )
-        )
+            k_built += len(k_rows)
+            candidates.extend(k_rows)
+        if hit_intents:
+            hit_rows = _batter_hits_candidates(
+                research=research,
+                bookmakers=bookmakers,
+                event_id=event_id,
+                event_name=bundle["event_name"],
+                start_time=bundle["start_time"],
+                slate_date=slate_date,
+                game=game,
+                now=now,
+                intents=hit_intents,
+            )
+            hits_built += len(hit_rows)
+            candidates.extend(hit_rows)
 
-        if settings.mlb_props_enabled and prop_events_used < settings.mlb_max_prop_events:
-            # Count the attempted event request so a slate refresh can never exceed
-            # the configured request budget, including events with no posted props.
-            prop_events_used += 1
-            prop_payload = get_player_props(
-                event_id,
-                sport="baseball_mlb",
-                markets="pitcher_strikeouts",
-            )
-            if prop_payload:
-                candidates.extend(
-                    _pitcher_strikeout_candidates(
-                        game=game,
-                        research=research,
-                        bookmakers=prop_payload.get("bookmakers", []),
-                        event_id=event_id,
-                        event_name=event_name,
-                        start_time=start_time,
-                        slate_date=slate_date,
-                        now=now,
-                    )
-                )
+    _last_props_status.update(
+        {
+            "enabled": bool(settings.mlb_props_enabled),
+            "events_priced": prop_events_used,
+            "k_candidates": k_built,
+            "hits_candidates": hits_built,
+            "skipped_disabled": not bool(settings.mlb_props_enabled),
+            "skipped_research": skipped_research,
+            "skipped_no_intent": skipped_no_intent,
+        }
+    )
 
     logger.info("Built %d independent-model MLB candidates for %s", len(candidates), slate_date)
     return candidates
+
+
+def _build_matched_game_bundle(
+    game: dict[str, Any],
+    matched_event: dict[str, Any],
+    slate_date: date,
+    now: datetime,
+) -> dict[str, Any] | None:
+    """Research one matched MLB game and build market candidates (no Odds props)."""
+    bookmakers = matched_event.get("bookmakers", [])
+    if not bookmakers:
+        return None
+
+    research = _game_research(game, slate_date)
+    # Seed context with schedule-level weather/officials/venue before searchers.
+    context = research["context"]
+    if game.get("weather") and not context.get("weather", {}).get("verified"):
+        weather = game.get("weather") or {}
+        context["weather"] = {
+            "verified": bool(weather),
+            "condition": weather.get("condition"),
+            "temperature_f": weather.get("temp"),
+            "wind": weather.get("wind"),
+        }
+    if game.get("venue") and not context.get("venue"):
+        context["venue"] = game.get("venue")
+        context["park_verified"] = True
+    if game.get("officials") and not context.get("umpire_verified"):
+        context["officials"] = game.get("officials")
+        context["umpire_verified"] = True
+    searchers = run_mlb_research_searchers(
+        game=game,
+        context=context,
+        slate_date=slate_date,
+        bookmakers=bookmakers,
+    )
+    research["searchers"] = searchers
+    if searchers["umpires"].get("verified"):
+        context["umpire_verified"] = True
+        context["officials"] = searchers["umpires"].get("crew") or context.get("officials")
+    if searchers["park"].get("verified"):
+        context["park_verified"] = True
+        context["venue"] = searchers["park"].get("venue") or context.get("venue")
+    if (
+        not context.get("weather", {}).get("verified")
+        and searchers["weather_backup"].get("verified")
+    ):
+        context["weather"] = {
+            "verified": True,
+            "condition": searchers["weather_backup"].get("condition"),
+            "temperature_f": searchers["weather_backup"].get("temperature_c"),
+            "wind": searchers["weather_backup"].get("wind_kph"),
+            "source": "open_meteo",
+        }
+    research["context"] = context
+    research["market_search"] = searchers.get("market") or {}
+
+    projection = project_mlb_game(
+        home_form=research["home_form"],
+        away_form=research["away_form"],
+        home_pitcher_l5=research["home_pitcher_l5"],
+        away_pitcher_l5=research["away_pitcher_l5"],
+        home_bullpen=research["home_bullpen"],
+        away_bullpen=research["away_bullpen"],
+    )
+
+    event_id = str(matched_event.get("id") or game["game_pk"])
+    event_name = f"{game['away_team']} @ {game['home_team']}"
+    start_time = _parse_start(game.get("game_date"), slate_date)
+    market_candidates = _game_market_candidates(
+        game=game,
+        research=research,
+        projection=projection,
+        bookmakers=bookmakers,
+        event_id=event_id,
+        event_name=event_name,
+        start_time=start_time,
+        slate_date=slate_date,
+        now=now,
+    )
+    return {
+        "game": game,
+        "research": research,
+        "event_id": event_id,
+        "event_name": event_name,
+        "start_time": start_time,
+        "market_candidates": market_candidates,
+    }
 
 
 def _game_market_candidates(
@@ -321,6 +472,206 @@ def _game_market_candidates(
     return candidates
 
 
+
+def _research_ready_for_props(research: dict[str, Any]) -> bool:
+    """True when free MLB sources cleared the checks props still need later.
+
+    Without these, Odds prop prices would only create RESEARCH_INCOMPLETE skips —
+    spending credits for nothing.
+    """
+    context = research.get("context") or {}
+    weather = context.get("weather") or {}
+    market = research.get("market_search") or {}
+    return bool(
+        research.get("home_form", {}).get("verified")
+        and research.get("away_form", {}).get("verified")
+        and research.get("home_availability", {}).get("verified")
+        and research.get("away_availability", {}).get("verified")
+        and research.get("home_bullpen", {}).get("verified")
+        and research.get("away_bullpen", {}).get("verified")
+        and (context.get("home") or {}).get("lineup_confirmed")
+        and (context.get("away") or {}).get("lineup_confirmed")
+        and weather.get("verified")
+        and market.get("verified")
+    )
+
+
+def _pitcher_k_prop_intents(game: dict[str, Any], research: dict[str, Any]) -> list[str]:
+    """Return home/away sides worth pricing after free-source K gates.
+
+    Uses official MLB logs only — no Odds credits. Pitchers that would later
+    hard-skip (thin sample, short duration, first start back) never trigger a
+    paid props pull.
+    """
+    intents: list[str] = []
+    for side in ("home", "away"):
+        pitcher = game.get(f"{side}_pitcher") or {}
+        if not pitcher.get("id") or not pitcher.get("name"):
+            continue
+        logs = research.get(f"{side}_pitcher_log") or []
+        if len(logs) < 5:
+            continue
+        summary = research.get(f"{side}_pitcher_l5") or {}
+        k_stats = pitcher_k_stats(logs)
+        first_start_back = _listed_unavailable(
+            int(pitcher["id"]), research.get(f"{side}_availability") or {}
+        )
+        if first_start_back:
+            continue
+        duration_verified = (
+            float(k_stats.get("avg_ip", 0) or 0) >= 4.5
+            and float(summary.get("avg_pitches", 0) or 0) >= 70
+        )
+        if not duration_verified:
+            continue
+        # Soft volume screen: only spend credits when free form suggests a live Over.
+        if float(k_stats.get("avg_k", 0) or 0) < 4.5:
+            continue
+        intents.append(side)
+    return intents
+
+
+def _batter_hit_prop_intents(research: dict[str, Any]) -> list[dict[str, Any]]:
+    """Top-of-order batters worth pricing after free-source hit form.
+
+    Caps at 2 batters per side to control Odds volume. Requires confirmed lineup.
+    """
+    intents: list[dict[str, Any]] = []
+    context = research.get("context") or {}
+    for side in ("home", "away"):
+        side_ctx = context.get(side) or {}
+        if not side_ctx.get("lineup_confirmed"):
+            continue
+        lineup = list(side_ctx.get("lineup") or [])[:5]
+        picked = 0
+        for batter in lineup:
+            if picked >= 2:
+                break
+            batter_id = batter.get("id")
+            name = str(batter.get("name") or "").strip()
+            if not batter_id or not name:
+                continue
+            try:
+                logs = get_player_game_log(int(batter_id), last_n=8)
+            except Exception:
+                logger.warning("Batter log fetch failed for %s", batter_id, exc_info=True)
+                continue
+            if len(logs) < 5:
+                continue
+            recent = logs[:5]
+            avg_hits = sum(float(row.get("hits") or 0) for row in recent) / len(recent)
+            avg_ab = sum(float(row.get("at_bats") or 0) for row in recent) / len(recent)
+            # Soft volume: regulars who are actually getting hits lately.
+            if avg_ab < 2.5 or avg_hits < 0.85:
+                continue
+            intents.append(
+                {
+                    "side": side,
+                    "player_id": int(batter_id),
+                    "name": name,
+                    "avg_hits": round(avg_hits, 2),
+                    "logs": logs,
+                }
+            )
+            picked += 1
+    return intents
+
+
+def _batter_hits_candidates(
+    *,
+    research: dict[str, Any],
+    bookmakers: list[dict[str, Any]],
+    event_id: str,
+    event_name: str,
+    start_time: datetime,
+    slate_date: date,
+    game: dict[str, Any],
+    now: datetime,
+    intents: list[dict[str, Any]],
+) -> list[CandidateInput]:
+    candidates: list[CandidateInput] = []
+    for intent in intents:
+        name = intent["name"]
+        offer = extract_player_prop(
+            bookmakers,
+            market_key="batter_hits",
+            player_name=name,
+            outcome_name="Over",
+        )
+        if not offer or offer.get("point") is None:
+            continue
+        line = Decimal(str(offer["point"]))
+        logs = list(intent.get("logs") or [])
+        if len(logs) < 5:
+            continue
+        probability = _batter_hits_probability(logs, float(line))
+        avg_hits = float(intent.get("avg_hits") or 0)
+        side = intent["side"]
+        candidates.append(
+            _build_candidate(
+                game=game,
+                research=research,
+                candidate_id=f"mlb-hits-{side}-{intent['player_id']}-{game['game_pk']}",
+                event_id=event_id,
+                event_name=event_name,
+                start_time=start_time,
+                market_type="player_hits_over",
+                selection=f"{name} Over {line} hits",
+                line=line,
+                odds=offer["american_odds"],
+                bookmaker=str(offer.get("book") or "") or None,
+                probability=probability,
+                model_quality=min(0.9, 0.6 + 0.03 * min(len(logs), 10)),
+                thesis_key=f"mlb-{_slug(name)}-hits-over-{line}-{slate_date}",
+                script_key=f"mlb-{_slug(event_name)}-{_slug(name)}-hits",
+                player_key=f"mlb-batter-{intent['player_id']}",
+                reason_codes=["INDEPENDENT_MODEL", "ACTUAL_L5_L10", "CURRENT_FORM"],
+                reasoning=[
+                    f"Official MLB L5: {avg_hits} average hits across recent games.",
+                    f"Actual {offer.get('book')} line and price are used only for value comparison.",
+                ],
+                factors={
+                    "recent_hits": _scale(avg_hits - float(line), 1.5),
+                    "playing_time": 0.25 if avg_hits >= 1.0 else 0.1,
+                },
+                recent_hit_rate=_batter_hit_rate(logs, float(line)),
+                average_cushion=round(avg_hits - float(line), 2),
+                matchup_score=probability,
+                script_alignment=0.6,
+                multiple_paths_score=0.55,
+                miss_by_one_count_l10=_batter_hits_miss_by_one(logs, float(line)),
+                now=now,
+                side_hint=side,
+            )
+        )
+    return candidates
+
+
+def _batter_hits_probability(logs: list[dict[str, Any]], line: float) -> float:
+    sample = logs[:10] or logs
+    clears = sum(1 for row in sample if float(row.get("hits") or 0) > line)
+    rate = clears / max(len(sample), 1)
+    return max(0.35, min(0.78, 0.42 + rate * 0.4))
+
+
+def _batter_hit_rate(logs: list[dict[str, Any]], line: float) -> float:
+    sample = logs[:10] or logs
+    if not sample:
+        return 0.0
+    clears = sum(1 for row in sample if float(row.get("hits") or 0) > line)
+    return round(clears / len(sample), 3)
+
+
+def _batter_hits_miss_by_one(logs: list[dict[str, Any]], line: float) -> int:
+    sample = logs[:10] or logs
+    return sum(
+        1
+        for row in sample
+        if abs(float(row.get("hits") or 0) - line) <= 1.0
+        and float(row.get("hits") or 0) <= line
+    )
+
+
 def _pitcher_strikeout_candidates(
     *,
     game: dict[str, Any],
@@ -331,9 +682,12 @@ def _pitcher_strikeout_candidates(
     start_time: datetime,
     slate_date: date,
     now: datetime,
+    allowed_sides: set[str] | None = None,
 ) -> list[CandidateInput]:
     candidates: list[CandidateInput] = []
     for side in ("home", "away"):
+        if allowed_sides is not None and side not in allowed_sides:
+            continue
         pitcher = game.get(f"{side}_pitcher")
         if not pitcher or not pitcher.get("id") or not pitcher.get("name"):
             continue
@@ -441,6 +795,7 @@ def _build_candidate(
     k_duration_verified: bool = True,
     bookmaker: str | None = None,
     price_timestamp: datetime | None = None,
+    side_hint: str | None = None,
 ) -> CandidateInput:
     context = research["context"]
     lineups_confirmed = bool(
@@ -520,17 +875,25 @@ def _build_candidate(
         game_status, market_status = "CANCELLED", "CLOSED"
 
     team_id = None
-    pitcher_id = None
+    headshot_id = None
     if player_key and player_key.startswith("mlb-pitcher-"):
         try:
-            pitcher_id = int(player_key.rsplit("-", 1)[-1])
+            headshot_id = int(player_key.rsplit("-", 1)[-1])
         except ValueError:
-            pitcher_id = None
-    for side in ("home", "away"):
-        team_name = str(game.get(f"{side}_team") or "")
-        if team_name and team_name in selection:
-            team_id = game.get(f"{side}_id")
-            break
+            headshot_id = None
+    elif player_key and player_key.startswith("mlb-batter-"):
+        try:
+            headshot_id = int(player_key.rsplit("-", 1)[-1])
+        except ValueError:
+            headshot_id = None
+    if side_hint in {"home", "away"}:
+        team_id = game.get(f"{side_hint}_id")
+    if team_id is None:
+        for side in ("home", "away"):
+            team_name = str(game.get(f"{side}_team") or "")
+            if team_name and team_name in selection:
+                team_id = game.get(f"{side}_id")
+                break
     if team_id is None:
         team_id = game.get("home_id")
 
@@ -613,7 +976,7 @@ def _build_candidate(
         thesis_key=thesis_key,
         script_key=script_key,
         player_key=player_key,
-        image_url=player_headshot_url(pitcher_id),
+        image_url=player_headshot_url(headshot_id),
         team_image_url=team_logo_url(team_id if isinstance(team_id, int) else None),
         safer_alternative=f"Use a lower line only if its own model edge is verified: {selection}",
         higher_upside=f"Use a higher line only after a separate cushion check: {selection}",

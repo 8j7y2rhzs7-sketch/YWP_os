@@ -20,6 +20,10 @@ export const WHOP_CHECKOUT_URL =
   process.env.NEXT_PUBLIC_WHOP_CHECKOUT_URL ??
   "https://whop.com/checkout/plan_MwJ2qcFxmvqDY";
 
+export const APP_DOWNLOAD_URL =
+  process.env.EXPO_PUBLIC_APP_DOWNLOAD_URL ??
+  "https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.29/YWP-OS-3.3.29.apk";
+
 export function normalizeApiUrl(value: string): string {
   const normalized = value.trim().replace(/\/$/, "");
   if (!normalized) throw new Error("Enter your deployed YWP OS API URL");
@@ -93,10 +97,89 @@ export class ApiError extends Error {
   }
 }
 
+const DEFAULT_TIMEOUT_MS = 25_000;
+/** Slate + analyze pull Odds + research; Render cold starts often exceed 25s. */
+const HEAVY_TIMEOUT_MS = 90_000;
+/** Full NCAAF cards can be 250–400 candidates and need a longer analyze window. */
+const ANALYZE_TIMEOUT_MS = 180_000;
+
+function formatApiDetail(detail: unknown, status: number): string {
+  if (typeof detail === "string" && detail.trim()) return detail;
+  if (Array.isArray(detail) && detail.length) {
+    const parts = detail.map((item) => {
+      if (typeof item === "string") return item;
+      if (item && typeof item === "object") {
+        const row = item as { msg?: unknown; loc?: unknown; type?: unknown };
+        const where = Array.isArray(row.loc)
+          ? row.loc
+              .filter((part) => part !== "body")
+              .map(String)
+              .join(".")
+          : "";
+        const msg = typeof row.msg === "string" ? row.msg : "Invalid request";
+        return where ? `${where}: ${msg}` : msg;
+      }
+      return "Invalid request";
+    });
+    return parts.slice(0, 3).join(" · ");
+  }
+  if (
+    detail &&
+    typeof detail === "object" &&
+    "message" in detail &&
+    typeof (detail as { message: unknown }).message === "string"
+  ) {
+    return (detail as { message: string }).message;
+  }
+  return `Request failed with status ${status}`;
+}
+
+export function timeoutMsForPath(path: string, override?: number): number {
+  if (typeof override === "number" && override > 0) return override;
+  const route = path.split("?")[0] ?? path;
+  if (route.startsWith("/sports/analyze")) {
+    return ANALYZE_TIMEOUT_MS;
+  }
+  if (
+    route.startsWith("/sports/slate") ||
+    route.startsWith("/sports/prefetch-odds") ||
+    route.startsWith("/sports/market-board") ||
+    route.startsWith("/sports/day-forge")
+  ) {
+    return HEAVY_TIMEOUT_MS;
+  }
+  return DEFAULT_TIMEOUT_MS;
+}
+
+function isCanceledFetchError(error: unknown): boolean {
+  if (!(error instanceof Error)) return false;
+  if (error.name === "AbortError") return true;
+  const message = error.message.toLowerCase();
+  if (
+    message.includes("aborted") ||
+    message.includes("canceled") ||
+    message.includes("cancelled")
+  ) {
+    return true;
+  }
+  const cause = (error as Error & { cause?: unknown }).cause;
+  if (cause instanceof Error) {
+    const causeMessage = cause.message.toLowerCase();
+    return (
+      cause.name === "AbortError" ||
+      causeMessage.includes("aborted") ||
+      causeMessage.includes("canceled") ||
+      causeMessage.includes("cancelled")
+    );
+  }
+  return false;
+}
+
 export async function rawRequest<T>(
   path: string,
   init: RequestInit = {},
   accessToken?: string,
+  timeoutMs?: number,
 ): Promise<T> {
   const apiUrl = getApiUrl() || PRODUCTION_API_URL;
   currentApiUrl = apiUrl;
@@ -107,7 +190,31 @@ export async function rawRequest<T>(
   if (accessToken) {
     headers.set("Authorization", `Bearer ${accessToken}`);
   }
-  const response = await fetch(`${apiUrl}${path}`, { ...init, headers });
+  const waitMs = timeoutMsForPath(path, timeoutMs);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), waitMs);
+  let response: Response;
+  try {
+    response = await fetch(`${apiUrl}${path}`, {
+      ...init,
+      headers,
+      signal: init.signal ?? controller.signal,
+    });
+  } catch (error) {
+    clearTimeout(timer);
+    if (controller.signal.aborted || isCanceledFetchError(error)) {
+      throw new ApiError(
+        `Request timed out after ${Math.round(waitMs / 1000)}s — check connectivity and retry`,
+        408,
+      );
+    }
+    throw new ApiError(
+      error instanceof Error ? error.message : "Network request failed",
+      0,
+    );
+  } finally {
+    clearTimeout(timer);
+  }
   const contentType = response.headers.get("content-type") ?? "";
   const body = contentType.includes("application/json")
     ? await response.json()
@@ -124,15 +231,7 @@ export async function rawRequest<T>(
       typeof detail.checkout_url === "string"
         ? detail.checkout_url
         : undefined;
-    const message =
-      typeof detail === "string"
-        ? detail
-        : typeof detail === "object" &&
-            detail !== null &&
-            "message" in detail &&
-            typeof detail.message === "string"
-          ? detail.message
-          : `Request failed with status ${response.status}`;
+    const message = formatApiDetail(detail, response.status);
     throw new ApiError(message, response.status, detail, checkoutUrl);
   }
   return body as T;

@@ -1,73 +1,72 @@
-# YWP OS — iOS / TestFlight
+# YWP OS — iOS
 
-Expo managed workflow (SDK 57). There is no committed `ios/` directory; EAS runs prebuild on the build servers.
+See also **[RELEASE_CHANNELS.md](./RELEASE_CHANNELS.md)** so Android APKs and iOS builds stay separated.
 
-## Prerequisites (your Apple / Expo accounts)
+Expo managed workflow (SDK 57). No committed `ios/` directory — EAS prebuilds on Expo’s servers.
 
-1. **Apple Developer Program** enrollment (paid) for the Apple ID that will own the app.
-2. **App Store Connect** access for that team (create the app record when ready).
-3. **Expo account** logged in on this machine:
+## Try on your iPhone now (free — Expo Go)
+
+No Apple Developer fee required.
+
+1. Install **Expo Go** from the App Store.
+2. On a computer with this repo:
+
+```bash
+cd mobile
+npm ci
+npm run start:phone
+```
+
+3. Scan the QR code with the iPhone Camera → open in Expo Go.
+4. You should hit the live API (`https://ywp-os-api.onrender.com/api/v1`).
+5. Create/login with the same email you will use on Whop → paywall → Sync.
+
+Same Wi‑Fi is nicest; `--tunnel` (used by `start:phone`) works across networks.
+
+## Real TestFlight / App Store (needs $99 Apple Developer)
+
+1. Enroll in the **Apple Developer Program**.
+2. Register bundle ID **`com.ywpos.app`** in Apple Developer → Identifiers.
+3. Create the app in App Store Connect.
+4. On your Mac:
 
 ```bash
 cd mobile
 npx eas-cli login
-npx eas-cli init          # creates/links projectId → writes to app.json extra.eas
-npx eas-cli credentials -p ios   # generate or upload distribution cert + provisioning
+npx eas-cli init          # writes projectId into app.json extra.eas
+npx eas-cli credentials -p ios
+npm run build:ios:preview
 ```
 
-4. Bundle ID is fixed as **`com.ywpos.app`**. Register the same identifier in Apple Developer → Identifiers if it does not exist yet.
+5. Submit to TestFlight; invite testers.
+6. Later: `npm run build:ios:production` + `npm run submit:ios`.
 
-## Profiles (`mobile/eas.json`)
+### Version knobs (iOS)
+
+- Marketing: `app.json` → `expo.version` (currently **3.3.29**, keep aligned with Android `versionName`)
+- Build number: `app.json` → `expo.ios.buildNumber` (currently **39**) — bump for every TestFlight/App Store upload
+
+### EAS profiles (`eas.json`)
 
 | Profile | Use |
 |---|---|
 | `development` | Dev client, iOS Simulator |
-| `preview` | Internal distribution → TestFlight / ad-hoc devices |
-| `production` | App Store / TestFlight production build |
+| `preview` | TestFlight / internal iOS |
+| `production` | App Store iOS |
 
-## Build commands
+Android is **not** built via EAS in this repo.
 
-```bash
-cd mobile
-npm run build:ios:preview      # TestFlight / internal
-npm run build:ios:production   # store
-npm run submit:ios             # after a production build (needs ASC API key or Apple login)
-```
+## App Store Connect checklist (before public listing)
 
-Version / build:
+- Privacy policy URL + support URL
+- Age rating (gambling-adjacent — review carefully)
+- Screenshots for required sizes
+- Account / data deletion disclosures
+- Export compliance (`ITSAppUsesNonExemptEncryption` is already false for standard HTTPS)
 
-- Marketing version: `app.json` → `expo.version` (currently **3.3.5**, same as Android)
-- iOS build number: `app.json` → `expo.ios.buildNumber` (currently **15**) — bump this for every App Store / TestFlight upload
+## Do not
 
-## What this branch already configured
-
-- iOS bundle ID, build number, tablet support
-- Photo library usage strings (Graphic Studio / share flows)
-- Privacy manifest reasons for UserDefaults + file timestamps
-- `expo-build-properties` with iOS deployment target **16.4**
-- EAS iOS preview + production profiles
-- npm scripts for build / submit
-
-## App Store Connect checklist (before first public listing)
-
-- Privacy policy URL
-- Support URL / marketing URL
-- Age rating (gambling / simulated gambling categories — review carefully)
-- Screenshots for required device sizes
-- Account deletion / data deletion disclosures if accounts are offered
-- Export compliance (usually “no” for standard HTTPS apps)
-
-## Local Expo Go (quick UI check)
-
-```bash
-cd mobile
-npx expo start
-```
-
-Scan the QR code with Camera → Expo Go on a physical iPhone. API must be reachable over HTTPS (`EXPO_PUBLIC_API_URL`).
-
-## Notes
-
-- Android `android/` is still committed for the signed APK path. That triggers an expo-doctor CNG warning; expected until Android also moves fully to prebuild-only.
-- Do **not** commit Apple certificates, `.p8` keys, or provisioning profiles.
-- No IPA is produced in CI from this agent until Expo + Apple credentials are available on the build machine.
+- Use BetaDrop / InstallOnAir / random enterprise signers for customers
+- Commit Apple certificates, `.p8` keys, or provisioning profiles
+- Run `expo prebuild` casually (can disturb the committed Android tree)
+- Put an IPA on the Whop Android download URL
