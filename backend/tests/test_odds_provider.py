@@ -194,6 +194,33 @@ def test_list_odds_sports_uses_free_catalog_and_cache(monkeypatch) -> None:
     assert odds_mod.app_sport_in_season("nba") is False
 
 
+def test_soccer_maps_multiple_leagues_and_in_season_any(monkeypatch) -> None:
+    class _Fake:
+        odds_api_key = "abcdef0123456789abcdef0123456789"
+
+    monkeypatch.setattr(odds_mod, "settings", _Fake())
+    keys = odds_mod.odds_keys_for_app_sport("soccer")
+    assert keys[0] == "soccer_uefa_champs_league"
+    assert "soccer_epl" in keys
+    assert "soccer_spain_la_liga" in keys
+    assert "soccer_france_ligue_one" in keys
+    assert "soccer_usa_mls" in keys
+    assert odds_mod.soccer_odds_regions("soccer") == "us,uk"
+    assert odds_mod.soccer_odds_regions("mlb") == "us"
+
+    monkeypatch.setattr(
+        odds_mod,
+        "in_season_odds_keys",
+        lambda force_refresh=False: {"soccer_epl", "soccer_spain_la_liga"},
+    )
+    assert odds_mod.app_sport_in_season("soccer") is True
+    active = odds_mod.active_odds_keys_for_app_sport("soccer")
+    assert active == ["soccer_epl", "soccer_spain_la_liga"]
+
+    monkeypatch.setattr(odds_mod, "in_season_odds_keys", lambda force_refresh=False: {"basketball_nba"})
+    assert odds_mod.app_sport_in_season("soccer") is False
+
+
 def test_get_game_odds_skips_out_of_season_and_caches_paid(monkeypatch) -> None:
     calls: list[str] = []
 

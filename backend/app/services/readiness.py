@@ -21,17 +21,31 @@ COMMON_REQUIRED_CHECKS: tuple[tuple[str, str], ...] = (
     ("sport_specific_sweep_complete", "sport-specific strict-mode sweep"),
 )
 
+# KBO has no certified lineup/bullpen JSON feed (ESPN baseball/kbo unsupported).
+# Full-game markets verify on Odds schedule/scores + weather + price consensus.
+KBO_REQUIRED_CHECKS: tuple[tuple[str, str], ...] = (
+    ("schedule_verified", "schedule"),
+    ("universe_scan_complete", "full slate/player universe"),
+    ("current_form_verified", "current form"),
+    ("l5_l10_verified", "actual L5/L10"),
+    ("injuries_verified", "injuries/rest"),
+    ("home_away_verified", "home/away/travel"),
+    ("market_movement_verified", "current market/line movement"),
+    ("sport_specific_sweep_complete", "sport-specific strict-mode sweep"),
+    ("weather_verified", "weather/venue conditions"),
+)
+
 
 def candidate_verification_gaps(candidate: CandidateInput) -> list[str]:
-    gaps = [label for field, label in COMMON_REQUIRED_CHECKS if not bool(getattr(candidate, field))]
-
     sport_l = candidate.sport.lower()
-    if sport_l in {"mlb", "nfl", "ncaaf", "soccer", "mls", "epl", "kbo"} and not candidate.weather_verified:
+    required = KBO_REQUIRED_CHECKS if sport_l == "kbo" else COMMON_REQUIRED_CHECKS
+    gaps = [label for field, label in required if not bool(getattr(candidate, field))]
+
+    if sport_l != "kbo" and sport_l in {"mlb", "nfl", "ncaaf", "soccer", "mls", "epl"} and not candidate.weather_verified:
         gaps.append("weather/venue conditions")
 
     # Only unknown labels on hard research channels block readiness.
-    # "probable" is allowed for pregame lineups/umpires while certified feeds catch up.
-    # Bullpen is baseball-only — never block NBA/NFL/soccer for a missing bullpen source.
+    # "probable" / "n/a" are allowed while certified feeds catch up or are unsupported.
     hard_source_keys = {
         "schedule",
         "market",
@@ -39,7 +53,8 @@ def candidate_verification_gaps(candidate: CandidateInput) -> list[str]:
         "injuries",
         "starter",
     }
-    if sport_l in {"mlb", "baseball", "kbo"}:
+    # Bullpen is MLB-only until a certified KBO bullpen source exists.
+    if sport_l in {"mlb", "baseball"}:
         hard_source_keys.add("bullpen")
 
     unknown_sources = [
@@ -47,6 +62,10 @@ def candidate_verification_gaps(candidate: CandidateInput) -> list[str]:
         for label, state in candidate.source_status.items()
         if state == "unknown" and label in hard_source_keys
     ]
+    # KBO: starter/lineup sources are explicitly n/a — never treat as unknown blockers.
+    if sport_l == "kbo":
+        unknown_sources = [label for label in unknown_sources if label not in {"starter", "lineup", "bullpen"}]
+
     gaps.extend(f"source:{label}" for label in unknown_sources)
 
     if candidate.probability_source == "market_implied":

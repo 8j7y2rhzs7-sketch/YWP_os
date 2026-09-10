@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "YWP OS API"
-    app_version: str = "3.3.12"
+    app_version: str = "3.3.17"
     api_prefix: str = "/api/v1"
     env: Literal["development", "test", "staging", "production"] = Field(
         default="development", validation_alias="YWP_ENV"
@@ -41,11 +41,12 @@ class Settings(BaseSettings):
         description="One-time/ops secret for POST /auth/provision-tester",
     )
     mlb_props_enabled: bool = Field(
-        default=False,
+        default=True,
         validation_alias="YWP_MLB_PROPS_ENABLED",
         description=(
             "When true, MLB player props use a source-first path: free MLB research "
-            "must surface a gated intent before Odds event-prop credits are spent."
+            "must surface a gated intent before Odds event-prop credits are spent. "
+            "Default on so Sheet/Run can show pitcher Ks and batter hits when research is ready."
         ),
     )
     mlb_max_prop_events: int = Field(
@@ -53,6 +54,16 @@ class Settings(BaseSettings):
         ge=0,
         le=20,
         validation_alias="YWP_MLB_MAX_PROP_EVENTS",
+    )
+    mlb_board_max_prop_events: int = Field(
+        default=8,
+        ge=0,
+        le=30,
+        validation_alias="YWP_MLB_BOARD_MAX_PROP_EVENTS",
+        description=(
+            "Pick Sheet sportsbook menu: max events to price player props for. "
+            "Higher than model-slate gating because Sheet is a full selectable board."
+        ),
     )
 
     whop_api_key: str | None = Field(default=None, validation_alias="WHOP_API_KEY")

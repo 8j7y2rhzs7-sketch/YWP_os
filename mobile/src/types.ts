@@ -209,6 +209,32 @@ export interface AnalyzeResponse {
   };
 }
 
+export interface DayForgeResponse {
+  engine: "YWP Day Forge";
+  status: "cooking" | "ready" | "pass" | "unavailable";
+  phase:
+    | "waiting_slate"
+    | "gathering_heat"
+    | "grading"
+    | "forging"
+    | "ready"
+    | "pass"
+    | "unavailable";
+  progress: number;
+  message: string;
+  sport: string;
+  date: string;
+  readiness?: Readiness | null;
+  cook_reasons: string[];
+  pass_reason?: string | null;
+  forgeable_count: number;
+  graded_count: number;
+  analysis_id?: string | null;
+  play?: Recommendation | null;
+  notification_title?: string | null;
+  notification_body?: string | null;
+}
+
 export interface HiveLearningSummary {
   eligible_samples: number;
   pending_samples: number;
@@ -363,6 +389,27 @@ export interface Performance {
   by_sport: Array<Record<string, string | number | null>>;
   by_market: Array<Record<string, string | number | null>>;
   confidence_calibration: Array<Record<string, string | number | null>>;
+  /** Board / pick accuracy (same as settled/wins/win_rate). */
+  leg_settled?: number;
+  leg_wins?: number;
+  leg_losses?: number;
+  leg_pushes?: number;
+  leg_win_rate?: number | null;
+  /** Full ticket / parlay accuracy after Sync Scores. */
+  ticket_settled?: number;
+  ticket_wins?: number;
+  ticket_losses?: number;
+  ticket_pushes?: number;
+  ticket_win_rate?: number | null;
+  /** Legs that actually rode on a placed/settled ticket. */
+  locked_leg_settled?: number;
+  locked_leg_wins?: number;
+  locked_leg_losses?: number;
+  locked_leg_win_rate?: number | null;
+  /** leg_win_rate - ticket_win_rate when both exist. */
+  packaging_gap?: number | null;
+  by_ticket_type?: Array<Record<string, string | number | null>>;
+  packaging_note?: string | null;
 }
 
 export interface MissByOneReport {

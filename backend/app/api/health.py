@@ -6,14 +6,15 @@ from app.deps import DB
 from app.services.espn_provider import probe_espn_api
 from app.services.mlb_provider import probe_mlb_api
 from app.services.nhl_provider import probe_nhl_api
-from app.services.odds_provider import odds_api_configured, probe_odds_api
+from app.services.odds_provider import odds_api_configured, get_last_fetch_status, probe_odds_api
 
 router = APIRouter(tags=["health"])
 
 
 @router.get("/health")
-def health(db: DB) -> dict[str, str | bool]:
+def health(db: DB) -> dict[str, str | bool | None]:
     db.execute(text("SELECT 1"))
+    odds_remaining = get_last_fetch_status().get("remaining")
     return {
         "status": "ok",
         "service": settings.app_name,
@@ -21,6 +22,7 @@ def health(db: DB) -> dict[str, str | bool]:
         "protocol_version": settings.protocol_version,
         "demo_mode": settings.demo_mode,
         "odds_api_configured": odds_api_configured(),
+        "odds_requests_remaining": odds_remaining,
         "database": "ok",
     }
 
@@ -36,7 +38,7 @@ def health_providers() -> dict[str, object]:
     odds = probe_odds_api()
     nhl = probe_nhl_api()
     espn_by_sport = {
-        sport: probe_espn_api(sport) for sport in ("nba", "nfl", "soccer", "wnba", "kbo")
+        sport: probe_espn_api(sport) for sport in ("nba", "nfl", "soccer", "wnba")
     }
     mlb_ok = bool(mlb.get("ok"))
     odds_ok = bool(odds.get("ok"))
@@ -47,10 +49,15 @@ def health_providers() -> dict[str, object]:
         "mlb": mlb,
         "nhl": nhl,
         "espn": espn_by_sport,
+        "kbo": {
+            "status": "odds_backed",
+            "detail": "ESPN has no baseball/kbo path; KBO facts use The Odds API scores + Open-Meteo.",
+        },
         "odds": odds,
         "coverage_note": (
             "Odds health uses the free /v4/sports catalog (0 credits). "
             "ESPN facts use site.web.api.espn.com (site.api is often Akamai-blocked from cloud IPs). "
+            "KBO uses Odds scores (not ESPN). "
             "Non-MLB slates still show Odds-priced plays if a fact feed degrades. "
             "Out-of-season sports are gated before paid /odds calls. "
             "Empty dates mean no Odds events that day — try a nearby date from the slate notice."

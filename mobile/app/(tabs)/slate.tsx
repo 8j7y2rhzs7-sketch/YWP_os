@@ -1,15 +1,18 @@
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { Linking, Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { PlayerPortrait } from "@/components/PlayerPortrait";
 import { BrandHeader } from "@/components/BrandHeader";
+import { EngineStage } from "@/components/EngineStage";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { FormField } from "@/components/FormField";
 import { LoadingState } from "@/components/LoadingState";
 import { MetalPanel } from "@/components/MetalPanel";
+import { MotionReveal } from "@/components/MotionReveal";
 import { Screen } from "@/components/Screen";
 import { SectionTitle } from "@/components/SectionTitle";
+import { SportBallIcon } from "@/components/SportBallIcon";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAppData } from "@/context/AppDataContext";
@@ -34,6 +37,32 @@ function probabilityLabel(source: string | undefined): string {
   if (source === "demo") return "DEMO P";
   if (source === "manual_verified") return "VERIFIED P";
   return "MODEL P";
+}
+
+function orbitToneFor(
+  loading: boolean,
+  slate: SlateResponse | null,
+): "idle" | "loading" | "verified" | "partial" | "danger" {
+  if (loading) return "loading";
+  if (!slate) return "idle";
+  const readiness = slateReadiness(slate);
+  if (readiness === "VERIFIED") return "verified";
+  if (readiness === "PARTIAL") return "partial";
+  if (readiness === "DEMO") return "danger";
+  return "idle";
+}
+
+function orbitLabel(
+  loading: boolean,
+  slate: SlateResponse | null,
+): string | undefined {
+  if (loading) return "Verifying";
+  if (!slate) return "Standby";
+  const readiness = slateReadiness(slate);
+  if (readiness === "VERIFIED") return "Verified";
+  if (readiness === "PARTIAL") return "Partial";
+  if (readiness === "DEMO") return "Demo";
+  return readiness;
 }
 
 const sports = [
@@ -178,16 +207,80 @@ export default function SlateScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sport, date, catalogReady]);
 
+  const tone = orbitToneFor(loadingSlate || analyzing, slate);
+  const look = sportLook(sport);
+
   return (
     <Screen sport={sport}>
       <BrandHeader title="FULL PROTOCOL RUN" subtitle="AIN • STRICT MODE • ALL ANGLES" compact sport={sport} />
-      <MetalPanel tone="gold">
+
+      {/* Focal engine — shockwaves + radar track load / readiness */}
+      <View style={styles.engineStage}>
+        <MotionReveal
+          replayKey={`${sport}-${tone}-${loadingSlate}-${analyzing}`}
+          fromY={24}
+        >
+          <EngineStage
+            size={200}
+            tone={tone}
+            label={orbitLabel(loadingSlate || analyzing, slate)}
+            intensity="hero"
+            calloutsActive={Boolean(slate) && !loadingSlate}
+            callouts={[
+              {
+                id: "sport",
+                label: sport.toUpperCase(),
+                side: "left",
+                top: 48,
+              },
+              {
+                id: "state",
+                label: orbitLabel(loadingSlate || analyzing, slate) ?? "STANDBY",
+                side: "right",
+                top: 72,
+              },
+              {
+                id: "count",
+                label: slate ? `${slate.candidates.length} RAW` : "0 RAW",
+                side: "left",
+                top: 128,
+              },
+              {
+                id: "mode",
+                label: analyzing ? "AIN" : "STRICT",
+                side: "right",
+                top: 148,
+              },
+            ]}
+          />
+        </MotionReveal>
+        <MotionReveal delay={120} replayKey={`${sport}-${slate?.candidates.length ?? 0}`}>
+          <Text style={styles.engineHeadline}>
+            {analyzing
+              ? "Running AIN + Strict Mode"
+              : loadingSlate
+                ? "Pulling live candidates"
+                : slate
+                  ? `${sport.toUpperCase()} slate · ${slate.candidates.length} candidates`
+                  : "Select sport · load slate"}
+          </Text>
+        </MotionReveal>
+        <MotionReveal delay={220} replayKey={`${sport}-${slate?.notice ?? "idle"}`}>
+          <Text style={styles.engineSupport}>
+            {slate?.notice
+              ? slate.notice
+              : "Quiet chassis. Verification first. No forced ticket."}
+          </Text>
+        </MotionReveal>
+      </View>
+
+      <MetalPanel tone="gold" accent={look.accent}>
         <Text style={type.eyebrow}>SELECT SPORT</Text>
         <View style={styles.sports}>
           {sports.map((item) => {
             const catalog = catalogByKey[item.key];
             const outOfSeason = catalog?.in_season === false;
-            const look = sportLook(item.key);
+            const itemLook = sportLook(item.key);
             const active = sport === item.key;
             return (
               <Pressable
@@ -196,18 +289,22 @@ export default function SlateScreen() {
                 style={[
                   styles.sport,
                   active && {
-                    borderColor: look.accent,
-                    backgroundColor: look.accentSoft,
+                    borderColor: itemLook.accent,
+                    backgroundColor: itemLook.accentSoft,
                   },
                   outOfSeason && styles.sportOutOfSeason,
                 ]}
               >
-                <View style={[styles.sportStripe, { backgroundColor: look.accent }]} />
-                <Text style={styles.sportIcon}>{item.icon}</Text>
+                <View style={[styles.sportStripe, { backgroundColor: itemLook.accent }]} />
+                <SportBallIcon
+                  icon={item.icon}
+                  spinning={active && (loadingSlate || analyzing)}
+                  size={28}
+                />
                 <Text
                   style={[
                     styles.sportLabel,
-                    active && { color: look.stripe },
+                    active && { color: itemLook.stripe },
                     outOfSeason && styles.sportLabelOutOfSeason,
                   ]}
                 >
@@ -256,7 +353,6 @@ export default function SlateScreen() {
               </Text>
               <StatusPill value={slateReadiness(slate) === "VERIFIED" ? "LOCKED" : "WARNING"} />
             </View>
-            <Text style={type.body}>{slate.notice}</Text>
             {slateReadiness(slate) === "PARTIAL" ? (
               <Text style={styles.verificationWarning}>
                 {slate.verification_summary?.partial_count ?? slate.candidates.length}{" "}
@@ -272,7 +368,12 @@ export default function SlateScreen() {
             subtitle="Raw list appears before YWP scoring, eliminations, and card building."
           />
           {slate.candidates.map((candidate, index) => (
-            <MetalPanel key={candidate.candidate_id} style={styles.candidate} accent={sportLook(sport).accent}>
+            <MetalPanel
+              key={candidate.candidate_id}
+              style={styles.candidate}
+              accent={sportLook(sport).accent}
+              motionDelay={Math.min(index, 8) * 45}
+            >
               <View style={styles.candidateTop}>
                 <Text style={[styles.number, { backgroundColor: sportLook(sport).accent }]}>{index + 1}</Text>
                 <PlayerPortrait
@@ -300,18 +401,6 @@ export default function SlateScreen() {
                 Probability source:{" "}
                 {(candidate.probability_source ?? "model").replaceAll("_", " ")}
               </Text>
-              {Array.isArray(candidate.source_urls) && candidate.source_urls[0] ? (
-                <Pressable
-                  accessibilityRole="link"
-                  onPress={() => {
-                    const sourceUrl = String(candidate.source_urls?.[0] ?? "");
-                    if (sourceUrl) void Linking.openURL(sourceUrl);
-                  }}
-                  style={styles.sourceLink}
-                >
-                  <Text style={styles.sourceLinkText}>OPEN MLB SOURCE</Text>
-                </Pressable>
-              ) : null}
             </MetalPanel>
           ))}
           <YwpButton
@@ -331,6 +420,26 @@ export default function SlateScreen() {
 }
 
 const styles = StyleSheet.create({
+  engineStage: {
+    alignItems: "center",
+    gap: spacing.md,
+    paddingVertical: spacing.lg,
+    paddingHorizontal: spacing.sm,
+  },
+  engineHeadline: {
+    color: colors.white,
+    fontFamily: fonts.displaySemi,
+    fontSize: 18,
+    fontWeight: "700",
+    letterSpacing: -0.35,
+    textAlign: "center",
+  },
+  engineSupport: {
+    ...type.caption,
+    textAlign: "center",
+    maxWidth: 360,
+    color: colors.silver,
+  },
   sports: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
   sport: {
     flex: 1,
@@ -356,7 +465,6 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   sportOutOfSeason: { opacity: 0.42 },
-  sportIcon: { fontSize: 28 },
   sportLabel: {
     color: colors.silver,
     fontFamily: fonts.bodyBold,
@@ -427,20 +535,5 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "700",
     marginTop: spacing.sm,
-  },
-  sourceLink: {
-    alignSelf: "flex-start",
-    borderColor: colors.info,
-    borderWidth: 1,
-    borderRadius: radius.pill,
-    paddingHorizontal: spacing.lg,
-    paddingVertical: 10,
-    marginTop: spacing.sm,
-  },
-  sourceLinkText: {
-    color: colors.info,
-    fontSize: 12,
-    fontWeight: "700",
-    letterSpacing: 0.4,
   },
 });

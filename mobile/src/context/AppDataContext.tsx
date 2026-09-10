@@ -13,16 +13,18 @@ import {
 import { getApiUrl } from "@/lib/api";
 import type { AnalyzeResponse, BuildTicketResponse, SlateResponse } from "@/types";
 
-const CACHE_SCHEMA = "v5";
+const CACHE_SCHEMA = "v6";
 const MAX_CACHED = 20;
 
 interface AppDataValue {
   analyses: Record<string, AnalyzeResponse>;
   builds: Record<string, BuildTicketResponse>;
   lastSlate: SlateResponse | null;
+  lastMarketBoard: SlateResponse | null;
   saveAnalysis: (analysis: AnalyzeResponse) => void;
   saveBuild: (analysisId: string, build: BuildTicketResponse) => void;
   saveSlate: (slate: SlateResponse) => void;
+  saveMarketBoard: (board: SlateResponse) => void;
   clearCache: () => Promise<void>;
   ready: boolean;
 }
@@ -40,7 +42,10 @@ function trimToRecent<T>(record: Record<string, T>, max: number): Record<string,
   return trimmed;
 }
 
-function scopeKey(kind: "analyses" | "builds" | "slate", userId: string | null): string {
+function scopeKey(
+  kind: "analyses" | "builds" | "slate" | "marketBoard",
+  userId: string | null,
+): string {
   const api = getApiUrl().replace(/\/$/, "");
   const user = userId ?? "anonymous";
   return `ywp.os.${kind}.${CACHE_SCHEMA}.${user}.${api}`;
@@ -56,6 +61,7 @@ export function AppDataProvider({
   const [analyses, setAnalyses] = useState<Record<string, AnalyzeResponse>>({});
   const [builds, setBuilds] = useState<Record<string, BuildTicketResponse>>({});
   const [lastSlate, setLastSlate] = useState<SlateResponse | null>(null);
+  const [lastMarketBoard, setLastMarketBoard] = useState<SlateResponse | null>(null);
   const [ready, setReady] = useState(false);
   const hydrateGen = useRef(0);
 
@@ -65,17 +71,20 @@ export function AppDataProvider({
     setAnalyses({});
     setBuilds({});
     setLastSlate(null);
+    setLastMarketBoard(null);
     void (async () => {
       try {
-        const [rawA, rawB, rawS] = await Promise.all([
+        const [rawA, rawB, rawS, rawBoard] = await Promise.all([
           AsyncStorage.getItem(scopeKey("analyses", userId)),
           AsyncStorage.getItem(scopeKey("builds", userId)),
           AsyncStorage.getItem(scopeKey("slate", userId)),
+          AsyncStorage.getItem(scopeKey("marketBoard", userId)),
         ]);
         if (gen !== hydrateGen.current) return;
         if (rawA) setAnalyses(JSON.parse(rawA));
         if (rawB) setBuilds(JSON.parse(rawB));
         if (rawS) setLastSlate(JSON.parse(rawS));
+        if (rawBoard) setLastMarketBoard(JSON.parse(rawBoard));
       } catch {
         /* first launch or corrupt data — start fresh */
       }
@@ -127,15 +136,28 @@ export function AppDataProvider({
     [userId],
   );
 
+  const saveMarketBoard = useCallback(
+    (board: SlateResponse) => {
+      setLastMarketBoard(board);
+      AsyncStorage.setItem(
+        scopeKey("marketBoard", userId),
+        JSON.stringify(board),
+      ).catch(() => {});
+    },
+    [userId],
+  );
+
   const clearCache = useCallback(async () => {
     hydrateGen.current += 1;
     setAnalyses({});
     setBuilds({});
     setLastSlate(null);
+    setLastMarketBoard(null);
     await Promise.all([
       AsyncStorage.removeItem(scopeKey("analyses", userId)),
       AsyncStorage.removeItem(scopeKey("builds", userId)),
       AsyncStorage.removeItem(scopeKey("slate", userId)),
+      AsyncStorage.removeItem(scopeKey("marketBoard", userId)),
     ]).catch(() => undefined);
     setReady(true);
   }, [userId]);
@@ -145,9 +167,11 @@ export function AppDataProvider({
       analyses,
       builds,
       lastSlate,
+      lastMarketBoard,
       saveAnalysis,
       saveBuild,
       saveSlate,
+      saveMarketBoard,
       clearCache,
       ready,
     }),
@@ -155,9 +179,11 @@ export function AppDataProvider({
       analyses,
       builds,
       lastSlate,
+      lastMarketBoard,
       saveAnalysis,
       saveBuild,
       saveSlate,
+      saveMarketBoard,
       clearCache,
       ready,
     ],

@@ -3,6 +3,7 @@
 Grades:
 1. Placed ticket legs (vault settle)
 2. Board picks the user was shown (PLAY/LEAN/WATCH) even if never locked
+3. Pick Sheet sportsbook-menu legs (incl. SKIP) so Hive can learn customer picks
 
 Outcome settlement is automatic for memory (WIN/LOSS/PUSH/VOID).
 Process audit grades stay UNCLASSIFIED until the user completes a full
@@ -45,6 +46,8 @@ class SettlementItem:
 
 
 BOARD_DECISIONS = frozenset({"PLAY", "LEAN", "WATCH"})
+# Sheet sportsbook-menu legs are Hive-captured even on SKIP — settle them too.
+SHEET_LEARNING_DECISIONS = frozenset({"PLAY", "LEAN", "WATCH", "SKIP", "REVIEW"})
 
 
 @dataclass
@@ -121,6 +124,18 @@ def settle_user_day(
             trigger="settle_day",
             extra={"hive_outcomes_mapped": mapped, "settled_items": len(items)},
         )
+        # Second loop: after fresh evidence lands, Hive invents/tests tactics.
+        from app.hive.config import settings as hive_settings
+        from app.hive.self_improve import run_self_improvement_cycle
+
+        if (
+            hive_settings.self_improve_enabled
+            and mapped >= int(hive_settings.self_improve_min_mapped)
+        ):
+            run_self_improvement_cycle(
+                db=db,
+                trigger="settle_day",
+            )
     return SettleDayResult(
         items=items,
         hive_outcomes_mapped=mapped,
@@ -129,7 +144,7 @@ def settle_user_day(
 def sync_hive_outcomes_for_graded(db: Session, user_id: str) -> int:
     """Map graded board/ticket results onto pending Hive captures for this user.
 
-    Sync must settle the same PLAY/LEAN/WATCH universe Hive captured — not only
+    Sync must settle the same board/Sheet universe Hive captured — not only
     locked tickets — so optimum-accuracy can advance from live evidence.
     """
     from app.hive.models import HiveLearningEvent
@@ -206,13 +221,25 @@ def settle_user_placed_tickets(
     return items
 
 
+def _is_sheet_menu_recommendation(recommendation: Recommendation) -> bool:
+    """True when this row came from Pick Sheet sportsbook menu (not Run slate)."""
+    if (recommendation.data_source or "") == "THE_ODDS_API_BOARD":
+        return True
+    snap = recommendation.snapshot or {}
+    if snap.get("data_source") == "THE_ODDS_API_BOARD":
+        return True
+    reasons = snap.get("reason_codes") or recommendation.reason_codes or []
+    return "SPORTSBOOK_MENU" in reasons
+
+
 def settle_user_board_recommendations(
     db: Session, user_id: str, *, as_of: date | None = None
 ) -> list[SettlementItem]:
-    """Grade ungraded PLAY/LEAN/WATCH board picks even if never locked into a ticket.
+    """Grade ungraded board + Sheet-menu picks even if never locked into a ticket.
 
     Locked tickets still matter for exposure/P&L, but every pick the protocol
-    surfaced for the day is training data for the next day.
+    surfaced (and every Sheet sportsbook-menu leg the customer checked,
+    including SKIP) is training data for the next day.
     Future slate dates are skipped until their calendar day arrives.
     """
     query = (
@@ -220,7 +247,7 @@ def settle_user_board_recommendations(
         .where(
             Recommendation.created_by_user_id == user_id,
             Recommendation.outcome.is_(None),
-            Recommendation.decision.in_(BOARD_DECISIONS),
+            Recommendation.decision.in_(SHEET_LEARNING_DECISIONS),
         )
         .options(joinedload(Recommendation.result))
         .order_by(Recommendation.slate_date.desc(), Recommendation.rank.asc())
@@ -232,16 +259,31 @@ def settle_user_board_recommendations(
     for recommendation in recommendations:
         if recommendation.result:
             continue
+        # Official Run/board: PLAY/LEAN/WATCH only. Sheet menu: all decisions.
+        if recommendation.decision not in BOARD_DECISIONS and not _is_sheet_menu_recommendation(
+            recommendation
+        ):
+            continue
+        sheet_menu = _is_sheet_menu_recommendation(recommendation)
+        tags = ["BOARD_SETTLED", "NOT_LOCKED"]
+        if sheet_menu:
+            tags.append("SHEET_MENU_SETTLED")
+        lesson = (
+            "Auto-settled Pick Sheet sportsbook-menu leg (incl. SKIP). "
+            "Outcome trains Hive customer-selection calibration."
+            if sheet_menu
+            else (
+                "Auto-settled board pick (never locked). "
+                "Outcome still trains next-day weights."
+            )
+        )
         try:
             graded = _grade_recommendation(
                 db,
                 recommendation,
                 stake=Decimal("0.00"),
-                extra_tags=["BOARD_SETTLED", "NOT_LOCKED"],
-                lesson=(
-                    "Auto-settled board pick (never locked). "
-                    "Outcome still trains next-day weights."
-                ),
+                extra_tags=tags,
+                lesson=lesson,
             )
         except Exception as exc:  # noqa: BLE001 — keep batch settling resilient
             logger.exception("Board settlement failed for %s", recommendation.id)
@@ -583,6 +625,7 @@ def _final_box(feed: dict[str, Any]) -> dict[str, Any] | None:
                     away_runs = int(runs)
 
     pitchers: dict[int, dict[str, Any]] = {}
+    batters: dict[int, dict[str, Any]] = {}
     for side in ("home", "away"):
         players = (boxscore.get(side) or {}).get("players") or {}
         for record in players.values():
@@ -590,16 +633,41 @@ def _final_box(feed: dict[str, Any]) -> dict[str, Any] | None:
             pid = person.get("id")
             if not isinstance(pid, int):
                 continue
-            pitching = ((record.get("stats") or {}).get("pitching")) or {}
-            if not pitching:
-                continue
-            pitchers[pid] = {
-                "id": pid,
-                "name": person.get("fullName") or "",
-                "strikeouts": int(pitching.get("strikeOuts") or 0),
-                "innings_pitched": pitching.get("inningsPitched"),
-                "side": side,
-            }
+            stats = record.get("stats") or {}
+            pitching = stats.get("pitching") or {}
+            if pitching:
+                pitchers[pid] = {
+                    "id": pid,
+                    "name": person.get("fullName") or "",
+                    "strikeouts": int(pitching.get("strikeOuts") or 0),
+                    "outs": int(pitching.get("outs") or 0),
+                    "hits_allowed": int(pitching.get("hits") or 0),
+                    "earned_runs": int(pitching.get("earnedRuns") or 0),
+                    "walks": int(pitching.get("baseOnBalls") or 0),
+                    "innings_pitched": pitching.get("inningsPitched"),
+                    "side": side,
+                }
+            batting = stats.get("batting") or {}
+            if batting:
+                hits = int(batting.get("hits") or 0)
+                runs = int(batting.get("runs") or 0)
+                rbi = int(batting.get("rbi") or 0)
+                hr = int(batting.get("homeRuns") or 0)
+                tb = int(batting.get("totalBases") or 0)
+                batters[pid] = {
+                    "id": pid,
+                    "name": person.get("fullName") or "",
+                    "hits": hits,
+                    "runs": runs,
+                    "rbi": rbi,
+                    "home_runs": hr,
+                    "total_bases": tb,
+                    "hits_runs_rbis": hits + runs + rbi,
+                    "stolen_bases": int(batting.get("stolenBases") or 0),
+                    "walks": int(batting.get("baseOnBalls") or 0),
+                    "at_bats": int(batting.get("atBats") or 0),
+                    "side": side,
+                }
 
     return {
         "home_team": home_team,
@@ -609,6 +677,7 @@ def _final_box(feed: dict[str, Any]) -> dict[str, Any] | None:
         "total_runs": home_runs + away_runs,
         "final_score": f"{away_team} {away_runs} @ {home_team} {home_runs}",
         "pitchers": pitchers,
+        "batters": batters,
         "boxscore": boxscore,
     }
 
@@ -686,7 +755,7 @@ def _derive_outcome(
             "detail": f"{team} {team_runs} with line {line:+} vs {opp_runs}.",
         }
 
-    if "strikeout" in market or "pitcher" in market:
+    if "strikeout" in market and "batter" not in market:
         if line is None:
             return None
         pitcher = _match_pitcher(recommendation, box)
@@ -712,7 +781,98 @@ def _derive_outcome(
             "detail": f"{pitcher['name']} struck out {actual} vs line {line} ({direction}).",
         }
 
+    if "pitcher" in market:
+        if line is None:
+            return None
+        pitcher = _match_pitcher(recommendation, box)
+        if pitcher is None:
+            return {
+                "outcome": "VOID",
+                "actual_value": None,
+                "final_score": final_score,
+                "detail": "Pitcher prop total not found in final boxscore.",
+            }
+        if "outs" in market:
+            actual = Decimal(int(pitcher.get("outs") or 0))
+            label = "outs"
+        elif "earned" in market:
+            actual = Decimal(int(pitcher.get("earned_runs") or 0))
+            label = "ER"
+        elif "walks" in market:
+            actual = Decimal(int(pitcher.get("walks") or 0))
+            label = "BB"
+        else:
+            actual = Decimal(int(pitcher.get("hits_allowed") or 0))
+            label = "HA"
+        direction = "under" if "under" in selection_l else "over"
+        if actual == line:
+            outcome = "PUSH"
+        elif direction == "over":
+            outcome = "WIN" if actual > line else "LOSS"
+        else:
+            outcome = "WIN" if actual < line else "LOSS"
+        return {
+            "outcome": outcome,
+            "actual_value": actual,
+            "final_score": f"{final_score} • {pitcher['name']} {actual} {label}",
+            "detail": f"{pitcher['name']} {label} {actual} vs line {line} ({direction}).",
+        }
+
+    if (
+        "hits" in market
+        or "rbi" in market
+        or "runs" in market
+        or "hr" in market
+        or "bases" in market
+        or "hrr" in market
+        or "stolen" in market
+        or "walks" in market
+    ):
+        if line is None:
+            return None
+        batter = _match_batter(recommendation, box)
+        if batter is None:
+            return {
+                "outcome": "VOID",
+                "actual_value": None,
+                "final_score": final_score,
+                "detail": "Batter prop total not found in final boxscore.",
+            }
+        stat_key, label = _batter_stat_for_market(market, selection_l)
+        actual = Decimal(int(batter.get(stat_key) or 0))
+        direction = "under" if "under" in selection_l else "over"
+        if actual == line:
+            outcome = "PUSH"
+        elif direction == "over":
+            outcome = "WIN" if actual > line else "LOSS"
+        else:
+            outcome = "WIN" if actual < line else "LOSS"
+        return {
+            "outcome": outcome,
+            "actual_value": actual,
+            "final_score": f"{final_score} • {batter['name']} {actual} {label}",
+            "detail": f"{batter['name']} had {actual} {label} vs line {line} ({direction}).",
+        }
+
     return None
+
+
+def _batter_stat_for_market(market: str, selection_l: str) -> tuple[str, str]:
+    if "hrr" in market or "hits_runs_rbis" in market or "hits+runs" in selection_l:
+        return "hits_runs_rbis", "H+R+RBI"
+    if "total_bases" in market or "total bases" in selection_l:
+        return "total_bases", "TB"
+    if "home_run" in market or "hr" in market or "home runs" in selection_l:
+        return "home_runs", "HR"
+    if "rbi" in market:
+        return "rbi", "RBI"
+    if "stolen" in market or "sb" in market:
+        return "stolen_bases", "SB"
+    if "walks" in market:
+        return "walks", "BB"
+    if "runs" in market and "hits" not in market:
+        return "runs", "R"
+    return "hits", "H"
 
 
 def _selected_team(
@@ -770,6 +930,35 @@ def _match_pitcher(recommendation: Recommendation, box: dict[str, Any]) -> dict[
             name_guess.lower() in full.lower() or full.lower() in name_guess.lower()
         ):
             return pitcher
+    return None
+
+
+def _match_batter(recommendation: Recommendation, box: dict[str, Any]) -> dict[str, Any] | None:
+    player_key = recommendation.player_key or ""
+    batter_id = None
+    match = re.search(r"(\d+)$", player_key)
+    if match:
+        batter_id = int(match.group(1))
+    batters: dict[int, dict[str, Any]] = box.get("batters") or {}
+    if batter_id and batter_id in batters:
+        return batters[batter_id]
+
+    selection = recommendation.selection or ""
+    name_guess = re.sub(
+        r"\b(over|under)\b.*$",
+        "",
+        selection,
+        flags=re.IGNORECASE,
+    ).strip()
+    name_guess = re.sub(r"\bhits?\b.*$", "", name_guess, flags=re.IGNORECASE).strip()
+    for batter in batters.values():
+        full = str(batter.get("name") or "")
+        if full and full.lower() in selection.lower():
+            return batter
+        if name_guess and full and (
+            name_guess.lower() in full.lower() or full.lower() in name_guess.lower()
+        ):
+            return batter
     return None
 
 

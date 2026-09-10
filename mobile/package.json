@@ -1,6 +1,6 @@
 {
   "name": "ywp-os-mobile",
-  "version": "3.3.11",
+  "version": "3.3.29",
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
@@ -8,7 +8,6 @@
     "start:phone": "node ../scripts/mobile-start-phone.mjs",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "ios:device:free": "bash ../scripts/ios-free-device.sh",
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
     "doctor": "npx expo-doctor@latest",
@@ -35,6 +34,7 @@
     "expo-sharing": "~57.0.17",
     "expo-splash-screen": "~57.0.8",
     "expo-status-bar": "~57.0.1",
+    "expo-video": "^57.0.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.86.3",

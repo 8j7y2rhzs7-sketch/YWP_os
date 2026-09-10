@@ -3,10 +3,12 @@ import { useCallback, useEffect, useState } from "react";
 import { Alert, StyleSheet, Text, View } from "react-native";
 
 import { BrandHeader } from "@/components/BrandHeader";
+import { EngineStage } from "@/components/EngineStage";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { LoadingState } from "@/components/LoadingState";
 import { MetalPanel } from "@/components/MetalPanel";
 import { Metric } from "@/components/Metric";
+import { MotionReveal } from "@/components/MotionReveal";
 import { Screen } from "@/components/Screen";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
@@ -125,6 +127,21 @@ export default function TicketsScreen() {
   return (
     <Screen refreshing={refreshing} onRefresh={() => void load(true, true)}>
       <BrandHeader title="TICKET VAULT" subtitle="EXPOSURE • LOCKS • DECISIONS" compact />
+      <MotionReveal fromY={16}>
+        <EngineStage
+          size={160}
+          tone={placedCount ? "verified" : "idle"}
+          intensity="standard"
+          label={placedCount ? "Live" : "Vault"}
+          calloutsActive
+          callouts={[
+            { id: "placed", label: `${placedCount} PLACED`, side: "left", top: 44 },
+            { id: "draft", label: `${lockedDraftCount} OPEN`, side: "right", top: 60 },
+            { id: "total", label: `${tickets.length} TOTAL`, side: "left", top: 112 },
+            { id: "sync", label: "SYNC", side: "right", top: 128 },
+          ]}
+        />
+      </MotionReveal>
       {error ? <ErrorNotice message={error} /> : null}
       {syncNote ? (
         <MetalPanel tone="gold">
@@ -152,9 +169,10 @@ export default function TicketsScreen() {
           <YwpButton label="RUN A SLATE" onPress={() => router.push("/(tabs)/slate")} />
         </MetalPanel>
       ) : null}
-      {tickets.map((ticket) => (
+      {tickets.map((ticket, index) => (
         <MetalPanel
           key={ticket.id}
+          motionDelay={Math.min(index, 10) * 40}
           tone={
             ticket.status === "placed" || ticket.status === "settled" ? "success" : "default"
           }

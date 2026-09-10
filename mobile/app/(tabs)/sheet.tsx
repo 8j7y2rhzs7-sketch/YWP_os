@@ -3,10 +3,12 @@ import { useMemo, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { BrandHeader } from "@/components/BrandHeader";
+import { EngineStage } from "@/components/EngineStage";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { FormField } from "@/components/FormField";
 import { LoadingState } from "@/components/LoadingState";
 import { MetalPanel } from "@/components/MetalPanel";
+import { MotionReveal } from "@/components/MotionReveal";
 import { Screen } from "@/components/Screen";
 import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
@@ -23,6 +25,23 @@ import type {
   SlateResponse,
 } from "@/types";
 
+const sports = [
+  { key: "mlb", label: "MLB" },
+  { key: "wnba", label: "WNBA" },
+  { key: "nba", label: "NBA" },
+  { key: "nfl", label: "NFL" },
+  { key: "ncaaf", label: "NCAAF" },
+  { key: "nhl", label: "NHL" },
+  { key: "soccer", label: "SOCCER" },
+  { key: "kbo", label: "KBO" },
+] as const;
+
+function localDate(): string {
+  const now = new Date();
+  const offset = now.getTimezoneOffset() * 60_000;
+  return new Date(now.getTime() - offset).toISOString().slice(0, 10);
+}
+
 function oddsLabel(odds: number): string {
   return odds > 0 ? `+${odds}` : String(odds);
 }
@@ -33,7 +52,7 @@ function marketOrder(market: string): number {
   if (key.includes("run_line") || key.includes("spread")) return 1;
   if (key.includes("total_over") || key === "over") return 2;
   if (key.includes("total_under") || key === "under") return 3;
-  if (key.includes("strikeout") || key.includes("prop")) return 4;
+  if (key.includes("strikeout") || key.includes("hits") || key.includes("prop")) return 4;
   return 5;
 }
 
@@ -59,23 +78,33 @@ function groupByEvent(candidates: CandidateInput[]) {
 
 export default function PickSheetScreen() {
   const { user, request } = useAuth();
-  const { lastSlate, saveAnalysis, saveSlate, ready } = useAppData();
+  const { lastMarketBoard, saveAnalysis, saveMarketBoard, ready } = useAppData();
+  const [sport, setSport] = useState<(typeof sports)[number]["key"]>(
+    (lastMarketBoard?.sport as (typeof sports)[number]["key"]) || "mlb",
+  );
+  const [date, setDate] = useState(lastMarketBoard?.date || localDate());
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [stake, setStake] = useState("25");
   const [busy, setBusy] = useState(false);
-  const [loadingSlate, setLoadingSlate] = useState(false);
+  const [loadingBoard, setLoadingBoard] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [note, setNote] = useState<string | null>(null);
+  const [grades, setGrades] = useState<Recommendation[]>([]);
 
-  const slate = lastSlate;
+  const board = lastMarketBoard;
   const games = useMemo(
-    () => groupByEvent(slate?.candidates ?? []),
-    [slate],
+    () => groupByEvent(board?.candidates ?? []),
+    [board],
   );
   const selected = useMemo(
-    () => (slate?.candidates ?? []).filter((item) => selectedIds.includes(item.candidate_id)),
-    [slate, selectedIds],
+    () => (board?.candidates ?? []).filter((item) => selectedIds.includes(item.candidate_id)),
+    [board, selectedIds],
   );
+  const gradeByCandidate = useMemo(() => {
+    const map = new Map<string, Recommendation>();
+    for (const pick of grades) map.set(pick.candidate_id, pick);
+    return map;
+  }, [grades]);
 
   function toggle(candidateId: string) {
     setSelectedIds((current) =>
@@ -85,36 +114,47 @@ export default function PickSheetScreen() {
     );
     setNote(null);
     setError(null);
+    setGrades([]);
   }
 
-  async function refreshSlate() {
-    if (!slate) {
-      setError("Pull a slate on the Run tab first — this sheet reuses that same list.");
-      return;
-    }
-    setLoadingSlate(true);
+  async function loadBoard() {
+    setLoadingBoard(true);
     setError(null);
     try {
+      // Book menu first (fast). Model overlay is optional — it re-runs research and
+      // was timing out / 503'ing the whole Sheet load on Render.
       const response = await request<SlateResponse>(
-        `/sports/slate?sport=${encodeURIComponent(slate.sport)}&date=${encodeURIComponent(slate.date)}`,
+        `/sports/market-board?sport=${encodeURIComponent(sport)}&date=${encodeURIComponent(date)}&include_props=true&overlay_model=false`,
       );
-      saveSlate(response);
+      saveMarketBoard(response);
       setSelectedIds([]);
-      setNote(`Refreshed ${response.sport.toUpperCase()} ${response.date} — ${response.candidates.length} markets.`);
+      setGrades([]);
+      if (!response.candidates.length) {
+        setNote(response.notice);
+        setError(
+          response.notice.includes("temporary error") || response.notice.includes("Could not fetch")
+            ? response.notice
+            : null,
+        );
+      } else {
+        setNote(
+          `Loaded ${response.candidates.length} sportsbook markets for ${response.sport.toUpperCase()} ${response.date}.`,
+        );
+      }
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "Slate refresh failed");
+      setError(reason instanceof Error ? reason.message : "Market board failed");
     } finally {
-      setLoadingSlate(false);
+      setLoadingBoard(false);
     }
   }
 
   async function checkAndBuild() {
-    if (!slate) {
-      setError("No slate loaded. Open Run, refresh the raw slate, then come back here.");
+    if (!board) {
+      setError("Load the sportsbook menu first.");
       return;
     }
     if (!selected.length) {
-      setError("Tap at least one market to build a ticket.");
+      setError("Tap at least one market to grade.");
       return;
     }
     const numericStake = Number(stake);
@@ -126,14 +166,18 @@ export default function PickSheetScreen() {
     setError(null);
     setNote(null);
     try {
+      // Grade only what the customer selected — full board can exceed analyze caps.
       const analysis = await request<AnalyzeResponse>("/sports/analyze", {
         method: "POST",
         body: JSON.stringify({
-          sport: slate.sport,
-          date: slate.date,
+          sport: board.sport,
+          date: board.date,
           mode: "pregame",
           user_risk_profile: user?.risk_profile ?? "balanced",
-          candidates: slate.candidates,
+          // Soft-overlay selected Sheet legs with model twins on Check only
+          // (Load keeps overlay off for sportsbook-menu speed).
+          overlay_model_on_sheet: true,
+          candidates: selected,
         }),
       });
       saveAnalysis(analysis);
@@ -142,6 +186,10 @@ export default function PickSheetScreen() {
       for (const pick of [...analysis.ranked_picks, ...analysis.stay_away]) {
         byCandidate.set(pick.candidate_id, pick);
       }
+      const orderedGrades = selected
+        .map((leg) => byCandidate.get(leg.candidate_id))
+        .filter((item): item is Recommendation => Boolean(item));
+      setGrades(orderedGrades);
 
       const cleared: Recommendation[] = [];
       const blocked: string[] = [];
@@ -157,10 +205,14 @@ export default function PickSheetScreen() {
         }
       }
 
+      setNote(
+        `Graded ${orderedGrades.length} leg(s): ${cleared.length} PLAY/LEAN, ${blocked.length} blocked.`,
+      );
+
       if (!cleared.length) {
         setError(
           blocked.length
-            ? `Strict Mode blocked every selected leg. ${blocked.slice(0, 3).join(" · ")}`
+            ? `Nothing cleared PLAY/LEAN — slip stays graded, ticket not built. ${blocked.slice(0, 3).join(" · ")}`
             : "No selected markets cleared PLAY/LEAN.",
         );
         return;
@@ -209,42 +261,74 @@ export default function PickSheetScreen() {
   }
 
   return (
-    <Screen sport={slate?.sport}>
+    <Screen sport={board?.sport || sport}>
       <BrandHeader
         title="PICK SHEET"
-        subtitle="SAME SLATE PULL • TAP MARKETS • CHECK LIKE APP TICKETS"
+        subtitle="SPORTSBOOK MENU • SELECT ANY MARKET • YWP GRADES YOUR SLIP"
         compact
-        sport={slate?.sport}
+        sport={board?.sport || sport}
       />
+      <MotionReveal fromY={16} replayKey={sport}>
+        <EngineStage
+          size={168}
+          tone={loadingBoard ? "loading" : board ? "partial" : "idle"}
+          intensity="standard"
+          label={loadingBoard ? "Loading" : board ? "Board" : "Sheet"}
+          calloutsActive={Boolean(board)}
+          callouts={[
+            { id: "sport", label: sport.toUpperCase(), side: "left", top: 44 },
+            {
+              id: "games",
+              label: board ? `${games.length} GAMES` : "LOAD",
+              side: "right",
+              top: 60,
+            },
+            {
+              id: "mkts",
+              label: board ? `${board.candidates.length} MKTS` : "MENU",
+              side: "left",
+              top: 112,
+            },
+            {
+              id: "slip",
+              label: `${selectedIds.length} SLIP`,
+              side: "right",
+              top: 128,
+            },
+          ]}
+        />
+      </MotionReveal>
 
       <MetalPanel tone="gold">
-        <Text style={type.eyebrow}>SOURCE</Text>
-        <Text style={styles.title}>
-          {slate
-            ? `${slate.sport.toUpperCase()} • ${slate.date}`
-            : "No slate yet"}
-        </Text>
+        <Text style={type.eyebrow}>BOARD</Text>
+        <Text style={styles.title}>Hard Rock / DK style menu</Text>
         <Text style={type.body}>
-          {slate
-            ? `Reuses the Run tab pull (${slate.candidates.length} markets). Select sides, then protocol-check before Lock Check.`
-            : "Open the Run tab, refresh a raw slate, then return here — no second Odds pull required."}
+          Pulls the full priced board (not just model-approved plays). Pick anything you want —
+          Check grades each leg. Only PLAY/LEAN can become a ticket.
         </Text>
-        <View style={styles.row}>
-          <YwpButton
-            label="REFRESH SAME SLATE"
-            variant="outline"
-            onPress={() => void refreshSlate()}
-            loading={loadingSlate}
-            disabled={!slate}
-            style={styles.flex}
-          />
-          <YwpButton
-            label="GO TO RUN"
-            variant="outline"
-            onPress={() => router.push("/(tabs)/slate")}
-            style={styles.flex}
-          />
+        <View style={styles.sportRow}>
+          {sports.map((item) => {
+            const active = sport === item.key;
+            return (
+              <Pressable
+                key={item.key}
+                onPress={() => setSport(item.key)}
+                style={[styles.sportChip, active && styles.sportChipActive]}
+              >
+                <Text style={[styles.sportChipText, active && styles.sportChipTextActive]}>
+                  {item.label}
+                </Text>
+              </Pressable>
+            );
+          })}
         </View>
+        <FormField label="DATE" value={date} onChangeText={setDate} />
+        <YwpButton
+          label={loadingBoard ? "LOADING BOARD…" : "LOAD SPORTSBOOK MENU"}
+          onPress={() => void loadBoard()}
+          loading={loadingBoard}
+        />
+        {board?.notice ? <Text style={type.caption}>{board.notice}</Text> : null}
       </MetalPanel>
 
       {error ? <ErrorNotice message={error} /> : null}
@@ -254,14 +338,14 @@ export default function PickSheetScreen() {
         </MetalPanel>
       ) : null}
 
-      {slate ? (
+      {board ? (
         <>
           <SectionTitle
-            title={`${games.length} Games`}
-            subtitle="Tap a price to add or remove it from your slip."
+            title={`${games.length} Games · ${board.candidates.length} Markets`}
+            subtitle="Tap prices like a sportsbook — hits, runs, RBIs, HRs, Ks, totals, and more. Model-backed markets can clear; book-only markets still show and grade."
           />
-          {games.map((game) => (
-            <MetalPanel key={game.eventId} style={styles.game}>
+          {games.map((game, index) => (
+            <MetalPanel key={game.eventId} style={styles.game} motionDelay={Math.min(index, 10) * 40}>
               <Text style={styles.gameTitle}>{game.eventName}</Text>
               {game.startTime ? (
                 <Text style={type.caption}>{new Date(game.startTime).toLocaleString()}</Text>
@@ -269,6 +353,7 @@ export default function PickSheetScreen() {
               <View style={styles.markets}>
                 {game.markets.map((market) => {
                   const active = selectedIds.includes(market.candidate_id);
+                  const grade = gradeByCandidate.get(market.candidate_id);
                   return (
                     <Pressable
                       key={market.candidate_id}
@@ -277,6 +362,7 @@ export default function PickSheetScreen() {
                     >
                       <Text style={[styles.marketKind, active && styles.marketTextActive]}>
                         {market.market_type.replaceAll("_", " ").toUpperCase()}
+                        {market.probability_source === "model" ? " · MODEL" : " · BOOK"}
                       </Text>
                       <Text style={[styles.marketPick, active && styles.marketTextActive]}>
                         {market.selection}
@@ -284,6 +370,11 @@ export default function PickSheetScreen() {
                       <Text style={[styles.marketOdds, active && styles.marketTextActive]}>
                         {oddsLabel(market.american_odds)}
                       </Text>
+                      {grade ? (
+                        <Text style={[styles.gradeTag, active && styles.marketTextActive]}>
+                          {grade.decision}
+                        </Text>
+                      ) : null}
                     </Pressable>
                   );
                 })}
@@ -297,11 +388,15 @@ export default function PickSheetScreen() {
               <StatusPill value={`${selected.length} LEG${selected.length === 1 ? "" : "S"}`} />
             </View>
             {selected.length ? (
-              selected.map((leg) => (
-                <Text key={leg.candidate_id} style={type.body}>
-                  • {leg.event_name} — {leg.selection} ({oddsLabel(leg.american_odds)})
-                </Text>
-              ))
+              selected.map((leg) => {
+                const grade = gradeByCandidate.get(leg.candidate_id);
+                return (
+                  <Text key={leg.candidate_id} style={type.body}>
+                    • {leg.event_name} — {leg.selection} ({oddsLabel(leg.american_odds)})
+                    {grade ? ` → ${grade.decision}` : ""}
+                  </Text>
+                );
+              })
             ) : (
               <Text style={type.caption}>No markets selected yet.</Text>
             )}
@@ -314,29 +409,28 @@ export default function PickSheetScreen() {
             <YwpButton
               label={
                 busy
-                  ? "RUNNING PROTOCOL CHECK…"
-                  : `CHECK ${Math.max(selected.length, 1)}-LEG TICKET`
+                  ? "GRADING SLIP…"
+                  : `GRADE ${Math.max(selected.length, 1)}-LEG SLIP`
               }
               onPress={() => void checkAndBuild()}
               loading={busy}
               disabled={!selected.length}
             />
             <Text style={type.caption}>
-              Runs the same AIN / Strict Mode gates as official tickets, then opens Lock Check.
-              Blocked legs stay off the ticket. Every protocol run and placed ticket feeds Hive —
-              Sync Scores grades outcomes so tomorrow’s blends get stronger.
+              Grades every selected market. PLAY/LEAN legs can build a ticket and open Lock Check.
+              SKIP/REVIEW legs stay visible so you see why YWP would not approve them — that is the
+              point of this sheet.
             </Text>
           </MetalPanel>
         </>
       ) : (
         <MetalPanel tone="danger">
-          <StatusPill value="WAITING" />
-          <Text style={styles.title}>Pull a slate on Run first</Text>
+          <StatusPill value="EMPTY" />
+          <Text style={styles.title}>Load a sportsbook menu</Text>
           <Text style={type.body}>
-            This page does not spend a separate Odds call. It mirrors whatever the Run tab
-            already loaded.
+            Sheet no longer mirrors only the Run raw pull. Load the full priced board here, then
+            select and grade.
           </Text>
-          <YwpButton label="OPEN RUN TAB" onPress={() => router.push("/(tabs)/slate")} />
         </MetalPanel>
       )}
     </Screen>
@@ -345,8 +439,21 @@ export default function PickSheetScreen() {
 
 const styles = StyleSheet.create({
   title: { color: colors.white, fontSize: 18, fontWeight: "900" },
-  row: { flexDirection: "row", gap: spacing.sm, marginTop: spacing.md },
-  flex: { flex: 1 },
+  sportRow: { flexDirection: "row", flexWrap: "wrap", gap: spacing.xs, marginTop: spacing.sm },
+  sportChip: {
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: radius.sm,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 6,
+    backgroundColor: colors.backgroundRaised,
+  },
+  sportChipActive: {
+    borderColor: colors.gold,
+    backgroundColor: colors.surfaceGold,
+  },
+  sportChipText: { color: colors.muted, fontWeight: "800", fontSize: 11 },
+  sportChipTextActive: { color: colors.background },
   game: { gap: spacing.sm },
   gameTitle: { color: colors.gold, fontWeight: "900", fontSize: 15 },
   markets: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
@@ -367,6 +474,7 @@ const styles = StyleSheet.create({
   marketKind: { color: colors.muted, fontSize: 10, fontWeight: "800", letterSpacing: 0.6 },
   marketPick: { color: colors.white, fontWeight: "800", fontSize: 13 },
   marketOdds: { color: colors.gold, fontWeight: "900", fontSize: 16 },
+  gradeTag: { color: colors.gold, fontSize: 11, fontWeight: "900", marginTop: 2 },
   marketTextActive: { color: colors.background },
   slipHeader: {
     flexDirection: "row",

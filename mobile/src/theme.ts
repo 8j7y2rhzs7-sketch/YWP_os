@@ -82,7 +82,7 @@ export const spacing = {
   huge: 40,
   screen: 20,
   section: 24,
-  bottomChrome: 128,
+  bottomChrome: 140,
 } as const;
 
 export const radius = {

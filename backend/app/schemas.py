@@ -303,6 +303,16 @@ class SportsAnalyzeRequest(YWPModel):
     bankroll: Decimal | None = Field(default=None, ge=0)
     # NCAAF Saturdays routinely exceed 250 priced sides (ML/spread/total × games).
     candidates: list[CandidateInput] = Field(min_length=1, max_length=500)
+    # Sheet Check path: upgrade selected sportsbook-menu legs with model twins.
+    # Default on so older APKs get model grades without a new client build.
+    # Load board still keeps overlay forced off for reliability.
+    overlay_model_on_sheet: bool = Field(
+        default=True,
+        description=(
+            "When true, sportsbook-menu candidates are soft-overlaid with matching "
+            "model-slate projections before grading (selected legs only)."
+        ),
+    )
 
     @model_validator(mode="after")
     def candidates_match_sport(self) -> SportsAnalyzeRequest:
@@ -412,6 +422,41 @@ class SlateResponse(YWPModel):
     notice: str
     verification_summary: dict[str, Any]
     candidates: list[CandidateInput]
+
+
+class DayForgePlayOut(YWPModel):
+    """Compact Home reveal payload — same identity as a RecommendationOut."""
+
+    recommendation: RecommendationOut
+    label: str = "Day Forge"
+    stake_hint: str = "Cash-band process play — size small, process first."
+
+
+class DayForgeResponse(YWPModel):
+    engine: Literal["YWP Day Forge"] = "YWP Day Forge"
+    status: Literal["cooking", "ready", "pass", "unavailable"]
+    phase: Literal[
+        "waiting_slate",
+        "gathering_heat",
+        "grading",
+        "forging",
+        "ready",
+        "pass",
+        "unavailable",
+    ]
+    progress: float = Field(ge=0.0, le=1.0)
+    message: str
+    sport: str
+    date: date
+    readiness: Literal["DEMO", "PARTIAL", "VERIFIED"] | None = None
+    cook_reasons: list[str] = Field(default_factory=list)
+    pass_reason: str | None = None
+    forgeable_count: int = 0
+    graded_count: int = 0
+    analysis_id: str | None = None
+    play: RecommendationOut | None = None
+    notification_title: str | None = None
+    notification_body: str | None = None
 
 
 class CustomCardPreviewRequest(YWPModel):
@@ -772,6 +817,24 @@ class PerformanceOut(YWPModel):
     by_sport: list[dict[str, Any]]
     by_market: list[dict[str, Any]]
     confidence_calibration: list[dict[str, Any]]
+    # Packaging diagnostics: board/leg accuracy vs full-ticket accuracy.
+    leg_settled: int = 0
+    leg_wins: int = 0
+    leg_losses: int = 0
+    leg_pushes: int = 0
+    leg_win_rate: float | None = None
+    ticket_settled: int = 0
+    ticket_wins: int = 0
+    ticket_losses: int = 0
+    ticket_pushes: int = 0
+    ticket_win_rate: float | None = None
+    locked_leg_settled: int = 0
+    locked_leg_wins: int = 0
+    locked_leg_losses: int = 0
+    locked_leg_win_rate: float | None = None
+    packaging_gap: float | None = None
+    by_ticket_type: list[dict[str, Any]] = Field(default_factory=list)
+    packaging_note: str | None = None
 
 
 class LearningPulseOut(YWPModel):
