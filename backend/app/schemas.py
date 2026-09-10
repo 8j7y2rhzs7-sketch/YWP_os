@@ -424,6 +424,41 @@ class SlateResponse(YWPModel):
     candidates: list[CandidateInput]
 
 
+class DayForgePlayOut(YWPModel):
+    """Compact Home reveal payload — same identity as a RecommendationOut."""
+
+    recommendation: RecommendationOut
+    label: str = "Day Forge"
+    stake_hint: str = "Cash-band process play — size small, process first."
+
+
+class DayForgeResponse(YWPModel):
+    engine: Literal["YWP Day Forge"] = "YWP Day Forge"
+    status: Literal["cooking", "ready", "pass", "unavailable"]
+    phase: Literal[
+        "waiting_slate",
+        "gathering_heat",
+        "grading",
+        "forging",
+        "ready",
+        "pass",
+        "unavailable",
+    ]
+    progress: float = Field(ge=0.0, le=1.0)
+    message: str
+    sport: str
+    date: date
+    readiness: Literal["DEMO", "PARTIAL", "VERIFIED"] | None = None
+    cook_reasons: list[str] = Field(default_factory=list)
+    pass_reason: str | None = None
+    forgeable_count: int = 0
+    graded_count: int = 0
+    analysis_id: str | None = None
+    play: RecommendationOut | None = None
+    notification_title: str | None = None
+    notification_body: str | None = None
+
+
 class CustomCardPreviewRequest(YWPModel):
     recommendation_ids: list[str] = Field(min_length=1, max_length=12)
     label: str | None = Field(default=None, max_length=120)

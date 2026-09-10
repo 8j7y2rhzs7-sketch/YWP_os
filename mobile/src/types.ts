@@ -209,6 +209,32 @@ export interface AnalyzeResponse {
   };
 }
 
+export interface DayForgeResponse {
+  engine: "YWP Day Forge";
+  status: "cooking" | "ready" | "pass" | "unavailable";
+  phase:
+    | "waiting_slate"
+    | "gathering_heat"
+    | "grading"
+    | "forging"
+    | "ready"
+    | "pass"
+    | "unavailable";
+  progress: number;
+  message: string;
+  sport: string;
+  date: string;
+  readiness?: Readiness | null;
+  cook_reasons: string[];
+  pass_reason?: string | null;
+  forgeable_count: number;
+  graded_count: number;
+  analysis_id?: string | null;
+  play?: Recommendation | null;
+  notification_title?: string | null;
+  notification_body?: string | null;
+}
+
 export interface HiveLearningSummary {
   eligible_samples: number;
   pending_samples: number;

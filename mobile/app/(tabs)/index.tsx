@@ -1,7 +1,10 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
+import { DayForgeChamber } from "@/components/DayForgeChamber";
+import { DayForgeReveal } from "@/components/DayForgeReveal";
 import { EngineStage } from "@/components/EngineStage";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { LoadingState } from "@/components/LoadingState";
@@ -17,6 +20,7 @@ import { useAuth } from "@/context/AuthContext";
 import { brand, colors, fonts, spacing, type } from "@/theme";
 import type {
   Bankroll,
+  DayForgeResponse,
   LearningPulse,
   Performance,
   ProtocolDefinition,
@@ -27,6 +31,11 @@ function percent(value: number | null): string {
   return value === null ? "—" : `${(value * 100).toFixed(1)}%`;
 }
 
+function forgeRevealKey(forge: DayForgeResponse): string {
+  const id = forge.play?.id ?? forge.analysis_id ?? forge.status;
+  return `ywp.dayforge.revealed.${forge.date}.${forge.sport}.${id}`;
+}
+
 export default function CommandCenter() {
   const { user, request } = useAuth();
   const [bankroll, setBankroll] = useState<Bankroll | null>(null);
@@ -34,9 +43,42 @@ export default function CommandCenter() {
   const [performance, setPerformance] = useState<Performance | null>(null);
   const [protocol, setProtocol] = useState<ProtocolDefinition | null>(null);
   const [pulse, setPulse] = useState<LearningPulse | null>(null);
+  const [forge, setForge] = useState<DayForgeResponse | null>(null);
+  const [revealOpen, setRevealOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const lastStatus = useRef<string | null>(null);
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const maybeAutoReveal = useCallback(async (next: DayForgeResponse) => {
+    if (next.status !== "ready" && next.status !== "pass") return;
+    const key = forgeRevealKey(next);
+    try {
+      const seen = await AsyncStorage.getItem(key);
+      if (seen) return;
+      await AsyncStorage.setItem(key, "1");
+      setRevealOpen(true);
+    } catch {
+      setRevealOpen(true);
+    }
+  }, []);
+
+  const loadForge = useCallback(async () => {
+    try {
+      const next = await request<DayForgeResponse>("/sports/day-forge");
+      const previous = lastStatus.current;
+      setForge(next);
+      lastStatus.current = next.status;
+      const flipped =
+        previous === "cooking" && (next.status === "ready" || next.status === "pass");
+      if (flipped || next.status === "ready" || next.status === "pass") {
+        await maybeAutoReveal(next);
+      }
+    } catch {
+      // Keep Home usable if forge is still warming / cold-starting.
+    }
+  }, [maybeAutoReveal, request]);
 
   const load = useCallback(
     async (refresh = false) => {
@@ -56,6 +98,7 @@ export default function CommandCenter() {
         setPerformance(nextPerformance);
         setProtocol(nextProtocol);
         setPulse(nextPulse);
+        void loadForge();
       } catch (reason) {
         setError(reason instanceof Error ? reason.message : "Dashboard failed to load");
       } finally {
@@ -63,12 +106,24 @@ export default function CommandCenter() {
         setRefreshing(false);
       }
     },
-    [request],
+    [loadForge, request],
   );
 
   useEffect(() => {
     void load();
   }, [load]);
+
+  useEffect(() => {
+    if (pollRef.current) clearInterval(pollRef.current);
+    if (forge?.status === "cooking" || !forge) {
+      pollRef.current = setInterval(() => {
+        void loadForge();
+      }, 28_000);
+    }
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current);
+    };
+  }, [forge?.status, loadForge]);
 
   if (loading) {
     return (
@@ -88,7 +143,6 @@ export default function CommandCenter() {
 
   return (
     <Screen refreshing={refreshing} onRefresh={() => void load(true)}>
-      {/* First viewport: motion-led composition — engine graphic first, copy cascades in */}
       <View style={styles.heroViewport}>
         <MotionReveal delay={0} fromY={28}>
           <EngineStage
@@ -215,6 +269,30 @@ export default function CommandCenter() {
           </Text>
         </MetalPanel>
       )}
+
+      <SectionTitle
+        title="Day Forge"
+        subtitle="One cash-band play when the data is cooked — never forced juice."
+      />
+      <MotionReveal delay={80} fromY={24}>
+        <DayForgeChamber
+          forge={forge}
+          onPress={() => {
+            if (forge?.status === "ready" || forge?.status === "pass") {
+              setRevealOpen(true);
+            } else {
+              void loadForge();
+            }
+          }}
+        />
+      </MotionReveal>
+
+      <DayForgeReveal
+        visible={revealOpen}
+        forge={forge}
+        onClose={() => setRevealOpen(false)}
+        onRunProtocol={() => router.push("/(tabs)/slate")}
+      />
 
       <Text style={styles.footer}>{brand.primaryLine}</Text>
       <Text style={styles.footerMuted}>{brand.secondaryLine}</Text>

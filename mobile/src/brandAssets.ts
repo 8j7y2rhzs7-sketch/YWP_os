@@ -33,6 +33,11 @@ export const brandAssets = {
   tabTickets: require("../assets/brand/tabs/tickets.png"),
   tabLearning: require("../assets/brand/tabs/learning.png"),
   tabControls: require("../assets/brand/tabs/controls.png"),
+  /** Day Forge — sealed vault (cooking) + open reveal blast */
+  dayForgeSealed: require("../assets/brand/forge/sealed.png"),
+  dayForgeOpen: require("../assets/brand/forge/open.png"),
+  dayForgeSealedDock: require("../assets/brand/forge/sealed-dock.png"),
+  dayForgeOpenDock: require("../assets/brand/forge/open-dock.png"),
   mlbProtocolReference: require("../assets/brand/reference-cards/mlb-protocol.png"),
   mlbFinalReference: require("../assets/brand/reference-cards/mlb-final.png"),
   ghosttReference: require("../assets/brand/reference-cards/ghostt.png"),

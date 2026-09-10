@@ -35,16 +35,24 @@ from app.schemas import (
     CustomCardPreviewRequest,
     BuildTicketResponse,
     CandidateInput,
+    DayForgeResponse,
     ExternalResultCreate,
     ExternalResultOut,
     RecommendationOut,
     ResultCreate,
     ResultOut,
+    RiskProfile,
     SettleDayResponse,
     SettlementItemOut,
     SlateResponse,
     SportsAnalyzeRequest,
     TicketCardOut,
+)
+from app.services.day_forge import (
+    cook_progress_from_slate,
+    resolve_day_forge_sport,
+    select_day_forge_play,
+    trim_forge_candidates,
 )
 from app.services.decision_engine import (
     decision_engine,
@@ -411,6 +419,348 @@ def market_board(
         mode="live",
         notice=notice,
         candidates=candidates,
+    )
+
+
+def _persist_day_forge_evaluations(
+    *,
+    db: DB,
+    user_id: str,
+    sport: str,
+    slate_date: date,
+    mode: str,
+    candidates: list[CandidateInput],
+) -> tuple[str, list[Recommendation]]:
+    """Grade a trimmed forge slate and persist like a light analyze run."""
+    analysis_id = str(uuid4())
+    protocol_run = run_protocol_health_check(
+        db,
+        analysis_id=analysis_id,
+        user_id=user_id,
+        sport=sport,
+        candidates=candidates,
+    )
+    del protocol_run  # health recorded; response uses forge messaging
+
+    weight_cache: dict[tuple[str, str], dict[str, float]] = {}
+    raw_evaluations = []
+    from app.hive.self_improve import get_active_policy
+    from app.hive.service import hive_bucket_key
+
+    hive_policy = get_active_policy(db=db)
+    for candidate in candidates:
+        evaluation = decision_engine.evaluate(
+            candidate,
+            RiskProfile.balanced,
+            learned_weights=weight_cache.setdefault(
+                (candidate.sport.lower(), candidate.market_type),
+                load_feature_weights(db, candidate.sport.lower(), candidate.market_type),
+            ),
+        )
+        base_probability = (
+            float(evaluation.adjusted_probability)
+            if candidate.probability_source in {"model", "manual_verified", "demo"}
+            else None
+        )
+        hive_signal = get_hive_signal(
+            db=db,
+            sport=candidate.sport,
+            league=candidate.league,
+            market=candidate.market_type,
+            market_scope=candidate.market_period,
+            model_version=settings.model_version,
+        )
+        hive_adjusted, hive_meta = blend_hive_probability(
+            base_probability=base_probability,
+            hive_signal=hive_signal,
+            policy=hive_policy.to_dict(),
+            bucket_key=hive_bucket_key(
+                candidate.sport,
+                candidate.league,
+                candidate.market_type,
+                candidate.market_period,
+                settings.model_version,
+            ),
+        )
+        evaluation.payload["model_probability"] = base_probability
+        evaluation.payload["hive_adjusted_probability"] = hive_adjusted
+        evaluation.payload["hive"] = hive_meta
+        evaluation.payload["day_forge"] = True
+        if (
+            hive_meta.get("used")
+            and hive_adjusted is not None
+            and base_probability is not None
+        ):
+            evaluation = decision_engine.apply_hive_calibration(
+                evaluation,
+                float(hive_adjusted),
+                shift_applied=float(hive_meta.get("shift_applied") or 0.0),
+            )
+        raw_evaluations.append(evaluation)
+
+    evaluations = decision_engine.rank(raw_evaluations)
+    records: list[Recommendation] = []
+    for rank, evaluation in enumerate(evaluations, start=1):
+        candidate = evaluation.candidate
+        reason_codes = list(evaluation.reason_codes or [])
+        if "DAY_FORGE_CANDIDATE" not in reason_codes:
+            reason_codes.append("DAY_FORGE_CANDIDATE")
+        db.add(
+            GameSnapshot(
+                analysis_id=analysis_id,
+                event_id=candidate.event_id,
+                sport=candidate.sport.lower(),
+                slate_date=slate_date,
+                data_source=candidate.data_source,
+                source_timestamp=candidate.source_timestamp,
+                input_hash=evaluation.input_hash,
+                payload=evaluation.payload,
+            )
+        )
+        record = Recommendation(
+            analysis_id=analysis_id,
+            created_by_user_id=user_id,
+            candidate_id=candidate.candidate_id,
+            event_id=candidate.event_id,
+            event_name=candidate.event_name,
+            sport=candidate.sport.lower(),
+            league=candidate.league,
+            slate_date=slate_date,
+            mode=mode,
+            market_type=candidate.market_type,
+            market_period=candidate.market_period,
+            selection=candidate.selection,
+            line=candidate.line,
+            american_odds=candidate.american_odds,
+            estimated_probability=money(candidate.estimated_probability),
+            implied_probability=money(evaluation.implied_probability),
+            adjusted_probability=money(evaluation.adjusted_probability),
+            edge=money(evaluation.edge),
+            expected_value=money(evaluation.expected_value),
+            confidence_score=evaluation.confidence_score,
+            ywp_rating=money(evaluation.ywp_intelligence_score, "0.01"),
+            vision_score=money(evaluation.vision_score, "0.01"),
+            miss_by_one_risk=money(evaluation.miss_by_one_risk, "0.0001"),
+            reliability=money(evaluation.reliability, "0.0001"),
+            stability=money(evaluation.stability, "0.0001"),
+            variance=money(candidate.variance, "0.0001"),
+            data_quality=money(candidate.data_quality, "0.0001"),
+            risk=evaluation.risk,
+            risk_tier=evaluation.risk_tier,
+            variance_rating=evaluation.variance_rating,
+            edge_class=evaluation.edge_class,
+            expected_value_label=evaluation.expected_value_label,
+            suggested_stake_pct=money(evaluation.suggested_stake_pct, "0.0001"),
+            decision=evaluation.decision,
+            recommendation_tier=evaluation.recommendation_tier,
+            rank=rank,
+            reason_codes=reason_codes,
+            reasoning_summary=evaluation.reasoning_summary,
+            warnings=evaluation.warnings,
+            safer_alternative=candidate.safer_alternative,
+            higher_upside=candidate.higher_upside,
+            invalidation_conditions=candidate.invalidation_conditions,
+            live_trigger=candidate.live_trigger,
+            hedge=candidate.hedge,
+            quick_cash=candidate.quick_cash,
+            chain_reaction_key=candidate.chain_reaction_key,
+            thesis_key=candidate.thesis_key,
+            script_key=candidate.script_key,
+            player_key=candidate.player_key,
+            data_source=candidate.data_source,
+            source_timestamp=candidate.source_timestamp,
+            model_version=settings.model_version,
+            protocol_version=settings.protocol_version,
+            input_hash=evaluation.input_hash,
+            snapshot=evaluation.payload,
+        )
+        db.add(record)
+        records.append(record)
+
+    record_usage_event(
+        db,
+        event_type="DAY_FORGE",
+        sport=sport.lower(),
+        analysis={
+            "analysis_id": analysis_id,
+            "user_id": user_id,
+            "candidate_count": len(candidates),
+            "forge": True,
+        },
+    )
+    db.commit()
+    for record in records:
+        db.refresh(record)
+    return analysis_id, records
+
+
+@router.get("/day-forge", response_model=DayForgeResponse)
+def day_forge(
+    user: SubscribedUser,
+    db: DB,
+    sport_name: str | None = Query(default=None, alias="sport", min_length=2, max_length=24),
+    slate_date: date | None = Query(default=None, alias="date"),
+    force: bool = Query(default=False),
+) -> DayForgeResponse:
+    """Home Day Forge — cook until data is ready, then reveal one cash-band play."""
+    today = slate_date or datetime.now(ZoneInfo("America/New_York")).date()
+    catalog = build_app_sports_catalog()
+    sport = resolve_day_forge_sport(catalog, sport_name)
+
+    # Reuse today's forged pick when already sealed (unless force).
+    if not force:
+        existing = list(
+            db.scalars(
+                select(Recommendation)
+                .where(
+                    Recommendation.created_by_user_id == user.id,
+                    Recommendation.slate_date == today,
+                    Recommendation.sport == sport,
+                )
+                .order_by(Recommendation.created_at.desc())
+                .limit(80)
+            ).all()
+        )
+        forged = [
+            row
+            for row in existing
+            if "DAY_FORGE_PICK" in (row.reason_codes or [])
+            or "DAY_FORGE_CANDIDATE" in (row.reason_codes or [])
+        ]
+        pick = select_day_forge_play(forged or existing)
+        if pick and "DAY_FORGE_PICK" in (pick.reason_codes or []):
+            out = RecommendationOut.model_validate(pick)
+            return DayForgeResponse(
+                status="ready",
+                phase="ready",
+                progress=1.0,
+                message="Day Forge sealed — today's cash-band play is ready.",
+                sport=sport,
+                date=today,
+                readiness=None,
+                cook_reasons=[],
+                forgeable_count=1,
+                graded_count=len(forged or existing),
+                analysis_id=pick.analysis_id,
+                play=out,
+                notification_title="DAY FORGE READY",
+                notification_body=f"{out.selection} · {out.american_odds:+d}"
+                if out.american_odds
+                else out.selection,
+            )
+
+    try:
+        board = slate(user, sport_name=sport, slate_date=today)
+    except HTTPException as exc:
+        if exc.status_code == status.HTTP_503_SERVICE_UNAVAILABLE:
+            return DayForgeResponse(
+                status="unavailable",
+                phase="unavailable",
+                progress=0.05,
+                message="Day Forge standing by — live slate heat is offline.",
+                sport=sport,
+                date=today,
+                cook_reasons=["slate_unavailable"],
+                pass_reason=str(exc.detail),
+            )
+        raise
+
+    cook = cook_progress_from_slate(board.candidates)
+    if cook.status == "unavailable":
+        return DayForgeResponse(
+            status="unavailable",
+            phase="unavailable",
+            progress=cook.progress,
+            message=cook.message,
+            sport=sport,
+            date=today,
+            readiness=board.readiness,
+            cook_reasons=cook.cook_reasons,
+            forgeable_count=cook.forgeable_count,
+            pass_reason="empty_slate",
+        )
+
+    fuel = trim_forge_candidates(board.candidates)
+    if cook.phase == "gathering_heat" or (
+        cook.status == "cooking" and cook.phase != "grading" and not force
+    ):
+        return DayForgeResponse(
+            status="cooking",
+            phase=cook.phase,
+            progress=cook.progress,
+            message=cook.message,
+            sport=sport,
+            date=today,
+            readiness=board.readiness,
+            cook_reasons=cook.cook_reasons,
+            forgeable_count=len(fuel),
+        )
+
+    if not fuel:
+        return DayForgeResponse(
+            status="cooking",
+            phase="gathering_heat",
+            progress=max(0.35, cook.progress),
+            message="Vault sealed — still waiting on cash-band candidates.",
+            sport=sport,
+            date=today,
+            readiness=board.readiness,
+            cook_reasons=["no_forge_fuel"],
+            forgeable_count=0,
+        )
+
+    analysis_id, records = _persist_day_forge_evaluations(
+        db=db,
+        user_id=user.id,
+        sport=sport,
+        slate_date=today,
+        mode=board.mode,
+        candidates=fuel,
+    )
+    pick = select_day_forge_play(records)
+    if pick is None:
+        return DayForgeResponse(
+            status="pass",
+            phase="pass",
+            progress=1.0,
+            message="Forge complete — no cash-band PLAY cleared the gates. PASS stands.",
+            sport=sport,
+            date=today,
+            readiness=board.readiness,
+            cook_reasons=[],
+            pass_reason="no_eligible_play",
+            forgeable_count=len(fuel),
+            graded_count=len(records),
+            analysis_id=analysis_id,
+            notification_title="DAY FORGE PASS",
+            notification_body="Nothing in the cash band cleared. No forced play.",
+        )
+
+    codes = list(pick.reason_codes or [])
+    if "DAY_FORGE_PICK" not in codes:
+        codes.append("DAY_FORGE_PICK")
+        pick.reason_codes = codes
+        db.add(pick)
+        db.commit()
+        db.refresh(pick)
+
+    out = RecommendationOut.model_validate(pick)
+    odds_label = f"{out.american_odds:+d}" if out.american_odds else "priced"
+    return DayForgeResponse(
+        status="ready",
+        phase="ready",
+        progress=1.0,
+        message="Day Forge open — one process play sealed for today.",
+        sport=sport,
+        date=today,
+        readiness=board.readiness,
+        cook_reasons=[],
+        forgeable_count=len(fuel),
+        graded_count=len(records),
+        analysis_id=analysis_id,
+        play=out,
+        notification_title="DAY FORGE READY",
+        notification_body=f"{out.selection} · {odds_label}",
     )
 
 
