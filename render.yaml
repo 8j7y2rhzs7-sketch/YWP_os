@@ -42,6 +42,8 @@ services:
         generateValue: true
       - key: ODDS_API_KEY
         sync: false
+      - key: CFBD_API_KEY
+        sync: false
       - key: YWP_MLB_PROPS_ENABLED
         value: "true"
       - key: YWP_MLB_MAX_PROP_EVENTS

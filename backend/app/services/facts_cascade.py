@@ -10,7 +10,7 @@ import logging
 from datetime import date
 from typing import Any
 
-from app.services import espn_provider, kbo_provider, nhl_provider
+from app.services import cfbd_provider, espn_provider, kbo_provider, nhl_provider
 
 logger = logging.getLogger(__name__)
 
@@ -67,6 +67,17 @@ def match_schedule_game(
         errors.append(f"espn_site_api:{exc}")
         logger.warning("ESPN schedule cascade miss for %s: %s", sport_l, exc)
 
+    if sport_l == "ncaaf":
+        try:
+            game = cfbd_provider.match_odds_event_to_cfbd(
+                slate_date, home_team=home_team, away_team=away_team
+            )
+            if game:
+                return game
+        except Exception as exc:  # noqa: BLE001
+            errors.append(f"college_football_data:{exc}")
+            logger.warning("CFBD schedule cascade miss: %s", exc)
+
     if errors:
         logger.info("No schedule match for %s %s @ %s (%s)", sport_l, away_team, home_team, "; ".join(errors))
     return None
@@ -104,9 +115,17 @@ def team_recent_form(
             form = espn_provider.get_team_recent_form(sport_l, team_id, slate_date)
             if form.get("verified"):
                 return form
-            return form
         except Exception as exc:  # noqa: BLE001
             logger.warning("ESPN form cascade miss for %s: %s", sport_l, exc)
+
+    if sport_l == "ncaaf" and team_name:
+        try:
+            form = cfbd_provider.get_team_recent_form(team_name, slate_date)
+            if form.get("verified"):
+                return form
+            return form
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("CFBD form cascade miss: %s", exc)
 
     return {
         "verified": False,

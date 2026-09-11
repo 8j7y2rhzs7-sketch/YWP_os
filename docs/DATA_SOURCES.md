@@ -7,7 +7,10 @@ Rule: **The Odds API shows the play. Fact sources enrich it. Missing facts = PAR
 | MLB | MLB Stats API | The Odds API |
 | NHL | NHL Web API → ESPN Site API | The Odds API |
 | NBA / NFL / NCAAF / NCAAB / WNBA / soccer / KBO | ESPN Site API (when reachable) | The Odds API |
-| Outdoor weather | Open-Meteo | — |
+| NCAAF form/schedule backup | CollegeFootballData (CFBD, free key) | — |
+| NBA secondary (registered) | BallDontLie | — |
+| Soccer secondary (registered) | Football-Data.org | — |
+| Outdoor weather | Open-Meteo (+ ESPN/CFBD venue lat/lng when present) | — |
 
 HTML sites (mykbostats, 365scores, marketing pages) are **not** trusted auto-verify sources. Official JSON APIs only.
 
