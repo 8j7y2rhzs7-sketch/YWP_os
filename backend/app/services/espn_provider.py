@@ -265,38 +265,41 @@ def injuries_for_teams(
     }
 
 
-def _team_matched(by_team: dict[str, list], team_name: str) -> bool:
+def _best_team_key(by_team: dict[str, list], team_name: str) -> str | None:
+    """Resolve Odds/ESPN team labels onto injury-report keys without State collisions."""
     if not team_name:
-        return False
+        return None
     if team_name in by_team:
-        return True
+        return team_name
     needle = _norm(team_name)
-    stop = {"fc", "sc", "the", "club", "city", "town", "university", "univ", "team"}
-    tokens = [t for t in needle.split() if t not in stop]
+    if not needle:
+        return None
+    best_key: str | None = None
+    best_score = 0
     for name in by_team:
         hay = _norm(name)
-        if needle and (hay in needle or needle in hay):
-            return True
-        hay_tokens = [t for t in hay.split() if t not in stop]
-        if tokens and hay_tokens and set(tokens) & set(hay_tokens):
-            return True
-    return False
+        if not hay:
+            continue
+        if hay == needle or hay in needle or needle in hay:
+            score = 10 + _name_overlap(team_name, name)
+        else:
+            score = _name_overlap(team_name, name)
+        if score > best_score:
+            best_score = score
+            best_key = name
+    # Require a real identity signal (mascot bonus or 2+ meaningful tokens).
+    return best_key if best_score >= 2 else None
+
+
+def _team_matched(by_team: dict[str, list], team_name: str) -> bool:
+    return _best_team_key(by_team, team_name) is not None
 
 
 def _lookup_team_injuries(by_team: dict[str, list], team_name: str) -> list[dict[str, Any]]:
-    if team_name in by_team:
-        return list(by_team[team_name])
-    needle = _norm(team_name)
-    stop = {"fc", "sc", "the", "club", "city", "town", "university", "univ", "team"}
-    tokens = [t for t in needle.split() if t not in stop]
-    for name, entries in by_team.items():
-        hay = _norm(name)
-        if needle and (hay in needle or needle in hay):
-            return list(entries)
-        hay_tokens = [t for t in hay.split() if t not in stop]
-        if tokens and hay_tokens and set(tokens) & set(hay_tokens):
-            return list(entries)
-    return []
+    key = _best_team_key(by_team, team_name)
+    if key is None:
+        return []
+    return list(by_team.get(key) or [])
 
 
 def _parse_event(event: dict[str, Any], *, sport: str) -> dict[str, Any] | None:
@@ -329,6 +332,8 @@ def _parse_event(event: dict[str, Any], *, sport: str) -> dict[str, Any] | None:
         "city": address.get("city") or "",
         "state": address.get("state") or "",
         "country": address.get("country") or "",
+        "latitude": _coord_value(venue.get("latitude") or address.get("latitude")),
+        "longitude": _coord_value(venue.get("longitude") or address.get("longitude")),
         "source_id": SOURCE_ID,
         "source_url": f"{SOURCE_API}/{espn_path_for(sport)}/scoreboard",
     }
@@ -350,20 +355,62 @@ def _score_value(raw: Any) -> float | None:
     return None
 
 
+_GENERIC_NAME_TOKENS = frozenset(
+    {
+        "fc",
+        "sc",
+        "the",
+        "at",
+        "of",
+        "and",
+        "club",
+        "city",
+        "town",
+        "university",
+        "univ",
+        "college",
+        "st",
+        "state",
+        "team",
+        "football",
+        "basketball",
+        "soccer",
+        "hockey",
+    }
+)
+
+
+def _name_tokens(value: str) -> set[str]:
+    return {token for token in _norm(value).split() if token and token not in _GENERIC_NAME_TOKENS}
+
+
 def _name_overlap(a: str, b: str) -> int:
-    na = set(_norm(a).split())
-    nb = set(_norm(b).split())
+    """Score school/club name overlap without weak tokens like 'state'/'university'."""
+    na = _name_tokens(a)
+    nb = _name_tokens(b)
     if not na or not nb:
         return 0
-    # Drop generic tokens
-    stop = {"fc", "sc", "the", "at", "club", "city", "town", "university", "univ"}
-    na -= stop
-    nb -= stop
-    return len(na & nb)
+    shared = na & nb
+    score = len(shared)
+    # Bonus when the distinctive last token (mascot / nickname) matches.
+    a_last = (_norm(a).split() or [""])[-1]
+    b_last = (_norm(b).split() or [""])[-1]
+    if a_last and a_last == b_last and a_last not in _GENERIC_NAME_TOKENS:
+        score += 2
+    return score
 
 
 def _norm(value: str) -> str:
     return re.sub(r"[^a-z0-9 ]+", " ", (value or "").lower()).strip()
+
+
+def _coord_value(raw: Any) -> float | None:
+    if raw is None or isinstance(raw, bool):
+        return None
+    try:
+        return float(raw)
+    except (TypeError, ValueError):
+        return None
 
 
 def _is_out(status: str) -> bool:
