@@ -29,6 +29,16 @@ def clean_database():
     Base.metadata.drop_all(bind=engine)
 
 
+@pytest.fixture(autouse=True)
+def clear_process_caches():
+    """Isolate process-local single-flight / odds caches between tests."""
+    from app.services.single_flight import clear_single_flight_cache
+
+    clear_single_flight_cache()
+    yield
+    clear_single_flight_cache()
+
+
 @pytest.fixture
 def client() -> TestClient:
     return TestClient(app)

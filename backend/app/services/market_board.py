@@ -21,6 +21,7 @@ from app.core.config import settings
 from app.schemas import CandidateInput
 from app.services.board_metrics import bookmaker_display_name
 from app.services.decision_engine import implied_probability
+from app.services.single_flight import single_flight
 from app.services.odds_provider import (
     APP_SPORT_TO_ODDS_KEY,
     PREFERRED_BOOKS,
@@ -64,7 +65,7 @@ _LEAGUE: dict[str, str] = {
 }
 
 
-def build_market_board(
+def _build_market_board_uncached(
     sport: str,
     slate_date: date,
     *,
@@ -238,6 +239,32 @@ def build_market_board(
     )
     return board, notice
 
+
+
+def build_market_board(
+    sport: str,
+    slate_date: date,
+    *,
+    include_props: bool = True,
+    overlay_model: bool = True,
+) -> tuple[list[CandidateInput], str]:
+    """Coalesce concurrent Pick Sheet board builds for the same sport/date."""
+    props_flag = "props" if include_props else "noprops"
+    model_flag = "model" if overlay_model else "book"
+    key = (
+        f"market-board|{sport.lower().strip()}|{slate_date.isoformat()}"
+        f"|{props_flag}|{model_flag}"
+    )
+    return single_flight(
+        key,
+        lambda: _build_market_board_uncached(
+            sport,
+            slate_date,
+            include_props=include_props,
+            overlay_model=overlay_model,
+        ),
+        ttl_seconds=45.0,
+    )
 
 def _chunk_csv(value: str, *, size: int) -> list[str]:
     parts = [part.strip() for part in value.split(",") if part.strip()]
