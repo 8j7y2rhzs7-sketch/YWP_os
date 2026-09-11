@@ -101,7 +101,17 @@ def build_event_research(
     indoor = bool((espn_game or {}).get("indoor"))
     if sport_l in WEATHER_SPORTS and espn_game and not indoor:
         city = espn_game.get("city") or ""
-        coords = _city_coords(city, espn_game.get("state") or "", espn_game.get("country") or "")
+        # Prefer venue lat/lng from ESPN/CFBD when present; fall back to city map.
+        lat = espn_game.get("latitude")
+        lon = espn_game.get("longitude")
+        coords = None
+        try:
+            if lat is not None and lon is not None:
+                coords = (float(lat), float(lon))
+        except (TypeError, ValueError):
+            coords = None
+        if coords is None:
+            coords = _city_coords(city, espn_game.get("state") or "", espn_game.get("country") or "")
         if coords:
             try:
                 weather = search_open_meteo_weather(

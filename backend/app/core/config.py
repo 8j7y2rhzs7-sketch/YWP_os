@@ -34,6 +34,11 @@ class Settings(BaseSettings):
     openai_api_key: str | None = Field(default=None, validation_alias="OPENAI_API_KEY")
     sports_data_api_key: str | None = Field(default=None, validation_alias="SPORTS_DATA_API_KEY")
     odds_api_key: str | None = Field(default=None, validation_alias="ODDS_API_KEY")
+    cfbd_api_key: str | None = Field(
+        default=None,
+        validation_alias="CFBD_API_KEY",
+        description="CollegeFootballData.com Bearer token (free tier OK).",
+    )
     weather_api_key: str | None = Field(default=None, validation_alias="WEATHER_API_KEY")
     provision_secret: str | None = Field(
         default=None,
@@ -154,6 +159,7 @@ class Settings(BaseSettings):
 
     @field_validator(
         "odds_api_key",
+        "cfbd_api_key",
         "whop_api_key",
         "whop_webhook_secret",
         "whop_app_id",

@@ -135,6 +135,83 @@ TRUSTED_SOURCES: list[dict[str, Any]] = [
         "notes": "Backup weather for outdoor sports when primary weather is missing.",
     },
     {
+        "id": "college_football_data",
+        "name": "CollegeFootballData (CFBD)",
+        "tier": "secondary",
+        "sports": ["ncaaf"],
+        "base_url": "https://api.collegefootballdata.com",
+        "categories": ["schedule", "form", "park", "weather", "motivation"],
+        "auth": "CFBD_API_KEY",
+        "notes": (
+            "Free-tier JSON API for NCAA football games, teams, and form. "
+            "NCAAF schedule/form backup when ESPN matching is thin. Optional Bearer key."
+        ),
+    },
+    {
+        "id": "balldontlie",
+        "name": "BallDontLie NBA API",
+        "tier": "secondary",
+        "sports": ["nba"],
+        "base_url": "https://api.balldontlie.io",
+        "categories": ["schedule", "form"],
+        "auth": "none",
+        "notes": (
+            "Validated free NBA JSON API for games/teams/stats. Registered for cascade use; "
+            "ESPN remains primary until wired live."
+        ),
+    },
+    {
+        "id": "football_data_org",
+        "name": "Football-Data.org",
+        "tier": "secondary",
+        "sports": ["soccer", "epl", "mls"],
+        "base_url": "https://api.football-data.org/v4",
+        "categories": ["schedule", "form"],
+        "auth": "FOOTBALL_DATA_API_KEY",
+        "notes": (
+            "Free football (soccer) fixtures/results JSON API. Registered as secondary "
+            "schedule/form source behind ESPN for soccer leagues."
+        ),
+    },
+    {
+        "id": "nba_stats_cdn",
+        "name": "NBA Stats CDN",
+        "tier": "reference",
+        "sports": ["nba"],
+        "base_url": "https://stats.nba.com",
+        "categories": ["schedule", "form", "lineups"],
+        "auth": "none",
+        "notes": (
+            "Official NBA stats endpoints (CDN). Reference/secondary; cloud egress often "
+            "blocks these hosts, so ESPN remains the live cascade path."
+        ),
+    },
+    {
+        "id": "ncaa_data_api",
+        "name": "NCAA Data API",
+        "tier": "reference",
+        "sports": ["ncaaf", "ncaab"],
+        "base_url": "https://data.ncaa.com",
+        "categories": ["schedule", "form"],
+        "auth": "none",
+        "notes": (
+            "NCAA public scoreboard JSON where available. Reference only — schema drifts "
+            "and is not used for Strict Mode auto-verify yet."
+        ),
+    },
+    {
+        "id": "nws_weather_gov",
+        "name": "National Weather Service (api.weather.gov)",
+        "tier": "reference",
+        "sports": ["mlb", "nfl", "ncaaf"],
+        "base_url": "https://api.weather.gov",
+        "categories": ["weather"],
+        "auth": "none",
+        "notes": (
+            "Free US government weather JSON. Reference backup to Open-Meteo for US venues."
+        ),
+    },
+    {
         "id": "ywp_mlb_model",
         "name": "YWP MLB Independent Model",
         "tier": "primary",
@@ -182,7 +259,7 @@ def trusted_sources_manifest(sport: str | None = None) -> dict[str, Any]:
         ]
     return {
         "protocol": "YWP Trusted Source Research Protocol",
-        "version": "2026.09.04-ts2",
+        "version": "2026.09.11-ts3",
         "rule": (
             "Strict Mode may auto-verify a research field only when a trusted source "
             "in that category returned confirmed data. Untrusted pages cannot clear gaps."
