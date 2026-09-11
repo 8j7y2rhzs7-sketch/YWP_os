@@ -75,6 +75,58 @@ def _diverse(
     return selected
 
 
+
+
+def _hybrid_category_legs(
+    cash_pool: list[Recommendation],
+    eligible: list[Recommendation],
+    edge_pool: list[Recommendation],
+    max_legs: int,
+) -> list[Recommendation]:
+    """One cash-tier / safe anchor + one core + optional edge — mixed categories.
+
+    Process-safe mix: distinct theses/scripts/entities via _diverse, never juice filler.
+    """
+    legs: list[Recommendation] = []
+    used_entities: set[str] = set()
+
+    def _take(pool: list[Recommendation], n: int) -> list[Recommendation]:
+        nonlocal used_entities
+        picked = _diverse(pool, n, existing=used_entities)
+        for item in picked:
+            used_entities.add(item.player_key or item.event_id)
+        return picked
+
+    # Prefer explicit cash_builder / no_stress tiers when tagged.
+    cash_tier = [
+        item
+        for item in cash_pool
+        if str(item.recommendation_tier or "") in {"cash_builder", "no_stress", "quick_cash"}
+    ] or cash_pool
+    core_tier = [
+        item
+        for item in eligible
+        if str(item.recommendation_tier or "") in {"core_parlay", "support", ""}
+        or item not in cash_tier
+    ]
+    edge_tier = [
+        item
+        for item in edge_pool
+        if str(item.recommendation_tier or "") in {"edge_play", "edge_plays"}
+        or float(item.expected_value) > 0
+    ] or edge_pool
+
+    legs.extend(_take(cash_tier, 1))
+    if max_legs >= 2:
+        legs.extend(_take(core_tier, 1))
+    if max_legs >= 3:
+        legs.extend(_take(edge_tier, 1))
+    # If still short, fill from remaining eligible under diversity.
+    if len(legs) < min(3, max_legs):
+        legs.extend(_take(eligible, min(3, max_legs) - len(legs)))
+    return legs
+
+
 def preview_custom_card(
     recommendations: list[Recommendation],
     *,
@@ -286,6 +338,7 @@ def build_cards(
     b = _diverse(eligible, min(3, max_legs), existing=a_entities)
     c_pool = sorted({item.id: item for item in [*a, *b]}.values(), key=_priority)
     c = _diverse(c_pool, min(3, max_legs))
+    hybrid = _hybrid_category_legs(cash_pool, eligible, edge_pool, max_legs)
 
     cards = {
         "max_bet": _card("max_bet", "Max Bet — strongest single", strongest),
@@ -329,6 +382,15 @@ def build_cards(
         "ticket_a": _card("ticket_a", "Ticket A — strongest plays", a),
         "ticket_b": _card("ticket_b", "Ticket B — different players/theses", b),
         "ticket_c": _card("ticket_c", "Ticket C — best of A + B", c),
+        "hybrid_mix": _card(
+            "hybrid_mix",
+            "Hybrid Mix — cash + core + edge",
+            hybrid,
+            [
+                "Declared category mix: one cash-band anchor, one core, "
+                "optional edge. Same thesis/script gates as other official cards."
+            ],
+        ),
     }
     min_legs = {
         "max_bet": 1,
@@ -350,6 +412,7 @@ def build_cards(
         "ticket_a": 2,
         "ticket_b": 2,
         "ticket_c": 2,
+        "hybrid_mix": 2,
     }
     pruned: dict[str, TicketCardOut] = {}
     for key, card in cards.items():

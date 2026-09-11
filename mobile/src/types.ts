@@ -367,6 +367,33 @@ export interface SettleDayItem {
   detail: string | null;
 }
 
+export interface EodQualityReport {
+  slate_date: string;
+  locked_graded: number;
+  locked_wins: number;
+  locked_losses: number;
+  board_uncalled_graded: number;
+  board_uncalled_wins: number;
+  board_uncalled_losses: number;
+  missed_winners: Array<{
+    recommendation_id: string;
+    selection: string;
+    decision: string;
+    recommendation_tier: string;
+    outcome: string;
+    market_type: string;
+    american_odds: number;
+  }>;
+  good_dodges: Array<{ selection: string; outcome: string }>;
+  false_skips: Array<{ selection: string; outcome: string }>;
+  locked_hit_rate: number | null;
+  uncalled_play_lean_hit_rate: number | null;
+  packaging_gap: number | null;
+  quality_score: number;
+  headline: string;
+  lessons: string[];
+}
+
 export interface SettleDayResponse {
   graded: number;
   pending: number;
@@ -375,6 +402,7 @@ export interface SettleDayResponse {
   tickets_settled: number;
   board_graded?: number;
   hive_outcomes_mapped?: number;
+  eod_quality?: EodQualityReport | null;
   items: SettleDayItem[];
 }
 
