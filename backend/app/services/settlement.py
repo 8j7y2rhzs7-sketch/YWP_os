@@ -52,10 +52,11 @@ SHEET_LEARNING_DECISIONS = frozenset({"PLAY", "LEAN", "WATCH", "SKIP", "REVIEW"}
 
 @dataclass
 class SettleDayResult:
-    """Full Sync Scores payload: tickets + board games + Hive outcome mapping."""
+    """Full Sync Scores payload: tickets + board games + Hive + EOD quality."""
 
     items: list[SettlementItem]
     hive_outcomes_mapped: int = 0
+    eod_quality: dict[str, Any] | None = None
 
     @property
     def board_graded(self) -> int:
@@ -136,9 +137,23 @@ def settle_user_day(
                 db=db,
                 trigger="settle_day",
             )
+
+    # End-of-day quality: called vs uncalled board, missed winners, packaging gap.
+    eod_quality: dict[str, Any] | None = None
+    try:
+        from app.services.eod_quality import run_eod_quality_pass
+
+        eod_report = run_eod_quality_pass(db, user_id, slate_date=as_of)
+        eod_quality = eod_report.to_dict()
+        db.flush()
+    except Exception:  # noqa: BLE001 — settle must still return grades if EOD fails
+        logger.exception("EOD quality pass failed for user=%s date=%s", user_id, as_of)
+        eod_quality = None
+
     return SettleDayResult(
         items=items,
         hive_outcomes_mapped=mapped,
+        eod_quality=eod_quality,
     )
 
 def sync_hive_outcomes_for_graded(db: Session, user_id: str) -> int:

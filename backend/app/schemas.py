@@ -744,6 +744,7 @@ class SettleDayResponse(YWPModel):
     tickets_settled: int
     board_graded: int = 0
     hive_outcomes_mapped: int = 0
+    eod_quality: dict[str, Any] | None = None
     items: list[SettlementItemOut]
 
 

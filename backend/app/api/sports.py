@@ -1447,6 +1447,7 @@ def settle_day(user: SubscribedUser, db: DB) -> SettleDayResponse:
         tickets_settled=sum(1 for item in items if item.status == "ticket_settled"),
         board_graded=result.board_graded,
         hive_outcomes_mapped=result.hive_outcomes_mapped,
+        eod_quality=result.eod_quality,
         items=[
             SettlementItemOut(
                 recommendation_id=item.recommendation_id,

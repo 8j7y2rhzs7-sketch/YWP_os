@@ -37,6 +37,16 @@ function summarizeSettle(result: SettleDayResponse): string {
   if (boardOnly && !result.board_graded) {
     parts.push(`${boardOnly} unlocked board pick(s) logged for learning`);
   }
+  const eod = result.eod_quality;
+  if (eod?.headline) {
+    parts.push(`EOD ${eod.quality_score.toFixed(0)} — ${eod.headline}`);
+    if (eod.missed_winners?.length) {
+      parts.push(`${eod.missed_winners.length} missed PLAY/LEAN winner(s)`);
+    }
+    if (eod.packaging_gap != null && Math.abs(eod.packaging_gap) >= 0.05) {
+      parts.push(`packaging gap ${eod.packaging_gap > 0 ? "+" : ""}${(eod.packaging_gap * 100).toFixed(0)} pts`);
+    }
+  }
   if (!parts.length) {
     return "No MLB board picks or placed legs were ready to grade. Games must be Final.";
   }
@@ -45,7 +55,9 @@ function summarizeSettle(result: SettleDayResponse): string {
     .slice(0, 4)
     .map((item) => `• ${item.selection || item.status}: ${item.detail || item.status}`)
     .join("\n");
-  return details ? `${parts.join(" · ")}\n\n${details}` : parts.join(" · ");
+  const lessons = (eod?.lessons || []).slice(0, 3).map((lesson) => `• ${lesson}`).join("\n");
+  const extra = [details, lessons].filter(Boolean).join("\n\n");
+  return extra ? `${parts.join(" · ")}\n\n${extra}` : parts.join(" · ");
 }
 
 export default function TicketsScreen() {
