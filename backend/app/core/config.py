@@ -56,13 +56,13 @@ class Settings(BaseSettings):
         validation_alias="YWP_MLB_MAX_PROP_EVENTS",
     )
     mlb_board_max_prop_events: int = Field(
-        default=8,
+        default=4,
         ge=0,
         le=30,
         validation_alias="YWP_MLB_BOARD_MAX_PROP_EVENTS",
         description=(
             "Pick Sheet sportsbook menu: max events to price player props for. "
-            "Higher than model-slate gating because Sheet is a full selectable board."
+            "Kept modest so two phones refreshing together do not stall the free worker."
         ),
     )
 
