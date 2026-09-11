@@ -318,3 +318,52 @@ def test_underfilled_multi_leg_cards_are_dropped() -> None:
         "needs 2 legs" in item.reason or "needs 3 legs" in item.reason
         for item in quarantined
     )
+
+
+def test_hybrid_mix_card_mixes_cash_core_and_edge() -> None:
+    cash = _play(
+        id="cash-1",
+        rank=1,
+        thesis_key="thesis-cash",
+        event_id="event-cash",
+        selection="Cash anchor ML",
+        player_key="player-cash",
+        script_key="script-cash",
+        recommendation_tier="cash_builder",
+        miss_by_one_risk=Decimal("0.10"),
+        variance=Decimal("0.15"),
+        expected_value=Decimal("0.02"),
+    )
+    core = _play(
+        id="core-1",
+        rank=2,
+        thesis_key="thesis-core",
+        event_id="event-core",
+        selection="Core support ML",
+        player_key="player-core",
+        script_key="script-core",
+        recommendation_tier="core_parlay",
+        miss_by_one_risk=Decimal("0.25"),
+        variance=Decimal("0.30"),
+        expected_value=Decimal("0.04"),
+    )
+    edge = _play(
+        id="edge-1",
+        rank=3,
+        thesis_key="thesis-edge",
+        event_id="event-edge",
+        selection="Edge upside ML",
+        player_key="player-edge",
+        script_key="script-edge",
+        recommendation_tier="edge_play",
+        miss_by_one_risk=Decimal("0.35"),
+        variance=Decimal("0.40"),
+        expected_value=Decimal("0.12"),
+        edge=Decimal("0.06"),
+    )
+    cards, _quarantined = build_cards([cash, core, edge], max_legs=5, min_rating=0)
+    assert "hybrid_mix" in cards
+    hybrid = cards["hybrid_mix"]
+    assert hybrid.label.startswith("Hybrid Mix")
+    assert set(hybrid.recommendation_ids) == {"cash-1", "core-1", "edge-1"}
+    assert any("category mix" in warning.lower() for warning in hybrid.warnings)
