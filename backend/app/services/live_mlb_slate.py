@@ -30,6 +30,7 @@ from app.services.mlb_provider import (
     player_headshot_url,
     team_logo_url,
 )
+from app.services.single_flight import single_flight
 from app.services.odds_provider import (
     extract_best_odds,
     extract_player_prop,
@@ -90,7 +91,7 @@ def props_slate_notice(status: dict[str, Any] | None = None) -> str:
     return " ".join(parts)
 
 
-def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
+def _build_live_mlb_slate(slate_date: date) -> list[CandidateInput]:
     """Return a complete real-market MLB candidate universe for one date."""
     games = get_schedule(slate_date)
     if not games:
@@ -131,7 +132,7 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
     # Research games in parallel — sequential full-slate research often exceeds the
     # mobile client's historical 25s abort window on a full MLB card.
     bundles: list[dict[str, Any]] = []
-    workers = min(4, max(1, len(matched_games)))
+    workers = min(2, max(1, len(matched_games)))
     with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="mlb-game") as pool:
         futures = [
             pool.submit(_build_matched_game_bundle, game, matched_event, slate_date, now)
@@ -234,6 +235,15 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
     logger.info("Built %d independent-model MLB candidates for %s", len(candidates), slate_date)
     return candidates
 
+
+
+def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
+    """Coalesce concurrent MLB slate builds for the same date (multi-phone safe)."""
+    return single_flight(
+        f"live-mlb-slate|{slate_date.isoformat()}",
+        lambda: _build_live_mlb_slate(slate_date),
+        ttl_seconds=45.0,
+    )
 
 def _build_matched_game_bundle(
     game: dict[str, Any],
@@ -1019,7 +1029,7 @@ def _game_research(game: dict[str, Any], slate_date: date) -> dict[str, Any]:
     }
 
     futures: dict[str, tuple[Future[Any], Any]] = {}
-    with ThreadPoolExecutor(max_workers=6, thread_name_prefix="mlb-source") as pool:
+    with ThreadPoolExecutor(max_workers=3, thread_name_prefix="mlb-source") as pool:
         for key, (function, args, default) in tasks.items():
             # Every task's first positional argument is its required MLB id.
             # A later None is valid (the optional season for pitcher game logs).

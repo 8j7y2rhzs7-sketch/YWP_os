@@ -13,6 +13,7 @@ from typing import Any
 import httpx
 
 from app.core.config import settings
+from app.services.single_flight import single_flight
 
 logger = logging.getLogger(__name__)
 
@@ -475,42 +476,46 @@ def get_game_odds(
         )
         return list(data)
 
-    try:
-        data = _get_sync(
-            f"/v4/sports/{sport}/odds",
-            {
-                "regions": regions,
-                "markets": markets,
-                "oddsFormat": "american",
-            },
+    def _fetch_game_odds() -> list[dict[str, Any]]:
+        try:
+            payload = _get_sync(
+                f"/v4/sports/{sport}/odds",
+                {
+                    "regions": regions,
+                    "markets": markets,
+                    "oddsFormat": "american",
+                },
+            )
+        except Exception as exc:
+            # Prefer the structured status already set by _get_sync for 401/429.
+            if not _last_fetch_status.get("error"):
+                _set_status(ok=False, events=0, error=_safe_error_message(exc))
+            else:
+                _set_status(ok=False, events=0)
+            logger.exception("Odds API fetch failed")
+            return []
+
+        if not isinstance(payload, list):
+            _set_status(ok=False, events=0, error="unexpected_odds_payload")
+            return []
+
+        market_count = len([part for part in markets.split(",") if part.strip()])
+        region_count = len([part for part in regions.split(",") if part.strip()])
+        credit_cost = market_count * max(1, region_count)
+        _odds_response_cache[cache_key] = {"fetched_at": time.time(), "data": payload}
+        _set_status(
+            ok=True,
+            events=len(payload),
+            error=None,
+            skipped_paid_call=False,
+            cache_hit=False,
+            credit_cost=credit_cost,
+            sport=sport,
         )
-    except Exception as exc:
-        # Prefer the structured status already set by _get_sync for 401/429.
-        if not _last_fetch_status.get("error"):
-            _set_status(ok=False, events=0, error=_safe_error_message(exc))
-        else:
-            _set_status(ok=False, events=0)
-        logger.exception("Odds API fetch failed")
-        return []
+        return payload
 
-    if not isinstance(data, list):
-        _set_status(ok=False, events=0, error="unexpected_odds_payload")
-        return []
-
-    market_count = len([part for part in markets.split(",") if part.strip()])
-    region_count = len([part for part in regions.split(",") if part.strip()])
-    credit_cost = market_count * max(1, region_count)
-    _odds_response_cache[cache_key] = {"fetched_at": now, "data": data}
-    _set_status(
-        ok=True,
-        events=len(data),
-        error=None,
-        skipped_paid_call=False,
-        cache_hit=False,
-        credit_cost=credit_cost,
-        sport=sport,
-    )
-    return data
+    # Coalesce concurrent cache misses (two phones refreshing together).
+    return list(single_flight(f"game-odds|{cache_key}", _fetch_game_odds, ttl_seconds=0.0))
 
 
 def prefetch_in_season_app_odds(
@@ -659,34 +664,44 @@ def get_player_props(
     markets: str = "batter_hits,batter_total_bases,batter_rbis,batter_home_runs,pitcher_strikeouts",
     regions: str = "us",
 ) -> dict[str, Any] | None:
-    """Fetch player prop odds for a single event."""
+    """Fetch player prop odds for a single event.
+
+    Cached + single-flight so two phones opening Sheet at once do not double
+    burn Odds credits or stack blocking HTTP on the only web worker.
+    """
     if not odds_api_configured():
         return None
-    try:
-        data = _get_sync(
-            f"/v4/sports/{sport}/events/{event_id}/odds",
-            {
-                "regions": regions,
-                "markets": markets,
-                "oddsFormat": "american",
-            },
-        )
-        if isinstance(data, dict):
-            return data
-        return None
-    except httpx.HTTPStatusError as exc:
-        if exc.response.status_code == 422:
-            logger.warning("Props not available for event %s", event_id)
+
+    cache_key = f"props|{sport}|{event_id}|{markets}|{regions}"
+
+    def _fetch() -> dict[str, Any] | None:
+        try:
+            data = _get_sync(
+                f"/v4/sports/{sport}/events/{event_id}/odds",
+                {
+                    "regions": regions,
+                    "markets": markets,
+                    "oddsFormat": "american",
+                },
+            )
+            if isinstance(data, dict):
+                return data
             return None
-        logger.warning(
-            "Props HTTP %s for event %s — skipping",
-            exc.response.status_code,
-            event_id,
-        )
-        return None
-    except Exception:
-        logger.exception("Props fetch failed for event %s", event_id)
-        return None
+        except httpx.HTTPStatusError as exc:
+            if exc.response.status_code == 422:
+                logger.warning("Props not available for event %s", event_id)
+                return None
+            logger.warning(
+                "Props HTTP %s for event %s — skipping",
+                exc.response.status_code,
+                event_id,
+            )
+            return None
+        except Exception:
+            logger.exception("Props fetch failed for event %s", event_id)
+            return None
+
+    return single_flight(cache_key, _fetch, ttl_seconds=_ODDS_CACHE_TTL_SECONDS)
 
 
 # ---------------------------------------------------------------------------
