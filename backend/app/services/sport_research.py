@@ -160,6 +160,24 @@ def build_event_research(
             and market_verified
         )
         bullpen_status = "probable"
+    elif sport_l in {
+        "ncaaf",
+        "nfl",
+    }:
+        # Same honesty as KBO: no certified depth-chart feed, so full-game
+        # markets clear on schedule + form + injuries + Odds consensus (+ weather
+        # when outdoor). Lineup/starter flags stay false and are not required.
+        market_movement_verified = market_verified
+        motivation_verified = form_verified
+        outdoor = sport_l in {"nfl", "ncaaf", "soccer", "mls", "epl"}
+        weather_ok = weather_verified if outdoor else True
+        sport_sweep = bool(
+            schedule_verified
+            and form_verified
+            and injuries_verified
+            and weather_ok
+            and market_verified
+        )
 
     return {
         "espn_game": espn_game,
@@ -290,8 +308,12 @@ def build_verified_candidate(
     game_status, market_status = event_market_status(start_time, now)
     espn_game = research.get("espn_game") or {}
     # Cap quality while lineup/starter/sweep remain incomplete — form alone is not PLAY-grade.
-    quality_cap = 0.62 if not flags.get("sport_specific_sweep_complete") else 0.88
-    data_quality = max(0.45, min(quality_cap, projection.quality * 0.75))
+    # Once the sport sweep clears (KBO / NCAAF / NFL team-market path), floor quality
+    # above settings.minimum_data_quality so cleared research is not auto-SKIP'd.
+    if flags.get("sport_specific_sweep_complete"):
+        data_quality = max(0.68, min(0.88, float(projection.quality) * 0.9))
+    else:
+        data_quality = max(0.45, min(0.62, float(projection.quality) * 0.75))
     missing = [
         label
         for key, label in [
@@ -319,6 +341,25 @@ def build_verified_candidate(
             ]
             if not flags.get(key)
         ]
+    elif sport.lower() in {
+        "ncaaf",
+        "nfl",
+    }:
+        missing = [
+            label
+            for key, label in [
+                ("schedule_verified", "schedule"),
+                ("current_form_verified", "current form / L5-L10"),
+                ("injuries_verified", "injuries for both teams"),
+                ("weather_verified", "weather/venue"),
+                ("market_movement_verified", "current sportsbook price consensus"),
+                ("sport_specific_sweep_complete", "sport-specific strict-mode sweep"),
+            ]
+            if not flags.get(key)
+        ]
+        # Indoor leagues do not need weather in the missing list.
+        if sport.lower() in {"nba", "ncaab", "wnba", "nhl"}:
+            missing = [label for label in missing if label != "weather/venue"]
     market_period = "90_min" if sport.lower() in {"soccer", "mls", "epl"} and (
         "moneyline" in market_type.lower() or "draw" in selection.lower()
     ) else "full_game"
@@ -361,7 +402,20 @@ def build_verified_candidate(
                 "KBO Strict Mode uses Odds schedule/scores + weather + price consensus "
                 "(ESPN has no baseball/kbo path)."
                 if sport.lower() == "kbo"
-                else "Strict Mode incomplete until confirmed lineups/starters clear the sweep."
+                else (
+                    "ESPN team-market Strict Mode: schedule + form + injuries + Odds "
+                    "consensus clear the sweep (no certified depth-chart feed yet)."
+                    if sport.lower()
+                    in {"ncaaf", "nfl", "nba", "ncaab", "wnba", "nhl", "soccer", "mls", "epl"}
+                    and flags.get("sport_specific_sweep_complete")
+                    else (
+                        "ESPN team-market Strict Mode incomplete until schedule, form, "
+                        "injuries, and Odds consensus verify."
+                        if sport.lower()
+                        in {"ncaaf", "nfl", "nba", "ncaab", "wnba", "nhl", "soccer", "mls", "epl"}
+                        else "Strict Mode incomplete until confirmed lineups/starters clear the sweep."
+                    )
+                )
             ),
         ],
         data_source="FACT_CASCADE+THE_ODDS_API",
@@ -458,6 +512,90 @@ _CITY_COORDS: dict[str, tuple[float, float]] = {
     "daejeon": (36.3504, 127.3845),
     "suwon": (37.2636, 127.0286),
     "changwon": (35.2280, 128.6811),
+    # Major NCAAF / college towns (weather Strict Mode for outdoor football)
+    "richmond": (37.5407, -77.4360),
+    "newark": (39.6837, -75.7497),
+    "charlottesville": (38.0293, -78.4767),
+    "blacksburg": (37.2296, -80.4139),
+    "lexington": (38.0406, -84.5037),
+    "louisville": (38.2527, -85.7585),
+    "knoxville": (35.9606, -83.9207),
+    "nashville": (36.1627, -86.7816),
+    "tuscaloosa": (33.2098, -87.5692),
+    "auburn": (32.6099, -85.4808),
+    "athens": (33.9519, -83.3576),
+    "clemson": (34.6834, -82.8374),
+    "columbia": (34.0007, -81.0348),
+    "tallahassee": (30.4383, -84.2807),
+    "gainesville": (29.6516, -82.3248),
+    "orlando": (28.5383, -81.3792),
+    "baton rouge": (30.4515, -91.1871),
+    "oxford": (34.3668, -89.5192),
+    "starkville": (33.4504, -88.8184),
+    "fayetteville": (36.0626, -94.1574),
+    "norman": (35.2226, -97.4395),
+    "stillwater": (36.1156, -97.0584),
+    "lubbock": (33.5779, -101.8552),
+    "waco": (31.5493, -97.1467),
+    "college station": (30.6280, -96.3344),
+    "austin": (30.2672, -97.7431),
+    "san antonio": (29.4241, -98.4936),
+    "fort worth": (32.7555, -97.3308),
+    "south bend": (41.6764, -86.2520),
+    "ann arbor": (42.2808, -83.7430),
+    "east lansing": (42.7369, -84.4839),
+    "columbus": (39.9612, -82.9988),
+    "west lafayette": (40.4259, -86.9081),
+    "bloomington": (39.1653, -86.5264),
+    "iowa city": (41.6611, -91.5302),
+    "ames": (42.0308, -93.6319),
+    "madison": (43.0731, -89.4012),
+    "minneapolis": (44.9778, -93.2650),
+    "lincoln": (40.8136, -96.7026),
+    "lawrence": (38.9717, -95.2353),
+    "boulder": (40.0150, -105.2705),
+    "provo": (40.2338, -111.6585),
+    "salt lake city": (40.7608, -111.8910),
+    "eugene": (44.0521, -123.0868),
+    "corvallis": (44.5646, -123.2620),
+    "pullman": (46.7298, -117.1817),
+    "seattle": (47.6062, -122.3321),
+    "tucson": (32.2226, -110.9747),
+    "tempe": (33.4255, -111.9400),
+    "berkeley": (37.8715, -122.2730),
+    "stanford": (37.4275, -122.1697),
+    "los angeles": (34.0522, -118.2437),
+    "pasadena": (34.1478, -118.1445),
+    "san diego": (32.7157, -117.1611),
+    "fresno": (36.7378, -119.7871),
+    "sacramento": (38.5816, -121.4944),
+    "chapel hill": (35.9132, -79.0558),
+    "durham": (35.9940, -78.8986),
+    "raleigh": (35.7796, -78.6382),
+    "winston-salem": (36.0999, -80.2442),
+    "syracuse": (43.0481, -76.1474),
+    "state college": (40.7934, -77.8600),
+    "pittsburgh": (40.4406, -79.9959),
+    "morgantown": (39.6295, -79.9559),
+    "charlottesville": (38.0293, -78.4767),
+    "chestnut hill": (42.3309, -71.1662),
+    "south orange": (40.7490, -74.2610),
+    "piscataway": (40.5549, -74.4643),
+    "storrs": (41.8084, -72.2495),
+    "memphis": (35.1495, -90.0490),
+    "tulsa": (36.1540, -95.9928),
+    "honolulu": (21.3069, -157.8583),
+    "boise": (43.6150, -116.2023),
+    "reno": (39.5296, -119.8138),
+    "albuquerque": (35.0844, -106.6504),
+    "laramie": (41.3114, -105.5911),
+    "moscow": (46.7324, -117.0002),
+    "logan": (41.7369, -111.8338),
+    "fort collins": (40.5853, -105.0844),
+    "manhattan": (39.1836, -96.5717),
+    "champaign": (40.1164, -88.2434),
+    "evanston": (42.0447, -87.6931),
+    "south bend": (41.6764, -86.2520),
 }
 
 

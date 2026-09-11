@@ -35,13 +35,44 @@ KBO_REQUIRED_CHECKS: tuple[tuple[str, str], ...] = (
     ("weather_verified", "weather/venue conditions"),
 )
 
+# ESPN team sports also lack a certified depth-chart/lineup JSON feed in YWP.
+# Full-game markets (ML/spread/total) clear Strict Mode on schedule + form +
+# injuries + current Odds consensus (+ weather when outdoor) — same honesty as KBO.
+# MLB keeps COMMON_REQUIRED_CHECKS (batting order / bullpen still required).
+ESPN_TEAM_MARKET_SPORTS = frozenset(
+    {
+        "ncaaf",
+        "nfl",
+    }
+)
+ESPN_TEAM_REQUIRED_CHECKS: tuple[tuple[str, str], ...] = (
+    ("schedule_verified", "schedule"),
+    ("universe_scan_complete", "full slate/player universe"),
+    ("current_form_verified", "current form"),
+    ("l5_l10_verified", "actual L5/L10"),
+    ("injuries_verified", "injuries/rest"),
+    ("home_away_verified", "home/away/travel"),
+    ("market_movement_verified", "current market/line movement"),
+    ("sport_specific_sweep_complete", "sport-specific strict-mode sweep"),
+)
+OUTDOOR_WEATHER_SPORTS = frozenset({"mlb", "nfl", "ncaaf", "soccer", "mls", "epl", "kbo"})
+
+
+def _required_checks_for(sport_l: str) -> tuple[tuple[str, str], ...]:
+    if sport_l == "kbo":
+        return KBO_REQUIRED_CHECKS
+    if sport_l in ESPN_TEAM_MARKET_SPORTS:
+        return ESPN_TEAM_REQUIRED_CHECKS
+    return COMMON_REQUIRED_CHECKS
+
 
 def candidate_verification_gaps(candidate: CandidateInput) -> list[str]:
     sport_l = candidate.sport.lower()
-    required = KBO_REQUIRED_CHECKS if sport_l == "kbo" else COMMON_REQUIRED_CHECKS
+    required = _required_checks_for(sport_l)
     gaps = [label for field, label in required if not bool(getattr(candidate, field))]
 
-    if sport_l != "kbo" and sport_l in {"mlb", "nfl", "ncaaf", "soccer", "mls", "epl"} and not candidate.weather_verified:
+    if sport_l in OUTDOOR_WEATHER_SPORTS and sport_l != "kbo" and not candidate.weather_verified:
+        # KBO already includes weather in its checklist.
         gaps.append("weather/venue conditions")
 
     # Only unknown labels on hard research channels block readiness.
@@ -62,8 +93,8 @@ def candidate_verification_gaps(candidate: CandidateInput) -> list[str]:
         for label, state in candidate.source_status.items()
         if state == "unknown" and label in hard_source_keys
     ]
-    # KBO: starter/lineup sources are explicitly n/a — never treat as unknown blockers.
-    if sport_l == "kbo":
+    # KBO / ESPN team sports: no certified lineup feed — starter/lineup never block.
+    if sport_l == "kbo" or sport_l in ESPN_TEAM_MARKET_SPORTS:
         unknown_sources = [label for label in unknown_sources if label not in {"starter", "lineup", "bullpen"}]
 
     gaps.extend(f"source:{label}" for label in unknown_sources)
