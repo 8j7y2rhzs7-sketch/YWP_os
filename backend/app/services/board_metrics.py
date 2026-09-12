@@ -33,6 +33,10 @@ def market_scope_label(
         "first_5": "First 5 innings",
         "1h": "1st half",
         "2h": "2nd half",
+        "1q": "1st quarter",
+        "2q": "2nd quarter",
+        "3q": "3rd quarter",
+        "4q": "4th quarter",
         "90_min": "90 minutes",
         "regulation": "Regulation",
     }.get(period, period.replace("_", " ").title())

@@ -15,7 +15,7 @@ from app.services.espn_provider import (
     injuries_for_teams,
 )
 from app.services.facts_cascade import league_injuries, match_schedule_game, team_recent_form
-from app.services.research_searchers import search_market_consensus, search_open_meteo_weather
+from app.services.research_searchers import search_market_consensus, search_venue_weather
 from app.services.sport_model import SportProjection, project_matchup
 from app.services.team_art import logo_for_play
 from app.services.ticket_gates import event_market_status
@@ -114,7 +114,7 @@ def build_event_research(
             coords = _city_coords(city, espn_game.get("state") or "", espn_game.get("country") or "")
         if coords:
             try:
-                weather = search_open_meteo_weather(
+                weather = search_venue_weather(
                     latitude=coords[0], longitude=coords[1], slate_date=slate_date
                 )
             except Exception as exc:  # noqa: BLE001

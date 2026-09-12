@@ -163,6 +163,115 @@ def search_open_meteo_weather(
         }
 
 
+def search_nws_weather(
+    *,
+    latitude: float | None,
+    longitude: float | None,
+    slate_date: date | None = None,
+) -> dict[str, Any]:
+    """US National Weather Service forecast backup (api.weather.gov).
+
+    Live-validated free JSON. Used when Open-Meteo misses for outdoor US sports.
+    """
+    del slate_date  # NWS points/forecast is near-term; date kept for API symmetry.
+    if latitude is None or longitude is None:
+        return {
+            "category": "weather",
+            "source_id": "nws_weather_gov",
+            "verified": False,
+            "trusted": True,
+            "detail": "No venue coordinates available for NWS weather.",
+            "trusted_sources": [item["id"] for item in sources_for("weather")],
+        }
+    headers = {
+        "User-Agent": "YWP-OS/3.2 trusted-research (ncaaf-weather)",
+        "Accept": "application/geo+json",
+    }
+    try:
+        points = httpx.get(
+            f"https://api.weather.gov/points/{float(latitude):.4f},{float(longitude):.4f}",
+            headers=headers,
+            timeout=TIMEOUT,
+        )
+        points.raise_for_status()
+        forecast_url = (points.json().get("properties") or {}).get("forecast")
+        if not forecast_url:
+            return {
+                "category": "weather",
+                "source_id": "nws_weather_gov",
+                "verified": False,
+                "trusted": True,
+                "detail": "NWS points response missing forecast URL.",
+            }
+        forecast = httpx.get(forecast_url, headers=headers, timeout=TIMEOUT)
+        forecast.raise_for_status()
+        periods = (forecast.json().get("properties") or {}).get("periods") or []
+        if not periods:
+            return {
+                "category": "weather",
+                "source_id": "nws_weather_gov",
+                "verified": False,
+                "trusted": True,
+                "detail": "NWS forecast returned no periods.",
+            }
+        period = periods[0]
+        temp_f = period.get("temperature")
+        temp_c = None
+        if isinstance(temp_f, (int, float)):
+            unit = str(period.get("temperatureUnit") or "F").upper()
+            temp_c = float(temp_f) if unit == "C" else (float(temp_f) - 32.0) * 5.0 / 9.0
+        wind_raw = str(period.get("windSpeed") or "")
+        wind_kph = None
+        for token in wind_raw.replace("to", " ").split():
+            if token.isdigit():
+                # NWS wind is mph for US points.
+                wind_kph = round(float(token) * 1.60934, 1)
+                break
+        return _ok(
+            {
+                "category": "weather",
+                "source_id": "nws_weather_gov",
+                "verified": True,
+                "condition": str(period.get("shortForecast") or "forecast"),
+                "temperature_c": temp_c,
+                "wind_kph": wind_kph,
+                "precip_mm": None,
+                "detail": str(period.get("detailedForecast") or "")[:240],
+                "source_url": forecast_url,
+                "trusted_sources": [item["id"] for item in sources_for("weather")],
+            }
+        )
+    except Exception as exc:
+        logger.warning("NWS weather search failed: %s", exc)
+        return {
+            "category": "weather",
+            "source_id": "nws_weather_gov",
+            "verified": False,
+            "trusted": True,
+            "detail": str(exc)[:200],
+        }
+
+
+def search_venue_weather(
+    *,
+    latitude: float | None,
+    longitude: float | None,
+    slate_date: date,
+) -> dict[str, Any]:
+    """Open-Meteo first, NWS backup for US outdoor venues."""
+    primary = search_open_meteo_weather(
+        latitude=latitude, longitude=longitude, slate_date=slate_date
+    )
+    if primary.get("verified"):
+        return primary
+    backup = search_nws_weather(
+        latitude=latitude, longitude=longitude, slate_date=slate_date
+    )
+    if backup.get("verified"):
+        return backup
+    return primary
+
+
 def search_market_consensus(bookmakers: list[dict[str, Any]], market_key: str, selection: str) -> dict[str, Any]:
     """Confirm current market from multiple trusted sportsbook quotes when available."""
     prices: list[int] = []

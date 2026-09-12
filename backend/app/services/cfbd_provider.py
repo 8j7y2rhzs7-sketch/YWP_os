@@ -44,6 +44,35 @@ def cfbd_configured() -> bool:
     return bool((settings.cfbd_api_key or "").strip())
 
 
+def probe_cfbd_api(*, year: int | None = None) -> dict[str, Any]:
+    """Secret-free connectivity check for the CFBD key + API."""
+    if not cfbd_configured():
+        return {
+            "ok": False,
+            "status": "not_configured",
+            "source_id": SOURCE_ID,
+            "detail": "CFBD_API_KEY is not set.",
+        }
+    season = year or date.today().year
+    try:
+        teams = get_teams(year=season)
+        return {
+            "ok": bool(teams),
+            "status": "connected" if teams else "empty",
+            "teams": len(teams),
+            "year": season,
+            "source_id": SOURCE_ID,
+        }
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("CFBD probe failed: %s", exc)
+        return {
+            "ok": False,
+            "status": "unavailable",
+            "source_id": SOURCE_ID,
+            "detail": str(exc)[:200],
+        }
+
+
 def get_teams(*, year: int | None = None) -> list[dict[str, Any]]:
     if not cfbd_configured():
         return []
