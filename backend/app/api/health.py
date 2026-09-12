@@ -3,10 +3,12 @@ from sqlalchemy import text
 
 from app.core.config import settings
 from app.deps import DB
+from app.services.cfbd_provider import cfbd_configured, probe_cfbd_api
 from app.services.espn_provider import probe_espn_api
 from app.services.mlb_provider import probe_mlb_api
 from app.services.nhl_provider import probe_nhl_api
 from app.services.odds_provider import odds_api_configured, get_last_fetch_status, probe_odds_api
+from app.services.ncaa_provider import probe_ncaa_api
 
 router = APIRouter(tags=["health"])
 
@@ -38,8 +40,10 @@ def health_providers() -> dict[str, object]:
     odds = probe_odds_api()
     nhl = probe_nhl_api()
     espn_by_sport = {
-        sport: probe_espn_api(sport) for sport in ("nba", "nfl", "soccer", "wnba")
+        sport: probe_espn_api(sport) for sport in ("nba", "nfl", "soccer", "wnba", "ncaaf")
     }
+    cfbd = probe_cfbd_api()
+    ncaa = probe_ncaa_api(week=3)
     mlb_ok = bool(mlb.get("ok"))
     odds_ok = bool(odds.get("ok"))
     return {
@@ -49,6 +53,11 @@ def health_providers() -> dict[str, object]:
         "mlb": mlb,
         "nhl": nhl,
         "espn": espn_by_sport,
+        "cfbd": {
+            "configured": cfbd_configured(),
+            **cfbd,
+        },
+        "ncaa": ncaa,
         "kbo": {
             "status": "odds_backed",
             "detail": "ESPN has no baseball/kbo path; KBO facts use The Odds API scores + Open-Meteo.",
@@ -57,6 +66,8 @@ def health_providers() -> dict[str, object]:
         "coverage_note": (
             "Odds health uses the free /v4/sports catalog (0 credits). "
             "ESPN facts use site.web.api.espn.com (site.api is often Akamai-blocked from cloud IPs). "
+            "NCAAF facts: ESPN primary, CFBD secondary (CFBD_API_KEY), NCAA scoreboard tertiary, "
+            "Open-Meteo + NWS weather. "
             "KBO uses Odds scores (not ESPN). "
             "Non-MLB slates still show Odds-priced plays if a fact feed degrades. "
             "Out-of-season sports are gated before paid /odds calls. "
