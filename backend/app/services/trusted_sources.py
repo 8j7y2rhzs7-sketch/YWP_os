@@ -189,26 +189,27 @@ TRUSTED_SOURCES: list[dict[str, Any]] = [
     {
         "id": "ncaa_data_api",
         "name": "NCAA Data API",
-        "tier": "reference",
+        "tier": "secondary",
         "sports": ["ncaaf", "ncaab"],
         "base_url": "https://data.ncaa.com",
-        "categories": ["schedule", "form"],
+        "categories": ["schedule"],
         "auth": "none",
         "notes": (
-            "NCAA public scoreboard JSON where available. Reference only — schema drifts "
-            "and is not used for Strict Mode auto-verify yet."
+            "NCAA Casablanca FBS scoreboard JSON (no auth). Live-validated schedule "
+            "tertiary for NCAAF after ESPN + CFBD. Does not price markets."
         ),
     },
     {
         "id": "nws_weather_gov",
         "name": "National Weather Service (api.weather.gov)",
-        "tier": "reference",
+        "tier": "secondary",
         "sports": ["mlb", "nfl", "ncaaf"],
         "base_url": "https://api.weather.gov",
         "categories": ["weather"],
         "auth": "none",
         "notes": (
-            "Free US government weather JSON. Reference backup to Open-Meteo for US venues."
+            "Free US government weather JSON. Live-validated backup to Open-Meteo "
+            "for outdoor US venues (NCAAF/NFL/MLB)."
         ),
     },
     {
@@ -259,7 +260,7 @@ def trusted_sources_manifest(sport: str | None = None) -> dict[str, Any]:
         ]
     return {
         "protocol": "YWP Trusted Source Research Protocol",
-        "version": "2026.09.11-ts3",
+        "version": "2026.09.12-ts4",
         "rule": (
             "Strict Mode may auto-verify a research field only when a trusted source "
             "in that category returned confirmed data. Untrusted pages cannot clear gaps."
