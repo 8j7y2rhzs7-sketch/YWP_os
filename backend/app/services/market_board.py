@@ -47,7 +47,30 @@ _PROP_MARKETS_BY_SPORT: dict[str, str] = {
     "nba": "player_points,player_rebounds,player_assists,player_threes,player_blocks,player_steals",
     "wnba": "player_points,player_rebounds,player_assists,player_threes,player_points_rebounds_assists",
     "nfl": "player_pass_yds,player_rush_yds,player_reception_yds,player_pass_tds,player_receptions,player_anytime_td",
+    # NCAAF Sheet categories priced via Odds event markets (ESPN is facts-only).
+    # Covers: TD scorers, pass/rush/rec, combo yards, kicking, longest, Q1 pass yards, total TDs.
+    # Deferred (no Odds key / thin books): fantasy points, game highs, full each-half player menus.
+    "ncaaf": (
+        "player_pass_yds,player_pass_tds,player_rush_yds,player_rush_tds,"
+        "player_reception_yds,player_receptions,player_reception_tds,player_anytime_td,"
+        "player_pass_rush_yds,player_rush_reception_yds,player_pass_rush_reception_yds,"
+        "player_pass_rush_reception_tds,player_tds_over,"
+        "player_kicking_points,player_field_goals,player_pats,"
+        "player_pass_longest_completion,player_reception_longest,player_rush_longest,"
+        "player_pass_yds_q1"
+    ),
     "nhl": "player_points,player_shots_on_goal,player_goals,player_assists",
+}
+
+# Team period markets (event-odds only). Shared event cap with props to control credits.
+_PERIOD_MARKETS_BY_SPORT: dict[str, str] = {
+    "ncaaf": "h2h_h1,spreads_h1,totals_h1,h2h_q1,spreads_q1,totals_q1",
+    "nfl": "h2h_h1,spreads_h1,totals_h1,h2h_q1,spreads_q1,totals_q1",
+}
+
+# Cap prop/period event fan-out for huge Saturday NCAAF slates.
+_BOARD_MAX_PROP_EVENTS_BY_SPORT: dict[str, int] = {
+    "ncaaf": 3,
 }
 
 _LEAGUE: dict[str, str] = {
@@ -143,19 +166,25 @@ def _build_market_board_uncached(
 
     props_priced = 0
     props_errors = 0
+    period_priced = 0
     if include_props and matched_events:
         prop_markets = _PROP_MARKETS_BY_SPORT.get(sport_lower)
+        period_markets = _PERIOD_MARKETS_BY_SPORT.get(sport_lower)
+        default_max = int(
+            getattr(settings, "mlb_board_max_prop_events", None)
+            or settings.mlb_max_prop_events
+            or 0
+        )
         max_events = max(
             0,
-            int(
-                getattr(settings, "mlb_board_max_prop_events", None)
-                or settings.mlb_max_prop_events
-                or 0
-            ),
+            int(_BOARD_MAX_PROP_EVENTS_BY_SPORT.get(sport_lower, default_max)),
         )
-        if prop_markets and max_events:
-            # Chunk markets — one giant MLB props request often 422s / times out on Render.
-            market_chunks = _chunk_csv(prop_markets, size=4)
+        if (prop_markets or period_markets) and max_events:
+            # Chunk markets — one giant props request often 422s / times out on Render.
+            prop_chunks = _chunk_csv(prop_markets, size=4) if prop_markets else []
+            period_chunks = (
+                _chunk_csv(period_markets, size=3) if period_markets else []
+            )
             priced = 0
             for event in odds_events:
                 if priced >= max_events:
@@ -170,9 +199,11 @@ def _build_market_board_uncached(
                 league = str(
                     event.get("_ywp_league") or _LEAGUE.get(sport_lower, sport_lower.upper())
                 )
-                merged_books: list[dict[str, Any]] = []
-                got_any = False
-                for chunk in market_chunks:
+                prop_books: list[dict[str, Any]] = []
+                period_books: list[dict[str, Any]] = []
+                got_props = False
+                got_period = False
+                for chunk in prop_chunks:
                     try:
                         payload = get_player_props(event_id, sport=odds_key, markets=chunk)
                     except Exception:
@@ -183,26 +214,61 @@ def _build_market_board_uncached(
                         continue
                     if not payload:
                         continue
-                    got_any = True
-                    merged_books.extend(payload.get("bookmakers") or [])
-                if not got_any:
+                    got_props = True
+                    prop_books.extend(payload.get("bookmakers") or [])
+                for chunk in period_chunks:
+                    try:
+                        payload = get_player_props(event_id, sport=odds_key, markets=chunk)
+                    except Exception:
+                        props_errors += 1
+                        logger.warning(
+                            "Period markets chunk failed for %s (%s)",
+                            event_id,
+                            chunk,
+                            exc_info=True,
+                        )
+                        continue
+                    if not payload:
+                        continue
+                    got_period = True
+                    period_books.extend(payload.get("bookmakers") or [])
+                if not got_props and not got_period:
                     continue
                 priced += 1
-                props_priced += 1
-                merged = dict(event)
-                merged["bookmakers"] = merged_books
-                try:
-                    board.extend(
-                        _flatten_prop_markets(
-                            event=merged,
-                            sport=sport_lower,
-                            start_time=start_time,
-                            now=now,
-                            league=league,
+                if got_props:
+                    props_priced += 1
+                    merged = dict(event)
+                    merged["bookmakers"] = prop_books
+                    try:
+                        board.extend(
+                            _flatten_prop_markets(
+                                event=merged,
+                                sport=sport_lower,
+                                start_time=start_time,
+                                now=now,
+                                league=league,
+                            )
                         )
-                    )
-                except Exception:
-                    logger.exception("Flatten prop markets failed for %s", event_id)
+                    except Exception:
+                        logger.exception("Flatten prop markets failed for %s", event_id)
+                if got_period:
+                    period_priced += 1
+                    merged_period = dict(event)
+                    merged_period["bookmakers"] = period_books
+                    try:
+                        board.extend(
+                            _flatten_period_markets(
+                                event=merged_period,
+                                sport=sport_lower,
+                                start_time=start_time,
+                                now=now,
+                                league=league,
+                            )
+                        )
+                    except Exception:
+                        logger.exception(
+                            "Flatten period markets failed for %s", event_id
+                        )
 
     overlay_count = 0
     if overlay_model and board:
@@ -226,6 +292,11 @@ def _build_market_board_uncached(
         f"Sportsbook menu for {sport_lower.upper()} {slate_date.isoformat()}: "
         f"{matched_events} game(s), {len(board)} selectable market(s)"
         + (f", props priced on {props_priced} event(s)" if props_priced else "")
+        + (
+            f", 1H/1Q team markets on {period_priced} event(s)"
+            if period_priced
+            else ""
+        )
         + (f", {props_errors} prop fetch warning(s)" if props_errors else "")
         + (
             f", {overlay_count} upgraded with independent YWP model probability"
@@ -371,6 +442,69 @@ def _flatten_game_markets(
     now: datetime,
     league: str | None = None,
 ) -> list[CandidateInput]:
+    return _flatten_team_markets(
+        event=event,
+        sport=sport,
+        start_time=start_time,
+        now=now,
+        league=league,
+        market_keys={"h2h", "spreads", "totals"},
+        default_period="full_game",
+    )
+
+
+def _flatten_period_markets(
+    *,
+    event: dict[str, Any],
+    sport: str,
+    start_time: datetime,
+    now: datetime,
+    league: str | None = None,
+) -> list[CandidateInput]:
+    return _flatten_team_markets(
+        event=event,
+        sport=sport,
+        start_time=start_time,
+        now=now,
+        league=league,
+        market_keys={
+            "h2h_h1",
+            "spreads_h1",
+            "totals_h1",
+            "h2h_q1",
+            "spreads_q1",
+            "totals_q1",
+        },
+        default_period="full_game",
+    )
+
+
+def _period_from_odds_market_key(market_key: str) -> tuple[str, str, str]:
+    """Return (base_key, market_period, selection_tag) for Odds period markets."""
+    key = market_key.casefold()
+    for suffix, period, tag in (
+        ("_q1", "1q", "1Q"),
+        ("_q2", "2q", "2Q"),
+        ("_q3", "3q", "3Q"),
+        ("_q4", "4q", "4Q"),
+        ("_h1", "1h", "1H"),
+        ("_h2", "2h", "2H"),
+    ):
+        if key.endswith(suffix):
+            return key[: -len(suffix)], period, tag
+    return key, "full_game", ""
+
+
+def _flatten_team_markets(
+    *,
+    event: dict[str, Any],
+    sport: str,
+    start_time: datetime,
+    now: datetime,
+    league: str | None = None,
+    market_keys: set[str],
+    default_period: str = "full_game",
+) -> list[CandidateInput]:
     bookmakers = event.get("bookmakers") or []
     if not bookmakers:
         return []
@@ -383,37 +517,41 @@ def _flatten_game_markets(
         event_name = f"{event_name} ({league_label})"
     rows: list[CandidateInput] = []
 
-    for offer in _best_outcomes(bookmakers, market_keys={"h2h", "spreads", "totals"}):
+    for offer in _best_outcomes(bookmakers, market_keys=market_keys):
         market_key = offer["market_key"]
+        base_key, period, tag = _period_from_odds_market_key(market_key)
+        if period == "full_game":
+            period = default_period
         name = offer["name"]
         point = offer.get("point")
         price = offer["price"]
         book = offer["book"]
-        if market_key == "h2h":
+        tag_suffix = f" ({tag})" if tag else ""
+        if base_key == "h2h":
             if name.casefold() == "draw":
                 market_type = "moneyline_draw"
-                selection = "Draw"
+                selection = f"Draw{tag_suffix}"
             else:
                 market_type = "moneyline"
-                selection = f"{name} ML"
+                selection = f"{name} ML{tag_suffix}"
             line = None
-        elif market_key == "spreads":
+        elif base_key == "spreads":
             market_type = "run_line" if sport == "mlb" else "spread"
             if point is None:
                 continue
             line = Decimal(str(point))
-            selection = f"{name} {float(line):+g}"
-        elif market_key == "totals":
+            selection = f"{name} {float(line):+g}{tag_suffix}"
+        elif base_key == "totals":
             if point is None:
                 continue
             line = Decimal(str(point))
             direction = name.casefold()
             if direction.startswith("over"):
                 market_type = "game_total_over"
-                selection = f"Over {line}"
+                selection = f"Over {line}{tag_suffix}"
             elif direction.startswith("under"):
                 market_type = "game_total_under"
-                selection = f"Under {line}"
+                selection = f"Under {line}{tag_suffix}"
             else:
                 continue
         else:
@@ -428,6 +566,7 @@ def _flatten_game_markets(
                     home_team=home or None,
                     away_team=away or None,
                     market_type=market_type,
+                    market_period=period,
                     selection=selection,
                     line=line,
                     odds=price,
@@ -464,7 +603,17 @@ def _flatten_prop_markets(
     for offer in _best_outcomes(
         bookmakers,
         market_keys=None,
-        exclude_keys={"h2h", "spreads", "totals"},
+        exclude_keys={
+            "h2h",
+            "spreads",
+            "totals",
+            "h2h_h1",
+            "spreads_h1",
+            "totals_h1",
+            "h2h_q1",
+            "spreads_q1",
+            "totals_q1",
+        },
     ):
         market_key = offer["market_key"]
         outcome = offer["name"]
@@ -472,6 +621,52 @@ def _flatten_prop_markets(
         point = offer.get("point")
         price = offer["price"]
         book = offer["book"]
+        direction = outcome.casefold().strip()
+        _, prop_period, _ = _period_from_odds_market_key(market_key)
+
+        # Yes/No player markets (anytime TD scorers, etc.).
+        if point is None and direction in {"yes", "no"}:
+            if direction == "no":
+                continue  # Sheet density: Yes / scorer side only.
+            if not player:
+                player = outcome
+            key_cf = market_key.casefold()
+            if "anytime_td" in key_cf:
+                market_type = "player_anytime_td_yes"
+                selection = f"{player} Anytime TD"
+            elif "1st_td" in key_cf or "first_td" in key_cf:
+                market_type = "player_first_td_yes"
+                selection = f"{player} First TD"
+            else:
+                safe = re.sub(r"[^a-z0-9]+", "_", key_cf).strip("_") or "player_prop"
+                market_type = f"{safe}_yes"[:50]
+                selection = f"{player} Yes"
+            player_slug = re.sub(r"[^a-z0-9]+", "-", player.casefold()).strip("-")
+            try:
+                rows.append(
+                    _board_candidate(
+                        sport=sport,
+                        event_id=event_id,
+                        event_name=event_name,
+                        start_time=start_time,
+                        home_team=home or None,
+                        away_team=away or None,
+                        market_type=market_type,
+                        market_period=prop_period,
+                        selection=selection[:180],
+                        line=None,
+                        odds=price,
+                        bookmaker=book,
+                        now=now,
+                        player_key=f"{sport}-prop-{player_slug}"[:120],
+                        market_is_pitcher_strikeout_over=False,
+                        league=league_label,
+                    )
+                )
+            except (ValidationError, ValueError) as exc:
+                logger.debug("Skip invalid yes/no prop %s: %s", selection, exc)
+            continue
+
         if not player or point is None:
             # Some feeds put player in name; keep a usable selection.
             if not player:
@@ -479,7 +674,6 @@ def _flatten_prop_markets(
             if point is None:
                 continue
         line = Decimal(str(point))
-        direction = outcome.casefold()
         if direction not in {"over", "under"} and not direction.endswith(" over") and not direction.endswith(
             " under"
         ):
@@ -501,6 +695,7 @@ def _flatten_prop_markets(
                     home_team=home or None,
                     away_team=away or None,
                     market_type=market_type,
+                    market_period=prop_period,
                     selection=selection[:180],
                     line=line,
                     odds=price,
@@ -539,12 +734,38 @@ def _prop_market_meta(market_key: str, *, is_over: bool) -> tuple[str, str, bool
         "pitcher_hits_allowed": ("pitcher_hits_allowed", "hits allowed"),
         "pitcher_earned_runs": ("pitcher_earned_runs", "earned runs"),
         "pitcher_walks": ("pitcher_walks", "walks"),
+        # Football (NFL / NCAAF) player props — longer keys first via sorted match below.
+        "player_pass_yds_q1": ("player_pass_yds_q1", "pass yards (1Q)"),
+        "player_pass_yds": ("player_pass_yds", "pass yards"),
+        "player_pass_tds": ("player_pass_tds", "pass TDs"),
+        "player_pass_completions": ("player_pass_comp", "pass completions"),
+        "player_pass_attempts": ("player_pass_att", "pass attempts"),
+        "player_pass_interceptions": ("player_pass_int", "interceptions"),
+        "player_rush_yds": ("player_rush_yds", "rush yards"),
+        "player_rush_tds": ("player_rush_tds", "rush TDs"),
+        "player_rush_attempts": ("player_rush_att", "rush attempts"),
+        "player_reception_yds": ("player_rec_yds", "rec yards"),
+        "player_receptions": ("player_receptions", "receptions"),
+        "player_reception_tds": ("player_rec_tds", "rec TDs"),
+        "player_pass_rush_reception_yds": ("player_prr_yds", "pass+rush+rec yards"),
+        "player_pass_rush_reception_tds": ("player_prr_tds", "pass+rush+rec TDs"),
+        "player_pass_rush_yds": ("player_pass_rush_yds", "pass+rush yards"),
+        "player_rush_reception_yds": ("player_rush_rec_yds", "rush+rec yards"),
+        "player_tds_over": ("player_tds", "touchdowns"),
+        "player_kicking_points": ("player_kick_pts", "kicking points"),
+        "player_field_goals": ("player_fg", "field goals"),
+        "player_pats": ("player_pats", "PATs"),
+        "player_pass_longest_completion": ("player_longest_pass", "longest completion"),
+        "player_reception_longest": ("player_longest_rec", "longest reception"),
+        "player_rush_longest": ("player_longest_rush", "longest rush"),
     }
-    for market, (prefix, label) in labels.items():
-        if key == market or key.startswith(market):
-            suffix = "over" if is_over else "under"
-            return (f"{prefix}_{suffix}"[:50], label, False)
     suffix = "over" if is_over else "under"
+    if key in labels:
+        prefix, label = labels[key]
+        return (f"{prefix}_{suffix}"[:50], label, False)
+    for market, (prefix, label) in sorted(labels.items(), key=lambda item: -len(item[0])):
+        if key.startswith(market):
+            return (f"{prefix}_{suffix}"[:50], label, False)
     safe = re.sub(r"[^a-z0-9]+", "_", key).strip("_") or "player_prop"
     return (f"{safe}_{suffix}"[:50], key.replace("_", " "), False)
 
@@ -611,13 +832,17 @@ def _board_candidate(
     player_key: str | None,
     market_is_pitcher_strikeout_over: bool,
     league: str | None = None,
+    market_period: str = "full_game",
 ) -> CandidateInput:
     implied = implied_probability(odds)
     implied = max(0.02, min(0.98, float(implied)))
     game_status, market_status = event_market_status(start_time, now)
     slug_sel = re.sub(r"[^a-z0-9]+", "-", selection.casefold()).strip("-")[:80]
     line_part = "nl" if line is None else str(line).replace(".", "p")
-    candidate_id = f"board-{sport}-{event_id[:18]}-{market_type}-{line_part}-{slug_sel}"[:100]
+    period = (market_period or "full_game")[:32]
+    candidate_id = (
+        f"board-{sport}-{event_id[:18]}-{market_type}-{period}-{line_part}-{slug_sel}"
+    )[:100]
     return CandidateInput(
         candidate_id=candidate_id,
         event_id=event_id[:100],
@@ -631,6 +856,7 @@ def _board_candidate(
         bookmaker_label=bookmaker_display_name(bookmaker),
         price_timestamp=now,
         market_type=market_type[:50],
+        market_period=period,
         selection=selection[:180],
         line=line,
         american_odds=odds,
@@ -654,8 +880,10 @@ def _board_candidate(
         market_status=market_status,  # type: ignore[arg-type]
         market_is_pitcher_strikeout_over=market_is_pitcher_strikeout_over,
         independent_value_verified=False,
-        thesis_key=f"board:{sport}:{event_id}:{market_type}:{slug_sel}:{line_part}"[:160],
-        script_key=f"board:{sport}:{event_id}:{market_type}"[:160],
+        thesis_key=f"board:{sport}:{event_id}:{market_type}:{period}:{slug_sel}:{line_part}"[
+            :160
+        ],
+        script_key=f"board:{sport}:{event_id}:{market_type}:{period}"[:160],
         player_key=player_key,
         safer_alternative="Pick a different market on this sheet if this grade is SKIP.",
         higher_upside="Use Run/Full Protocol when you want model-only candidates.",

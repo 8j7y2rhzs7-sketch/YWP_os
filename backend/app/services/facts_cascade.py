@@ -10,7 +10,13 @@ import logging
 from datetime import date
 from typing import Any
 
-from app.services import cfbd_provider, espn_provider, kbo_provider, nhl_provider
+from app.services import (
+    cfbd_provider,
+    espn_provider,
+    kbo_provider,
+    ncaa_provider,
+    nhl_provider,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -77,6 +83,15 @@ def match_schedule_game(
         except Exception as exc:  # noqa: BLE001
             errors.append(f"college_football_data:{exc}")
             logger.warning("CFBD schedule cascade miss: %s", exc)
+        try:
+            game = ncaa_provider.match_odds_event_to_ncaa(
+                slate_date, home_team=home_team, away_team=away_team
+            )
+            if game:
+                return game
+        except Exception as exc:  # noqa: BLE001
+            errors.append(f"ncaa_data_api:{exc}")
+            logger.warning("NCAA schedule cascade miss: %s", exc)
 
     if errors:
         logger.info("No schedule match for %s %s @ %s (%s)", sport_l, away_team, home_team, "; ".join(errors))

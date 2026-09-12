@@ -165,7 +165,7 @@ def test_kbo_research_can_clear_sweep(monkeypatch) -> None:
     )
     monkeypatch.setattr(
         sport_research,
-        "search_open_meteo_weather",
+        "search_venue_weather",
         lambda **kwargs: {"verified": True, "source_url": "https://open-meteo.com/"},
     )
     monkeypatch.setattr(
