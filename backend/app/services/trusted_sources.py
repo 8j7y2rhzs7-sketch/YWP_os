@@ -97,8 +97,11 @@ TRUSTED_SOURCES: list[dict[str, Any]] = [
         ],
         "auth": "none",
         "notes": (
-            "Structured ESPN Site JSON API (not HTML scrape). Secondary fact source — "
-            "Render/host egress may 403; cascade continues with Odds-priced plays."
+            "Structured ESPN Site JSON API (not HTML scrape). Primary multi-sport "
+            "fact path for schedule, injuries, venue, and L5/L10 form. Early-season "
+            "form backfills completed games from the prior season when the current "
+            "slate has fewer than five results. Render/host egress may 403; cascade "
+            "continues with Odds-priced plays."
         ),
     },
     {

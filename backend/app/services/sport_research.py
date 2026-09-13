@@ -153,6 +153,10 @@ def build_event_research(
     sport_sweep = False
     market_movement_verified = False
     bullpen_status = "unknown"
+    # Fields that are intentionally out of scope for a sport must not inflate
+    # "unknown source labels" on the Decision Board (was ~168 on NFL sweeps).
+    starter_status = "unknown"
+    lineup_status = "unknown"
 
     if sport_l == "kbo":
         # ESPN has no baseball/kbo. Odds schedule/scores + Open-Meteo + price
@@ -169,14 +173,23 @@ def build_event_research(
             and weather_verified
             and market_verified
         )
-        bullpen_status = "probable"
+        bullpen_status = "n/a"
+        starter_status = "n/a"
+        lineup_status = "n/a"
     elif sport_l in {
         "ncaaf",
         "nfl",
+        "nba",
+        "ncaab",
+        "wnba",
+        "nhl",
+        "soccer",
+        "mls",
+        "epl",
     }:
-        # Same honesty as KBO: no certified depth-chart feed, so full-game
-        # markets clear on schedule + form + injuries + Odds consensus (+ weather
-        # when outdoor). Lineup/starter flags stay false and are not required.
+        # Same honesty as KBO: no certified depth-chart/lineup JSON feed, so
+        # full-game markets clear on schedule + form + injuries + Odds consensus
+        # (+ weather when outdoor). Lineup/starter/bullpen are N/A — not unknown.
         market_movement_verified = market_verified
         motivation_verified = form_verified
         outdoor = sport_l in {"nfl", "ncaaf", "soccer", "mls", "epl"}
@@ -188,6 +201,20 @@ def build_event_research(
             and weather_ok
             and market_verified
         )
+        bullpen_status = "n/a"
+        starter_status = "n/a"
+        lineup_status = "n/a"
+
+    indoor_team = sport_l in {"nba", "ncaab", "wnba", "nhl"}
+    if indoor_team:
+        weather_status = "n/a"
+        weather_flag = True
+    elif weather_verified:
+        weather_status = "confirmed"
+        weather_flag = True
+    else:
+        weather_status = "unknown"
+        weather_flag = False
 
     return {
         "espn_game": espn_game,
@@ -202,7 +229,7 @@ def build_event_research(
             "l5_l10_verified": form_verified,
             "lineup_confirmed": lineup_confirmed,
             "injuries_verified": injuries_verified,
-            "weather_verified": weather_verified,
+            "weather_verified": weather_flag,
             "starter_confirmed": starter_confirmed,
             "motivation_rotation_verified": motivation_verified,
             "home_away_verified": schedule_verified,
@@ -216,17 +243,9 @@ def build_event_research(
             "market": "confirmed" if market_verified else "unknown",
             "current_form": "confirmed" if form_verified else "unknown",
             "injuries": "confirmed" if injuries_verified else "unknown",
-            "starter": (
-                "probable"
-                if sport_l == "kbo"
-                else ("probable" if schedule_verified else "unknown")
-            ),
-            "lineup": (
-                "probable"
-                if sport_l == "kbo"
-                else ("probable" if schedule_verified else "unknown")
-            ),
-            "weather": "confirmed" if weather_verified else "unknown",
+            "starter": starter_status,
+            "lineup": lineup_status,
+            "weather": weather_status,
             "venue": "confirmed" if venue_verified else "unknown",
             # Bullpen is only a hard readiness key for MLB (see readiness.py).
             "bullpen": bullpen_status,

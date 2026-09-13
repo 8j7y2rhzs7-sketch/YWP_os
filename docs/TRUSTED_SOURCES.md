@@ -16,13 +16,15 @@ Strict Mode may auto-verify research only from this certified list.
 
 | Source | Role | Used for |
 | --- | --- | --- |
-| ESPN Site API (`site.api.espn.com`) | Primary | Schedule, L5/L10 form, injuries, venue/indoor flag |
+| ESPN Site API (`site.api.espn.com`) | Primary | Schedule, L5/L10 form (incl. prior-season backfill when early-season thin), injuries, venue/indoor flag |
 | The Odds API | Market | Current sportsbook prices and multi-book consensus |
-| Open-Meteo | Secondary weather | Outdoor NFL / NCAAF / soccer / KBO when venue city is known |
+| CollegeFootballData (CFBD) | NCAAF secondary | Form/schedule backup when `CFBD_API_KEY` is set |
+| Open-Meteo / NWS | Secondary weather | Outdoor NFL / NCAAF / soccer / KBO when venue city is known |
 | YWP Multi-Sport Independent Model | Internal | Projection from ESPN form + injuries; never from book price |
 
 ## Not trusted
 
+- StatMuse (no certified public JSON API for Strict Mode auto-verify; do not scrape)
 - Random blogs / tip sheets
 - Unauthenticated sportsbook HTML scrapes
 - Social rumor without official confirmation

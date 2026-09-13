@@ -208,7 +208,7 @@ class CandidateInput(YWPModel):
     source_urls: list[str] = Field(default_factory=list, max_length=12)
     source_timestamp: datetime
     missing_fields: list[str] = Field(default_factory=list)
-    source_status: dict[str, Literal["confirmed", "probable", "unknown"]] = Field(
+    source_status: dict[str, Literal["confirmed", "probable", "unknown", "n/a"]] = Field(
         default_factory=dict
     )
     schedule_verified: bool = False

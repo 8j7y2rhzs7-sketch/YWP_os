@@ -202,7 +202,9 @@ def test_kbo_research_can_clear_sweep(monkeypatch) -> None:
     assert flags["weather_verified"] is True
     assert flags["market_movement_verified"] is True
     assert flags["sport_specific_sweep_complete"] is True
-    assert research["source_status"]["bullpen"] == "probable"
+    assert research["source_status"]["bullpen"] == "n/a"
+    assert research["source_status"]["starter"] == "n/a"
+    assert research["source_status"]["lineup"] == "n/a"
 
     candidate = sport_research.build_verified_candidate(
         sport="kbo",

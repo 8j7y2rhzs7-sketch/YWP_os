@@ -1010,9 +1010,11 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
     ]
     qualities = [candidate.data_quality for candidate in candidates]
     unknowns = sum(
-        value == "unknown"
+        1
         for candidate in candidates
         for value in candidate.source_status.values()
+        # n/a = intentionally out of scope for this sport (not a failed source check).
+        if str(value).lower() == "unknown"
     )
     readiness = slate_readiness(candidates)
     hive_learning = hive_learning_maturity(db=db, sport=payload.sport)

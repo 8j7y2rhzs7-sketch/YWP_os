@@ -131,14 +131,160 @@ def get_team_recent_form(
     *,
     last_n: int = 10,
 ) -> dict[str, Any]:
+    """Build L5/L10 form from ESPN team schedules.
+
+    Early NFL/NCAAF/NBA seasons often have <5 completed games on the current
+    schedule. When that happens we backfill completed games from the prior
+    season so Strict Mode is not stuck on `source:current_form` for weeks.
+    """
     path = espn_path_for(sport)
     if not path:
         return _empty_form()
+
+    current_games = _completed_games_from_schedule(
+        path=path, team_id=team_id, slate_date=slate_date
+    )
+    games = list(current_games)
+    used_prior = False
+    # Prior-season backfill when the current slate is thin (Week 1–4 football,
+    # early NBA/NHL, etc.).
+    if len(games) < 5:
+        prior_year = slate_date.year - 1
+        try:
+            prior = _completed_games_from_schedule(
+                path=path,
+                team_id=team_id,
+                slate_date=slate_date,
+                season=prior_year,
+            )
+        except Exception as exc:  # noqa: BLE001
+            logger.warning(
+                "ESPN prior-season form backfill failed for %s team %s: %s",
+                sport,
+                team_id,
+                exc,
+            )
+            prior = []
+        seen = {item["date"] for item in games}
+        for item in prior:
+            if item["date"] in seen:
+                continue
+            games.append(item)
+            seen.add(item["date"])
+            used_prior = True
+
+    games.sort(key=lambda item: item["date"], reverse=True)
+    sample = games[:last_n]
+    l5 = sample[:5]
+
+    def summarize(items: list[dict[str, Any]]) -> dict[str, Any]:
+        count = len(items)
+        if not count:
+            return {
+                "games": 0,
+                "wins": 0,
+                "losses": 0,
+                "win_pct": 0.5,
+                "avg_for": 0.0,
+                "avg_against": 0.0,
+                "totals": [],
+            }
+        wins = sum(1 for item in items if item["win"])
+        scored = sum(float(item["score_for"]) for item in items)
+        against = sum(float(item["score_against"]) for item in items)
+        return {
+            "games": count,
+            "wins": wins,
+            "losses": count - wins,
+            "win_pct": round(wins / count, 4),
+            "avg_for": round(scored / count, 2),
+            "avg_against": round(against / count, 2),
+            "totals": [float(item["score_for"]) + float(item["score_against"]) for item in items],
+        }
+
+    # Prefer a full L5 when available; still verify with 3+ when a season is young
+    # but prior-season fill could not reach five.
+    verified = len(sample) >= 5 or (len(sample) >= 3 and sport.lower() in {"nfl", "ncaaf"})
+    return {
+        "verified": verified,
+        "l5": summarize(l5),
+        "l10": summarize(sample),
+        "games": sample,
+        "source_id": SOURCE_ID,
+        "source_url": f"{SOURCE_API}/{path}/teams/{team_id}/schedule",
+        "detail": (
+            f"ESPN form from {len(sample)} completed games"
+            + (" including prior-season backfill" if used_prior else "")
+        ),
+        "prior_season_backfill": used_prior,
+        "current_season_games": len(current_games),
+    }
+
+
+def resolve_team_id(sport: str, team_name: str) -> str | None:
+    """Map an Odds/ESPN display name onto an ESPN team id when schedule match missed."""
+    path = espn_path_for(sport)
+    if not path or not team_name.strip():
+        return None
     try:
-        data = _get(f"{SOURCE_API}/{path}/teams/{team_id}/schedule", cache_ttl=300)
+        data = _get(f"{SOURCE_API}/{path}/teams", cache_ttl=86_400)
     except Exception as exc:  # noqa: BLE001
-        logger.warning("ESPN form unavailable for %s team %s: %s", sport, team_id, exc)
-        return _empty_form()
+        logger.warning("ESPN teams list unavailable for %s: %s", sport, exc)
+        return None
+    sports = data.get("sports") or []
+    leagues = (sports[0].get("leagues") if sports else None) or []
+    teams = (leagues[0].get("teams") if leagues else None) or data.get("teams") or []
+    best_id: str | None = None
+    best_score = 0
+    for row in teams:
+        team = row.get("team") if isinstance(row, dict) else None
+        if not isinstance(team, dict):
+            continue
+        candidates = [
+            str(team.get("displayName") or ""),
+            str(team.get("name") or ""),
+            str(team.get("shortDisplayName") or ""),
+            str(team.get("nickname") or ""),
+            str(team.get("abbreviation") or ""),
+        ]
+        for candidate in candidates:
+            if not candidate:
+                continue
+            score = _name_overlap(team_name, candidate)
+            hay = _norm(candidate)
+            needle = _norm(team_name)
+            if hay and needle and (hay == needle or hay in needle or needle in hay):
+                score += 10
+            if score > best_score:
+                best_score = score
+                best_id = str(team.get("id") or "") or None
+    return best_id if best_score >= 2 and best_id else None
+
+
+def _completed_games_from_schedule(
+    *,
+    path: str,
+    team_id: str | int,
+    slate_date: date,
+    season: int | None = None,
+) -> list[dict[str, Any]]:
+    params: dict[str, Any] = {}
+    if season is not None:
+        params["season"] = season
+    try:
+        data = _get(
+            f"{SOURCE_API}/{path}/teams/{team_id}/schedule",
+            params=params or None,
+            cache_ttl=300,
+        )
+    except Exception as exc:  # noqa: BLE001
+        logger.warning(
+            "ESPN schedule unavailable for team %s season=%s: %s",
+            team_id,
+            season,
+            exc,
+        )
+        return []
     games: list[dict[str, Any]] = []
     for event in data.get("events") or []:
         comp = (event.get("competitions") or [{}])[0]
@@ -170,43 +316,7 @@ def get_team_recent_form(
                 "win": bool(me.get("winner")),
             }
         )
-    games.sort(key=lambda item: item["date"], reverse=True)
-    sample = games[:last_n]
-    l5 = sample[:5]
-
-    def summarize(items: list[dict[str, Any]]) -> dict[str, Any]:
-        count = len(items)
-        if not count:
-            return {
-                "games": 0,
-                "wins": 0,
-                "losses": 0,
-                "win_pct": 0.5,
-                "avg_for": 0.0,
-                "avg_against": 0.0,
-                "totals": [],
-            }
-        wins = sum(1 for item in items if item["win"])
-        scored = sum(float(item["score_for"]) for item in items)
-        against = sum(float(item["score_against"]) for item in items)
-        return {
-            "games": count,
-            "wins": wins,
-            "losses": count - wins,
-            "win_pct": round(wins / count, 4),
-            "avg_for": round(scored / count, 2),
-            "avg_against": round(against / count, 2),
-            "totals": [float(item["score_for"]) + float(item["score_against"]) for item in items],
-        }
-
-    return {
-        "verified": len(sample) >= min(last_n, 5),
-        "l5": summarize(l5),
-        "l10": summarize(sample),
-        "games": sample,
-        "source_id": SOURCE_ID,
-        "source_url": f"{SOURCE_API}/{path}/teams/{team_id}/schedule",
-    }
+    return games
 
 
 def get_league_injuries(sport: str) -> dict[str, Any]:

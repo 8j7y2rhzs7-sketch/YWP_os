@@ -125,22 +125,58 @@ def team_recent_form(
         except Exception as exc:  # noqa: BLE001
             logger.warning("KBO form cascade miss: %s", exc)
 
+    best: dict[str, Any] | None = None
+
     if team_id:
         try:
             form = espn_provider.get_team_recent_form(sport_l, team_id, slate_date)
             if form.get("verified"):
                 return form
+            best = form
         except Exception as exc:  # noqa: BLE001
             logger.warning("ESPN form cascade miss for %s: %s", sport_l, exc)
+
+    # Schedule match sometimes misses team ids (Odds naming drift). Resolve by
+    # display name so NFL/NBA/NHL form is not stuck on unknown forever.
+    if team_name and sport_l in {
+        "nfl",
+        "ncaaf",
+        "nba",
+        "ncaab",
+        "wnba",
+        "nhl",
+        "soccer",
+        "mls",
+        "epl",
+    }:
+        resolved = espn_provider.resolve_team_id(sport_l, team_name)
+        if resolved and str(resolved) != str(team_id or ""):
+            try:
+                form = espn_provider.get_team_recent_form(sport_l, resolved, slate_date)
+                if form.get("verified"):
+                    return form
+                if not best or len(form.get("games") or []) > len(best.get("games") or []):
+                    best = form
+            except Exception as exc:  # noqa: BLE001
+                logger.warning(
+                    "ESPN name-resolved form cascade miss for %s %s: %s",
+                    sport_l,
+                    team_name,
+                    exc,
+                )
 
     if sport_l == "ncaaf" and team_name:
         try:
             form = cfbd_provider.get_team_recent_form(team_name, slate_date)
             if form.get("verified"):
                 return form
-            return form
+            if not best or len(form.get("games") or []) > len(best.get("games") or []):
+                best = form
         except Exception as exc:  # noqa: BLE001
             logger.warning("CFBD form cascade miss: %s", exc)
+
+    if best is not None:
+        return best
 
     return {
         "verified": False,

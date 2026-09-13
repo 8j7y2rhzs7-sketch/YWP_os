@@ -43,6 +43,13 @@ ESPN_TEAM_MARKET_SPORTS = frozenset(
     {
         "ncaaf",
         "nfl",
+        "nba",
+        "ncaab",
+        "wnba",
+        "nhl",
+        "soccer",
+        "mls",
+        "epl",
     }
 )
 ESPN_TEAM_REQUIRED_CHECKS: tuple[tuple[str, str], ...] = (

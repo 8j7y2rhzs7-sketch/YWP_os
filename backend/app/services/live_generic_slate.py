@@ -129,7 +129,7 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
             )
         except Exception:
             logger.exception("Research failed for %s %s — keeping Odds-priced play", sport, event_name)
-            research = _odds_only_research(bookmakers, home_team=home)
+            research = _odds_only_research(bookmakers, home_team=home, sport=sport)
 
         try:
             _append_event_candidates(
@@ -332,10 +332,24 @@ def _append_event_candidates(
         )
 
 
-def _odds_only_research(bookmakers: list, *, home_team: str) -> dict:
+def _odds_only_research(bookmakers: list, *, home_team: str, sport: str | None = None) -> dict:
     from app.services.research_searchers import search_market_consensus
 
     market = search_market_consensus(bookmakers, "h2h", home_team)
+    sport_l = (sport or "").lower()
+    team_market = sport_l in {
+        "nfl",
+        "ncaaf",
+        "nba",
+        "ncaab",
+        "wnba",
+        "nhl",
+        "soccer",
+        "mls",
+        "epl",
+        "kbo",
+    }
+    na = "n/a" if team_market else "unknown"
     return {
         "espn_game": None,
         "home_form": {"verified": False},
@@ -363,11 +377,11 @@ def _odds_only_research(bookmakers: list, *, home_team: str) -> dict:
             "market": "confirmed" if market.get("verified") else "unknown",
             "current_form": "unknown",
             "injuries": "unknown",
-            "starter": "unknown",
-            "lineup": "unknown",
+            "starter": na,
+            "lineup": na,
             "weather": "unknown",
             "venue": "unknown",
-            "bullpen": "unknown",
+            "bullpen": na,
         },
         "source_urls": [],
         "missing": ["schedule", "form", "injuries"],
