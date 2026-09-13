@@ -373,7 +373,16 @@ def build_verified_candidate(
     elif sport.lower() in {
         "ncaaf",
         "nfl",
+        "nba",
+        "ncaab",
+        "wnba",
+        "nhl",
+        "soccer",
+        "mls",
+        "epl",
     }:
+        # Same honesty as NFL/KBO for every ESPN team-market sport: full-game
+        # markets do not require a certified depth-chart/lineup JSON feed.
         missing = [
             label
             for key, label in [

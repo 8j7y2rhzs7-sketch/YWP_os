@@ -16,6 +16,7 @@ from app.services import (
     kbo_provider,
     ncaa_provider,
     nhl_provider,
+    odds_provider,
 )
 
 logger = logging.getLogger(__name__)
@@ -174,6 +175,30 @@ def team_recent_form(
                 best = form
         except Exception as exc:  # noqa: BLE001
             logger.warning("CFBD form cascade miss: %s", exc)
+
+    # Odds completed scores (≤3 day lookback) — secondary form when ESPN/NHL/CFBD thin.
+    if team_name and sport_l in {
+        "nfl",
+        "ncaaf",
+        "nba",
+        "ncaab",
+        "wnba",
+        "nhl",
+        "soccer",
+        "mls",
+        "epl",
+        "kbo",
+    }:
+        try:
+            form = odds_provider.get_team_recent_form_from_scores(
+                sport_l, team_name, slate_date
+            )
+            if form.get("verified"):
+                return form
+            if not best or len(form.get("games") or []) > len(best.get("games") or []):
+                best = form
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Odds scores form cascade miss for %s: %s", sport_l, exc)
 
     if best is not None:
         return best

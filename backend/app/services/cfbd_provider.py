@@ -135,35 +135,17 @@ def get_team_recent_form(team_label: str, slate_date: date) -> dict[str, Any]:
     if not school:
         return _empty_form("team_unresolved")
     games = get_games(year=slate_date.year, team=school)
-    # Include prior season tail when early in the year.
-    if slate_date.month <= 2:
-        games = get_games(year=slate_date.year - 1, team=school) + games
-    completed: list[dict[str, Any]] = []
-    for game in games:
-        if not game.get("completed"):
-            continue
-        start = str(game.get("startDate") or game.get("start_date") or "")[:10]
-        if start and start >= slate_date.isoformat():
-            continue
-        home = str(game.get("homeTeam") or game.get("home_team") or "")
-        away = str(game.get("awayTeam") or game.get("away_team") or "")
-        home_points = game.get("homePoints", game.get("home_points"))
-        away_points = game.get("awayPoints", game.get("away_points"))
-        if home_points is None or away_points is None:
-            continue
-        is_home = _norm(home) == _norm(school) or school.lower() in home.lower()
-        scored = float(home_points if is_home else away_points)
-        against = float(away_points if is_home else home_points)
-        completed.append(
-            {
-                "date": start,
-                "opponent": away if is_home else home,
-                "home": is_home,
-                "score_for": scored,
-                "score_against": against,
-                "win": scored > against,
-            }
-        )
+    completed = _completed_form_games(games, school=school, slate_date=slate_date)
+    # Early season (Aug/Sep) and calendar early-year both need prior-year fill —
+    # waiting until February left September NCAAF form thin when ESPN missed.
+    if len(completed) < 5:
+        prior = get_games(year=slate_date.year - 1, team=school)
+        seen = {item["date"] for item in completed}
+        for item in _completed_form_games(prior, school=school, slate_date=slate_date):
+            if item["date"] in seen:
+                continue
+            completed.append(item)
+            seen.add(item["date"])
     completed.sort(key=lambda item: item["date"], reverse=True)
     sample = completed[:10]
     l5 = sample[:5]

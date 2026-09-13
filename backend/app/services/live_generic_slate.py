@@ -350,12 +350,13 @@ def _odds_only_research(bookmakers: list, *, home_team: str, sport: str | None =
         "kbo",
     }
     na = "n/a" if team_market else "unknown"
+    indoor = sport_l in {"nba", "ncaab", "wnba", "nhl"}
     return {
         "espn_game": None,
         "home_form": {"verified": False},
         "away_form": {"verified": False},
         "injuries": {"verified": False, "home_out": 0, "away_out": 0},
-        "weather": {"verified": False},
+        "weather": {"verified": indoor},
         "market": market,
         "flags": {
             "schedule_verified": False,
@@ -363,7 +364,7 @@ def _odds_only_research(bookmakers: list, *, home_team: str, sport: str | None =
             "l5_l10_verified": False,
             "lineup_confirmed": False,
             "injuries_verified": False,
-            "weather_verified": False,
+            "weather_verified": indoor,
             "starter_confirmed": False,
             "motivation_rotation_verified": False,
             "home_away_verified": False,
@@ -379,7 +380,8 @@ def _odds_only_research(bookmakers: list, *, home_team: str, sport: str | None =
             "injuries": "unknown",
             "starter": na,
             "lineup": na,
-            "weather": "unknown",
+            # Indoor team sports never need weather — do not inflate unknown labels.
+            "weather": ("n/a" if indoor else "unknown"),
             "venue": "unknown",
             "bullpen": na,
         },

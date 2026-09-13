@@ -6,6 +6,8 @@ Aggregates odds from Hard Rock, DraftKings, FanDuel, BetMGM, etc.
 
 from __future__ import annotations
 
+from datetime import date
+
 import logging
 import re
 from typing import Any
@@ -651,6 +653,145 @@ def get_scores(
         return []
     _odds_response_cache[cache_key] = {"fetched_at": now, "data": data}
     return data
+
+
+def get_team_recent_form_from_scores(
+    app_sport: str,
+    team_name: str,
+    slate_date: date,
+    *,
+    days_from: int = 3,
+) -> dict[str, Any]:
+    """Build thin L5-style form from Odds completed scores (max 3-day lookback).
+
+    Used as a cascade fallback when ESPN/NHL/CFBD form is unavailable. Daily
+    sports (NBA/NHL) can clear a 3-game early-season verify from this window;
+    weekly football may still need ESPN prior-season backfill.
+    """
+    empty = {
+        "verified": False,
+        "l5": {
+            "games": 0,
+            "wins": 0,
+            "losses": 0,
+            "win_pct": 0.5,
+            "avg_for": 0.0,
+            "avg_against": 0.0,
+            "totals": [],
+        },
+        "l10": {
+            "games": 0,
+            "wins": 0,
+            "losses": 0,
+            "win_pct": 0.5,
+            "avg_for": 0.0,
+            "avg_against": 0.0,
+            "totals": [],
+        },
+        "games": [],
+        "source_id": "the_odds_api_scores",
+        "detail": "No completed Odds scores in lookback for this club.",
+    }
+    odds_key = APP_SPORT_TO_ODDS_KEY.get((app_sport or "").lower())
+    if not odds_key or not team_name.strip():
+        return empty
+    try:
+        scores = get_scores(odds_key, days_from=days_from)
+    except Exception:
+        logger.exception("Odds scores form failed for %s %s", app_sport, team_name)
+        return empty
+
+    needle = _norm_team(team_name)
+    results: list[dict[str, Any]] = []
+    for event in scores or []:
+        if not event.get("completed"):
+            continue
+        home = str(event.get("home_team") or "")
+        away = str(event.get("away_team") or "")
+        if not (_soft_team_match(needle, _norm_team(home)) or _soft_team_match(needle, _norm_team(away))):
+            continue
+        commence = str(event.get("commence_time") or "")[:10]
+        if commence and commence > slate_date.isoformat():
+            continue
+        score_map = {
+            str(row.get("name") or ""): _to_float(row.get("score"))
+            for row in (event.get("scores") or [])
+            if isinstance(row, dict)
+        }
+        home_score = score_map.get(home)
+        away_score = score_map.get(away)
+        if home_score is None or away_score is None:
+            continue
+        is_home = _soft_team_match(needle, _norm_team(home))
+        scored = home_score if is_home else away_score
+        against = away_score if is_home else home_score
+        results.append(
+            {
+                "date": commence,
+                "opponent": away if is_home else home,
+                "home": is_home,
+                "score_for": scored,
+                "score_against": against,
+                "win": scored > against,
+            }
+        )
+    results.sort(key=lambda row: row.get("date") or "", reverse=True)
+    if not results:
+        return empty
+
+    def summarize(items: list[dict[str, Any]]) -> dict[str, Any]:
+        count = len(items)
+        if not count:
+            return empty["l5"]
+        wins = sum(1 for item in items if item["win"])
+        return {
+            "games": count,
+            "wins": wins,
+            "losses": count - wins,
+            "win_pct": round(wins / count, 4),
+            "avg_for": round(sum(float(item["score_for"]) for item in items) / count, 2),
+            "avg_against": round(sum(float(item["score_against"]) for item in items) / count, 2),
+            "totals": [float(item["score_for"]) + float(item["score_against"]) for item in items],
+        }
+
+    sample = results[:10]
+    l5 = sample[:5]
+    # Odds lookback is only 3 days — verify when we have 3+ (daily sports) or any
+    # 2+ sample for football so cascade can still clear early-week form.
+    sport_l = (app_sport or "").lower()
+    min_games = 2 if sport_l in {"nfl", "ncaaf"} else 3
+    verified = len(sample) >= min_games
+    return {
+        "verified": verified,
+        "l5": summarize(l5),
+        "l10": summarize(sample),
+        "games": sample,
+        "source_id": "the_odds_api_scores",
+        "source_url": "https://the-odds-api.com/",
+        "detail": f"Odds scores form from {len(sample)} completed game(s) (≤{days_from}-day lookback).",
+    }
+
+
+def _norm_team(value: str) -> str:
+    return " ".join("".join(ch if ch.isalnum() else " " for ch in value.lower()).split())
+
+
+def _soft_team_match(a: str, b: str) -> bool:
+    if not a or not b:
+        return False
+    if a == b or a in b or b in a:
+        return True
+    ta, tb = set(a.split()), set(b.split())
+    return len(ta & tb) >= 2
+
+
+def _to_float(raw: Any) -> float | None:
+    try:
+        if raw is None or raw == "":
+            return None
+        return float(raw)
+    except (TypeError, ValueError):
+        return None
 
 
 # ---------------------------------------------------------------------------

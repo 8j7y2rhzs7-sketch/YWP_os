@@ -76,12 +76,48 @@ def get_team_recent_form(
     if not abbrev:
         return _empty_form()
     season = _season_id(slate_date)
+    games = _completed_games_for_season(abbrev, season, slate_date)
+    used_prior = False
+    # Early season / offseason: current club schedule is often empty. Backfill
+    # the prior NHL season so Strict Mode is not stuck on current_form.
+    if len(games) < 5:
+        prior_season = _prior_season_id(season)
+        prior = _completed_games_for_season(abbrev, prior_season, slate_date)
+        seen = {item["date"] for item in games}
+        for item in prior:
+            if item["date"] in seen:
+                continue
+            games.append(item)
+            seen.add(item["date"])
+            used_prior = True
+    games.sort(key=lambda row: row["date"], reverse=True)
+    sample = games[:last_n]
+    l5 = sample[:5]
+    verified = len(sample) >= 5 or len(sample) >= 3
+    return {
+        "verified": verified,
+        "l5": _summarize(l5),
+        "l10": _summarize(sample),
+        "games": sample,
+        "source_id": SOURCE_ID,
+        "source_url": f"{SOURCE_API}/club-schedule-season/{abbrev}/{season}",
+        "team_abbrev": abbrev,
+        "prior_season_backfill": used_prior,
+        "detail": (
+            f"NHL form from {len(sample)} completed games"
+            + (" including prior-season backfill" if used_prior else "")
+        ),
+    }
+
+
+def _completed_games_for_season(
+    abbrev: str, season: str, slate_date: date
+) -> list[dict[str, Any]]:
     try:
         data = _get(f"{SOURCE_API}/club-schedule-season/{abbrev}/{season}", cache_ttl=300)
     except Exception as exc:  # noqa: BLE001
-        logger.warning("NHL club schedule failed for %s: %s", abbrev, exc)
-        return _empty_form()
-
+        logger.warning("NHL club schedule failed for %s %s: %s", abbrev, season, exc)
+        return []
     games: list[dict[str, Any]] = []
     for item in data.get("games") or []:
         state = str(item.get("gameState") or "")
@@ -116,18 +152,15 @@ def get_team_recent_form(
                 "win": scored > against,
             }
         )
-    games.sort(key=lambda row: row["date"], reverse=True)
-    sample = games[:last_n]
-    l5 = sample[:5]
-    return {
-        "verified": bool(sample),
-        "l5": _summarize(l5),
-        "l10": _summarize(sample),
-        "games": sample,
-        "source_id": SOURCE_ID,
-        "source_url": f"{SOURCE_API}/club-schedule-season/{abbrev}/{season}",
-        "team_abbrev": abbrev,
-    }
+    return games
+
+
+def _prior_season_id(season: str) -> str:
+    # Season labels look like 20252026 → prior is 20242025.
+    if len(season) == 8 and season.isdigit():
+        start = int(season[:4]) - 1
+        return f"{start}{start + 1}"
+    return season
 
 
 def _games_for_date(slate_date: date) -> list[dict[str, Any]]:

@@ -8,7 +8,8 @@ Strict Mode may auto-verify research only from this certified list.
 | --- | --- | --- |
 | MLB Stats API (`statsapi.mlb.com`) | Primary | Schedule, form, lineups, roster/injuries, weather, umpires, park/venue, bullpen workload |
 | MLB.com Gameday | Reference link | Human-readable official game page on candidates |
-| The Odds API | Market | Current sportsbook prices and multi-book consensus |
+| The Odds API | Market + secondary form | Current sportsbook prices/consensus; completed scores as form fallback (≤3-day lookback) when ESPN/NHL/CFBD are thin |
+| NHL Web API (`api-web.nhle.com`) | NHL primary/secondary | Schedule + L5/L10 form with prior-season backfill |
 | Open-Meteo | Secondary weather | Backup only when MLB weather is not posted |
 | YWP MLB Independent Model | Internal | Projection from official MLB facts; never from book price |
 

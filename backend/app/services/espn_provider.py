@@ -203,8 +203,19 @@ def get_team_recent_form(
         }
 
     # Prefer a full L5 when available; still verify with 3+ when a season is young
-    # but prior-season fill could not reach five.
-    verified = len(sample) >= 5 or (len(sample) >= 3 and sport.lower() in {"nfl", "ncaaf"})
+    # but prior-season fill could not reach five (all ESPN team sports, not just NFL).
+    early_season_ok = sport.lower() in {
+        "nfl",
+        "ncaaf",
+        "nba",
+        "ncaab",
+        "wnba",
+        "nhl",
+        "soccer",
+        "mls",
+        "epl",
+    }
+    verified = len(sample) >= 5 or (len(sample) >= 3 and early_season_ok)
     return {
         "verified": verified,
         "l5": summarize(l5),

@@ -58,7 +58,7 @@ def test_sport_model_prefers_form_not_coin_flip() -> None:
     assert total.win_probability >= 0.5
 
 
-def test_build_verified_candidate_stays_partial_without_lineups() -> None:
+def test_build_verified_candidate_clears_wnba_without_lineups() -> None:
     research = {
         "espn_game": {
             "home_team": "Home Club",
@@ -87,19 +87,21 @@ def test_build_verified_candidate_stays_partial_without_lineups() -> None:
             "injuries_verified": True,
             "weather_verified": True,
             "starter_confirmed": False,
-            "motivation_rotation_verified": False,
+            "motivation_rotation_verified": True,
             "home_away_verified": True,
             "market_movement_verified": True,
-            "sport_specific_sweep_complete": False,
+            "sport_specific_sweep_complete": True,
         },
         "source_status": {
             "schedule": "confirmed",
             "market": "confirmed",
             "current_form": "confirmed",
             "injuries": "confirmed",
-            "starter": "probable",
-            "lineup": "probable",
-            "weather": "confirmed",
+            "starter": "n/a",
+            "lineup": "n/a",
+            "weather": "n/a",
+            "venue": "confirmed",
+            "bullpen": "n/a",
         },
         "source_urls": ["https://example.test"],
     }
@@ -124,13 +126,13 @@ def test_build_verified_candidate_stays_partial_without_lineups() -> None:
     )
     assert candidate.probability_source == "model"
     assert candidate.lineup_confirmed is False
-    assert candidate.sport_specific_sweep_complete is False
+    assert candidate.sport_specific_sweep_complete is True
     from app.services.readiness import candidate_readiness, candidate_verification_gaps
 
-    assert candidate_readiness(candidate) == "PARTIAL"
+    assert candidate_readiness(candidate) == "VERIFIED"
     gaps = candidate_verification_gaps(candidate)
-    assert any("lineup" in gap.lower() for gap in gaps)
-    assert any("sweep" in gap.lower() or "starter" in gap.lower() for gap in gaps)
+    assert not any("lineup" in gap.lower() for gap in gaps)
+    assert not any("starter" in gap.lower() for gap in gaps)
 
 
 def test_injuries_require_both_teams_matched() -> None:
