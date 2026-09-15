@@ -104,7 +104,7 @@ const HEAVY_TIMEOUT_MS = 90_000;
 const ANALYZE_TIMEOUT_MS = 180_000;
 
 function formatApiDetail(detail: unknown, status: number): string {
-  if (typeof detail === "string" && detail.trim()) return detail;
+  if (typeof detail === "string" && detail.trim()) return detail.trim();
   if (Array.isArray(detail) && detail.length) {
     const parts = detail.map((item) => {
       if (typeof item === "string") return item;
@@ -127,9 +127,22 @@ function formatApiDetail(detail: unknown, status: number): string {
     detail &&
     typeof detail === "object" &&
     "message" in detail &&
-    typeof (detail as { message: unknown }).message === "string"
+    typeof (detail as { message: unknown }).message === "string" &&
+    (detail as { message: string }).message.trim()
   ) {
-    return (detail as { message: string }).message;
+    return (detail as { message: string }).message.trim();
+  }
+  if (status === 401) {
+    return "Session expired or not signed in — open Controls and sign in again.";
+  }
+  if (status === 403) {
+    return "Access denied — check subscription / Whop membership, then retry.";
+  }
+  if (status === 503) {
+    return "Live provider is down and demo will not be substituted. Retry in a moment.";
+  }
+  if (status === 0) {
+    return "Network request failed — check connectivity and retry.";
   }
   return `Request failed with status ${status}`;
 }

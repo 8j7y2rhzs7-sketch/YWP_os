@@ -159,7 +159,11 @@ export default function SlateScreen() {
         return;
       }
       setSlate(null);
-      setError(reason instanceof Error ? reason.message : "Slate failed to load");
+      const message =
+        reason instanceof Error && reason.message.trim()
+          ? reason.message.trim()
+          : "Slate failed to load — check sign-in and retry REFRESH RAW SLATE.";
+      setError(message);
     } finally {
       if (requestSport === sport && requestDate === date) {
         setLoadingSlate(false);
@@ -189,7 +193,11 @@ export default function SlateScreen() {
       saveAnalysis(response);
       router.push(`/analysis/${response.analysis_id}`);
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "Analysis failed");
+      setError(
+        reason instanceof Error && reason.message.trim()
+          ? reason.message.trim()
+          : "Analysis failed — reload the slate and try again.",
+      );
     } finally {
       setAnalyzing(false);
     }
@@ -337,7 +345,7 @@ export default function SlateScreen() {
         {prefetchNote ? <Text style={styles.prefetchNote}>{prefetchNote}</Text> : null}
       </MetalPanel>
 
-      {error ? <ErrorNotice message={error} /> : null}
+      {error && error.trim() ? <ErrorNotice message={error} /> : null}
       {loadingSlate ? <LoadingState label="Verifying schedule and candidates…" /> : null}
 
       {slate ? (
