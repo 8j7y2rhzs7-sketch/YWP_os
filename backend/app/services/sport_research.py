@@ -216,6 +216,15 @@ def build_event_research(
         weather_status = "unknown"
         weather_flag = False
 
+    # KBO has no certified injury JSON feed — checklist clears via policy, but
+    # the source label must stay n/a (not "confirmed") so the board is honest.
+    if sport_l == "kbo" and feed.get("policy") == "unsupported_feed_assumed_clear":
+        injuries_status = "n/a"
+    elif injuries_verified:
+        injuries_status = "confirmed"
+    else:
+        injuries_status = "unknown"
+
     return {
         "espn_game": espn_game,
         "home_form": home_form,
@@ -242,7 +251,7 @@ def build_event_research(
             "schedule": "confirmed" if schedule_verified else "unknown",
             "market": "confirmed" if market_verified else "unknown",
             "current_form": "confirmed" if form_verified else "unknown",
-            "injuries": "confirmed" if injuries_verified else "unknown",
+            "injuries": injuries_status,
             "starter": starter_status,
             "lineup": lineup_status,
             "weather": weather_status,

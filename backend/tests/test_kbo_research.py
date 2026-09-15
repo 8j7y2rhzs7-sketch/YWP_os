@@ -120,12 +120,26 @@ def test_kbo_form_from_scores(monkeypatch) -> None:
                     {"name": "Doosan Bears", "score": "5"},
                     {"name": "LG Twins", "score": "2"},
                 ],
-            }
+            },
+            {
+                "completed": True,
+                "commence_time": "2026-09-07T10:00:00Z",
+                "home_team": "Kiwoom Heroes",
+                "away_team": "Doosan Bears",
+                "scores": [
+                    {"name": "Kiwoom Heroes", "score": "3"},
+                    {"name": "Doosan Bears", "score": "4"},
+                ],
+            },
         ],
     )
     form = kbo_provider.get_team_recent_form("Doosan Bears", date(2026, 9, 9))
     assert form["verified"] is True
-    assert form["l5"]["wins"] == 1
+    assert form["l5"]["wins"] == 2
+    assert form["l5"]["games"] == 2
+
+    thin = kbo_provider.get_team_recent_form("Hanwha Eagles", date(2026, 9, 9))
+    assert thin["verified"] is False
 
 
 def test_kbo_research_can_clear_sweep(monkeypatch) -> None:
@@ -202,6 +216,7 @@ def test_kbo_research_can_clear_sweep(monkeypatch) -> None:
     assert flags["weather_verified"] is True
     assert flags["market_movement_verified"] is True
     assert flags["sport_specific_sweep_complete"] is True
+    assert research["source_status"]["injuries"] == "n/a"
     assert research["source_status"]["bullpen"] == "n/a"
     assert research["source_status"]["starter"] == "n/a"
     assert research["source_status"]["lineup"] == "n/a"
@@ -226,3 +241,13 @@ def test_kbo_research_can_clear_sweep(monkeypatch) -> None:
         research=research,
     )
     assert readiness.candidate_readiness(candidate) == "VERIFIED"
+
+
+def test_empty_live_slate_is_partial_not_demo() -> None:
+    assert readiness.slate_readiness([]) == "PARTIAL"
+
+
+def test_kbo_korea_date_helper_matches_schedule() -> None:
+    from datetime import timezone as tz
+    start = datetime(2026, 9, 15, 9, 0, tzinfo=tz.utc)  # morning UTC = Korea afternoon same day
+    assert kbo_provider._korea_date(start) == date(2026, 9, 15)

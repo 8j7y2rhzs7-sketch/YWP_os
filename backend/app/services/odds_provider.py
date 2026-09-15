@@ -85,12 +85,16 @@ SOCCER_MAX_LEAGUES_PER_FETCH = 10
 # US-only regions often under-cover European soccer vs Hard Rock / DK.
 # us+uk keeps Hard Rock while picking up EPL/UCL books (credits = markets×2).
 SOCCER_ODDS_REGIONS = "us,uk"
+# KBO books are thin on US-only; eu/uk often carry baseball_kbo prices.
+KBO_ODDS_REGIONS = "us,eu,uk"
 
 
 def soccer_odds_regions(app_sport: str | None = None) -> str:
     key = (app_sport or "").strip().lower()
     if key in {"soccer", "epl", "mls"}:
         return SOCCER_ODDS_REGIONS
+    if key == "kbo":
+        return KBO_ODDS_REGIONS
     return "us"
 
 def soccer_league_label(odds_key: str) -> str:

@@ -87,6 +87,11 @@ class DecisionEngine:
         confidence_penalty = 0.0
 
         readiness = candidate_readiness(candidate)
+        if readiness == "DEMO" or candidate.probability_source == "demo":
+            hard_skip_reasons.append(
+                "Official play blocked: demo/synthetic probability is not live evidence."
+            )
+            reasons.append("DEMO_DATA")
         if readiness == "PARTIAL":
             gaps = candidate_verification_gaps(candidate)
             hard_skip_reasons.append(

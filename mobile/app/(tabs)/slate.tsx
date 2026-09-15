@@ -347,13 +347,24 @@ export default function SlateScreen() {
               <Text style={styles.noticeTitle}>
                 {slateReadiness(slate) === "VERIFIED"
                   ? "LIVE VERIFIED"
-                  : slateReadiness(slate) === "PARTIAL"
-                    ? "LIVE — RESEARCH INCOMPLETE"
-                    : "DEMO DATA"}
+                  : slate.mode === "demo" || slateReadiness(slate) === "DEMO"
+                    ? "DEMO DATA"
+                    : slate.candidates.length === 0
+                      ? sport === "kbo"
+                        ? "LIVE — NO KBO EVENTS (TRY KOREA DATE)"
+                        : "LIVE — NO EVENTS FOR THIS DATE"
+                      : "LIVE — RESEARCH INCOMPLETE"}
               </Text>
               <StatusPill value={slateReadiness(slate) === "VERIFIED" ? "LOCKED" : "WARNING"} />
             </View>
-            {slateReadiness(slate) === "PARTIAL" ? (
+            {slate.candidates.length === 0 && slate.mode !== "demo" ? (
+              <Text style={styles.verificationWarning}>
+                {sport === "kbo"
+                  ? "KBO uses Korea (Asia/Seoul) calendar dates. If your phone is on a US date, step forward/back a day — empty is not demo mode."
+                  : "No priced events for this date. This is a live empty board, not demo data."}
+              </Text>
+            ) : null}
+            {slateReadiness(slate) === "PARTIAL" && slate.candidates.length > 0 ? (
               <Text style={styles.verificationWarning}>
                 {slate.verification_summary?.partial_count ?? slate.candidates.length}{" "}
                 candidate(s) are missing required verification. The engine will calculate

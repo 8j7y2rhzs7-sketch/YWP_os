@@ -119,11 +119,19 @@ def _slate_response(
     notice: str,
     candidates: list,
 ) -> SlateResponse:
+    # DEMO only when mode is demo (or candidates are demo-sourced). Empty live
+    # boards are PARTIAL so KBO/US-date misses never show as "DEMO DATA".
+    if mode == "demo":
+        readiness = "DEMO"
+    else:
+        readiness = slate_readiness(candidates)
+        if not candidates and readiness == "DEMO":
+            readiness = "PARTIAL"
     return SlateResponse(
         sport=sport,
         date=slate_date,
         mode=mode,
-        readiness=slate_readiness(candidates),
+        readiness=readiness,
         notice=notice,
         verification_summary=verification_summary(candidates),
         candidates=candidates,
@@ -143,13 +151,17 @@ def _owned_recommendation(db: DB, recommendation_id: str, user_id: str) -> Recom
 
 
 def _candidate_event_local_date(
-    candidate: CandidateInput, *, timezone_name: str = "America/New_York"
+    candidate: CandidateInput, *, timezone_name: str | None = None
 ) -> date:
     start = candidate.start_time
     if start.tzinfo is None:
         start = start.replace(tzinfo=UTC)
+    sport_l = (candidate.sport or "").lower()
+    zone_name = timezone_name or (
+        "Asia/Seoul" if sport_l == "kbo" else "America/New_York"
+    )
     try:
-        zone = ZoneInfo(timezone_name)
+        zone = ZoneInfo(zone_name)
     except Exception:  # noqa: BLE001
         zone = ZoneInfo("America/New_York")
     return start.astimezone(zone).date()
@@ -167,6 +179,11 @@ def _assert_candidates_match_slate_date(payload: SportsAnalyzeRequest) -> None:
             detail=(
                 "Candidate events do not match the requested slate date. "
                 "Reload the slate for that date before analyzing."
+                + (
+                    " KBO uses Korea (Asia/Seoul) calendar dates."
+                    if payload.sport.lower() == "kbo"
+                    else ""
+                )
             ),
         )
 

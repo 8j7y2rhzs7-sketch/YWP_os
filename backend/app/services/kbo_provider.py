@@ -58,10 +58,9 @@ def match_odds_event_to_kbo(
         start = _parse_start(event.get("commence_time"))
         if start is None:
             continue
-        # Accept Korea-local or US-local calendar match (KBO often spans both).
+        # Require UTC or Korea-local calendar match — do not accept arbitrary dates.
         if start.astimezone(timezone.utc).date() != slate_date and _korea_date(start) != slate_date:
-            # Still allow exact team match even if date helper drifts — Odds event is truth.
-            pass
+            continue
         city = KBO_TEAM_CITY.get(ev_home) or KBO_TEAM_CITY.get(home_l) or "Seoul"
         return {
             "event_id": str(event.get("id") or ""),
@@ -139,14 +138,21 @@ def get_team_recent_form(team_name: str, slate_date: date) -> dict[str, Any]:
         return empty
     l5 = _bucket(results[:5])
     l10 = _bucket(results[:10])
+    # Odds daysFrom max is 3 — require at least 2 completed scores before claiming
+    # form verified (1-game "L5" was clearing Strict Mode dishonestly).
+    verified = len(results) >= 2
     return {
-        "verified": True,
+        "verified": verified,
         "l5": l5,
         "l10": l10,
         "games": results[:10],
         "source_id": SOURCE_ID,
         "source_url": "https://the-odds-api.com/",
-        "detail": f"Form from {len(results)} completed Odds score(s) (≤3-day lookback).",
+        "detail": (
+            f"Form from {len(results)} completed Odds score(s) (≤3-day lookback)"
+            + ("" if verified else " — need ≥2 for verify")
+            + "."
+        ),
     }
 
 

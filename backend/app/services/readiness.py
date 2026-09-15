@@ -124,7 +124,12 @@ def candidate_readiness(candidate: CandidateInput) -> Readiness:
 
 def slate_readiness(candidates: list[CandidateInput]) -> Readiness:
     states = [candidate_readiness(candidate) for candidate in candidates]
-    if not states or all(state == "DEMO" for state in states):
+    # Empty live slate is NOT demo data — it means no priced events for the
+    # selected date (common for KBO on US-local calendars). Reserve DEMO for
+    # actual demo/synthetic probability sources.
+    if not states:
+        return "PARTIAL"
+    if all(state == "DEMO" for state in states):
         return "DEMO"
     return "VERIFIED" if all(state == "VERIFIED" for state in states) else "PARTIAL"
 
