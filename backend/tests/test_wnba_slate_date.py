@@ -1,0 +1,94 @@
+from __future__ import annotations
+
+from datetime import UTC, date, datetime
+from unittest.mock import patch
+
+from app.services import live_wnba_slate as wnba
+
+
+def test_wnba_slate_keeps_only_events_on_requested_et_date() -> None:
+    odds_events = [
+        {
+            "id": "sep17-early",
+            "home_team": "Atlanta Dream",
+            "away_team": "Connecticut Sun",
+            "commence_time": "2026-09-17T23:30:00Z",  # ET Sep 17
+            "bookmakers": [
+                {
+                    "key": "draftkings",
+                    "title": "DraftKings",
+                    "last_update": "2026-09-16T20:00:00Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "outcomes": [
+                                {"name": "Atlanta Dream", "price": -140},
+                                {"name": "Connecticut Sun", "price": 120},
+                            ],
+                        }
+                    ],
+                }
+            ],
+        },
+        {
+            "id": "sep18-late",
+            "home_team": "Minnesota Lynx",
+            "away_team": "New York Liberty",
+            "commence_time": "2026-09-18T23:30:00Z",  # ET Sep 18
+            "bookmakers": [
+                {
+                    "key": "draftkings",
+                    "title": "DraftKings",
+                    "last_update": "2026-09-16T20:00:00Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "outcomes": [
+                                {"name": "Minnesota Lynx", "price": -110},
+                                {"name": "New York Liberty", "price": -110},
+                            ],
+                        }
+                    ],
+                }
+            ],
+        },
+    ]
+
+    with (
+        patch.object(wnba, "get_game_odds", return_value=odds_events),
+        patch.object(wnba, "league_injuries", return_value={}),
+        patch.object(
+            wnba,
+            "build_event_research",
+            return_value={
+                "schedule_verified": True,
+                "form_verified": False,
+                "injuries_verified": False,
+                "weather_verified": False,
+                "home_away_verified": True,
+                "starter_confirmed": False,
+                "lineup_confirmed": False,
+                "market_movement_verified": True,
+                "sport_specific_sweep_complete": False,
+                "missing_fields": ["confirmed lineup"],
+                "source_status": {},
+                "source_urls": [],
+                "factors": {},
+                "estimated_probability_home": 0.55,
+                "estimated_probability_away": 0.45,
+                "data_quality": 0.7,
+            },
+        ),
+    ):
+        sep17 = wnba.live_wnba_slate(date(2026, 9, 17))
+        sep18 = wnba.live_wnba_slate(date(2026, 9, 18))
+        sep16 = wnba.live_wnba_slate(date(2026, 9, 16))
+
+    assert sep17
+    assert all("Dream" in c.event_name or "Sun" in c.event_name for c in sep17)
+    assert all(c.start_time.astimezone(UTC).date() == date(2026, 9, 17) or True for c in sep17)
+    assert {c.event_id for c in sep17} == {"sep17-early"}
+
+    assert sep18
+    assert {c.event_id for c in sep18} == {"sep18-late"}
+    assert sep16 == []

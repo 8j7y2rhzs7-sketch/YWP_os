@@ -6,6 +6,7 @@ from __future__ import annotations
 import logging
 from datetime import UTC, date, datetime
 from decimal import Decimal
+from zoneinfo import ZoneInfo
 
 from app.schemas import CandidateInput
 from app.services.facts_cascade import league_injuries
@@ -31,14 +32,21 @@ def live_wnba_slate(slate_date: date) -> list[CandidateInput]:
     injury_feed = league_injuries("wnba")
     candidates: list[CandidateInput] = []
     now = datetime.now(UTC)
+    matched_events = 0
 
     for event in odds_events:
+        start_time = _parse_start(event.get("commence_time"), slate_date)
+        # Same gate as /sports/analyze: America/New_York calendar date (or UTC match).
+        if start_time.astimezone(UTC).date() != slate_date and _event_local_date(
+            start_time
+        ) != slate_date:
+            continue
+        matched_events += 1
         event_id = event.get("id", "")
         home = event.get("home_team", "")
         away = event.get("away_team", "")
         event_name = f"{away} @ {home}"
         bookmakers = event.get("bookmakers", [])
-        start_time = _parse_start(event.get("commence_time"), slate_date)
         research = build_event_research(
             sport="wnba",
             slate_date=slate_date,
@@ -136,7 +144,12 @@ def live_wnba_slate(slate_date: date) -> list[CandidateInput]:
                 )
             )
 
-    logger.info("Built %d live WNBA candidates for %s", len(candidates), slate_date)
+    logger.info(
+        "Built %d live WNBA candidates from %d date-matched events for %s",
+        len(candidates),
+        matched_events,
+        slate_date,
+    )
     return candidates
 
 
