@@ -65,7 +65,7 @@ from app.services.protocols import run_protocol_health_check
 from app.services.providers import demo_slate
 from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate, upcoming_odds_dates
 from app.services.live_mlb_slate import live_mlb_slate, props_slate_notice
-from app.services.live_wnba_slate import live_wnba_slate
+from app.services.live_wnba_slate import live_wnba_slate, upcoming_wnba_dates
 from app.services.market_board import build_market_board
 from app.services.odds_provider import (
     app_sport_in_season,
@@ -290,6 +290,23 @@ def slate(
                     ),
                     candidates=candidates,
                 )
+            nearby = upcoming_wnba_dates()
+            notice = (
+                f"No WNBA Odds events on {slate_date.isoformat()} (America/New_York). "
+                + (
+                    f"Nearest dates with prices: {', '.join(nearby)}. "
+                    if nearby
+                    else "No priced WNBA events in the current Odds upcoming feed. "
+                )
+                + "Change the slate date and refresh — demo data is not substituted."
+            )
+            return _slate_response(
+                sport=sport_lower,
+                slate_date=slate_date,
+                mode="live",
+                notice=notice,
+                candidates=[],
+            )
         except Exception:
             logger.exception("Live WNBA slate failed")
 

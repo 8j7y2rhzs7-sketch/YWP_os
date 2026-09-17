@@ -92,3 +92,29 @@ def test_wnba_slate_keeps_only_events_on_requested_et_date() -> None:
     assert sep18
     assert {c.event_id for c in sep18} == {"sep18-late"}
     assert sep16 == []
+
+
+def test_event_local_date_uses_america_new_york() -> None:
+    start = datetime(2026, 9, 18, 2, 0, tzinfo=UTC)  # Sep 17 evening ET
+    assert wnba._event_local_date(start) == date(2026, 9, 17)
+
+
+def test_upcoming_wnba_dates_lists_et_calendar_days() -> None:
+    odds_events = [
+        {
+            "id": "a",
+            "commence_time": "2026-09-17T23:30:00Z",
+            "home_team": "A",
+            "away_team": "B",
+            "bookmakers": [],
+        },
+        {
+            "id": "b",
+            "commence_time": "2026-09-18T23:30:00Z",
+            "home_team": "C",
+            "away_team": "D",
+            "bookmakers": [],
+        },
+    ]
+    with patch.object(wnba, "get_game_odds", return_value=odds_events):
+        assert wnba.upcoming_wnba_dates() == ["2026-09-17", "2026-09-18"]

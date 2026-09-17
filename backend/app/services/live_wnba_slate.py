@@ -153,6 +153,30 @@ def live_wnba_slate(slate_date: date) -> list[CandidateInput]:
     return candidates
 
 
+def upcoming_wnba_dates(*, limit: int = 5) -> list[str]:
+    """Nearest America/New_York slate dates that currently have WNBA Odds events."""
+    try:
+        odds_events = get_game_odds(sport=SPORT_KEY, markets="h2h,spreads,totals")
+    except Exception:
+        logger.exception("Failed to fetch WNBA odds for upcoming dates")
+        return []
+    dates: list[str] = []
+    for event in odds_events or []:
+        start = _parse_start(event.get("commence_time"), date.today())
+        stamp = _event_local_date(start).isoformat()
+        if stamp not in dates:
+            dates.append(stamp)
+        if len(dates) >= limit:
+            break
+    return sorted(dates)[:limit]
+
+
+def _event_local_date(start_time: datetime) -> date:
+    if start_time.tzinfo is None:
+        start_time = start_time.replace(tzinfo=UTC)
+    return start_time.astimezone(ZoneInfo("America/New_York")).date()
+
+
 def _parse_start(commence_time: str | None, slate_date: date) -> datetime:
     if commence_time:
         try:
