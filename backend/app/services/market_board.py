@@ -758,6 +758,14 @@ def _prop_market_meta(market_key: str, *, is_over: bool) -> tuple[str, str, bool
         "player_pass_longest_completion": ("player_longest_pass", "longest completion"),
         "player_reception_longest": ("player_longest_rec", "longest reception"),
         "player_rush_longest": ("player_longest_rush", "longest rush"),
+        # Basketball (NBA / WNBA)
+        "player_points_rebounds_assists": ("player_pra", "pts+reb+ast"),
+        "player_points": ("player_points", "points"),
+        "player_rebounds": ("player_rebounds", "rebounds"),
+        "player_assists": ("player_assists", "assists"),
+        "player_threes": ("player_threes", "threes"),
+        "player_blocks": ("player_blocks", "blocks"),
+        "player_steals": ("player_steals", "steals"),
     }
     suffix = "over" if is_over else "under"
     if key in labels:

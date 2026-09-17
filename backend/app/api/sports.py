@@ -285,8 +285,9 @@ def slate(
                     slate_date=slate_date,
                     mode="live",
                     notice=(
-                        "Live WNBA data from The Odds API. "
-                        "Player props and L5/L10 stats require manual verification."
+                        "Live WNBA from The Odds API: full-game markets plus player "
+                        "props (points/rebounds/assists/threes/PRA) for a credit-capped "
+                        "set of tip-offs. Prop research stays PARTIAL until player L5 clears."
                     ),
                     candidates=candidates,
                 )
