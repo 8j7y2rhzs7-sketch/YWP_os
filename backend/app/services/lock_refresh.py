@@ -295,22 +295,10 @@ def _odds_price_fields(
     selection = recommendation.selection or ""
     notes: list[str] = []
 
-    if "pitcher" in market_type or "strikeout" in market_type:
-        props = get_player_props(event_id, sport=sport_key)
-        if not props:
-            return None, False, ["Pitcher prop market could not be refreshed."]
-        bookmakers = props.get("bookmakers") or []
-        player_name = re.sub(
-            r"\s+(Over|Under)\b.*$", "", selection, flags=re.IGNORECASE
-        ).strip()
-        direction = "Over" if "under" not in selection.casefold() else "Under"
-        offer = extract_player_prop(
-            bookmakers, "pitcher_strikeouts", player_name, outcome_name=direction
+    if _is_player_prop_market(market_type):
+        return _player_prop_price_fields(
+            recommendation, sport_key=sport_key, event_id=event_id
         )
-        if not offer:
-            return None, False, [f"No current pitcher strikeout offer for {selection}."]
-        notes.append(f"Price refreshed from {offer.get('book')}.")
-        return int(offer["american_odds"]), True, notes
 
     event = get_event_odds(event_id, sport=sport_key)
     if not event:
@@ -344,3 +332,128 @@ def _odds_price_fields(
         return None, False, [f"No current sportsbook offer matching {selection}."]
     notes.append(f"Price refreshed from {offer.get('book')}.")
     return int(offer["american_odds"]), True, notes
+
+
+_PLAYER_PROP_MARKET_ALIASES = {
+    "player_pra": "player_points_rebounds_assists",
+    "player_pr": "player_points_rebounds",
+    "player_pa": "player_points_assists",
+    "player_ra": "player_rebounds_assists",
+    "player_kick_pts": "player_kicking_points",
+    "player_fg": "player_field_goals",
+    "player_pass_comp": "player_pass_completions",
+    "player_pass_att": "player_pass_attempts",
+    "player_pass_int": "player_pass_interceptions",
+    "player_rush_att": "player_rush_attempts",
+    "player_rec_yds": "player_reception_yds",
+    "player_rec_tds": "player_reception_tds",
+}
+
+
+def _is_player_prop_market(market_type: str) -> bool:
+    mt = (market_type or "").lower()
+    return (
+        mt.startswith("player_")
+        or mt.startswith("batter_")
+        or mt.startswith("pitcher_")
+        or "strikeout" in mt
+    )
+
+
+def _odds_api_player_market_key(market_type: str) -> str:
+    mt = (market_type or "").lower().strip()
+    for suffix in ("_over", "_under", "_yes", "_no"):
+        if mt.endswith(suffix):
+            mt = mt[: -len(suffix)]
+            break
+    return _PLAYER_PROP_MARKET_ALIASES.get(mt, mt)
+
+
+def _player_prop_selection_parts(
+    selection: str, market_type: str
+) -> tuple[str, str, bool]:
+    """Return (player_name, outcome_name, require_point)."""
+    mt = (market_type or "").lower()
+    binary = mt.endswith(("_yes", "_no")) or any(
+        token in mt
+        for token in (
+            "double_double",
+            "triple_double",
+            "anytime_td",
+            "first_td",
+            "1st_td",
+        )
+    )
+    if binary:
+        player = re.sub(
+            r"\s+(Double Double|Triple Double|Anytime TD|First TD|Yes|No)\s*$",
+            "",
+            selection,
+            flags=re.IGNORECASE,
+        ).strip()
+        outcome = "No" if mt.endswith("_no") or re.search(r"\bNo\b", selection) else "Yes"
+        return player, outcome, False
+    player = re.sub(
+        r"\s+(Over|Under)\b.*$", "", selection, flags=re.IGNORECASE
+    ).strip()
+    outcome = "Under" if re.search(r"\bUnder\b", selection, flags=re.IGNORECASE) else "Over"
+    return player, outcome, True
+
+
+def _player_prop_price_fields(
+    recommendation: Recommendation, *, sport_key: str, event_id: str
+) -> tuple[int | None, bool, list[str]]:
+    market_type = (recommendation.market_type or "").lower()
+    selection = recommendation.selection or ""
+    odds_market = _odds_api_player_market_key(market_type)
+    if not odds_market:
+        return None, False, [f"Unsupported player prop market {market_type}."]
+
+    props = get_player_props(event_id, sport=sport_key, markets=odds_market)
+    if not props:
+        return None, False, [f"Player prop market could not be refreshed ({odds_market})."]
+    bookmakers = props.get("bookmakers") or []
+    if not bookmakers:
+        return None, False, [f"No current bookmaker offers for {odds_market}."]
+
+    player_name, outcome_name, require_point = _player_prop_selection_parts(
+        selection, market_type
+    )
+    target_point: float | None = None
+    if require_point and recommendation.line is not None:
+        target_point = float(Decimal(str(recommendation.line)))
+
+    offer = extract_player_prop(
+        bookmakers,
+        odds_market,
+        player_name,
+        outcome_name=outcome_name,
+        require_point=require_point,
+        target_point=target_point,
+    )
+    if not offer and target_point is not None:
+        # Line may have moved — surface the move instead of a silent miss.
+        moved = extract_player_prop(
+            bookmakers,
+            odds_market,
+            player_name,
+            outcome_name=outcome_name,
+            require_point=True,
+            target_point=None,
+        )
+        if moved and moved.get("point") is not None:
+            return (
+                int(moved["american_odds"]),
+                False,
+                [
+                    f"Prop line moved from {recommendation.line} to {moved.get('point')}.",
+                    f"Price seen at {moved.get('book')}.",
+                ],
+            )
+    if not offer:
+        return None, False, [f"No current sportsbook offer matching {selection}."]
+    return (
+        int(offer["american_odds"]),
+        True,
+        [f"Price refreshed from {offer.get('book')}."],
+    )

@@ -922,6 +922,9 @@ def extract_player_prop(
     player_name: str,
     outcome_name: str = "Over",
     preferred_books: list[str] | None = None,
+    *,
+    require_point: bool = True,
+    target_point: float | None = None,
 ) -> dict[str, Any] | None:
     """Return a real player-prop line; never manufacture a line or price.
 
@@ -946,7 +949,15 @@ def extract_player_prop(
                     continue
                 point = outcome.get("point")
                 price = outcome.get("price")
-                if point is None or not isinstance(price, int):
+                if require_point and point is None:
+                    continue
+                if not isinstance(price, int) or isinstance(price, bool):
+                    continue
+                if (
+                    target_point is not None
+                    and point is not None
+                    and abs(float(point) - float(target_point)) > 0.01
+                ):
                     continue
                 candidates.append(
                     {

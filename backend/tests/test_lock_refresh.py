@@ -299,3 +299,105 @@ def test_run_lock_check_empty_updates_uses_server_refresh(db_session=None) -> No
         for note in leg.get("changes_detected", [])
     )
     session.close()
+
+
+def test_wnba_points_prop_lock_refresh_uses_player_props_endpoint() -> None:
+    rec = _recommendation(
+        id="rec-wnba-pts",
+        sport="wnba",
+        selection="Georgia Amoore Over 8.5 points",
+        market_type="player_points_over",
+        line=Decimal("8.5"),
+        event_id="wnba-event-1",
+        data_source="THE_ODDS_API+ESPN_PLAYER_PROP_MODEL",
+    )
+    props_payload = {
+        "bookmakers": [
+            {
+                "key": "draftkings",
+                "markets": [
+                    {
+                        "key": "player_points",
+                        "outcomes": [
+                            {
+                                "name": "Over",
+                                "description": "Georgia Amoore",
+                                "price": -115,
+                                "point": 8.5,
+                            },
+                            {
+                                "name": "Under",
+                                "description": "Georgia Amoore",
+                                "price": -105,
+                                "point": 8.5,
+                            },
+                        ],
+                    }
+                ],
+            }
+        ]
+    }
+    with (
+        patch("app.services.lock_refresh.odds_api_configured", return_value=True),
+        patch(
+            "app.services.lock_refresh.get_player_props",
+            return_value=props_payload,
+        ) as props_mock,
+        patch(
+            "app.services.lock_refresh.get_event_odds",
+            side_effect=AssertionError("event odds must not be used for player props"),
+        ),
+    ):
+        update = fetch_recommendation_lock_update(rec)
+    assert update is not None
+    assert update.market_available is True
+    assert update.market_status == "OPEN"
+    assert update.current_odds == -115
+    props_mock.assert_called()
+    assert props_mock.call_args.kwargs.get("markets") == "player_points" or (
+        len(props_mock.call_args.args) >= 1
+    )
+
+
+def test_wnba_double_double_lock_refresh_allows_yes_no_without_point() -> None:
+    rec = _recommendation(
+        id="rec-wnba-dd",
+        sport="wnba",
+        selection="Kiki Iriafen Double Double",
+        market_type="player_double_double_yes",
+        line=None,
+        event_id="wnba-event-2",
+        data_source="THE_ODDS_API+ESPN_PLAYER_PROP_MODEL",
+    )
+    props_payload = {
+        "bookmakers": [
+            {
+                "key": "fanduel",
+                "markets": [
+                    {
+                        "key": "player_double_double",
+                        "outcomes": [
+                            {
+                                "name": "Yes",
+                                "description": "Kiki Iriafen",
+                                "price": 240,
+                                "point": None,
+                            }
+                        ],
+                    }
+                ],
+            }
+        ]
+    }
+    with (
+        patch("app.services.lock_refresh.odds_api_configured", return_value=True),
+        patch(
+            "app.services.lock_refresh.get_player_props",
+            return_value=props_payload,
+        ),
+    ):
+        update = fetch_recommendation_lock_update(rec)
+    assert update is not None
+    assert update.market_available is True
+    assert update.current_odds == 240
+    assert update.market_status == "OPEN"
