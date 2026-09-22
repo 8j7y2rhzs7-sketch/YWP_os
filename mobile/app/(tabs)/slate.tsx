@@ -186,7 +186,6 @@ export default function SlateScreen() {
 
   async function warmResearch(
     base: SlateResponse,
-    *,
     epoch: number,
   ): Promise<SlateResponse | null> {
     const sportKey = base.sport.toLowerCase();
@@ -282,7 +281,7 @@ export default function SlateScreen() {
       saveSlate(response);
       setLoadingSlate(false);
       // Auto-warm so gold LAUNCH means research finished — not a rushed grade.
-      void warmResearch(response, { epoch });
+      void warmResearch(response, epoch);
     } catch (reason) {
       if (requestSport !== sport || requestDate !== date) {
         return;
