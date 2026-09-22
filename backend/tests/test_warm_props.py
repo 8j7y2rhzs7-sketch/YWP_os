@@ -84,8 +84,33 @@ def test_warm_props_upgrades_and_reports_coverage(client, auth_headers) -> None:
     assert body["prop_modeled"] == 1
     assert body["prop_pending"] == 2
     assert body["enriched_this_pass"] == 1
+    # Zero early-exit on partial progress — client keeps looping.
     assert body["ready"] is False
     assert body["candidates"][0]["probability_source"] == "model"
+
+
+def test_warm_props_not_ready_on_zero_gain(client, auth_headers) -> None:
+    pending = [_prop(i) for i in range(2)]
+
+    with patch(
+        "app.services.player_prop_research.enrich_player_prop_candidates",
+        side_effect=lambda rows, slate_date=None, budget_seconds=14.0: rows,
+    ):
+        response = client.post(
+            "/api/v1/sports/warm-props",
+            json={
+                "sport": "wnba",
+                "date": "2026-09-22",
+                "candidates": pending,
+                "budget_seconds": 18,
+            },
+            headers=auth_headers,
+        )
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["enriched_this_pass"] == 0
+    assert body["ready"] is False
+    assert body["prop_pending"] == 2
 
 
 def test_warm_props_ready_when_no_pending(client, auth_headers) -> None:

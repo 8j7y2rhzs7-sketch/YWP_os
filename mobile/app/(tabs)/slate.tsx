@@ -33,7 +33,9 @@ import type {
 const CANDIDATE_PAGE = 20;
 const PROP_SPORTS = new Set(["wnba", "nba", "nfl", "ncaaf"]);
 /** Chunked warm passes — each stays under Render's ~30s proxy. */
-const MAX_WARM_ROUNDS = 8;
+const MAX_WARM_ROUNDS = 14;
+/** Stop only after this many consecutive zero-gain passes. */
+const STALL_ROUNDS_TO_ARM = 3;
 
 function slateReadiness(slate: SlateResponse): Readiness {
   return slate.readiness ?? (slate.mode === "demo" ? "DEMO" : "PARTIAL");
@@ -203,47 +205,100 @@ export default function SlateScreen() {
     }
     let candidates = base.candidates;
     let latest = base;
+    let stallRounds = 0;
+    let errors = 0;
     try {
       for (let round = 0; round < MAX_WARM_ROUNDS; round += 1) {
         if (epoch !== warmEpoch.current) return null;
-        if (pendingPropCount(candidates) <= 0) break;
+        const pendingBefore = pendingPropCount(candidates);
+        if (pendingBefore <= 0) break;
         setResearchNote(
           `Researching props… pass ${round + 1}/${MAX_WARM_ROUNDS}`,
         );
-        const warm = await request<PropWarmResponse>("/sports/warm-props", {
-          method: "POST",
-          body: JSON.stringify({
-            sport: base.sport,
-            date: base.date,
-            candidates,
-            budget_seconds: 18,
-          }),
-        });
+        // Only ship pending market_implied props — much smaller body, less 502 risk.
+        const pendingOnly = candidates.filter(
+          (row) =>
+            String(row.market_type || "").startsWith("player_") &&
+            row.probability_source === "market_implied",
+        );
+        let warm: PropWarmResponse;
+        try {
+          warm = await request<PropWarmResponse>("/sports/warm-props", {
+            method: "POST",
+            body: JSON.stringify({
+              sport: base.sport,
+              date: base.date,
+              candidates: pendingOnly,
+              budget_seconds: 18,
+            }),
+          });
+          errors = 0;
+        } catch (reason) {
+          errors += 1;
+          if (epoch !== warmEpoch.current) return null;
+          setResearchNote(
+            reason instanceof Error && reason.message.trim()
+              ? `Research retry ${errors}/3 — ${reason.message.trim()}`
+              : `Research retry ${errors}/3…`,
+          );
+          if (errors >= 3) break;
+          await new Promise((resolve) => setTimeout(resolve, 1500));
+          continue;
+        }
         if (epoch !== warmEpoch.current) return null;
-        candidates = warm.candidates;
+        const upgradedById = new Map(
+          warm.candidates.map((row) => [row.candidate_id, row] as const),
+        );
+        candidates = candidates.map((row) => upgradedById.get(row.candidate_id) ?? row);
         latest = { ...base, candidates };
         setSlate(latest);
         saveSlate(latest);
-        setResearchNote(
-          `${warm.prop_modeled}/${warm.prop_total} modeled (${Math.round(warm.coverage_pct)}%)`,
-        );
-        if (warm.ready) break;
+        const pendingAfter = pendingPropCount(candidates);
+        const modeled = candidates.filter(
+          (row) =>
+            String(row.market_type || "").startsWith("player_") &&
+            (row.probability_source === "model" ||
+              row.probability_source === "manual_verified"),
+        ).length;
+        const propTotal = candidates.filter((row) =>
+          String(row.market_type || "").startsWith("player_"),
+        ).length;
+        const coverage =
+          propTotal > 0 ? Math.round((modeled / propTotal) * 100) : 100;
+        setResearchNote(`${modeled}/${propTotal} modeled (${coverage}%)`);
+        if (pendingAfter <= 0 || coverage >= 92) {
+          break;
+        }
+        if (warm.enriched_this_pass <= 0 && pendingAfter >= pendingBefore) {
+          stallRounds += 1;
+          setResearchNote(
+            `${modeled}/${propTotal} modeled — stall ${stallRounds}/${STALL_ROUNDS_TO_ARM}`,
+          );
+          if (stallRounds >= STALL_ROUNDS_TO_ARM) break;
+        } else {
+          stallRounds = 0;
+        }
       }
       if (epoch === warmEpoch.current) {
+        const stillPending = pendingPropCount(candidates);
         setLaunchArmed(true);
-        setResearchNote("Research ready — LAUNCH is gold. Tap to grade.");
         setWarming(false);
+        setResearchNote(
+          stillPending > 0
+            ? `Research armed — ${stillPending} props still sportsbook-only (will SKIP). Gold = grade.`
+            : "Research ready — LAUNCH is gold. Tap to grade.",
+        );
       }
       return latest;
     } catch (reason) {
       if (epoch === warmEpoch.current) {
         setWarming(false);
-        // Fail open to armed so the user can still grade fail-closed SKIPs.
-        setLaunchArmed(true);
+        // Stay blue — user can tap WAIT/WARM to resume instead of Refresh.
+        setLaunchArmed(false);
         setResearchNote(
           reason instanceof Error && reason.message.trim()
-            ? `Research paused: ${reason.message.trim()}`
-            : "Research paused — LAUNCH will grade what is modeled.",
+            ? `Research paused — tap blue WARM to continue. ${reason.message.trim()}`
+            : "Research paused — tap blue WARM to continue.",
         );
       }
       return latest;
@@ -302,12 +357,18 @@ export default function SlateScreen() {
       setError("Slate is out of date — reload before analyzing.");
       return;
     }
-    if (warming || !launchArmed) {
-      setError(null);
+    // Blue button = keep researching (no need to hit Refresh).
+    if (warming) {
       setResearchNote(
-        researchNote ??
-          "Still warming research — wait for the button to turn gold.",
+        researchNote ?? "Still warming research — wait for gold.",
       );
+      return;
+    }
+    if (!launchArmed) {
+      const epoch = warmEpoch.current;
+      setError(null);
+      setResearchNote("Continuing research…");
+      await warmResearch(slate, epoch);
       return;
     }
     setAnalyzing(true);

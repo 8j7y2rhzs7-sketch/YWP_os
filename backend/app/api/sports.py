@@ -178,9 +178,10 @@ def warm_props(payload: PropWarmRequest, _: SubscribedUser) -> PropWarmResponse:
     )
     total, modeled, pending, coverage = _prop_research_stats(enriched)
     gained = max(0, modeled - before_modeled)
-    # Ready when nearly all props have an independent model, or this pass made
-    # no progress (ESPN misses / unresolvable names) so we stop spinning.
-    ready = pending <= 0 or coverage >= 88.0 or (gained == 0 and before_pending > 0)
+    # Only "ready" when coverage is high or nothing left. Never stop after a
+    # single zero-gain pass — ESPN lookups often spend a slice with no upgrades
+    # before the next pass finds models. The client decides when to stall-out.
+    ready = pending <= 0 or coverage >= 92.0
     notice = (
         f"Research {modeled}/{total} props modeled ({coverage:.0f}%). "
         + (
@@ -188,7 +189,7 @@ def warm_props(payload: PropWarmRequest, _: SubscribedUser) -> PropWarmResponse:
             if ready and pending <= 0
             else "Ready to grade — remaining lines stay SKIP until sources resolve."
             if ready
-            else "Keep warming — do not rush LAUNCH yet."
+            else f"+{gained} this pass — keep warming."
         )
     )
     return PropWarmResponse(
