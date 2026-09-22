@@ -155,6 +155,12 @@ export default function LearningScreen() {
     },
     [isAdmin, request],
   );
+
+  useEffect(() => {
+    void load();
+  }, [load]);
+
+  const reviewProposal = useCallback(
     async (proposalId: string, action: "implemented" | "dismissed") => {
       try {
         await request(`/ops-heal/proposals/${proposalId}/review`, {
