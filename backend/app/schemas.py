@@ -301,8 +301,9 @@ class SportsAnalyzeRequest(YWPModel):
     mode: Literal["pregame", "live"] = "pregame"
     user_risk_profile: RiskProfile = RiskProfile.balanced
     bankroll: Decimal | None = Field(default=None, ge=0)
-    # NCAAF Saturdays routinely exceed 250 priced sides (ML/spread/total × games).
-    candidates: list[CandidateInput] = Field(min_length=1, max_length=500)
+    # Full sport prop boards (WNBA/NFL) routinely exceed 500 priced sides.
+    # Do not truncate the user's slate — analyze whatever the raw board returns.
+    candidates: list[CandidateInput] = Field(min_length=1, max_length=10000)
     # Sheet Check path: upgrade selected sportsbook-menu legs with model twins.
     # Default on so older APKs get model grades without a new client build.
     # Load board still keeps overlay forced off for reliability.
