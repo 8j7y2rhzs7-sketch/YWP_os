@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { BrandHeader } from "@/components/BrandHeader";
@@ -140,12 +140,15 @@ export default function SlateScreen() {
   const [loadingSlate, setLoadingSlate] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [researchNote, setResearchNote] = useState<string | null>(null);
+  const [launchArmed, setLaunchArmed] = useState(false);
+  const [warming, setWarming] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [catalogByKey, setCatalogByKey] = useState<Record<string, SportCatalogItem>>({});
   const [catalogReady, setCatalogReady] = useState(false);
   const [prefetchNote, setPrefetchNote] = useState<string | null>(null);
   const [prefetching, setPrefetching] = useState(false);
   const [visibleCount, setVisibleCount] = useState(CANDIDATE_PAGE);
+  const warmEpoch = useRef(0);
 
   async function loadCatalog() {
     try {
@@ -181,10 +184,82 @@ export default function SlateScreen() {
     }
   }
 
+  async function warmResearch(
+    base: SlateResponse,
+    *,
+    epoch: number,
+  ): Promise<SlateResponse | null> {
+    const sportKey = base.sport.toLowerCase();
+    if (!PROP_SPORTS.has(sportKey) || pendingPropCount(base.candidates) <= 0) {
+      if (epoch === warmEpoch.current) {
+        setLaunchArmed(true);
+        setResearchNote(null);
+        setWarming(false);
+      }
+      return base;
+    }
+    if (epoch === warmEpoch.current) {
+      setLaunchArmed(false);
+      setWarming(true);
+    }
+    let candidates = base.candidates;
+    let latest = base;
+    try {
+      for (let round = 0; round < MAX_WARM_ROUNDS; round += 1) {
+        if (epoch !== warmEpoch.current) return null;
+        if (pendingPropCount(candidates) <= 0) break;
+        setResearchNote(
+          `Researching props… pass ${round + 1}/${MAX_WARM_ROUNDS}`,
+        );
+        const warm = await request<PropWarmResponse>("/sports/warm-props", {
+          method: "POST",
+          body: JSON.stringify({
+            sport: base.sport,
+            date: base.date,
+            candidates,
+            budget_seconds: 18,
+          }),
+        });
+        if (epoch !== warmEpoch.current) return null;
+        candidates = warm.candidates;
+        latest = { ...base, candidates };
+        setSlate(latest);
+        saveSlate(latest);
+        setResearchNote(
+          `${warm.prop_modeled}/${warm.prop_total} modeled (${Math.round(warm.coverage_pct)}%)`,
+        );
+        if (warm.ready) break;
+      }
+      if (epoch === warmEpoch.current) {
+        setLaunchArmed(true);
+        setResearchNote("Research ready — LAUNCH is gold. Tap to grade.");
+        setWarming(false);
+      }
+      return latest;
+    } catch (reason) {
+      if (epoch === warmEpoch.current) {
+        setWarming(false);
+        // Fail open to armed so the user can still grade fail-closed SKIPs.
+        setLaunchArmed(true);
+        setResearchNote(
+          reason instanceof Error && reason.message.trim()
+            ? `Research paused: ${reason.message.trim()}`
+            : "Research paused — LAUNCH will grade what is modeled.",
+        );
+      }
+      return latest;
+    }
+  }
+
   async function loadSlate() {
     const requestSport = sport;
     const requestDate = date;
     const catalog = catalogByKey[requestSport];
+    warmEpoch.current += 1;
+    const epoch = warmEpoch.current;
+    setLaunchArmed(false);
+    setWarming(false);
+    setResearchNote(null);
     if (requestSport !== "mlb" && catalog?.in_season === false) {
       setSlate(null);
       setLoadingSlate(false);
@@ -200,11 +275,14 @@ export default function SlateScreen() {
       const response = await request<SlateResponse>(
         `/sports/slate?sport=${encodeURIComponent(requestSport)}&date=${encodeURIComponent(requestDate)}`,
       );
-      if (requestSport !== sport || requestDate !== date) {
+      if (requestSport !== sport || requestDate !== date || epoch !== warmEpoch.current) {
         return;
       }
       setSlate(response);
       saveSlate(response);
+      setLoadingSlate(false);
+      // Auto-warm so gold LAUNCH means research finished — not a rushed grade.
+      void warmResearch(response, { epoch });
     } catch (reason) {
       if (requestSport !== sport || requestDate !== date) {
         return;
@@ -215,10 +293,7 @@ export default function SlateScreen() {
           ? reason.message.trim()
           : "Slate failed to load — check sign-in and retry REFRESH RAW SLATE.";
       setError(message);
-    } finally {
-      if (requestSport === sport && requestDate === date) {
-        setLoadingSlate(false);
-      }
+      setLoadingSlate(false);
     }
   }
 
@@ -228,43 +303,18 @@ export default function SlateScreen() {
       setError("Slate is out of date — reload before analyzing.");
       return;
     }
+    if (warming || !launchArmed) {
+      setError(null);
+      setResearchNote(
+        researchNote ??
+          "Still warming research — wait for the button to turn gold.",
+      );
+      return;
+    }
     setAnalyzing(true);
     setError(null);
-    setResearchNote(null);
+    setResearchNote("Grading with full research…");
     try {
-      let candidates = slate.candidates;
-      const sportKey = slate.sport.toLowerCase();
-      const needsWarm =
-        PROP_SPORTS.has(sportKey) && pendingPropCount(candidates) > 0;
-
-      if (needsWarm) {
-        // Do not rush grade: warm ESPN form in Render-safe chunks until ready.
-        for (let round = 0; round < MAX_WARM_ROUNDS; round += 1) {
-          if (pendingPropCount(candidates) <= 0) break;
-          setResearchNote(
-            `Researching props… pass ${round + 1}/${MAX_WARM_ROUNDS}`,
-          );
-          const warm = await request<PropWarmResponse>("/sports/warm-props", {
-            method: "POST",
-            body: JSON.stringify({
-              sport: slate.sport,
-              date: slate.date,
-              candidates,
-              budget_seconds: 18,
-            }),
-          });
-          candidates = warm.candidates;
-          const nextSlate = { ...slate, candidates };
-          setSlate(nextSlate);
-          saveSlate(nextSlate);
-          setResearchNote(
-            `${warm.prop_modeled}/${warm.prop_total} modeled (${Math.round(warm.coverage_pct)}%)`,
-          );
-          if (warm.ready) break;
-        }
-        setResearchNote("Grading with full research…");
-      }
-
       const response = await request<AnalyzeResponse>("/sports/analyze", {
         method: "POST",
         body: JSON.stringify({
@@ -272,7 +322,7 @@ export default function SlateScreen() {
           date: slate.date,
           mode: "pregame",
           user_risk_profile: user?.risk_profile ?? "balanced",
-          candidates,
+          candidates: slate.candidates,
         }),
       });
       saveAnalysis(response);
@@ -302,7 +352,7 @@ export default function SlateScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sport, date, catalogReady]);
 
-  const tone = orbitToneFor(loadingSlate || analyzing, slate);
+  const tone = orbitToneFor(loadingSlate || analyzing || warming, slate);
   const look = sportLook(sport);
   const showRunDock = Boolean(slate && slate.candidates.length > 0);
   const markets = useMemo(
@@ -311,7 +361,11 @@ export default function SlateScreen() {
   );
   const visibleCandidates = slate?.candidates.slice(0, visibleCount) ?? [];
   const hiddenCount = Math.max(0, (slate?.candidates.length ?? 0) - visibleCount);
-  const engineLabel = orbitLabel(loadingSlate || analyzing, slate, researchNote);
+  const engineLabel = orbitLabel(
+    loadingSlate || analyzing || warming,
+    slate,
+    warming || researchNote ? researchNote ?? "Warming research" : null,
+  );
 
   return (
     <View style={styles.page}>
@@ -354,7 +408,7 @@ export default function SlateScreen() {
               },
               {
                 id: "mode",
-                label: researchNote ? "RESEARCH" : analyzing ? "AIN" : "STRICT",
+                label: warming ? "RESEARCH" : analyzing ? "AIN" : "STRICT",
                 side: "right",
                 top: 148,
               },
@@ -363,14 +417,16 @@ export default function SlateScreen() {
         </MotionReveal>
         <MotionReveal delay={120} replayKey={`${sport}-${slate?.candidates.length ?? 0}-${researchNote ?? "idle"}`}>
           <Text style={styles.engineHeadline}>
-            {researchNote
+            {warming || researchNote
               ? "Giving research time to finish"
               : analyzing
               ? "Running AIN + Strict Mode"
               : loadingSlate
                 ? "Pulling live candidates"
                 : slate
-                  ? `${sport.toUpperCase()} slate · ${slate.candidates.length} candidates`
+                  ? launchArmed
+                    ? `${sport.toUpperCase()} ready · gold LAUNCH`
+                    : `${sport.toUpperCase()} slate · ${slate.candidates.length} candidates`
                   : "Select sport · load slate"}
           </Text>
         </MotionReveal>
@@ -572,8 +628,9 @@ export default function SlateScreen() {
         sport={sport}
         playCount={slate?.candidates.length ?? 0}
         readiness={slate ? slateReadiness(slate) : undefined}
-        loading={analyzing}
-        statusText={researchNote ? "WARM" : null}
+        armed={launchArmed && !warming}
+        loading={analyzing || warming}
+        statusText={warming ? "WARM" : analyzing ? "RUN" : null}
         disabled={!slate?.candidates.length}
         onPress={() => void analyze()}
       />

@@ -18,6 +18,8 @@ interface ProtocolRunDockProps {
   sport: string;
   playCount: number;
   readiness?: string;
+  /** True when research is done and LAUNCH may grade. */
+  armed?: boolean;
   loading?: boolean;
   disabled?: boolean;
   statusText?: string | null;
@@ -27,11 +29,14 @@ interface ProtocolRunDockProps {
 /**
  * Sticky launch rail — a stylus tip + ignition ring so RUN stays reachable
  * above long raw candidate lists without scrolling to the footer.
+ *
+ * Circuit-blue while research warms; gold only when armed to grade.
  */
 export function ProtocolRunDock({
   sport,
   playCount,
   readiness,
+  armed = true,
   loading = false,
   disabled = false,
   statusText = null,
@@ -42,7 +47,9 @@ export function ProtocolRunDock({
   const pulse = useRef(new Animated.Value(0)).current;
   const glide = useRef(new Animated.Value(0)).current;
   const enter = useRef(new Animated.Value(0)).current;
-  const inactive = disabled || loading || playCount <= 0;
+  const inactive = disabled || playCount <= 0;
+  const canPress = !inactive && !loading;
+  const live = armed && !loading && !inactive;
 
   useEffect(() => {
     Animated.spring(enter, {
@@ -63,13 +70,13 @@ export function ProtocolRunDock({
       Animated.sequence([
         Animated.timing(pulse, {
           toValue: 1,
-          duration: 1100,
+          duration: armed ? 1100 : 900,
           easing: Easing.out(Easing.quad),
           useNativeDriver: true,
         }),
         Animated.timing(pulse, {
           toValue: 0,
-          duration: 1100,
+          duration: armed ? 1100 : 900,
           easing: Easing.in(Easing.quad),
           useNativeDriver: true,
         }),
@@ -89,7 +96,7 @@ export function ProtocolRunDock({
       ring.stop();
       stylus.stop();
     };
-  }, [glide, inactive, pulse, reduceMotion]);
+  }, [armed, glide, inactive, pulse, reduceMotion]);
 
   const ringScale = pulse.interpolate({
     inputRange: [0, 1],
@@ -105,13 +112,28 @@ export function ProtocolRunDock({
   });
 
   const readyLabel =
-    readiness === "VERIFIED"
-      ? "VERIFIED"
-      : readiness === "PARTIAL"
-        ? "PARTIAL"
-        : readiness === "DEMO"
-          ? "DEMO"
-          : "STANDBY";
+    loading && !armed
+      ? "WARMING"
+      : !armed
+        ? "WARMING"
+        : readiness === "VERIFIED"
+          ? "VERIFIED"
+          : readiness === "PARTIAL"
+            ? "PARTIAL"
+            : readiness === "DEMO"
+              ? "DEMO"
+              : "ARMED";
+
+  const railColors = armed ? gradients.panelGold : gradients.panelBlue;
+  const stylusColors = armed
+    ? (["#FFE58D", "#E2AD26", "#8B5D08"] as const)
+    : ([colors.circuitBlueBright, colors.circuitBlue, colors.circuitBlueDeep] as const);
+  const ignitionColors = armed
+    ? gradients.gold
+    : ([colors.circuitBlueBright, colors.circuitBlue, colors.circuitBlueDeep] as const);
+  const ringBorder = armed ? colors.goldBright : colors.circuitBlueBright;
+  const shellBorder = armed ? "rgba(240,193,74,0.45)" : "rgba(26,168,240,0.45)";
+  const shadow = armed ? colors.gold : colors.circuitBlue;
 
   return (
     <Animated.View
@@ -137,50 +159,69 @@ export function ProtocolRunDock({
         style={styles.fade}
         pointerEvents="none"
       />
-      <View style={styles.railShell}>
-        <LinearGradient colors={gradients.panelGold} style={styles.rail}>
+      <View
+        style={[
+          styles.railShell,
+          { borderColor: shellBorder, shadowColor: shadow },
+        ]}
+      >
+        <LinearGradient colors={railColors} style={styles.rail}>
           <View style={styles.railSheen} />
           <View style={styles.meta}>
             <Text style={styles.sport}>{sport.toUpperCase()}</Text>
             <Text style={styles.plays}>
               {playCount} PLAY{playCount === 1 ? "" : "S"}
             </Text>
-            <Text style={styles.ready}>{readyLabel}</Text>
+            <Text style={[styles.ready, !armed && styles.readyWarming]}>
+              {readyLabel}
+            </Text>
           </View>
 
           <View style={styles.stylusTrack} pointerEvents="none">
-            <View style={styles.trackLine} />
+            <View
+              style={[
+                styles.trackLine,
+                !armed && { backgroundColor: "rgba(26,168,240,0.35)" },
+              ]}
+            />
             <Animated.View style={{ transform: [{ translateY: stylusY }] }}>
-              <LinearGradient
-                colors={["#FFE58D", "#E2AD26", "#8B5D08"]}
-                style={styles.stylusBody}
-              >
-                <View style={styles.stylusTip} />
+              <LinearGradient colors={[...stylusColors]} style={styles.stylusBody}>
+                <View
+                  style={[
+                    styles.stylusTip,
+                    !armed && { backgroundColor: colors.circuitBlueBright },
+                  ]}
+                />
               </LinearGradient>
             </Animated.View>
           </View>
 
           <Pressable
             onPress={onPress}
-            disabled={inactive}
+            disabled={!canPress}
             accessibilityRole="button"
-            accessibilityLabel="Run AIN Strict Mode"
+            accessibilityLabel={
+              armed
+                ? "Launch AIN Strict Mode"
+                : "Research still warming — wait for gold"
+            }
             style={({ pressed }) => [
               styles.ignitionHit,
-              pressed && !inactive && styles.pressed,
-              inactive && styles.disabled,
+              pressed && canPress && styles.pressed,
+              (!canPress || !live) && !loading && styles.disabled,
             ]}
           >
             <Animated.View
               style={[
                 styles.pulseRing,
                 {
+                  borderColor: ringBorder,
                   opacity: ringOpacity,
                   transform: [{ scale: ringScale }],
                 },
               ]}
             />
-            <LinearGradient colors={gradients.gold} style={styles.ignition}>
+            <LinearGradient colors={[...ignitionColors]} style={styles.ignition}>
               {loading ? (
                 <>
                   <ActivityIndicator color={colors.background} />
@@ -190,10 +231,15 @@ export function ProtocolRunDock({
                     </Text>
                   ) : null}
                 </>
-              ) : (
+              ) : armed ? (
                 <>
                   <Text style={styles.runEyebrow}>LAUNCH</Text>
                   <Text style={styles.runLabel}>RUN</Text>
+                </>
+              ) : (
+                <>
+                  <Text style={styles.runEyebrow}>WAIT</Text>
+                  <Text style={styles.runLabel}>WARM</Text>
                 </>
               )}
             </LinearGradient>
@@ -224,77 +270,71 @@ const styles = StyleSheet.create({
     borderRadius: radius.lg,
     overflow: "hidden",
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: "rgba(240,193,74,0.45)",
-    shadowColor: colors.gold,
     shadowOpacity: 0.28,
-    shadowRadius: 18,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 12,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 10,
   },
   rail: {
-    minHeight: 72,
+    minHeight: 78,
     paddingVertical: spacing.sm,
-    paddingLeft: spacing.lg,
-    paddingRight: spacing.sm,
+    paddingHorizontal: spacing.md,
     flexDirection: "row",
     alignItems: "center",
     gap: spacing.md,
   },
   railSheen: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 1,
-    backgroundColor: "rgba(255,229,141,0.35)",
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(255,255,255,0.03)",
   },
   meta: {
     flex: 1,
     gap: 2,
   },
   sport: {
-    color: colors.goldBright,
-    fontFamily: fonts.bodyBold,
-    fontSize: 11,
-    letterSpacing: 1.4,
+    ...type.eyebrow,
+    color: colors.textMuted,
   },
   plays: {
-    color: colors.white,
-    fontFamily: fonts.displaySemi,
+    fontFamily: fonts.display,
     fontSize: 18,
-    letterSpacing: -0.3,
+    color: colors.text,
+    letterSpacing: 0.4,
   },
   ready: {
-    ...type.caption,
-    color: colors.silver,
-    letterSpacing: 0.8,
+    fontFamily: fonts.bodyBold,
+    fontSize: 10,
+    letterSpacing: 1.4,
+    color: colors.gold,
+  },
+  readyWarming: {
+    color: colors.circuitBlueBright,
   },
   stylusTrack: {
-    width: 18,
-    height: 44,
+    width: 28,
+    height: 52,
     alignItems: "center",
     justifyContent: "center",
   },
   trackLine: {
     position: "absolute",
     width: 2,
-    top: 4,
-    bottom: 4,
+    height: 44,
     borderRadius: 1,
     backgroundColor: "rgba(240,193,74,0.28)",
   },
   stylusBody: {
     width: 10,
-    height: 34,
+    height: 36,
     borderRadius: 5,
     alignItems: "center",
-    paddingTop: 3,
+    paddingTop: 2,
   },
   stylusTip: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: colors.background,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: colors.goldBright,
   },
   ignitionHit: {
     width: 72,
@@ -308,7 +348,6 @@ const styles = StyleSheet.create({
     height: 72,
     borderRadius: 36,
     borderWidth: 2,
-    borderColor: colors.goldBright,
   },
   ignition: {
     width: 64,
