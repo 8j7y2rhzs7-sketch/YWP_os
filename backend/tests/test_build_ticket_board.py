@@ -88,6 +88,89 @@ def _rec(
     return row
 
 
+def test_build_cards_tolerates_null_script_alignment() -> None:
+    """PARTIAL WNBA props often ship snapshot.script_alignment=null — must not 500."""
+    from datetime import UTC, date, datetime
+    from decimal import Decimal
+    from uuid import uuid4
+
+    from app.models import Recommendation
+
+    plays = []
+    for i in range(27):
+        plays.append(
+            Recommendation(
+                id=str(uuid4()),
+                analysis_id=str(uuid4()),
+                created_by_user_id=str(uuid4()),
+                candidate_id=f"cand-{i}",
+                event_id=f"event-{i % 8}",
+                event_name="Sun @ Dream",
+                sport="wnba",
+                league="WNBA",
+                slate_date=date.today(),
+                mode="pregame",
+                market_type="player_points_over",
+                market_period="full_game",
+                selection=f"Player {i} Over 12.5 points",
+                line=Decimal("12.5"),
+                american_odds=-110,
+                estimated_probability=Decimal("0.550000"),
+                implied_probability=Decimal("0.523810"),
+                adjusted_probability=Decimal("0.550000"),
+                edge=Decimal("0.040000"),
+                expected_value=Decimal("0.030000"),
+                confidence_score=90,
+                ywp_rating=Decimal("8.20"),
+                vision_score=Decimal("7.00"),
+                miss_by_one_risk=Decimal("0.2000"),
+                reliability=Decimal("0.7000"),
+                stability=Decimal("0.7000"),
+                variance=Decimal("0.2800"),
+                data_quality=Decimal("0.7300"),
+                risk="medium",
+                risk_tier="Moderate",
+                variance_rating="Medium",
+                edge_class="Edge",
+                expected_value_label="Positive",
+                suggested_stake_pct=Decimal("0.0100"),
+                decision="PLAY",
+                recommendation_tier="cash_builder",
+                rank=i + 1,
+                reason_codes=["OK"],
+                reasoning_summary="test",
+                warnings=[],
+                safer_alternative=None,
+                higher_upside=None,
+                invalidation_conditions=[],
+                live_trigger=None,
+                hedge=None,
+                quick_cash=False,
+                chain_reaction_key=None,
+                thesis_key=f"thesis-{i}",
+                script_key=f"script-{i}",
+                player_key=f"player-{i}",
+                data_source="ESPN_PLAYER_PROP_MODEL",
+                source_timestamp=datetime.now(UTC),
+                model_version="ywp-sports-v3.1.0",
+                protocol_version="2026.09.03",
+                input_hash=f"hash-{i}",
+                created_at=datetime.now(UTC),
+                snapshot={
+                    "probability_source": "model",
+                    "game_status": "PRE_GAME",
+                    "market_status": "OPEN",
+                    "script_alignment": None,
+                    "start_time": datetime.now(UTC).isoformat(),
+                },
+            )
+        )
+    cards, quarantined = build_cards(plays, max_legs=5, min_rating=6.5)
+    assert "max_bet" in cards
+    assert cards["max_bet"].legs
+    assert isinstance(quarantined, list)
+
+
 def test_build_cards_tolerates_bad_price_timestamp(db_session, client, auth_headers) -> None:
     me = client.get("/api/v1/users/me", headers=auth_headers)
     assert me.status_code == 200, me.text

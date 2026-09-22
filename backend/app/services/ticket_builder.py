@@ -34,6 +34,16 @@ def _analysis_rank(recommendation: Recommendation) -> int:
     return rank if rank > 0 else 10_000
 
 
+def _safe_float(value: object, default: float = 0.0) -> float:
+    """Snapshot fields are often null on PARTIAL research — never float(None)."""
+    if value is None:
+        return default
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
 def _priority(recommendation: Recommendation) -> tuple:
     """Prefer analysis board rank so #1 eligible picks surface on Max Bet."""
     conf, rating, vision, edge, neg_miss, neg_var = _score(recommendation)
@@ -113,7 +123,7 @@ def _hybrid_category_legs(
         item
         for item in edge_pool
         if str(item.recommendation_tier or "") in {"edge_play", "edge_plays"}
-        or float(item.expected_value) > 0
+        or _safe_float(item.expected_value) > 0
     ] or edge_pool
 
     legs.extend(_take(cash_tier, 1))
@@ -174,7 +184,7 @@ def _card(
         weakest = weakest_item.id
         risk, risk_explanation = card_risk(kept)
         high_near_miss = [
-            item.selection for item in kept if float(item.miss_by_one_risk) >= 0.55
+            item.selection for item in kept if _safe_float(item.miss_by_one_risk) >= 0.55
         ]
         if high_near_miss:
             warnings.append("Elevated miss-by-1 leg(s): " + ", ".join(high_near_miss))
@@ -265,7 +275,7 @@ def build_cards(
                 )
             )
             continue
-        if float(item.miss_by_one_risk) >= 0.80:
+        if _safe_float(item.miss_by_one_risk) >= 0.80:
             quarantined.append(
                 _quarantine(
                     item,
@@ -293,12 +303,12 @@ def build_cards(
 
     eligible = sorted(best_by_thesis.values(), key=_priority)
     strongest = eligible[:1]
-    safe_pool = [item for item in eligible if float(item.miss_by_one_risk) < 0.55]
+    safe_pool = [item for item in eligible if _safe_float(item.miss_by_one_risk) < 0.55]
     cash_pool = sorted(
         safe_pool,
         key=lambda item: (
-            float(item.miss_by_one_risk),
-            float(item.variance),
+            _safe_float(item.miss_by_one_risk),
+            _safe_float(item.variance),
             _analysis_rank(item),
             -item.confidence_score,
         ),
@@ -308,7 +318,7 @@ def build_cards(
     edge_pool = sorted(
         eligible,
         key=lambda item: (
-            -float(item.expected_value),
+            -_safe_float(item.expected_value),
             -item.confidence_score,
             _analysis_rank(item),
         ),
@@ -322,8 +332,8 @@ def build_cards(
     handicap_pool = sorted(
         eligible,
         key=lambda item: (
-            -float(item.vision_score),
-            -float(item.edge),
+            -_safe_float(item.vision_score),
+            -_safe_float(item.edge),
             -item.confidence_score,
             _analysis_rank(item),
         ),
@@ -333,13 +343,13 @@ def build_cards(
     scripted_pool = sorted(
         eligible,
         key=lambda item: (
-            -float((item.snapshot or {}).get("script_alignment", 0)),
+            -_safe_float((item.snapshot or {}).get("script_alignment"), 0.0),
             -item.confidence_score,
             _analysis_rank(item),
         ),
     )
     scripted = _diverse(scripted_pool, min(3, max_legs))
-    ghostt_pool = [item for item in edge_pool if float(item.edge) >= 0.03]
+    ghostt_pool = [item for item in edge_pool if _safe_float(item.edge) >= 0.03]
     ghostt = _diverse(ghostt_pool, min(4, max_legs))
     quick_cash = _diverse([item for item in eligible if item.quick_cash], min(3, max_legs))
     chain_reaction = _diverse(
