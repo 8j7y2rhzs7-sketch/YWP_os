@@ -92,8 +92,8 @@ android {
         applicationId 'com.ywpos.app'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 42
-        versionName "3.3.41"
+        versionCode 43
+        versionName "3.3.44"
 
         buildConfigField "String", "REACT_NATIVE_RELEASE_LEVEL", "\"${findProperty('reactNativeReleaseLevel') ?: 'stable'}\""
     }
@@ -103,6 +103,8 @@ android {
             storePassword 'android'
             keyAlias 'androiddebugkey'
             keyPassword 'android'
+            enableV1Signing true
+            enableV2Signing true
         }
     }
     buildTypes {
