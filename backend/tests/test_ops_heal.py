@@ -251,12 +251,14 @@ def test_ops_heal_api_endpoints(client, auth_headers, monkeypatch) -> None:
     idle = client.get("/api/v1/ops-heal/status", headers=auth_headers)
     assert idle.status_code == 200
     assert idle.json()["status"] == "idle"
+    assert idle.json().get("proposals_pending", 0) == 0
 
     ran = client.post("/api/v1/ops-heal/run?apply=true", headers=auth_headers)
     assert ran.status_code == 200
     body = ran.json()
     assert body["bot"] == "ops_heal"
     assert "contracts" in body
+    assert "proposals_pending" in body
 
     status = client.get("/api/v1/ops-heal/status", headers=auth_headers)
     assert status.status_code == 200
@@ -266,3 +268,132 @@ def test_ops_heal_api_endpoints(client, auth_headers, monkeypatch) -> None:
     assert cycles.status_code == 200
     assert cycles.json()["bot"] == "ops_heal"
     assert len(cycles.json()["cycles"]) >= 1
+
+
+def test_improvement_proposals_collect_analyze_and_human_review(db_session, monkeypatch) -> None:
+    from app.services.ops_heal import list_ops_heal_proposals, review_ops_heal_proposal
+
+    user = _user(db_session)
+    db_session.add(
+        ErrorReport(
+            user_id=user.id,
+            category="crash",
+            message="Internal Server Error after analyze",
+            screen="Decision Board",
+            status="open",
+        )
+    )
+    db_session.add(
+        ErrorReport(
+            user_id=user.id,
+            category="crash",
+            message="Internal Server Error again",
+            screen="Decision Board",
+            status="open",
+        )
+    )
+    db_session.flush()
+
+    monkeypatch.setattr(
+        "app.services.ops_heal._rem_run_settle_day",
+        lambda **_: _ok("run_settle_day"),
+    )
+    monkeypatch.setattr(
+        "app.services.ops_heal._rem_sync_hive",
+        lambda **_: _ok("sync_hive_outcomes"),
+    )
+
+    cycle = run_ops_heal_cycle(
+        db=db_session,
+        user_id=user.id,
+        trigger="test_proposals",
+        apply=True,
+    )
+    assert cycle["proposals_pending"] >= 1
+    assert cycle["proposals_drafted"]
+
+    pending = list_ops_heal_proposals(db=db_session, status="pending", limit=20)
+    assert pending
+    boardish = [p for p in pending if "fingerprint" in p and "decision_board" in str(p.get("fingerprint"))]
+    assert boardish or any("error_cluster" in str(p.get("fingerprint")) for p in pending)
+    for row in pending:
+        assert row["status"] == "pending"
+        assert row.get("recommended_change")
+        assert row.get("implements_when") == "human_checks_in"
+
+    # Second cycle refreshes sightings instead of duplicating fingerprints.
+    before_count = len(pending)
+    run_ops_heal_cycle(
+        db=db_session,
+        user_id=user.id,
+        trigger="test_proposals_again",
+        apply=True,
+    )
+    again = list_ops_heal_proposals(db=db_session, status="pending", limit=40)
+    assert len(again) == before_count
+    assert any(int(p.get("sightings") or 1) >= 2 for p in again)
+
+    target = again[0]
+    reviewed = review_ops_heal_proposal(
+        db=db_session,
+        proposal_id=target["id"],
+        action="implemented",
+        reviewer_user_id=user.id,
+        note="shipped in check-in",
+    )
+    assert reviewed["status"] == "implemented"
+    assert reviewed["review_note"] == "shipped in check-in"
+    still_pending = list_ops_heal_proposals(db=db_session, status="pending", limit=40)
+    assert all(p["id"] != target["id"] for p in still_pending)
+
+
+def test_ops_heal_proposals_api_review(client, auth_headers, monkeypatch) -> None:
+    from app.core.database import SessionLocal
+    from app.models import ErrorReport as ER
+    from app.models import User as U
+
+    monkeypatch.setattr(
+        "app.services.ops_heal._rem_run_settle_day",
+        lambda **_: _ok("run_settle_day"),
+    )
+    monkeypatch.setattr(
+        "app.services.ops_heal._rem_sync_hive",
+        lambda **_: _ok("sync_hive_outcomes"),
+    )
+
+    db = SessionLocal()
+    try:
+        user = db.query(U).filter(U.email == "owner@ywp-os.com").one()
+        for i in range(2):
+            db.add(
+                ER(
+                    user_id=user.id,
+                    category="crash",
+                    message="Internal Server Error",
+                    screen="Decision Board",
+                    status="open",
+                )
+            )
+        db.commit()
+    finally:
+        db.close()
+
+    ran = client.post("/api/v1/ops-heal/run", headers=auth_headers)
+    assert ran.status_code == 200
+
+    listed = client.get("/api/v1/ops-heal/proposals?status=pending", headers=auth_headers)
+    assert listed.status_code == 200
+    proposals = listed.json()["proposals"]
+    assert proposals
+    proposal_id = proposals[0]["id"]
+
+    reviewed = client.post(
+        f"/api/v1/ops-heal/proposals/{proposal_id}/review",
+        headers=auth_headers,
+        json={"action": "dismissed", "note": "not this week"},
+    )
+    assert reviewed.status_code == 200
+    assert reviewed.json()["status"] == "dismissed"
+
+    leftover = client.get("/api/v1/ops-heal/proposals?status=pending", headers=auth_headers)
+    assert all(p["id"] != proposal_id for p in leftover.json()["proposals"])

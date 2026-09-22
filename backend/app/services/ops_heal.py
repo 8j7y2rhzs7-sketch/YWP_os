@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 
 OPS_HEAL_CYCLE_TYPE = "ops_heal_cycle"
 OPS_HEAL_STATUS_TYPE = "ops_heal_status"
+OPS_HEAL_PROPOSAL_TYPE = "ops_heal_proposal"
 
 # Allowlisted remediation ids — expand only with explicit safe actions.
 ALLOWED_REMEDIATIONS = frozenset(
@@ -35,6 +36,9 @@ ALLOWED_REMEDIATIONS = frozenset(
         "noop_observe",
     }
 )
+
+PROPOSAL_STATUSES = frozenset({"pending", "implemented", "dismissed"})
+PROPOSAL_REVIEW_ACTIONS = frozenset({"implemented", "dismissed"})
 
 
 @dataclass(slots=True)
@@ -113,6 +117,27 @@ def run_ops_heal_cycle(
         )
     )
 
+    # Collect + analyze → draft human-reviewable change briefs (never auto-code).
+    drafts = analyze_improvement_proposals(
+        db=db,
+        user_id=user_id,
+        contracts=contracts,
+        applied=applied,
+        trigger=trigger,
+    )
+    proposals = upsert_improvement_proposals(db=db, drafts=drafts)
+
+    pending_count = len(
+        [p for p in list_ops_heal_proposals(db=db, status="pending", limit=40)]
+    )
+    if proposals:
+        explanation += (
+            f" Drafted {len(proposals)} improvement proposal(s) for human review "
+            f"({pending_count} pending in inbox)."
+        )
+    elif pending_count:
+        explanation += f" {pending_count} improvement proposal(s) waiting in inbox."
+
     cycle = {
         "id": str(uuid4()),
         "trigger": trigger,
@@ -121,6 +146,8 @@ def run_ops_heal_cycle(
         "contracts": [_contract_dict(c) for c in contracts],
         "planned_remediations": planned,
         "applied_remediations": [_rem_dict(r) for r in applied],
+        "proposals_drafted": [p.get("id") for p in proposals],
+        "proposals_pending": pending_count,
         "bot": "ops_heal",
         "scope": "product_health",
         "not_in_scope": [
@@ -161,14 +188,213 @@ def list_ops_heal_cycles(*, db: Session, limit: int = 12) -> list[dict[str, Any]
 
 def latest_ops_heal_status(*, db: Session) -> dict[str, Any]:
     cycles = list_ops_heal_cycles(db=db, limit=1)
+    pending = list_ops_heal_proposals(db=db, status="pending", limit=40)
     if not cycles:
         return {
             "bot": "ops_heal",
             "status": "idle",
             "explanation": "Ops Heal has not run yet. Open Learning or POST /ops-heal/run.",
             "contracts": [],
+            "proposals_pending": len(pending),
+            "proposals": pending[:8],
         }
-    return cycles[0]
+    latest = dict(cycles[0])
+    latest["proposals_pending"] = len(pending)
+    latest["proposals"] = pending[:8]
+    return latest
+
+
+def list_ops_heal_proposals(
+    *,
+    db: Session,
+    status: str | None = "pending",
+    limit: int = 20,
+) -> list[dict[str, Any]]:
+    from app.hive.models import HiveModelSnapshot
+
+    rows = (
+        db.query(HiveModelSnapshot)
+        .filter(HiveModelSnapshot.snapshot_type == OPS_HEAL_PROPOSAL_TYPE)
+        .order_by(HiveModelSnapshot.created_at.desc())
+        .limit(120)
+        .all()
+    )
+    out: list[dict[str, Any]] = []
+    for row in rows:
+        params = row.parameters if isinstance(row.parameters, dict) else {}
+        item = {
+            "id": row.id,
+            "created_at": row.created_at.isoformat() if row.created_at else None,
+            "notes": row.notes,
+            **params,
+        }
+        item_status = str(item.get("status") or "pending")
+        if status and status != "all" and item_status != status:
+            continue
+        out.append(item)
+        if len(out) >= max(1, min(limit, 60)):
+            break
+    return out
+
+
+def review_ops_heal_proposal(
+    *,
+    db: Session,
+    proposal_id: str,
+    action: str,
+    reviewer_user_id: str | None = None,
+    note: str | None = None,
+) -> dict[str, Any]:
+    """Mark a drafted change as implemented or dismissed when a human checks in."""
+    from app.hive.models import HiveModelSnapshot
+    from app.models import AuditLog
+
+    if action not in PROPOSAL_REVIEW_ACTIONS:
+        raise ValueError(f"action must be one of {sorted(PROPOSAL_REVIEW_ACTIONS)}")
+
+    row = db.get(HiveModelSnapshot, proposal_id)
+    if row is None or row.snapshot_type != OPS_HEAL_PROPOSAL_TYPE:
+        raise KeyError("proposal_not_found")
+
+    params = dict(row.parameters) if isinstance(row.parameters, dict) else {}
+    params["status"] = action
+    params["reviewed_at"] = _utcnow().isoformat()
+    params["reviewed_by_user_id"] = reviewer_user_id
+    if note:
+        params["review_note"] = note[:500]
+    row.parameters = params
+    row.notes = f"{action}: {params.get('title') or row.notes or 'ops_heal_proposal'}"
+    db.add(
+        AuditLog(
+            user_id=reviewer_user_id,
+            action=f"OPS_HEAL_PROPOSAL_{action.upper()}",
+            entity_type="ops_heal_proposal",
+            entity_id=proposal_id,
+            details={
+                "fingerprint": params.get("fingerprint"),
+                "title": params.get("title"),
+                "note": note,
+            },
+        )
+    )
+    db.flush()
+    return {
+        "id": row.id,
+        "created_at": row.created_at.isoformat() if row.created_at else None,
+        **params,
+    }
+
+
+def analyze_improvement_proposals(
+    *,
+    db: Session,
+    user_id: str,
+    contracts: list[ContractResult],
+    applied: list[RemediationResult],
+    trigger: str,
+) -> list[dict[str, Any]]:
+    """Turn collected health evidence into concrete change briefs for humans."""
+    del user_id
+    applied_ids = [r.remediation_id for r in applied]
+    drafts: list[dict[str, Any]] = []
+
+    for contract in contracts:
+        if contract.ok:
+            continue
+        draft = _proposal_from_contract(contract, applied_ids=applied_ids, trigger=trigger)
+        if draft:
+            drafts.append(draft)
+
+    drafts.extend(_proposals_from_error_clusters(db=db, trigger=trigger))
+    drafts.extend(_proposals_from_coverage_gaps(db=db, trigger=trigger))
+
+    # Deduplicate within this cycle by fingerprint.
+    seen: set[str] = set()
+    unique: list[dict[str, Any]] = []
+    for draft in drafts:
+        fp = str(draft.get("fingerprint") or "")
+        if not fp or fp in seen:
+            continue
+        seen.add(fp)
+        unique.append(draft)
+    return unique
+
+
+def upsert_improvement_proposals(
+    *, db: Session, drafts: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    """Persist new pending proposals; refresh evidence on matching open fingerprints."""
+    from app.hive.models import HiveModelSnapshot
+
+    if not drafts:
+        return []
+
+    open_rows = (
+        db.query(HiveModelSnapshot)
+        .filter(HiveModelSnapshot.snapshot_type == OPS_HEAL_PROPOSAL_TYPE)
+        .order_by(HiveModelSnapshot.created_at.desc())
+        .limit(80)
+        .all()
+    )
+    by_fp: dict[str, Any] = {}
+    for row in open_rows:
+        params = row.parameters if isinstance(row.parameters, dict) else {}
+        if str(params.get("status") or "pending") != "pending":
+            continue
+        fp = str(params.get("fingerprint") or "")
+        if fp and fp not in by_fp:
+            by_fp[fp] = row
+
+    stored: list[dict[str, Any]] = []
+    for draft in drafts:
+        fp = str(draft.get("fingerprint") or "")
+        if not fp:
+            continue
+        existing = by_fp.get(fp)
+        if existing is not None:
+            params = dict(existing.parameters) if isinstance(existing.parameters, dict) else {}
+            params["evidence"] = draft.get("evidence") or params.get("evidence")
+            params["summary"] = draft.get("summary") or params.get("summary")
+            params["recommended_change"] = (
+                draft.get("recommended_change") or params.get("recommended_change")
+            )
+            params["last_seen_at"] = _utcnow().isoformat()
+            params["sightings"] = int(params.get("sightings") or 1) + 1
+            params["auto_remediations_tried"] = list(
+                dict.fromkeys(
+                    list(params.get("auto_remediations_tried") or [])
+                    + list(draft.get("auto_remediations_tried") or [])
+                )
+            )
+            existing.parameters = params
+            existing.sample_count = int(params.get("sightings") or 1)
+            stored.append({"id": existing.id, **params})
+            continue
+
+        proposal_id = str(uuid4())
+        payload = {
+            **draft,
+            "id": proposal_id,
+            "status": "pending",
+            "sightings": 1,
+            "last_seen_at": _utcnow().isoformat(),
+            "created_at": _utcnow().isoformat(),
+            "bot": "ops_heal",
+            "implements_when": "human_checks_in",
+        }
+        db.add(
+            HiveModelSnapshot(
+                id=proposal_id,
+                release_version=f"ops-heal-proposal-{fp[:40]}-{uuid4().hex[:8]}",
+                snapshot_type=OPS_HEAL_PROPOSAL_TYPE,
+                parameters=payload,
+                sample_count=1,
+                notes=str(draft.get("title") or "ops_heal_proposal"),
+            )
+        )
+        stored.append(payload)
+    db.flush()
+    return stored
 
 
 def classify_error_for_heal(message: str, screen: str | None = None) -> list[str]:
@@ -563,6 +789,202 @@ def _rem_record_gaps(
         detail=f"Published {len(gaps)} settlement gap(s) into Hive progress.",
         evidence={"gap_count": len(gaps)},
     )
+
+
+# ---------------------------------------------------------------------------
+# Improvement proposals (collect → analyze → human implements later)
+# ---------------------------------------------------------------------------
+
+
+def _proposal_from_contract(
+    contract: ContractResult,
+    *,
+    applied_ids: list[str],
+    trigger: str,
+) -> dict[str, Any] | None:
+    templates: dict[str, dict[str, Any]] = {
+        "day_forge_not_frozen": {
+            "area": "day_forge",
+            "priority": "high",
+            "title": "Keep Day Forge cooking instead of freezing at ~5%",
+            "recommended_change": (
+                "Verify cook_progress_from_slate empty/offline path stays status=cooking "
+                "and day_forge_sport_queue prefers catalog keys. Ship a cook-path regression "
+                "test if Home still stops polling."
+            ),
+        },
+        "decision_board_errors": {
+            "area": "decision_board",
+            "priority": "high",
+            "title": "Stop Decision Board Internal Server Errors after analyze",
+            "recommended_change": (
+                "Harden build-ticket / stay_away serialization for large prop boards. "
+                "Cap or slim stay_away payloads and add a regression test for oversized analyzes."
+            ),
+        },
+        "hive_pending_drain": {
+            "area": "settlement",
+            "priority": "medium",
+            "title": "Unstick Hive pending outcomes so learning can leave 0%",
+            "recommended_change": (
+                "Ensure settle-day covers every app sport (ESPN + Odds) and maps grades onto "
+                "Hive captures automatically. Add monitoring if pending stays high with low eligible."
+            ),
+        },
+        "settlement_coverage_gaps": {
+            "area": "settlement",
+            "priority": "medium",
+            "title": "Close settlement coverage gaps for skipped markets",
+            "recommended_change": (
+                "Review SETTLEMENT_COVERAGE_GAP events by sport/market and extend auto-grade "
+                "paths (boxscore merge, prop result sources) for the repeating gaps."
+            ),
+        },
+    }
+    template = templates.get(contract.contract_id)
+    if not template:
+        return None
+    return {
+        "fingerprint": f"contract:{contract.contract_id}",
+        "area": template["area"],
+        "priority": template["priority"],
+        "title": template["title"],
+        "summary": contract.detail,
+        "recommended_change": template["recommended_change"],
+        "source_contracts": [contract.contract_id],
+        "auto_remediations_tried": [
+            r for r in applied_ids if r in (contract.remediations or [])
+        ],
+        "evidence": {
+            "contract": _contract_dict(contract),
+            "trigger": trigger,
+        },
+    }
+
+
+def _proposals_from_error_clusters(*, db: Session, trigger: str) -> list[dict[str, Any]]:
+    from app.models import ErrorReport
+
+    since = _utcnow() - timedelta(hours=72)
+    rows = list(
+        db.scalars(
+            select(ErrorReport)
+            .where(ErrorReport.created_at >= since)
+            .order_by(ErrorReport.created_at.desc())
+            .limit(60)
+        ).all()
+    )
+    clusters: dict[str, list[Any]] = {}
+    for row in rows:
+        key = _error_cluster_key(row.message or "", row.screen)
+        if not key:
+            continue
+        clusters.setdefault(key, []).append(row)
+
+    out: list[dict[str, Any]] = []
+    for key, group in clusters.items():
+        if len(group) < 2:
+            continue
+        sample = group[0]
+        out.append(
+            {
+                "fingerprint": f"error_cluster:{key}",
+                "area": "client_errors",
+                "priority": "high" if "internal_server_error" in key else "medium",
+                "title": f"Recurring client error: {key.replace('_', ' ')}",
+                "summary": (
+                    f"{len(group)} report(s) in 72h matching `{key}`. "
+                    f"Latest: {(sample.message or '')[:140]}"
+                ),
+                "recommended_change": (
+                    "Reproduce from the listed screens, fix the failing endpoint/UI path, "
+                    "and add a guard or regression test so the cluster stops growing."
+                ),
+                "source_contracts": ["decision_board_errors"]
+                if "server_error" in key or "build_ticket" in key
+                else [],
+                "auto_remediations_tried": [],
+                "evidence": {
+                    "cluster_key": key,
+                    "count": len(group),
+                    "screens": sorted({(r.screen or "unknown") for r in group})[:8],
+                    "sample_messages": [(r.message or "")[:160] for r in group[:5]],
+                    "trigger": trigger,
+                },
+            }
+        )
+    return out
+
+
+def _proposals_from_coverage_gaps(*, db: Session, trigger: str) -> list[dict[str, Any]]:
+    from app.models import LearningEvent
+
+    since = _utcnow() - timedelta(days=7)
+    gaps = list(
+        db.scalars(
+            select(LearningEvent)
+            .where(
+                LearningEvent.event_type == "SETTLEMENT_COVERAGE_GAP",
+                LearningEvent.created_at >= since,
+            )
+            .order_by(LearningEvent.created_at.desc())
+            .limit(80)
+        ).all()
+    )
+    by_market: dict[str, list[Any]] = {}
+    for gap in gaps:
+        sport = (gap.sport or "unknown").lower()
+        market = (gap.market_type or "unknown").lower()
+        by_market.setdefault(f"{sport}:{market}", []).append(gap)
+
+    out: list[dict[str, Any]] = []
+    for key, group in by_market.items():
+        if len(group) < 3:
+            continue
+        sport, market = key.split(":", 1)
+        out.append(
+            {
+                "fingerprint": f"coverage_gap:{key}",
+                "area": "settlement",
+                "priority": "medium",
+                "title": f"Add auto-grade coverage for {sport} {market}",
+                "summary": f"{len(group)} coverage-gap event(s) for {sport}/{market} in 7d.",
+                "recommended_change": (
+                    f"Extend settlement providers so {sport} {market} grades without a manual "
+                    "per-sport ask. Prefer ESPN boxscore / Odds scores already used elsewhere."
+                ),
+                "source_contracts": ["settlement_coverage_gaps"],
+                "auto_remediations_tried": [],
+                "evidence": {
+                    "sport": sport,
+                    "market_type": market,
+                    "count": len(group),
+                    "samples": [
+                        (g.analysis or {}).get("detail")
+                        if isinstance(g.analysis, dict)
+                        else None
+                        for g in group[:5]
+                    ],
+                    "trigger": trigger,
+                },
+            }
+        )
+    return out
+
+
+def _error_cluster_key(message: str, screen: str | None) -> str | None:
+    text = f"{message} {screen or ''}".lower()
+    if "internal server error" in text:
+        return "internal_server_error"
+    if "build-ticket" in text or "ticket builder" in text:
+        return "build_ticket_failure"
+    if "day forge" in text or "standing by" in text:
+        return "day_forge_freeze"
+    if "network request failed" in text or "failed to fetch" in text:
+        return "network_request_failed"
+    if "pending sync" in text:
+        return "pending_sync_stall"
+    return None
 
 
 def _persist_cycle(*, db: Session, cycle: dict[str, Any]) -> None:

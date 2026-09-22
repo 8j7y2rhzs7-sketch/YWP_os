@@ -11,6 +11,7 @@ import { MotionReveal } from "@/components/MotionReveal";
 import { Screen } from "@/components/Screen";
 import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
+import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
 import { colors, spacing, type } from "@/theme";
 import type {
@@ -18,6 +19,7 @@ import type {
   LearningPulse,
   MissByOneReport,
   OpsHealCycle,
+  OpsHealProposal,
   Performance,
   ProtocolDefinition,
   SettleDayResponse,
@@ -48,6 +50,7 @@ export default function LearningScreen() {
   const [pulse, setPulse] = useState<LearningPulse | null>(null);
   const [hiveReports, setHiveReports] = useState<HiveProgressReport[]>([]);
   const [opsHeal, setOpsHeal] = useState<OpsHealCycle | null>(null);
+  const [proposals, setProposals] = useState<OpsHealProposal[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -73,8 +76,15 @@ export default function LearningScreen() {
               body: "{}",
             });
             setOpsHeal(heal);
+            if (heal?.proposals?.length) {
+              setProposals(heal.proposals);
+            }
             if (heal?.explanation) {
-              healNote = ` · Ops Heal ${heal.status ?? "ran"}`;
+              const pending = heal.proposals_pending ?? heal.proposals?.length ?? 0;
+              healNote =
+                pending > 0
+                  ? ` · Ops Heal ${heal.status ?? "ran"} · ${pending} change brief${pending === 1 ? "" : "s"}`
+                  : ` · Ops Heal ${heal.status ?? "ran"}`;
             }
           } catch {
             // Ops Heal is best-effort; Learning still loads Hive pulse.
@@ -93,8 +103,16 @@ export default function LearningScreen() {
         } catch {
           // Learning screen still loads pulse/performance if settle is cold.
         }
-        const [nextPerformance, nextMiss, nextPatterns, nextProtocol, nextPulse, nextHive, nextHeal] =
-          await Promise.all([
+        const [
+          nextPerformance,
+          nextMiss,
+          nextPatterns,
+          nextProtocol,
+          nextPulse,
+          nextHive,
+          nextHeal,
+          nextProposals,
+        ] = await Promise.all([
             request<Performance>("/learning/performance"),
             request<MissByOneReport>("/learning/miss-by-one"),
             request<Patterns>("/learning/patterns"),
@@ -102,6 +120,9 @@ export default function LearningScreen() {
             request<LearningPulse>("/learning/pulse"),
             request<{ reports: HiveProgressReport[] }>("/hive/progress-reports?limit=12"),
             request<OpsHealCycle>("/ops-heal/status").catch(() => null),
+            request<{ proposals: OpsHealProposal[] }>("/ops-heal/proposals?status=pending&limit=20").catch(
+              () => ({ proposals: [] as OpsHealProposal[] }),
+            ),
           ]);
         setPerformance(nextPerformance);
         setMiss(nextMiss);
@@ -110,6 +131,7 @@ export default function LearningScreen() {
         setPulse(nextPulse);
         setHiveReports(nextHive.reports ?? []);
         if (nextHeal) setOpsHeal(nextHeal);
+        setProposals(nextProposals.proposals ?? []);
       } catch (reason) {
         setError(reason instanceof Error ? reason.message : "Learning data failed to load");
       } finally {
@@ -123,6 +145,28 @@ export default function LearningScreen() {
   useEffect(() => {
     void load();
   }, [load]);
+
+  const reviewProposal = useCallback(
+    async (proposalId: string, action: "implemented" | "dismissed") => {
+      try {
+        await request(`/ops-heal/proposals/${proposalId}/review`, {
+          method: "POST",
+          body: JSON.stringify({ action }),
+        });
+        setProposals((prev) => prev.filter((row) => row.id !== proposalId));
+        setSyncNote(
+          action === "implemented"
+            ? "Marked improvement as implemented"
+            : "Dismissed improvement brief",
+        );
+      } catch (reason) {
+        setError(
+          reason instanceof Error ? reason.message : "Could not update improvement brief",
+        );
+      }
+    },
+    [request],
+  );
 
   if (loading) {
     return (
@@ -245,7 +289,7 @@ export default function LearningScreen() {
         </View>
         <Text style={type.body}>
           {opsHeal?.explanation ??
-            "Ops Heal watches health contracts and runs allowlisted remediations (settle-day, Hive sync, Day Forge probe). It does not edit app code."}
+            "Ops Heal collects product health evidence, applies allowlisted runtime fixes, and drafts change briefs for you to implement when you check in."}
         </Text>
         {(opsHeal?.contracts ?? []).length ? (
           <View style={{ marginTop: spacing.sm }}>
@@ -275,6 +319,55 @@ export default function LearningScreen() {
               .join(", ")}
           </Text>
         ) : null}
+      </MetalPanel>
+
+      <SectionTitle
+        title="Improvement Inbox"
+        subtitle="Ops Heal collects evidence and drafts change briefs. You implement them when you check in."
+      />
+      <MetalPanel tone={proposals.length ? "gold" : "default"}>
+        {proposals.length ? (
+          proposals.slice(0, 8).map((proposal) => (
+            <View key={proposal.id} style={{ marginBottom: spacing.md }}>
+              <View style={styles.row}>
+                <View style={styles.flex}>
+                  <Text style={type.eyebrow}>
+                    {(proposal.area ?? "product").replaceAll("_", " ").toUpperCase()}
+                    {proposal.priority ? ` · ${proposal.priority.toUpperCase()}` : ""}
+                    {proposal.sightings && proposal.sightings > 1
+                      ? ` · seen ${proposal.sightings}x`
+                      : ""}
+                  </Text>
+                  <Text style={styles.title}>{proposal.title}</Text>
+                </View>
+                <StatusPill value={(proposal.status ?? "pending").toUpperCase()} />
+              </View>
+              {proposal.summary ? <Text style={type.body}>{proposal.summary}</Text> : null}
+              {proposal.recommended_change ? (
+                <Text style={[type.caption, { marginTop: spacing.xs }]}>
+                  Change: {proposal.recommended_change}
+                </Text>
+              ) : null}
+              <View style={[styles.row, { marginTop: spacing.sm, gap: spacing.sm }]}>
+                <YwpButton
+                  label="MARK IMPLEMENTED"
+                  onPress={() => void reviewProposal(proposal.id, "implemented")}
+                />
+                <YwpButton
+                  label="DISMISS"
+                  variant="outline"
+                  onPress={() => void reviewProposal(proposal.id, "dismissed")}
+                />
+              </View>
+            </View>
+          ))
+        ) : (
+          <Text style={type.body}>
+            No pending change briefs yet. Open Learning / Sync Scores and Ops Heal will draft
+            improvements from Day Forge freezes, board errors, and settlement gaps — ready when you
+            check in.
+          </Text>
+        )}
       </MetalPanel>
 
       {(pulse?.active_shifts ?? []).length ? (

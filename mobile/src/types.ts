@@ -274,6 +274,21 @@ export interface OpsHealContract {
   detail: string;
 }
 
+export interface OpsHealProposal {
+  id: string;
+  status: "pending" | "implemented" | "dismissed" | string;
+  fingerprint?: string;
+  area?: string;
+  priority?: string;
+  title: string;
+  summary?: string;
+  recommended_change?: string;
+  sightings?: number;
+  created_at?: string | null;
+  last_seen_at?: string | null;
+  auto_remediations_tried?: string[];
+}
+
 export interface OpsHealCycle {
   id?: string;
   bot?: string;
@@ -284,6 +299,9 @@ export interface OpsHealCycle {
   contracts?: OpsHealContract[];
   planned_remediations?: string[];
   applied_remediations?: Array<{ remediation_id: string; ok: boolean; detail: string }>;
+  proposals_drafted?: string[];
+  proposals_pending?: number;
+  proposals?: OpsHealProposal[];
 }
 
 export interface TicketCard {
