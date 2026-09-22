@@ -1,6 +1,13 @@
 import { Link, Redirect, router } from "expo-router";
-import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 import { EngineStage } from "@/components/EngineStage";
 import { ErrorNotice } from "@/components/ErrorNotice";
@@ -20,6 +27,18 @@ export default function LoginScreen() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+
+  useEffect(() => {
+    const showEvent = Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+    const hideEvent = Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+    const showSub = Keyboard.addListener(showEvent, () => setKeyboardOpen(true));
+    const hideSub = Keyboard.addListener(hideEvent, () => setKeyboardOpen(false));
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
 
   if (user) {
     return <Redirect href={user.has_app_access ? "/(tabs)" : "/(auth)/paywall"} />;
@@ -40,66 +59,103 @@ export default function LoginScreen() {
   }
 
   return (
-    <Screen contentStyle={styles.content}>
-      <MotionReveal fromY={24}>
-        <EngineStage size={220} tone="idle" intensity="hero" label="Online" />
-      </MotionReveal>
+    <KeyboardAvoidingView
+      style={styles.flex}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 12 : 0}
+    >
+      <Screen contentStyle={styles.content} keyboardAware>
+        {!keyboardOpen ? (
+          <>
+            <MotionReveal fromY={24}>
+              <EngineStage size={220} tone="idle" intensity="hero" label="Online" />
+            </MotionReveal>
 
-      <MotionReveal delay={140}>
-        <View style={styles.copyStage}>
-          <MetalShimmer intensity="bright" periodMs={3200} style={styles.brandShimmer}>
-            <Text style={styles.brandMark}>{brand.product}</Text>
-          </MetalShimmer>
-          <Text style={styles.tagline}>YOUR WINNING PROCESS</Text>
-          <Text style={styles.heroTitle}>Measure twice.{"\n"}Cut once.</Text>
-          <Text style={styles.heroBody}>
-            Full sweeps, honest PASS calls, bankroll discipline, and learning from
-            every result.
+            <MotionReveal delay={140}>
+              <View style={styles.copyStage}>
+                <MetalShimmer intensity="bright" periodMs={3200} style={styles.brandShimmer}>
+                  <Text style={styles.brandMark}>{brand.product}</Text>
+                </MetalShimmer>
+                <Text style={styles.tagline}>YOUR WINNING PROCESS</Text>
+                <Text style={styles.heroTitle}>Measure twice.{"\n"}Cut once.</Text>
+                <Text style={styles.heroBody}>
+                  Full sweeps, honest PASS calls, bankroll discipline, and learning from
+                  every result.
+                </Text>
+              </View>
+            </MotionReveal>
+          </>
+        ) : (
+          <View style={styles.compactBrand}>
+            <Text style={styles.compactMark}>{brand.product}</Text>
+            <Text style={styles.compactHint}>Password field stays above the keys</Text>
+          </View>
+        )}
+
+        <MotionReveal delay={keyboardOpen ? 0 : 280}>
+          <MetalPanel tone="gold">
+            <Text style={styles.panelTitle}>COMMAND CENTER LOGIN</Text>
+            {error ? <ErrorNotice message={error} /> : null}
+            <FormField
+              label="Email"
+              value={email}
+              onChangeText={setEmail}
+              autoCapitalize="none"
+              autoComplete="email"
+              keyboardType="email-address"
+              placeholder="you@example.com"
+              returnKeyType="next"
+            />
+            <FormField
+              label="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              autoComplete="current-password"
+              placeholder="••••••••••"
+              returnKeyType="go"
+              onSubmitEditing={() => void submit()}
+            />
+            <YwpButton label="ENTER YWP OS" onPress={() => void submit()} loading={loading} />
+            <Link href="/(auth)/register" style={styles.link}>
+              Create a protected account
+            </Link>
+          </MetalPanel>
+        </MotionReveal>
+        {!keyboardOpen ? (
+          <Text style={styles.disclaimer}>
+            YWP OS is decision support, not a guarantee. PASS is an official answer.
+            Wager responsibly and only where legal.
           </Text>
-        </View>
-      </MotionReveal>
-
-      <MotionReveal delay={280}>
-        <MetalPanel tone="gold">
-          <Text style={styles.panelTitle}>COMMAND CENTER LOGIN</Text>
-          {error ? <ErrorNotice message={error} /> : null}
-          <FormField
-            label="Email"
-            value={email}
-            onChangeText={setEmail}
-            autoCapitalize="none"
-            autoComplete="email"
-            keyboardType="email-address"
-            placeholder="you@example.com"
-          />
-          <FormField
-            label="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            autoComplete="current-password"
-            placeholder="••••••••••"
-          />
-          <YwpButton label="ENTER YWP OS" onPress={() => void submit()} loading={loading} />
-          <Link href="/(auth)/register" style={styles.link}>
-            Create a protected account
-          </Link>
-        </MetalPanel>
-      </MotionReveal>
-      <Text style={styles.disclaimer}>
-        YWP OS is decision support, not a guarantee. PASS is an official answer.
-        Wager responsibly and only where legal.
-      </Text>
-    </Screen>
+        ) : null}
+      </Screen>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  content: { justifyContent: "center", paddingTop: spacing.md, gap: spacing.xl },
+  flex: { flex: 1 },
+  // Top-aligned so the login panel can scroll above the keyboard in landscape.
+  content: { justifyContent: "flex-start", paddingTop: spacing.md, gap: spacing.lg },
   copyStage: {
     gap: spacing.sm,
     paddingVertical: spacing.sm,
     backgroundColor: "transparent",
+  },
+  compactBrand: {
+    gap: 4,
+    paddingBottom: spacing.xs,
+  },
+  compactMark: {
+    color: colors.goldBright,
+    fontFamily: fonts.display,
+    fontSize: 22,
+    fontWeight: "800",
+    letterSpacing: -0.6,
+  },
+  compactHint: {
+    ...type.caption,
+    color: colors.circuitBlueBright,
   },
   brandShimmer: { alignSelf: "flex-start", borderRadius: 8 },
   brandMark: {

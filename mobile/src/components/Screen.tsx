@@ -23,6 +23,8 @@ interface ScreenProps {
   sport?: string;
   /** Extra atmospheric sparks behind content. */
   signalField?: boolean;
+  /** Lift / inset content when the software keyboard is open (login, forms). */
+  keyboardAware?: boolean;
 }
 
 export function Screen({
@@ -33,6 +35,7 @@ export function Screen({
   contentStyle,
   sport,
   signalField = true,
+  keyboardAware = false,
 }: ScreenProps) {
   const look = sportLook(sport);
   const enter = useRef(new Animated.Value(0)).current;
@@ -114,6 +117,8 @@ export function Screen({
           <Animated.ScrollView
             contentContainerStyle={styles.scrollContent}
             keyboardShouldPersistTaps="handled"
+            keyboardDismissMode="on-drag"
+            automaticallyAdjustKeyboardInsets={keyboardAware}
             showsVerticalScrollIndicator={false}
             scrollEventThrottle={16}
             onScroll={Animated.event(
