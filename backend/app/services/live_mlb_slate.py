@@ -62,20 +62,22 @@ def get_last_props_status() -> dict[str, Any]:
 
 
 def props_slate_notice(status: dict[str, Any] | None = None) -> str:
-    """Short Sheet/Run notice explaining why Ks/hits may be missing from the raw list."""
+    """Short Sheet/Run notice explaining why props may be missing from the raw list."""
     status = status or get_last_props_status()
     if status.get("skipped_disabled") or not status.get("enabled"):
         return (
-            "Player props (pitcher Ks / batter hits) are off — set YWP_MLB_PROPS_ENABLED=true "
+            "Player props are off — set YWP_MLB_PROPS_ENABLED=true "
             "and redeploy to price them into the raw slate."
         )
     k_n = int(status.get("k_candidates") or 0)
-    hits_n = int(status.get("hits_candidates") or 0)
+    batter_n = int(status.get("hits_candidates") or 0)
+    pitcher_extra = int(status.get("pitcher_peripheral_candidates") or 0)
     priced = int(status.get("events_priced") or 0)
     skipped_research = int(status.get("skipped_research") or 0)
     skipped_intent = int(status.get("skipped_no_intent") or 0)
     parts = [
-        f"Props priced on {priced} game(s): {k_n} pitcher K over(s), {hits_n} batter hits over(s)."
+        f"Props priced on {priced} game(s): {k_n} K over(s), "
+        f"{batter_n} batter prop(s), {pitcher_extra} pitcher peripheral(s)."
     ]
     if skipped_research:
         parts.append(
@@ -86,7 +88,7 @@ def props_slate_notice(status: dict[str, Any] | None = None) -> str:
         parts.append(
             f"{skipped_intent} researched game(s) had no free-source K/hits volume intent yet."
         )
-    if k_n == 0 and hits_n == 0 and priced == 0 and not skipped_research:
+    if k_n == 0 and batter_n == 0 and priced == 0 and not skipped_research:
         parts.append("No gated K/hits intents cleared free-source screens for this slate.")
     return " ".join(parts)
 
@@ -156,7 +158,8 @@ def _build_live_mlb_slate(slate_date: date) -> list[CandidateInput]:
     skipped_research = 0
     skipped_no_intent = 0
     k_built = 0
-    hits_built = 0
+    batter_built = 0
+    pitcher_extra_built = 0
     for bundle in bundles:
         if not settings.mlb_props_enabled:
             break
@@ -179,14 +182,31 @@ def _build_live_mlb_slate(slate_date: date) -> list[CandidateInput]:
             continue
         markets: list[str] = []
         if prop_intents:
-            markets.append("pitcher_strikeouts")
+            markets.extend(
+                [
+                    "pitcher_strikeouts",
+                    "pitcher_outs",
+                    "pitcher_hits_allowed",
+                    "pitcher_earned_runs",
+                ]
+            )
         if hit_intents:
-            markets.append("batter_hits")
+            markets.extend(
+                [
+                    "batter_hits",
+                    "batter_home_runs",
+                    "batter_rbis",
+                    "batter_total_bases",
+                    "batter_runs_scored",
+                    "batter_hits_runs_rbis",
+                    "batter_walks",
+                ]
+            )
         prop_events_used += 1
         prop_payload = get_player_props(
             event_id,
             sport="baseball_mlb",
-            markets=",".join(markets),
+            markets=",".join(dict.fromkeys(markets)),
         )
         if not prop_payload:
             continue
@@ -205,8 +225,21 @@ def _build_live_mlb_slate(slate_date: date) -> list[CandidateInput]:
             )
             k_built += len(k_rows)
             candidates.extend(k_rows)
+            extra = _pitcher_peripheral_candidates(
+                game=game,
+                research=research,
+                bookmakers=bookmakers,
+                event_id=event_id,
+                event_name=bundle["event_name"],
+                start_time=bundle["start_time"],
+                slate_date=slate_date,
+                now=now,
+                allowed_sides=set(prop_intents),
+            )
+            pitcher_extra_built += len(extra)
+            candidates.extend(extra)
         if hit_intents:
-            hit_rows = _batter_hits_candidates(
+            batter_rows = _batter_prop_candidates(
                 research=research,
                 bookmakers=bookmakers,
                 event_id=event_id,
@@ -217,15 +250,16 @@ def _build_live_mlb_slate(slate_date: date) -> list[CandidateInput]:
                 now=now,
                 intents=hit_intents,
             )
-            hits_built += len(hit_rows)
-            candidates.extend(hit_rows)
+            batter_built += len(batter_rows)
+            candidates.extend(batter_rows)
 
     _last_props_status.update(
         {
             "enabled": bool(settings.mlb_props_enabled),
             "events_priced": prop_events_used,
             "k_candidates": k_built,
-            "hits_candidates": hits_built,
+            "hits_candidates": batter_built,
+            "pitcher_peripheral_candidates": pitcher_extra_built,
             "skipped_disabled": not bool(settings.mlb_props_enabled),
             "skipped_research": skipped_research,
             "skipped_no_intent": skipped_no_intent,
@@ -599,87 +633,334 @@ def _batter_hits_candidates(
     now: datetime,
     intents: list[dict[str, Any]],
 ) -> list[CandidateInput]:
+    """Backward-compatible hits-only builder — delegates to the full batter menu."""
+    return [
+        row
+        for row in _batter_prop_candidates(
+            research=research,
+            bookmakers=bookmakers,
+            event_id=event_id,
+            event_name=event_name,
+            start_time=start_time,
+            slate_date=slate_date,
+            game=game,
+            now=now,
+            intents=intents,
+        )
+        if row.market_type == "player_hits_over"
+    ]
+
+
+_BATTER_PROP_SPECS: tuple[tuple[str, str, str, str, float], ...] = (
+    # odds_key, market_type, log_field, label, cushion_scale
+    ("batter_hits", "player_hits_over", "hits", "hits", 1.5),
+    ("batter_home_runs", "player_hr_over", "home_runs", "home runs", 1.0),
+    ("batter_rbis", "player_rbi_over", "rbi", "RBIs", 1.5),
+    ("batter_total_bases", "player_total_bases_over", "total_bases", "total bases", 2.0),
+    ("batter_runs_scored", "player_runs_over", "runs", "runs", 1.5),
+    ("batter_walks", "player_walks_over", "walks", "walks", 1.5),
+)
+
+
+def _batter_prop_candidates(
+    *,
+    research: dict[str, Any],
+    bookmakers: list[dict[str, Any]],
+    event_id: str,
+    event_name: str,
+    start_time: datetime,
+    slate_date: date,
+    game: dict[str, Any],
+    now: datetime,
+    intents: list[dict[str, Any]],
+) -> list[CandidateInput]:
+    """Build Overs for top-of-order batters across the valuable MLB prop menu."""
     candidates: list[CandidateInput] = []
     for intent in intents:
         name = intent["name"]
-        offer = extract_player_prop(
-            bookmakers,
-            market_key="batter_hits",
-            player_name=name,
-            outcome_name="Over",
-        )
-        if not offer or offer.get("point") is None:
-            continue
-        line = Decimal(str(offer["point"]))
         logs = list(intent.get("logs") or [])
         if len(logs) < 5:
             continue
-        probability = _batter_hits_probability(logs, float(line))
-        avg_hits = float(intent.get("avg_hits") or 0)
         side = intent["side"]
-        candidates.append(
-            _build_candidate(
-                game=game,
-                research=research,
-                candidate_id=f"mlb-hits-{side}-{intent['player_id']}-{game['game_pk']}",
-                event_id=event_id,
-                event_name=event_name,
-                start_time=start_time,
-                market_type="player_hits_over",
-                selection=f"{name} Over {line} hits",
-                line=line,
-                odds=offer["american_odds"],
-                bookmaker=str(offer.get("book") or "") or None,
-                probability=probability,
-                model_quality=min(0.9, 0.6 + 0.03 * min(len(logs), 10)),
-                thesis_key=f"mlb-{_slug(name)}-hits-over-{line}-{slate_date}",
-                script_key=f"mlb-{_slug(event_name)}-{_slug(name)}-hits",
-                player_key=f"mlb-batter-{intent['player_id']}",
-                reason_codes=["INDEPENDENT_MODEL", "ACTUAL_L5_L10", "CURRENT_FORM"],
-                reasoning=[
-                    f"Official MLB L5: {avg_hits} average hits across recent games.",
-                    f"Actual {offer.get('book')} line and price are used only for value comparison.",
-                ],
-                factors={
-                    "recent_hits": _scale(avg_hits - float(line), 1.5),
-                    "playing_time": 0.25 if avg_hits >= 1.0 else 0.1,
-                },
-                recent_hit_rate=_batter_hit_rate(logs, float(line)),
-                average_cushion=round(avg_hits - float(line), 2),
-                matchup_score=probability,
-                script_alignment=0.6,
-                multiple_paths_score=0.55,
-                miss_by_one_count_l10=_batter_hits_miss_by_one(logs, float(line)),
-                now=now,
-                side_hint=side,
+        for odds_key, market_type, field, label, scale in _BATTER_PROP_SPECS:
+            offer = extract_player_prop(
+                bookmakers,
+                market_key=odds_key,
+                player_name=name,
+                outcome_name="Over",
             )
+            if not offer or offer.get("point") is None:
+                continue
+            line = Decimal(str(offer["point"]))
+            series = [float(row.get(field) or 0) for row in logs[:10]]
+            if field == "home_runs" and sum(series) < 1:
+                # Don't force dead HR overs for non-power bats just because they're hitting.
+                continue
+            probability = _series_hit_probability(series, float(line))
+            avg = sum(series) / len(series)
+            # Soft volume: mean should be near the line (avoid random Unders dressed as Overs).
+            if avg + 0.15 < float(line) and field != "home_runs":
+                continue
+            if field == "home_runs" and avg < 0.15 and float(line) >= 0.5:
+                continue
+            candidates.append(
+                _build_candidate(
+                    game=game,
+                    research=research,
+                    candidate_id=(
+                        f"mlb-{field}-{side}-{intent['player_id']}-{game['game_pk']}"
+                    )[:100],
+                    event_id=event_id,
+                    event_name=event_name,
+                    start_time=start_time,
+                    market_type=market_type,
+                    selection=f"{name} Over {line} {label}",
+                    line=line,
+                    odds=offer["american_odds"],
+                    bookmaker=str(offer.get("book") or "") or None,
+                    probability=probability,
+                    model_quality=min(0.9, 0.6 + 0.03 * min(len(series), 10)),
+                    thesis_key=f"mlb-{_slug(name)}-{field}-over-{line}-{slate_date}",
+                    script_key=f"mlb-{_slug(event_name)}-{_slug(name)}-{field}",
+                    player_key=f"mlb-batter-{intent['player_id']}",
+                    reason_codes=["INDEPENDENT_MODEL", "ACTUAL_L5_L10", "CURRENT_FORM"],
+                    reasoning=[
+                        f"Official MLB L10: {round(avg, 2)} average {label}.",
+                        f"Actual {offer.get('book')} line and price are used only for value comparison.",
+                    ],
+                    factors={
+                        f"recent_{field}": _scale(avg - float(line), scale),
+                        "playing_time": 0.25 if avg >= max(0.5, float(line) * 0.7) else 0.1,
+                    },
+                    recent_hit_rate=_series_hit_rate(series, float(line)),
+                    average_cushion=round(avg - float(line), 2),
+                    matchup_score=probability,
+                    script_alignment=0.6,
+                    multiple_paths_score=0.55,
+                    miss_by_one_count_l10=_series_miss_by_one(series, float(line)),
+                    now=now,
+                    side_hint=side,
+                )
+            )
+        # Hits+runs+RBIs combo when the book posts it.
+        hrr_offer = extract_player_prop(
+            bookmakers,
+            market_key="batter_hits_runs_rbis",
+            player_name=name,
+            outcome_name="Over",
         )
+        if hrr_offer and hrr_offer.get("point") is not None:
+            line = Decimal(str(hrr_offer["point"]))
+            series = [
+                float(row.get("hits") or 0)
+                + float(row.get("runs") or 0)
+                + float(row.get("rbi") or 0)
+                for row in logs[:10]
+            ]
+            avg = sum(series) / len(series)
+            if avg + 0.2 >= float(line):
+                candidates.append(
+                    _build_candidate(
+                        game=game,
+                        research=research,
+                        candidate_id=(
+                            f"mlb-hrr-{side}-{intent['player_id']}-{game['game_pk']}"
+                        )[:100],
+                        event_id=event_id,
+                        event_name=event_name,
+                        start_time=start_time,
+                        market_type="player_hrr_over",
+                        selection=f"{name} Over {line} hits+runs+RBIs",
+                        line=line,
+                        odds=hrr_offer["american_odds"],
+                        bookmaker=str(hrr_offer.get("book") or "") or None,
+                        probability=_series_hit_probability(series, float(line)),
+                        model_quality=min(0.9, 0.6 + 0.03 * min(len(series), 10)),
+                        thesis_key=f"mlb-{_slug(name)}-hrr-over-{line}-{slate_date}",
+                        script_key=f"mlb-{_slug(event_name)}-{_slug(name)}-hrr",
+                        player_key=f"mlb-batter-{intent['player_id']}",
+                        reason_codes=["INDEPENDENT_MODEL", "ACTUAL_L5_L10", "CURRENT_FORM"],
+                        reasoning=[
+                            f"Official MLB L10: {round(avg, 2)} average hits+runs+RBIs.",
+                            "Sportsbook price used only for value comparison after form projection.",
+                        ],
+                        factors={"recent_hrr": _scale(avg - float(line), 2.0)},
+                        recent_hit_rate=_series_hit_rate(series, float(line)),
+                        average_cushion=round(avg - float(line), 2),
+                        matchup_score=_series_hit_probability(series, float(line)),
+                        script_alignment=0.62,
+                        multiple_paths_score=0.6,
+                        miss_by_one_count_l10=_series_miss_by_one(series, float(line)),
+                        now=now,
+                        side_hint=side,
+                    )
+                )
     return candidates
+
+
+def _series_hit_probability(series: list[float], line: float) -> float:
+    if not series:
+        return 0.5
+    rate = sum(1 for value in series if value > line) / len(series)
+    mean = sum(series) / len(series)
+    distance = mean - line
+    probability = 0.5 + (rate - 0.5) * 0.40 + max(-0.12, min(0.12, distance / 8.0))
+    return max(0.28, min(0.78, probability))
+
+
+def _series_hit_rate(series: list[float], line: float) -> float:
+    if not series:
+        return 0.0
+    return round(sum(1 for value in series if value > line) / len(series), 3)
+
+
+def _series_miss_by_one(series: list[float], line: float) -> int:
+    return sum(1 for value in series if value <= line and abs(value - line) <= 1.0)
 
 
 def _batter_hits_probability(logs: list[dict[str, Any]], line: float) -> float:
     sample = logs[:10] or logs
-    clears = sum(1 for row in sample if float(row.get("hits") or 0) > line)
-    rate = clears / max(len(sample), 1)
-    return max(0.35, min(0.78, 0.42 + rate * 0.4))
+    series = [float(row.get("hits") or 0) for row in sample]
+    return _series_hit_probability(series, line)
 
 
 def _batter_hit_rate(logs: list[dict[str, Any]], line: float) -> float:
     sample = logs[:10] or logs
-    if not sample:
-        return 0.0
-    clears = sum(1 for row in sample if float(row.get("hits") or 0) > line)
-    return round(clears / len(sample), 3)
+    series = [float(row.get("hits") or 0) for row in sample]
+    return _series_hit_rate(series, line)
 
 
 def _batter_hits_miss_by_one(logs: list[dict[str, Any]], line: float) -> int:
     sample = logs[:10] or logs
-    return sum(
-        1
-        for row in sample
-        if abs(float(row.get("hits") or 0) - line) <= 1.0
-        and float(row.get("hits") or 0) <= line
+    series = [float(row.get("hits") or 0) for row in sample]
+    return _series_miss_by_one(series, line)
+
+
+def _pitcher_peripheral_candidates(
+    *,
+    game: dict[str, Any],
+    research: dict[str, Any],
+    bookmakers: list[dict[str, Any]],
+    event_id: str,
+    event_name: str,
+    start_time: datetime,
+    slate_date: date,
+    now: datetime,
+    allowed_sides: set[str] | None = None,
+) -> list[CandidateInput]:
+    """Outs / hits allowed / ER props for pitchers that already cleared K gates."""
+    from app.services.mlb_provider import _baseball_innings
+
+    specs = (
+        # odds_key, market_type, label, extractor, prefer_under
+        (
+            "pitcher_outs",
+            "pitcher_outs_over",
+            "outs",
+            lambda logs: [
+                round(_baseball_innings(row.get("innings_pitched", "0")) * 3) for row in logs[:10]
+            ],
+            False,
+        ),
+        (
+            "pitcher_hits_allowed",
+            "pitcher_hits_allowed_under",
+            "hits allowed",
+            lambda logs: [float(row.get("hits_allowed") or 0) for row in logs[:10]],
+            True,
+        ),
+        (
+            "pitcher_earned_runs",
+            "pitcher_earned_runs_under",
+            "earned runs",
+            lambda logs: [float(row.get("earned_runs") or 0) for row in logs[:10]],
+            True,
+        ),
     )
+    candidates: list[CandidateInput] = []
+    for side in ("home", "away"):
+        if allowed_sides is not None and side not in allowed_sides:
+            continue
+        pitcher = game.get(f"{side}_pitcher")
+        if not pitcher or not pitcher.get("id") or not pitcher.get("name"):
+            continue
+        logs = research.get(f"{side}_pitcher_log") or []
+        if len(logs) < 5:
+            continue
+        name = pitcher["name"]
+        for odds_key, market_type, label, extractor, prefer_under in specs:
+            outcome = "Under" if prefer_under else "Over"
+            offer = extract_player_prop(
+                bookmakers,
+                market_key=odds_key,
+                player_name=name,
+                outcome_name=outcome,
+            )
+            if not offer or offer.get("point") is None:
+                continue
+            line = Decimal(str(offer["point"]))
+            series = extractor(logs)
+            if len(series) < 5:
+                continue
+            is_over = not prefer_under
+            # Rebuild probability/hit-rate for under sides.
+            if is_over:
+                probability = _series_hit_probability(series, float(line))
+                hit_rate = _series_hit_rate(series, float(line))
+                avg = sum(series) / len(series)
+                cushion = avg - float(line)
+                miss1 = _series_miss_by_one(series, float(line))
+            else:
+                clears = [1 for value in series if value < float(line)]
+                rate = len(clears) / len(series)
+                avg = sum(series) / len(series)
+                distance = float(line) - avg
+                probability = max(
+                    0.28,
+                    min(0.78, 0.5 + (rate - 0.5) * 0.40 + max(-0.12, min(0.12, distance / 8.0))),
+                )
+                hit_rate = round(rate, 3)
+                cushion = float(line) - avg
+                miss1 = sum(
+                    1 for value in series if value >= float(line) and abs(value - float(line)) <= 1.0
+                )
+            if (is_over and avg + 0.2 < float(line)) or (not is_over and avg - 0.2 > float(line)):
+                continue
+            candidates.append(
+                _build_candidate(
+                    game=game,
+                    research=research,
+                    candidate_id=f"mlb-{odds_key}-{side}-{game['game_pk']}"[:100],
+                    event_id=event_id,
+                    event_name=event_name,
+                    start_time=start_time,
+                    market_type=market_type,
+                    selection=f"{name} {outcome} {line} {label}",
+                    line=line,
+                    odds=offer["american_odds"],
+                    bookmaker=str(offer.get("book") or "") or None,
+                    probability=probability,
+                    model_quality=min(0.9, 0.6 + 0.03 * min(len(series), 10)),
+                    thesis_key=f"mlb-{_slug(name)}-{odds_key}-{outcome.lower()}-{line}-{slate_date}",
+                    script_key=f"mlb-{_slug(event_name)}-{_slug(name)}-{odds_key}",
+                    player_key=f"mlb-pitcher-{pitcher['id']}",
+                    reason_codes=["INDEPENDENT_MODEL", "ACTUAL_L5_L10", "CURRENT_FORM"],
+                    reasoning=[
+                        f"Official MLB L10: {round(avg, 2)} average {label}.",
+                        "Sportsbook price used only for value comparison after form projection.",
+                    ],
+                    factors={f"recent_{odds_key}": _scale(cushion, 2.0)},
+                    recent_hit_rate=hit_rate,
+                    average_cushion=round(cushion, 2),
+                    matchup_score=probability,
+                    script_alignment=0.6,
+                    multiple_paths_score=0.55,
+                    miss_by_one_count_l10=miss1,
+                    now=now,
+                    side_hint=side,
+                )
+            )
+    return candidates
 
 
 def _pitcher_strikeout_candidates(

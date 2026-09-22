@@ -248,13 +248,15 @@ class DecisionEngine:
             reasons.append("MISS_BY_ONE_RISK")
             confidence_penalty += 6 if miss_by_one_risk < 0.80 else 10
         market_l = str(candidate.market_type or "").lower()
-        is_modeled_prop_sport = sport_l in {
-            "wnba",
-            "nba",
-            "basketball",
-            "nfl",
-            "ncaaf",
-        } and market_l.startswith("player_")
+        is_modeled_prop_sport = (
+            sport_l in {"wnba", "nba", "basketball", "nfl", "ncaaf", "mlb"}
+            and (
+                market_l.startswith("player_")
+                or market_l.startswith("pitcher_")
+                or market_l.startswith("batter_")
+                or "strikeout" in market_l
+            )
+        )
         # Mimic the human filter: thin player-prop closes never become official plays,
         # even when the sheet pre-filled a generic safer_alternative string.
         if is_modeled_prop_sport and miss_by_one_risk >= 0.55:
@@ -334,9 +336,15 @@ class DecisionEngine:
 
         from app.services.board_metrics import FORM_PROP_OUTLIER_EDGE_REVIEW
 
-        form_prop = (
-            str(candidate.data_source or "") == "ESPN_PLAYER_PROP_MODEL"
-            and bool(candidate.l5_l10_verified)
+        form_prop = bool(candidate.l5_l10_verified) and candidate.probability_source in {
+            "model",
+            "manual_verified",
+        } and (
+            str(candidate.market_type or "").startswith("player_")
+            or str(candidate.market_type or "").startswith("pitcher_")
+            or "strikeout" in str(candidate.market_type or "").lower()
+            or str(candidate.data_source or "") == "ESPN_PLAYER_PROP_MODEL"
+            or "MLB_STATS" in str(candidate.data_source or "").upper()
         )
         outlier_codes = outlier_review_reasons(
             adjusted_probability=adjusted,

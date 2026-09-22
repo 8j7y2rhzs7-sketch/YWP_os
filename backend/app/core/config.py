@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "YWP OS API"
-    app_version: str = "3.3.31"
+    app_version: str = "3.3.32"
     api_prefix: str = "/api/v1"
     env: Literal["development", "test", "staging", "production"] = Field(
         default="development", validation_alias="YWP_ENV"
@@ -65,19 +65,19 @@ class Settings(BaseSettings):
         ),
     )
     mlb_max_prop_events: int = Field(
-        default=4,
+        default=6,
         ge=0,
         le=20,
         validation_alias="YWP_MLB_MAX_PROP_EVENTS",
     )
     mlb_board_max_prop_events: int = Field(
-        default=4,
+        default=6,
         ge=0,
         le=30,
         validation_alias="YWP_MLB_BOARD_MAX_PROP_EVENTS",
         description=(
             "Pick Sheet sportsbook menu: max events to price player props for. "
-            "Kept modest so two phones refreshing together do not stall the free worker."
+            "Raised with the fuller MLB prop menu (Ks/hits/HR/RBI/TB and pitcher peripherals)."
         ),
     )
     wnba_max_prop_events: int = Field(

@@ -195,6 +195,7 @@ def get_player_game_log(
                 "opponent": split.get("opponent", {}).get("name", ""),
                 "hits": stat.get("hits", 0),
                 "at_bats": stat.get("atBats", 0),
+                "runs": stat.get("runs", 0),
                 "home_runs": stat.get("homeRuns", 0),
                 "rbi": stat.get("rbi", 0),
                 "strikeouts": stat.get("strikeOuts", 0),

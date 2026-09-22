@@ -236,3 +236,38 @@ def test_enrich_nfl_pass_yards() -> None:
         enriched = enrich_player_prop_candidates([candidate], slate_date=date(2026, 9, 17))[0]
     assert enriched.probability_source == "model"
     assert enriched.cushion_scale == 25.0
+
+
+def test_mlb_thin_cushion_hard_skips() -> None:
+    candidate = _modeled_prop(
+        sport="mlb",
+        league="MLB",
+        market_type="player_strikeouts_over",
+        selection="Ace Pitcher Over 5.5 strikeouts",
+        line=Decimal("5.5"),
+        estimated_probability=0.58,
+        average_cushion=0.3,
+        recent_hit_rate=0.6,
+        miss_by_one_count_l10=2,
+        cushion_scale=3.0,
+        data_source="MLB_STATS_API+THE_ODDS_API",
+        market_is_pitcher_strikeout_over=True,
+        k_duration_verified=True,
+        normal_workload_confirmed=True,
+        weather_verified=True,
+        lineup_confirmed=True,
+        injuries_verified=True,
+        schedule_verified=True,
+        universe_scan_complete=True,
+        current_form_verified=True,
+        l5_l10_verified=True,
+        home_away_verified=True,
+        market_movement_verified=True,
+        sport_specific_sweep_complete=True,
+        independent_value_verified=True,
+        motivation_rotation_verified=True,
+        starter_confirmed=True,
+    )
+    evaluation = decision_engine.evaluate(candidate, RiskProfile.balanced)
+    assert evaluation.decision == "SKIP"
+    assert "PROP_CUSHION_GATE" in evaluation.reason_codes

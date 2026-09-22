@@ -465,4 +465,4 @@ def test_props_pull_batter_hits_when_intent_clears(monkeypatch) -> None:
     assert len(hits) == 1
     assert "Top Hitter" in hits[0].selection
     assert slate_module.get_last_props_status()["hits_candidates"] == 1
-    assert "batter hits" in slate_module.props_slate_notice().lower()
+    assert "batter prop" in slate_module.props_slate_notice().lower()

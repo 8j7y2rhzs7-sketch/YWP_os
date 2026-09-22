@@ -187,8 +187,17 @@ def min_prop_cushion(candidate: CandidateInput) -> float:
     """Minimum average L10 cushion required before a modeled prop can PLAY."""
     scale = float(candidate.cushion_scale or 4.0)
     sport = (candidate.sport or "").lower()
+    market = str(candidate.market_type or "").lower()
     if sport in {"nfl", "ncaaf"}:
         return max(1.0, 0.20 * scale)
+    if sport == "mlb":
+        if "strikeout" in market or market.endswith("_k_over"):
+            return max(0.75, 0.25 * scale)
+        if any(token in market for token in ("hr", "home_run")):
+            return 0.35
+        if any(token in market for token in ("hits", "rbi", "runs", "bases", "walks", "hrr")):
+            return 0.55
+        return max(0.55, 0.20 * scale)
     return 0.75
 
 
