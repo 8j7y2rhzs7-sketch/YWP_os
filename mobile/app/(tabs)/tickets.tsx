@@ -28,7 +28,11 @@ function summarizeSettle(result: SettleDayResponse): string {
     parts.push(`${result.hive_outcomes_mapped} Hive outcome(s) mapped`);
   }
   if (result.pending) parts.push(`${result.pending} still waiting on finals`);
-  if (result.skipped) parts.push(`${result.skipped} skipped (not MLB finals yet or already graded)`);
+  if (result.skipped) {
+    parts.push(
+      `${result.skipped} skipped (not final yet, unsupported market, or already graded)`,
+    );
+  }
   if (result.tickets_settled) parts.push(`${result.tickets_settled} ticket(s) marked settled`);
   if (result.errors) parts.push(`${result.errors} failed`);
   const boardOnly = result.items.filter(
@@ -48,7 +52,7 @@ function summarizeSettle(result: SettleDayResponse): string {
     }
   }
   if (!parts.length) {
-    return "No MLB board picks or placed legs were ready to grade. Games must be Final.";
+    return "No board picks or placed legs were ready to grade. Games must be Final (MLB + ESPN sports).";
   }
   const details = result.items
     .filter((item) => item.status === "pending" || item.status === "skipped" || item.status === "error")

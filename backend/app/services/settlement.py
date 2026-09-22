@@ -484,16 +484,42 @@ def _grade_recommendation(
     if recommendation.result or recommendation.outcome:
         return {"status": "already_graded", "outcome": recommendation.outcome}
 
-    sport = (recommendation.sport or "").lower()
-    if sport != "mlb":
-        return {
-            "status": "skipped",
-            "detail": "Automatic settlement currently supports MLB finals only.",
-        }
-
     if recommendation.data_source in {"YWP_DEMO_PROVIDER", "EXTERNAL_BOOK_LOG"}:
         return {"status": "skipped", "detail": "Demo/external picks are graded manually."}
 
+    sport = (recommendation.sport or "").lower()
+    if sport == "mlb":
+        return _grade_mlb_recommendation(
+            db,
+            recommendation,
+            stake=stake,
+            extra_tags=extra_tags,
+            lesson=lesson,
+        )
+    from app.services.espn_provider import ESPN_SPORT_PATHS
+
+    if sport in ESPN_SPORT_PATHS:
+        return _grade_espn_recommendation(
+            db,
+            recommendation,
+            stake=stake,
+            extra_tags=extra_tags,
+            lesson=lesson,
+        )
+    return {
+        "status": "skipped",
+        "detail": f"Automatic settlement does not support {sport.upper()} yet.",
+    }
+
+
+def _grade_mlb_recommendation(
+    db: Session,
+    recommendation: Recommendation,
+    *,
+    stake: Decimal,
+    extra_tags: list[str] | None = None,
+    lesson: str | None = None,
+) -> dict[str, Any]:
     game_pk = _game_pk(recommendation)
     if game_pk is None:
         return {"status": "skipped", "detail": "No MLB game_pk on recommendation snapshot."}
@@ -517,7 +543,219 @@ def _grade_recommendation(
             "status": "skipped",
             "detail": f"No settlement rule for market {recommendation.market_type}.",
         }
+    return _persist_auto_grade(
+        db,
+        recommendation,
+        derived=derived,
+        stake=stake,
+        extra_tags=extra_tags,
+        lesson=lesson
+        or "Auto-settled from MLB final score/stats. Complete process audit when ready.",
+        result_source="official_mlb",
+    )
 
+
+def _grade_espn_recommendation(
+    db: Session,
+    recommendation: Recommendation,
+    *,
+    stake: Decimal,
+    extra_tags: list[str] | None = None,
+    lesson: str | None = None,
+) -> dict[str, Any]:
+    """Settle WNBA/NBA/NFL/NCAAF (and other ESPN sports) from official finals."""
+    from app.services.board_metrics import parse_event_teams
+    from app.services.espn_provider import (
+        get_event_summary,
+        match_odds_event_to_espn,
+        parse_boxscore_player_stats,
+    )
+
+    sport = (recommendation.sport or "").lower()
+    snap = recommendation.snapshot or {}
+    home = str(snap.get("home_team") or recommendation.home_team or "")
+    away = str(snap.get("away_team") or recommendation.away_team or "")
+    if not home or not away:
+        parsed_away, parsed_home = parse_event_teams(recommendation.event_name or "")
+        home = home or (parsed_home or "")
+        away = away or (parsed_away or "")
+    if not home or not away:
+        return {
+            "status": "skipped",
+            "detail": "Missing home/away teams for ESPN settlement match.",
+        }
+
+    game = match_odds_event_to_espn(
+        sport,
+        recommendation.slate_date,
+        home_team=home,
+        away_team=away,
+    )
+    if game is None:
+        return {
+            "status": "pending",
+            "detail": "ESPN final not matched yet for this event.",
+        }
+    if not game.get("completed"):
+        return {
+            "status": "pending",
+            "detail": f"Game not final yet ({game.get('status') or 'in progress'}).",
+        }
+
+    home_score = game.get("home_score")
+    away_score = game.get("away_score")
+    if home_score is None or away_score is None:
+        return {
+            "status": "pending",
+            "detail": "ESPN final is marked complete but scores are missing.",
+        }
+
+    box = {
+        "home_team": str(game.get("home_team") or home),
+        "away_team": str(game.get("away_team") or away),
+        "home_runs": int(home_score),
+        "away_runs": int(away_score),
+        "total_runs": int(home_score) + int(away_score),
+        "final_score": f"{game.get('away_team') or away} {int(away_score)} @ "
+        f"{game.get('home_team') or home} {int(home_score)}",
+        "pitchers": [],
+        "batters": [],
+    }
+
+    market = (recommendation.market_type or "").lower()
+    if market.startswith("player_") or any(
+        token in market
+        for token in (
+            "points",
+            "rebounds",
+            "assists",
+            "threes",
+            "three",
+            "pra",
+            "steals",
+            "blocks",
+            "turnovers",
+        )
+    ):
+        summary = get_event_summary(sport, str(game.get("event_id") or ""))
+        players = parse_boxscore_player_stats(summary)
+        derived = _derive_espn_player_prop(recommendation, box, players)
+    else:
+        derived = _derive_outcome(recommendation, box)
+
+    if derived is None:
+        return {
+            "status": "skipped",
+            "detail": f"No settlement rule for market {recommendation.market_type}.",
+        }
+    return _persist_auto_grade(
+        db,
+        recommendation,
+        derived=derived,
+        stake=stake,
+        extra_tags=extra_tags,
+        lesson=lesson
+        or "Auto-settled from ESPN final score/stats. Complete process audit when ready.",
+        result_source="official_espn",
+    )
+
+
+def _derive_espn_player_prop(
+    recommendation: Recommendation,
+    box: dict[str, Any],
+    players: list[dict[str, Any]],
+) -> dict[str, Any] | None:
+    line = recommendation.line
+    if line is None:
+        return None
+    selection = recommendation.selection or ""
+    selection_l = selection.lower()
+    market = (recommendation.market_type or "").lower()
+    player_name = _player_name_from_selection(selection)
+    if not player_name:
+        return None
+
+    from app.services.espn_provider import _name_overlap
+
+    best = None
+    best_score = 0
+    for row in players:
+        score = _name_overlap(player_name, str(row.get("name") or ""))
+        if score > best_score:
+            best_score = score
+            best = row
+    if best is None or best_score < 2:
+        return {
+            "outcome": "VOID",
+            "actual_value": None,
+            "final_score": box.get("final_score"),
+            "detail": f"Player '{player_name}' not found in ESPN final boxscore.",
+        }
+
+    stat_key, label = _espn_stat_for_market(market, selection_l)
+    raw = best.get(stat_key)
+    if raw is None:
+        return {
+            "outcome": "VOID",
+            "actual_value": None,
+            "final_score": box.get("final_score"),
+            "detail": f"{best.get('name')} final boxscore missing {label}.",
+        }
+    actual = Decimal(str(raw))
+    direction = "under" if "under" in selection_l else "over"
+    if actual == line:
+        outcome = "PUSH"
+    elif direction == "over":
+        outcome = "WIN" if actual > line else "LOSS"
+    else:
+        outcome = "WIN" if actual < line else "LOSS"
+    return {
+        "outcome": outcome,
+        "actual_value": actual,
+        "final_score": f"{box.get('final_score')} • {best.get('name')} {actual} {label}",
+        "detail": f"{best.get('name')} had {actual} {label} vs line {line} ({direction}).",
+    }
+
+
+def _player_name_from_selection(selection: str) -> str:
+    text = selection.strip()
+    for token in (" over ", " under ", " Over ", " Under "):
+        if token in text:
+            return text.split(token, 1)[0].strip()
+    # Fallback: strip trailing line fragments.
+    return re.split(r"\s+[+-]?\d", text, maxsplit=1)[0].strip()
+
+
+def _espn_stat_for_market(market: str, selection_l: str) -> tuple[str, str]:
+    if "pra" in market or "points_rebounds_assists" in market:
+        return "PRA", "PRA"
+    if "rebounds" in market or "rebounds" in selection_l:
+        return "REB", "REB"
+    if "assists" in market or "assists" in selection_l:
+        return "AST", "AST"
+    if "three" in market or "threes" in market or "3pt" in selection_l:
+        return "3PT", "3PT"
+    if "steals" in market:
+        return "STL", "STL"
+    if "blocks" in market:
+        return "BLK", "BLK"
+    if "turnover" in market:
+        return "TO", "TO"
+    if "points" in market or "points" in selection_l:
+        return "PTS", "PTS"
+    return "PTS", "PTS"
+
+
+def _persist_auto_grade(
+    db: Session,
+    recommendation: Recommendation,
+    *,
+    derived: dict[str, Any],
+    stake: Decimal,
+    extra_tags: list[str] | None,
+    lesson: str,
+    result_source: str,
+) -> dict[str, Any]:
     outcome = derived["outcome"]
     actual_value = derived.get("actual_value")
     final_score = derived.get("final_score")
@@ -525,10 +763,6 @@ def _grade_recommendation(
     miss_distance = _signed_margin(recommendation, actual_value, bet_line)
     profit_loss = _american_profit(stake, recommendation.american_odds, outcome)
     tags = list(dict.fromkeys(["AUTO_SETTLED", *(extra_tags or [])]))
-    lesson_text = (
-        lesson
-        or "Auto-settled from MLB final score/stats. Complete process audit when ready."
-    )
 
     result = Result(
         recommendation_id=recommendation.id,
@@ -559,7 +793,7 @@ def _grade_recommendation(
         process_grade="C",
         variance_grade="MEDIUM",
         root_cause_tags=tags,
-        lesson=lesson_text,
+        lesson=lesson,
         result_time=utcnow(),
     )
     recommendation.outcome = outcome
@@ -585,6 +819,7 @@ def _grade_recommendation(
                 "process_grade": "C",
                 "variance_grade": "MEDIUM",
                 "root_cause_tags": tags,
+                "result_source": result_source,
             },
         )
     )
@@ -595,7 +830,7 @@ def _grade_recommendation(
             source_recommendation_id=str(recommendation.id),
             outcome=outcome,
             verified=True,
-            result_source="official_mlb",
+            result_source=result_source,
             resolved_at=result.result_time,
         )
     except (RuntimeError, ValueError):

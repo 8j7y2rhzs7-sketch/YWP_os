@@ -13,7 +13,7 @@ import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
 import { useAuth } from "@/context/AuthContext";
 import { colors, spacing, type } from "@/theme";
-import type { HiveProgressReport, LearningPulse, MissByOneReport, Performance, ProtocolDefinition } from "@/types";
+import type { HiveProgressReport, LearningPulse, MissByOneReport, Performance, ProtocolDefinition, SettleDayResponse } from "@/types";
 
 interface Patterns {
   root_cause_tags: Array<{ tag: string; count: number }>;
@@ -42,12 +42,33 @@ export default function LearningScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [syncNote, setSyncNote] = useState<string | null>(null);
 
   const load = useCallback(
     async (refresh = false) => {
       refresh ? setRefreshing(true) : setLoading(true);
       setError(null);
       try {
+        // Pull finals + map Hive outcomes so optimum-accuracy can move.
+        try {
+          const settle = await request<SettleDayResponse>("/sports/settle-day", {
+            method: "POST",
+            body: "{}",
+          });
+          const mapped = settle.hive_outcomes_mapped ?? 0;
+          const graded = (settle.graded ?? 0) + (settle.board_graded ?? 0);
+          if (mapped || graded) {
+            setSyncNote(
+              `Hive sync: ${graded} graded · ${mapped} outcome${mapped === 1 ? "" : "s"} mapped`,
+            );
+          } else if (settle.pending) {
+            setSyncNote(`${settle.pending} still waiting on finals`);
+          } else {
+            setSyncNote(null);
+          }
+        } catch {
+          // Learning screen still loads pulse/performance if settle is cold.
+        }
         const [nextPerformance, nextMiss, nextPatterns, nextProtocol, nextPulse, nextHive] =
           await Promise.all([
             request<Performance>("/learning/performance"),
@@ -105,6 +126,9 @@ export default function LearningScreen() {
         />
       </MotionReveal>
       {error ? <ErrorNotice message={error} /> : null}
+      {syncNote ? (
+        <Text style={type.caption}>{syncNote}</Text>
+      ) : null}
       <MetalPanel tone="gold">
         <View style={styles.row}>
           <View style={styles.flex}>
@@ -115,7 +139,7 @@ export default function LearningScreen() {
         </View>
         <Text style={type.body}>
           {pulse?.headline ??
-            "Sync Scores grades board picks and locked tickets. Tiny weight shifts land immediately; big production changes still need a sample and human approval."}
+            "Opening Learning syncs finals (MLB + ESPN sports), maps Hive outcomes, and unlocks blend once enough settled samples land. Pull to refresh to sync again."}
         </Text>
         {pulse?.latest_lesson ? (
           <Text style={type.caption}>Latest lesson: {pulse.latest_lesson}</Text>

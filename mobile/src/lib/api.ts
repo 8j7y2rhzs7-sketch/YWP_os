@@ -158,7 +158,8 @@ export function timeoutMsForPath(path: string, override?: number): number {
     route.startsWith("/sports/prefetch-odds") ||
     route.startsWith("/sports/market-board") ||
     route.startsWith("/sports/day-forge") ||
-    route.startsWith("/sports/build-ticket")
+    route.startsWith("/sports/build-ticket") ||
+    route.startsWith("/sports/settle-day")
   ) {
     return HEAVY_TIMEOUT_MS;
   }

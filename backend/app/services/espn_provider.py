@@ -103,6 +103,57 @@ def match_odds_event_to_espn(
     return best
 
 
+def get_event_summary(sport: str, event_id: str | int) -> dict[str, Any] | None:
+    """Fetch ESPN event summary (boxscore + header) for settlement."""
+    path = espn_path_for(sport)
+    if not path or not event_id:
+        return None
+    try:
+        return _get(
+            f"{SOURCE_API}/{path}/summary",
+            params={"event": str(event_id)},
+            cache_ttl=90,
+        )
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("ESPN summary unavailable for %s %s: %s", sport, event_id, exc)
+        return None
+
+
+def parse_boxscore_player_stats(summary: dict[str, Any] | None) -> list[dict[str, Any]]:
+    """Flatten ESPN summary boxscore players into name + numeric stats."""
+    if not summary:
+        return []
+    box = summary.get("boxscore") or {}
+    rows: list[dict[str, Any]] = []
+    for team_block in box.get("players") or []:
+        team_name = str((team_block.get("team") or {}).get("displayName") or "")
+        for group in team_block.get("statistics") or []:
+            names = [str(n).upper() for n in (group.get("names") or group.get("labels") or [])]
+            for athlete_row in group.get("athletes") or []:
+                athlete = athlete_row.get("athlete") or {}
+                name = str(athlete.get("displayName") or athlete.get("fullName") or "").strip()
+                if not name:
+                    continue
+                raw_stats = athlete_row.get("stats") or []
+                mapped: dict[str, Any] = {
+                    "name": name,
+                    "athlete_id": str(athlete.get("id") or ""),
+                    "team": team_name,
+                }
+                for index, label in enumerate(names):
+                    if index >= len(raw_stats):
+                        break
+                    mapped[label] = _parse_stat_cell(raw_stats[index])
+                # Convenience composites for common prop markets.
+                pts = mapped.get("PTS")
+                reb = mapped.get("REB")
+                ast = mapped.get("AST")
+                if pts is not None and reb is not None and ast is not None:
+                    mapped["PRA"] = float(pts) + float(reb) + float(ast)
+                rows.append(mapped)
+    return rows
+
+
 def probe_espn_api(sport: str = "nfl") -> dict[str, Any]:
     path = espn_path_for(sport)
     if not path:
