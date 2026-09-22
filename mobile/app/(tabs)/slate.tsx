@@ -17,6 +17,11 @@ import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAppData } from "@/context/AppDataContext";
 import { useAuth } from "@/context/AuthContext";
+import {
+  ApiError,
+  EDGE_CHALLENGE_MESSAGE,
+  looksLikeEdgeChallenge,
+} from "@/lib/api";
 import { sportLook } from "@/sportVisuals";
 import { colors, fonts, radius, spacing, type } from "@/theme";
 import type {
@@ -36,6 +41,19 @@ const PROP_SPORTS = new Set(["wnba", "nba", "nfl", "ncaaf"]);
 const MAX_WARM_ROUNDS = 14;
 /** Stop only after this many consecutive zero-gain passes. */
 const STALL_ROUNDS_TO_ARM = 3;
+/** Normal warm-request retries before arming with partial research. */
+const WARM_RETRY_LIMIT = 3;
+/** Extra retries when Cloudflare / edge rate-limits the burst. */
+const WARM_EDGE_RETRY_LIMIT = 5;
+
+function isEdgeThrottleError(reason: unknown): boolean {
+  if (!(reason instanceof Error)) return false;
+  if (looksLikeEdgeChallenge(reason.message)) return true;
+  if (reason.message.includes("Edge protection")) return true;
+  if (!(reason instanceof ApiError)) return false;
+  if (looksLikeEdgeChallenge(reason.details)) return true;
+  return reason.status === 403 || reason.status === 429 || reason.status === 503;
+}
 
 function slateReadiness(slate: SlateResponse): Readiness {
   return slate.readiness ?? (slate.mode === "demo" ? "DEMO" : "PARTIAL");
@@ -236,13 +254,20 @@ export default function SlateScreen() {
         } catch (reason) {
           errors += 1;
           if (epoch !== warmEpoch.current) return null;
+          const edge = isEdgeThrottleError(reason);
+          const limit = edge ? WARM_EDGE_RETRY_LIMIT : WARM_RETRY_LIMIT;
+          const waitMs = edge ? Math.min(16_000, 4_000 * errors) : 1_500;
+          const detail =
+            edge
+              ? EDGE_CHALLENGE_MESSAGE
+              : reason instanceof Error && reason.message.trim()
+                ? reason.message.trim()
+                : "request failed";
           setResearchNote(
-            reason instanceof Error && reason.message.trim()
-              ? `Research retry ${errors}/3 — ${reason.message.trim()}`
-              : `Research retry ${errors}/3…`,
+            `Research retry ${errors}/${limit} — ${detail}`,
           );
-          if (errors >= 3) break;
-          await new Promise((resolve) => setTimeout(resolve, 1500));
+          if (errors >= limit) break;
+          await new Promise((resolve) => setTimeout(resolve, waitMs));
           continue;
         }
         if (epoch !== warmEpoch.current) return null;
@@ -278,6 +303,8 @@ export default function SlateScreen() {
         } else {
           stallRounds = 0;
         }
+        // Brief pause between passes so edge WAF does not treat warm as a bot burst.
+        await new Promise((resolve) => setTimeout(resolve, 900));
       }
       if (epoch === warmEpoch.current) {
         const stillPending = pendingPropCount(candidates);

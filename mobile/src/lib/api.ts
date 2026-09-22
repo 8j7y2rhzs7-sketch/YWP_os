@@ -103,11 +103,42 @@ const HEAVY_TIMEOUT_MS = 90_000;
 /** Full NCAAF cards can be 250–400 candidates and need a longer analyze window. */
 const ANALYZE_TIMEOUT_MS = 180_000;
 
+/** Shown when Cloudflare (or similar) returns an HTML challenge instead of JSON. */
+export const EDGE_CHALLENGE_MESSAGE =
+  "Edge protection paused this request — wait ~15s, then retry. Rapid Refresh can trigger this.";
+
+/** Detect Cloudflare / WAF challenge HTML dumped into API error bodies. */
+export function looksLikeEdgeChallenge(value: unknown): boolean {
+  if (typeof value !== "string") return false;
+  const sample = value.trim().slice(0, 800).toLowerCase();
+  if (!sample) return false;
+  return (
+    sample.startsWith("<!doctype html") ||
+    sample.startsWith("<html") ||
+    sample.includes("just a moment") ||
+    sample.includes("challenges.cloudflare.com") ||
+    sample.includes("cf-browser-verification") ||
+    sample.includes("cdn-cgi/challenge") ||
+    sample.includes("attention required! | cloudflare")
+  );
+}
+
+function clipMessage(text: string, max = 280): string {
+  const trimmed = text.trim();
+  if (trimmed.length <= max) return trimmed;
+  return `${trimmed.slice(0, max - 1)}…`;
+}
+
 function formatApiDetail(detail: unknown, status: number): string {
-  if (typeof detail === "string" && detail.trim()) return detail.trim();
+  if (typeof detail === "string" && detail.trim()) {
+    if (looksLikeEdgeChallenge(detail)) return EDGE_CHALLENGE_MESSAGE;
+    return clipMessage(detail);
+  }
   if (Array.isArray(detail) && detail.length) {
     const parts = detail.map((item) => {
-      if (typeof item === "string") return item;
+      if (typeof item === "string") {
+        return looksLikeEdgeChallenge(item) ? EDGE_CHALLENGE_MESSAGE : item;
+      }
       if (item && typeof item === "object") {
         const row = item as { msg?: unknown; loc?: unknown; type?: unknown };
         const where = Array.isArray(row.loc)
@@ -121,7 +152,7 @@ function formatApiDetail(detail: unknown, status: number): string {
       }
       return "Invalid request";
     });
-    return parts.slice(0, 3).join(" · ");
+    return clipMessage(parts.slice(0, 3).join(" · "));
   }
   if (
     detail &&
@@ -130,13 +161,18 @@ function formatApiDetail(detail: unknown, status: number): string {
     typeof (detail as { message: unknown }).message === "string" &&
     (detail as { message: string }).message.trim()
   ) {
-    return (detail as { message: string }).message.trim();
+    const nested = (detail as { message: string }).message.trim();
+    if (looksLikeEdgeChallenge(nested)) return EDGE_CHALLENGE_MESSAGE;
+    return clipMessage(nested);
   }
   if (status === 401) {
     return "Session expired or not signed in — open Controls and sign in again.";
   }
   if (status === 403) {
     return "Access denied — check subscription / Whop membership, then retry.";
+  }
+  if (status === 429) {
+    return "Too many requests — wait a few seconds, then retry.";
   }
   if (status === 502 || status === 504) {
     return "Server timed out — wait for research to finish, then LAUNCH again. Props still score fail-closed until modeled.";
@@ -203,6 +239,9 @@ export async function rawRequest<T>(
   const apiUrl = getApiUrl() || PRODUCTION_API_URL;
   currentApiUrl = apiUrl;
   const headers = new Headers(init.headers);
+  if (!headers.has("Accept")) {
+    headers.set("Accept", "application/json");
+  }
   if (init.body && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");
   }
@@ -235,9 +274,31 @@ export async function rawRequest<T>(
     clearTimeout(timer);
   }
   const contentType = response.headers.get("content-type") ?? "";
-  const body = contentType.includes("application/json")
-    ? await response.json()
-    : await response.text();
+  const isJson = contentType.includes("application/json");
+  let body: unknown;
+  if (isJson) {
+    try {
+      body = await response.json();
+    } catch {
+      throw new ApiError(
+        "Server returned invalid JSON — wait a moment and retry.",
+        response.status || 502,
+      );
+    }
+  } else {
+    body = await response.text();
+  }
+  // Cloudflare often serves an HTML challenge with 403/503 (or rarely 200).
+  if (
+    looksLikeEdgeChallenge(body) ||
+    (!isJson && typeof body === "string" && /<\/?[a-z][\s\S]*>/i.test(body.slice(0, 200)))
+  ) {
+    throw new ApiError(
+      EDGE_CHALLENGE_MESSAGE,
+      response.status === 200 ? 503 : response.status,
+      body,
+    );
+  }
   if (!response.ok) {
     const detail =
       typeof body === "object" && body !== null && "detail" in body
