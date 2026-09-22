@@ -13,7 +13,15 @@ import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
 import { useAuth } from "@/context/AuthContext";
 import { colors, spacing, type } from "@/theme";
-import type { HiveProgressReport, LearningPulse, MissByOneReport, Performance, ProtocolDefinition, SettleDayResponse } from "@/types";
+import type {
+  HiveProgressReport,
+  LearningPulse,
+  MissByOneReport,
+  OpsHealCycle,
+  Performance,
+  ProtocolDefinition,
+  SettleDayResponse,
+} from "@/types";
 
 interface Patterns {
   root_cause_tags: Array<{ tag: string; count: number }>;
@@ -39,6 +47,7 @@ export default function LearningScreen() {
   const [protocol, setProtocol] = useState<ProtocolDefinition | null>(null);
   const [pulse, setPulse] = useState<LearningPulse | null>(null);
   const [hiveReports, setHiveReports] = useState<HiveProgressReport[]>([]);
+  const [opsHeal, setOpsHeal] = useState<OpsHealCycle | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -57,19 +66,34 @@ export default function LearningScreen() {
           });
           const mapped = settle.hive_outcomes_mapped ?? 0;
           const graded = (settle.graded ?? 0) + (settle.board_graded ?? 0);
+          let healNote = "";
+          try {
+            const heal = await request<OpsHealCycle>("/ops-heal/run", {
+              method: "POST",
+              body: "{}",
+            });
+            setOpsHeal(heal);
+            if (heal?.explanation) {
+              healNote = ` · Ops Heal ${heal.status ?? "ran"}`;
+            }
+          } catch {
+            // Ops Heal is best-effort; Learning still loads Hive pulse.
+          }
           if (mapped || graded) {
             setSyncNote(
-              `Hive sync: ${graded} graded · ${mapped} outcome${mapped === 1 ? "" : "s"} mapped`,
+              `Hive sync: ${graded} graded · ${mapped} outcome${mapped === 1 ? "" : "s"} mapped${healNote}`,
             );
           } else if (settle.pending) {
-            setSyncNote(`${settle.pending} still waiting on finals`);
+            setSyncNote(`${settle.pending} still waiting on finals${healNote}`);
+          } else if (healNote) {
+            setSyncNote(`Ops Heal ran${healNote}`);
           } else {
             setSyncNote(null);
           }
         } catch {
           // Learning screen still loads pulse/performance if settle is cold.
         }
-        const [nextPerformance, nextMiss, nextPatterns, nextProtocol, nextPulse, nextHive] =
+        const [nextPerformance, nextMiss, nextPatterns, nextProtocol, nextPulse, nextHive, nextHeal] =
           await Promise.all([
             request<Performance>("/learning/performance"),
             request<MissByOneReport>("/learning/miss-by-one"),
@@ -77,6 +101,7 @@ export default function LearningScreen() {
             request<ProtocolDefinition>("/protocol/current"),
             request<LearningPulse>("/learning/pulse"),
             request<{ reports: HiveProgressReport[] }>("/hive/progress-reports?limit=12"),
+            request<OpsHealCycle>("/ops-heal/status").catch(() => null),
           ]);
         setPerformance(nextPerformance);
         setMiss(nextMiss);
@@ -84,6 +109,7 @@ export default function LearningScreen() {
         setProtocol(nextProtocol);
         setPulse(nextPulse);
         setHiveReports(nextHive.reports ?? []);
+        if (nextHeal) setOpsHeal(nextHeal);
       } catch (reason) {
         setError(reason instanceof Error ? reason.message : "Learning data failed to load");
       } finally {
@@ -157,7 +183,7 @@ export default function LearningScreen() {
 
       <SectionTitle
         title="Hive Progress Reports"
-        subtitle="Automatic snapshots after Sync Scores — living evidence growth, not slogans."
+        subtitle="Pick calibration from settled WIN/LOSS — separate from product self-heal."
       />
       <MetalPanel tone={hiveReports.length ? "success" : "default"}>
         {hiveReports.length ? (
@@ -187,6 +213,68 @@ export default function LearningScreen() {
             each graded outcome writes a progress snapshot and strengthens tomorrow’s blends.
           </Text>
         )}
+      </MetalPanel>
+
+      <SectionTitle
+        title="Ops Heal"
+        subtitle="Product health bot — Day Forge, Decision Board, settlement stalls. Allowlisted fixes only."
+      />
+      <MetalPanel
+        tone={
+          opsHeal?.status === "healthy"
+            ? "success"
+            : opsHeal?.status === "critical"
+              ? "danger"
+              : "default"
+        }
+      >
+        <View style={styles.row}>
+          <View style={styles.flex}>
+            <Text style={type.eyebrow}>PRODUCT SELF-HEAL</Text>
+            <Text style={styles.title}>
+              {opsHeal?.status === "idle"
+                ? "Standing by"
+                : opsHeal?.status
+                  ? opsHeal.status.replaceAll("_", " ")
+                  : "Not run yet"}
+            </Text>
+          </View>
+          <StatusPill
+            value={(opsHeal?.status ?? "IDLE").toUpperCase()}
+          />
+        </View>
+        <Text style={type.body}>
+          {opsHeal?.explanation ??
+            "Ops Heal watches health contracts and runs allowlisted remediations (settle-day, Hive sync, Day Forge probe). It does not edit app code."}
+        </Text>
+        {(opsHeal?.contracts ?? []).length ? (
+          <View style={{ marginTop: spacing.sm }}>
+            {(opsHeal?.contracts ?? []).map((contract) => (
+              <View key={contract.contract_id} style={styles.dataRow}>
+                <View style={styles.flex}>
+                  <Text style={styles.dataName}>{contract.title}</Text>
+                  <Text style={type.caption}>{contract.detail}</Text>
+                </View>
+                <Text
+                  style={[
+                    styles.dataValue,
+                    { color: contract.ok ? colors.success : colors.danger },
+                  ]}
+                >
+                  {contract.ok ? "OK" : contract.severity.toUpperCase()}
+                </Text>
+              </View>
+            ))}
+          </View>
+        ) : null}
+        {(opsHeal?.applied_remediations ?? []).length ? (
+          <Text style={[type.caption, { marginTop: spacing.sm }]}>
+            Applied:{" "}
+            {(opsHeal?.applied_remediations ?? [])
+              .map((r) => r.remediation_id)
+              .join(", ")}
+          </Text>
+        ) : null}
       </MetalPanel>
 
       {(pulse?.active_shifts ?? []).length ? (

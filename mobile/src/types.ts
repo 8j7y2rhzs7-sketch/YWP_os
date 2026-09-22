@@ -266,6 +266,26 @@ export interface HiveProgressReport {
   living_effect?: string | null;
 }
 
+export interface OpsHealContract {
+  contract_id: string;
+  title: string;
+  ok: boolean;
+  severity: string;
+  detail: string;
+}
+
+export interface OpsHealCycle {
+  id?: string;
+  bot?: string;
+  status: string;
+  explanation?: string;
+  trigger?: string;
+  created_at?: string | null;
+  contracts?: OpsHealContract[];
+  planned_remediations?: string[];
+  applied_remediations?: Array<{ remediation_id: string; ok: boolean; detail: string }>;
+}
+
 export interface TicketCard {
   key: string;
   label: string;

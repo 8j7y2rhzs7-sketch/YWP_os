@@ -52,8 +52,26 @@ def submit_error_report(
             },
         )
     )
+    # Second bot: product self-heal (not Hive pick calibration).
+    heal_note = None
+    if user is not None:
+        try:
+            from app.services.ops_heal import classify_error_for_heal, run_ops_heal_cycle
+
+            if classify_error_for_heal(payload.message, payload.screen):
+                cycle = run_ops_heal_cycle(
+                    db=db,
+                    user_id=user.id,
+                    timezone_name=getattr(user, "timezone", None),
+                    trigger="error_report",
+                    apply=True,
+                )
+                heal_note = cycle.get("explanation")
+        except Exception:  # noqa: BLE001 — never block error intake
+            pass
     db.commit()
-    return MessageOut(message=f"Error report {report.id} received. Thank you.")
+    suffix = f" Ops Heal: {heal_note}" if heal_note else ""
+    return MessageOut(message=f"Error report {report.id} received. Thank you.{suffix}")
 
 
 @router.get("", response_model=list[ErrorReportOut])

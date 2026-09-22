@@ -1,6 +1,18 @@
 from fastapi import APIRouter
 
-from app.api import auth, bankroll, errors, health, learning, protocols, sports, tickets, users, whop
+from app.api import (
+    auth,
+    bankroll,
+    errors,
+    health,
+    learning,
+    ops_heal,
+    protocols,
+    sports,
+    tickets,
+    users,
+    whop,
+)
 from app.hive.router import router as hive_router
 
 api_router = APIRouter()
@@ -13,5 +25,6 @@ api_router.include_router(sports.router)
 api_router.include_router(tickets.router)
 api_router.include_router(learning.router)
 api_router.include_router(errors.router)
+api_router.include_router(ops_heal.router)
 api_router.include_router(whop.router)
 api_router.include_router(hive_router)

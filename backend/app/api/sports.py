@@ -1565,6 +1565,19 @@ def settle_day(user: SubscribedUser, db: DB) -> SettleDayResponse:
     """
     result = settle_user_day(db, user.id, timezone_name=user.timezone)
     items = result.items
+    # Product self-heal bot runs after settle — separate from Hive pick blend.
+    try:
+        from app.services.ops_heal import run_ops_heal_cycle
+
+        run_ops_heal_cycle(
+            db=db,
+            user_id=user.id,
+            timezone_name=user.timezone,
+            trigger="settle_day",
+            apply=True,
+        )
+    except Exception:  # noqa: BLE001
+        logger.exception("Ops Heal cycle failed after settle-day")
     return SettleDayResponse(
         graded=sum(1 for item in items if item.status == "graded"),
         pending=sum(1 for item in items if item.status == "pending"),
