@@ -14,7 +14,10 @@ from app.schemas import CandidateInput
 from app.services.facts_cascade import league_injuries
 from app.services.market_board import _flatten_prop_markets
 from app.services.odds_provider import extract_best_odds, get_game_odds, get_player_props
-from app.services.player_prop_research import enrich_player_prop_candidates
+from app.services.player_prop_research import (
+    enrich_player_prop_candidates,
+    schedule_background_prop_enrich,
+)
 from app.services.sport_research import build_event_research, build_verified_candidate
 
 logger = logging.getLogger(__name__)
@@ -53,7 +56,8 @@ def wnba_props_slate_notice() -> str:
         return "Player props collected but none flattened for this slate."
     return (
         f"Player props on slate: {props_n} line(s) across {priced} game(s) "
-        f"({model_n} ESPN form-modeled for protocol)."
+        f"({model_n} ESPN form-modeled for protocol — research keeps warming "
+        f"in the background; wait ~1 min then LAUNCH for fuller coverage)."
     )
 
 
@@ -275,12 +279,19 @@ def _append_wnba_player_props(
     # Always keep collected Odds props on the raw list; upgrade in place to model
     # when ESPN L5/L10 resolves so Strict Mode can PLAY instead of hard-SKIP.
     if out:
-        # Keep slate refresh under Render's ~30s proxy — full enrich happens
-        # (budgeted again) on LAUNCH for remaining market_implied rows.
-        budget = 8.0 if len(out) >= 200 else 14.0
+        # Request-path budget stays short for Render. Background warm continues
+        # filling the process cache so a later LAUNCH sees far more model rows.
+        budget = 10.0 if len(out) >= 200 else 14.0
         out = enrich_player_prop_candidates(
             out, slate_date=slate_date, budget_seconds=budget
         )
+        remaining = [
+            row for row in out if row.probability_source == "market_implied"
+        ]
+        if remaining:
+            schedule_background_prop_enrich(
+                remaining, slate_date=slate_date, budget_seconds=90.0
+            )
     model_n = sum(1 for row in out if row.probability_source == "model")
     _last_props_status.update(
         {

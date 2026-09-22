@@ -238,6 +238,7 @@ def test_live_wnba_slate_enriches_props_in_place() -> None:
         patch.object(wnba, "build_event_research", return_value=research),
         patch.object(wnba, "get_player_props", return_value=prop_payload),
         patch.object(wnba, "enrich_player_prop_candidates", side_effect=fake_enrich),
+        patch.object(wnba, "schedule_background_prop_enrich", return_value=False),
         patch.object(wnba.settings, "wnba_max_prop_events", 10),
     ):
         slate = wnba.live_wnba_slate(date(2026, 9, 17))
@@ -249,9 +250,11 @@ def test_live_wnba_slate_enriches_props_in_place() -> None:
     assert status["prop_candidates"] >= 1
     assert status["model_props"] >= 1
     assert "ESPN form-modeled" in wnba.wnba_props_slate_notice()
+    assert "background" in wnba.wnba_props_slate_notice().lower()
 
 
 def test_enrich_skips_already_modeled_props_without_espn() -> None:
+    player_prop_research.clear_prop_enrich_cache()
     modeled = _board_prop(
         probability_source="model",
         data_source="ESPN_PLAYER_PROP_MODEL",
@@ -266,3 +269,64 @@ def test_enrich_skips_already_modeled_props_without_espn() -> None:
     assert out[0].probability_source == "model"
     assert enrich_one.call_count == 1
     assert enrich_one.call_args.args[0].candidate_id == "still-market"
+
+
+def test_enrich_process_cache_reused_on_second_pass() -> None:
+    player_prop_research.clear_prop_enrich_cache()
+    pending = _board_prop(candidate_id="cache-me")
+    modeled = _board_prop(
+        probability_source="model",
+        data_source="ESPN_PLAYER_PROP_MODEL",
+        candidate_id="cache-me",
+        estimated_probability=0.61,
+    )
+    with patch.object(player_prop_research, "_enrich_one", return_value=modeled) as enrich_one:
+        first = player_prop_research.enrich_player_prop_candidates(
+            [pending], slate_date=date(2026, 9, 17), budget_seconds=5.0
+        )
+        second = player_prop_research.enrich_player_prop_candidates(
+            [_board_prop(candidate_id="cache-me")],
+            slate_date=date(2026, 9, 17),
+            budget_seconds=5.0,
+        )
+    assert first[0].probability_source == "model"
+    assert second[0].probability_source == "model"
+    assert enrich_one.call_count == 1
+
+
+def test_enrich_priority_puts_core_high_freq_players_first() -> None:
+    player_prop_research.clear_prop_enrich_cache()
+    star_pts = _board_prop(
+        candidate_id="star-pts",
+        selection="A'ja Wilson Over 22.5 points",
+        market_type="player_points_over",
+        american_odds=-110,
+    )
+    star_reb = _board_prop(
+        candidate_id="star-reb",
+        selection="A'ja Wilson Over 9.5 rebounds",
+        market_type="player_rebounds_over",
+        american_odds=-105,
+    )
+    bench_exotic = _board_prop(
+        candidate_id="bench-to",
+        selection="Bench Player Over 1.5 turnovers",
+        market_type="player_turnovers_over",
+        american_odds=-200,
+    )
+    seen: list[str] = []
+
+    def track(candidate, **kwargs):
+        seen.append(candidate.candidate_id)
+        return None
+
+    with patch.object(player_prop_research, "_enrich_one", side_effect=track):
+        player_prop_research.enrich_player_prop_candidates(
+            [bench_exotic, star_pts, star_reb],
+            slate_date=date(2026, 9, 17),
+            budget_seconds=5.0,
+        )
+    # Wilson appears twice → both Wilson rows before the single bench exotic.
+    assert seen[0].startswith("star-")
+    assert seen[1].startswith("star-")
+    assert seen[2] == "bench-to"

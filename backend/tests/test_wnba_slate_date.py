@@ -202,8 +202,9 @@ def test_wnba_raw_slate_includes_player_props() -> None:
         patch.object(
             wnba,
             "enrich_player_prop_candidates",
-            side_effect=lambda rows, slate_date=None: rows,
+            side_effect=lambda rows, slate_date=None, budget_seconds=14.0: rows,
         ),
+        patch.object(wnba, "schedule_background_prop_enrich", return_value=False),
     ):
         slate = wnba.live_wnba_slate(date(2026, 9, 17))
 

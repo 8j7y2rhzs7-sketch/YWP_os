@@ -24,7 +24,10 @@ from app.services.odds_provider import (
     soccer_league_label,
     soccer_odds_regions,
 )
-from app.services.player_prop_research import enrich_player_prop_candidates
+from app.services.player_prop_research import (
+    enrich_player_prop_candidates,
+    schedule_background_prop_enrich,
+)
 from app.services.sport_research import build_event_research, build_verified_candidate
 
 logger = logging.getLogger(__name__)
@@ -257,12 +260,18 @@ def _append_football_player_props(
             logger.exception("Flatten %s prop markets failed for %s", sport, event_id)
 
     if out:
-        # Keep slate refresh under Render's ~30s proxy — full enrich happens
-        # (budgeted again) on LAUNCH for remaining market_implied rows.
-        budget = 8.0 if len(out) >= 200 else 14.0
+        # Keep slate refresh under Render's ~30s proxy; background warm continues.
+        budget = 10.0 if len(out) >= 200 else 14.0
         out = enrich_player_prop_candidates(
             out, slate_date=slate_date, budget_seconds=budget
         )
+        remaining = [
+            row for row in out if row.probability_source == "market_implied"
+        ]
+        if remaining:
+            schedule_background_prop_enrich(
+                remaining, slate_date=slate_date, budget_seconds=90.0
+            )
     return out
 
 

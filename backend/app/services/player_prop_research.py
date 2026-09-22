@@ -3,13 +3,21 @@
 Collected Odds lines alone are market_implied and always SKIP. After collection,
 attach independent L5/L10 hit-rate projections (WNBA/NBA/NFL/NCAAF) so the
 protocol has real model inputs instead of dead MENU rows.
+
+Coverage strategy (without blowing Render's ~30s request limit):
+1. Process-wide TTL cache so REFRESH → wait → LAUNCH reuses ESPN work.
+2. Prioritize high-leverage props inside the request budget.
+3. Parallel ESPN lookups (small worker pool) while the budget remains.
+4. Background warm after slate refresh fills the cache while the user scans.
 """
 
 from __future__ import annotations
 
 import logging
 import re
+import threading
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date
 from typing import Any
 
@@ -19,6 +27,14 @@ from app.services import espn_provider
 logger = logging.getLogger(__name__)
 
 PROP_MODEL_SPORTS = frozenset({"wnba", "nba", "nfl", "ncaaf", "basketball"})
+
+# Process-local enriched-prop cache (survives across slate refresh → LAUNCH).
+_PROP_CACHE_TTL_SECONDS = 20 * 60
+_prop_cache: dict[tuple[Any, ...], tuple[float, dict[str, Any] | None]] = {}
+_prop_cache_lock = threading.Lock()
+_bg_lock = threading.Lock()
+_bg_running = False
+_ENRICH_WORKERS = 3
 
 # Stat keys consumed by _stat_series. Combos resolve from components.
 _PLAYER_STAT_BY_MARKET: dict[str, str] = {
@@ -156,6 +172,144 @@ _CUSHION_SCALE_BY_STAT: dict[str, float] = {
 }
 
 
+def _cache_key(
+    candidate: CandidateInput,
+    *,
+    sport: str,
+    slate_date: date | None,
+) -> tuple[Any, ...]:
+    day = (slate_date or candidate.start_time.date()).isoformat()
+    return (
+        sport,
+        str(candidate.market_type or ""),
+        str(candidate.selection or "").casefold(),
+        float(candidate.line) if candidate.line is not None else 0.0,
+        day,
+    )
+
+
+def _cache_get(key: tuple[Any, ...]) -> CandidateInput | None | object:
+    """Return CandidateInput, None (known miss), or _CACHE_MISS sentinel."""
+    now = time.monotonic()
+    with _prop_cache_lock:
+        row = _prop_cache.get(key)
+        if row is None:
+            return _CACHE_MISS
+        fetched_at, payload = row
+        if now - fetched_at >= _PROP_CACHE_TTL_SECONDS:
+            _prop_cache.pop(key, None)
+            return _CACHE_MISS
+    if payload is None:
+        return None
+    try:
+        return CandidateInput.model_validate(payload)
+    except Exception:
+        return _CACHE_MISS
+
+
+def _cache_put(key: tuple[Any, ...], upgraded: CandidateInput | None) -> None:
+    payload = upgraded.model_dump(mode="json") if upgraded is not None else None
+    with _prop_cache_lock:
+        _prop_cache[key] = (time.monotonic(), payload)
+
+
+_CACHE_MISS = object()
+
+
+def _player_token(candidate: CandidateInput) -> str:
+    text = str(candidate.selection or "")
+    parsed = _SELECTION_PLAYER_RE.match(text) or _SELECTION_YES_RE.match(text)
+    if parsed:
+        return parsed.group("player").strip().casefold()
+    return text.casefold()[:48]
+
+
+def _enrich_priority(
+    candidate: CandidateInput, *, player_freq: dict[str, int]
+) -> tuple[int, int, int]:
+    """Higher-leverage props first inside a fixed time budget.
+
+    1. Players with more priced markets (one ESPN resolve unlocks many rows)
+    2. Core counting markets before exotics
+    3. Juice closer to even money (more ticket-actionable)
+    """
+    token = _player_token(candidate)
+    freq = player_freq.get(token, 1)
+    market = str(candidate.market_type or "").lower()
+    core_tokens = (
+        "points",
+        "rebounds",
+        "assists",
+        "threes",
+        "pass_yds",
+        "rush_yds",
+        "rec_yds",
+        "receptions",
+        "anytime_td",
+    )
+    core = 0 if any(token in market for token in core_tokens) else 1
+    odds = int(candidate.american_odds or -110)
+    juice_distance = abs(odds + 110)
+    return (-freq, core, juice_distance)
+
+
+def clear_prop_enrich_cache() -> None:
+    """Test helper — drop process-local enriched prop cache."""
+    with _prop_cache_lock:
+        _prop_cache.clear()
+
+
+def schedule_background_prop_enrich(
+    candidates: list[CandidateInput],
+    *,
+    slate_date: date | None = None,
+    budget_seconds: float = 75.0,
+) -> bool:
+    """Continue ESPN form modeling off the request path after slate refresh.
+
+    Returns True when a background worker was started. LAUNCH then hits cache
+    for rows already modeled — coverage rises without extending request timeout.
+    """
+    global _bg_running
+    pending = [
+        c
+        for c in candidates
+        if str(c.market_type or "").startswith("player_")
+        and c.probability_source == "market_implied"
+        and (c.sport or "").lower() in PROP_MODEL_SPORTS
+    ]
+    if not pending or budget_seconds <= 0:
+        return False
+    with _bg_lock:
+        if _bg_running:
+            return False
+        _bg_running = True
+
+    snapshot = list(pending)
+
+    def _work() -> None:
+        global _bg_running
+        try:
+            enrich_player_prop_candidates(
+                snapshot,
+                slate_date=slate_date,
+                budget_seconds=budget_seconds,
+            )
+            logger.info(
+                "Background prop enrich finished pending=%s budget=%.1fs",
+                len(snapshot),
+                budget_seconds,
+            )
+        except Exception:
+            logger.exception("Background prop enrich failed")
+        finally:
+            with _bg_lock:
+                _bg_running = False
+
+    threading.Thread(target=_work, name="ywp-prop-enrich-bg", daemon=True).start()
+    return True
+
+
 def enrich_player_prop_candidates(
     candidates: list[CandidateInput],
     *,
@@ -165,64 +319,137 @@ def enrich_player_prop_candidates(
     """Return candidates with player props upgraded to independent form projections.
 
     Large boards (400+ props) used to burn the whole request on ESPN lookups and
-    502 on Render. Enrich until the wall-clock budget is hit, then grade the rest
-    with the sportsbook line as-is so LAUNCH still completes.
+    502 on Render. Enrich until the wall-clock budget is hit (priority order,
+    shared cache, small parallel pool), then grade the rest with the sportsbook
+    line as-is so LAUNCH still completes. Unmodeled rows stay SKIP — never a
+    fabricated PLAY.
     """
     if not candidates:
         return candidates
     started = time.monotonic()
-    out: list[CandidateInput] = []
-    roster_cache: dict[tuple[str, str], str | None] = {}
-    form_cache: dict[tuple[str, str, str, float, bool], CandidateInput | None] = {}
-    enriched = 0
-    skipped_budget = 0
-    for candidate in candidates:
+    deadline = started + max(0.0, budget_seconds)
+
+    # Preserve input order in the returned list.
+    out: list[CandidateInput | None] = [None] * len(candidates)
+    work_idx: list[int] = []
+    cache_hits = 0
+    already_model = 0
+
+    for i, candidate in enumerate(candidates):
         sport = (candidate.sport or "").lower()
         if sport not in PROP_MODEL_SPORTS or not str(candidate.market_type).startswith("player_"):
-            out.append(candidate)
+            out[i] = candidate
             continue
-        # Slate refresh may have already attached ESPN form — do not burn the
-        # analyze budget re-hitting ESPN for modeled props.
         if candidate.probability_source in {"model", "manual_verified"}:
-            out.append(candidate)
+            out[i] = candidate
+            already_model += 1
             continue
         if sport == "basketball":
             sport = "nba"
-        if (time.monotonic() - started) >= max(0.0, budget_seconds):
-            out.append(candidate)
-            skipped_budget += 1
+        key = _cache_key(candidate, sport=sport, slate_date=slate_date)
+        cached = _cache_get(key)
+        if cached is not _CACHE_MISS:
+            cache_hits += 1
+            out[i] = cached or candidate
             continue
-        cache_key = (
-            sport,
-            str(candidate.market_type or ""),
-            str(candidate.selection or "").casefold(),
-            float(candidate.line) if candidate.line is not None else 0.0,
-            True,
-        )
-        if cache_key in form_cache:
-            cached = form_cache[cache_key]
-            out.append(cached or candidate)
-            continue
+        work_idx.append(i)
+
+    player_freq: dict[str, int] = {}
+    for i in work_idx:
+        token = _player_token(candidates[i])
+        player_freq[token] = player_freq.get(token, 0) + 1
+    work_idx.sort(
+        key=lambda i: _enrich_priority(candidates[i], player_freq=player_freq)
+    )
+
+    enriched = 0
+    skipped_budget = 0
+
+    def _sport_for(candidate: CandidateInput) -> str:
+        sport = (candidate.sport or "").lower()
+        return "nba" if sport == "basketball" else sport
+
+    def _run_one(idx: int) -> tuple[int, CandidateInput | None]:
+        candidate = candidates[idx]
+        sport = _sport_for(candidate)
+        # Per-worker roster map — ESPN team/athlete HTTP is already TTL-cached.
+        local_roster: dict[tuple[str, str], str | None] = {}
         try:
             upgraded = _enrich_one(
-                candidate, sport=sport, slate_date=slate_date, roster_cache=roster_cache
+                candidate, sport=sport, slate_date=slate_date, roster_cache=local_roster
             )
         except Exception:
             logger.exception("Player prop enrichment failed for %s", candidate.candidate_id)
             upgraded = None
-        form_cache[cache_key] = upgraded
-        if upgraded is not None:
-            enriched += 1
-        out.append(upgraded or candidate)
-    if skipped_budget:
-        logger.warning(
-            "Player prop enrichment budget %.1fs hit — enriched=%s deferred=%s total=%s",
+        key = _cache_key(candidate, sport=sport, slate_date=slate_date)
+        _cache_put(key, upgraded)
+        return idx, upgraded
+
+    # Parallel ESPN lookups until the budget is exhausted.
+    idx_cursor = 0
+    in_flight: dict[Any, int] = {}
+    workers = _ENRICH_WORKERS if budget_seconds >= 3.0 and len(work_idx) > 1 else 1
+    with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="prop-enrich") as pool:
+        while idx_cursor < len(work_idx) or in_flight:
+            now = time.monotonic()
+            if now >= deadline:
+                skipped_budget += len(work_idx) - idx_cursor + len(in_flight)
+                for i in in_flight.values():
+                    if out[i] is None:
+                        out[i] = candidates[i]
+                for i in work_idx[idx_cursor:]:
+                    if out[i] is None:
+                        out[i] = candidates[i]
+                in_flight.clear()
+                break
+            while (
+                idx_cursor < len(work_idx)
+                and len(in_flight) < workers
+                and time.monotonic() < deadline
+            ):
+                i = work_idx[idx_cursor]
+                idx_cursor += 1
+                fut = pool.submit(_run_one, i)
+                in_flight[fut] = i
+            if not in_flight:
+                break
+            remaining = max(0.05, deadline - time.monotonic())
+            try:
+                done = next(as_completed(list(in_flight.keys()), timeout=remaining))
+            except TimeoutError:
+                skipped_budget += len(work_idx) - idx_cursor + len(in_flight)
+                for i in in_flight.values():
+                    if out[i] is None:
+                        out[i] = candidates[i]
+                for i in work_idx[idx_cursor:]:
+                    if out[i] is None:
+                        out[i] = candidates[i]
+                in_flight.clear()
+                break
+            i = in_flight.pop(done)
+            try:
+                _, upgraded = done.result()
+            except Exception:
+                logger.exception("Prop enrich worker failed")
+                upgraded = None
+            if upgraded is not None:
+                enriched += 1
+                out[i] = upgraded
+            else:
+                out[i] = candidates[i]
+
+    if skipped_budget or cache_hits or enriched:
+        logger.info(
+            "Player prop enrich budget=%.1fs enriched=%s cache_hits=%s "
+            "already_model=%s deferred=%s total=%s",
             budget_seconds,
             enriched,
+            cache_hits,
+            already_model,
             skipped_budget,
             len(candidates),
         )
-    return out
+    return [row if row is not None else candidates[i] for i, row in enumerate(out)]
 
 
 def min_prop_cushion(candidate: CandidateInput) -> float:

@@ -32,11 +32,14 @@ def clean_database():
 @pytest.fixture(autouse=True)
 def clear_process_caches():
     """Isolate process-local single-flight / odds caches between tests."""
+    from app.services.player_prop_research import clear_prop_enrich_cache
     from app.services.single_flight import clear_single_flight_cache
 
     clear_single_flight_cache()
+    clear_prop_enrich_cache()
     yield
     clear_single_flight_cache()
+    clear_prop_enrich_cache()
 
 
 @pytest.fixture
