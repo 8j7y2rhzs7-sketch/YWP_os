@@ -290,7 +290,7 @@ def slate(
                     mode="live",
                     notice=(
                         "Live WNBA from The Odds API: full-game markets plus player "
-                        "props (points/rebounds/assists/threes/PRA). "
+                        "props (points/rebounds/assists/threes/PRA/blocks/steals). "
                         + wnba_props_slate_notice()
                     ),
                     candidates=candidates,

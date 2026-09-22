@@ -44,9 +44,24 @@ _PROP_MARKETS_BY_SPORT: dict[str, str] = {
         "batter_hits,batter_runs_scored,batter_rbis,batter_home_runs,batter_total_bases,"
         "batter_hits_runs_rbis,batter_stolen_bases,batter_walks"
     ),
-    "nba": "player_points,player_rebounds,player_assists,player_threes,player_blocks,player_steals",
-    "wnba": "player_points,player_rebounds,player_assists,player_threes,player_points_rebounds_assists",
-    "nfl": "player_pass_yds,player_rush_yds,player_reception_yds,player_pass_tds,player_receptions,player_anytime_td",
+    "nba": (
+        "player_points,player_rebounds,player_assists,player_threes,"
+        "player_points_rebounds_assists,player_blocks,player_steals"
+    ),
+    "wnba": (
+        "player_points,player_rebounds,player_assists,player_threes,"
+        "player_points_rebounds_assists,player_blocks,player_steals"
+    ),
+    # NFL Sheet: same breadth as NCAAF all-categories sweep (credits × events).
+    "nfl": (
+        "player_pass_yds,player_pass_tds,player_pass_completions,player_pass_attempts,"
+        "player_pass_interceptions,player_rush_yds,player_rush_tds,player_rush_attempts,"
+        "player_reception_yds,player_receptions,player_reception_tds,player_anytime_td,"
+        "player_pass_rush_yds,player_rush_reception_yds,player_pass_rush_reception_yds,"
+        "player_pass_rush_reception_tds,player_tds_over,"
+        "player_kicking_points,player_field_goals,player_pats,"
+        "player_pass_longest_completion,player_reception_longest,player_rush_longest"
+    ),
     # NCAAF Sheet categories priced via Odds event markets (ESPN is facts-only).
     # Covers: TD scorers, pass/rush/rec, combo yards, kicking, longest, Q1 pass yards, total TDs.
     # Deferred (no Odds key / thin books): fantasy points, game highs, full each-half player menus.
@@ -71,7 +86,9 @@ _PERIOD_MARKETS_BY_SPORT: dict[str, str] = {
 # Cap prop/period event fan-out for huge Saturday NCAAF slates.
 _BOARD_MAX_PROP_EVENTS_BY_SPORT: dict[str, int] = {
     "ncaaf": 3,
+    "nfl": 6,
     "wnba": 10,
+    "nba": 8,
 }
 
 _LEAGUE: dict[str, str] = {

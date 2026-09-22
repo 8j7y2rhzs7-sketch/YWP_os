@@ -23,7 +23,7 @@ SPORT_KEY = "basketball_wnba"
 # Same menu as Pick Sheet WNBA board — credits scale with markets × events.
 WNBA_PROP_MARKETS = (
     "player_points,player_rebounds,player_assists,player_threes,"
-    "player_points_rebounds_assists"
+    "player_points_rebounds_assists,player_blocks,player_steals"
 )
 
 _last_props_status: dict[str, Any] = {
