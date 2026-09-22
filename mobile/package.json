@@ -11,7 +11,7 @@
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
     "doctor": "npx expo-doctor@latest",
-    "build:apk": "cd android && ./gradlew assembleRelease -PreactNativeArchitectures=armeabi-v7a,arm64-v8a -x lintVitalAnalyzeRelease -x lintVitalReportRelease -x lintVitalRelease",
+    "build:apk": "cd android && ./gradlew :app:assembleRelease -PreactNativeArchitectures=armeabi-v7a,arm64-v8a",
     "build:ios:preview": "npx eas-cli build --platform ios --profile preview",
     "build:ios:production": "npx eas-cli build --platform ios --profile production",
     "submit:ios": "npx eas-cli submit --platform ios --profile production"
