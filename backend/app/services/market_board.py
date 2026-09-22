@@ -46,11 +46,17 @@ _PROP_MARKETS_BY_SPORT: dict[str, str] = {
     ),
     "nba": (
         "player_points,player_rebounds,player_assists,player_threes,"
-        "player_points_rebounds_assists,player_blocks,player_steals"
+        "player_points_rebounds_assists,player_points_rebounds,player_points_assists,"
+        "player_rebounds_assists,player_blocks,player_steals,player_blocks_steals,"
+        "player_turnovers,player_double_double,player_triple_double,"
+        "player_field_goals,player_frees_made"
     ),
     "wnba": (
         "player_points,player_rebounds,player_assists,player_threes,"
-        "player_points_rebounds_assists,player_blocks,player_steals"
+        "player_points_rebounds_assists,player_points_rebounds,player_points_assists,"
+        "player_rebounds_assists,player_blocks,player_steals,player_blocks_steals,"
+        "player_turnovers,player_double_double,player_triple_double,"
+        "player_field_goals,player_frees_made"
     ),
     # NFL Sheet: same breadth as NCAAF all-categories sweep (credits × events).
     "nfl": (
@@ -662,6 +668,12 @@ def _flatten_prop_markets(
             elif "1st_td" in key_cf or "first_td" in key_cf:
                 market_type = "player_first_td_yes"
                 selection = f"{player} First TD"
+            elif "double_double" in key_cf and "triple" not in key_cf:
+                market_type = "player_double_double_yes"
+                selection = f"{player} Double Double"
+            elif "triple_double" in key_cf:
+                market_type = "player_triple_double_yes"
+                selection = f"{player} Triple Double"
             else:
                 safe = re.sub(r"[^a-z0-9]+", "_", key_cf).strip("_") or "player_prop"
                 market_type = f"{safe}_yes"[:50]
@@ -783,8 +795,15 @@ def _prop_market_meta(market_key: str, *, is_over: bool) -> tuple[str, str, bool
         "player_pass_longest_completion": ("player_longest_pass", "longest completion"),
         "player_reception_longest": ("player_longest_rec", "longest reception"),
         "player_rush_longest": ("player_longest_rush", "longest rush"),
-        # Basketball (NBA / WNBA)
+        # Basketball (NBA / WNBA) — full Odds player-prop menu including combos / DD.
         "player_points_rebounds_assists": ("player_pra", "pts+reb+ast"),
+        "player_points_rebounds": ("player_pr", "pts+reb"),
+        "player_points_assists": ("player_pa", "pts+ast"),
+        "player_rebounds_assists": ("player_ra", "reb+ast"),
+        "player_blocks_steals": ("player_blocks_steals", "blk+stl"),
+        "player_turnovers": ("player_turnovers", "turnovers"),
+        "player_field_goals": ("player_fg", "field goals"),
+        "player_frees_made": ("player_frees_made", "FT made"),
         "player_points": ("player_points", "points"),
         "player_rebounds": ("player_rebounds", "rebounds"),
         "player_assists": ("player_assists", "assists"),

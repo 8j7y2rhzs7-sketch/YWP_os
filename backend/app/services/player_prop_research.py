@@ -17,6 +17,7 @@ from app.services import espn_provider
 
 logger = logging.getLogger(__name__)
 
+# Stat keys consumed by _stat_series. Combos resolve from components.
 _PLAYER_STAT_BY_MARKET: dict[str, str] = {
     "player_points_over": "points",
     "player_points_under": "points",
@@ -26,21 +27,61 @@ _PLAYER_STAT_BY_MARKET: dict[str, str] = {
     "player_assists_under": "assists",
     "player_threes_over": "threePointFieldGoalsMade",
     "player_threes_under": "threePointFieldGoalsMade",
-    # Flatten uses player_pra_* for Odds player_points_rebounds_assists.
     "player_pra_over": "pra",
     "player_pra_under": "pra",
     "player_points_rebounds_assists_over": "pra",
     "player_points_rebounds_assists_under": "pra",
+    "player_pr_over": "pr",
+    "player_pr_under": "pr",
+    "player_points_rebounds_over": "pr",
+    "player_points_rebounds_under": "pr",
+    "player_pa_over": "pa",
+    "player_pa_under": "pa",
+    "player_points_assists_over": "pa",
+    "player_points_assists_under": "pa",
+    "player_ra_over": "ra",
+    "player_ra_under": "ra",
+    "player_rebounds_assists_over": "ra",
+    "player_rebounds_assists_under": "ra",
     "player_blocks_over": "blocks",
     "player_blocks_under": "blocks",
     "player_steals_over": "steals",
     "player_steals_under": "steals",
+    "player_blocks_steals_over": "blocks_steals",
+    "player_blocks_steals_under": "blocks_steals",
+    "player_turnovers_over": "turnovers",
+    "player_turnovers_under": "turnovers",
+    "player_fg_over": "fieldGoalsMade",
+    "player_fg_under": "fieldGoalsMade",
+    "player_field_goals_over": "fieldGoalsMade",
+    "player_field_goals_under": "fieldGoalsMade",
+    "player_frees_made_over": "freeThrowsMade",
+    "player_frees_made_under": "freeThrowsMade",
+    # Yes / No specials
+    "player_double_double_yes": "double_double",
+    "player_triple_double_yes": "triple_double",
 }
 
 _SELECTION_PLAYER_RE = re.compile(
     r"^(?P<player>.+?)\s+(?P<side>Over|Under)\b",
     re.IGNORECASE,
 )
+_SELECTION_YES_RE = re.compile(
+    r"^(?P<player>.+?)\s+(?P<label>Double Double|Triple Double|Anytime TD|First TD|Yes)\b",
+    re.IGNORECASE,
+)
+
+# Cushion units are raw stat points; combos use a wider scale.
+_CUSHION_SCALE_BY_STAT: dict[str, float] = {
+    "pra": 6.0,
+    "pr": 5.0,
+    "pa": 5.0,
+    "ra": 4.0,
+    "blocks_steals": 2.5,
+    "turnovers": 2.0,
+    "double_double": 1.0,
+    "triple_double": 1.0,
+}
 
 
 def enrich_player_prop_candidates(
@@ -75,15 +116,27 @@ def _enrich_one(
 ) -> CandidateInput | None:
     market = str(candidate.market_type or "")
     stat_key = _PLAYER_STAT_BY_MARKET.get(market)
-    if not stat_key or candidate.line is None:
+    if not stat_key:
         return None
-    parsed = _SELECTION_PLAYER_RE.match(str(candidate.selection or ""))
-    if not parsed:
-        return None
-    player_name = parsed.group("player").strip()
-    side = parsed.group("side").casefold()
-    is_over = side.startswith("over")
-    line = float(candidate.line)
+
+    is_binary = stat_key in {"double_double", "triple_double"}
+    if is_binary:
+        parsed_yes = _SELECTION_YES_RE.match(str(candidate.selection or ""))
+        if not parsed_yes:
+            return None
+        player_name = parsed_yes.group("player").strip()
+        is_over = True
+        line = 0.5  # Yes pays when the binary event fires (≥1)
+    else:
+        if candidate.line is None:
+            return None
+        parsed = _SELECTION_PLAYER_RE.match(str(candidate.selection or ""))
+        if not parsed:
+            return None
+        player_name = parsed.group("player").strip()
+        side = parsed.group("side").casefold()
+        is_over = side.startswith("over")
+        line = float(candidate.line)
 
     sport = candidate.sport.lower()
     team_ids: list[str] = []
@@ -133,7 +186,12 @@ def _enrich_one(
     miss_by_one = sum(1 for c in l10 if -1.0 <= c < 0) if is_over else sum(
         1 for c in l10 if 0 < c <= 1.0
     )
+    if is_binary:
+        # Binary: "miss by one" is not meaningful in raw units — use misses.
+        miss_by_one = sum(1 for v in l10 if v < line)
+        avg_cushion = hit_rate  # 0–1 share of clears as cushion proxy
     injuries_source = "confirmed" if injury_state == "clear" else "probable"
+    cushion_scale = _CUSHION_SCALE_BY_STAT.get(stat_key, 4.0)
 
     data = candidate.model_dump()
     data.update(
@@ -141,7 +199,7 @@ def _enrich_one(
             "estimated_probability": probability,
             "probability_source": "model",
             "data_quality": max(float(candidate.data_quality or 0), 0.74),
-            "variance": 0.34,
+            "variance": 0.34 if not is_binary else 0.40,
             "data_source": "ESPN_PLAYER_PROP_MODEL",
             "missing_fields": [
                 field
@@ -177,9 +235,9 @@ def _enrich_one(
             "motivation_rotation_verified": True,
             "recent_hit_rate": hit_rate,
             "average_cushion": round(avg_cushion, 3),
-            "cushion_scale": 4.0,
+            "cushion_scale": cushion_scale,
             "matchup_score": probability,
-            "script_alignment": min(0.95, max(0.05, 0.5 + avg_cushion / 8.0)),
+            "script_alignment": min(0.95, max(0.05, 0.5 + avg_cushion / max(cushion_scale, 1.0))),
             "multiple_paths_score": min(1.0, 0.45 + hit_rate * 0.5),
             "role_stability": 0.7,
             "miss_by_one_count_l10": int(miss_by_one),
@@ -264,13 +322,51 @@ def _stat_series(games: list[dict[str, Any]], stat_key: str) -> list[float]:
         "3PM",
     )
     for game in games:
+        pts = _num(game.get("points"))
+        reb = _num(game.get("totalRebounds") or game.get("rebounds"))
+        ast = _num(game.get("assists"))
+        blk = _num(game.get("blocks"))
+        stl = _num(game.get("steals"))
+        tov = _num(game.get("turnovers"))
+        fgm = _num(game.get("fieldGoalsMade") or game.get("fieldGoalsMade-fieldGoalsAttempted"))
+        ftm = _num(game.get("freeThrowsMade") or game.get("freeThrowsMade-freeThrowsAttempted"))
+
         if stat_key == "pra":
-            pts = game.get("points")
-            reb = game.get("totalRebounds") or game.get("rebounds")
-            ast = game.get("assists")
             if pts is None or reb is None or ast is None:
                 continue
-            values.append(float(pts) + float(reb) + float(ast))
+            values.append(pts + reb + ast)
+            continue
+        if stat_key == "pr":
+            if pts is None or reb is None:
+                continue
+            values.append(pts + reb)
+            continue
+        if stat_key == "pa":
+            if pts is None or ast is None:
+                continue
+            values.append(pts + ast)
+            continue
+        if stat_key == "ra":
+            if reb is None or ast is None:
+                continue
+            values.append(reb + ast)
+            continue
+        if stat_key == "blocks_steals":
+            if blk is None or stl is None:
+                continue
+            values.append(blk + stl)
+            continue
+        if stat_key == "double_double":
+            if pts is None or reb is None or ast is None:
+                continue
+            doubles = sum(1 for v in (pts, reb, ast, blk or 0, stl or 0) if v >= 10)
+            values.append(1.0 if doubles >= 2 else 0.0)
+            continue
+        if stat_key == "triple_double":
+            if pts is None or reb is None or ast is None:
+                continue
+            doubles = sum(1 for v in (pts, reb, ast, blk or 0, stl or 0) if v >= 10)
+            values.append(1.0 if doubles >= 3 else 0.0)
             continue
         if stat_key == "threePointFieldGoalsMade":
             raw = None
@@ -278,14 +374,64 @@ def _stat_series(games: list[dict[str, Any]], stat_key: str) -> list[float]:
                 if game.get(alias) is not None:
                     raw = game.get(alias)
                     break
-        else:
-            raw = game.get(stat_key)
-            if raw is None and stat_key == "totalRebounds":
-                raw = game.get("rebounds")
+            if raw is None:
+                continue
+            values.append(float(raw))
+            continue
+        if stat_key == "turnovers":
+            if tov is None:
+                continue
+            values.append(tov)
+            continue
+        if stat_key == "fieldGoalsMade":
+            if fgm is None:
+                continue
+            values.append(fgm)
+            continue
+        if stat_key == "freeThrowsMade":
+            if ftm is None:
+                continue
+            values.append(ftm)
+            continue
+        if stat_key == "totalRebounds":
+            if reb is None:
+                continue
+            values.append(reb)
+            continue
+        if stat_key == "blocks":
+            if blk is None:
+                continue
+            values.append(blk)
+            continue
+        if stat_key == "steals":
+            if stl is None:
+                continue
+            values.append(stl)
+            continue
+        if stat_key == "points":
+            if pts is None:
+                continue
+            values.append(pts)
+            continue
+        if stat_key == "assists":
+            if ast is None:
+                continue
+            values.append(ast)
+            continue
+        raw = game.get(stat_key)
         if raw is None:
             continue
         values.append(float(raw))
     return values
+
+
+def _num(raw: Any) -> float | None:
+    if raw is None:
+        return None
+    try:
+        return float(raw)
+    except (TypeError, ValueError):
+        return None
 
 
 def _raw_hit_rate(values: list[float], line: float, *, is_over: bool) -> float:
@@ -303,11 +449,13 @@ def _raw_hit_rate(values: list[float], line: float, *, is_over: bool) -> float:
 def _hit_rate_probability(
     values: list[float], line: float, *, is_over: bool
 ) -> float | None:
+    """Conservative form projection — strong L10 should edge the book, not claim 95%."""
     if len(values) < 5:
         return None
     rate = _raw_hit_rate(values, line, is_over=is_over)
     mean = sum(values) / len(values)
     distance = (mean - line) if is_over else (line - mean)
-    distance_term = max(-0.25, min(0.25, distance / 10.0))
-    probability = 0.5 + (rate - 0.5) * 0.80 + distance_term * 0.35
-    return max(0.05, min(0.95, probability))
+    distance_term = max(-0.15, min(0.15, distance / 12.0))
+    # Shrink toward 0.5 so soft-book edges stay PLAYABLE without outlier quarantine.
+    probability = 0.5 + (rate - 0.5) * 0.40 + distance_term * 0.12
+    return max(0.15, min(0.78, probability))

@@ -14,12 +14,45 @@ from app.models import Recommendation
 MAX_CLEAN_EDGE = 0.15
 OUTLIER_PLUS_MONEY_MODEL_FLOOR = 0.75  # model ≥75% while price is plus-money
 OUTLIER_EDGE_REVIEW = 0.15
+# ESPN L10 form props vs soft books: allow a wider clean band before REVIEW.
+FORM_PROP_OUTLIER_EDGE_REVIEW = 0.22
 
 
 def _implied_probability(odds: int) -> float:
     if odds > 0:
         return 100 / (odds + 100)
     return abs(odds) / (abs(odds) + 100)
+
+
+def outlier_review_reasons(
+    *,
+    adjusted_probability: float,
+    american_odds: int,
+    probability_source: str | None,
+    edge_review_threshold: float | None = None,
+) -> list[str]:
+    """Flag unresolved extreme model-vs-price claims for REVIEW (not silent capping)."""
+    reasons: list[str] = []
+    source = (probability_source or "").lower()
+    if source not in {"model", "manual_verified"}:
+        return reasons
+    implied = _implied_probability(american_odds)
+    edge = adjusted_probability - implied
+    threshold = (
+        OUTLIER_EDGE_REVIEW
+        if edge_review_threshold is None
+        else float(edge_review_threshold)
+    )
+    if abs(edge) > threshold:
+        reasons.append("OUTLIER_EDGE_REVIEW")
+    # Plus-money price with very high model probability is a major discrepancy.
+    if american_odds > 0 and adjusted_probability >= OUTLIER_PLUS_MONEY_MODEL_FLOOR:
+        reasons.append("OUTLIER_PLUS_MONEY_PROBABILITY")
+    # Model claims near-certainty while market is close to a coin flip.
+    if adjusted_probability >= 0.85 and 0.42 <= implied <= 0.58:
+        reasons.append("OUTLIER_NEAR_CERTAINTY_VS_MARKET")
+    return list(dict.fromkeys(reasons))
+
 
 def market_scope_label(
     market_type: str, market_period: str = "full_game", *, sport: str | None = None
@@ -118,30 +151,6 @@ def model_win_probability(
     if source in {"model", "manual_verified"}:
         return float(adjusted_probability)
     return None
-
-
-def outlier_review_reasons(
-    *,
-    adjusted_probability: float,
-    american_odds: int,
-    probability_source: str | None,
-) -> list[str]:
-    """Flag unresolved extreme model-vs-price claims for REVIEW (not silent capping)."""
-    reasons: list[str] = []
-    source = (probability_source or "").lower()
-    if source not in {"model", "manual_verified"}:
-        return reasons
-    implied = _implied_probability(american_odds)
-    edge = adjusted_probability - implied
-    if abs(edge) > OUTLIER_EDGE_REVIEW:
-        reasons.append("OUTLIER_EDGE_REVIEW")
-    # Plus-money price with very high model probability is a major discrepancy.
-    if american_odds > 0 and adjusted_probability >= OUTLIER_PLUS_MONEY_MODEL_FLOOR:
-        reasons.append("OUTLIER_PLUS_MONEY_PROBABILITY")
-    # Model claims near-certainty while market is close to a coin flip.
-    if adjusted_probability >= 0.85 and 0.42 <= implied <= 0.58:
-        reasons.append("OUTLIER_NEAR_CERTAINTY_VS_MARKET")
-    return list(dict.fromkeys(reasons))
 
 
 def select_weakest_leg(

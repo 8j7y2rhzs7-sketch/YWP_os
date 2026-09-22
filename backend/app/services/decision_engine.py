@@ -247,7 +247,27 @@ class DecisionEngine:
             )
             reasons.append("MISS_BY_ONE_RISK")
             confidence_penalty += 6 if miss_by_one_risk < 0.80 else 10
-        if miss_by_one_risk >= 0.80 and not candidate.safer_alternative:
+        market_l = str(candidate.market_type or "").lower()
+        is_basketball_prop = sport_l in {"wnba", "nba", "basketball"} and market_l.startswith(
+            "player_"
+        )
+        # Mimic the human filter: thin basketball prop closes never become official plays,
+        # even when the sheet pre-filled a generic safer_alternative string.
+        if is_basketball_prop and miss_by_one_risk >= 0.55:
+            hard_skip_reasons.append(
+                "Basketball prop blocked: elevated miss-by-1 / thin-cushion profile."
+            )
+            reasons.append("PROP_THIN_CLOSE_GATE")
+        elif (
+            is_basketball_prop
+            and candidate.average_cushion is not None
+            and float(candidate.average_cushion) < 0.75
+        ):
+            hard_skip_reasons.append(
+                "Basketball prop blocked: average L10 cushion below the 0.75 minimum."
+            )
+            reasons.append("PROP_CUSHION_GATE")
+        elif miss_by_one_risk >= 0.80 and not candidate.safer_alternative:
             hard_skip_reasons.append(
                 "Miss-by-1 risk is critical and no safer available line was supplied."
             )
@@ -308,10 +328,17 @@ class DecisionEngine:
             )
             reasons.append("MARKET_NOT_OPEN")
 
+        from app.services.board_metrics import FORM_PROP_OUTLIER_EDGE_REVIEW
+
+        form_prop = (
+            str(candidate.data_source or "") == "ESPN_PLAYER_PROP_MODEL"
+            and bool(candidate.l5_l10_verified)
+        )
         outlier_codes = outlier_review_reasons(
             adjusted_probability=adjusted,
             american_odds=candidate.american_odds,
             probability_source=candidate.probability_source,
+            edge_review_threshold=FORM_PROP_OUTLIER_EDGE_REVIEW if form_prop else None,
         )
         review_reasons: list[str] = []
         if outlier_codes:
