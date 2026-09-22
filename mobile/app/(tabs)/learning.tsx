@@ -43,7 +43,8 @@ interface Patterns {
 }
 
 export default function LearningScreen() {
-  const { request } = useAuth();
+  const { user, request } = useAuth();
+  const isAdmin = (user?.role ?? "").toLowerCase() === "admin";
   const [performance, setPerformance] = useState<Performance | null>(null);
   const [miss, setMiss] = useState<MissByOneReport | null>(null);
   const [patterns, setPatterns] = useState<Patterns | null>(null);
@@ -78,7 +79,7 @@ export default function LearningScreen() {
               body: "{}",
             });
             setOpsHeal(heal);
-            if (heal?.evidence) setEvidence(heal.evidence);
+            if (isAdmin && heal?.evidence) setEvidence(heal.evidence);
             if (heal?.proposals?.length) {
               setProposals(heal.proposals);
             }
@@ -127,7 +128,9 @@ export default function LearningScreen() {
             request<{ proposals: OpsHealProposal[] }>("/ops-heal/proposals?status=pending&limit=20").catch(
               () => ({ proposals: [] as OpsHealProposal[] }),
             ),
-            request<OpsHealEvidence>("/ops-heal/evidence").catch(() => null),
+            isAdmin
+              ? request<OpsHealEvidence>("/ops-heal/evidence").catch(() => null)
+              : Promise.resolve(null),
           ]);
         setPerformance(nextPerformance);
         setMiss(nextMiss);
@@ -137,8 +140,12 @@ export default function LearningScreen() {
         setHiveReports(nextHive.reports ?? []);
         if (nextHeal) setOpsHeal(nextHeal);
         setProposals(nextProposals.proposals ?? []);
-        if (nextEvidence) setEvidence(nextEvidence);
-        else if (nextHeal?.evidence) setEvidence(nextHeal.evidence);
+        if (isAdmin) {
+          if (nextEvidence) setEvidence(nextEvidence);
+          else if (nextHeal?.evidence) setEvidence(nextHeal.evidence);
+        } else {
+          setEvidence(null);
+        }
       } catch (reason) {
         setError(reason instanceof Error ? reason.message : "Learning data failed to load");
       } finally {
@@ -146,14 +153,8 @@ export default function LearningScreen() {
         setRefreshing(false);
       }
     },
-    [request],
+    [isAdmin, request],
   );
-
-  useEffect(() => {
-    void load();
-  }, [load]);
-
-  const reviewProposal = useCallback(
     async (proposalId: string, action: "implemented" | "dismissed") => {
       try {
         await request(`/ops-heal/proposals/${proposalId}/review`, {
@@ -328,54 +329,58 @@ export default function LearningScreen() {
         ) : null}
       </MetalPanel>
 
-      <SectionTitle
-        title="Process Evidence"
-        subtitle="Every app movement — slate, Day Forge, analyze, board, tickets, lock, settle, Hive, Learning, errors."
-      />
-      <MetalPanel tone={(evidence?.summary?.total_movements ?? 0) > 0 ? "success" : "default"}>
-        <View style={styles.metrics}>
-          <Metric
-            label="Processes active"
-            value={`${evidence?.summary?.processes_active ?? 0}/${evidence?.summary?.processes_tracked ?? 0}`}
+      {isAdmin ? (
+        <>
+          <SectionTitle
+            title="Process Evidence"
+            subtitle="Admin only — every app movement across slate, Day Forge, board, tickets, settle, Hive, Learning."
           />
-          <Metric
-            label="Movements"
-            value={evidence?.summary?.total_movements ?? 0}
-            accent={colors.gold}
-          />
-          <Metric
-            label="Errors"
-            value={evidence?.summary?.total_errors ?? 0}
-            accent={(evidence?.summary?.total_errors ?? 0) > 0 ? colors.danger : colors.success}
-          />
-        </View>
-        {(evidence?.process_coverage ?? []).filter((row) => row.active).length ? (
-          <View style={{ marginTop: spacing.sm }}>
-            {(evidence?.process_coverage ?? [])
-              .filter((row) => row.active)
-              .slice(0, 12)
-              .map((row) => (
-                <View key={row.process} style={styles.dataRow}>
-                  <Text style={styles.dataName}>{row.process.replaceAll("_", " ")}</Text>
-                  <Text
-                    style={[
-                      styles.dataValue,
-                      { color: row.errors ? colors.danger : colors.success },
-                    ]}
-                  >
-                    {row.movements} move{row.movements === 1 ? "" : "s"}
-                    {row.errors ? ` · ${row.errors} err` : ""}
-                  </Text>
-                </View>
-              ))}
-          </View>
-        ) : (
-          <Text style={[type.body, { marginTop: spacing.sm }]}>
-            No process movements in the current window yet. Use the app — every API/process path
-            feeds this evidence pack for Ops Heal.
-          </Text>
-        )}
-      </MetalPanel>
+          <MetalPanel tone={(evidence?.summary?.total_movements ?? 0) > 0 ? "success" : "default"}>
+            <View style={styles.metrics}>
+              <Metric
+                label="Processes active"
+                value={`${evidence?.summary?.processes_active ?? 0}/${evidence?.summary?.processes_tracked ?? 0}`}
+              />
+              <Metric
+                label="Movements"
+                value={evidence?.summary?.total_movements ?? 0}
+                accent={colors.gold}
+              />
+              <Metric
+                label="Errors"
+                value={evidence?.summary?.total_errors ?? 0}
+                accent={(evidence?.summary?.total_errors ?? 0) > 0 ? colors.danger : colors.success}
+              />
+            </View>
+            {(evidence?.process_coverage ?? []).filter((row) => row.active).length ? (
+              <View style={{ marginTop: spacing.sm }}>
+                {(evidence?.process_coverage ?? [])
+                  .filter((row) => row.active)
+                  .slice(0, 12)
+                  .map((row) => (
+                    <View key={row.process} style={styles.dataRow}>
+                      <Text style={styles.dataName}>{row.process.replaceAll("_", " ")}</Text>
+                      <Text
+                        style={[
+                          styles.dataValue,
+                          { color: row.errors ? colors.danger : colors.success },
+                        ]}
+                      >
+                        {row.movements} move{row.movements === 1 ? "" : "s"}
+                        {row.errors ? ` · ${row.errors} err` : ""}
+                      </Text>
+                    </View>
+                  ))}
+              </View>
+            ) : (
+              <Text style={[type.body, { marginTop: spacing.sm }]}>
+                No process movements in the current window yet. Use the app — every API/process path
+                feeds this evidence pack for Ops Heal.
+              </Text>
+            )}
+          </MetalPanel>
+        </>
+      ) : null}
 
       <SectionTitle
         title="Improvement Inbox"

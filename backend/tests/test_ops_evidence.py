@@ -173,9 +173,34 @@ def test_ops_heal_cycle_includes_full_process_evidence(db_session, monkeypatch) 
 
 
 def test_ops_heal_evidence_api(client, auth_headers) -> None:
+    # Members cannot read process evidence — admin only.
+    blocked = client.get("/api/v1/ops-heal/evidence", headers=auth_headers)
+    assert blocked.status_code == 403
+
+    from app.core.database import SessionLocal
+    from app.models import User as U
+
+    db = SessionLocal()
+    try:
+        user = db.query(U).filter(U.email == "owner@ywp-os.com").one()
+        user.role = "admin"
+        db.commit()
+    finally:
+        db.close()
+
     listed = client.get("/api/v1/ops-heal/evidence", headers=auth_headers)
     assert listed.status_code == 200
     body = listed.json()
     assert body["kind"] == "process_evidence" or "summary" in body
     assert "process_coverage" in body
     assert body["summary"]["processes_tracked"] >= 10
+
+
+def test_ops_heal_run_strips_evidence_for_members(client, auth_headers) -> None:
+    ran = client.post("/api/v1/ops-heal/run", headers=auth_headers)
+    assert ran.status_code == 200
+    assert "evidence" not in ran.json()
+
+    status = client.get("/api/v1/ops-heal/status", headers=auth_headers)
+    assert status.status_code == 200
+    assert "evidence" not in status.json()

@@ -5,7 +5,7 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
-from app.deps import DB, SubscribedUser
+from app.deps import AdminUser, DB, SubscribedUser
 from app.services.ops_evidence import (
     collect_all_process_evidence,
     latest_evidence_pack,
@@ -27,10 +27,32 @@ class OpsHealProposalReviewIn(BaseModel):
     note: str | None = Field(default=None, max_length=500)
 
 
+def _is_admin(user: object) -> bool:
+    return str(getattr(user, "role", "") or "").lower() == "admin"
+
+
+def _public_ops_payload(payload: dict, *, admin: bool) -> dict:
+    """Process evidence packs are admin-only — strip from member responses."""
+    if admin:
+        return payload
+    out = dict(payload)
+    out.pop("evidence", None)
+    if isinstance(out.get("cycles"), list):
+        cleaned = []
+        for row in out["cycles"]:
+            if isinstance(row, dict):
+                item = dict(row)
+                item.pop("evidence", None)
+                cleaned.append(item)
+            else:
+                cleaned.append(row)
+        out["cycles"] = cleaned
+    return out
+
+
 @router.get("/status")
 def ops_heal_status(user: SubscribedUser, db: DB) -> dict:
-    del user
-    return latest_ops_heal_status(db=db)
+    return _public_ops_payload(latest_ops_heal_status(db=db), admin=_is_admin(user))
 
 
 @router.get("/cycles")
@@ -39,27 +61,29 @@ def ops_heal_cycles(
     db: DB,
     limit: int = Query(default=12, ge=1, le=40),
 ) -> dict:
-    del user
-    return {"bot": "ops_heal", "cycles": list_ops_heal_cycles(db=db, limit=limit)}
+    return _public_ops_payload(
+        {"bot": "ops_heal", "cycles": list_ops_heal_cycles(db=db, limit=limit)},
+        admin=_is_admin(user),
+    )
 
 
 @router.get("/evidence")
 def ops_heal_evidence(
-    user: SubscribedUser,
+    admin: AdminUser,
     db: DB,
     hours: int = Query(default=72, ge=1, le=168),
     refresh: bool = Query(default=False),
 ) -> dict:
-    """Evidence across all app process movements (API, audits, tickets, Hive, …)."""
+    """Admin-only: evidence across all app process movements."""
     if refresh:
-        pack = collect_all_process_evidence(db=db, user_id=user.id, hours=hours)
+        pack = collect_all_process_evidence(db=db, user_id=admin.id, hours=hours)
         persist_evidence_pack(db=db, pack=pack)
         db.commit()
         return pack
     latest = latest_evidence_pack(db=db)
     if latest:
         return latest
-    pack = collect_all_process_evidence(db=db, user_id=user.id, hours=hours)
+    pack = collect_all_process_evidence(db=db, user_id=admin.id, hours=hours)
     persist_evidence_pack(db=db, pack=pack)
     db.commit()
     return pack
@@ -119,4 +143,4 @@ def ops_heal_run(
         apply=apply,
     )
     db.commit()
-    return cycle
+    return _public_ops_payload(cycle, admin=_is_admin(user))
