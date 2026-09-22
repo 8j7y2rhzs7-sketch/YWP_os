@@ -148,8 +148,20 @@ def _card(
 ) -> TicketCardOut:
     warnings = list(warnings or [])
     joint = joint_win_probability_disclosure(legs)
-    if not legs:
-        warnings.append("No plays qualified. PASS is the official output.")
+    out_legs: list[RecommendationOut] = []
+    kept: list[Recommendation] = []
+    for item in legs:
+        try:
+            out_legs.append(RecommendationOut.model_validate(item))
+            kept.append(item)
+        except Exception:
+            # One bad snapshot must not 500 the whole Decision Board.
+            warnings.append(f"Skipped unreadable leg: {getattr(item, 'selection', item.id)}")
+    if not kept:
+        if legs:
+            warnings.append("No plays qualified. PASS is the official output.")
+        else:
+            warnings.append("No plays qualified. PASS is the official output.")
         confidence = 0
         risk = "none"
         risk_explanation = "No legs; PASS."
@@ -157,21 +169,22 @@ def _card(
         criterion = None
         explanation = None
     else:
-        confidence = round(sum(item.confidence_score for item in legs) / len(legs))
-        weakest_item, criterion, explanation = select_weakest_leg(legs)
+        confidence = round(sum(item.confidence_score for item in kept) / len(kept))
+        weakest_item, criterion, explanation = select_weakest_leg(kept)
         weakest = weakest_item.id
-        risk, risk_explanation = card_risk(legs)
+        risk, risk_explanation = card_risk(kept)
         high_near_miss = [
-            item.selection for item in legs if float(item.miss_by_one_risk) >= 0.55
+            item.selection for item in kept if float(item.miss_by_one_risk) >= 0.55
         ]
         if high_near_miss:
             warnings.append("Elevated miss-by-1 leg(s): " + ", ".join(high_near_miss))
         warnings.append(explanation)
+        joint = joint_win_probability_disclosure(kept)
     return TicketCardOut(
         key=key,
         label=label,
-        recommendation_ids=[item.id for item in legs],
-        legs=[RecommendationOut.model_validate(item) for item in legs],
+        recommendation_ids=[item.id for item in kept],
+        legs=out_legs,
         risk=risk,
         risk_explanation=risk_explanation,
         confidence_score=confidence,

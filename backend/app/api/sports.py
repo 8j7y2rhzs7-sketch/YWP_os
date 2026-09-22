@@ -1170,15 +1170,42 @@ def build_ticket(payload: BuildTicketRequest, user: SubscribedUser, db: DB) -> B
         source_conditions.append(Recommendation.analysis_id == payload.analysis_id)
     if payload.recommendation_ids:
         source_conditions.append(Recommendation.id.in_(payload.recommendation_ids))
+    if not source_conditions:
+        raise HTTPException(status_code=422, detail="analysis_id or recommendation_ids is required")
+
+    # Card builder only needs PLAY/LEAN (+ top ranks for quarantine notes).
+    # Re-loading/serializing every SKIP/REVIEW (often 400+) after a full prop
+    # analyze was blowing the Decision Board with Internal Server Error.
     recommendations = list(
         db.scalars(
             select(Recommendation)
-            .where(*conditions, or_(*source_conditions))
+            .where(
+                *conditions,
+                or_(*source_conditions),
+                or_(
+                    Recommendation.decision.in_(["PLAY", "LEAN"]),
+                    Recommendation.rank <= 10,
+                ),
+            )
             .order_by(Recommendation.rank)
         ).all()
     )
     if not recommendations:
-        raise HTTPException(status_code=404, detail="No recommendations found")
+        # Distinguish "analysis missing" from "true PASS (no PLAY/LEAN)".
+        any_for_analysis = db.scalar(
+            select(Recommendation.id)
+            .where(*conditions, or_(*source_conditions))
+            .limit(1)
+        )
+        if not any_for_analysis:
+            raise HTTPException(status_code=404, detail="No recommendations found")
+        return BuildTicketResponse(
+            analysis_id=payload.analysis_id,
+            official_pass=True,
+            cards={},
+            stay_away=[],
+            quarantined=[],
+        )
 
     exposed_theses = set(
         db.scalars(
@@ -1191,25 +1218,34 @@ def build_ticket(payload: BuildTicketRequest, user: SubscribedUser, db: DB) -> B
             )
         ).all()
     )
-    cards, quarantined = build_cards(
-        recommendations,
-        max_legs=payload.max_legs,
-        min_rating=payload.min_rating,
-        exposed_thesis_keys=exposed_theses,
-    )
+    try:
+        cards, quarantined = build_cards(
+            recommendations,
+            max_legs=payload.max_legs,
+            min_rating=payload.min_rating,
+            exposed_thesis_keys=exposed_theses,
+        )
+    except Exception:
+        logger.exception(
+            "build_cards failed analysis_id=%s recs=%s",
+            payload.analysis_id,
+            len(recommendations),
+        )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Ticket builder failed while assembling official cards. Retry the board.",
+        ) from None
+
     # Official PASS means no PLAY/LEAN survived analysis — not "card templates underfilled".
     # Eligible picks must remain custom-buildable even when diversity/min-leg gates omit cards.
     has_play_lean = any(item.decision in {"PLAY", "LEAN"} for item in recommendations)
     official_pass = not has_play_lean
+    # Stay-away list already shipped on /analyze; do not re-emit hundreds of SKIP rows here.
     return BuildTicketResponse(
         analysis_id=payload.analysis_id,
         official_pass=official_pass,
         cards={} if official_pass else cards,
-        stay_away=[
-            RecommendationOut.model_validate(item)
-            for item in recommendations
-            if item.decision in {"SKIP", "REVIEW"}
-        ],
+        stay_away=[],
         quarantined=quarantined,
     )
 

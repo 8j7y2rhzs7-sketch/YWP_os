@@ -84,7 +84,14 @@ export default function AnalysisScreen() {
       });
       saveBuild(id, response);
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "Ticket Builder failed");
+      const raw =
+        reason instanceof Error ? reason.message : "Ticket Builder failed";
+      // Keep ranked plays usable — official cards are secondary to the board.
+      setError(
+        /internal server error/i.test(raw)
+          ? "Official cards failed to load — tap RE-RUN TICKET BUILDER. Ranked plays below still work."
+          : raw,
+      );
     } finally {
       setLoading(false);
     }

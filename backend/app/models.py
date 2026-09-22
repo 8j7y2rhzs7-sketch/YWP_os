@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import date, datetime
+from datetime import UTC, date, datetime
 from decimal import Decimal
 from typing import Any
 from uuid import uuid4
@@ -25,6 +25,28 @@ from app.core.security import utcnow
 
 def new_id() -> str:
     return str(uuid4())
+
+
+def _coerce_snap_datetime(value: Any) -> datetime | None:
+    """Snapshot timestamps must never crash RecommendationOut validation."""
+    if value is None:
+        return None
+    if isinstance(value, datetime):
+        return value if value.tzinfo else value.replace(tzinfo=UTC)
+    if isinstance(value, (int, float)):
+        try:
+            return datetime.fromtimestamp(float(value), tz=UTC)
+        except (OverflowError, OSError, ValueError):
+            return None
+    if isinstance(value, str):
+        text = value.strip()
+        if not text:
+            return None
+        try:
+            return datetime.fromisoformat(text.replace("Z", "+00:00"))
+        except ValueError:
+            return None
+    return None
 
 
 class TimestampMixin:
@@ -249,7 +271,7 @@ class Recommendation(Base):
     def start_time(self):
         snap = self.snapshot or {}
         value = snap.get("start_time") or snap.get("commence_time")
-        return value
+        return _coerce_snap_datetime(value)
 
     @property
     def bookmaker(self) -> str | None:
@@ -269,8 +291,9 @@ class Recommendation(Base):
     @property
     def price_timestamp(self):
         snap = self.snapshot or {}
-        return snap.get("price_timestamp") or snap.get("source_timestamp")
-
+        return _coerce_snap_datetime(
+            snap.get("price_timestamp") or snap.get("source_timestamp")
+        )
     @property
     def market_scope_label(self) -> str:
         from app.services.board_metrics import market_scope_label
