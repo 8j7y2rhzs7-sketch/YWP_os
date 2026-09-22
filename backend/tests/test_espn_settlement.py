@@ -1,4 +1,4 @@
-"""ESPN auto-settlement unlocks Hive learning for WNBA/NBA/NFL props."""
+"""Multi-sport auto-settlement unlocks Hive learning everywhere."""
 
 from __future__ import annotations
 
@@ -41,6 +41,7 @@ def test_espn_player_prop_grades_from_boxscore(monkeypatch) -> None:
         result=None,
         outcome=None,
         sport="wnba",
+        league="WNBA",
         data_source="THE_ODDS_API",
         slate_date=date(2026, 9, 21),
         event_name="Atlanta Dream @ New York Liberty",
@@ -71,8 +72,133 @@ def test_espn_player_prop_grades_from_boxscore(monkeypatch) -> None:
         stake=Decimal("0"),
     )
     assert out["status"] == "graded"
-    assert out["outcome"] == "WIN"  # 2 reb under 3.5
+    assert out["outcome"] == "WIN"
     assert out["actual_value"] == Decimal("2")
+
+
+def test_nfl_passing_yards_prop(monkeypatch) -> None:
+    game = {
+        "event_id": "401872947",
+        "home_team": "Los Angeles Rams",
+        "away_team": "New York Giants",
+        "home_score": 24,
+        "away_score": 17,
+        "completed": True,
+        "status": "STATUS_FINAL",
+        "espn_path": "football/nfl",
+    }
+    players = [
+        {
+            "name": "Jameis Winston",
+            "PASS_YDS": 111,
+            "YDS": 111,
+            "PASS_TD": 0,
+            "PASS_INT": 1,
+        }
+    ]
+    monkeypatch.setattr(
+        "app.services.espn_provider.match_odds_event_to_espn",
+        lambda *args, **kwargs: game,
+    )
+    monkeypatch.setattr(
+        "app.services.espn_provider.get_event_summary",
+        lambda *args, **kwargs: {"boxscore": {}},
+    )
+    monkeypatch.setattr(
+        "app.services.espn_provider.parse_boxscore_player_stats",
+        lambda summary: players,
+    )
+    monkeypatch.setattr(
+        settlement,
+        "_persist_auto_grade",
+        lambda db, recommendation, **kw: {
+            "status": "graded",
+            "outcome": kw["derived"]["outcome"],
+            "actual_value": kw["derived"].get("actual_value"),
+            "detail": kw["derived"].get("detail"),
+            "final_score": kw["derived"].get("final_score"),
+        },
+    )
+    rec = SimpleNamespace(
+        id="rec-nfl",
+        result=None,
+        outcome=None,
+        sport="nfl",
+        league="NFL",
+        data_source="THE_ODDS_API",
+        slate_date=date(2026, 9, 21),
+        event_name="New York Giants @ Los Angeles Rams",
+        market_type="player_pass_yds",
+        selection="Jameis Winston Under 215.5 passing yards",
+        line=Decimal("215.5"),
+        american_odds=-110,
+        snapshot={
+            "home_team": "Los Angeles Rams",
+            "away_team": "New York Giants",
+        },
+        home_team="Los Angeles Rams",
+        away_team="New York Giants",
+    )
+    out = settlement._grade_espn_recommendation(
+        db=None,  # type: ignore[arg-type]
+        recommendation=rec,  # type: ignore[arg-type]
+        stake=Decimal("0"),
+    )
+    assert out["status"] == "graded"
+    assert out["outcome"] == "WIN"
+    assert out["actual_value"] == Decimal("111")
+
+
+def test_odds_scores_kbo_moneyline(monkeypatch) -> None:
+    monkeypatch.setattr(
+        "app.services.odds_provider.get_scores",
+        lambda *args, **kwargs: [
+            {
+                "completed": True,
+                "home_team": "LG Twins",
+                "away_team": "Doosan Bears",
+                "scores": [
+                    {"name": "LG Twins", "score": "5"},
+                    {"name": "Doosan Bears", "score": "3"},
+                ],
+            }
+        ],
+    )
+    monkeypatch.setattr(
+        settlement,
+        "_persist_auto_grade",
+        lambda db, recommendation, **kw: {
+            "status": "graded",
+            "outcome": kw["derived"]["outcome"],
+            "actual_value": kw["derived"].get("actual_value"),
+            "detail": kw["derived"].get("detail"),
+            "final_score": kw["derived"].get("final_score"),
+        },
+    )
+    rec = SimpleNamespace(
+        id="rec-kbo",
+        result=None,
+        outcome=None,
+        sport="kbo",
+        league="KBO",
+        data_source="THE_ODDS_API",
+        slate_date=date(2026, 9, 21),
+        event_name="Doosan Bears @ LG Twins",
+        market_type="moneyline",
+        selection="LG Twins ML",
+        line=None,
+        american_odds=-130,
+        snapshot={"home_team": "LG Twins", "away_team": "Doosan Bears"},
+        home_team="LG Twins",
+        away_team="Doosan Bears",
+    )
+    out = settlement._grade_odds_scores_recommendation(
+        db=None,  # type: ignore[arg-type]
+        recommendation=rec,  # type: ignore[arg-type]
+        stake=Decimal("0"),
+    )
+    assert out["status"] == "graded"
+    assert out["outcome"] == "WIN"
 
 
 def test_espn_pending_when_game_not_final(monkeypatch) -> None:
@@ -93,6 +219,7 @@ def test_espn_pending_when_game_not_final(monkeypatch) -> None:
         result=None,
         outcome=None,
         sport="wnba",
+        league="WNBA",
         data_source="THE_ODDS_API",
         slate_date=date(2026, 9, 22),
         event_name="Toronto Tempo @ Chicago Sky",
@@ -115,3 +242,30 @@ def test_espn_pending_when_game_not_final(monkeypatch) -> None:
 def test_player_name_parser() -> None:
     assert settlement._player_name_from_selection("Kiki Rice Under 3.5 rebounds") == "Kiki Rice"
     assert settlement._player_name_from_selection("Angel Reese Over 9.5 rebounds") == "Angel Reese"
+
+
+def test_stat_maps_cover_major_sports() -> None:
+    assert (
+        settlement._espn_stat_for_market(
+            "player_pass_yds", "under 215.5 passing yards", sport="nfl"
+        )[0]
+        == "PASS_YDS"
+    )
+    assert (
+        settlement._espn_stat_for_market(
+            "player_shots_on_goal", "over 2.5 shots", sport="nhl"
+        )[0]
+        == "SOG"
+    )
+    assert (
+        settlement._espn_stat_for_market(
+            "player_points", "over 22.5 points", sport="nba"
+        )[0]
+        == "PTS"
+    )
+    assert (
+        settlement._espn_stat_for_market(
+            "player_goal_scorer", "anytime scorer", sport="soccer"
+        )[0]
+        == "G"
+    )

@@ -117,21 +117,25 @@ def settle_user_day(
         or 0
     )
     mapped = max(0, pending_before - pending_after)
-    if mapped > 0:
+    coverage = _settlement_coverage_snapshot(items)
+    if mapped > 0 or coverage.get("gaps"):
         from app.hive.service import record_hive_progress_report
 
         record_hive_progress_report(
             db=db,
             trigger="settle_day",
-            extra={"hive_outcomes_mapped": mapped, "settled_items": len(items)},
+            extra={
+                "hive_outcomes_mapped": mapped,
+                "settled_items": len(items),
+                "settlement_coverage": coverage,
+            },
         )
         # Second loop: after fresh evidence lands, Hive invents/tests tactics.
         from app.hive.config import settings as hive_settings
         from app.hive.self_improve import run_self_improvement_cycle
 
-        if (
-            hive_settings.self_improve_enabled
-            and mapped >= int(hive_settings.self_improve_min_mapped)
+        if hive_settings.self_improve_enabled and (
+            mapped >= int(hive_settings.self_improve_min_mapped) or coverage.get("gaps")
         ):
             run_self_improvement_cycle(
                 db=db,
@@ -155,6 +159,40 @@ def settle_user_day(
         hive_outcomes_mapped=mapped,
         eod_quality=eod_quality,
     )
+
+def _settlement_coverage_snapshot(items: list[SettlementItem]) -> dict[str, Any]:
+    """Summarize which sports/markets settled vs still need engine coverage."""
+    graded = [item for item in items if item.status == "graded"]
+    pending = [item for item in items if item.status == "pending"]
+    gaps = [
+        item
+        for item in items
+        if item.status == "skipped"
+        and item.detail
+        and (
+            "does not support" in item.detail.lower()
+            or "no settlement rule" in item.detail.lower()
+            or "no odds-scores settlement" in item.detail.lower()
+        )
+    ]
+    return {
+        "graded": len(graded),
+        "pending": len(pending),
+        "gaps": [
+            {
+                "selection": item.selection,
+                "detail": item.detail,
+            }
+            for item in gaps[:25]
+        ],
+        "gap_count": len(gaps),
+        "supported_engines": [
+            "mlb_stats_api",
+            "espn_site_api",
+            "the_odds_api_scores",
+        ],
+    }
+
 
 def sync_hive_outcomes_for_graded(db: Session, user_id: str) -> int:
     """Map graded board/ticket results onto pending Hive captures for this user.
@@ -496,19 +534,48 @@ def _grade_recommendation(
             extra_tags=extra_tags,
             lesson=lesson,
         )
-    from app.services.espn_provider import ESPN_SPORT_PATHS
 
-    if sport in ESPN_SPORT_PATHS:
-        return _grade_espn_recommendation(
+    from app.services.espn_provider import ESPN_SPORT_PATHS, resolve_espn_path
+
+    snap = recommendation.snapshot or {}
+    league_hint = str(
+        snap.get("league")
+        or snap.get("odds_key")
+        or snap.get("competition")
+        or recommendation.league
+        or ""
+    )
+    espn_result: dict[str, Any] | None = None
+    if sport in ESPN_SPORT_PATHS or resolve_espn_path(sport, league_hint=league_hint):
+        espn_result = _grade_espn_recommendation(
             db,
             recommendation,
             stake=stake,
             extra_tags=extra_tags,
             lesson=lesson,
+            league_hint=league_hint,
         )
+        if espn_result.get("status") != "skipped":
+            return espn_result
+        # Fall through to Odds scores for team markets when ESPN can't map a prop.
+
+    odds_result = _grade_odds_scores_recommendation(
+        db,
+        recommendation,
+        stake=stake,
+        extra_tags=extra_tags,
+        lesson=lesson,
+    )
+    if odds_result.get("status") != "skipped":
+        return odds_result
+
+    detail = (espn_result or {}).get("detail") or odds_result.get("detail") or (
+        f"Automatic settlement does not support {sport.upper()} {recommendation.market_type}."
+    )
+    _record_settlement_gap(db, recommendation, detail=str(detail))
     return {
         "status": "skipped",
-        "detail": f"Automatic settlement does not support {sport.upper()} yet.",
+        "detail": str(detail),
     }
 
 
@@ -562,8 +629,9 @@ def _grade_espn_recommendation(
     stake: Decimal,
     extra_tags: list[str] | None = None,
     lesson: str | None = None,
+    league_hint: str | None = None,
 ) -> dict[str, Any]:
-    """Settle WNBA/NBA/NFL/NCAAF (and other ESPN sports) from official finals."""
+    """Settle ESPN-backed sports from official finals (all app ESPN leagues)."""
     from app.services.board_metrics import parse_event_teams
     from app.services.espn_provider import (
         get_event_summary,
@@ -590,6 +658,7 @@ def _grade_espn_recommendation(
         recommendation.slate_date,
         home_team=home,
         away_team=away,
+        league_hint=league_hint,
     )
     if game is None:
         return {
@@ -623,21 +692,13 @@ def _grade_espn_recommendation(
     }
 
     market = (recommendation.market_type or "").lower()
-    if market.startswith("player_") or any(
-        token in market
-        for token in (
-            "points",
-            "rebounds",
-            "assists",
-            "threes",
-            "three",
-            "pra",
-            "steals",
-            "blocks",
-            "turnovers",
+    if _is_player_prop_market(market, recommendation.selection or ""):
+        summary = get_event_summary(
+            sport,
+            str(game.get("event_id") or ""),
+            league_hint=league_hint,
+            espn_path=str(game.get("espn_path") or "") or None,
         )
-    ):
-        summary = get_event_summary(sport, str(game.get("event_id") or ""))
         players = parse_boxscore_player_stats(summary)
         derived = _derive_espn_player_prop(recommendation, box, players)
     else:
@@ -658,6 +719,167 @@ def _grade_espn_recommendation(
         or "Auto-settled from ESPN final score/stats. Complete process audit when ready.",
         result_source="official_espn",
     )
+
+
+def _grade_odds_scores_recommendation(
+    db: Session,
+    recommendation: Recommendation,
+    *,
+    stake: Decimal,
+    extra_tags: list[str] | None = None,
+    lesson: str | None = None,
+) -> dict[str, Any]:
+    """Universal team-market fallback via The Odds API completed scores (incl. KBO)."""
+    market = (recommendation.market_type or "").lower()
+    selection_l = (recommendation.selection or "").lower()
+    if _is_player_prop_market(market, recommendation.selection or ""):
+        return {
+            "status": "skipped",
+            "detail": "Odds scores fallback covers team markets only (ML/spread/total).",
+        }
+    if not (
+        "moneyline" in market
+        or market in {"h2h", "ml"}
+        or selection_l.endswith(" ml")
+        or "total" in market
+        or "spread" in market
+        or "run_line" in market
+        or "handicap" in market
+    ):
+        return {
+            "status": "skipped",
+            "detail": f"No Odds-scores settlement rule for market {recommendation.market_type}.",
+        }
+
+    from app.services.board_metrics import parse_event_teams
+    from app.services.odds_provider import (
+        APP_SPORT_TO_ODDS_KEY,
+        get_scores,
+        odds_keys_for_app_sport,
+        _norm_team,
+    )
+
+    sport = (recommendation.sport or "").lower()
+    snap = recommendation.snapshot or {}
+    home = str(snap.get("home_team") or recommendation.home_team or "")
+    away = str(snap.get("away_team") or recommendation.away_team or "")
+    if not home or not away:
+        parsed_away, parsed_home = parse_event_teams(recommendation.event_name or "")
+        home = home or (parsed_home or "")
+        away = away or (parsed_away or "")
+    if not home or not away:
+        return {
+            "status": "skipped",
+            "detail": "Missing home/away teams for Odds scores settlement.",
+        }
+
+    keys = odds_keys_for_app_sport(sport) or []
+    primary = APP_SPORT_TO_ODDS_KEY.get(sport)
+    if primary and primary not in keys:
+        keys = [primary, *keys]
+    if not keys:
+        return {
+            "status": "skipped",
+            "detail": f"No Odds sport key mapped for {sport.upper()}.",
+        }
+
+    home_n = _norm_team(home)
+    away_n = _norm_team(away)
+    matched = None
+    for odds_key in keys:
+        for event in get_scores(odds_key, days_from=3) or []:
+            if not event.get("completed"):
+                continue
+            scores = {
+                _norm_team(str(row.get("name") or "")): row.get("score")
+                for row in (event.get("scores") or [])
+                if isinstance(row, dict)
+            }
+            home_score = scores.get(home_n)
+            away_score = scores.get(away_n)
+            # Also try event home/away team fields.
+            if home_score is None or away_score is None:
+                event_home = _norm_team(str(event.get("home_team") or ""))
+                event_away = _norm_team(str(event.get("away_team") or ""))
+                if event_home == home_n and event_away == away_n:
+                    home_score = scores.get(event_home)
+                    away_score = scores.get(event_away)
+            if home_score is None or away_score is None:
+                continue
+            try:
+                matched = {
+                    "home_team": home,
+                    "away_team": away,
+                    "home_runs": int(float(home_score)),
+                    "away_runs": int(float(away_score)),
+                    "total_runs": int(float(home_score)) + int(float(away_score)),
+                    "final_score": f"{away} {int(float(away_score))} @ {home} {int(float(home_score))}",
+                    "pitchers": [],
+                    "batters": [],
+                    "odds_key": odds_key,
+                }
+            except (TypeError, ValueError):
+                continue
+            break
+        if matched:
+            break
+
+    if matched is None:
+        return {
+            "status": "pending",
+            "detail": "Odds completed score not found yet for this event.",
+        }
+
+    derived = _derive_outcome(recommendation, matched)
+    if derived is None:
+        return {
+            "status": "skipped",
+            "detail": f"No settlement rule for market {recommendation.market_type}.",
+        }
+    return _persist_auto_grade(
+        db,
+        recommendation,
+        derived=derived,
+        stake=stake,
+        extra_tags=extra_tags,
+        lesson=lesson
+        or "Auto-settled from Odds API completed scores. Complete process audit when ready.",
+        result_source="odds_scores",
+    )
+
+
+def _is_player_prop_market(market: str, selection: str) -> bool:
+    market_l = (market or "").lower()
+    selection_l = (selection or "").lower()
+    if market_l.startswith("player_") or market_l.startswith("batter_") or market_l.startswith(
+        "pitcher_"
+    ):
+        return True
+    tokens = (
+        "points",
+        "rebounds",
+        "assists",
+        "threes",
+        "three",
+        "pra",
+        "steals",
+        "blocks",
+        "turnovers",
+        "passing",
+        "rushing",
+        "receiving",
+        "receptions",
+        "yards",
+        "touchdown",
+        "strikeout",
+        "hits",
+        "rbi",
+        "shots",
+        "saves",
+        "goals",
+        "anytime",
+    )
+    return any(token in market_l or token in selection_l for token in tokens)
 
 
 def _derive_espn_player_prop(
@@ -692,8 +914,18 @@ def _derive_espn_player_prop(
             "detail": f"Player '{player_name}' not found in ESPN final boxscore.",
         }
 
-    stat_key, label = _espn_stat_for_market(market, selection_l)
-    raw = best.get(stat_key)
+    stat_key, label = _espn_stat_for_market(
+        market,
+        selection_l,
+        sport=str((recommendation.sport or "")).lower(),
+    )
+    raw = _lookup_player_stat(
+        best,
+        market,
+        selection_l,
+        preferred=stat_key,
+        sport=str((recommendation.sport or "")).lower(),
+    )
     if raw is None:
         return {
             "outcome": "VOID",
@@ -717,6 +949,54 @@ def _derive_espn_player_prop(
     }
 
 
+def _lookup_player_stat(
+    player: dict[str, Any],
+    market: str,
+    selection_l: str,
+    *,
+    preferred: str,
+    sport: str = "",
+) -> float | None:
+    text = f"{market} {selection_l}".lower()
+    if "anytime" in text and "touchdown" in text:
+        total = 0.0
+        found = False
+        for key in ("RUSH_TD", "REC_TD", "PASS_TD", "TD"):
+            value = player.get(key)
+            if value is not None:
+                total += float(value)
+                found = True
+        return total if found else None
+
+    candidates = [preferred]
+    # Friendly aliases across sports / group prefixes.
+    aliases = {
+        "PASS_YDS": ["PASS_YDS", "YDS"],
+        "RUSH_YDS": ["RUSH_YDS", "YDS"],
+        "REC_YDS": ["REC_YDS", "YDS"],
+        "PASS_TD": ["PASS_TD", "TD"],
+        "RUSH_TD": ["RUSH_TD", "TD"],
+        "REC_TD": ["REC_TD", "TD"],
+        "PASS_INT": ["PASS_INT", "INT"],
+        "REC": ["REC", "REC_REC"],
+        "RUSH_CAR": ["RUSH_CAR", "CAR"],
+        "REC_TGTS": ["REC_TGTS", "TGTS"],
+        "SOG": ["SOG", "S", "SHOTS"],
+        "POINTS": ["POINTS", "G+A", "PTS"],
+        "AST": ["AST", "A"],
+        "G": ["G", "GOALS"],
+        "PITCH_K": ["PITCH_K", "K", "SO"],
+        "BAT_H": ["BAT_H", "H", "HITS"],
+        "BAT_RBI": ["BAT_RBI", "RBI"],
+    }
+    candidates.extend(aliases.get(preferred, []))
+    for key in candidates:
+        value = player.get(key)
+        if value is not None:
+            return float(value)
+    return None
+
+
 def _player_name_from_selection(selection: str) -> str:
     text = selection.strip()
     for token in (" over ", " under ", " Over ", " Under "):
@@ -726,24 +1006,118 @@ def _player_name_from_selection(selection: str) -> str:
     return re.split(r"\s+[+-]?\d", text, maxsplit=1)[0].strip()
 
 
-def _espn_stat_for_market(market: str, selection_l: str) -> tuple[str, str]:
-    if "pra" in market or "points_rebounds_assists" in market:
+def _espn_stat_for_market(
+    market: str, selection_l: str, *, sport: str = ""
+) -> tuple[str, str]:
+    """Map market/selection language → ESPN boxscore keys (multi-sport)."""
+    text = f"{market} {selection_l}".lower()
+    sport_l = (sport or "").lower()
+
+    # Football
+    if sport_l in {"nfl", "ncaaf"} or any(
+        token in text for token in ("pass", "rush", "receiv", "reception", "touchdown")
+    ):
+        if "pass" in text and ("yard" in text or "yds" in text):
+            return "PASS_YDS", "PASS YDS"
+        if "rush" in text and ("yard" in text or "yds" in text):
+            return "RUSH_YDS", "RUSH YDS"
+        if ("receiv" in text or "reception" in text) and ("yard" in text or "yds" in text):
+            return "REC_YDS", "REC YDS"
+        if "reception" in text:
+            return "REC", "REC"
+        if "pass" in text and ("td" in text or "touchdown" in text):
+            return "PASS_TD", "PASS TD"
+        if "rush" in text and ("td" in text or "touchdown" in text):
+            return "RUSH_TD", "RUSH TD"
+        if "receiv" in text and ("td" in text or "touchdown" in text):
+            return "REC_TD", "REC TD"
+        if "anytime" in text and "touchdown" in text:
+            return "RUSH_TD", "TD"
+        if "interception" in text:
+            return "PASS_INT", "INT"
+        if "target" in text:
+            return "REC_TGTS", "TGTS"
+        if "carry" in text or "carries" in text:
+            return "RUSH_CAR", "CAR"
+
+    # Hockey
+    if sport_l == "nhl":
+        if "save" in text:
+            return "SV", "SV"
+        if "shot" in text:
+            return "SOG", "SOG"
+        if "goalie" in text and "goal" in text:
+            return "GA", "GA"
+        if "point" in text:
+            return "POINTS", "PTS"
+        if "assist" in text:
+            return "A", "A"
+        if "goal" in text:
+            return "G", "G"
+
+    # Soccer
+    if sport_l in {"soccer", "mls", "epl"}:
+        if "shot" in text:
+            return "SOG", "SOT"
+        if "goal" in text or "scorer" in text:
+            return "G", "G"
+        if "assist" in text:
+            return "A", "A"
+
+    # Basketball / generic
+    if "pra" in text or "points_rebounds_assists" in text:
         return "PRA", "PRA"
-    if "rebounds" in market or "rebounds" in selection_l:
+    if "rebounds" in text:
         return "REB", "REB"
-    if "assists" in market or "assists" in selection_l:
+    if "assists" in text:
         return "AST", "AST"
-    if "three" in market or "threes" in market or "3pt" in selection_l:
+    if "three" in text or "threes" in text or "3pt" in text or "3-pt" in text:
         return "3PT", "3PT"
-    if "steals" in market:
+    if "steals" in text:
         return "STL", "STL"
-    if "blocks" in market:
+    if "blocks" in text:
         return "BLK", "BLK"
-    if "turnover" in market:
+    if "turnover" in text:
         return "TO", "TO"
-    if "points" in market or "points" in selection_l:
+    if "points" in text:
         return "PTS", "PTS"
+
+    if "strikeout" in text:
+        return "PITCH_K", "K"
+    if "hits" in text:
+        return "BAT_H", "H"
+    if "rbi" in text:
+        return "BAT_RBI", "RBI"
+
     return "PTS", "PTS"
+
+
+def _record_settlement_gap(
+    db: Session,
+    recommendation: Recommendation,
+    *,
+    detail: str,
+) -> None:
+    """Persist unsupported settle markets so Hive self-improve can close gaps."""
+    try:
+        db.add(
+            LearningEvent(
+                recommendation_id=recommendation.id,
+                event_type="SETTLEMENT_COVERAGE_GAP",
+                sport=recommendation.sport,
+                market_type=recommendation.market_type,
+                analysis={
+                    "detail": detail,
+                    "selection": recommendation.selection,
+                    "sport": recommendation.sport,
+                    "market_type": recommendation.market_type,
+                    "slate_date": str(recommendation.slate_date),
+                },
+            )
+        )
+        db.flush()
+    except Exception:  # noqa: BLE001 — never block settle batch
+        logger.exception("Failed to record settlement coverage gap")
 
 
 def _persist_auto_grade(

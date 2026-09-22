@@ -54,21 +54,55 @@ def espn_path_for(sport: str) -> str | None:
     return ESPN_SPORT_PATHS.get(sport.lower())
 
 
-def get_scoreboard(sport: str, slate_date: date) -> list[dict[str, Any]]:
-    path = espn_path_for(sport)
-    if not path:
-        return []
-    stamp = slate_date.strftime("%Y%m%d")
-    try:
-        data = _get(f"{SOURCE_API}/{path}/scoreboard", params={"dates": stamp}, cache_ttl=120)
-    except Exception as exc:  # noqa: BLE001
-        logger.warning("ESPN scoreboard unavailable for %s %s: %s", sport, slate_date, exc)
-        return []
+def get_scoreboard(
+    sport: str,
+    slate_date: date,
+    *,
+    league_hint: str | None = None,
+) -> list[dict[str, Any]]:
+    paths: list[str] = []
+    primary = resolve_espn_path(sport, league_hint=league_hint)
+    if primary:
+        paths.append(primary)
+    sport_l = (sport or "").lower()
+    # Soccer boards span many competitions — scan major paths when hint is thin.
+    if sport_l in {"soccer", "mls", "epl"}:
+        for path in (
+            "soccer/usa.1",
+            "soccer/eng.1",
+            "soccer/esp.1",
+            "soccer/ger.1",
+            "soccer/ita.1",
+            "soccer/fra.1",
+            "soccer/uefa.champions",
+            "soccer/uefa.europa",
+            "soccer/mex.1",
+        ):
+            if path not in paths:
+                paths.append(path)
     games: list[dict[str, Any]] = []
-    for event in data.get("events") or []:
-        parsed = _parse_event(event, sport=sport)
-        if parsed:
+    stamp = slate_date.strftime("%Y%m%d")
+    seen_ids: set[str] = set()
+    for path in paths:
+        try:
+            data = _get(f"{SOURCE_API}/{path}/scoreboard", params={"dates": stamp}, cache_ttl=120)
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("ESPN scoreboard unavailable for %s %s: %s", path, slate_date, exc)
+            continue
+        for event in data.get("events") or []:
+            parsed = _parse_event(event, sport=sport)
+            if not parsed:
+                continue
+            eid = str(parsed.get("event_id") or "")
+            if eid and eid in seen_ids:
+                continue
+            if eid:
+                seen_ids.add(eid)
+            parsed["espn_path"] = path
             games.append(parsed)
+        # First matching path with games is enough for non-soccer.
+        if games and sport_l not in {"soccer", "mls", "epl"}:
+            break
     return games
 
 
@@ -78,14 +112,21 @@ def match_odds_event_to_espn(
     *,
     home_team: str,
     away_team: str,
+    league_hint: str | None = None,
 ) -> dict[str, Any] | None:
     """Best-effort match Odds API event names to an ESPN scoreboard game."""
     try:
-        games = get_scoreboard(sport, slate_date)
+        games = get_scoreboard(sport, slate_date, league_hint=league_hint)
         # Also try adjacent days for late/early slate timezone drift.
         if not games:
             for delta in (-1, 1):
-                games.extend(get_scoreboard(sport, slate_date + timedelta(days=delta)))
+                games.extend(
+                    get_scoreboard(
+                        sport,
+                        slate_date + timedelta(days=delta),
+                        league_hint=league_hint,
+                    )
+                )
     except Exception as exc:  # noqa: BLE001
         logger.warning("ESPN match failed for %s: %s", sport, exc)
         return None
@@ -103,9 +144,15 @@ def match_odds_event_to_espn(
     return best
 
 
-def get_event_summary(sport: str, event_id: str | int) -> dict[str, Any] | None:
+def get_event_summary(
+    sport: str,
+    event_id: str | int,
+    *,
+    league_hint: str | None = None,
+    espn_path: str | None = None,
+) -> dict[str, Any] | None:
     """Fetch ESPN event summary (boxscore + header) for settlement."""
-    path = espn_path_for(sport)
+    path = espn_path or resolve_espn_path(sport, league_hint=league_hint)
     if not path or not event_id:
         return None
     try:
@@ -115,43 +162,127 @@ def get_event_summary(sport: str, event_id: str | int) -> dict[str, Any] | None:
             cache_ttl=90,
         )
     except Exception as exc:  # noqa: BLE001
-        logger.warning("ESPN summary unavailable for %s %s: %s", sport, event_id, exc)
+        logger.warning("ESPN summary unavailable for %s %s: %s", path, event_id, exc)
         return None
 
 
 def parse_boxscore_player_stats(summary: dict[str, Any] | None) -> list[dict[str, Any]]:
-    """Flatten ESPN summary boxscore players into name + numeric stats."""
+    """Flatten ESPN summary boxscore players into name + numeric stats.
+
+    Merges an athlete across passing/rushing/receiving (etc.) groups and keeps
+    both raw labels (YDS) and group-prefixed keys (PASS_YDS, RUSH_YDS, REC_YDS)
+    so football/hockey props settle without sport-by-sport special casing.
+    """
     if not summary:
         return []
     box = summary.get("boxscore") or {}
-    rows: list[dict[str, Any]] = []
+    by_athlete: dict[str, dict[str, Any]] = {}
     for team_block in box.get("players") or []:
         team_name = str((team_block.get("team") or {}).get("displayName") or "")
         for group in team_block.get("statistics") or []:
+            group_key = _boxscore_group_prefix(
+                str(group.get("name") or group.get("type") or group.get("keys") or "")
+            )
             names = [str(n).upper() for n in (group.get("names") or group.get("labels") or [])]
             for athlete_row in group.get("athletes") or []:
                 athlete = athlete_row.get("athlete") or {}
                 name = str(athlete.get("displayName") or athlete.get("fullName") or "").strip()
+                athlete_id = str(athlete.get("id") or "")
                 if not name:
                     continue
+                key = athlete_id or f"{team_name}:{name.lower()}"
+                mapped = by_athlete.get(key)
+                if mapped is None:
+                    mapped = {
+                        "name": name,
+                        "athlete_id": athlete_id,
+                        "team": team_name,
+                    }
+                    by_athlete[key] = mapped
                 raw_stats = athlete_row.get("stats") or []
-                mapped: dict[str, Any] = {
-                    "name": name,
-                    "athlete_id": str(athlete.get("id") or ""),
-                    "team": team_name,
-                }
                 for index, label in enumerate(names):
                     if index >= len(raw_stats):
                         break
-                    mapped[label] = _parse_stat_cell(raw_stats[index])
-                # Convenience composites for common prop markets.
-                pts = mapped.get("PTS")
-                reb = mapped.get("REB")
-                ast = mapped.get("AST")
-                if pts is not None and reb is not None and ast is not None:
-                    mapped["PRA"] = float(pts) + float(reb) + float(ast)
-                rows.append(mapped)
+                    value = _parse_stat_cell(raw_stats[index])
+                    mapped[label] = value
+                    if group_key:
+                        mapped[f"{group_key}_{label}"] = value
+    rows = list(by_athlete.values())
+    for mapped in rows:
+        pts = mapped.get("PTS")
+        reb = mapped.get("REB")
+        ast = mapped.get("AST")
+        if pts is not None and reb is not None and ast is not None:
+            mapped["PRA"] = float(pts) + float(reb) + float(ast)
+        goals = mapped.get("G")
+        assists = mapped.get("A")
+        if goals is not None and assists is not None:
+            mapped["POINTS"] = float(goals) + float(assists)
+            mapped["G+A"] = mapped["POINTS"]
     return rows
+
+
+def _boxscore_group_prefix(raw: str) -> str:
+    text = (raw or "").strip().lower()
+    if not text:
+        return ""
+    if "pass" in text:
+        return "PASS"
+    if "rush" in text:
+        return "RUSH"
+    if "receiv" in text:
+        return "REC"
+    if "defen" in text:
+        return "DEF"
+    if "kick" in text:
+        return "KICK"
+    if "punt" in text:
+        return "PUNT"
+    if "goalie" in text or "goaltend" in text:
+        return "GOALIE"
+    if "forward" in text or "defense" in text or "skater" in text:
+        return "SKATER"
+    if "batting" in text or "batter" in text:
+        return "BAT"
+    if "pitch" in text:
+        return "PITCH"
+    return re.sub(r"[^a-z0-9]+", "", text).upper()[:12]
+
+
+# Soccer league id / odds-key hints → ESPN path (beyond the default usa.1).
+SOCCER_ESPN_PATHS: dict[str, str] = {
+    "usa.1": "soccer/usa.1",
+    "mls": "soccer/usa.1",
+    "eng.1": "soccer/eng.1",
+    "epl": "soccer/eng.1",
+    "esp.1": "soccer/esp.1",
+    "la liga": "soccer/esp.1",
+    "fra.1": "soccer/fra.1",
+    "ligue 1": "soccer/fra.1",
+    "ita.1": "soccer/ita.1",
+    "serie a": "soccer/ita.1",
+    "ger.1": "soccer/ger.1",
+    "bundesliga": "soccer/ger.1",
+    "uefa.champions": "soccer/uefa.champions",
+    "ucl": "soccer/uefa.champions",
+    "uefa.europa": "soccer/uefa.europa",
+    "mex.1": "soccer/mex.1",
+}
+
+
+def resolve_espn_path(sport: str, *, league_hint: str | None = None) -> str | None:
+    """Resolve ESPN path for an app sport, including soccer league hints."""
+    sport_l = (sport or "").lower().strip()
+    hint = (league_hint or "").lower().strip()
+    if sport_l in {"soccer", "mls", "epl"} or hint:
+        for key, path in SOCCER_ESPN_PATHS.items():
+            if key == hint or key in hint or (hint and hint in key):
+                return path
+        if sport_l == "mls":
+            return "soccer/usa.1"
+        if sport_l == "epl":
+            return "soccer/eng.1"
+    return espn_path_for(sport_l)
 
 
 def probe_espn_api(sport: str = "nfl") -> dict[str, Any]:
