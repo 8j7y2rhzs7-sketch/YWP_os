@@ -65,7 +65,11 @@ from app.services.protocols import run_protocol_health_check
 from app.services.providers import demo_slate
 from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate, upcoming_odds_dates
 from app.services.live_mlb_slate import live_mlb_slate, props_slate_notice
-from app.services.live_wnba_slate import live_wnba_slate, upcoming_wnba_dates
+from app.services.live_wnba_slate import (
+    live_wnba_slate,
+    upcoming_wnba_dates,
+    wnba_props_slate_notice,
+)
 from app.services.market_board import build_market_board
 from app.services.odds_provider import (
     app_sport_in_season,
@@ -286,8 +290,8 @@ def slate(
                     mode="live",
                     notice=(
                         "Live WNBA from The Odds API: full-game markets plus player "
-                        "props (points/rebounds/assists/threes/PRA) for a credit-capped "
-                        "set of tip-offs. Prop research stays PARTIAL until player L5 clears."
+                        "props (points/rebounds/assists/threes/PRA). "
+                        + wnba_props_slate_notice()
                     ),
                     candidates=candidates,
                 )
@@ -819,6 +823,18 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
                 payload.sport,
                 payload.date,
             )
+
+    # Basketball player props arrive as market_implied from Odds; attach ESPN form
+    # so Strict Mode can PLAY instead of hard-SKIP for missing independent model.
+    sport_l = (payload.sport or "").lower()
+    if sport_l in {"wnba", "nba", "basketball"} and any(
+        str(c.market_type or "").startswith("player_")
+        and c.probability_source == "market_implied"
+        for c in candidates
+    ):
+        from app.services.player_prop_research import enrich_player_prop_candidates
+
+        candidates = enrich_player_prop_candidates(candidates, slate_date=payload.date)
 
     protocol_run = run_protocol_health_check(
         db,

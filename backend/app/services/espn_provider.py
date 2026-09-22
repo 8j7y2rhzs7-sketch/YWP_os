@@ -548,6 +548,153 @@ def _is_out(status: str) -> bool:
     return any(token in text for token in ("out", "injured reserve", "ir", "doubtful"))
 
 
+def get_team_roster(sport: str, team_id: str | int) -> list[dict[str, Any]]:
+    """Return active roster athletes for an ESPN team id."""
+    path = espn_path_for(sport)
+    if not path or not team_id:
+        return []
+    try:
+        data = _get(f"{SOURCE_API}/{path}/teams/{team_id}/roster", cache_ttl=3_600)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("ESPN roster unavailable for %s team %s: %s", sport, team_id, exc)
+        return []
+    athletes: list[dict[str, Any]] = []
+    for row in data.get("athletes") or []:
+        group = row.get("items") if isinstance(row, dict) and "items" in row else [row]
+        for person in group or []:
+            athlete = person.get("athlete") if isinstance(person, dict) else None
+            if not isinstance(athlete, dict):
+                athlete = person if isinstance(person, dict) else {}
+            athlete_id = athlete.get("id")
+            name = athlete.get("displayName") or athlete.get("fullName") or ""
+            if athlete_id and name:
+                athletes.append(
+                    {
+                        "id": str(athlete_id),
+                        "name": str(name),
+                        "jersey": athlete.get("jersey"),
+                        "position": ((athlete.get("position") or {}).get("abbreviation")),
+                    }
+                )
+    return athletes
+
+
+def resolve_athlete_id(
+    sport: str,
+    player_name: str,
+    *,
+    team_ids: list[str] | None = None,
+) -> dict[str, Any] | None:
+    """Fuzzy-match a sportsbook player name onto an ESPN athlete via team rosters."""
+    if not player_name.strip():
+        return None
+    ids = [str(tid) for tid in (team_ids or []) if tid]
+    if not ids:
+        return None
+    best: dict[str, Any] | None = None
+    best_score = 0
+    needle = _norm(player_name)
+    for team_id in ids:
+        for athlete in get_team_roster(sport, team_id):
+            hay = _norm(str(athlete.get("name") or ""))
+            if not hay:
+                continue
+            score = _name_overlap(player_name, str(athlete.get("name") or ""))
+            if hay == needle:
+                score += 20
+            elif needle in hay or hay in needle:
+                score += 12
+            needle_last = (needle.split() or [""])[-1]
+            hay_last = (hay.split() or [""])[-1]
+            if needle_last and needle_last == hay_last and len(needle_last) > 2:
+                score += 6
+            if score > best_score:
+                best_score = score
+                best = dict(athlete)
+    return best if best and best_score >= 6 else None
+
+
+def get_athlete_gamelog(
+    sport: str,
+    athlete_id: str | int,
+    *,
+    season: int | None = None,
+    last_n: int = 10,
+) -> dict[str, Any]:
+    """Parse ESPN common-v3 athlete gamelog into recent numeric stat rows."""
+    path = espn_path_for(sport)
+    if not path or not athlete_id:
+        return {"verified": False, "names": [], "games": [], "source_id": SOURCE_ID}
+    season = season or date.today().year
+    url = (
+        f"https://site.web.api.espn.com/apis/common/v3/sports/{path}/athletes/"
+        f"{athlete_id}/gamelog"
+    )
+    try:
+        data = _get(url, params={"season": season}, cache_ttl=900)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("ESPN gamelog unavailable for %s %s: %s", sport, athlete_id, exc)
+        return {
+            "verified": False,
+            "names": [],
+            "games": [],
+            "source_id": SOURCE_ID,
+            "error": str(exc),
+        }
+    names = [str(n) for n in (data.get("names") or [])]
+    labels = [str(n) for n in (data.get("labels") or [])]
+    event_meta = data.get("events") if isinstance(data.get("events"), dict) else {}
+    rows: list[dict[str, Any]] = []
+    for season_type in data.get("seasonTypes") or []:
+        for category in season_type.get("categories") or []:
+            for event in category.get("events") or []:
+                event_id = str(event.get("eventId") or "")
+                stats = event.get("stats") or []
+                if not event_id or not stats:
+                    continue
+                meta = event_meta.get(event_id) or {}
+                mapped: dict[str, Any] = {
+                    "event_id": event_id,
+                    "game_date": str(meta.get("gameDate") or "")[:10],
+                    "opponent": ((meta.get("opponent") or {}).get("displayName") or ""),
+                    "result": meta.get("gameResult"),
+                }
+                for index, name in enumerate(names):
+                    if index >= len(stats):
+                        break
+                    mapped[name] = _parse_stat_cell(stats[index])
+                rows.append(mapped)
+    rows.sort(key=lambda row: str(row.get("game_date") or ""), reverse=True)
+    trimmed = rows[: max(1, last_n)]
+    return {
+        "verified": len(trimmed) >= 3,
+        "names": names,
+        "labels": labels,
+        "games": trimmed,
+        "source_id": SOURCE_ID,
+        "source_url": url,
+        "athlete_id": str(athlete_id),
+    }
+
+
+def _parse_stat_cell(raw: Any) -> float | None:
+    if raw is None:
+        return None
+    text = str(raw).strip()
+    if not text or text in {"-", "--"}:
+        return None
+    if "-" in text and text.replace("-", "").replace(".", "").isdigit():
+        left = text.split("-", 1)[0]
+        try:
+            return float(left)
+        except ValueError:
+            return None
+    try:
+        return float(text.replace("%", ""))
+    except ValueError:
+        return None
+
+
 def _empty_form() -> dict[str, Any]:
     empty = {
         "games": 0,

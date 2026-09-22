@@ -71,6 +71,7 @@ _PERIOD_MARKETS_BY_SPORT: dict[str, str] = {
 # Cap prop/period event fan-out for huge Saturday NCAAF slates.
 _BOARD_MAX_PROP_EVENTS_BY_SPORT: dict[str, int] = {
     "ncaaf": 3,
+    "wnba": 10,
 }
 
 _LEAGUE: dict[str, str] = {
@@ -175,6 +176,13 @@ def _build_market_board_uncached(
             or settings.mlb_max_prop_events
             or 0
         )
+        if sport_lower == "wnba":
+            default_max = int(
+                getattr(settings, "wnba_board_max_prop_events", None)
+                or getattr(settings, "wnba_max_prop_events", None)
+                or default_max
+                or 10
+            )
         max_events = max(
             0,
             int(_BOARD_MAX_PROP_EVENTS_BY_SPORT.get(sport_lower, default_max)),

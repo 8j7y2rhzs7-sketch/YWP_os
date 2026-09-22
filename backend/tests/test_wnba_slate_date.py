@@ -198,7 +198,12 @@ def test_wnba_raw_slate_includes_player_props() -> None:
         patch.object(wnba, "league_injuries", return_value={}),
         patch.object(wnba, "build_event_research", return_value=research),
         patch.object(wnba, "get_player_props", return_value=prop_payload),
-        patch.object(wnba.settings, "mlb_board_max_prop_events", 4),
+        patch.object(wnba.settings, "wnba_max_prop_events", 4),
+        patch.object(
+            wnba,
+            "enrich_player_prop_candidates",
+            side_effect=lambda rows, slate_date=None: rows,
+        ),
     ):
         slate = wnba.live_wnba_slate(date(2026, 9, 17))
 

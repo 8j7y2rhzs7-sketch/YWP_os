@@ -14,6 +14,7 @@ from app.schemas import CandidateInput
 from app.services.facts_cascade import league_injuries
 from app.services.market_board import _flatten_prop_markets
 from app.services.odds_provider import extract_best_odds, get_game_odds, get_player_props
+from app.services.player_prop_research import enrich_player_prop_candidates
 from app.services.sport_research import build_event_research, build_verified_candidate
 
 logger = logging.getLogger(__name__)
@@ -24,6 +25,33 @@ WNBA_PROP_MARKETS = (
     "player_points,player_rebounds,player_assists,player_threes,"
     "player_points_rebounds_assists"
 )
+
+_last_props_status: dict[str, Any] = {
+    "enabled": True,
+    "events_priced": 0,
+    "prop_candidates": 0,
+    "model_props": 0,
+    "errors": 0,
+}
+
+
+def get_last_wnba_props_status() -> dict[str, Any]:
+    return dict(_last_props_status)
+
+
+def wnba_props_slate_notice() -> str:
+    status = get_last_wnba_props_status()
+    priced = int(status.get("events_priced") or 0)
+    props_n = int(status.get("prop_candidates") or 0)
+    model_n = int(status.get("model_props") or 0)
+    if props_n == 0:
+        if priced == 0:
+            return "Player props enabled — no Odds prop lines for this slate date yet."
+        return "Player props collected but none flattened for this slate."
+    return (
+        f"Player props on slate: {props_n} line(s) across {priced} game(s) "
+        f"({model_n} ESPN form-modeled for protocol)."
+    )
 
 
 def live_wnba_slate(slate_date: date) -> list[CandidateInput]:
@@ -164,7 +192,14 @@ def live_wnba_slate(slate_date: date) -> list[CandidateInput]:
     prop_candidates = _append_wnba_player_props(
         prop_event_contexts,
         now=now,
-        max_events=max(0, int(settings.mlb_board_max_prop_events or 4)),
+        slate_date=slate_date,
+        max_events=max(
+            0,
+            int(
+                getattr(settings, "wnba_max_prop_events", None)
+                or 10
+            ),
+        ),
     )
     candidates.extend(prop_candidates)
 
@@ -182,14 +217,19 @@ def _append_wnba_player_props(
     contexts: list[dict[str, Any]],
     *,
     now: datetime,
+    slate_date: date,
     max_events: int,
 ) -> list[CandidateInput]:
-    """Price WNBA player props onto the Run/raw slate (credit-capped)."""
+    """Price WNBA player props onto the Run/raw slate and attach ESPN form models."""
     if max_events <= 0 or not contexts:
+        _last_props_status.update(
+            {"enabled": True, "events_priced": 0, "prop_candidates": 0, "model_props": 0, "errors": 0}
+        )
         return []
     chunks = _chunk_csv(WNBA_PROP_MARKETS, size=3)
     out: list[CandidateInput] = []
     priced = 0
+    errors = 0
     for ctx in contexts:
         if priced >= max_events:
             break
@@ -201,7 +241,10 @@ def _append_wnba_player_props(
             try:
                 payload = get_player_props(event_id, sport=SPORT_KEY, markets=chunk)
             except Exception:
-                logger.warning("WNBA props chunk failed for %s (%s)", event_id, chunk, exc_info=True)
+                logger.warning(
+                    "WNBA props chunk failed for %s (%s)", event_id, chunk, exc_info=True
+                )
+                errors += 1
                 continue
             if not payload:
                 continue
@@ -224,6 +267,22 @@ def _append_wnba_player_props(
             )
         except Exception:
             logger.exception("Flatten WNBA prop markets failed for %s", event_id)
+            errors += 1
+
+    # Always keep collected Odds props on the raw list; upgrade in place to model
+    # when ESPN L5/L10 resolves so Strict Mode can PLAY instead of hard-SKIP.
+    if out:
+        out = enrich_player_prop_candidates(out, slate_date=slate_date)
+    model_n = sum(1 for row in out if row.probability_source == "model")
+    _last_props_status.update(
+        {
+            "enabled": True,
+            "events_priced": priced,
+            "prop_candidates": len(out),
+            "model_props": model_n,
+            "errors": errors,
+        }
+    )
     return out
 
 
