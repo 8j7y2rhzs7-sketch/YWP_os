@@ -1,8 +1,9 @@
 """Ops Heal — product self-heal bot alongside Hive pick-calibration.
 
 Hive learns from settled WIN/LOSS and adjusts probability blend.
-Ops Heal watches product health contracts (Day Forge freeze, Decision Board
-500s, settlement stalls) and runs *allowlisted* remediations only.
+Ops Heal collects evidence from *all* app process movements (API, audits,
+learning events, protocol, tickets, locks, settlement, Hive, errors),
+runs allowlisted remediations, and drafts human-reviewable change briefs.
 
 It never edits application source code. Code patches stay human PRs.
 """
@@ -118,6 +119,15 @@ def run_ops_heal_cycle(
     )
 
     # Collect + analyze → draft human-reviewable change briefs (never auto-code).
+    from app.services.ops_evidence import (
+        collect_all_process_evidence,
+        persist_evidence_pack,
+        proposals_from_process_evidence,
+    )
+
+    evidence = collect_all_process_evidence(db=db, user_id=user_id, hours=72)
+    persist_evidence_pack(db=db, pack=evidence)
+
     drafts = analyze_improvement_proposals(
         db=db,
         user_id=user_id,
@@ -125,11 +135,13 @@ def run_ops_heal_cycle(
         applied=applied,
         trigger=trigger,
     )
+    drafts.extend(proposals_from_process_evidence(evidence))
     proposals = upsert_improvement_proposals(db=db, drafts=drafts)
 
     pending_count = len(
         [p for p in list_ops_heal_proposals(db=db, status="pending", limit=40)]
     )
+    evidence_summary = evidence.get("summary") if isinstance(evidence.get("summary"), dict) else {}
     if proposals:
         explanation += (
             f" Drafted {len(proposals)} improvement proposal(s) for human review "
@@ -137,6 +149,11 @@ def run_ops_heal_cycle(
         )
     elif pending_count:
         explanation += f" {pending_count} improvement proposal(s) waiting in inbox."
+    explanation += (
+        f" Evidence: {evidence_summary.get('processes_active', 0)}/"
+        f"{evidence_summary.get('processes_tracked', 0)} processes active · "
+        f"{evidence_summary.get('total_movements', 0)} movements."
+    )
 
     cycle = {
         "id": str(uuid4()),
@@ -148,6 +165,11 @@ def run_ops_heal_cycle(
         "applied_remediations": [_rem_dict(r) for r in applied],
         "proposals_drafted": [p.get("id") for p in proposals],
         "proposals_pending": pending_count,
+        "evidence": {
+            "id": evidence.get("id"),
+            "summary": evidence_summary,
+            "process_coverage": evidence.get("process_coverage"),
+        },
         "bot": "ops_heal",
         "scope": "product_health",
         "not_in_scope": [
@@ -187,8 +209,11 @@ def list_ops_heal_cycles(*, db: Session, limit: int = 12) -> list[dict[str, Any]
 
 
 def latest_ops_heal_status(*, db: Session) -> dict[str, Any]:
+    from app.services.ops_evidence import latest_evidence_pack
+
     cycles = list_ops_heal_cycles(db=db, limit=1)
     pending = list_ops_heal_proposals(db=db, status="pending", limit=40)
+    evidence = latest_evidence_pack(db=db)
     if not cycles:
         return {
             "bot": "ops_heal",
@@ -197,10 +222,18 @@ def latest_ops_heal_status(*, db: Session) -> dict[str, Any]:
             "contracts": [],
             "proposals_pending": len(pending),
             "proposals": pending[:8],
+            "evidence": evidence,
         }
     latest = dict(cycles[0])
     latest["proposals_pending"] = len(pending)
     latest["proposals"] = pending[:8]
+    if evidence and "evidence" not in latest:
+        latest["evidence"] = {
+            "id": evidence.get("id"),
+            "summary": evidence.get("summary"),
+            "process_coverage": evidence.get("process_coverage"),
+            "created_at": evidence.get("created_at"),
+        }
     return latest
 
 

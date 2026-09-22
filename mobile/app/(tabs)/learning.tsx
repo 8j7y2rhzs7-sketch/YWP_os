@@ -19,6 +19,7 @@ import type {
   LearningPulse,
   MissByOneReport,
   OpsHealCycle,
+  OpsHealEvidence,
   OpsHealProposal,
   Performance,
   ProtocolDefinition,
@@ -51,6 +52,7 @@ export default function LearningScreen() {
   const [hiveReports, setHiveReports] = useState<HiveProgressReport[]>([]);
   const [opsHeal, setOpsHeal] = useState<OpsHealCycle | null>(null);
   const [proposals, setProposals] = useState<OpsHealProposal[]>([]);
+  const [evidence, setEvidence] = useState<OpsHealEvidence | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -76,6 +78,7 @@ export default function LearningScreen() {
               body: "{}",
             });
             setOpsHeal(heal);
+            if (heal?.evidence) setEvidence(heal.evidence);
             if (heal?.proposals?.length) {
               setProposals(heal.proposals);
             }
@@ -112,6 +115,7 @@ export default function LearningScreen() {
           nextHive,
           nextHeal,
           nextProposals,
+          nextEvidence,
         ] = await Promise.all([
             request<Performance>("/learning/performance"),
             request<MissByOneReport>("/learning/miss-by-one"),
@@ -123,6 +127,7 @@ export default function LearningScreen() {
             request<{ proposals: OpsHealProposal[] }>("/ops-heal/proposals?status=pending&limit=20").catch(
               () => ({ proposals: [] as OpsHealProposal[] }),
             ),
+            request<OpsHealEvidence>("/ops-heal/evidence").catch(() => null),
           ]);
         setPerformance(nextPerformance);
         setMiss(nextMiss);
@@ -132,6 +137,8 @@ export default function LearningScreen() {
         setHiveReports(nextHive.reports ?? []);
         if (nextHeal) setOpsHeal(nextHeal);
         setProposals(nextProposals.proposals ?? []);
+        if (nextEvidence) setEvidence(nextEvidence);
+        else if (nextHeal?.evidence) setEvidence(nextHeal.evidence);
       } catch (reason) {
         setError(reason instanceof Error ? reason.message : "Learning data failed to load");
       } finally {
@@ -319,6 +326,55 @@ export default function LearningScreen() {
               .join(", ")}
           </Text>
         ) : null}
+      </MetalPanel>
+
+      <SectionTitle
+        title="Process Evidence"
+        subtitle="Every app movement — slate, Day Forge, analyze, board, tickets, lock, settle, Hive, Learning, errors."
+      />
+      <MetalPanel tone={(evidence?.summary?.total_movements ?? 0) > 0 ? "success" : "default"}>
+        <View style={styles.metrics}>
+          <Metric
+            label="Processes active"
+            value={`${evidence?.summary?.processes_active ?? 0}/${evidence?.summary?.processes_tracked ?? 0}`}
+          />
+          <Metric
+            label="Movements"
+            value={evidence?.summary?.total_movements ?? 0}
+            accent={colors.gold}
+          />
+          <Metric
+            label="Errors"
+            value={evidence?.summary?.total_errors ?? 0}
+            accent={(evidence?.summary?.total_errors ?? 0) > 0 ? colors.danger : colors.success}
+          />
+        </View>
+        {(evidence?.process_coverage ?? []).filter((row) => row.active).length ? (
+          <View style={{ marginTop: spacing.sm }}>
+            {(evidence?.process_coverage ?? [])
+              .filter((row) => row.active)
+              .slice(0, 12)
+              .map((row) => (
+                <View key={row.process} style={styles.dataRow}>
+                  <Text style={styles.dataName}>{row.process.replaceAll("_", " ")}</Text>
+                  <Text
+                    style={[
+                      styles.dataValue,
+                      { color: row.errors ? colors.danger : colors.success },
+                    ]}
+                  >
+                    {row.movements} move{row.movements === 1 ? "" : "s"}
+                    {row.errors ? ` · ${row.errors} err` : ""}
+                  </Text>
+                </View>
+              ))}
+          </View>
+        ) : (
+          <Text style={[type.body, { marginTop: spacing.sm }]}>
+            No process movements in the current window yet. Use the app — every API/process path
+            feeds this evidence pack for Ops Heal.
+          </Text>
+        )}
       </MetalPanel>
 
       <SectionTitle

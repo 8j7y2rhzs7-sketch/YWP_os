@@ -1,4 +1,4 @@
-"""Ops Heal API — product self-heal + human-review improvement inbox."""
+"""Ops Heal API — product self-heal + full-process evidence + improvement inbox."""
 
 from __future__ import annotations
 
@@ -6,6 +6,11 @@ from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
 from app.deps import DB, SubscribedUser
+from app.services.ops_evidence import (
+    collect_all_process_evidence,
+    latest_evidence_pack,
+    persist_evidence_pack,
+)
 from app.services.ops_heal import (
     latest_ops_heal_status,
     list_ops_heal_cycles,
@@ -36,6 +41,28 @@ def ops_heal_cycles(
 ) -> dict:
     del user
     return {"bot": "ops_heal", "cycles": list_ops_heal_cycles(db=db, limit=limit)}
+
+
+@router.get("/evidence")
+def ops_heal_evidence(
+    user: SubscribedUser,
+    db: DB,
+    hours: int = Query(default=72, ge=1, le=168),
+    refresh: bool = Query(default=False),
+) -> dict:
+    """Evidence across all app process movements (API, audits, tickets, Hive, …)."""
+    if refresh:
+        pack = collect_all_process_evidence(db=db, user_id=user.id, hours=hours)
+        persist_evidence_pack(db=db, pack=pack)
+        db.commit()
+        return pack
+    latest = latest_evidence_pack(db=db)
+    if latest:
+        return latest
+    pack = collect_all_process_evidence(db=db, user_id=user.id, hours=hours)
+    persist_evidence_pack(db=db, pack=pack)
+    db.commit()
+    return pack
 
 
 @router.get("/proposals")
@@ -83,7 +110,7 @@ def ops_heal_run(
     db: DB,
     apply: bool = Query(default=True),
 ) -> dict:
-    """Run health contracts, allowlisted remediations, and draft improvement proposals."""
+    """Collect all-process evidence, remediate, and draft improvement proposals."""
     cycle = run_ops_heal_cycle(
         db=db,
         user_id=user.id,

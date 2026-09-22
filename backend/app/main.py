@@ -8,6 +8,7 @@ from app.api.router import api_router
 from app.core.config import settings
 from app.core.database import SessionLocal
 from app.middleware.rate_limit import RateLimitMiddleware
+from app.middleware.process_evidence import ProcessEvidenceMiddleware
 from app.services.whop import (
     check_user_access,
     checkout_url,
@@ -44,6 +45,7 @@ app.add_middleware(
 
 
 app.add_middleware(RateLimitMiddleware)
+app.add_middleware(ProcessEvidenceMiddleware)
 
 
 @app.middleware("http")

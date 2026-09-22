@@ -289,6 +289,29 @@ export interface OpsHealProposal {
   auto_remediations_tried?: string[];
 }
 
+export interface OpsHealProcessCoverage {
+  process: string;
+  movements: number;
+  errors: number;
+  active: boolean;
+  error_rate: number;
+}
+
+export interface OpsHealEvidence {
+  id?: string;
+  created_at?: string | null;
+  summary?: {
+    processes_tracked?: number;
+    processes_active?: number;
+    processes_quiet?: string[];
+    total_movements?: number;
+    total_errors?: number;
+    hot_failures?: OpsHealProcessCoverage[];
+  };
+  process_coverage?: OpsHealProcessCoverage[];
+  streams?: Record<string, unknown>;
+}
+
 export interface OpsHealCycle {
   id?: string;
   bot?: string;
@@ -302,6 +325,7 @@ export interface OpsHealCycle {
   proposals_drafted?: string[];
   proposals_pending?: number;
   proposals?: OpsHealProposal[];
+  evidence?: OpsHealEvidence;
 }
 
 export interface TicketCard {
