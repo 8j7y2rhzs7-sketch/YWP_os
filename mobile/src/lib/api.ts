@@ -138,6 +138,9 @@ function formatApiDetail(detail: unknown, status: number): string {
   if (status === 403) {
     return "Access denied — check subscription / Whop membership, then retry.";
   }
+  if (status === 502 || status === 504) {
+    return "Server timed out grading this large slate — retry LAUNCH once. Props still score; research may finish mid-run.";
+  }
   if (status === 503) {
     return "Live provider is down and demo will not be substituted. Retry in a moment.";
   }

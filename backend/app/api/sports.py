@@ -863,6 +863,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
 
     # Player props arrive as market_implied from Odds; attach ESPN form so Strict
     # Mode can PLAY instead of hard-SKIP for missing independent model.
+    # Budget enrichment so 400+ prop boards do not 502 on Render.
     sport_l = (payload.sport or "").lower()
     if sport_l in {"wnba", "nba", "basketball", "nfl", "ncaaf"} and any(
         str(c.market_type or "").startswith("player_")
@@ -871,7 +872,10 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
     ):
         from app.services.player_prop_research import enrich_player_prop_candidates
 
-        candidates = enrich_player_prop_candidates(candidates, slate_date=payload.date)
+        enrich_budget = 12.0 if len(candidates) >= 200 else 18.0
+        candidates = enrich_player_prop_candidates(
+            candidates, slate_date=payload.date, budget_seconds=enrich_budget
+        )
 
     protocol_run = run_protocol_health_check(
         db,
@@ -886,6 +890,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
     from app.hive.service import hive_bucket_key
 
     hive_policy = get_active_policy(db=db)
+    hive_signal_cache: dict[tuple[str, str, str, str, str], object] = {}
     for candidate in candidates:
         evaluation = decision_engine.evaluate(
             candidate,
@@ -901,14 +906,23 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             if candidate.probability_source in {"model", "manual_verified"}
             else None
         )
-        hive_signal = get_hive_signal(
-            db=db,
-            sport=candidate.sport,
-            league=candidate.league,
-            market=candidate.market_type,
-            market_scope=candidate.market_period,
-            model_version=settings.model_version,
+        hive_key = (
+            candidate.sport.lower(),
+            (candidate.league or "").lower(),
+            candidate.market_type,
+            candidate.market_period,
+            settings.model_version,
         )
+        if hive_key not in hive_signal_cache:
+            hive_signal_cache[hive_key] = get_hive_signal(
+                db=db,
+                sport=candidate.sport,
+                league=candidate.league,
+                market=candidate.market_type,
+                market_scope=candidate.market_period,
+                model_version=settings.model_version,
+            )
+        hive_signal = hive_signal_cache[hive_key]
         hive_adjusted, hive_meta = blend_hive_probability(
             base_probability=base_probability,
             hive_signal=hive_signal,
@@ -954,20 +968,22 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
     )
 
     records: list[Recommendation] = []
+    persist_all_snapshots = len(evaluations) <= 250
     for rank, evaluation in enumerate(evaluations, start=1):
         candidate = evaluation.candidate
-        db.add(
-            GameSnapshot(
-                analysis_id=analysis_id,
-                event_id=candidate.event_id,
-                sport=candidate.sport.lower(),
-                slate_date=payload.date,
-                data_source=candidate.data_source,
-                source_timestamp=candidate.source_timestamp,
-                input_hash=evaluation.input_hash,
-                payload=evaluation.payload,
+        if persist_all_snapshots or evaluation.decision in {"PLAY", "LEAN", "WATCH"}:
+            db.add(
+                GameSnapshot(
+                    analysis_id=analysis_id,
+                    event_id=candidate.event_id,
+                    sport=candidate.sport.lower(),
+                    slate_date=payload.date,
+                    data_source=candidate.data_source,
+                    source_timestamp=candidate.source_timestamp,
+                    input_hash=evaluation.input_hash,
+                    payload=evaluation.payload,
+                )
             )
-        )
         record = Recommendation(
             analysis_id=analysis_id,
             created_by_user_id=user.id,
@@ -1029,8 +1045,21 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         records.append(record)
 
     db.commit()
-    for record in records:
+    # Avoid refreshing hundreds of SKIP rows — that alone 502s Render on big boards.
+    board_records = [r for r in records if r.decision in {"PLAY", "LEAN", "WATCH"}]
+    for record in board_records:
         db.refresh(record)
+    sheet_skips = [
+        r
+        for r in records
+        if r.decision not in {"PLAY", "LEAN", "WATCH"}
+        and (
+            "SPORTSBOOK_MENU" in (r.reason_codes or [])
+            or (r.snapshot or {}).get("data_source") == "THE_ODDS_API_BOARD"
+        )
+    ]
+    hive_targets = list(board_records) + sheet_skips[:80]
+    for record in hive_targets:
         # Official board picks (PLAY/LEAN/WATCH) always feed Hive.
         # Customer Pick Sheet sportsbook-menu legs also feed Hive even when SKIP —
         # that is how "they picked something we didn't like and it won" becomes data
@@ -1086,16 +1115,12 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             logger.warning("Hive capture skipped for %s: %s", record.id, exc)
     db.commit()
 
-    ranked = [
-        RecommendationOut.model_validate(record)
-        for record in records
-        if record.decision in {"PLAY", "LEAN", "WATCH"}
+    ranked = [RecommendationOut.model_validate(record) for record in board_records]
+    stay_away_all = [
+        record for record in records if record.decision in {"SKIP", "REVIEW"}
     ]
-    stay_away = [
-        RecommendationOut.model_validate(record)
-        for record in records
-        if record.decision in {"SKIP", "REVIEW"}
-    ]
+    # Huge stay_away payloads 502 the proxy after big prop boards — keep a sample.
+    stay_away = [RecommendationOut.model_validate(record) for record in stay_away_all[:40]]
     qualities = [candidate.data_quality for candidate in candidates]
     unknowns = sum(
         1
@@ -1124,7 +1149,8 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             "candidate_count": len(candidates),
             "sheet_overlay_upgraded": overlay_upgraded,
             "official_pass_count": len(ranked),
-            "official_skip_count": len(stay_away),
+            "official_skip_count": len(stay_away_all),
+            "stay_away_returned": len(stay_away),
             "official_pass": len(ranked) == 0,
             "verified_candidate_count": sum(
                 1 for candidate in candidates if slate_readiness([candidate]) == "VERIFIED"

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import logging
 import re
+import time
 from datetime import date
 from typing import Any
 
@@ -159,12 +160,22 @@ def enrich_player_prop_candidates(
     candidates: list[CandidateInput],
     *,
     slate_date: date | None = None,
+    budget_seconds: float = 14.0,
 ) -> list[CandidateInput]:
-    """Return candidates with player props upgraded to independent form projections."""
+    """Return candidates with player props upgraded to independent form projections.
+
+    Large boards (400+ props) used to burn the whole request on ESPN lookups and
+    502 on Render. Enrich until the wall-clock budget is hit, then grade the rest
+    with the sportsbook line as-is so LAUNCH still completes.
+    """
     if not candidates:
         return candidates
+    started = time.monotonic()
     out: list[CandidateInput] = []
     roster_cache: dict[tuple[str, str], str | None] = {}
+    form_cache: dict[tuple[str, str, str, float, bool], CandidateInput | None] = {}
+    enriched = 0
+    skipped_budget = 0
     for candidate in candidates:
         sport = (candidate.sport or "").lower()
         if sport not in PROP_MODEL_SPORTS or not str(candidate.market_type).startswith("player_"):
@@ -172,14 +183,40 @@ def enrich_player_prop_candidates(
             continue
         if sport == "basketball":
             sport = "nba"
+        if (time.monotonic() - started) >= max(0.0, budget_seconds):
+            out.append(candidate)
+            skipped_budget += 1
+            continue
+        cache_key = (
+            sport,
+            str(candidate.market_type or ""),
+            str(candidate.selection or "").casefold(),
+            float(candidate.line) if candidate.line is not None else 0.0,
+            True,
+        )
+        if cache_key in form_cache:
+            cached = form_cache[cache_key]
+            out.append(cached or candidate)
+            continue
         try:
-            enriched = _enrich_one(
+            upgraded = _enrich_one(
                 candidate, sport=sport, slate_date=slate_date, roster_cache=roster_cache
             )
         except Exception:
             logger.exception("Player prop enrichment failed for %s", candidate.candidate_id)
-            enriched = None
-        out.append(enriched or candidate)
+            upgraded = None
+        form_cache[cache_key] = upgraded
+        if upgraded is not None:
+            enriched += 1
+        out.append(upgraded or candidate)
+    if skipped_budget:
+        logger.warning(
+            "Player prop enrichment budget %.1fs hit — enriched=%s deferred=%s total=%s",
+            budget_seconds,
+            enriched,
+            skipped_budget,
+            len(candidates),
+        )
     return out
 
 
