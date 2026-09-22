@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from app.core.config import settings
 from app.models import ProtocolRun
 from app.schemas import CandidateInput
-from app.services.readiness import ESPN_TEAM_MARKET_SPORTS
+from app.services.readiness import ESPN_TEAM_MARKET_SPORTS, is_mlb_team_market
 
 CURRENT_PROTOCOL = {
     "name": "YWP OS Canonical Sports Protocol",
@@ -289,9 +289,11 @@ def _team_market_without_lineups(sport: str) -> bool:
 
 
 def _lineup_injuries_starters_ok(candidate: CandidateInput) -> bool:
-    """ESPN/KBO team markets have no certified lineup feed — injuries alone clear."""
+    """Team markets must not FAIL Protocol Health solely on missing batting orders."""
     if _team_market_without_lineups(candidate.sport):
         return bool(candidate.injuries_verified)
+    if is_mlb_team_market(candidate):
+        return bool(candidate.injuries_verified and candidate.starter_confirmed)
     return bool(
         candidate.lineup_confirmed
         and candidate.injuries_verified

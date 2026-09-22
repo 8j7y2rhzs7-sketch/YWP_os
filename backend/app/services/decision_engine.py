@@ -15,6 +15,7 @@ from app.services.readiness import (
     OUTDOOR_WEATHER_SPORTS,
     candidate_readiness,
     candidate_verification_gaps,
+    is_mlb_team_market,
 )
 
 
@@ -136,8 +137,13 @@ class DecisionEngine:
         }
         sport_l = (candidate.sport or "").lower()
         # No certified lineup feed for ESPN team sports / KBO — do not scare the board.
-        if sport_l not in ESPN_TEAM_MARKET_SPORTS and sport_l != "kbo":
+        # MLB full-game markets also skip lineup as a hard unverified flag (orders post late).
+        if sport_l not in ESPN_TEAM_MARKET_SPORTS and sport_l != "kbo" and not is_mlb_team_market(
+            candidate
+        ):
             verification_checks["lineup"] = candidate.lineup_confirmed
+            verification_checks["starter"] = candidate.starter_confirmed
+        elif is_mlb_team_market(candidate):
             verification_checks["starter"] = candidate.starter_confirmed
         if sport_l in OUTDOOR_WEATHER_SPORTS:
             verification_checks["weather"] = candidate.weather_verified

@@ -65,28 +65,57 @@ def test_kbo_readiness_does_not_require_lineups_or_bullpen() -> None:
     assert readiness.candidate_readiness(candidate) == "VERIFIED"
 
 
-def test_mlb_still_requires_lineups(monkeypatch) -> None:
+def test_mlb_team_market_allows_probable_lineup(monkeypatch) -> None:
     candidate = _candidate(
         sport="mlb",
         league="MLB",
+        market_type="moneyline",
         lineup_confirmed=False,
-        starter_confirmed=False,
+        starter_confirmed=True,
+        injuries_verified=True,
+        weather_verified=True,
+        motivation_rotation_verified=True,
+        market_movement_verified=True,
+        sport_specific_sweep_complete=True,
+        source_status={
+            "schedule": "confirmed",
+            "market": "confirmed",
+            "current_form": "confirmed",
+            "injuries": "confirmed",
+            "starter": "confirmed",
+            "lineup": "probable",
+            "weather": "confirmed",
+            "venue": "confirmed",
+            "bullpen": "confirmed",
+        },
+        missing_fields=[],
+    )
+    assert readiness.candidate_readiness(candidate) == "VERIFIED"
+
+
+def test_mlb_props_still_need_lineups(monkeypatch) -> None:
+    candidate = _candidate(
+        sport="mlb",
+        league="MLB",
+        market_type="player_hits_over",
+        lineup_confirmed=False,
+        starter_confirmed=True,
         sport_specific_sweep_complete=False,
         source_status={
             "schedule": "confirmed",
             "market": "confirmed",
             "current_form": "confirmed",
             "injuries": "confirmed",
-            "starter": "unknown",
+            "starter": "confirmed",
             "lineup": "unknown",
             "weather": "confirmed",
             "venue": "confirmed",
-            "bullpen": "unknown",
+            "bullpen": "confirmed",
         },
-        missing_fields=["confirmed lineup"],
+        missing_fields=["confirmed batting orders"],
     )
     gaps = readiness.candidate_verification_gaps(candidate)
-    assert "confirmed lineup" in gaps
+    assert any("lineup" in g.lower() or "batting" in g.lower() for g in gaps)
     assert readiness.candidate_readiness(candidate) == "PARTIAL"
 
 

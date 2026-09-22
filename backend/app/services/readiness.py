@@ -38,7 +38,6 @@ KBO_REQUIRED_CHECKS: tuple[tuple[str, str], ...] = (
 # ESPN team sports also lack a certified depth-chart/lineup JSON feed in YWP.
 # Full-game markets (ML/spread/total) clear Strict Mode on schedule + form +
 # injuries + current Odds consensus (+ weather when outdoor) — same honesty as KBO.
-# MLB keeps COMMON_REQUIRED_CHECKS (batting order / bullpen still required).
 ESPN_TEAM_MARKET_SPORTS = frozenset(
     {
         "ncaaf",
@@ -62,20 +61,62 @@ ESPN_TEAM_REQUIRED_CHECKS: tuple[tuple[str, str], ...] = (
     ("market_movement_verified", "current market/line movement"),
     ("sport_specific_sweep_complete", "sport-specific strict-mode sweep"),
 )
+
+# MLB full-game markets (ML / run line / totals) must not hard-block on batting
+# orders — boards often post <60–90 min before first pitch. Probable starters +
+# form + weather + price clear the play; orders remain a soft quality signal.
+# Player props still use COMMON_REQUIRED_CHECKS (lineup required).
+MLB_TEAM_REQUIRED_CHECKS: tuple[tuple[str, str], ...] = (
+    ("schedule_verified", "schedule"),
+    ("universe_scan_complete", "full slate/player universe"),
+    ("current_form_verified", "current form"),
+    ("l5_l10_verified", "actual L5/L10"),
+    ("injuries_verified", "injuries/rest"),
+    ("starter_confirmed", "starter/role"),
+    ("motivation_rotation_verified", "motivation/rotation/workload"),
+    ("home_away_verified", "home/away/travel"),
+    ("market_movement_verified", "current market/line movement"),
+    ("sport_specific_sweep_complete", "sport-specific strict-mode sweep"),
+)
 OUTDOOR_WEATHER_SPORTS = frozenset({"mlb", "nfl", "ncaaf", "soccer", "mls", "epl", "kbo"})
 
+MLB_TEAM_MARKET_TYPES = frozenset(
+    {
+        "moneyline",
+        "run_line",
+        "spread",
+        "game_total_over",
+        "game_total_under",
+        "total_over",
+        "total_under",
+    }
+)
 
-def _required_checks_for(sport_l: str) -> tuple[tuple[str, str], ...]:
+
+def is_mlb_team_market(candidate: CandidateInput) -> bool:
+    """True for MLB ML/run-line/totals — not player props / K markets."""
+    if (candidate.sport or "").lower() != "mlb":
+        return False
+    market = (candidate.market_type or "").lower()
+    if market in MLB_TEAM_MARKET_TYPES:
+        return True
+    return bool(market) and not market.startswith("player_") and "strikeout" not in market
+
+
+def _required_checks_for(candidate: CandidateInput) -> tuple[tuple[str, str], ...]:
+    sport_l = candidate.sport.lower()
     if sport_l == "kbo":
         return KBO_REQUIRED_CHECKS
     if sport_l in ESPN_TEAM_MARKET_SPORTS:
         return ESPN_TEAM_REQUIRED_CHECKS
+    if is_mlb_team_market(candidate):
+        return MLB_TEAM_REQUIRED_CHECKS
     return COMMON_REQUIRED_CHECKS
 
 
 def candidate_verification_gaps(candidate: CandidateInput) -> list[str]:
     sport_l = candidate.sport.lower()
-    required = _required_checks_for(sport_l)
+    required = _required_checks_for(candidate)
     gaps = [label for field, label in required if not bool(getattr(candidate, field))]
 
     if sport_l in OUTDOOR_WEATHER_SPORTS and sport_l != "kbo" and not candidate.weather_verified:
@@ -100,9 +141,15 @@ def candidate_verification_gaps(candidate: CandidateInput) -> list[str]:
         for label, state in candidate.source_status.items()
         if state == "unknown" and label in hard_source_keys
     ]
-    # KBO / ESPN team sports: no certified lineup feed — starter/lineup never block.
-    if sport_l == "kbo" or sport_l in ESPN_TEAM_MARKET_SPORTS:
-        unknown_sources = [label for label in unknown_sources if label not in {"starter", "lineup", "bullpen"}]
+    # KBO / ESPN team sports / MLB full-game: starter/lineup never block via source labels.
+    if (
+        sport_l == "kbo"
+        or sport_l in ESPN_TEAM_MARKET_SPORTS
+        or is_mlb_team_market(candidate)
+    ):
+        unknown_sources = [
+            label for label in unknown_sources if label not in {"starter", "lineup", "bullpen"}
+        ]
 
     gaps.extend(f"source:{label}" for label in unknown_sources)
 
@@ -112,7 +159,19 @@ def candidate_verification_gaps(candidate: CandidateInput) -> list[str]:
     if candidate.probability_source == "demo":
         gaps.append("real provider inputs")
 
-    return list(dict.fromkeys([*candidate.missing_fields, *gaps]))
+    # MLB full-game: batting-order notes are informational, not hard gaps.
+    if is_mlb_team_market(candidate):
+        soft = {
+            "confirmed batting orders",
+            "confirmed lineup",
+            "confirmed lineup/starters",
+            "umpire assignment (park/venue verified when available)",
+        }
+        missing = [field for field in candidate.missing_fields if field not in soft]
+    else:
+        missing = list(candidate.missing_fields)
+
+    return list(dict.fromkeys([*missing, *gaps]))
 
 
 def candidate_readiness(candidate: CandidateInput) -> Readiness:

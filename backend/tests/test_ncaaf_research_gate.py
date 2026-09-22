@@ -77,29 +77,32 @@ def test_ncaaf_still_partial_without_form_or_injuries() -> None:
     assert readiness.candidate_readiness(candidate) == "PARTIAL"
 
 
-def test_mlb_still_requires_lineups_after_ncaaf_carve_out() -> None:
+def test_mlb_team_market_clears_without_lineups_after_ncaaf_carve_out() -> None:
     candidate = _candidate(
         sport="mlb",
         league="MLB",
+        market_type="moneyline",
         lineup_confirmed=False,
-        starter_confirmed=False,
-        sport_specific_sweep_complete=False,
+        starter_confirmed=True,
+        injuries_verified=True,
+        weather_verified=True,
+        motivation_rotation_verified=True,
+        market_movement_verified=True,
+        sport_specific_sweep_complete=True,
         source_status={
             "schedule": "confirmed",
             "market": "confirmed",
             "current_form": "confirmed",
             "injuries": "confirmed",
-            "starter": "unknown",
-            "lineup": "unknown",
+            "starter": "confirmed",
+            "lineup": "probable",
             "weather": "confirmed",
             "venue": "confirmed",
-            "bullpen": "unknown",
+            "bullpen": "confirmed",
         },
-        missing_fields=["confirmed lineup"],
+        missing_fields=[],
     )
-    gaps = readiness.candidate_verification_gaps(candidate)
-    assert "confirmed lineup" in gaps
-    assert readiness.candidate_readiness(candidate) == "PARTIAL"
+    assert readiness.candidate_readiness(candidate) == "VERIFIED"
 
 
 def test_build_verified_candidate_clears_ncaaf_sweep_without_lineups() -> None:

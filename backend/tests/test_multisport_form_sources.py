@@ -85,12 +85,8 @@ def test_nba_verified_without_lineups_when_sweep_clears() -> None:
     assert readiness.candidate_verification_gaps(candidate) == []
 
 
-def test_mlb_still_requires_lineups() -> None:
-    research = _team_market_research(sweep_complete=False)
-    research["source_status"]["starter"] = "unknown"
-    research["source_status"]["lineup"] = "unknown"
-    research["source_status"]["bullpen"] = "unknown"
-    research["source_status"]["weather"] = "confirmed"
+def test_mlb_full_game_clears_without_batting_orders() -> None:
+    """ML/run-line/totals must not hard-block when battingOrder is not posted yet."""
     candidate = sport_research.build_verified_candidate(
         sport="mlb",
         league="MLB",
@@ -108,10 +104,70 @@ def test_mlb_still_requires_lineups() -> None:
         script_key="script-home-control",
         reason_codes=["CURRENT_FORM"],
         reasoning=["test"],
-        research=research,
+        research=_team_market_research(sweep_complete=True),
+    )
+    # build_verified_candidate still leaves lineup false for MLB research stubs
+    candidate = candidate.model_copy(
+        update={
+            "lineup_confirmed": False,
+            "starter_confirmed": True,
+            "injuries_verified": True,
+            "weather_verified": True,
+            "motivation_rotation_verified": True,
+            "market_movement_verified": True,
+            "sport_specific_sweep_complete": True,
+            "current_form_verified": True,
+            "l5_l10_verified": True,
+            "home_away_verified": True,
+            "schedule_verified": True,
+            "universe_scan_complete": True,
+            "missing_fields": [],
+            "source_status": {
+                "schedule": "confirmed",
+                "market": "confirmed",
+                "current_form": "confirmed",
+                "injuries": "confirmed",
+                "starter": "confirmed",
+                "lineup": "probable",
+                "weather": "confirmed",
+                "bullpen": "confirmed",
+            },
+        }
+    )
+    assert readiness.is_mlb_team_market(candidate) is True
+    assert readiness.candidate_readiness(candidate) == "VERIFIED"
+    assert not any("lineup" in gap.lower() for gap in readiness.candidate_verification_gaps(candidate))
+
+
+def test_mlb_player_props_still_require_lineups() -> None:
+    candidate = sport_research.build_verified_candidate(
+        sport="mlb",
+        league="MLB",
+        candidate_id="mlb-prop-1",
+        event_id="evt-mlb-1",
+        event_name="Away Club @ Home Club",
+        home_team="Home Club",
+        away_team="Away Club",
+        start_time=datetime.now(UTC),
+        market_type="player_hits_over",
+        selection="Star Batter Over 0.5 hits",
+        odds=-110,
+        line=0.5,
+        thesis_key="thesis-hits",
+        script_key="script-hits",
+        reason_codes=["CURRENT_FORM"],
+        reasoning=["test"],
+        research=_team_market_research(sweep_complete=True),
+    )
+    candidate = candidate.model_copy(
+        update={
+            "lineup_confirmed": False,
+            "missing_fields": ["confirmed batting orders"],
+            "sport_specific_sweep_complete": False,
+        }
     )
     gaps = readiness.candidate_verification_gaps(candidate)
-    assert any("lineup" in gap.lower() for gap in gaps)
+    assert any("lineup" in gap.lower() or "batting" in gap.lower() for gap in gaps)
     assert readiness.candidate_readiness(candidate) == "PARTIAL"
 
 

@@ -112,7 +112,7 @@ def get_schedule(slate_date: date) -> list[dict[str, Any]]:
         {
             "sportId": 1,
             "date": slate_date.isoformat(),
-            "hydrate": "probablePitcher,team,venue,linescore,weather,officials",
+            "hydrate": "probablePitcher,team,venue,linescore,weather,officials,lineups",
         },
         cache_ttl=45,
     )
@@ -130,6 +130,7 @@ def get_schedule(slate_date: date) -> list[dict[str, Any]]:
             home_record = home.get("leagueRecord", {})
             venue = g.get("venue", {}) or {}
             location = venue.get("location", {}) or {}
+            lineups = g.get("lineups") or {}
             games.append(
                 {
                     "game_pk": g["gamePk"],
@@ -154,6 +155,7 @@ def get_schedule(slate_date: date) -> list[dict[str, Any]]:
                     else location.get("lng") or location.get("lon"),
                     "officials": g.get("officials") or [],
                     "weather": g.get("weather") or {},
+                    "lineups": lineups,
                     "mlb_game_url": f"https://www.mlb.com/gameday/{g['gamePk']}",
                 }
             )
@@ -448,12 +450,37 @@ def get_team_availability(team_id: int) -> dict[str, Any]:
     }
 
 
-def get_game_context(game_pk: int) -> dict[str, Any]:
-    """Extract posted batting orders, official weather, live state, and bullpen lists."""
+def get_game_context(game_pk: int, *, schedule_lineups: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Extract posted batting orders, official weather, live state, and bullpen lists.
+
+    Prefer live boxscore battingOrder. Fall back to schedule hydrate=lineups
+    (homePlayers/awayPlayers) — the same payload MLB.com starting-lineups uses
+    once orders are official.
+    """
     data = get_live_feed(game_pk)
     game_data = data.get("gameData", {})
     live_data = data.get("liveData", {})
     boxscore = live_data.get("boxscore", {}).get("teams", {})
+    schedule_lineups = schedule_lineups or {}
+
+    def _from_schedule_players(players: list[dict[str, Any]] | None) -> list[dict[str, Any]]:
+        rows: list[dict[str, Any]] = []
+        for person in players or []:
+            if not isinstance(person, dict):
+                continue
+            pid = person.get("id")
+            name = person.get("fullName") or person.get("boxscoreName") or ""
+            if not pid or not name:
+                continue
+            rows.append(
+                {
+                    "id": pid,
+                    "name": name,
+                    "position": ((person.get("primaryPosition") or {}).get("abbreviation"))
+                    or "",
+                }
+            )
+        return rows
 
     def side_context(side: str) -> dict[str, Any]:
         team_box = boxscore.get(side, {})
@@ -470,8 +497,13 @@ def get_game_context(game_pk: int) -> dict[str, Any]:
                     "position": record.get("position", {}).get("abbreviation", ""),
                 }
             )
+        if len(lineup) < 9:
+            key = "homePlayers" if side == "home" else "awayPlayers"
+            fallback = _from_schedule_players(schedule_lineups.get(key))
+            if len(fallback) >= 9:
+                lineup = fallback
         return {
-            "lineup_confirmed": len(order) >= 9,
+            "lineup_confirmed": len(lineup) >= 9,
             "lineup": lineup,
             "pitchers": team_box.get("pitchers", []),
             "bullpen": team_box.get("bullpen", []),

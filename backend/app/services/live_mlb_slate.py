@@ -829,9 +829,20 @@ def _build_candidate(
     park_verified = bool(context.get("park_verified") or context.get("venue") or game.get("venue"))
     umpire_verified = bool(context.get("umpire_verified") or game.get("officials"))
     market_search = research.get("market_search") or {}
-    # Posted batting orders clear the lineup gate. Probable starters alone stay PARTIAL.
+    # Posted batting orders are a quality signal for props — NOT a hard gate for
+    # ML / run line / totals. Boards often post inside the final hour before first pitch.
+    full_game = (market_type or "").lower() in {
+        "moneyline",
+        "run_line",
+        "spread",
+        "game_total_over",
+        "game_total_under",
+        "total_over",
+        "total_under",
+    }
+    # Keep lineup_confirmed honest (False until battingOrder posts). Full-game
+    # readiness no longer requires it — see MLB_TEAM_REQUIRED_CHECKS.
     lineup_gate = lineups_confirmed
-    # Official bullpen workload + both listed starters cover rotation/workload intent.
     motivation_rotation_verified = bullpen_verified and starters_confirmed
     # Trusted sportsbook quotes verify the current market. Never default True.
     market_movement_verified = bool(market_search.get("verified", False))
@@ -839,7 +850,7 @@ def _build_candidate(
         form_verified
         and availability_verified
         and starters_confirmed
-        and lineups_confirmed
+        and (lineups_confirmed or full_game)
         and weather_verified
         and motivation_rotation_verified
         and market_movement_verified
@@ -847,8 +858,11 @@ def _build_candidate(
     )
 
     missing_fields = []
-    if not lineups_confirmed:
+    if not lineups_confirmed and not full_game:
         missing_fields.append("confirmed batting orders")
+    elif not lineups_confirmed and full_game:
+        # Soft note only — readiness strips this for team markets.
+        pass
     if not availability_verified:
         missing_fields.append("official roster availability")
     if not weather_verified:
@@ -857,7 +871,7 @@ def _build_candidate(
         missing_fields.append("both probable starters")
     if not bullpen_verified:
         missing_fields.append("recent bullpen workload")
-    if not umpire_verified:
+    if not umpire_verified and not full_game:
         missing_fields.append("umpire assignment (park/venue verified when available)")
     soft_notes = [
         "Trusted-source research protocol used MLB Stats API"
@@ -866,7 +880,9 @@ def _build_candidate(
         "opening-to-current line history not stored; current sportsbook price verified",
     ]
     if not lineups_confirmed and starters_confirmed:
-        soft_notes.append("Probable starters listed; batting orders not yet confirmed.")
+        soft_notes.append(
+            "Probable starters listed; batting orders not yet posted — full-game markets still eligible."
+        )
     if market_search.get("book_count"):
         soft_notes.append(str(market_search.get("detail")))
 
@@ -1007,13 +1023,17 @@ def _game_research(game: dict[str, Any], slate_date: date) -> dict[str, Any]:
     away_id = game.get("away_id")
     home_pitcher = game.get("home_pitcher") or {}
     away_pitcher = game.get("away_pitcher") or {}
+    schedule_lineups = game.get("lineups") or {}
+
+    def _context(game_pk: int) -> dict[str, Any]:
+        return get_game_context(game_pk, schedule_lineups=schedule_lineups)
 
     tasks: dict[str, tuple[Callable[..., Any], tuple[Any, ...], Any]] = {
         "home_form": (get_team_recent_form, (home_id, slate_date), _empty_form()),
         "away_form": (get_team_recent_form, (away_id, slate_date), _empty_form()),
         "home_availability": (get_team_availability, (home_id,), _empty_availability()),
         "away_availability": (get_team_availability, (away_id,), _empty_availability()),
-        "context": (get_game_context, (game["game_pk"],), _empty_context()),
+        "context": (_context, (game["game_pk"],), _empty_context()),
         "home_bullpen": (get_bullpen_usage, (home_id, slate_date), _empty_bullpen()),
         "away_bullpen": (get_bullpen_usage, (away_id, slate_date), _empty_bullpen()),
         "home_pitcher_log": (
