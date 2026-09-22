@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "YWP OS API"
-    app_version: str = "3.3.24"
+    app_version: str = "3.3.25"
     api_prefix: str = "/api/v1"
     env: Literal["development", "test", "staging", "production"] = Field(
         default="development", validation_alias="YWP_ENV"
@@ -38,6 +38,16 @@ class Settings(BaseSettings):
         default=None,
         validation_alias="CFBD_API_KEY",
         description="CollegeFootballData.com Bearer token (free tier OK).",
+    )
+    football_data_api_key: str | None = Field(
+        default=None,
+        validation_alias="FOOTBALL_DATA_API_KEY",
+        description="Football-Data.org free token for soccer schedule/form.",
+    )
+    balldontlie_api_key: str | None = Field(
+        default=None,
+        validation_alias="BALLDONTLIE_API_KEY",
+        description="BallDontLie Bearer token for NBA schedule/form.",
     )
     weather_api_key: str | None = Field(default=None, validation_alias="WEATHER_API_KEY")
     provision_secret: str | None = Field(
@@ -160,6 +170,8 @@ class Settings(BaseSettings):
     @field_validator(
         "odds_api_key",
         "cfbd_api_key",
+        "football_data_api_key",
+        "balldontlie_api_key",
         "whop_api_key",
         "whop_webhook_secret",
         "whop_app_id",

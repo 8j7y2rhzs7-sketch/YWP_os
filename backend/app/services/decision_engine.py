@@ -10,7 +10,12 @@ from typing import Any
 from app.core.config import settings
 from app.schemas import CandidateInput, Decision, RiskProfile
 from app.services.board_metrics import outlier_review_reasons
-from app.services.readiness import candidate_readiness, candidate_verification_gaps
+from app.services.readiness import (
+    ESPN_TEAM_MARKET_SPORTS,
+    OUTDOOR_WEATHER_SPORTS,
+    candidate_readiness,
+    candidate_verification_gaps,
+)
 
 
 def clamp(value: float, low: float, high: float) -> float:
@@ -123,15 +128,19 @@ class DecisionEngine:
             "schedule": candidate.schedule_verified,
             "current form": candidate.current_form_verified,
             "actual L5/L10": candidate.l5_l10_verified,
-            "lineup": candidate.lineup_confirmed,
             "injuries": candidate.injuries_verified,
-            "weather": candidate.weather_verified,
-            "starter": candidate.starter_confirmed,
             "motivation/rotation": candidate.motivation_rotation_verified,
             "home/away": candidate.home_away_verified,
             "market movement": candidate.market_movement_verified,
             "sport-specific sweep": candidate.sport_specific_sweep_complete,
         }
+        sport_l = (candidate.sport or "").lower()
+        # No certified lineup feed for ESPN team sports / KBO — do not scare the board.
+        if sport_l not in ESPN_TEAM_MARKET_SPORTS and sport_l != "kbo":
+            verification_checks["lineup"] = candidate.lineup_confirmed
+            verification_checks["starter"] = candidate.starter_confirmed
+        if sport_l in OUTDOOR_WEATHER_SPORTS:
+            verification_checks["weather"] = candidate.weather_verified
         unverified = [name for name, passed in verification_checks.items() if not passed]
         if unverified:
             warnings.append("Unverified: " + ", ".join(unverified))

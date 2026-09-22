@@ -139,3 +139,45 @@ def test_sheet_menu_props_with_null_matchup_do_not_500() -> None:
         assert isinstance(run.checks, list) and run.checks
     finally:
         db.close()
+
+
+def test_wnba_team_markets_do_not_fail_for_missing_lineups() -> None:
+    """ESPN team sports have no certified lineup feed — Protocol Health must not FAIL on that alone."""
+    db = SessionLocal()
+    try:
+        row = _candidate(
+            candidate_id="wnba-ml",
+            sport="wnba",
+            league="WNBA",
+            data_source="FACT_CASCADE+THE_ODDS_API",
+            lineup_confirmed=False,
+            starter_confirmed=False,
+            miss_by_one_count_l10=None,
+            multiple_paths_score=None,
+            average_cushion=None,
+            source_status={
+                "schedule": "confirmed",
+                "market": "confirmed",
+                "current_form": "confirmed",
+                "injuries": "confirmed",
+                "starter": "n/a",
+                "lineup": "n/a",
+                "weather": "n/a",
+                "venue": "confirmed",
+                "bullpen": "n/a",
+            },
+        )
+        run = run_protocol_health_check(
+            db,
+            analysis_id="wnba-lineup-na",
+            user_id=None,
+            sport="wnba",
+            candidates=[row],
+        )
+        by_key = {item["key"]: item["status"] for item in run.checks}
+        assert by_key["lineup_injuries_starters"] == "PASS"
+        assert by_key["miss_by_one"] != "FAIL"
+        assert by_key["multiple_paths"] != "FAIL"
+        assert run.status != "FAILED"
+    finally:
+        db.close()

@@ -372,8 +372,17 @@ def injuries_for_teams(
     away = _lookup_team_injuries(by_team, away_team)
     home_matched = _team_matched(by_team, home_team)
     away_matched = _team_matched(by_team, away_team)
-    # Feed HTTP success alone is not enough — both clubs must resolve in the report.
-    verified = bool(injury_feed.get("verified")) and home_matched and away_matched
+    # ESPN (and similar boards) often omit healthy clubs with an empty report.
+    # When the league feed itself succeeded, treat an unmatched club as matched
+    # with zero injuries — do not block Strict Mode on a missing healthy side.
+    feed_ok = bool(injury_feed.get("verified"))
+    if feed_ok and home_team and not home_matched:
+        home_matched = True
+        home = []
+    if feed_ok and away_team and not away_matched:
+        away_matched = True
+        away = []
+    verified = feed_ok and (not home_team or home_matched) and (not away_team or away_matched)
     return {
         "verified": verified,
         "home_matched": home_matched,

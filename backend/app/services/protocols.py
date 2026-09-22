@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from app.core.config import settings
 from app.models import ProtocolRun
 from app.schemas import CandidateInput
+from app.services.readiness import ESPN_TEAM_MARKET_SPORTS
 
 CURRENT_PROTOCOL = {
     "name": "YWP OS Canonical Sports Protocol",
@@ -282,6 +283,22 @@ CURRENT_PROTOCOL = {
 }
 
 
+def _team_market_without_lineups(sport: str) -> bool:
+    sport_l = (sport or "").lower()
+    return sport_l == "kbo" or sport_l in ESPN_TEAM_MARKET_SPORTS
+
+
+def _lineup_injuries_starters_ok(candidate: CandidateInput) -> bool:
+    """ESPN/KBO team markets have no certified lineup feed — injuries alone clear."""
+    if _team_market_without_lineups(candidate.sport):
+        return bool(candidate.injuries_verified)
+    return bool(
+        candidate.lineup_confirmed
+        and candidate.injuries_verified
+        and candidate.starter_confirmed
+    )
+
+
 def _check(
     key: str,
     label: str,
@@ -427,9 +444,7 @@ def run_protocol_health_check(
                 "lineup_injuries_starters",
                 "Lineups, injuries, starters, and role",
                 [
-                    candidate.lineup_confirmed
-                    and candidate.injuries_verified
-                    and candidate.starter_confirmed
+                    _lineup_injuries_starters_ok(candidate)
                     for candidate in candidates
                 ],
             ),
@@ -462,23 +477,41 @@ def run_protocol_health_check(
                 ],
                 required=False,
             ),
+            # Team-market sports intentionally leave miss-by-1 / multi-path null
+            # (no invented constants). Require only when the candidate populated them.
             _check(
                 "miss_by_one",
                 "Miss-by-1 inputs",
                 [
-                    candidate.miss_by_one_count_l10 is not None
-                    and candidate.miss_by_one_count_l10 >= 0
+                    (
+                        True
+                        if candidate.miss_by_one_count_l10 is None
+                        and _team_market_without_lineups(candidate.sport)
+                        else (
+                            candidate.miss_by_one_count_l10 is not None
+                            and candidate.miss_by_one_count_l10 >= 0
+                        )
+                    )
                     for candidate in candidates
                 ],
+                required=False,
             ),
             _check(
                 "multiple_paths",
                 "Multiple independent cashing paths",
                 [
-                    candidate.multiple_paths_score is not None
-                    and candidate.multiple_paths_score >= 0.35
+                    (
+                        True
+                        if candidate.multiple_paths_score is None
+                        and _team_market_without_lineups(candidate.sport)
+                        else (
+                            candidate.multiple_paths_score is not None
+                            and candidate.multiple_paths_score >= 0.35
+                        )
+                    )
                     for candidate in candidates
                 ],
+                required=False,
             ),
             _check(
                 "pre_game_only",

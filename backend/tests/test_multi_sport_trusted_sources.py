@@ -135,17 +135,21 @@ def test_build_verified_candidate_clears_wnba_without_lineups() -> None:
     assert not any("starter" in gap.lower() for gap in gaps)
 
 
-def test_injuries_require_both_teams_matched() -> None:
+def test_injuries_omitted_healthy_club_still_verifies() -> None:
+    """ESPN drops clubs with empty injury lists — that must not block the matchup."""
     feed = {
         "verified": True,
         "by_team": {"Home Club": [{"status": "Out", "name": "Star"}]},
     }
     both = espn_provider.injuries_for_teams(feed, "Home Club", "Away Club")
-    assert both["verified"] is False
-    feed["by_team"]["Away Club"] = []
+    assert both["verified"] is True
+    assert both["away_matched"] is True
+    assert both["away"] == []
+    assert both["home_out"] == 1
+    feed["by_team"]["Away Club"] = [{"status": "Out", "name": "Other"}]
     both = espn_provider.injuries_for_teams(feed, "Home Club", "Away Club")
     assert both["verified"] is True
-    assert both["home_out"] == 1
+    assert both["away_out"] == 1
 
 
 def test_espn_form_parses_completed_games(monkeypatch) -> None:

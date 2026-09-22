@@ -72,7 +72,7 @@ TRUSTED_SOURCES: list[dict[str, Any]] = [
     {
         "id": "espn_site_api",
         "name": "ESPN Site API",
-        "tier": "secondary",
+        "tier": "reference",
         "sports": [
             "wnba",
             "nba",
@@ -83,7 +83,6 @@ TRUSTED_SOURCES: list[dict[str, Any]] = [
             "soccer",
             "mls",
             "epl",
-            "kbo",
         ],
         "base_url": "https://site.web.api.espn.com/apis/site/v2/sports",
         "categories": [
@@ -97,11 +96,10 @@ TRUSTED_SOURCES: list[dict[str, Any]] = [
         ],
         "auth": "none",
         "notes": (
-            "Structured ESPN Site JSON API (not HTML scrape). Primary multi-sport "
-            "fact path for schedule, injuries, venue, and L5/L10 form. Early-season "
-            "form backfills completed games from the prior season when the current "
-            "slate has fewer than five results. Render/host egress may 403; cascade "
-            "continues with Odds-priced plays."
+            "LAST-RESORT fallback only. Prefer NHL Web API, CFBD/NCAA, BallDontLie, "
+            "Football-Data.org, and Odds scores. ESPN often 403s on cloud egress and "
+            "omits healthy clubs from injury boards. Soft-match treats omitted clubs "
+            "as clear when the league feed succeeds."
         ),
     },
     {
@@ -112,7 +110,7 @@ TRUSTED_SOURCES: list[dict[str, Any]] = [
         "base_url": "https://api-web.nhle.com/v1",
         "categories": ["schedule", "form", "park"],
         "auth": "none",
-        "notes": "Official NHL public Web API for schedule and club form.",
+        "notes": "Official NHL public Web API — primary schedule/form for NHL.",
     },
     {
         "id": "the_odds_api",
@@ -147,33 +145,33 @@ TRUSTED_SOURCES: list[dict[str, Any]] = [
         "auth": "CFBD_API_KEY",
         "notes": (
             "Free-tier JSON API for NCAA football games, teams, and form. "
-            "NCAAF schedule/form backup when ESPN matching is thin. Optional Bearer key."
+            "PRIMARY NCAAF schedule/form when CFBD_API_KEY is set; NCAA data + Odds next."
         ),
     },
     {
         "id": "balldontlie",
         "name": "BallDontLie NBA API",
-        "tier": "secondary",
+        "tier": "primary",
         "sports": ["nba"],
         "base_url": "https://api.balldontlie.io",
         "categories": ["schedule", "form"],
-        "auth": "none",
+        "auth": "BALLDONTLIE_API_KEY",
         "notes": (
-            "Validated free NBA JSON API for games/teams/stats. Registered for cascade use; "
-            "ESPN remains primary until wired live."
+            "PRIMARY NBA schedule/form when BALLDONTLIE_API_KEY is set. "
+            "Odds scores then ESPN last-resort."
         ),
     },
     {
         "id": "football_data_org",
         "name": "Football-Data.org",
-        "tier": "secondary",
+        "tier": "primary",
         "sports": ["soccer", "epl", "mls"],
         "base_url": "https://api.football-data.org/v4",
         "categories": ["schedule", "form"],
         "auth": "FOOTBALL_DATA_API_KEY",
         "notes": (
-            "Free football (soccer) fixtures/results JSON API. Registered as secondary "
-            "schedule/form source behind ESPN for soccer leagues."
+            "PRIMARY soccer fixtures/results when FOOTBALL_DATA_API_KEY is set. "
+            "Odds scores then ESPN last-resort."
         ),
     },
     {
@@ -185,8 +183,8 @@ TRUSTED_SOURCES: list[dict[str, Any]] = [
         "categories": ["schedule", "form", "lineups"],
         "auth": "none",
         "notes": (
-            "Official NBA stats endpoints (CDN). Reference/secondary; cloud egress often "
-            "blocks these hosts, so ESPN remains the live cascade path."
+            "Official NBA stats endpoints (CDN). Often blocked on cloud egress; "
+            "BallDontLie + Odds scores are the live NBA path."
         ),
     },
     {
@@ -198,8 +196,8 @@ TRUSTED_SOURCES: list[dict[str, Any]] = [
         "categories": ["schedule"],
         "auth": "none",
         "notes": (
-            "NCAA Casablanca FBS scoreboard JSON (no auth). Live-validated schedule "
-            "tertiary for NCAAF after ESPN + CFBD. Does not price markets."
+            "NCAA Casablanca FBS scoreboard JSON (no auth). NCAAF schedule backup "
+            "after CFBD, before ESPN. Does not price markets."
         ),
     },
     {
@@ -263,10 +261,11 @@ def trusted_sources_manifest(sport: str | None = None) -> dict[str, Any]:
         ]
     return {
         "protocol": "YWP Trusted Source Research Protocol",
-        "version": "2026.09.12-ts4",
+        "version": "2026.09.22-ts5",
         "rule": (
             "Strict Mode may auto-verify a research field only when a trusted source "
-            "in that category returned confirmed data. Untrusted pages cannot clear gaps."
+            "in that category returned confirmed data. Official/primary sources win; "
+            "ESPN is last-resort only. Untrusted pages cannot clear gaps."
         ),
         "sports": ALL_SPORTS,
         "sources": sources,
