@@ -325,6 +325,23 @@ def slate(
                         "Open-Meteo (ESPN has no baseball/kbo path). Full-game markets can "
                         "clear when schedule, recent form, weather, and price consensus verify."
                     )
+                elif sport_lower in {"nfl", "ncaaf"}:
+                    prop_n = sum(
+                        1
+                        for c in candidates
+                        if str(c.market_type or "").startswith("player_")
+                    )
+                    model_n = sum(
+                        1
+                        for c in candidates
+                        if str(c.market_type or "").startswith("player_")
+                        and c.probability_source == "model"
+                    )
+                    notice = (
+                        f"Live {sport_lower.upper()} from The Odds API: full-game markets plus "
+                        f"expanded player props ({prop_n} lines, {model_n} ESPN form-modeled). "
+                        "Thin-cushion / miss-by-1 closes hard-SKIP before PLAY."
+                    )
                 else:
                     notice = (
                         f"Live {sport_lower.upper()} prices from The Odds API with "
@@ -824,10 +841,10 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
                 payload.date,
             )
 
-    # Basketball player props arrive as market_implied from Odds; attach ESPN form
-    # so Strict Mode can PLAY instead of hard-SKIP for missing independent model.
+    # Player props arrive as market_implied from Odds; attach ESPN form so Strict
+    # Mode can PLAY instead of hard-SKIP for missing independent model.
     sport_l = (payload.sport or "").lower()
-    if sport_l in {"wnba", "nba", "basketball"} and any(
+    if sport_l in {"wnba", "nba", "basketball", "nfl", "ncaaf"} and any(
         str(c.market_type or "").startswith("player_")
         and c.probability_source == "market_implied"
         for c in candidates

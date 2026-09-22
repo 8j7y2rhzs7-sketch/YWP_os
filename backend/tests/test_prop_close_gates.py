@@ -160,3 +160,79 @@ def test_enrich_maps_points_rebounds_combo() -> None:
         enriched = enrich_player_prop_candidates([candidate])[0]
     assert enriched.probability_source == "model"
     assert enriched.average_cushion is not None
+
+
+def test_nfl_pass_yards_thin_cushion_hard_skips() -> None:
+    from app.services.player_prop_research import min_prop_cushion
+
+    candidate = _modeled_prop(
+        sport="nfl",
+        league="NFL",
+        market_type="player_pass_yds_over",
+        selection="Patrick Mahomes Over 275.5 pass yards",
+        line=Decimal("275.5"),
+        cushion_scale=25.0,
+        average_cushion=3.0,
+        recent_hit_rate=0.7,
+        miss_by_one_count_l10=0,
+        estimated_probability=0.62,
+        matchup_score=0.62,
+        script_alignment=0.6,
+        multiple_paths_score=0.8,
+    )
+    assert min_prop_cushion(candidate) >= 5.0
+    evaluation = decision_engine.evaluate(candidate, RiskProfile.balanced)
+    assert evaluation.decision == "SKIP"
+    assert "PROP_CUSHION_GATE" in evaluation.reason_codes
+
+
+def test_enrich_nfl_pass_yards() -> None:
+    from datetime import date
+
+    games = [
+        {
+            "passingYards": 310,
+            "rushingYards": 20,
+            "receivingYards": 0,
+            "game_date": f"2026-09-{d:02d}",
+        }
+        for d in range(16, 6, -1)
+    ]
+    candidate = _modeled_prop(
+        sport="nfl",
+        league="NFL",
+        market_type="player_pass_yds_over",
+        selection="Patrick Mahomes Over 275.5 pass yards",
+        line=Decimal("275.5"),
+        probability_source="market_implied",
+        data_source="THE_ODDS_API_BOARD",
+        data_quality=0.35,
+        missing_fields=["independent_model_projection"],
+        current_form_verified=False,
+        l5_l10_verified=False,
+        sport_specific_sweep_complete=False,
+        independent_value_verified=False,
+        home_team="Kansas City Chiefs",
+        away_team="Las Vegas Raiders",
+    )
+    with (
+        patch.object(player_prop_research.espn_provider, "resolve_team_id", return_value="12"),
+        patch.object(
+            player_prop_research.espn_provider,
+            "resolve_athlete_id",
+            return_value={"id": "3139477", "name": "Patrick Mahomes"},
+        ),
+        patch.object(
+            player_prop_research.espn_provider,
+            "get_athlete_gamelog",
+            return_value={"verified": True, "games": games, "source_url": "x"},
+        ),
+        patch.object(
+            player_prop_research.espn_provider,
+            "get_league_injuries",
+            return_value={"verified": True, "by_team": {}},
+        ),
+    ):
+        enriched = enrich_player_prop_candidates([candidate], slate_date=date(2026, 9, 17))[0]
+    assert enriched.probability_source == "model"
+    assert enriched.cushion_scale == 25.0

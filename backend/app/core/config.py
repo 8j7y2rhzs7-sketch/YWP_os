@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "YWP OS API"
-    app_version: str = "3.3.30"
+    app_version: str = "3.3.31"
     api_prefix: str = "/api/v1"
     env: Literal["development", "test", "staging", "production"] = Field(
         default="development", validation_alias="YWP_ENV"
@@ -97,6 +97,23 @@ class Settings(BaseSettings):
         le=30,
         validation_alias="YWP_WNBA_BOARD_MAX_PROP_EVENTS",
         description="Pick Sheet WNBA: max events to price player props for.",
+    )
+    nfl_max_prop_events: int = Field(
+        default=8,
+        ge=0,
+        le=30,
+        validation_alias="YWP_NFL_MAX_PROP_EVENTS",
+        description=(
+            "NFL Run/raw slate: max kickoffs to price the full player-prop menu for. "
+            "Credits scale with markets × events — intentional for Sunday value."
+        ),
+    )
+    nfl_board_max_prop_events: int = Field(
+        default=8,
+        ge=0,
+        le=30,
+        validation_alias="YWP_NFL_BOARD_MAX_PROP_EVENTS",
+        description="Pick Sheet NFL: max events to price player props for.",
     )
 
     whop_api_key: str | None = Field(default=None, validation_alias="WHOP_API_KEY")

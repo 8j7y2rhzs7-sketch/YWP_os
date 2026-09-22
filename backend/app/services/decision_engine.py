@@ -248,25 +248,29 @@ class DecisionEngine:
             reasons.append("MISS_BY_ONE_RISK")
             confidence_penalty += 6 if miss_by_one_risk < 0.80 else 10
         market_l = str(candidate.market_type or "").lower()
-        is_basketball_prop = sport_l in {"wnba", "nba", "basketball"} and market_l.startswith(
-            "player_"
-        )
-        # Mimic the human filter: thin basketball prop closes never become official plays,
+        is_modeled_prop_sport = sport_l in {
+            "wnba",
+            "nba",
+            "basketball",
+            "nfl",
+            "ncaaf",
+        } and market_l.startswith("player_")
+        # Mimic the human filter: thin player-prop closes never become official plays,
         # even when the sheet pre-filled a generic safer_alternative string.
-        if is_basketball_prop and miss_by_one_risk >= 0.55:
+        if is_modeled_prop_sport and miss_by_one_risk >= 0.55:
             hard_skip_reasons.append(
-                "Basketball prop blocked: elevated miss-by-1 / thin-cushion profile."
+                "Player prop blocked: elevated miss-by-1 / thin-cushion profile."
             )
             reasons.append("PROP_THIN_CLOSE_GATE")
-        elif (
-            is_basketball_prop
-            and candidate.average_cushion is not None
-            and float(candidate.average_cushion) < 0.75
-        ):
-            hard_skip_reasons.append(
-                "Basketball prop blocked: average L10 cushion below the 0.75 minimum."
-            )
-            reasons.append("PROP_CUSHION_GATE")
+        elif is_modeled_prop_sport and candidate.average_cushion is not None:
+            from app.services.player_prop_research import min_prop_cushion
+
+            floor = min_prop_cushion(candidate)
+            if float(candidate.average_cushion) < floor:
+                hard_skip_reasons.append(
+                    f"Player prop blocked: average L10 cushion below the {floor:g} minimum."
+                )
+                reasons.append("PROP_CUSHION_GATE")
         elif miss_by_one_risk >= 0.80 and not candidate.safer_alternative:
             hard_skip_reasons.append(
                 "Miss-by-1 risk is critical and no safer available line was supplied."

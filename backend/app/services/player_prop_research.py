@@ -1,8 +1,8 @@
 """Enrich sportsbook player props with ESPN form so Strict Mode can grade them.
 
 Collected Odds lines alone are market_implied and always SKIP. After collection,
-attach independent L5/L10 hit-rate projections (WNBA/NBA) so the protocol has
-real model inputs instead of dead MENU rows.
+attach independent L5/L10 hit-rate projections (WNBA/NBA/NFL/NCAAF) so the
+protocol has real model inputs instead of dead MENU rows.
 """
 
 from __future__ import annotations
@@ -17,8 +17,11 @@ from app.services import espn_provider
 
 logger = logging.getLogger(__name__)
 
+PROP_MODEL_SPORTS = frozenset({"wnba", "nba", "nfl", "ncaaf", "basketball"})
+
 # Stat keys consumed by _stat_series. Combos resolve from components.
 _PLAYER_STAT_BY_MARKET: dict[str, str] = {
+    # Basketball
     "player_points_over": "points",
     "player_points_under": "points",
     "player_rebounds_over": "totalRebounds",
@@ -57,9 +60,55 @@ _PLAYER_STAT_BY_MARKET: dict[str, str] = {
     "player_field_goals_under": "fieldGoalsMade",
     "player_frees_made_over": "freeThrowsMade",
     "player_frees_made_under": "freeThrowsMade",
-    # Yes / No specials
     "player_double_double_yes": "double_double",
     "player_triple_double_yes": "triple_double",
+    # Football (NFL / NCAAF)
+    "player_pass_yds_over": "passingYards",
+    "player_pass_yds_under": "passingYards",
+    "player_pass_yds_q1_over": "passingYards",
+    "player_pass_yds_q1_under": "passingYards",
+    "player_pass_tds_over": "passingTouchdowns",
+    "player_pass_tds_under": "passingTouchdowns",
+    "player_pass_comp_over": "completions",
+    "player_pass_comp_under": "completions",
+    "player_pass_att_over": "passingAttempts",
+    "player_pass_att_under": "passingAttempts",
+    "player_pass_int_over": "interceptions",
+    "player_pass_int_under": "interceptions",
+    "player_rush_yds_over": "rushingYards",
+    "player_rush_yds_under": "rushingYards",
+    "player_rush_tds_over": "rushingTouchdowns",
+    "player_rush_tds_under": "rushingTouchdowns",
+    "player_rush_att_over": "rushingAttempts",
+    "player_rush_att_under": "rushingAttempts",
+    "player_rec_yds_over": "receivingYards",
+    "player_rec_yds_under": "receivingYards",
+    "player_receptions_over": "receptions",
+    "player_receptions_under": "receptions",
+    "player_rec_tds_over": "receivingTouchdowns",
+    "player_rec_tds_under": "receivingTouchdowns",
+    "player_pass_rush_yds_over": "pass_rush_yds",
+    "player_pass_rush_yds_under": "pass_rush_yds",
+    "player_rush_rec_yds_over": "rush_rec_yds",
+    "player_rush_rec_yds_under": "rush_rec_yds",
+    "player_prr_yds_over": "pass_rush_rec_yds",
+    "player_prr_yds_under": "pass_rush_rec_yds",
+    "player_prr_tds_over": "pass_rush_rec_tds",
+    "player_prr_tds_under": "pass_rush_rec_tds",
+    "player_tds_over": "total_tds",
+    "player_tds_under": "total_tds",
+    "player_kick_pts_over": "kickingPoints",
+    "player_kick_pts_under": "kickingPoints",
+    "player_pats_over": "extraPointsMade",
+    "player_pats_under": "extraPointsMade",
+    "player_longest_pass_over": "longestPass",
+    "player_longest_pass_under": "longestPass",
+    "player_longest_rec_over": "longestReception",
+    "player_longest_rec_under": "longestReception",
+    "player_longest_rush_over": "longestRush",
+    "player_longest_rush_under": "longestRush",
+    "player_anytime_td_yes": "anytime_td",
+    "player_first_td_yes": "anytime_td",
 }
 
 _SELECTION_PLAYER_RE = re.compile(
@@ -71,7 +120,8 @@ _SELECTION_YES_RE = re.compile(
     re.IGNORECASE,
 )
 
-# Cushion units are raw stat points; combos use a wider scale.
+_BINARY_STATS = frozenset({"double_double", "triple_double", "anytime_td"})
+
 _CUSHION_SCALE_BY_STAT: dict[str, float] = {
     "pra": 6.0,
     "pr": 5.0,
@@ -81,6 +131,27 @@ _CUSHION_SCALE_BY_STAT: dict[str, float] = {
     "turnovers": 2.0,
     "double_double": 1.0,
     "triple_double": 1.0,
+    "passingYards": 25.0,
+    "rushingYards": 12.0,
+    "receivingYards": 12.0,
+    "pass_rush_yds": 30.0,
+    "rush_rec_yds": 15.0,
+    "pass_rush_rec_yds": 35.0,
+    "completions": 3.0,
+    "passingAttempts": 4.0,
+    "receptions": 2.0,
+    "passingTouchdowns": 1.0,
+    "rushingTouchdowns": 1.0,
+    "receivingTouchdowns": 1.0,
+    "total_tds": 1.0,
+    "pass_rush_rec_tds": 1.0,
+    "interceptions": 1.0,
+    "rushingAttempts": 3.0,
+    "kickingPoints": 3.0,
+    "longestPass": 8.0,
+    "longestReception": 8.0,
+    "longestRush": 6.0,
+    "anytime_td": 1.0,
 }
 
 
@@ -89,18 +160,22 @@ def enrich_player_prop_candidates(
     *,
     slate_date: date | None = None,
 ) -> list[CandidateInput]:
-    """Return candidates with basketball player props upgraded to model projections."""
+    """Return candidates with player props upgraded to independent form projections."""
     if not candidates:
         return candidates
     out: list[CandidateInput] = []
     roster_cache: dict[tuple[str, str], str | None] = {}
     for candidate in candidates:
         sport = (candidate.sport or "").lower()
-        if sport not in {"wnba", "nba"} or not str(candidate.market_type).startswith("player_"):
+        if sport not in PROP_MODEL_SPORTS or not str(candidate.market_type).startswith("player_"):
             out.append(candidate)
             continue
+        if sport == "basketball":
+            sport = "nba"
         try:
-            enriched = _enrich_one(candidate, slate_date=slate_date, roster_cache=roster_cache)
+            enriched = _enrich_one(
+                candidate, sport=sport, slate_date=slate_date, roster_cache=roster_cache
+            )
         except Exception:
             logger.exception("Player prop enrichment failed for %s", candidate.candidate_id)
             enriched = None
@@ -108,9 +183,19 @@ def enrich_player_prop_candidates(
     return out
 
 
+def min_prop_cushion(candidate: CandidateInput) -> float:
+    """Minimum average L10 cushion required before a modeled prop can PLAY."""
+    scale = float(candidate.cushion_scale or 4.0)
+    sport = (candidate.sport or "").lower()
+    if sport in {"nfl", "ncaaf"}:
+        return max(1.0, 0.20 * scale)
+    return 0.75
+
+
 def _enrich_one(
     candidate: CandidateInput,
     *,
+    sport: str,
     slate_date: date | None,
     roster_cache: dict[tuple[str, str], str | None],
 ) -> CandidateInput | None:
@@ -119,14 +204,14 @@ def _enrich_one(
     if not stat_key:
         return None
 
-    is_binary = stat_key in {"double_double", "triple_double"}
+    is_binary = stat_key in _BINARY_STATS
     if is_binary:
         parsed_yes = _SELECTION_YES_RE.match(str(candidate.selection or ""))
         if not parsed_yes:
             return None
         player_name = parsed_yes.group("player").strip()
         is_over = True
-        line = 0.5  # Yes pays when the binary event fires (≥1)
+        line = 0.5
     else:
         if candidate.line is None:
             return None
@@ -138,7 +223,6 @@ def _enrich_one(
         is_over = side.startswith("over")
         line = float(candidate.line)
 
-    sport = candidate.sport.lower()
     team_ids: list[str] = []
     for team_name in (candidate.home_team, candidate.away_team):
         if not team_name:
@@ -187,9 +271,8 @@ def _enrich_one(
         1 for c in l10 if 0 < c <= 1.0
     )
     if is_binary:
-        # Binary: "miss by one" is not meaningful in raw units — use misses.
         miss_by_one = sum(1 for v in l10 if v < line)
-        avg_cushion = hit_rate  # 0–1 share of clears as cushion proxy
+        avg_cushion = hit_rate
     injuries_source = "confirmed" if injury_state == "clear" else "probable"
     cushion_scale = _CUSHION_SCALE_BY_STAT.get(stat_key, 4.0)
 
@@ -199,7 +282,7 @@ def _enrich_one(
             "estimated_probability": probability,
             "probability_source": "model",
             "data_quality": max(float(candidate.data_quality or 0), 0.74),
-            "variance": 0.34 if not is_binary else 0.40,
+            "variance": 0.40 if is_binary else 0.34,
             "data_source": "ESPN_PLAYER_PROP_MODEL",
             "missing_fields": [
                 field
@@ -225,8 +308,6 @@ def _enrich_one(
             "l5_l10_verified": True,
             "home_away_verified": True,
             "market_movement_verified": True,
-            # Soft-clear when the feed is down: priced Odds athletes are playable
-            # unless the board explicitly lists them Out/Doubtful.
             "injuries_verified": True,
             "starter_confirmed": True,
             "lineup_confirmed": False,
@@ -237,7 +318,9 @@ def _enrich_one(
             "average_cushion": round(avg_cushion, 3),
             "cushion_scale": cushion_scale,
             "matchup_score": probability,
-            "script_alignment": min(0.95, max(0.05, 0.5 + avg_cushion / max(cushion_scale, 1.0))),
+            "script_alignment": min(
+                0.95, max(0.05, 0.5 + avg_cushion / max(cushion_scale, 1.0))
+            ),
             "multiple_paths_score": min(1.0, 0.45 + hit_rate * 0.5),
             "role_stability": 0.7,
             "miss_by_one_count_l10": int(miss_by_one),
@@ -283,11 +366,6 @@ def _injury_state(
     home_team: str | None,
     away_team: str | None,
 ) -> str:
-    """Return clear / probable / out for a priced basketball prop athlete.
-
-    ESPN often omits healthy clubs and cloud IPs can 403 the injury board.
-    Only hard-block when the feed explicitly lists the athlete as Out/Doubtful.
-    """
     _ = (home_team, away_team)
     try:
         feed = espn_provider.get_league_injuries(sport)
@@ -313,6 +391,13 @@ def _injury_state(
     return "clear"
 
 
+def _pick(game: dict[str, Any], *keys: str) -> float | None:
+    for key in keys:
+        if game.get(key) is not None:
+            return _num(game.get(key))
+    return None
+
+
 def _stat_series(games: list[dict[str, Any]], stat_key: str) -> list[float]:
     values: list[float] = []
     threes_aliases = (
@@ -322,53 +407,152 @@ def _stat_series(games: list[dict[str, Any]], stat_key: str) -> list[float]:
         "3PM",
     )
     for game in games:
-        pts = _num(game.get("points"))
-        reb = _num(game.get("totalRebounds") or game.get("rebounds"))
-        ast = _num(game.get("assists"))
-        blk = _num(game.get("blocks"))
-        stl = _num(game.get("steals"))
-        tov = _num(game.get("turnovers"))
-        fgm = _num(game.get("fieldGoalsMade") or game.get("fieldGoalsMade-fieldGoalsAttempted"))
-        ftm = _num(game.get("freeThrowsMade") or game.get("freeThrowsMade-freeThrowsAttempted"))
+        pts = _pick(game, "points")
+        reb = _pick(game, "totalRebounds", "rebounds")
+        ast = _pick(game, "assists")
+        blk = _pick(game, "blocks")
+        stl = _pick(game, "steals")
+        tov = _pick(game, "turnovers")
+        fgm = _pick(game, "fieldGoalsMade", "fieldGoalsMade-fieldGoalsAttempted")
+        ftm = _pick(game, "freeThrowsMade", "freeThrowsMade-freeThrowsAttempted")
+        pass_yds = _pick(game, "passingYards", "netPassingYards", "passYards")
+        rush_yds = _pick(game, "rushingYards", "rushYards")
+        rec_yds = _pick(game, "receivingYards", "recYards")
+        pass_td = _pick(game, "passingTouchdowns", "passTD", "passingTDs")
+        rush_td = _pick(game, "rushingTouchdowns", "rushTD", "rushingTDs")
+        rec_td = _pick(game, "receivingTouchdowns", "recTD", "receivingTDs")
+        completions = _pick(game, "completions", "passingCompletions")
+        pass_att = _pick(game, "passingAttempts", "passAttempts")
+        ints = _pick(game, "interceptions", "passingInterceptions")
+        receptions = _pick(game, "receptions", "receivingReceptions")
+        rush_att = _pick(game, "rushingAttempts", "rushAttempts", "carries")
+        kick_pts = _pick(game, "kickingPoints", "totalKickingPoints")
+        fg_made = _pick(game, "fieldGoalsMade", "fieldGoals")
+        pats = _pick(game, "extraPointsMade", "extraPoints", "PATs")
+        long_pass = _pick(game, "longestPass", "longPassingYards", "passingLong")
+        long_rec = _pick(game, "longestReception", "longReception", "receivingLong")
+        long_rush = _pick(game, "longestRush", "longRushingYards", "rushingLong")
 
         if stat_key == "pra":
             if pts is None or reb is None or ast is None:
                 continue
             values.append(pts + reb + ast)
-            continue
-        if stat_key == "pr":
+        elif stat_key == "pr":
             if pts is None or reb is None:
                 continue
             values.append(pts + reb)
-            continue
-        if stat_key == "pa":
+        elif stat_key == "pa":
             if pts is None or ast is None:
                 continue
             values.append(pts + ast)
-            continue
-        if stat_key == "ra":
+        elif stat_key == "ra":
             if reb is None or ast is None:
                 continue
             values.append(reb + ast)
-            continue
-        if stat_key == "blocks_steals":
+        elif stat_key == "blocks_steals":
             if blk is None or stl is None:
                 continue
             values.append(blk + stl)
-            continue
-        if stat_key == "double_double":
+        elif stat_key == "double_double":
             if pts is None or reb is None or ast is None:
                 continue
             doubles = sum(1 for v in (pts, reb, ast, blk or 0, stl or 0) if v >= 10)
             values.append(1.0 if doubles >= 2 else 0.0)
-            continue
-        if stat_key == "triple_double":
+        elif stat_key == "triple_double":
             if pts is None or reb is None or ast is None:
                 continue
             doubles = sum(1 for v in (pts, reb, ast, blk or 0, stl or 0) if v >= 10)
             values.append(1.0 if doubles >= 3 else 0.0)
-            continue
-        if stat_key == "threePointFieldGoalsMade":
+        elif stat_key == "anytime_td":
+            if pass_td is None and rush_td is None and rec_td is None:
+                continue
+            total = (pass_td or 0) + (rush_td or 0) + (rec_td or 0)
+            values.append(1.0 if total > 0 else 0.0)
+        elif stat_key == "pass_rush_yds":
+            if pass_yds is None or rush_yds is None:
+                continue
+            values.append(pass_yds + rush_yds)
+        elif stat_key == "rush_rec_yds":
+            if rush_yds is None or rec_yds is None:
+                continue
+            values.append(rush_yds + rec_yds)
+        elif stat_key == "pass_rush_rec_yds":
+            if pass_yds is None or rush_yds is None or rec_yds is None:
+                continue
+            values.append(pass_yds + rush_yds + rec_yds)
+        elif stat_key == "pass_rush_rec_tds":
+            if pass_td is None or rush_td is None or rec_td is None:
+                continue
+            values.append(pass_td + rush_td + rec_td)
+        elif stat_key == "total_tds":
+            if pass_td is None and rush_td is None and rec_td is None:
+                continue
+            values.append((pass_td or 0) + (rush_td or 0) + (rec_td or 0))
+        elif stat_key == "passingYards":
+            if pass_yds is None:
+                continue
+            values.append(pass_yds)
+        elif stat_key == "rushingYards":
+            if rush_yds is None:
+                continue
+            values.append(rush_yds)
+        elif stat_key == "receivingYards":
+            if rec_yds is None:
+                continue
+            values.append(rec_yds)
+        elif stat_key == "passingTouchdowns":
+            if pass_td is None:
+                continue
+            values.append(pass_td)
+        elif stat_key == "rushingTouchdowns":
+            if rush_td is None:
+                continue
+            values.append(rush_td)
+        elif stat_key == "receivingTouchdowns":
+            if rec_td is None:
+                continue
+            values.append(rec_td)
+        elif stat_key == "completions":
+            if completions is None:
+                continue
+            values.append(completions)
+        elif stat_key == "passingAttempts":
+            if pass_att is None:
+                continue
+            values.append(pass_att)
+        elif stat_key == "interceptions":
+            if ints is None:
+                continue
+            values.append(ints)
+        elif stat_key == "receptions":
+            if receptions is None:
+                continue
+            values.append(receptions)
+        elif stat_key == "rushingAttempts":
+            if rush_att is None:
+                continue
+            values.append(rush_att)
+        elif stat_key == "kickingPoints":
+            if kick_pts is None:
+                continue
+            values.append(kick_pts)
+        elif stat_key == "extraPointsMade":
+            if pats is None:
+                continue
+            values.append(pats)
+        elif stat_key == "longestPass":
+            if long_pass is None:
+                continue
+            values.append(long_pass)
+        elif stat_key == "longestReception":
+            if long_rec is None:
+                continue
+            values.append(long_rec)
+        elif stat_key == "longestRush":
+            if long_rush is None:
+                continue
+            values.append(long_rush)
+        elif stat_key == "threePointFieldGoalsMade":
             raw = None
             for alias in threes_aliases:
                 if game.get(alias) is not None:
@@ -377,51 +561,43 @@ def _stat_series(games: list[dict[str, Any]], stat_key: str) -> list[float]:
             if raw is None:
                 continue
             values.append(float(raw))
-            continue
-        if stat_key == "turnovers":
+        elif stat_key == "turnovers":
             if tov is None:
                 continue
             values.append(tov)
-            continue
-        if stat_key == "fieldGoalsMade":
-            if fgm is None:
+        elif stat_key == "fieldGoalsMade":
+            if fgm is None and fg_made is None:
                 continue
-            values.append(fgm)
-            continue
-        if stat_key == "freeThrowsMade":
+            values.append(float(fgm if fgm is not None else fg_made))
+        elif stat_key == "freeThrowsMade":
             if ftm is None:
                 continue
             values.append(ftm)
-            continue
-        if stat_key == "totalRebounds":
+        elif stat_key == "totalRebounds":
             if reb is None:
                 continue
             values.append(reb)
-            continue
-        if stat_key == "blocks":
+        elif stat_key == "blocks":
             if blk is None:
                 continue
             values.append(blk)
-            continue
-        if stat_key == "steals":
+        elif stat_key == "steals":
             if stl is None:
                 continue
             values.append(stl)
-            continue
-        if stat_key == "points":
+        elif stat_key == "points":
             if pts is None:
                 continue
             values.append(pts)
-            continue
-        if stat_key == "assists":
+        elif stat_key == "assists":
             if ast is None:
                 continue
             values.append(ast)
-            continue
-        raw = game.get(stat_key)
-        if raw is None:
-            continue
-        values.append(float(raw))
+        else:
+            raw = game.get(stat_key)
+            if raw is None:
+                continue
+            values.append(float(raw))
     return values
 
 
@@ -456,6 +632,5 @@ def _hit_rate_probability(
     mean = sum(values) / len(values)
     distance = (mean - line) if is_over else (line - mean)
     distance_term = max(-0.15, min(0.15, distance / 12.0))
-    # Shrink toward 0.5 so soft-book edges stay PLAYABLE without outlier quarantine.
     probability = 0.5 + (rate - 0.5) * 0.40 + distance_term * 0.12
     return max(0.15, min(0.78, probability))

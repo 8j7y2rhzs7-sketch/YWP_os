@@ -66,7 +66,8 @@ _PROP_MARKETS_BY_SPORT: dict[str, str] = {
         "player_pass_rush_yds,player_rush_reception_yds,player_pass_rush_reception_yds,"
         "player_pass_rush_reception_tds,player_tds_over,"
         "player_kicking_points,player_field_goals,player_pats,"
-        "player_pass_longest_completion,player_reception_longest,player_rush_longest"
+        "player_pass_longest_completion,player_reception_longest,player_rush_longest,"
+        "player_pass_yds_q1"
     ),
     # NCAAF Sheet categories priced via Odds event markets (ESPN is facts-only).
     # Covers: TD scorers, pass/rush/rec, combo yards, kicking, longest, Q1 pass yards, total TDs.
@@ -91,8 +92,8 @@ _PERIOD_MARKETS_BY_SPORT: dict[str, str] = {
 
 # Cap prop/period event fan-out for huge Saturday NCAAF slates.
 _BOARD_MAX_PROP_EVENTS_BY_SPORT: dict[str, int] = {
-    "ncaaf": 3,
-    "nfl": 6,
+    "ncaaf": 4,
+    "nfl": 8,
     "wnba": 10,
     "nba": 8,
 }
@@ -205,6 +206,13 @@ def _build_market_board_uncached(
                 or getattr(settings, "wnba_max_prop_events", None)
                 or default_max
                 or 10
+            )
+        elif sport_lower == "nfl":
+            default_max = int(
+                getattr(settings, "nfl_board_max_prop_events", None)
+                or getattr(settings, "nfl_max_prop_events", None)
+                or default_max
+                or 8
             )
         max_events = max(
             0,

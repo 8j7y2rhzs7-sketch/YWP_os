@@ -12,15 +12,19 @@ from datetime import UTC, date, datetime
 from decimal import Decimal
 
 from app.schemas import CandidateInput
+from app.core.config import settings
 from app.services.espn_provider import espn_path_for
 from app.services.facts_cascade import league_injuries
+from app.services.market_board import _PROP_MARKETS_BY_SPORT, _flatten_prop_markets
 from app.services.odds_provider import (
     active_odds_keys_for_app_sport,
     extract_best_odds,
     get_game_odds,
+    get_player_props,
     soccer_league_label,
     soccer_odds_regions,
 )
+from app.services.player_prop_research import enrich_player_prop_candidates
 from app.services.sport_research import build_event_research, build_verified_candidate
 
 logger = logging.getLogger(__name__)
@@ -100,6 +104,7 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
     candidates: list[CandidateInput] = []
     now = datetime.now(UTC)
     matched_events = 0
+    prop_event_contexts: list[dict] = []
 
     for event in odds_events:
         start_time = _parse_start(event.get("commence_time"))
@@ -131,6 +136,17 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
             logger.exception("Research failed for %s %s — keeping Odds-priced play", sport, event_name)
             research = _odds_only_research(bookmakers, home_team=home, sport=sport)
 
+        if event_id and sport_lower in {"nfl", "ncaaf"}:
+            prop_event_contexts.append(
+                {
+                    "event": event,
+                    "event_id": str(event_id),
+                    "start_time": start_time,
+                    "odds_key": str(event.get("_ywp_odds_key") or odds_keys[0]),
+                    "league": league,
+                }
+            )
+
         try:
             _append_event_candidates(
                 candidates,
@@ -150,16 +166,99 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
         except Exception:
             logger.exception("Failed building candidates for %s %s", sport, event_name)
 
+    prop_candidates: list[CandidateInput] = []
+    if sport_lower in {"nfl", "ncaaf"} and prop_event_contexts:
+        max_events = int(
+            getattr(settings, "nfl_max_prop_events", None)
+            if sport_lower == "nfl"
+            else 4
+        )
+        prop_candidates = _append_football_player_props(
+            prop_event_contexts,
+            sport=sport_lower,
+            now=now,
+            slate_date=slate_date,
+            max_events=max(0, max_events),
+        )
+        candidates.extend(prop_candidates)
+
     logger.info(
-        "Built %d live %s candidates from %d Odds events on %s (%d date-matched; leagues=%s)",
+        "Built %d live %s candidates (%d props) from %d Odds events on %s "
+        "(%d date-matched; leagues=%s)",
         len(candidates),
         sport,
+        len(prop_candidates),
         len(odds_events),
         slate_date,
         matched_events,
         ",".join(leagues_fetched) or default_league,
     )
     return candidates
+
+
+def _chunk_csv(markets_csv: str, *, size: int) -> list[str]:
+    parts = [p.strip() for p in markets_csv.split(",") if p.strip()]
+    if size <= 0:
+        return [",".join(parts)] if parts else []
+    return [",".join(parts[i : i + size]) for i in range(0, len(parts), size)]
+
+
+def _append_football_player_props(
+    contexts: list[dict],
+    *,
+    sport: str,
+    now: datetime,
+    slate_date: date,
+    max_events: int,
+) -> list[CandidateInput]:
+    """Price NFL/NCAAF player props onto the Run slate and attach ESPN form models."""
+    markets = _PROP_MARKETS_BY_SPORT.get(sport)
+    if max_events <= 0 or not contexts or not markets:
+        return []
+    chunks = _chunk_csv(markets, size=4)
+    out: list[CandidateInput] = []
+    priced = 0
+    for ctx in contexts:
+        if priced >= max_events:
+            break
+        event_id = str(ctx["event_id"])
+        odds_key = str(ctx["odds_key"])
+        start_time = ctx["start_time"]
+        prop_books: list = []
+        got = False
+        for chunk in chunks:
+            try:
+                payload = get_player_props(event_id, sport=odds_key, markets=chunk)
+            except Exception:
+                logger.warning(
+                    "%s props chunk failed for %s (%s)", sport.upper(), event_id, chunk, exc_info=True
+                )
+                continue
+            if not payload:
+                continue
+            got = True
+            prop_books.extend(payload.get("bookmakers") or [])
+        if not got or not prop_books:
+            continue
+        priced += 1
+        merged = dict(ctx["event"])
+        merged["bookmakers"] = prop_books
+        try:
+            out.extend(
+                _flatten_prop_markets(
+                    event=merged,
+                    sport=sport,
+                    start_time=start_time,
+                    now=now,
+                    league=str(ctx.get("league") or sport.upper()),
+                )
+            )
+        except Exception:
+            logger.exception("Flatten %s prop markets failed for %s", sport, event_id)
+
+    if out:
+        out = enrich_player_prop_candidates(out, slate_date=slate_date)
+    return out
 
 
 def upcoming_odds_dates(sport: str, *, limit: int = 5) -> list[str]:
