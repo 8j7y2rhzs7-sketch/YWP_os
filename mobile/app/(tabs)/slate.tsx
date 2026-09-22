@@ -10,6 +10,7 @@ import { FormField } from "@/components/FormField";
 import { LoadingState } from "@/components/LoadingState";
 import { MetalPanel } from "@/components/MetalPanel";
 import { MotionReveal } from "@/components/MotionReveal";
+import { ProtocolRunDock } from "@/components/ProtocolRunDock";
 import { Screen } from "@/components/Screen";
 import { SectionTitle } from "@/components/SectionTitle";
 import { SportBallIcon } from "@/components/SportBallIcon";
@@ -217,9 +218,14 @@ export default function SlateScreen() {
 
   const tone = orbitToneFor(loadingSlate || analyzing, slate);
   const look = sportLook(sport);
+  const showRunDock = Boolean(slate && slate.candidates.length > 0);
 
   return (
-    <Screen sport={sport}>
+    <View style={styles.page}>
+    <Screen
+      sport={sport}
+      contentStyle={showRunDock ? styles.screenWithDock : undefined}
+    >
       <BrandHeader title="FULL PROTOCOL RUN" subtitle="AIN • STRICT MODE • ALL ANGLES" compact sport={sport} />
 
       {/* Focal engine — shockwaves + radar track load / readiness */}
@@ -422,23 +428,36 @@ export default function SlateScreen() {
               </Text>
             </MetalPanel>
           ))}
-          <YwpButton
-            label="RUN AIN + STRICT MODE + MISS-BY-1"
-            onPress={() => void analyze()}
-            loading={analyzing}
-            disabled={!slate.candidates.length}
-          />
-          <Text style={styles.footer}>
-            Schedule • L5/L10 • matchup • script • line • cushion • role • injuries •
-            motivation • variance • value • weakest leg • lock path
-          </Text>
+          <View style={styles.runFootnote}>
+            <Text style={styles.footer}>
+              Schedule • L5/L10 • matchup • script • line • cushion • role • injuries •
+              motivation • variance • value • weakest leg • lock path
+            </Text>
+            <Text style={styles.dockHint}>Use the stylus RUN dock below — no need to scroll past every play.</Text>
+          </View>
         </>
       ) : null}
     </Screen>
+    {showRunDock ? (
+      <ProtocolRunDock
+        sport={sport}
+        playCount={slate?.candidates.length ?? 0}
+        readiness={slate ? slateReadiness(slate) : undefined}
+        loading={analyzing}
+        disabled={!slate?.candidates.length}
+        onPress={() => void analyze()}
+      />
+    ) : null}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  page: { flex: 1 },
+  screenWithDock: {
+    // Clear tab bar + floating stylus RUN dock so the last plays stay readable.
+    paddingBottom: 200,
+  },
   engineStage: {
     alignItems: "center",
     gap: spacing.md,
@@ -548,7 +567,14 @@ const styles = StyleSheet.create({
     letterSpacing: 0.7,
     textTransform: "uppercase",
   },
-  footer: { ...type.caption, textAlign: "center", padding: spacing.md },
+  footer: { ...type.caption, textAlign: "center", paddingHorizontal: spacing.md },
+  runFootnote: { gap: spacing.sm, paddingBottom: spacing.md },
+  dockHint: {
+    ...type.caption,
+    textAlign: "center",
+    color: colors.gold,
+    letterSpacing: 0.3,
+  },
   verificationWarning: {
     color: colors.danger,
     fontSize: 13,
