@@ -50,6 +50,7 @@ from app.schemas import (
 )
 from app.services.day_forge import (
     cook_progress_from_slate,
+    day_forge_sport_queue,
     resolve_day_forge_sport,
     select_day_forge_play,
     trim_forge_candidates,
@@ -661,20 +662,23 @@ def day_forge(
     """Home Day Forge — cook until data is ready, then reveal one cash-band play."""
     today = slate_date or datetime.now(ZoneInfo("America/New_York")).date()
     catalog = build_app_sports_catalog()
-    sport = resolve_day_forge_sport(catalog, sport_name)
+    sport_queue = day_forge_sport_queue(catalog, sport_name)
+    sport = sport_queue[0] if sport_queue else resolve_day_forge_sport(catalog, sport_name)
 
     # Reuse today's forged pick when already sealed (unless force).
     if not force:
+        # Check sealed picks across the queue so a prior NFL seal still wins
+        # even if catalog priority flips overnight.
         existing = list(
             db.scalars(
                 select(Recommendation)
                 .where(
                     Recommendation.created_by_user_id == user.id,
                     Recommendation.slate_date == today,
-                    Recommendation.sport == sport,
+                    Recommendation.sport.in_(sport_queue or [sport]),
                 )
                 .order_by(Recommendation.created_at.desc())
-                .limit(80)
+                .limit(120)
             ).all()
         )
         forged = [
@@ -685,13 +689,14 @@ def day_forge(
         ]
         pick = select_day_forge_play(forged or existing)
         if pick and "DAY_FORGE_PICK" in (pick.reason_codes or []):
+            sealed_sport = str(getattr(pick, "sport", None) or sport)
             out = RecommendationOut.model_validate(pick)
             return DayForgeResponse(
                 status="ready",
                 phase="ready",
                 progress=1.0,
                 message="Day Forge sealed — today's cash-band play is ready.",
-                sport=sport,
+                sport=sealed_sport,
                 date=today,
                 readiness=None,
                 cook_reasons=[],
@@ -705,39 +710,54 @@ def day_forge(
                 else out.selection,
             )
 
-    try:
-        board = slate(user, sport_name=sport, slate_date=today)
-    except HTTPException as exc:
-        if exc.status_code == status.HTTP_503_SERVICE_UNAVAILABLE:
-            return DayForgeResponse(
-                status="unavailable",
-                phase="unavailable",
-                progress=0.05,
-                message="Day Forge standing by — live slate heat is offline.",
-                sport=sport,
-                date=today,
-                cook_reasons=["slate_unavailable"],
-                pass_reason=str(exc.detail),
-            )
-        raise
+    board = None
+    last_503_detail: str | None = None
+    tried: list[str] = []
+    for candidate_sport in sport_queue or [sport]:
+        tried.append(candidate_sport)
+        try:
+            board = slate(user, sport_name=candidate_sport, slate_date=today)
+            sport = candidate_sport
+            # Prefer a board that actually has candidates; otherwise keep looking.
+            if board.candidates:
+                break
+        except HTTPException as exc:
+            if exc.status_code == status.HTTP_503_SERVICE_UNAVAILABLE:
+                last_503_detail = str(exc.detail)
+                board = None
+                continue
+            raise
+
+    if board is None:
+        # Soft stand-by so Home keeps polling — do not freeze at 5% forever.
+        return DayForgeResponse(
+            status="cooking",
+            phase="waiting_slate",
+            progress=0.08,
+            message="Day Forge standing by — scanning live slate heat…",
+            sport=sport,
+            date=today,
+            cook_reasons=["slate_unavailable", *([f"tried:{','.join(tried)}"] if tried else [])],
+            pass_reason=last_503_detail,
+        )
 
     cook = cook_progress_from_slate(board.candidates)
     if cook.status == "unavailable":
         return DayForgeResponse(
-            status="unavailable",
-            phase="unavailable",
-            progress=cook.progress,
-            message=cook.message,
+            status="cooking",
+            phase="waiting_slate",
+            progress=max(0.08, cook.progress),
+            message=cook.message or "Day Forge standing by — waiting on priced board…",
             sport=sport,
             date=today,
             readiness=board.readiness,
-            cook_reasons=cook.cook_reasons,
+            cook_reasons=cook.cook_reasons or ["empty_slate"],
             forgeable_count=cook.forgeable_count,
             pass_reason="empty_slate",
         )
 
     fuel = trim_forge_candidates(board.candidates)
-    if cook.phase == "gathering_heat" or (
+    if cook.phase in {"gathering_heat", "waiting_slate"} or (
         cook.status == "cooking" and cook.phase != "grading" and not force
     ):
         return DayForgeResponse(

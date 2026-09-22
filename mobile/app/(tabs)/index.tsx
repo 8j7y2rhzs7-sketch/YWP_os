@@ -115,7 +115,11 @@ export default function CommandCenter() {
 
   useEffect(() => {
     if (pollRef.current) clearInterval(pollRef.current);
-    if (forge?.status === "cooking" || !forge) {
+    // Keep polling while cooking OR soft stand-by (unavailable) so heat can
+    // move once a live slate comes online — do not freeze at 5% forever.
+    const shouldPoll =
+      !forge || forge.status === "cooking" || forge.status === "unavailable";
+    if (shouldPoll) {
       pollRef.current = setInterval(() => {
         void loadForge();
       }, 28_000);

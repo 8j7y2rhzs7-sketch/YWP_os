@@ -100,10 +100,11 @@ def candidate_is_forge_fuel(candidate: CandidateInput) -> bool:
 def cook_progress_from_slate(candidates: list[CandidateInput]) -> DayForgeSelection:
     readiness = slate_readiness(candidates)
     if not candidates:
+        # Keep cooking so Home keeps polling — empty is "waiting", not dead.
         return DayForgeSelection(
-            status="unavailable",
-            phase="unavailable",
-            progress=0.08,
+            status="cooking",
+            phase="waiting_slate",
+            progress=0.12,
             message="No slate heat yet — waiting on today's priced board.",
             cook_reasons=["empty_slate"],
         )
@@ -256,19 +257,67 @@ def trim_forge_candidates(candidates: list[CandidateInput]) -> list[CandidateInp
     return fuel[:MAX_FORGE_CANDIDATES]
 
 
+# Prefer sports that actually run Day Forge fuel on live nights.
+_DAY_FORGE_SPORT_PRIORITY = (
+    "nfl",
+    "mlb",
+    "nba",
+    "wnba",
+    "ncaaf",
+    "ncaab",
+    "nhl",
+    "soccer",
+    "kbo",
+)
+
+
+def _catalog_sport_key(row: dict[str, Any]) -> str:
+    return str(row.get("key") or row.get("id") or row.get("sport") or "").lower().strip()
+
+
+def day_forge_sport_queue(
+    catalog: list[dict[str, Any]],
+    requested: str | None = None,
+) -> list[str]:
+    """Ordered sports to try for Day Forge (requested first, then in-season priority)."""
+    ordered: list[str] = []
+    seen: set[str] = set()
+
+    def _push(sport: str) -> None:
+        key = (sport or "").lower().strip()
+        if not key or key in seen:
+            return
+        seen.add(key)
+        ordered.append(key)
+
+    if requested:
+        _push(requested)
+
+    in_season = [
+        _catalog_sport_key(row)
+        for row in catalog
+        if row.get("in_season") is True and _catalog_sport_key(row)
+    ]
+    for sport in _DAY_FORGE_SPORT_PRIORITY:
+        if sport in in_season:
+            _push(sport)
+    for sport in in_season:
+        _push(sport)
+
+    # Catalog unknown / all out of season — still walk the priority list so we
+    # can recover when one provider is up and another is cold.
+    if not ordered:
+        for sport in _DAY_FORGE_SPORT_PRIORITY:
+            _push(sport)
+    return ordered
+
+
 def resolve_day_forge_sport(
     catalog: list[dict[str, Any]],
     requested: str | None = None,
 ) -> str:
-    if requested:
-        return requested.lower()
-    rows = [row for row in catalog if row.get("in_season") is True]
-    ids = [str(row.get("id") or row.get("sport") or "").lower() for row in rows]
-    if "mlb" in ids:
-        return "mlb"
-    if ids:
-        return ids[0]
-    return "mlb"
+    queue = day_forge_sport_queue(catalog, requested)
+    return queue[0] if queue else "mlb"
 
 
 def day_forge_play_payload(play: RecommendationOut | None) -> dict[str, Any] | None:
