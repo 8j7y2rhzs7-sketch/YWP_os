@@ -22,7 +22,7 @@ export const WHOP_CHECKOUT_URL =
 
 export const APP_DOWNLOAD_URL =
   process.env.EXPO_PUBLIC_APP_DOWNLOAD_URL ??
-  "https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.52/YWP-OS-3.3.52.apk";
+  "https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.53/YWP-OS-3.3.53.apk";
 
 export function normalizeApiUrl(value: string): string {
   const normalized = value.trim().replace(/\/$/, "");
@@ -110,16 +110,26 @@ export const EDGE_CHALLENGE_MESSAGE =
 /** Detect Cloudflare / WAF challenge HTML dumped into API error bodies. */
 export function looksLikeEdgeChallenge(value: unknown): boolean {
   if (typeof value !== "string") return false;
-  const sample = value.trim().slice(0, 800).toLowerCase();
-  if (!sample) return false;
+  const trimmed = value.trim();
+  if (!trimmed) return false;
+  // Sample head + a mid slice — scrolled/truncated dumps may miss the doctype.
+  const head = trimmed.slice(0, 1200).toLowerCase();
+  const mid = trimmed.slice(1200, 3200).toLowerCase();
+  const sample = `${head}\n${mid}`;
   return (
-    sample.startsWith("<!doctype html") ||
-    sample.startsWith("<html") ||
+    head.startsWith("<!doctype html") ||
+    head.startsWith("<html") ||
     sample.includes("just a moment") ||
     sample.includes("challenges.cloudflare.com") ||
     sample.includes("cf-browser-verification") ||
     sample.includes("cdn-cgi/challenge") ||
-    sample.includes("attention required! | cloudflare")
+    sample.includes("attention required! | cloudflare") ||
+    sample.includes("enable javascript and cookies to continue") ||
+    sample.includes("_cf_chl_opt") ||
+    sample.includes("challenge-error-text") ||
+    sample.includes("cf-challenge") ||
+    (trimmed.length > 400 &&
+      /<\/?(?:html|head|body|style|script|meta)\b/i.test(head))
   );
 }
 

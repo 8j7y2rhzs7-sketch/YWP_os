@@ -18,7 +18,9 @@ export function ErrorNotice({ message }: { message: string }) {
   return (
     <View style={styles.wrap} accessibilityRole="alert">
       <Text style={styles.title}>CHECK REQUIRED</Text>
-      <Text style={styles.message}>{body}</Text>
+      <Text style={styles.message} numberOfLines={8}>
+        {body}
+      </Text>
     </View>
   );
 }
