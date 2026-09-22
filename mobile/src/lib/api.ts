@@ -139,7 +139,7 @@ function formatApiDetail(detail: unknown, status: number): string {
     return "Access denied — check subscription / Whop membership, then retry.";
   }
   if (status === 502 || status === 504) {
-    return "Server timed out grading this large slate — retry LAUNCH once. Props still score; research may finish mid-run.";
+    return "Server timed out — wait for research to finish, then LAUNCH again. Props still score fail-closed until modeled.";
   }
   if (status === 503) {
     return "Live provider is down and demo will not be substituted. Retry in a moment.";
@@ -159,6 +159,7 @@ export function timeoutMsForPath(path: string, override?: number): number {
   if (
     route.startsWith("/sports/slate") ||
     route.startsWith("/sports/prefetch-odds") ||
+    route.startsWith("/sports/warm-props") ||
     route.startsWith("/sports/market-board") ||
     route.startsWith("/sports/day-forge") ||
     route.startsWith("/sports/build-ticket") ||

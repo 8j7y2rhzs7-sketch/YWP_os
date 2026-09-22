@@ -99,6 +99,19 @@ export interface OddsPrefetchResponse {
   note: string;
 }
 
+export interface PropWarmResponse {
+  sport: string;
+  date: string;
+  candidates: CandidateInput[];
+  prop_total: number;
+  prop_modeled: number;
+  prop_pending: number;
+  coverage_pct: number;
+  enriched_this_pass: number;
+  ready: boolean;
+  notice: string;
+}
+
 export interface SlateResponse {
   sport: string;
   date: string;

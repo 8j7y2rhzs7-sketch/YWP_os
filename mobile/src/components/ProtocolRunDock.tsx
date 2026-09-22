@@ -20,6 +20,7 @@ interface ProtocolRunDockProps {
   readiness?: string;
   loading?: boolean;
   disabled?: boolean;
+  statusText?: string | null;
   onPress: () => void;
 }
 
@@ -33,6 +34,7 @@ export function ProtocolRunDock({
   readiness,
   loading = false,
   disabled = false,
+  statusText = null,
   onPress,
 }: ProtocolRunDockProps) {
   const insets = useSafeAreaInsets();
@@ -180,7 +182,14 @@ export function ProtocolRunDock({
             />
             <LinearGradient colors={gradients.gold} style={styles.ignition}>
               {loading ? (
-                <ActivityIndicator color={colors.background} />
+                <>
+                  <ActivityIndicator color={colors.background} />
+                  {statusText ? (
+                    <Text style={styles.runEyebrow} numberOfLines={1}>
+                      {statusText}
+                    </Text>
+                  ) : null}
+                </>
               ) : (
                 <>
                   <Text style={styles.runEyebrow}>LAUNCH</Text>

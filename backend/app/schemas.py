@@ -326,6 +326,36 @@ class SportsAnalyzeRequest(YWPModel):
         return self
 
 
+class PropWarmRequest(YWPModel):
+    """Chunked ESPN form warm — call repeatedly until ready, then /analyze."""
+
+    sport: str = Field(min_length=2, max_length=24)
+    date: date
+    candidates: list[CandidateInput] = Field(min_length=1, max_length=10000)
+    # Keep each pass under Render's ~30s proxy; client loops for full coverage.
+    budget_seconds: float = Field(default=18.0, ge=3.0, le=22.0)
+
+    @model_validator(mode="after")
+    def candidates_match_sport(self) -> PropWarmRequest:
+        expected = self.sport.lower()
+        if any(candidate.sport.lower() != expected for candidate in self.candidates):
+            raise ValueError("Every candidate must match the requested sport")
+        return self
+
+
+class PropWarmResponse(YWPModel):
+    sport: str
+    date: date
+    candidates: list[CandidateInput]
+    prop_total: int
+    prop_modeled: int
+    prop_pending: int
+    coverage_pct: float
+    enriched_this_pass: int
+    ready: bool
+    notice: str
+
+
 class RecommendationOut(YWPModel):
     id: str
     analysis_id: str

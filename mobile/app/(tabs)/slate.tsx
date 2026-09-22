@@ -23,6 +23,7 @@ import type {
   AnalyzeResponse,
   CandidateInput,
   OddsPrefetchResponse,
+  PropWarmResponse,
   Readiness,
   SlateResponse,
   SportCatalogItem,
@@ -30,6 +31,9 @@ import type {
 } from "@/types";
 
 const CANDIDATE_PAGE = 20;
+const PROP_SPORTS = new Set(["wnba", "nba", "nfl", "ncaaf"]);
+/** Chunked warm passes — each stays under Render's ~30s proxy. */
+const MAX_WARM_ROUNDS = 8;
 
 function slateReadiness(slate: SlateResponse): Readiness {
   return slate.readiness ?? (slate.mode === "demo" ? "DEMO" : "PARTIAL");
@@ -51,7 +55,9 @@ function orbitToneFor(
 function orbitLabel(
   loading: boolean,
   slate: SlateResponse | null,
+  researchNote?: string | null,
 ): string | undefined {
+  if (researchNote) return "Researching";
   if (loading) return "Verifying";
   if (!slate) return "Standby";
   const readiness = slateReadiness(slate);
@@ -59,6 +65,14 @@ function orbitLabel(
   if (readiness === "PARTIAL") return "Partial";
   if (readiness === "DEMO") return "Demo";
   return readiness;
+}
+
+function pendingPropCount(candidates: CandidateInput[]): number {
+  return candidates.filter(
+    (row) =>
+      String(row.market_type || "").startsWith("player_") &&
+      row.probability_source === "market_implied",
+  ).length;
 }
 
 function marketBreakdown(candidates: CandidateInput[]): Array<{ market: string; count: number }> {
@@ -125,6 +139,7 @@ export default function SlateScreen() {
   const [slate, setSlate] = useState<SlateResponse | null>(null);
   const [loadingSlate, setLoadingSlate] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
+  const [researchNote, setResearchNote] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [catalogByKey, setCatalogByKey] = useState<Record<string, SportCatalogItem>>({});
   const [catalogReady, setCatalogReady] = useState(false);
@@ -215,7 +230,41 @@ export default function SlateScreen() {
     }
     setAnalyzing(true);
     setError(null);
+    setResearchNote(null);
     try {
+      let candidates = slate.candidates;
+      const sportKey = slate.sport.toLowerCase();
+      const needsWarm =
+        PROP_SPORTS.has(sportKey) && pendingPropCount(candidates) > 0;
+
+      if (needsWarm) {
+        // Do not rush grade: warm ESPN form in Render-safe chunks until ready.
+        for (let round = 0; round < MAX_WARM_ROUNDS; round += 1) {
+          if (pendingPropCount(candidates) <= 0) break;
+          setResearchNote(
+            `Researching props… pass ${round + 1}/${MAX_WARM_ROUNDS}`,
+          );
+          const warm = await request<PropWarmResponse>("/sports/warm-props", {
+            method: "POST",
+            body: JSON.stringify({
+              sport: slate.sport,
+              date: slate.date,
+              candidates,
+              budget_seconds: 18,
+            }),
+          });
+          candidates = warm.candidates;
+          const nextSlate = { ...slate, candidates };
+          setSlate(nextSlate);
+          saveSlate(nextSlate);
+          setResearchNote(
+            `${warm.prop_modeled}/${warm.prop_total} modeled (${Math.round(warm.coverage_pct)}%)`,
+          );
+          if (warm.ready) break;
+        }
+        setResearchNote("Grading with full research…");
+      }
+
       const response = await request<AnalyzeResponse>("/sports/analyze", {
         method: "POST",
         body: JSON.stringify({
@@ -223,7 +272,7 @@ export default function SlateScreen() {
           date: slate.date,
           mode: "pregame",
           user_risk_profile: user?.risk_profile ?? "balanced",
-          candidates: slate.candidates,
+          candidates,
         }),
       });
       saveAnalysis(response);
@@ -236,6 +285,7 @@ export default function SlateScreen() {
       );
     } finally {
       setAnalyzing(false);
+      setResearchNote(null);
     }
   }
 
@@ -261,6 +311,7 @@ export default function SlateScreen() {
   );
   const visibleCandidates = slate?.candidates.slice(0, visibleCount) ?? [];
   const hiddenCount = Math.max(0, (slate?.candidates.length ?? 0) - visibleCount);
+  const engineLabel = orbitLabel(loadingSlate || analyzing, slate, researchNote);
 
   return (
     <View style={styles.page}>
@@ -279,9 +330,9 @@ export default function SlateScreen() {
           <EngineStage
             size={200}
             tone={tone}
-            label={orbitLabel(loadingSlate || analyzing, slate)}
+            label={engineLabel}
             intensity="hero"
-            calloutsActive={Boolean(slate) && !loadingSlate}
+            calloutsActive={Boolean(slate) && !loadingSlate && !researchNote}
             callouts={[
               {
                 id: "sport",
@@ -291,7 +342,7 @@ export default function SlateScreen() {
               },
               {
                 id: "state",
-                label: orbitLabel(loadingSlate || analyzing, slate) ?? "STANDBY",
+                label: engineLabel ?? "STANDBY",
                 side: "right",
                 top: 72,
               },
@@ -303,16 +354,18 @@ export default function SlateScreen() {
               },
               {
                 id: "mode",
-                label: analyzing ? "AIN" : "STRICT",
+                label: researchNote ? "RESEARCH" : analyzing ? "AIN" : "STRICT",
                 side: "right",
                 top: 148,
               },
             ]}
           />
         </MotionReveal>
-        <MotionReveal delay={120} replayKey={`${sport}-${slate?.candidates.length ?? 0}`}>
+        <MotionReveal delay={120} replayKey={`${sport}-${slate?.candidates.length ?? 0}-${researchNote ?? "idle"}`}>
           <Text style={styles.engineHeadline}>
-            {analyzing
+            {researchNote
+              ? "Giving research time to finish"
+              : analyzing
               ? "Running AIN + Strict Mode"
               : loadingSlate
                 ? "Pulling live candidates"
@@ -321,9 +374,11 @@ export default function SlateScreen() {
                   : "Select sport · load slate"}
           </Text>
         </MotionReveal>
-        <MotionReveal delay={220} replayKey={`${sport}-${slate?.notice ?? "idle"}`}>
+        <MotionReveal delay={220} replayKey={`${sport}-${slate?.notice ?? "idle"}-${researchNote ?? ""}`}>
           <Text style={styles.engineSupport}>
-            {slate?.notice
+            {researchNote
+              ? researchNote
+              : slate?.notice
               ? slate.notice
               : "Quiet chassis. Verification first. No forced ticket."}
           </Text>
@@ -518,6 +573,7 @@ export default function SlateScreen() {
         playCount={slate?.candidates.length ?? 0}
         readiness={slate ? slateReadiness(slate) : undefined}
         loading={analyzing}
+        statusText={researchNote}
         disabled={!slate?.candidates.length}
         onPress={() => void analyze()}
       />

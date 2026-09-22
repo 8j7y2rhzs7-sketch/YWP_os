@@ -39,6 +39,8 @@ from app.schemas import (
     DayForgeResponse,
     ExternalResultCreate,
     ExternalResultOut,
+    PropWarmRequest,
+    PropWarmResponse,
     RecommendationOut,
     ResultCreate,
     ResultOut,
@@ -115,6 +117,92 @@ def prefetch_odds(_: SubscribedUser) -> dict[str, object]:
             detail="ODDS_API_KEY is not configured",
         )
     return prefetch_in_season_app_odds()
+
+
+def _prop_research_stats(
+    candidates: list[CandidateInput],
+) -> tuple[int, int, int, float]:
+    props = [
+        c
+        for c in candidates
+        if str(c.market_type or "").startswith("player_")
+    ]
+    total = len(props)
+    modeled = sum(1 for c in props if c.probability_source in {"model", "manual_verified"})
+    pending = total - modeled
+    coverage = round((modeled / total) * 100.0, 1) if total else 100.0
+    return total, modeled, pending, coverage
+
+
+@router.post("/warm-props", response_model=PropWarmResponse)
+def warm_props(payload: PropWarmRequest, _: SubscribedUser) -> PropWarmResponse:
+    """Spend a bounded slice of ESPN form research, then return updated candidates.
+
+    Render free kills ~30s requests. Full 500+ prop boards need several warm
+    passes — the mobile LAUNCH flow loops this until ready, then calls /analyze
+    so the engine is not rushed into grading sportsbook-only lines.
+    """
+    sport_l = (payload.sport or "").lower()
+    before_total, before_modeled, before_pending, _ = _prop_research_stats(payload.candidates)
+    if before_pending <= 0 or sport_l not in {
+        "wnba",
+        "nba",
+        "basketball",
+        "nfl",
+        "ncaaf",
+    }:
+        total, modeled, pending, coverage = _prop_research_stats(payload.candidates)
+        return PropWarmResponse(
+            sport=payload.sport,
+            date=payload.date,
+            candidates=payload.candidates,
+            prop_total=total,
+            prop_modeled=modeled,
+            prop_pending=pending,
+            coverage_pct=coverage,
+            enriched_this_pass=0,
+            ready=True,
+            notice=(
+                "No pending player-prop research — ready to LAUNCH."
+                if pending <= 0
+                else "This sport does not use ESPN prop form warm."
+            ),
+        )
+
+    from app.services.player_prop_research import enrich_player_prop_candidates
+
+    enriched = enrich_player_prop_candidates(
+        list(payload.candidates),
+        slate_date=payload.date,
+        budget_seconds=float(payload.budget_seconds),
+    )
+    total, modeled, pending, coverage = _prop_research_stats(enriched)
+    gained = max(0, modeled - before_modeled)
+    # Ready when nearly all props have an independent model, or this pass made
+    # no progress (ESPN misses / unresolvable names) so we stop spinning.
+    ready = pending <= 0 or coverage >= 88.0 or (gained == 0 and before_pending > 0)
+    notice = (
+        f"Research {modeled}/{total} props modeled ({coverage:.0f}%). "
+        + (
+            "Ready to grade."
+            if ready and pending <= 0
+            else "Ready to grade — remaining lines stay SKIP until sources resolve."
+            if ready
+            else "Keep warming — do not rush LAUNCH yet."
+        )
+    )
+    return PropWarmResponse(
+        sport=payload.sport,
+        date=payload.date,
+        candidates=enriched,
+        prop_total=total,
+        prop_modeled=modeled,
+        prop_pending=pending,
+        coverage_pct=coverage,
+        enriched_this_pass=gained,
+        ready=ready,
+        notice=notice,
+    )
 
 
 def _slate_response(
