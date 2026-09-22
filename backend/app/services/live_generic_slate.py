@@ -257,7 +257,12 @@ def _append_football_player_props(
             logger.exception("Flatten %s prop markets failed for %s", sport, event_id)
 
     if out:
-        out = enrich_player_prop_candidates(out, slate_date=slate_date)
+        # Keep slate refresh under Render's ~30s proxy — full enrich happens
+        # (budgeted again) on LAUNCH for remaining market_implied rows.
+        budget = 8.0 if len(out) >= 200 else 14.0
+        out = enrich_player_prop_candidates(
+            out, slate_date=slate_date, budget_seconds=budget
+        )
     return out
 
 

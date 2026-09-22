@@ -229,7 +229,7 @@ def test_live_wnba_slate_enriches_props_in_place() -> None:
     }
     modeled = _board_prop(probability_source="model", data_source="ESPN_PLAYER_PROP_MODEL")
 
-    def fake_enrich(rows, slate_date=None):
+    def fake_enrich(rows, slate_date=None, budget_seconds=14.0):
         return [modeled if "Wilson" in r.selection else r for r in rows]
 
     with (
@@ -249,3 +249,20 @@ def test_live_wnba_slate_enriches_props_in_place() -> None:
     assert status["prop_candidates"] >= 1
     assert status["model_props"] >= 1
     assert "ESPN form-modeled" in wnba.wnba_props_slate_notice()
+
+
+def test_enrich_skips_already_modeled_props_without_espn() -> None:
+    modeled = _board_prop(
+        probability_source="model",
+        data_source="ESPN_PLAYER_PROP_MODEL",
+        candidate_id="already-model",
+    )
+    pending = _board_prop(candidate_id="still-market")
+    with patch.object(player_prop_research, "_enrich_one") as enrich_one:
+        enrich_one.return_value = None
+        out = player_prop_research.enrich_player_prop_candidates(
+            [modeled, pending], slate_date=date(2026, 9, 17), budget_seconds=5.0
+        )
+    assert out[0].probability_source == "model"
+    assert enrich_one.call_count == 1
+    assert enrich_one.call_args.args[0].candidate_id == "still-market"

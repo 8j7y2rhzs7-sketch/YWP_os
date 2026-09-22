@@ -181,6 +181,11 @@ def enrich_player_prop_candidates(
         if sport not in PROP_MODEL_SPORTS or not str(candidate.market_type).startswith("player_"):
             out.append(candidate)
             continue
+        # Slate refresh may have already attached ESPN form — do not burn the
+        # analyze budget re-hitting ESPN for modeled props.
+        if candidate.probability_source in {"model", "manual_verified"}:
+            out.append(candidate)
+            continue
         if sport == "basketball":
             sport = "nba"
         if (time.monotonic() - started) >= max(0.0, budget_seconds):

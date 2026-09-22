@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import time
 from datetime import UTC, date, datetime
 from decimal import Decimal
 from uuid import uuid4
@@ -842,9 +843,14 @@ def day_forge(
 
 @router.post("/analyze", response_model=AnalyzeResponse, status_code=status.HTTP_201_CREATED)
 def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> AnalyzeResponse:
+    # Render free proxy hard-kills ~30s. Keep wall-clock headroom so huge WNBA/NFL
+    # prop boards return 201 instead of a client-facing 502.
+    analyze_started = time.monotonic()
+    analyze_deadline = analyze_started + 22.0
     _assert_candidates_match_slate_date(payload)
     analysis_id = str(uuid4())
     candidates = list(payload.candidates)
+    huge_board = len(candidates) >= 200
     overlay_upgraded = 0
     if payload.overlay_model_on_sheet and _candidates_look_like_sheet_menu(candidates):
         from app.services.market_board import overlay_selected_with_model
@@ -872,7 +878,13 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
     ):
         from app.services.player_prop_research import enrich_player_prop_candidates
 
-        enrich_budget = 12.0 if len(candidates) >= 200 else 18.0
+        remaining = max(0.5, analyze_deadline - time.monotonic())
+        if len(candidates) >= 400:
+            enrich_budget = min(5.0, remaining)
+        elif huge_board:
+            enrich_budget = min(8.0, remaining)
+        else:
+            enrich_budget = min(14.0, remaining)
         candidates = enrich_player_prop_candidates(
             candidates, slate_date=payload.date, budget_seconds=enrich_budget
         )
@@ -968,10 +980,16 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
     )
 
     records: list[Recommendation] = []
+    stay_away_records: list[Recommendation] = []
     persist_all_snapshots = len(evaluations) <= 250
+    # Huge boards: only persist board plays + a small stay_away sample. Writing
+    # 500+ SKIP rows (with full JSON snapshots) is what 502s Render after grade.
+    persist_skip_sample = 40 if huge_board else None
     for rank, evaluation in enumerate(evaluations, start=1):
         candidate = evaluation.candidate
-        if persist_all_snapshots or evaluation.decision in {"PLAY", "LEAN", "WATCH"}:
+        is_board = evaluation.decision in {"PLAY", "LEAN", "WATCH"}
+        is_skip = evaluation.decision in {"SKIP", "REVIEW"}
+        if persist_all_snapshots or is_board:
             db.add(
                 GameSnapshot(
                     analysis_id=analysis_id,
@@ -984,6 +1002,17 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
                     payload=evaluation.payload,
                 )
             )
+        # Slim SKIP snapshots on huge boards — display/stay_away only.
+        snapshot_payload = evaluation.payload
+        if huge_board and is_skip:
+            snapshot_payload = {
+                "candidate_id": candidate.candidate_id,
+                "decision": evaluation.decision,
+                "reason_codes": evaluation.reason_codes,
+                "probability_source": candidate.probability_source,
+                "data_source": candidate.data_source,
+                "model_probability": (evaluation.payload or {}).get("model_probability"),
+            }
         record = Recommendation(
             analysis_id=analysis_id,
             created_by_user_id=user.id,
@@ -1039,26 +1068,40 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             model_version=settings.model_version,
             protocol_version=settings.protocol_version,
             input_hash=evaluation.input_hash,
-            snapshot=evaluation.payload,
+            snapshot=snapshot_payload,
         )
+        if is_board:
+            db.add(record)
+            records.append(record)
+        elif is_skip:
+            stay_away_records.append(record)
+
+    stay_away_all_count = len(stay_away_records)
+    stay_away_limit = persist_skip_sample if persist_skip_sample is not None else stay_away_all_count
+    stay_away_to_persist = stay_away_records[:stay_away_limit]
+    for record in stay_away_to_persist:
         db.add(record)
-        records.append(record)
 
     db.commit()
     # Avoid refreshing hundreds of SKIP rows — that alone 502s Render on big boards.
     board_records = [r for r in records if r.decision in {"PLAY", "LEAN", "WATCH"}]
     for record in board_records:
         db.refresh(record)
+    for record in stay_away_to_persist:
+        db.refresh(record)
     sheet_skips = [
         r
-        for r in records
-        if r.decision not in {"PLAY", "LEAN", "WATCH"}
-        and (
+        for r in stay_away_to_persist
+        if (
             "SPORTSBOOK_MENU" in (r.reason_codes or [])
             or (r.snapshot or {}).get("data_source") == "THE_ODDS_API_BOARD"
         )
     ]
-    hive_targets = list(board_records) + sheet_skips[:80]
+    # Huge boards: Hive only on official plays — sheet-skip capture can wait.
+    if huge_board or time.monotonic() >= analyze_deadline:
+        hive_targets = [r for r in board_records if r.decision in {"PLAY", "LEAN"}]
+    else:
+        hive_targets = list(board_records) + sheet_skips[:80]
     for record in hive_targets:
         # Official board picks (PLAY/LEAN/WATCH) always feed Hive.
         # Customer Pick Sheet sportsbook-menu legs also feed Hive even when SKIP —
@@ -1116,11 +1159,10 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
     db.commit()
 
     ranked = [RecommendationOut.model_validate(record) for record in board_records]
-    stay_away_all = [
-        record for record in records if record.decision in {"SKIP", "REVIEW"}
-    ]
     # Huge stay_away payloads 502 the proxy after big prop boards — keep a sample.
-    stay_away = [RecommendationOut.model_validate(record) for record in stay_away_all[:40]]
+    stay_away = [
+        RecommendationOut.model_validate(record) for record in stay_away_to_persist[:40]
+    ]
     qualities = [candidate.data_quality for candidate in candidates]
     unknowns = sum(
         1
@@ -1130,7 +1172,39 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         if str(value).lower() == "unknown"
     )
     readiness = slate_readiness(candidates)
-    hive_learning = hive_learning_maturity(db=db, sport=payload.sport)
+    if huge_board or time.monotonic() >= analyze_deadline:
+        # Four COUNT queries on Hive tables are not worth a 502 on 500+ boards.
+        from app.hive.config import settings as hive_settings
+
+        hive_learning = {
+            "eligible_samples": 0,
+            "pending_samples": 0,
+            "resolved_samples": 0,
+            "min_sample_for_calibration": int(hive_settings.min_sample),
+            "optimal_sample": int(hive_settings.optimal_sample),
+            "volume_score_pct": 0.0,
+            "calibration_score_pct": 0.0,
+            "calibration_quality": 0.0,
+            "mean_abs_calibration_delta": None,
+            "calibrated_bucket_count": 0,
+            "wins": 0,
+            "losses": 0,
+            "optimum_accuracy_pct": 0.0,
+            "calibration_active": False,
+            "status": "deferred_large_board",
+            "release_version": hive_settings.release_version,
+        }
+    else:
+        hive_learning = hive_learning_maturity(db=db, sport=payload.sport)
+    logger.info(
+        "analyze done sport=%s candidates=%s board=%s skip_persisted=%s/%s elapsed=%.1fs",
+        payload.sport,
+        len(candidates),
+        len(board_records),
+        len(stay_away_to_persist),
+        stay_away_all_count,
+        time.monotonic() - analyze_started,
+    )
     return AnalyzeResponse(
         model_version=settings.model_version,
         analysis_id=analysis_id,
@@ -1141,7 +1215,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         data_quality_summary={
             "protocol_status": protocol_run.status,
             "protocol_run_id": protocol_run.id,
-            "average_data_quality": round(sum(qualities) / len(qualities), 4),
+            "average_data_quality": round(sum(qualities) / len(qualities), 4) if qualities else 0.0,
             "missing_field_count": sum(
                 len(candidate.missing_fields) for candidate in candidates
             ),
@@ -1149,7 +1223,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             "candidate_count": len(candidates),
             "sheet_overlay_upgraded": overlay_upgraded,
             "official_pass_count": len(ranked),
-            "official_skip_count": len(stay_away_all),
+            "official_skip_count": stay_away_all_count,
             "stay_away_returned": len(stay_away),
             "official_pass": len(ranked) == 0,
             "verified_candidate_count": sum(
@@ -1158,6 +1232,8 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             "readiness": readiness,
             "hive_learning": hive_learning,
             "hive_optimum_accuracy_pct": hive_learning["optimum_accuracy_pct"],
+            "analyze_elapsed_seconds": round(time.monotonic() - analyze_started, 2),
+            "huge_board_fast_path": huge_board,
         },
     )
 

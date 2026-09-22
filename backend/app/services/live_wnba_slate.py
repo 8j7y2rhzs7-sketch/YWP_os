@@ -275,7 +275,12 @@ def _append_wnba_player_props(
     # Always keep collected Odds props on the raw list; upgrade in place to model
     # when ESPN L5/L10 resolves so Strict Mode can PLAY instead of hard-SKIP.
     if out:
-        out = enrich_player_prop_candidates(out, slate_date=slate_date)
+        # Keep slate refresh under Render's ~30s proxy — full enrich happens
+        # (budgeted again) on LAUNCH for remaining market_implied rows.
+        budget = 8.0 if len(out) >= 200 else 14.0
+        out = enrich_player_prop_candidates(
+            out, slate_date=slate_date, budget_seconds=budget
+        )
     model_n = sum(1 for row in out if row.probability_source == "model")
     _last_props_status.update(
         {
