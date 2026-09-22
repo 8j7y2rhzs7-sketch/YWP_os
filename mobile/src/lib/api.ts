@@ -22,7 +22,7 @@ export const WHOP_CHECKOUT_URL =
 
 export const APP_DOWNLOAD_URL =
   process.env.EXPO_PUBLIC_APP_DOWNLOAD_URL ??
-  "https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.53/YWP-OS-3.3.53.apk";
+  "https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.54/YWP-OS-3.3.54.apk";
 
 export function normalizeApiUrl(value: string): string {
   const normalized = value.trim().replace(/\/$/, "");
@@ -105,32 +105,58 @@ const ANALYZE_TIMEOUT_MS = 180_000;
 
 /** Shown when Cloudflare (or similar) returns an HTML challenge instead of JSON. */
 export const EDGE_CHALLENGE_MESSAGE =
-  "Edge protection paused this request — wait ~15s, then retry. Rapid Refresh can trigger this.";
+  "Edge protection paused this request — waiting and retrying automatically. Avoid spamming Refresh.";
 
-/** Detect Cloudflare / WAF challenge HTML dumped into API error bodies. */
+const EDGE_RETRY_LIMIT = 3;
+const EDGE_RETRY_BASE_MS = 5_000;
+
+/** Detect Cloudflare / WAF challenge HTML/JS dumped into API error bodies. */
 export function looksLikeEdgeChallenge(value: unknown): boolean {
   if (typeof value !== "string") return false;
   const trimmed = value.trim();
   if (!trimmed) return false;
-  // Sample head + a mid slice — scrolled/truncated dumps may miss the doctype.
-  const head = trimmed.slice(0, 1200).toLowerCase();
-  const mid = trimmed.slice(1200, 3200).toLowerCase();
+  // Sample head + mid — scrolled dumps often show only challenge JS / tokens.
+  const head = trimmed.slice(0, 1600).toLowerCase();
+  const mid = trimmed.slice(1600, 5000).toLowerCase();
   const sample = `${head}\n${mid}`;
-  return (
+  if (
     head.startsWith("<!doctype html") ||
     head.startsWith("<html") ||
     sample.includes("just a moment") ||
     sample.includes("challenges.cloudflare.com") ||
     sample.includes("cf-browser-verification") ||
     sample.includes("cdn-cgi/challenge") ||
+    sample.includes("challenge-platform") ||
     sample.includes("attention required! | cloudflare") ||
     sample.includes("enable javascript and cookies to continue") ||
     sample.includes("_cf_chl_opt") ||
+    sample.includes("_cf_chl_rt_tk") ||
     sample.includes("challenge-error-text") ||
     sample.includes("cf-challenge") ||
-    (trimmed.length > 400 &&
-      /<\/?(?:html|head|body|style|script|meta)\b/i.test(head))
-  );
+    sample.includes("chl_page")
+  ) {
+    return true;
+  }
+  if (
+    trimmed.length > 400 &&
+    /<\/?(?:html|head|body|style|script|meta)\b/i.test(head)
+  ) {
+    return true;
+  }
+  // Opaque challenge token walls (almost no whitespace, very long, not JSON).
+  if (
+    trimmed.length > 600 &&
+    !trimmed.startsWith("{") &&
+    !trimmed.startsWith("[")
+  ) {
+    const spaces = (trimmed.match(/\s/g) ?? []).length;
+    if (spaces / trimmed.length < 0.06) return true;
+  }
+  return false;
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function clipMessage(text: string, max = 280): string {
@@ -246,11 +272,46 @@ export async function rawRequest<T>(
   accessToken?: string,
   timeoutMs?: number,
 ): Promise<T> {
+  let lastEdgeError: ApiError | null = null;
+  for (let attempt = 0; attempt <= EDGE_RETRY_LIMIT; attempt += 1) {
+    try {
+      return await rawRequestOnce<T>(path, init, accessToken, timeoutMs);
+    } catch (error) {
+      if (!(error instanceof ApiError) || !looksLikeEdgeChallenge(error.details ?? error.message)) {
+        // Also retry when the thrown message is already the friendly edge copy.
+        const isFriendlyEdge =
+          error instanceof ApiError &&
+          (error.message === EDGE_CHALLENGE_MESSAGE ||
+            error.message.includes("Edge protection"));
+        if (!isFriendlyEdge) throw error;
+        lastEdgeError = error;
+      } else {
+        lastEdgeError = error;
+      }
+      if (attempt >= EDGE_RETRY_LIMIT) break;
+      await sleep(EDGE_RETRY_BASE_MS * (attempt + 1));
+    }
+  }
+  throw (
+    lastEdgeError ??
+    new ApiError(EDGE_CHALLENGE_MESSAGE, 503)
+  );
+}
+
+async function rawRequestOnce<T>(
+  path: string,
+  init: RequestInit = {},
+  accessToken?: string,
+  timeoutMs?: number,
+): Promise<T> {
   const apiUrl = getApiUrl() || PRODUCTION_API_URL;
   currentApiUrl = apiUrl;
   const headers = new Headers(init.headers);
   if (!headers.has("Accept")) {
     headers.set("Accept", "application/json");
+  }
+  if (!headers.has("User-Agent")) {
+    headers.set("User-Agent", "YWP-OS/3.3.54 (Android; native)");
   }
   if (init.body && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");
@@ -298,15 +359,17 @@ export async function rawRequest<T>(
   } else {
     body = await response.text();
   }
-  // Cloudflare often serves an HTML challenge with 403/503 (or rarely 200).
+  // Cloudflare often serves an HTML/JS challenge with 403/503 (or rarely 200).
   if (
     looksLikeEdgeChallenge(body) ||
-    (!isJson && typeof body === "string" && /<\/?[a-z][\s\S]*>/i.test(body.slice(0, 200)))
+    (!isJson &&
+      typeof body === "string" &&
+      /<\/?[a-z][\s\S]*>/i.test(body.slice(0, 200)))
   ) {
     throw new ApiError(
       EDGE_CHALLENGE_MESSAGE,
       response.status === 200 ? 503 : response.status,
-      body,
+      typeof body === "string" ? body : EDGE_CHALLENGE_MESSAGE,
     );
   }
   if (!response.ok) {
