@@ -573,7 +573,7 @@ export default function SlateScreen() {
         playCount={slate?.candidates.length ?? 0}
         readiness={slate ? slateReadiness(slate) : undefined}
         loading={analyzing}
-        statusText={researchNote}
+        statusText={researchNote ? "WARM" : null}
         disabled={!slate?.candidates.length}
         onPress={() => void analyze()}
       />
