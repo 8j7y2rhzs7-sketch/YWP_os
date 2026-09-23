@@ -643,6 +643,17 @@ def _persist_day_forge_evaluations(
                 float(hive_adjusted),
                 shift_applied=float(hive_meta.get("shift_applied") or 0.0),
             )
+        from app.services.metacognition import reflect_on_decision
+
+        evaluation.payload["metacognition"] = reflect_on_decision(
+            decision=evaluation.decision,
+            reason_codes=evaluation.reason_codes,
+            warnings=evaluation.warnings,
+            reasoning_summary=evaluation.reasoning_summary,
+            selection=candidate.selection,
+            hive_meta=hive_meta if isinstance(hive_meta, dict) else None,
+            probability_source=candidate.probability_source,
+        )
         raw_evaluations.append(evaluation)
 
     evaluations = decision_engine.rank(raw_evaluations)
@@ -1051,6 +1062,17 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
                 float(hive_adjusted),
                 shift_applied=float(hive_meta.get("shift_applied") or 0.0),
             )
+        from app.services.metacognition import reflect_on_decision
+
+        evaluation.payload["metacognition"] = reflect_on_decision(
+            decision=evaluation.decision,
+            reason_codes=evaluation.reason_codes,
+            warnings=evaluation.warnings,
+            reasoning_summary=evaluation.reasoning_summary,
+            selection=candidate.selection,
+            hive_meta=hive_meta if isinstance(hive_meta, dict) else None,
+            probability_source=candidate.probability_source,
+        )
         raw_evaluations.append(evaluation)
     evaluations = decision_engine.rank(raw_evaluations)
     record_usage_event(
@@ -1101,6 +1123,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
                 "probability_source": candidate.probability_source,
                 "data_source": candidate.data_source,
                 "model_probability": (evaluation.payload or {}).get("model_probability"),
+                "metacognition": (evaluation.payload or {}).get("metacognition"),
             }
         record = Recommendation(
             analysis_id=analysis_id,

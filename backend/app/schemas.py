@@ -376,6 +376,7 @@ class RecommendationOut(YWPModel):
     model_probability: float | None = None
     hive_adjusted_probability: float | None = None
     hive: dict[str, Any] | None = None
+    metacognition: dict[str, Any] | None = None
     edge: Decimal
     expected_value: Decimal
     confidence_score: int

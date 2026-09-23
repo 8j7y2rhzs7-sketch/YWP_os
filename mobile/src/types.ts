@@ -173,6 +173,7 @@ export interface Recommendation {
   rank: number;
   reason_codes: string[];
   reasoning_summary: string;
+  metacognition?: MetacognitionReflection | null;
   warnings: string[];
   safer_alternative: string | null;
   higher_upside: string | null;
@@ -265,6 +266,28 @@ export interface HiveLearningSummary {
   calibration_active: boolean;
   status: "collecting" | "calibrating" | "optimal" | string;
   release_version?: string;
+}
+
+export interface MetacognitionReflection {
+  kind?: string;
+  subject?: string | null;
+  why: string;
+  system_impact: string;
+  next_time: string;
+}
+
+export interface MetacognitionFeedItem {
+  id?: string;
+  created_at?: string | null;
+  promoted?: boolean | null;
+  winner?: string | null;
+  metacognition: MetacognitionReflection;
+}
+
+export interface MetacognitionFeedResponse {
+  reflections: MetacognitionFeedItem[];
+  active_policy?: Record<string, unknown>;
+  note?: string;
 }
 
 export interface HiveProgressReport {

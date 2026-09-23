@@ -337,6 +337,12 @@ class Recommendation(Base):
         return value if isinstance(value, dict) else None
 
     @property
+    def metacognition(self) -> dict[str, Any] | None:
+        snap = self.snapshot or {}
+        value = snap.get("metacognition")
+        return value if isinstance(value, dict) else None
+
+    @property
     def probability_available(self) -> bool:
         return self.model_win_probability is not None
 

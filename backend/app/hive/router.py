@@ -16,6 +16,7 @@ from .self_improve import (
     list_self_improvement_cycles,
     run_self_improvement_cycle,
 )
+from app.services.metacognition import list_metacognition_feed
 
 from app.deps import CurrentUser, DB
 
@@ -190,6 +191,29 @@ def self_improve_cycles(
         "note": (
             "Each cycle tries bounded ideas, scores them with leave-one-out Brier on "
             "settled eligible picks, and promotes only clear winners."
+        ),
+    }
+
+
+@router.get("/metacognition")
+def metacognition_feed(
+    db: DB,
+    current_user: CurrentUser,
+    limit: int = 12,
+):
+    """Why / system impact / next-time reflections from recent Hive self-improve cycles.
+
+    This is the product spine for metacognition: the system explaining what it did,
+    how that changes live blends, and what it will try differently next.
+    """
+    cycles = list_self_improvement_cycles(db=db, limit=max(1, min(50, limit)))
+    return {
+        "reflections": list_metacognition_feed(cycles=cycles, limit=limit),
+        "active_policy": get_active_policy(db=db).to_dict(),
+        "note": (
+            "Metacognition answers three questions after every self-improve cycle: "
+            "why we acted, how it affects the system, and what to do differently next time. "
+            "Pick-level reflections also ship on each graded recommendation."
         ),
     }
 

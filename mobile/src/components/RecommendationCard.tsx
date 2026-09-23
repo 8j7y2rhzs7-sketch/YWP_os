@@ -103,6 +103,20 @@ export function RecommendationCard({
         {!compact ? (
           <>
             <Text style={styles.reasoning}>{item.reasoning_summary}</Text>
+            {item.metacognition ? (
+              <View style={styles.metacogBox}>
+                <Text style={styles.metacogTitle}>METACOGNITION</Text>
+                <Text style={styles.metacogLine}>
+                  WHY — {item.metacognition.why}
+                </Text>
+                <Text style={styles.metacogLine}>
+                  IMPACT — {item.metacognition.system_impact}
+                </Text>
+                <Text style={styles.metacogLine}>
+                  NEXT — {item.metacognition.next_time}
+                </Text>
+              </View>
+            ) : null}
             <View style={styles.tags}>
               {item.reason_codes.slice(0, 4).map((code) => (
                 <Text key={code} style={styles.tag}>
@@ -240,6 +254,27 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   warningText: { color: colors.danger, fontSize: 13, lineHeight: 18 },
+  metacogBox: {
+    backgroundColor: colors.surfaceRaised,
+    borderRadius: radius.md,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: "rgba(255,255,255,0.12)",
+    padding: spacing.md,
+    gap: spacing.sm,
+  },
+  metacogTitle: {
+    color: colors.gold,
+    fontFamily: fonts.bodyBold,
+    fontSize: 11,
+    fontWeight: "800",
+    letterSpacing: 1.2,
+  },
+  metacogLine: {
+    color: colors.text,
+    fontSize: 13,
+    lineHeight: 18,
+    fontFamily: fonts.body,
+  },
   safer: { color: colors.success, fontSize: 13, fontFamily: fonts.bodyBold, fontWeight: "700" },
   live: { color: colors.info, fontSize: 13, lineHeight: 18, fontFamily: fonts.bodyBold, fontWeight: "700" },
   hedge: { color: colors.warning, fontSize: 13, lineHeight: 18, fontFamily: fonts.bodyBold, fontWeight: "700" },

@@ -534,6 +534,18 @@ def run_self_improvement_cycle(
         )
     )
 
+    from app.services.metacognition import reflect_on_self_improve_cycle
+
+    metacog = reflect_on_self_improve_cycle(
+        promoted=promoted,
+        winner=best_name,
+        explanation=explanation,
+        baseline=baseline,
+        trials=trials,
+        trigger=trigger,
+        sport=sport,
+    )
+
     if promoted:
         save_active_policy(
             db=db,
@@ -553,6 +565,7 @@ def run_self_improvement_cycle(
             "winner": best_name,
             "active_policy_after": best_policy.to_dict() if promoted else current.to_dict(),
             "explanation": explanation,
+            "metacognition": metacog,
         },
         sample_count=int(baseline.get("n") or 0),
         notes=explanation,
@@ -566,6 +579,7 @@ def run_self_improvement_cycle(
         "promoted": promoted,
         "winner": best_name,
         "explanation": explanation,
+        "metacognition": metacog,
         "baseline": baseline,
         "trials": trials,
         "active_policy": get_active_policy(db=db).to_dict(),
@@ -598,6 +612,7 @@ def list_self_improvement_cycles(
                 "baseline": params.get("baseline"),
                 "active_policy_after": params.get("active_policy_after"),
                 "trial_count": len(params.get("trials") or []),
+                "metacognition": params.get("metacognition"),
             }
         )
     return out

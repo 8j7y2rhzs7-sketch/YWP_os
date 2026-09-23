@@ -22,7 +22,7 @@ export const WHOP_CHECKOUT_URL =
 
 export const APP_DOWNLOAD_URL =
   process.env.EXPO_PUBLIC_APP_DOWNLOAD_URL ??
-  "https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.54/YWP-OS-3.3.54.apk";
+  "https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.56/YWP-OS-3.3.56.apk";
 
 export function normalizeApiUrl(value: string): string {
   const normalized = value.trim().replace(/\/$/, "");
@@ -311,7 +311,7 @@ async function rawRequestOnce<T>(
     headers.set("Accept", "application/json");
   }
   if (!headers.has("User-Agent")) {
-    headers.set("User-Agent", "YWP-OS/3.3.54 (Android; native)");
+    headers.set("User-Agent", "YWP-OS/3.3.56 (Android; native)");
   }
   if (init.body && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");

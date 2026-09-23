@@ -17,6 +17,8 @@ import { colors, spacing, type } from "@/theme";
 import type {
   HiveProgressReport,
   LearningPulse,
+  MetacognitionFeedItem,
+  MetacognitionFeedResponse,
   MissByOneReport,
   OpsHealCycle,
   OpsHealEvidence,
@@ -51,6 +53,7 @@ export default function LearningScreen() {
   const [protocol, setProtocol] = useState<ProtocolDefinition | null>(null);
   const [pulse, setPulse] = useState<LearningPulse | null>(null);
   const [hiveReports, setHiveReports] = useState<HiveProgressReport[]>([]);
+  const [metacognition, setMetacognition] = useState<MetacognitionFeedItem[]>([]);
   const [opsHeal, setOpsHeal] = useState<OpsHealCycle | null>(null);
   const [proposals, setProposals] = useState<OpsHealProposal[]>([]);
   const [evidence, setEvidence] = useState<OpsHealEvidence | null>(null);
@@ -114,6 +117,7 @@ export default function LearningScreen() {
           nextProtocol,
           nextPulse,
           nextHive,
+          nextMetacog,
           nextHeal,
           nextProposals,
           nextEvidence,
@@ -124,6 +128,9 @@ export default function LearningScreen() {
             request<ProtocolDefinition>("/protocol/current"),
             request<LearningPulse>("/learning/pulse"),
             request<{ reports: HiveProgressReport[] }>("/hive/progress-reports?limit=12"),
+            request<MetacognitionFeedResponse>("/hive/metacognition?limit=8").catch(() => ({
+              reflections: [] as MetacognitionFeedItem[],
+            })),
             request<OpsHealCycle>("/ops-heal/status").catch(() => null),
             request<{ proposals: OpsHealProposal[] }>("/ops-heal/proposals?status=pending&limit=20").catch(
               () => ({ proposals: [] as OpsHealProposal[] }),
@@ -138,6 +145,7 @@ export default function LearningScreen() {
         setProtocol(nextProtocol);
         setPulse(nextPulse);
         setHiveReports(nextHive.reports ?? []);
+        setMetacognition(nextMetacog.reflections ?? []);
         if (nextHeal) setOpsHeal(nextHeal);
         setProposals(nextProposals.proposals ?? []);
         if (isAdmin) {
@@ -269,6 +277,40 @@ export default function LearningScreen() {
           <Text style={type.body}>
             No automatic Hive reports yet. Run boards, place/lock tickets, then Sync Scores —
             each graded outcome writes a progress snapshot and strengthens tomorrow’s blends.
+          </Text>
+        )}
+      </MetalPanel>
+
+      <SectionTitle
+        title="Metacognition"
+        subtitle="Why it acted · how that changes the system · what to try next."
+      />
+      <MetalPanel tone={metacognition.length ? "gold" : "default"}>
+        <Text style={type.body}>
+          The engine audits its own process — not just the score. Each reflection answers
+          why a move happened, what it does to live blends, and what should change next time.
+        </Text>
+        {metacognition.length ? (
+          metacognition.slice(0, 6).map((row) => {
+            const meta = row.metacognition;
+            return (
+              <View key={String(row.id ?? meta.why.slice(0, 24))} style={styles.metacogCard}>
+                <View style={styles.row}>
+                  <Text style={styles.dataName}>
+                    {row.winner ?? "cycle"} • {row.created_at?.slice(0, 16) ?? "—"}
+                  </Text>
+                  <StatusPill value={row.promoted ? "PROMOTED" : "HELD"} />
+                </View>
+                <Text style={styles.metacogLine}>WHY — {meta.why}</Text>
+                <Text style={styles.metacogLine}>IMPACT — {meta.system_impact}</Text>
+                <Text style={styles.metacogLine}>NEXT — {meta.next_time}</Text>
+              </View>
+            );
+          })
+        ) : (
+          <Text style={type.caption}>
+            No self-improve reflections yet. Sync Scores after games so Hive can invent,
+            simulate, and explain its next tactic.
           </Text>
         )}
       </MetalPanel>
@@ -640,6 +682,14 @@ const styles = StyleSheet.create({
   },
   dataName: { flex: 1, color: colors.white, fontSize: 13, fontWeight: "800", textTransform: "uppercase" },
   dataValue: { color: colors.muted, fontSize: 12, textAlign: "right" },
+  metacogCard: {
+    gap: spacing.sm,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+    paddingTop: spacing.sm,
+    marginTop: spacing.sm,
+  },
+  metacogLine: { color: colors.white, fontSize: 13, lineHeight: 18, fontWeight: "600" },
   count: { color: colors.gold, fontSize: 20, fontWeight: "900" },
   guardrail: { color: colors.success, fontSize: 13, lineHeight: 20 },
 });
