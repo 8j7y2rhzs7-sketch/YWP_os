@@ -11,9 +11,18 @@ When mobile product changes land (UI, API client, Learning, Run, tickets, metaco
 | Android | Sideload APK on GitHub Releases | `android-vX.Y.Z` |
 | iOS | EAS → TestFlight / App Store | `ios-vX.Y.Z` |
 
-Do not close a release after only one platform. If EAS credentials are missing, stop and request `EXPO_TOKEN` (+ Apple/ASC access) before claiming the cut is done.
+Do not close a release after only one platform.
 
-Helper: `./scripts/release-mobile.sh X.Y.Z`
+### Who builds what
+
+| Agent | Responsibility |
+|---|---|
+| Product / ops agent (this run) | Code, tests, Render deploy, Android APK GitHub release, **DISTRIBUTION_HANDOFF.md** |
+| **YWP OS CLOUD AGENT** (Expo) | Expo reload + EAS iOS / TestFlight from the handoff tip |
+
+After every mobile cut, write `DISTRIBUTION_HANDOFF.md` and hand it to the Expo cloud agent — do not stall asking this agent for `EXPO_TOKEN` when Expo credentials live on that agent.
+
+Helper: `./scripts/release-mobile.sh X.Y.Z` (Android half + iOS command when `EXPO_TOKEN` is available on the Expo agent).
 
 ## Android (sideload / Whop APK)
 
