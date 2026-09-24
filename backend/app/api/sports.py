@@ -1116,14 +1116,23 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         # Slim SKIP snapshots on huge boards — display/stay_away only.
         snapshot_payload = evaluation.payload
         if huge_board and is_skip:
+            full_payload = evaluation.payload or {}
             snapshot_payload = {
                 "candidate_id": candidate.candidate_id,
                 "decision": evaluation.decision,
                 "reason_codes": evaluation.reason_codes,
                 "probability_source": candidate.probability_source,
                 "data_source": candidate.data_source,
-                "model_probability": (evaluation.payload or {}).get("model_probability"),
-                "metacognition": (evaluation.payload or {}).get("metacognition"),
+                "model_probability": full_payload.get("model_probability"),
+                "metacognition": full_payload.get("metacognition"),
+                # Keep settle/Hive keys even on slim SKIP rows.
+                "game_pk": full_payload.get("game_pk") or getattr(candidate, "game_pk", None),
+                "mlb_game_pk": full_payload.get("mlb_game_pk")
+                or getattr(candidate, "mlb_game_pk", None),
+                "home_team": candidate.home_team,
+                "away_team": candidate.away_team,
+                "event_id": candidate.event_id,
+                "start_time": full_payload.get("start_time"),
             }
         record = Recommendation(
             analysis_id=analysis_id,

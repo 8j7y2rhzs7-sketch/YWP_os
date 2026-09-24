@@ -527,13 +527,30 @@ def _grade_recommendation(
 
     sport = (recommendation.sport or "").lower()
     if sport == "mlb":
-        return _grade_mlb_recommendation(
+        mlb_result = _grade_mlb_recommendation(
             db,
             recommendation,
             stake=stake,
             extra_tags=extra_tags,
             lesson=lesson,
         )
+        if mlb_result.get("status") != "skipped":
+            return mlb_result
+        # Team markets: Odds completed scores when Stats API pk is missing.
+        odds_result = _grade_odds_scores_recommendation(
+            db,
+            recommendation,
+            stake=stake,
+            extra_tags=extra_tags,
+            lesson=lesson,
+        )
+        if odds_result.get("status") != "skipped":
+            return odds_result
+        detail = mlb_result.get("detail") or odds_result.get("detail") or (
+            f"Automatic settlement does not support MLB {recommendation.market_type}."
+        )
+        _record_settlement_gap(db, recommendation, detail=str(detail))
+        return {"status": "skipped", "detail": str(detail)}
 
     from app.services.espn_provider import ESPN_SPORT_PATHS, resolve_espn_path
 
@@ -588,6 +605,28 @@ def _grade_mlb_recommendation(
     lesson: str | None = None,
 ) -> dict[str, Any]:
     game_pk = _game_pk(recommendation)
+    if game_pk is None:
+        try:
+            from app.services.mlb_provider import find_game_pk_for_teams
+
+            game_pk = find_game_pk_for_teams(
+                recommendation.slate_date,
+                home_team=recommendation.home_team,
+                away_team=recommendation.away_team,
+                event_name=recommendation.event_name,
+            )
+        except Exception:  # noqa: BLE001 — settle must continue without schedule lookup
+            logger.exception(
+                "MLB schedule game_pk lookup failed for recommendation=%s",
+                recommendation.id,
+            )
+            game_pk = None
+        if game_pk is not None:
+            # Persist so later Hive sync / re-settle does not re-query.
+            snap = dict(recommendation.snapshot or {})
+            snap["game_pk"] = game_pk
+            snap["mlb_game_pk"] = game_pk
+            recommendation.snapshot = snap
     if game_pk is None:
         return {"status": "skipped", "detail": "No MLB game_pk on recommendation snapshot."}
 

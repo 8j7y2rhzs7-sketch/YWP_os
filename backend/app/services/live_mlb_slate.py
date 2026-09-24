@@ -1221,6 +1221,12 @@ def _build_candidate(
     }
     # Keep all research gaps visible — do not silently drop batting-order / weather soft notes.
     hard_missing = list(missing_fields)
+    raw_pk = game.get("game_pk")
+    try:
+        resolved_pk = int(raw_pk) if raw_pk is not None else None
+    except (TypeError, ValueError):
+        resolved_pk = None
+
     return CandidateInput(
         candidate_id=candidate_id,
         event_id=event_id,
@@ -1230,6 +1236,8 @@ def _build_candidate(
         start_time=start_time,
         home_team=str(game.get("home_team") or "") or None,
         away_team=str(game.get("away_team") or "") or None,
+        game_pk=resolved_pk,
+        mlb_game_pk=resolved_pk,
         bookmaker=bookmaker,
         bookmaker_label=bookmaker_display_name(bookmaker),
         price_timestamp=price_timestamp or now,

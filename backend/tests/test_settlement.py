@@ -689,3 +689,132 @@ def test_sync_maps_hive_outcomes_for_unlocked_board_watch(monkeypatch) -> None:
         assert hive_row.outcome_verified is True
     finally:
         db.close()
+
+
+def test_game_pk_from_numeric_event_id_and_candidate_suffix() -> None:
+    from app.services.lock_refresh import _game_pk
+
+    via_event = _recommendation(
+        "user",
+        candidate_id="board-mlb-abc-moneyline",
+        event_id="776543",
+        snapshot={"home_team": "Tampa Bay Rays", "away_team": "Atlanta Braves"},
+    )
+    assert _game_pk(via_event) == 776543
+
+    via_suffix = _recommendation(
+        "user",
+        candidate_id="mlb-ml-home-812345",
+        event_id="odds-uuid-not-numeric",
+        snapshot={},
+    )
+    assert _game_pk(via_suffix) == 812345
+
+
+def test_mlb_settle_resolves_missing_game_pk_via_schedule(monkeypatch) -> None:
+    db = SessionLocal()
+    try:
+        user = User(
+            email="mlb-pk-resolve@example.com",
+            password_hash="x",
+            name="PkResolve",
+            timezone="America/New_York",
+            subscription_status="active",
+        )
+        db.add(user)
+        db.flush()
+        recommendation = _recommendation(
+            user.id,
+            candidate_id="board-mlb-no-pk-moneyline-rays",
+            event_id="odds-event-uuid-rays",
+            event_name="Away Club @ Home Club",
+            selection="Home Club ML",
+            snapshot={
+                "home_team": "Home Club",
+                "away_team": "Away Club",
+                "data_source": "THE_ODDS_API_BOARD",
+                "reason_codes": ["SPORTSBOOK_MENU"],
+            },
+            data_source="THE_ODDS_API_BOARD",
+        )
+        db.add(recommendation)
+        db.commit()
+
+        monkeypatch.setattr(
+            "app.services.mlb_provider.find_game_pk_for_teams",
+            lambda *a, **k: 777001,
+        )
+        monkeypatch.setattr(
+            settlement, "get_live_feed", lambda game_pk: _feed(home_runs=5, away_runs=2)
+        )
+
+        items = settlement.settle_user_board_recommendations(db, user.id)
+        assert any(item.status == "graded" for item in items)
+        db.refresh(recommendation)
+        assert recommendation.outcome == "WIN"
+        assert (recommendation.snapshot or {}).get("game_pk") == 777001
+    finally:
+        db.close()
+
+
+def test_mlb_team_market_falls_through_to_odds_when_no_game_pk(monkeypatch) -> None:
+    db = SessionLocal()
+    try:
+        user = User(
+            email="mlb-odds-fallback@example.com",
+            password_hash="x",
+            name="OddsFallback",
+            timezone="America/New_York",
+            subscription_status="active",
+        )
+        db.add(user)
+        db.flush()
+        recommendation = _recommendation(
+            user.id,
+            candidate_id="board-mlb-fallback-ml",
+            event_id="odds-uuid-fallback",
+            event_name="Away Club @ Home Club",
+            selection="Home Club ML",
+            snapshot={
+                "home_team": "Home Club",
+                "away_team": "Away Club",
+                "data_source": "THE_ODDS_API_BOARD",
+            },
+            data_source="THE_ODDS_API_BOARD",
+        )
+        db.add(recommendation)
+        db.commit()
+
+        monkeypatch.setattr(
+            "app.services.mlb_provider.find_game_pk_for_teams",
+            lambda *a, **k: None,
+        )
+
+        def _odds_grade(*_a, **_k):
+            return settlement._persist_auto_grade(
+                db,
+                recommendation,
+                derived={
+                    "outcome": "WIN",
+                    "final_score": "5-2",
+                    "actual_value": None,
+                    "detail": "Odds scores fallback",
+                },
+                stake=Decimal("1.00"),
+                extra_tags=None,
+                lesson="Odds fallback",
+                result_source="odds_scores",
+            )
+
+        monkeypatch.setattr(
+            settlement, "_grade_odds_scores_recommendation", _odds_grade
+        )
+
+        graded = settlement._grade_recommendation(
+            db, recommendation, stake=Decimal("1.00")
+        )
+        assert graded.get("status") == "graded" or recommendation.outcome == "WIN"
+        db.refresh(recommendation)
+        assert recommendation.outcome == "WIN"
+    finally:
+        db.close()

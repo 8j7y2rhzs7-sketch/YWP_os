@@ -188,6 +188,10 @@ class CandidateInput(YWPModel):
     start_time: datetime
     home_team: str | None = Field(default=None, max_length=80)
     away_team: str | None = Field(default=None, max_length=80)
+    # MLB Stats API gamePk — required for auto-settle / lock refresh. Persist explicitly
+    # so board/sheet overlays and truncated candidate_ids still grade.
+    game_pk: int | None = Field(default=None, ge=1)
+    mlb_game_pk: int | None = Field(default=None, ge=1)
     bookmaker: str | None = Field(default=None, max_length=40)
     bookmaker_label: str | None = Field(default=None, max_length=80)
     price_timestamp: datetime | None = None

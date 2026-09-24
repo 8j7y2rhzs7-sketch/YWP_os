@@ -99,15 +99,37 @@ def _odds_sport_key(sport: str) -> str:
     return mapping.get(sport, f"baseball_{sport}" if sport else "baseball_mlb")
 
 
+def _coerce_game_pk(raw: object) -> int | None:
+    if isinstance(raw, bool):
+        return None
+    if isinstance(raw, int) and raw >= 1:
+        return raw
+    if isinstance(raw, float) and raw >= 1 and raw == int(raw):
+        return int(raw)
+    if isinstance(raw, str):
+        text = raw.strip()
+        if text.isdigit() and int(text) >= 1:
+            return int(text)
+    return None
+
+
 def _game_pk(recommendation: Recommendation) -> int | None:
+    """Resolve MLB gamePk from snapshot, event_id, or candidate_id suffix."""
     snap = recommendation.snapshot or {}
     for key in ("game_pk", "mlb_game_pk"):
-        raw = snap.get(key)
-        if isinstance(raw, int):
-            return raw
-        if isinstance(raw, str) and raw.isdigit():
-            return int(raw)
+        found = _coerce_game_pk(snap.get(key))
+        if found is not None:
+            return found
+    for raw in (
+        snap.get("event_id"),
+        getattr(recommendation, "event_id", None),
+    ):
+        found = _coerce_game_pk(raw)
+        # Odds API event ids are UUIDs; numeric event_id is the Stats API pk.
+        if found is not None and found >= 10_000:
+            return found
     candidate_id = str(snap.get("candidate_id") or recommendation.candidate_id or "")
+    # Prefer trailing digits (…-{game_pk}); player ids often appear earlier.
     match = re.search(r"-(\d{5,})$", candidate_id)
     if match:
         return int(match.group(1))

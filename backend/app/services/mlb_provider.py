@@ -162,6 +162,69 @@ def get_schedule(slate_date: date) -> list[dict[str, Any]]:
     return games
 
 
+def find_game_pk_for_teams(
+    slate_date: date,
+    *,
+    home_team: str | None = None,
+    away_team: str | None = None,
+    event_name: str | None = None,
+) -> int | None:
+    """Resolve gamePk for settle/Hive even when snapshot omitted it (incl. Finals)."""
+    from app.services.board_metrics import parse_event_teams
+    from app.services.odds_provider import _norm_team, _soft_team_match
+
+    home = (home_team or "").strip()
+    away = (away_team or "").strip()
+    if (not home or not away) and event_name:
+        parsed_away, parsed_home = parse_event_teams(event_name)
+        home = home or (parsed_home or "")
+        away = away or (parsed_away or "")
+    if not home and not away:
+        return None
+
+    data = _get_sync(
+        "/v1/schedule",
+        {
+            "sportId": 1,
+            "date": slate_date.isoformat(),
+            "hydrate": "team",
+        },
+        cache_ttl=120,
+    )
+    home_n = _norm_team(home) if home else ""
+    away_n = _norm_team(away) if away else ""
+    for slate in data.get("dates", []) or []:
+        for game in slate.get("games", []) or []:
+            teams = game.get("teams") or {}
+            g_home = str((teams.get("home") or {}).get("team", {}).get("name") or "")
+            g_away = str((teams.get("away") or {}).get("team", {}).get("name") or "")
+            g_home_n = _norm_team(g_home)
+            g_away_n = _norm_team(g_away)
+            home_ok = (not home_n) or _soft_team_match(home_n, g_home_n) or _soft_team_match(
+                home_n, g_away_n
+            )
+            away_ok = (not away_n) or _soft_team_match(away_n, g_away_n) or _soft_team_match(
+                away_n, g_home_n
+            )
+            if home_n and away_n:
+                oriented = _soft_team_match(home_n, g_home_n) and _soft_team_match(
+                    away_n, g_away_n
+                )
+                flipped = _soft_team_match(home_n, g_away_n) and _soft_team_match(
+                    away_n, g_home_n
+                )
+                if not (oriented or flipped):
+                    continue
+            elif not (home_ok and away_ok):
+                continue
+            pk = game.get("gamePk")
+            try:
+                return int(pk)
+            except (TypeError, ValueError):
+                continue
+    return None
+
+
 def _pitcher_info(p: dict[str, Any] | None) -> dict[str, Any] | None:
     if not p:
         return None
