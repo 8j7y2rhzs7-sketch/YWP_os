@@ -357,6 +357,7 @@ def _odds_price_fields(
 
 
 _PLAYER_PROP_MARKET_ALIASES = {
+    # Basketball / football short names → Odds API keys
     "player_pra": "player_points_rebounds_assists",
     "player_pr": "player_points_rebounds",
     "player_pa": "player_points_assists",
@@ -369,6 +370,26 @@ _PLAYER_PROP_MARKET_ALIASES = {
     "player_rush_att": "player_rush_attempts",
     "player_rec_yds": "player_reception_yds",
     "player_rec_tds": "player_reception_tds",
+    # MLB YWP board/slate names → Odds API batter/pitcher keys.
+    # Without this, Lock Check asked for player_hrr / player_total_bases and
+    # treated every miss as CLOSED → SKIP even while the game was Pre-Game.
+    "player_hrr": "batter_hits_runs_rbis",
+    "player_total_bases": "batter_total_bases",
+    "player_hits": "batter_hits",
+    "player_runs": "batter_runs_scored",
+    "player_rbi": "batter_rbis",
+    "player_rbis": "batter_rbis",
+    "player_hr": "batter_home_runs",
+    "player_home_runs": "batter_home_runs",
+    "player_sb": "batter_stolen_bases",
+    "player_stolen_bases": "batter_stolen_bases",
+    "player_walks": "batter_walks",
+    "player_strikeouts": "pitcher_strikeouts",
+    "batter_strikeouts": "batter_strikeouts",
+    "pitcher_outs": "pitcher_outs",
+    "pitcher_hits_allowed": "pitcher_hits_allowed",
+    "pitcher_earned_runs": "pitcher_earned_runs",
+    "pitcher_walks": "pitcher_walks",
 }
 
 
@@ -431,12 +452,33 @@ def _player_prop_price_fields(
     if not odds_market:
         return None, False, [f"Unsupported player prop market {market_type}."]
 
+    ticket_odds = (
+        int(recommendation.american_odds)
+        if recommendation.american_odds is not None
+        else None
+    )
     props = get_player_props(event_id, sport=sport_key, markets=odds_market)
     if not props:
-        return None, False, [f"Player prop market could not be refreshed ({odds_market})."]
+        # Provider miss ≠ market CLOSED. Keep ticket odds so Lock Center can
+        # still show whether the play is good; UI warns to verify at the book.
+        return (
+            ticket_odds,
+            True,
+            [
+                f"Player prop market could not be refreshed ({odds_market}); using ticket odds.",
+                "Verify the live sportsbook price before locking.",
+            ],
+        )
     bookmakers = props.get("bookmakers") or []
     if not bookmakers:
-        return None, False, [f"No current bookmaker offers for {odds_market}."]
+        return (
+            ticket_odds,
+            True,
+            [
+                f"No current bookmaker offers for {odds_market}; using ticket odds.",
+                "Verify the live sportsbook price before locking.",
+            ],
+        )
 
     player_name, outcome_name, require_point = _player_prop_selection_parts(
         selection, market_type
@@ -473,6 +515,7 @@ def _player_prop_price_fields(
                 ],
             )
     if not offer:
+        # Books returned other props but not this selection — market pulled.
         return None, False, [f"No current sportsbook offer matching {selection}."]
     return (
         int(offer["american_odds"]),

@@ -167,6 +167,17 @@ def run_lock_check(
                 changes.append("Market is no longer available.")
                 leg_status = "SKIP"
                 checks["market_availability"] = "FAIL"
+            elif any(
+                "using ticket odds" in note.casefold()
+                or "could not be refreshed" in note.casefold()
+                for note in (update.notes or [])
+            ):
+                # Refresh miss kept the ticket open — warn, don't SKIP as CLOSED.
+                changes.append(
+                    "Prop price was not re-verified at the sportsbook feed; confirm before locking."
+                )
+                leg_status = _raise_status(leg_status, "WARNING")
+                checks["odds_movement"] = "WARNING"
             if update.starter_changed:
                 changes.append("Starter/pitcher changed.")
                 leg_status = _raise_status(leg_status, "CHANGE_REQUIRED")
