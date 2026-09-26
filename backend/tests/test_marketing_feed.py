@@ -199,6 +199,46 @@ def test_marketing_feed_excludes_demo_and_stale_and_revoked(client) -> None:
     assert response.json()["cards"] == []
 
 
+def test_admin_can_rotate_marketing_token_and_read_feed(client) -> None:
+    settings.marketing_service_token = None
+    db = SessionLocal()
+    try:
+        user, ticket, _ = _seed_ticket(db, eligible=True)
+        user.role = "admin"
+        user.email = "mkt-rotate@ywp-os.com"
+        user.password_hash = hash_password("StrongYwp!2026")
+        user.subscription_status = "active"
+        db.commit()
+        ticket_id = ticket.id
+    finally:
+        db.close()
+
+    # Unconfigured → 503
+    assert client.get("/api/v1/marketing/approved-cards").status_code == 503
+
+    login = client.post(
+        "/api/v1/auth/login",
+        json={"email": "mkt-rotate@ywp-os.com", "password": "StrongYwp!2026"},
+    )
+    assert login.status_code == 200, login.text
+    admin_token = login.json()["access_token"]
+    rotated = client.post(
+        "/api/v1/marketing/rotate-token",
+        headers={"Authorization": f"Bearer {admin_token}"},
+    )
+    assert rotated.status_code == 200, rotated.text
+    mkt_token = rotated.json()["token"]
+    assert len(mkt_token) >= 20
+
+    response = client.get(
+        "/api/v1/marketing/approved-cards",
+        headers={"Authorization": f"Bearer {mkt_token}"},
+    )
+    assert response.status_code == 200
+    assert len(response.json()["cards"]) == 1
+    assert response.json()["cards"][0]["id"] == ticket_id
+
+
 def test_admin_can_revoke_publication_eligibility(client) -> None:
     settings.marketing_service_token = TOKEN
     db = SessionLocal()

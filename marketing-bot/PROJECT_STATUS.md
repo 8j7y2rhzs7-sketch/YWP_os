@@ -22,6 +22,13 @@ Created: September 26, 2026
 - The bot cannot place wagers, edit Decision Cards, access sportsbook accounts, or read private ticket/bankroll data.
 - Paid/boosted betting advertising is not enabled by this package.
 
+## Backend wiring (done in YWP_os)
+
+- `GET /api/v1/marketing/approved-cards`
+- `POST /api/v1/marketing/rotate-token` (admin; DB-hashed scoped token)
+- `POST /api/v1/marketing/tickets/{id}/publication-eligibility` (admin)
+- See `SETUP.md`
+
 ## Remaining owner/setup work
 
 1. Extract the package into the current YWP OS repository and open it in Cursor.

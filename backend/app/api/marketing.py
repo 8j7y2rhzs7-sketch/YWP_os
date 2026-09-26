@@ -2,15 +2,18 @@
 
 from __future__ import annotations
 
-import hmac
 from datetime import datetime
 
 from fastapi import APIRouter, Header, HTTPException, status
 from pydantic import BaseModel, Field
 
-from app.core.config import settings
 from app.deps import AdminUser, DB
 from app.models import AuditLog, Ticket
+from app.services.marketing_auth import (
+    marketing_token_configured,
+    rotate_marketing_service_token,
+    verify_marketing_service_token,
+)
 from app.services.marketing_feed import (
     build_approved_marketing_feed,
     set_ticket_publication_eligibility,
@@ -27,22 +30,32 @@ class MarketingEligibilityIn(BaseModel):
     )
 
 
+def _extract_provided_token(
+    authorization: str | None,
+    x_ywp_marketing_token: str | None,
+) -> str:
+    if authorization and authorization.lower().startswith("bearer "):
+        return authorization[7:].strip()
+    if x_ywp_marketing_token:
+        return x_ywp_marketing_token.strip()
+    return ""
+
+
 def _require_marketing_token(
+    db: DB,
     authorization: str | None,
     x_ywp_marketing_token: str | None,
 ) -> None:
-    expected = (settings.marketing_service_token or "").strip()
-    if not expected:
+    if not marketing_token_configured(db):
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Marketing service token is not configured",
+            detail=(
+                "Marketing service token is not configured. "
+                "Admin: POST /api/v1/marketing/rotate-token"
+            ),
         )
-    provided = ""
-    if authorization and authorization.lower().startswith("bearer "):
-        provided = authorization[7:].strip()
-    elif x_ywp_marketing_token:
-        provided = x_ywp_marketing_token.strip()
-    if not provided or not hmac.compare_digest(expected, provided):
+    provided = _extract_provided_token(authorization, x_ywp_marketing_token)
+    if not verify_marketing_service_token(db, provided):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid marketing service token",
@@ -56,7 +69,7 @@ def approved_cards(
     x_ywp_marketing_token: str | None = Header(default=None),
 ) -> dict:
     """Read-only feed for the Instagram marketing bot."""
-    _require_marketing_token(authorization, x_ywp_marketing_token)
+    _require_marketing_token(db, authorization, x_ywp_marketing_token)
     payload = build_approved_marketing_feed(db)
     db.add(
         AuditLog(
@@ -72,6 +85,23 @@ def approved_cards(
     )
     db.commit()
     return payload
+
+
+@router.post("/rotate-token")
+def rotate_token(admin: AdminUser, db: DB) -> dict:
+    """Admin-only: mint a new scoped marketing token (plaintext returned once)."""
+    result = rotate_marketing_service_token(db, admin_user_id=admin.id)
+    db.add(
+        AuditLog(
+            user_id=admin.id,
+            action="MARKETING_TOKEN_ROTATED",
+            entity_type="service_credential",
+            entity_id="marketing_feed",
+            details={"rotated_by": admin.email},
+        )
+    )
+    db.commit()
+    return result
 
 
 @router.post("/tickets/{ticket_id}/publication-eligibility")
