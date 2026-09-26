@@ -78,3 +78,5 @@ services:
         value: "true"
       - key: YWP_HIVE_SELF_IMPROVE_MIN_MAPPED
         value: "20"
+      - key: YWP_MARKETING_SERVICE_TOKEN
+        sync: false

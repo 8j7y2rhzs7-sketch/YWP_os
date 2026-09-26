@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "YWP OS API"
-    app_version: str = "3.3.57"
+    app_version: str = "3.3.58"
     api_prefix: str = "/api/v1"
     env: Literal["development", "test", "staging", "production"] = Field(
         default="development", validation_alias="YWP_ENV"
@@ -54,6 +54,14 @@ class Settings(BaseSettings):
         default=None,
         validation_alias="YWP_PROVISION_SECRET",
         description="One-time/ops secret for POST /auth/provision-tester",
+    )
+    marketing_service_token: str | None = Field(
+        default=None,
+        validation_alias="YWP_MARKETING_SERVICE_TOKEN",
+        description=(
+            "Scoped Bearer token for GET /marketing/approved-cards. "
+            "Read-only; never use the mobile JWT secret for the marketing bot."
+        ),
     )
     mlb_props_enabled: bool = Field(
         default=True,

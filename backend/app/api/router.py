@@ -6,6 +6,7 @@ from app.api import (
     errors,
     health,
     learning,
+    marketing,
     ops_heal,
     protocols,
     sports,
@@ -26,5 +27,6 @@ api_router.include_router(tickets.router)
 api_router.include_router(learning.router)
 api_router.include_router(errors.router)
 api_router.include_router(ops_heal.router)
+api_router.include_router(marketing.router)
 api_router.include_router(whop.router)
 api_router.include_router(hive_router)

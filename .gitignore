@@ -11,10 +11,12 @@ htmlcov/
 node_modules/
 .expo/
 dist/
-    "web-build/
+web-build/
 .next/
 *.log
 .DS_Store
+marketing-bot/data/
+marketing-bot/.env
 mobile/android/local.properties
 mobile/android/.gradle/
 mobile/android/build/

@@ -40,6 +40,7 @@ app.add_middleware(
         "Idempotency-Key",
         "x-whop-user-token",
         "X-YWP-Provision-Secret",
+        "X-YWP-Marketing-Token",
     ],
 )
 

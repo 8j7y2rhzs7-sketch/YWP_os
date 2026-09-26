@@ -383,6 +383,13 @@ class Ticket(Base, TimestampMixin):
     last_lock_expires_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
+    publication_eligible: Mapped[bool] = mapped_column(Boolean, default=False, index=True)
+    publication_eligible_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    publication_expires_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
     settled_outcome: Mapped[str | None] = mapped_column(String(24), nullable=True)
     settled_payout: Mapped[Decimal | None] = mapped_column(Numeric(14, 2), nullable=True)
     settled_profit_loss: Mapped[Decimal | None] = mapped_column(Numeric(14, 2), nullable=True)
