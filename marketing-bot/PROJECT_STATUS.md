@@ -1,48 +1,30 @@
 # YWP OS Marketing Bot — project status
 
-Created: September 26, 2026
+Updated: September 26, 2026
 
 ## Complete
 
-- Cursor-ready Node/TypeScript project
-- Approval-first dashboard
-- YWP OS read-only marketing-feed contract
-- FastAPI adapter template for the existing backend
-- Strict VERIFIED/current/non-demo/publication-eligible checks
-- Expiry recheck at draft approval and again at publication
-- Black-and-gold 1080×1350 Instagram card renderer
-- Caption generator with freshness and responsible-betting language
+- One-tap **promo** creatives (not live tickets) — auto-APPROVED
+- Optional Instagram publish when `IG_PUBLISH_ENABLED=true`
+- Optional hands-off schedule via `PROMO_AUTO_INTERVAL_HOURS`
+- Dashboard: Post promo / Generate only
+- Black-and-gold 1080×1350 renderer + compliant captions
 - Meta Instagram image publishing client
-- Render and Docker deployment definitions
-- Automated safety tests and sample rendered preview
+- Backend: marketing feed + admin rotate-token (for legacy sync if ever needed)
+- Safety tests for promo + caption gates
 
 ## Deliberately locked
 
-- `IG_PUBLISH_ENABLED` defaults to `false`.
-- The bot cannot place wagers, edit Decision Cards, access sportsbook accounts, or read private ticket/bankroll data.
+- `IG_PUBLISH_ENABLED` defaults to `false` until Meta is wired once.
+- Bot does not place wagers, edit Decision Cards, or read private ticket/bankroll data.
 - Paid/boosted betting advertising is not enabled by this package.
+- Live-ticket marketing is not the product path (no per-post eligibility / Lock Check ritual).
 
-## Backend wiring (done in YWP_os)
+## Remaining owner work (one-time)
 
-- `GET /api/v1/marketing/approved-cards`
-- `POST /api/v1/marketing/rotate-token` (admin; DB-hashed scoped token)
-- `POST /api/v1/marketing/tickets/{id}/publication-eligibility` (admin)
-- See `SETUP.md`
+1. Meta Professional + app credentials into env.
+2. HTTPS `PUBLIC_BASE_URL` the bot can serve images from.
+3. `IG_PUBLISH_ENABLED=true` after one successful test publish.
+4. Optional: `PROMO_AUTO_INTERVAL_HOURS=24` so the bot posts without clicks.
 
-## Remaining owner/setup work
-
-1. Extract the package into the current YWP OS repository and open it in Cursor.
-2. Run the included Cursor prompt to map the feed contract to the repository's current FastAPI models and authentication.
-3. Create a scoped read-only service token for the bot.
-4. Connect the `@ywpossports` Professional account through Meta's developer setup.
-5. Store all credentials as environment variables and perform one controlled test.
-6. Enable publishing only after the exact test card, caption, account, and Meta response are verified.
-
-## Validation completed before packaging
-
-- TypeScript typecheck: passed
-- Production build: passed
-- Safety tests: 4 passed
-- Dashboard health endpoint: passed
-- Dashboard HTML smoke test: passed
-- PNG preview render: passed and visually inspected
+No per-post verification after that.

@@ -12,7 +12,9 @@ const envSchema = z.object({
   IG_USER_ID: z.string().default(""),
   IG_ACCESS_TOKEN: z.string().default(""),
   META_GRAPH_VERSION: z.string().regex(/^v\d+\.\d+$/).default("v24.0"),
-  YWP_TIMEZONE: z.string().default("America/New_York")
+  YWP_TIMEZONE: z.string().default("America/New_York"),
+  // 0 = off. Set e.g. 24 to auto-post a promo every day after Meta is connected once.
+  PROMO_AUTO_INTERVAL_HOURS: z.coerce.number().min(0).default(0)
 });
 
 const env = envSchema.parse(process.env);
@@ -28,5 +30,6 @@ export const config = {
   instagramUserId: env.IG_USER_ID,
   instagramAccessToken: env.IG_ACCESS_TOKEN,
   metaGraphVersion: env.META_GRAPH_VERSION,
-  timezone: env.YWP_TIMEZONE
+  timezone: env.YWP_TIMEZONE,
+  promoAutoIntervalHours: env.PROMO_AUTO_INTERVAL_HOURS
 };

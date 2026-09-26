@@ -2,7 +2,7 @@
   "name": "ywp-os-marketing-bot",
   "version": "0.1.0",
   "private": true,
-  "description": "Approval-first Instagram marketing bot for YWP OS.",
+  "description": "One-tap / scheduled Instagram promo bot for YWP OS (no per-post verify).",
   "type": "module",
   "scripts": {
     "dev": "node --import tsx --watch src/server.ts",

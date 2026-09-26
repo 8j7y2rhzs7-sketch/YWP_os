@@ -5,6 +5,7 @@ import { config } from "./config.js";
 import { buildCaption } from "./caption.js";
 import { dashboardHtml } from "./dashboard.js";
 import { InstagramPublisher } from "./instagram.js";
+import { createPromo, startPromoScheduler } from "./promo-pipeline.js";
 import { renderCard } from "./render.js";
 import { validateCardForDraft, validateDraftForPublish } from "./safety.js";
 import { DraftStore } from "./store.js";
@@ -21,7 +22,14 @@ const app = express();
 app.use(express.json({ limit: "1mb" }));
 app.use("/generated", express.static(generatedDirectory, { immutable: false, maxAge: "5m" }));
 app.get("/", (_request, response) => response.type("html").send(dashboardHtml));
-app.get("/health", (_request, response) => response.json({ ok: true, service: "ywp-os-marketing-bot", publishEnabled: config.instagramPublishEnabled }));
+app.get("/health", (_request, response) =>
+  response.json({
+    ok: true,
+    service: "ywp-os-marketing-bot",
+    publishEnabled: config.instagramPublishEnabled,
+    autoIntervalHours: config.promoAutoIntervalHours
+  })
+);
 
 function requireAdmin(request: Request, response: Response, next: NextFunction): void {
   const supplied = request.header("x-ywp-admin-key") ?? "";
@@ -34,9 +42,16 @@ function requireAdmin(request: Request, response: Response, next: NextFunction):
 app.use("/api", requireAdmin);
 
 app.get("/api/drafts", async (_request, response, next) => {
-  try { response.json({ drafts: await store.list(), publishEnabled: config.instagramPublishEnabled }); } catch (error) { next(error); }
+  try {
+    response.json({
+      drafts: await store.list(),
+      publishEnabled: config.instagramPublishEnabled,
+      autoIntervalHours: config.promoAutoIntervalHours
+    });
+  } catch (error) { next(error); }
 });
 
+/** Legacy feed sync — optional. Day-to-day marketing uses /api/promo (no ticket verify). */
 app.post("/api/sync", async (_request, response, next) => {
   try {
     const cards = await ywp.approvedCards();
@@ -69,65 +84,34 @@ app.post("/api/sync", async (_request, response, next) => {
 
 app.post("/api/promo", async (request, response, next) => {
   try {
-    const { buildPromoCard } = await import("./promo.js");
     const body = (request.body ?? {}) as {
       kind?: string;
       sport?: string;
       publish?: boolean;
     };
-    const kind = typeof body.kind === "string" ? body.kind : undefined;
-    const sport = typeof body.sport === "string" ? body.sport : undefined;
-    const wantPublish = body.publish === true;
-    const card = buildPromoCard({
-      kind: kind as "process" | "brand" | "sport_night" | "responsible" | undefined,
-      sport
+    const result = await createPromo(store, generatedDirectory, instagram, {
+      kind: body.kind as "process" | "brand" | "sport_night" | "responsible" | undefined,
+      sport: typeof body.sport === "string" ? body.sport : undefined,
+      publish: body.publish === true
     });
-    const caption = buildCaption(card);
-    const reasons = validateDraftForPublish(card, caption);
-    if (reasons.length) {
-      response.status(409).json({ error: "Promo failed safety check.", reasons });
+    response.json(result);
+  } catch (error) {
+    if (error instanceof Error && error.message.startsWith("Promo failed safety check")) {
+      response.status(409).json({
+        error: "Promo failed safety check.",
+        reasons: (error as Error & { reasons?: string[] }).reasons ?? []
+      });
       return;
     }
-    const id = crypto.randomUUID();
-    const imageFilename = `${id}.png`;
-    await renderCard(card, generatedDirectory, imageFilename);
-    const now = new Date().toISOString();
-    // Promos are our templates — already vetted. Skip human approve every time.
-    let draft: MarketingDraft = {
-      id,
-      cardId: card.id,
-      createdAt: now,
-      updatedAt: now,
-      status: "APPROVED",
-      caption,
-      imageFilename,
-      blockReasons: [],
-      approvedAt: now,
-      card
-    };
-    draft = await store.save(draft);
-
-    if (wantPublish) {
-      if (!config.instagramPublishEnabled) {
-        response.status(409).json({
-          error: "IG_PUBLISH_ENABLED is false. Turn it on once after Meta credentials are set, then one click posts.",
-          draft
-        });
-        return;
-      }
-      const imageUrl = `${config.publicBaseUrl}/generated/${encodeURIComponent(draft.imageFilename)}`;
-      const instagramMediaId = await instagram.publishImage(imageUrl, draft.caption);
-      const publishedAt = new Date().toISOString();
-      draft = await store.save({
-        ...draft,
-        status: "PUBLISHED",
-        publishedAt,
-        updatedAt: publishedAt,
-        instagramMediaId
+    if (error instanceof Error && error.message.includes("IG_PUBLISH_ENABLED is false")) {
+      response.status(409).json({
+        error: error.message,
+        draft: (error as Error & { draft?: MarketingDraft }).draft
       });
+      return;
     }
-    response.json({ draft, published: draft.status === "PUBLISHED" });
-  } catch (error) { next(error); }
+    next(error);
+  }
 });
 
 app.post("/api/drafts/:id/approve", async (request, response, next) => {
@@ -167,6 +151,7 @@ app.use((error: unknown, _request: Request, response: Response, _next: NextFunct
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(config.port, () => console.log(`YWP OS Marketing Bot listening on port ${config.port}`));
+  startPromoScheduler(store, generatedDirectory, instagram);
 }
 
 export { app };

@@ -1,55 +1,42 @@
 # YWP OS Marketing Bot
 
-Cursor-ready, approval-first Instagram marketing for YWP OS SPORTS (`@ywpossports`). It reads publication-eligible Decision Cards from the existing YWP OS backend, generates a black-and-gold 1080×1350 post and compliant caption, waits for owner approval, then publishes through Meta's official Instagram API.
+Instagram marketing for YWP OS SPORTS (`@ywpossports`). Day-to-day posts are **brand promo templates** — not live tickets. Templates are pre-vetted: create (and optionally publish) in one tap. Meta is connected **once**; you do not re-verify each post.
+
+## How it works
+
+1. Hit **Post promo** (or let `PROMO_AUTO_INTERVAL_HOURS` run).
+2. Bot renders a black-and-gold 1080×1350 creative + compliant caption.
+3. Status is `APPROVED` automatically (promo templates, not live bets).
+4. If `IG_PUBLISH_ENABLED=true`, the same action publishes through Meta's official Instagram API.
 
 ## Safety model
 
-- Publishing is disabled by default.
-- A card must be VERIFIED, non-demo, current, unexpired, complete, and explicitly publication-eligible.
-- The bot rechecks the card at approval and publication time.
-- Certainty language such as “guaranteed,” “can't lose,” “100%,” or “lock” is blocked.
-- Every caption includes freshness, 21+, responsible-betting language, and no-guarantee language.
-- The marketing feed is read-only and excludes bankroll, private tickets, user information, and credentials.
+- Publishing stays off until you flip `IG_PUBLISH_ENABLED` after Meta credentials are set.
+- Promo captions block certainty language (“guaranteed,” “can't lose,” “100%,” etc.).
+- Every caption includes freshness, 21+, responsible-betting, and no-guarantee language.
+- Marketing never posts private tickets, bankroll, or live Decision Cards by default.
+- Optional legacy `/api/sync` can still pull an approved-cards feed; that path is not the day-to-day bot.
 
-## What is included
-
-- Local web dashboard with Sync, Approve, Publish, and Copy Caption actions
-- Strict YWP OS feed schema and expiry checks
-- Premium black-and-gold PNG renderer
-- Official Instagram image-container and publish calls
-- File-backed draft queue for the first MVP
-- FastAPI integration contract and Cursor implementation prompt
-- Render/Docker deployment files and automated safety tests
-
-## Quick start in Cursor
-
-1. Extract this folder into the current YWP OS repository.
-2. Read `CURSOR_IMPLEMENTATION_PROMPT.md` and `YWP_OS_MARKETING_CONTRACT.md`.
-3. Connect the backend route using the current repository models and authentication.
-4. Copy `.env.example` to `.env` and set a long random `ADMIN_KEY`.
-5. Keep `IG_PUBLISH_ENABLED=false` during setup.
-6. Run:
+## Quick start
 
 ```bash
+cd marketing-bot
+cp .env.example .env   # set a long random ADMIN_KEY
 npm install
-npm run typecheck
 npm test
-npm run preview
 npm run dev
 ```
 
-7. Open `http://localhost:8787`, enter the admin key, and choose **Sync YWP OS**.
+Open `http://localhost:8787` → **Post promo**.
 
-## Meta setup
+## Meta setup (once)
 
-Use an Instagram Professional account and Meta's official content-publishing permissions. Put the resulting Instagram user ID and access token in environment variables; never commit them. Confirm the current supported Graph API version in Meta's developer dashboard and set `META_GRAPH_VERSION` accordingly. The public deployment URL must be configured as `PUBLIC_BASE_URL` because Meta fetches the generated image from that URL.
+Use an Instagram Professional account and Meta content-publishing permissions. Store `IG_USER_ID`, `IG_ACCESS_TOKEN`, `META_GRAPH_VERSION`, and an HTTPS `PUBLIC_BASE_URL` (Meta fetches the image from that URL). Then set `IG_PUBLISH_ENABLED=true`. Optional: `PROMO_AUTO_INTERVAL_HOURS=24` for scheduled posts with zero clicks.
 
-Only after a test card renders correctly and Meta setup is complete should `IG_PUBLISH_ENABLED` be changed to `true`. Paid or boosted betting advertising is separate from organic publishing and may require Meta's prior written permission.
+Paid/boosted betting ads are separate and may need Meta's written permission.
 
-## Deployment notes
+## Deployment
 
-The included file-backed queue is suitable for a single-instance MVP and local Cursor testing. On Render, attach a persistent disk or replace `DraftStore` with the existing YWP OS database before relying on long-term history. Store every secret in deployment environment variables.
+File-backed queue is fine for a single-instance MVP. On Render, use a persistent disk (or swap `DraftStore` to the YWP OS DB) before relying on long-term history. Keep secrets in env vars only.
 
-## Next controlled upgrade
-
-After the image workflow is proven, add separate Story/Reel templates, performance insights, scheduled approval windows, and verified win/loss recap cards. Keep owner approval as the final publication gate until the workflow has a reliable history.
+See `SETUP.md` for the short operator checklist.

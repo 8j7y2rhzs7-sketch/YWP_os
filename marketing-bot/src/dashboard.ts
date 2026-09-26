@@ -8,7 +8,7 @@ export const dashboardHtml = `<!doctype html>
 <div class="top">
   <div>
     <div class="brand">♛ YWP OS MARKETING</div>
-    <div class="meta">One click. Bot handles the rest.</div>
+    <div class="meta">Meta once. Then the bot posts — no re-verify.</div>
     <div id="pubState">Checking publish mode…</div>
   </div>
   <div class="actions-top">
@@ -16,7 +16,7 @@ export const dashboardHtml = `<!doctype html>
     <button class="secondary" onclick="makeOnly()">Generate only</button>
   </div>
 </div>
-<div class="notice" id="notice">Promo creatives auto-pass safety (templates we control). After Meta is connected once, <b>Post promo</b> creates and publishes in one tap — no ticket checks, no re-verify every time.</div>
+<div class="notice" id="notice">Promo templates auto-pass safety. You never re-verify a post. Connect Meta once; then one tap — or set PROMO_AUTO_INTERVAL_HOURS and walk away.</div>
 <div id="app" class="grid"></div></div>
 <script>
 const key=()=>sessionStorage.ywpKey||(sessionStorage.ywpKey=prompt('Enter ADMIN_KEY')||'');
@@ -31,7 +31,7 @@ function draftCard(d){
   return '<article class="card"><img src="'+img+'"><div class="body"><span class="status">'+esc(d.status)+(promo?' · PROMO':'')+'</span><h3>'+esc(d.card.title)+'</h3><div class="meta">'+esc(d.card.sport)+(d.instagramMediaId?' · IG '+esc(d.instagramMediaId):'')+'</div><div class="actions"><a href="'+img+'" download="ywp-promo.png"><button type="button">Download</button></a><button class="secondary" data-caption="'+caption+'" onclick="copyCaption(this)">Copy caption</button>'+pub+'</div></div></article>';
 }
 function copyCaption(button){navigator.clipboard.writeText(decodeURIComponent(button.dataset.caption));button.textContent='Copied';setTimeout(()=>button.textContent='Copy caption',1200)}
-async function load(){try{const p=await api('/api/drafts');publishEnabled=!!p.publishEnabled;document.getElementById('pubState').textContent=publishEnabled?'Auto-publish: ON — Post promo goes straight to Instagram.':'Auto-publish: OFF — Post promo still generates; turn IG_PUBLISH_ENABLED=true after one-time Meta setup.';document.getElementById('notice').textContent=publishEnabled?'One tap posts a brand creative to Instagram. No ticket verification. No approve step.':'Until Meta is connected once: Generate → Download + Copy caption → paste in IG. After Meta: same button auto-publishes.';const root=document.getElementById('app');root.innerHTML=p.drafts.length?p.drafts.map(draftCard).join(''):'<div class="empty">Nothing yet. Hit <b>Post promo</b>.</div>'}catch(e){document.getElementById('app').innerHTML='<div class="empty" style="color:#ff8d8d">'+esc(e.message)+'</div>'}}
+async function load(){try{const p=await api('/api/drafts');publishEnabled=!!p.publishEnabled;const auto=Number(p.autoIntervalHours||0);const autoTxt=auto>0?' · Schedule: every '+auto+'h':'';document.getElementById('pubState').textContent=publishEnabled?'Auto-publish: ON — Post promo goes straight to Instagram'+autoTxt+'.':'Auto-publish: OFF — generate still works; enable IG once after Meta setup.';document.getElementById('notice').textContent=publishEnabled?'One tap (or the schedule) posts a brand creative. No ticket checks. No approve. No re-verify.':'Until Meta is connected once: Generate → Download + Copy → paste in IG. After that: never do Meta/verify again per post.';const root=document.getElementById('app');root.innerHTML=p.drafts.length?p.drafts.map(draftCard).join(''):'<div class="empty">Nothing yet. Hit <b>Post promo</b>.</div>'}catch(e){document.getElementById('app').innerHTML='<div class="empty" style="color:#ff8d8d">'+esc(e.message)+'</div>'}}
 async function go(){const btn=document.getElementById('goBtn');btn.disabled=true;try{const p=await api('/api/promo',{method:'POST',body:JSON.stringify({publish:publishEnabled})});if(p.published)alert('Published to Instagram'+(p.draft.instagramMediaId?': '+p.draft.instagramMediaId:''));else alert('Creative ready — download/copy, or enable IG publish for one-tap posting.');load()}catch(e){alert(e.message)}finally{btn.disabled=false}}
 async function makeOnly(){try{await api('/api/promo',{method:'POST',body:JSON.stringify({publish:false})});load()}catch(e){alert(e.message)}}
 async function publishOne(el){try{await api('/api/drafts/'+el.dataset.id+'/publish',{method:'POST'});load()}catch(e){alert(e.message)}}
