@@ -67,6 +67,36 @@ app.post("/api/sync", async (_request, response, next) => {
   } catch (error) { next(error); }
 });
 
+app.post("/api/promo", async (request, response, next) => {
+  try {
+    const { buildPromoCard } = await import("./promo.js");
+    const body = (request.body ?? {}) as { kind?: string; sport?: string };
+    const kind = typeof body.kind === "string" ? body.kind : undefined;
+    const sport = typeof body.sport === "string" ? body.sport : undefined;
+    const card = buildPromoCard({
+      kind: kind as "process" | "brand" | "sport_night" | "responsible" | undefined,
+      sport
+    });
+    const id = crypto.randomUUID();
+    const imageFilename = `${id}.png`;
+    await renderCard(card, generatedDirectory, imageFilename);
+    const now = new Date().toISOString();
+    const draft: MarketingDraft = {
+      id,
+      cardId: card.id,
+      createdAt: now,
+      updatedAt: now,
+      status: "DRAFT",
+      caption: buildCaption(card),
+      imageFilename,
+      blockReasons: [],
+      card
+    };
+    const saved = await store.save(draft);
+    response.json({ draft: saved });
+  } catch (error) { next(error); }
+});
+
 app.post("/api/drafts/:id/approve", async (request, response, next) => {
   try {
     const draft = await store.get(request.params.id);

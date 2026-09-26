@@ -1,51 +1,26 @@
-# Finish Marketing Bot setup
+# Marketing Bot — simple path
 
-Backend API **3.3.59+** supports admin token rotation without Render dashboard access.
+You do **not** post live tickets. Use brand/promo creatives.
 
-## 1. Mint the scoped feed token (one-time)
-
-```bash
-# Login as an admin user, then:
-curl -sS -X POST https://ywp-os-api.onrender.com/api/v1/marketing/rotate-token \
-  -H "Authorization: Bearer $ADMIN_JWT"
-```
-
-Copy the returned `token` into `marketing-bot/.env` as `YWP_OS_API_TOKEN`.  
-Optional: also set `YWP_MARKETING_SERVICE_TOKEN` on Render to the same value.
-
-## 2. Mark a Decision Card publication-eligible
-
-Only locked/saved tickets with VERIFIED legs export. As admin:
-
-```bash
-curl -sS -X POST \
-  "https://ywp-os-api.onrender.com/api/v1/marketing/tickets/$TICKET_ID/publication-eligibility" \
-  -H "Authorization: Bearer $ADMIN_JWT" \
-  -H "Content-Type: application/json" \
-  -d '{"eligible":true,"expires_at":"2026-09-27T23:00:00Z"}'
-```
-
-Revoke anytime with `{"eligible":false}`.
-
-## 3. Run the bot dashboard (publish still off)
+## Make a post (2 minutes)
 
 ```bash
 cd marketing-bot
-cp .env.example .env
-# set ADMIN_KEY (long random) + YWP_OS_API_TOKEN from step 1
-# keep IG_PUBLISH_ENABLED=false
-npm install
+# .env already has ADMIN_KEY; keep IG_PUBLISH_ENABLED=false
 npm run dev
 ```
 
-Open `http://localhost:8787`, enter the admin key, **Sync YWP OS**.
+1. Open `http://localhost:8787`
+2. Enter your admin key
+3. Click **Make promo post**
+4. **Download image** + **Copy caption**
+5. Paste into Instagram Stories/Feed yourself
 
-## 4. Meta Instagram (owner-only — required before any public post)
+That’s it. No ticket eligibility. No Meta developer app required for manual posting.
 
-1. Convert `@ywpossports` to a Professional account if needed.
-2. Create a Meta app with Instagram content publishing permissions.
-3. Put `IG_USER_ID` + `IG_ACCESS_TOKEN` in env; set `PUBLIC_BASE_URL` to a reachable HTTPS host.
-4. Private test publish once, confirm Meta returns a media ID.
-5. Only then set `IG_PUBLISH_ENABLED=true`.
+## Optional later
 
-Paid/boosted betting ads are out of scope for this bot.
+- **Sync feed** — only if you ever want sanitized feed cards (advanced)
+- **Meta auto-publish** — only after Professional account + tokens; leave disabled until then
+
+Promo templates talk process/brand (Strict Mode, research gates, responsibility) — never real odds or locked tickets.

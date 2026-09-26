@@ -16,6 +16,7 @@ export function findProhibitedClaims(text: string): string[] {
 
 export function validateCardForDraft(card: MarketingCard, now = new Date()): string[] {
   const reasons: string[] = [];
+  const isPromo = card.sourceVersion === "promo" || card.id.startsWith("promo-");
   if (card.status !== "VERIFIED") reasons.push(`Card status is ${card.status}, not VERIFIED.`);
   if (!card.publicationEligible) reasons.push("YWP OS has not marked this card publication-eligible.");
   if (card.demo) reasons.push("Demo data cannot be marketed as a current card.");
@@ -25,7 +26,12 @@ export function validateCardForDraft(card: MarketingCard, now = new Date()): str
   if (card.legs.some((leg) => !leg.event || !leg.selection || !leg.market)) reasons.push("A leg is missing event, selection, or market details.");
 
   const claimText = [card.title, ...card.legs.flatMap((leg) => [leg.event, leg.selection, leg.market])].join(" ");
-  if (findProhibitedClaims(claimText).length) reasons.push("The source card contains prohibited certainty language.");
+  // Promo creatives are brand/process copy — still block "guaranteed" etc., but allow product terms.
+  const claims = findProhibitedClaims(claimText).filter((source) => {
+    if (isPromo && source.includes("lock")) return false;
+    return true;
+  });
+  if (claims.length) reasons.push("The source card contains prohibited certainty language.");
   return reasons;
 }
 

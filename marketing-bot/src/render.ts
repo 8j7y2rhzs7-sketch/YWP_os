@@ -25,6 +25,11 @@ export async function renderCard(card: MarketingCard, outputDirectory: string, f
   }).join("\n");
 
   const score = typeof card.ywpScore === "number" ? `${Math.round(card.ywpScore)}/100 YWP SCORE` : "YWP VERIFIED CARD";
+  const isPromo = card.sourceVersion === "promo" || card.id.startsWith("promo-");
+  const eyebrow = isPromo ? "MARKETING • NOT A LIVE TICKET" : `${escapeXml(card.sport.toUpperCase())} DECISION CARD`;
+  const footerLeft = isPromo
+    ? "BRAND CREATIVE — ILLUSTRATIVE PROCESS ONLY"
+    : `VERIFIED AS OF ${escapeXml(new Date(card.verifiedAsOf).toLocaleString("en-US", { timeZone: "America/New_York" }))}`;
   const svg = `<svg width="1080" height="1350" viewBox="0 0 1080 1350" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#050505"/><stop offset="0.55" stop-color="#17120a"/><stop offset="1" stop-color="#000000"/></linearGradient>
@@ -44,13 +49,13 @@ export async function renderCard(card: MarketingCard, outputDirectory: string, f
     <rect x="32" y="32" width="1016" height="1286" rx="32" fill="none" stroke="#c9a227" stroke-width="3"/>
     <path d="M470 90 L500 125 L540 78 L580 125 L610 90 L595 160 L485 160 Z" fill="url(#gold)" filter="url(#glow)"/>
     <text x="540" y="250" text-anchor="middle" class="brand">YWP OS</text>
-    <text x="540" y="302" text-anchor="middle" class="sub">${escapeXml(card.sport.toUpperCase())} DECISION CARD</text>
+    <text x="540" y="302" text-anchor="middle" class="sub">${escapeXml(eyebrow)}</text>
     <text x="540" y="356" text-anchor="middle" class="title">${escapeXml(fit(card.title, 40))}</text>
     ${rows}
     <rect x="245" y="1165" width="590" height="66" rx="33" fill="url(#gold)"/>
     <text x="540" y="1208" text-anchor="middle" style="font:900 26px Arial,sans-serif;fill:#090909;letter-spacing:3px">${escapeXml(score)}</text>
-    <text x="540" y="1270" text-anchor="middle" class="footer">VERIFIED AS OF ${escapeXml(new Date(card.verifiedAsOf).toLocaleString("en-US", { timeZone: "America/New_York" }))}</text>
-    <text x="540" y="1300" text-anchor="middle" class="footer">21+ • BET RESPONSIBLY • RESULTS ARE NOT GUARANTEED</text>
+    <text x="540" y="1270" text-anchor="middle" class="footer">${footerLeft}</text>
+    <text x="540" y="1300" text-anchor="middle" class="footer">21+ • BET RESPONSIBLY • NO OUTCOME IS ASSURED</text>
   </svg>`;
 
   const destination = path.join(outputDirectory, filename);

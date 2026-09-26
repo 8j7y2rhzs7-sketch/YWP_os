@@ -1,4 +1,5 @@
 import type { MarketingCard } from "./types.js";
+import { buildPromoCaption } from "./promo.js";
 
 function legLabel(index: number, card: MarketingCard): string {
   const leg = card.legs[index];
@@ -7,6 +8,9 @@ function legLabel(index: number, card: MarketingCard): string {
 }
 
 export function buildCaption(card: MarketingCard): string {
+  if (card.sourceVersion === "promo" || card.id.startsWith("promo-")) {
+    return buildPromoCaption(card);
+  }
   const asOf = new Intl.DateTimeFormat("en-US", {
     timeZone: "America/New_York",
     month: "short",
