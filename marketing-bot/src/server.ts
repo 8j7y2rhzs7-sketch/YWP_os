@@ -70,30 +70,63 @@ app.post("/api/sync", async (_request, response, next) => {
 app.post("/api/promo", async (request, response, next) => {
   try {
     const { buildPromoCard } = await import("./promo.js");
-    const body = (request.body ?? {}) as { kind?: string; sport?: string };
+    const body = (request.body ?? {}) as {
+      kind?: string;
+      sport?: string;
+      publish?: boolean;
+    };
     const kind = typeof body.kind === "string" ? body.kind : undefined;
     const sport = typeof body.sport === "string" ? body.sport : undefined;
+    const wantPublish = body.publish === true;
     const card = buildPromoCard({
       kind: kind as "process" | "brand" | "sport_night" | "responsible" | undefined,
       sport
     });
+    const caption = buildCaption(card);
+    const reasons = validateDraftForPublish(card, caption);
+    if (reasons.length) {
+      response.status(409).json({ error: "Promo failed safety check.", reasons });
+      return;
+    }
     const id = crypto.randomUUID();
     const imageFilename = `${id}.png`;
     await renderCard(card, generatedDirectory, imageFilename);
     const now = new Date().toISOString();
-    const draft: MarketingDraft = {
+    // Promos are our templates — already vetted. Skip human approve every time.
+    let draft: MarketingDraft = {
       id,
       cardId: card.id,
       createdAt: now,
       updatedAt: now,
-      status: "DRAFT",
-      caption: buildCaption(card),
+      status: "APPROVED",
+      caption,
       imageFilename,
       blockReasons: [],
+      approvedAt: now,
       card
     };
-    const saved = await store.save(draft);
-    response.json({ draft: saved });
+    draft = await store.save(draft);
+
+    if (wantPublish) {
+      if (!config.instagramPublishEnabled) {
+        response.status(409).json({
+          error: "IG_PUBLISH_ENABLED is false. Turn it on once after Meta credentials are set, then one click posts.",
+          draft
+        });
+        return;
+      }
+      const imageUrl = `${config.publicBaseUrl}/generated/${encodeURIComponent(draft.imageFilename)}`;
+      const instagramMediaId = await instagram.publishImage(imageUrl, draft.caption);
+      const publishedAt = new Date().toISOString();
+      draft = await store.save({
+        ...draft,
+        status: "PUBLISHED",
+        publishedAt,
+        updatedAt: publishedAt,
+        instagramMediaId
+      });
+    }
+    response.json({ draft, published: draft.status === "PUBLISHED" });
   } catch (error) { next(error); }
 });
 

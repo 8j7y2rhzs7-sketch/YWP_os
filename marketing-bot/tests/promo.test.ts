@@ -13,4 +13,11 @@ describe("promo creatives", () => {
     expect(caption).toMatch(/not a live ticket/i);
     expect(validateDraftForPublish(card, caption)).toEqual([]);
   });
+
+  it("is ready to publish without a human approve step", () => {
+    const card = buildPromoCard({ kind: "brand" });
+    const caption = buildPromoCaption(card);
+    // Same checks the /api/promo path runs before auto-APPROVED status.
+    expect(validateDraftForPublish(card, caption)).toEqual([]);
+  });
 });

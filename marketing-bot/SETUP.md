@@ -1,26 +1,36 @@
-# Marketing Bot — simple path
+# Marketing Bot
 
-You do **not** post live tickets. Use brand/promo creatives.
+**Promo posts are not live tickets.** Templates auto-pass safety — you do not re-verify every post.
 
-## Make a post (2 minutes)
+## Day-to-day (the bot doing its job)
 
 ```bash
-cd marketing-bot
-# .env already has ADMIN_KEY; keep IG_PUBLISH_ENABLED=false
-npm run dev
+cd marketing-bot && npm run dev
 ```
 
-1. Open `http://localhost:8787`
-2. Enter your admin key
-3. Click **Make promo post**
-4. **Download image** + **Copy caption**
-5. Paste into Instagram Stories/Feed yourself
+Open `http://localhost:8787` → **Post promo**.
 
-That’s it. No ticket eligibility. No Meta developer app required for manual posting.
+| Mode | What happens |
+|------|----------------|
+| `IG_PUBLISH_ENABLED=false` | Creates image + caption instantly (already approved). Download / copy into IG. |
+| `IG_PUBLISH_ENABLED=true` + Meta creds | **Same button posts to Instagram** in one tap. |
 
-## Optional later
+No ticket eligibility. No approve click every time.
 
-- **Sync feed** — only if you ever want sanitized feed cards (advanced)
-- **Meta auto-publish** — only after Professional account + tokens; leave disabled until then
+## One-time Meta setup (only if you want auto-post)
 
-Promo templates talk process/brand (Strict Mode, research gates, responsibility) — never real odds or locked tickets.
+Do this **once**, then forget it:
+
+1. `@ywpossports` → Instagram Professional + linked Facebook Page  
+2. Meta Developer app with Instagram content publish permission  
+3. Put in `.env`: `IG_USER_ID`, `IG_ACCESS_TOKEN`, `META_GRAPH_VERSION`, `PUBLIC_BASE_URL` (HTTPS the bot is reachable on)  
+4. Set `IG_PUBLISH_ENABLED=true`  
+5. Hit **Post promo** once and confirm Meta returns a media id  
+
+After that, marketing is one button.
+
+## What you never need per post
+
+- Marking tickets publication-eligible  
+- Re-running Lock Check / VERIFIED gates on a live bet  
+- Manual “approve draft” for promo templates  
