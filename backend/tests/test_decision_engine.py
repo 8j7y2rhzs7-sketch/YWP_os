@@ -5,6 +5,7 @@ from decimal import Decimal
 
 from app.schemas import CandidateInput, RiskProfile
 from app.services.decision_engine import decision_engine
+from app.services.readiness import candidate_readiness, candidate_verification_gaps
 
 
 def candidate(**changes) -> CandidateInput:
@@ -120,3 +121,49 @@ def test_risk_profile_changes_stake_only_not_official_pick() -> None:
     assert conservative.vision_score == aggressive.vision_score
     assert conservative.input_hash == aggressive.input_hash
     assert conservative.suggested_stake_pct < aggressive.suggested_stake_pct
+
+
+def test_market_price_is_not_accepted_as_independent_ywp_probability() -> None:
+    market_only = candidate(
+        probability_source="market_implied",
+        schedule_verified=True,
+        universe_scan_complete=True,
+        current_form_verified=True,
+        l5_l10_verified=True,
+        lineup_confirmed=True,
+        injuries_verified=True,
+        weather_verified=True,
+        starter_confirmed=True,
+        motivation_rotation_verified=True,
+        home_away_verified=True,
+        market_movement_verified=True,
+        sport_specific_sweep_complete=True,
+    )
+
+    evaluation = decision_engine.evaluate(market_only)
+
+    assert candidate_readiness(market_only) == "PARTIAL"
+    assert "independent model probability" in candidate_verification_gaps(market_only)
+    assert evaluation.decision == "SKIP"
+    assert "NO_INDEPENDENT_PROBABILITY" in evaluation.reason_codes
+
+
+def test_fully_researched_manual_candidate_can_be_verified() -> None:
+    researched = candidate(
+        probability_source="manual_verified",
+        schedule_verified=True,
+        universe_scan_complete=True,
+        current_form_verified=True,
+        l5_l10_verified=True,
+        lineup_confirmed=True,
+        injuries_verified=True,
+        weather_verified=True,
+        starter_confirmed=True,
+        motivation_rotation_verified=True,
+        home_away_verified=True,
+        market_movement_verified=True,
+        sport_specific_sweep_complete=True,
+    )
+
+    assert candidate_readiness(researched) == "VERIFIED"
+    assert candidate_verification_gaps(researched) == []

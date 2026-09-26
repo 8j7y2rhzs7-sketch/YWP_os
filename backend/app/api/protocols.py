@@ -1,21 +1,31 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from sqlalchemy import select
 
-from app.deps import DB, CurrentUser
+from app.deps import DB, SubscribedUser
 from app.models import ProtocolRun
 from app.schemas import ProtocolRunOut
 from app.services.protocols import CURRENT_PROTOCOL
+from app.services.trusted_sources import trusted_sources_manifest
 
 router = APIRouter(prefix="/protocol", tags=["protocol"])
 
 
 @router.get("/current")
-def current_protocol(_: CurrentUser) -> dict:
+def current_protocol(_: SubscribedUser) -> dict:
     return CURRENT_PROTOCOL
 
 
+@router.get("/trusted-sources")
+def trusted_sources(
+    _: SubscribedUser,
+    sport: str | None = Query(default=None),
+) -> dict:
+    """Certified sources the research searchers are allowed to pull from."""
+    return trusted_sources_manifest(sport)
+
+
 @router.get("/runs/{analysis_id}", response_model=ProtocolRunOut)
-def protocol_run(analysis_id: str, user: CurrentUser, db: DB) -> ProtocolRunOut:
+def protocol_run(analysis_id: str, user: SubscribedUser, db: DB) -> ProtocolRunOut:
     record = db.scalar(
         select(ProtocolRun)
         .where(ProtocolRun.analysis_id == analysis_id, ProtocolRun.user_id == user.id)

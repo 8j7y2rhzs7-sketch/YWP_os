@@ -1,18 +1,18 @@
 from functools import lru_cache
 from typing import Literal
 
-from pydantic import Field, field_validator
+from pydantic import AliasChoices, Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     app_name: str = "YWP OS API"
-    app_version: str = "3.0.0"
+    app_version: str = "3.3.59"
     api_prefix: str = "/api/v1"
     env: Literal["development", "test", "staging", "production"] = Field(
         default="development", validation_alias="YWP_ENV"
     )
-    demo_mode: bool = Field(default=True, validation_alias="YWP_DEMO_MODE")
+    demo_mode: bool = Field(default=False, validation_alias="YWP_DEMO_MODE")
 
     jwt_secret: str = Field(
         default="local-development-secret-change-before-production-12345",
@@ -27,25 +27,164 @@ class Settings(BaseSettings):
     database_url: str = Field(default="sqlite:///./ywp.db", validation_alias="DATABASE_URL")
     redis_url: str | None = Field(default=None, validation_alias="REDIS_URL")
     cors_origins_raw: str = Field(
-        default="http://localhost:8081,http://localhost:19006",
+        default="http://localhost:8081,http://localhost:19006,http://localhost:3000,https://whop.com",
         validation_alias="YWP_CORS_ORIGINS",
     )
 
     openai_api_key: str | None = Field(default=None, validation_alias="OPENAI_API_KEY")
     sports_data_api_key: str | None = Field(default=None, validation_alias="SPORTS_DATA_API_KEY")
     odds_api_key: str | None = Field(default=None, validation_alias="ODDS_API_KEY")
+    cfbd_api_key: str | None = Field(
+        default=None,
+        validation_alias="CFBD_API_KEY",
+        description="CollegeFootballData.com Bearer token (free tier OK).",
+    )
+    football_data_api_key: str | None = Field(
+        default=None,
+        validation_alias="FOOTBALL_DATA_API_KEY",
+        description="Football-Data.org free token for soccer schedule/form.",
+    )
+    balldontlie_api_key: str | None = Field(
+        default=None,
+        validation_alias="BALLDONTLIE_API_KEY",
+        description="BallDontLie Bearer token for NBA schedule/form.",
+    )
     weather_api_key: str | None = Field(default=None, validation_alias="WEATHER_API_KEY")
+    provision_secret: str | None = Field(
+        default=None,
+        validation_alias="YWP_PROVISION_SECRET",
+        description="One-time/ops secret for POST /auth/provision-tester",
+    )
+    marketing_service_token: str | None = Field(
+        default=None,
+        validation_alias="YWP_MARKETING_SERVICE_TOKEN",
+        description=(
+            "Scoped Bearer token for GET /marketing/approved-cards. "
+            "Read-only; never use the mobile JWT secret for the marketing bot."
+        ),
+    )
+    mlb_props_enabled: bool = Field(
+        default=True,
+        validation_alias="YWP_MLB_PROPS_ENABLED",
+        description=(
+            "When true, MLB player props use a source-first path: free MLB research "
+            "must surface a gated intent before Odds event-prop credits are spent. "
+            "Default on so Sheet/Run can show pitcher Ks and batter hits when research is ready."
+        ),
+    )
+    mlb_max_prop_events: int = Field(
+        default=6,
+        ge=0,
+        le=20,
+        validation_alias="YWP_MLB_MAX_PROP_EVENTS",
+    )
+    mlb_board_max_prop_events: int = Field(
+        default=6,
+        ge=0,
+        le=30,
+        validation_alias="YWP_MLB_BOARD_MAX_PROP_EVENTS",
+        description=(
+            "Pick Sheet sportsbook menu: max events to price player props for. "
+            "Raised with the fuller MLB prop menu (Ks/hits/HR/RBI/TB and pitcher peripherals)."
+        ),
+    )
+    wnba_max_prop_events: int = Field(
+        default=10,
+        ge=0,
+        le=30,
+        validation_alias="YWP_WNBA_MAX_PROP_EVENTS",
+        description=(
+            "WNBA Run/raw slate: max tip-offs to price player props for "
+            "(points/rebounds/assists/threes/PRA). Higher than MLB because "
+            "WNBA slates are small and props are the primary edge."
+        ),
+    )
+    wnba_board_max_prop_events: int = Field(
+        default=10,
+        ge=0,
+        le=30,
+        validation_alias="YWP_WNBA_BOARD_MAX_PROP_EVENTS",
+        description="Pick Sheet WNBA: max events to price player props for.",
+    )
+    nfl_max_prop_events: int = Field(
+        default=8,
+        ge=0,
+        le=30,
+        validation_alias="YWP_NFL_MAX_PROP_EVENTS",
+        description=(
+            "NFL Run/raw slate: max kickoffs to price the full player-prop menu for. "
+            "Credits scale with markets × events — intentional for Sunday value."
+        ),
+    )
+    nfl_board_max_prop_events: int = Field(
+        default=8,
+        ge=0,
+        le=30,
+        validation_alias="YWP_NFL_BOARD_MAX_PROP_EVENTS",
+        description="Pick Sheet NFL: max events to price player props for.",
+    )
+
+    whop_api_key: str | None = Field(default=None, validation_alias="WHOP_API_KEY")
+    whop_webhook_secret: str | None = Field(default=None, validation_alias="WHOP_WEBHOOK_SECRET")
+    whop_company_id: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices("WHOP_COMPANY_ID", "NEXT_PUBLIC_WHOP_COMPANY_ID"),
+    )
+    whop_product_id: str | None = Field(default=None, validation_alias="WHOP_PRODUCT_ID")
+    whop_plan_id: str | None = Field(default=None, validation_alias="WHOP_PLAN_ID")
+    whop_app_id: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices("WHOP_APP_ID", "NEXT_PUBLIC_WHOP_APP_ID"),
+    )
+    whop_checkout_url: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices("WHOP_CHECKOUT_URL", "NEXT_PUBLIC_WHOP_CHECKOUT_URL"),
+    )
+    whop_api_version_date: str = Field(
+        default="2026-09-02-2", validation_alias="WHOP_API_VERSION_DATE"
+    )
+    whop_subscription_required: bool = Field(
+        default=False, validation_alias="WHOP_SUBSCRIPTION_REQUIRED"
+    )
+    # How often to re-hit Whop checkAccess while the user is active.
+    whop_access_recheck_seconds: int = Field(
+        default=300,
+        ge=30,
+        le=86_400,
+        validation_alias="WHOP_ACCESS_RECHECK_SECONDS",
+    )
+    # Hard local ceiling for a day pass: without a fresh confirming checkAccess,
+    # access is revoked so users cannot overstay a 24h membership.
+    whop_day_pass_seconds: int = Field(
+        default=86_400,
+        ge=3_600,
+        le=604_800,
+        validation_alias="WHOP_DAY_PASS_SECONDS",
+    )
+    app_download_url: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices(
+            "YWP_APP_DOWNLOAD_URL",
+            "APP_DOWNLOAD_URL",
+            "EXPO_PUBLIC_APP_DOWNLOAD_URL",
+        ),
+    )
 
     lock_check_ttl_seconds: int = 300
     odds_warning_move_probability_points: float = 0.03
     odds_blocking_move_probability_points: float = 0.06
     minimum_data_quality: float = 0.65
     minimum_edge: float = 0.015
-    model_version: str = "ywp-sports-v3.0.0"
+    model_version: str = "ywp-sports-v3.1.0"
     protocol_version: str = "2026.09.03"
     learning_min_sample_size: int = 30
     learning_min_repeated_pattern: int = 5
     learning_max_weight_delta: float = 0.03
+    learning_micro_delta: float = 0.008
+    learning_weight_floor: float = 0.02
+    learning_weight_ceiling: float = 0.25
+    # Immediate bounded micro-updates vs large structural proposals.
+    learning_allow_micro_updates: bool = True
     learning_requires_human_approval: bool = True
 
     model_config = SettingsConfigDict(
@@ -62,9 +201,44 @@ class Settings(BaseSettings):
             raise ValueError("YWP_JWT_SECRET must be at least 32 bytes")
         return value
 
+    @field_validator("database_url")
+    @classmethod
+    def normalize_database_url(cls, value: str) -> str:
+        if value.startswith("postgres://"):
+            return "postgresql+psycopg://" + value.removeprefix("postgres://")
+        if value.startswith("postgresql://") and "+psycopg" not in value:
+            return "postgresql+psycopg://" + value.removeprefix("postgresql://")
+        return value
+
+    @field_validator(
+        "odds_api_key",
+        "cfbd_api_key",
+        "football_data_api_key",
+        "balldontlie_api_key",
+        "whop_api_key",
+        "whop_webhook_secret",
+        "whop_app_id",
+        "openai_api_key",
+        mode="before",
+    )
+    @classmethod
+    def empty_secret_to_none(cls, value: object) -> object:
+        if value is None:
+            return None
+        if isinstance(value, str):
+            cleaned = value.strip().strip('"').strip("'")
+            if cleaned in {"", "-", "null", "None"}:
+                return None
+            return cleaned
+        return value
+
     @property
     def cors_origins(self) -> list[str]:
         return [item.strip() for item in self.cors_origins_raw.split(",") if item.strip()]
+
+    @property
+    def checkout_url(self) -> str:
+        return self.whop_checkout_url or "https://whop.com/checkout/plan_MwJ2qcFxmvqDY"
 
 
 @lru_cache

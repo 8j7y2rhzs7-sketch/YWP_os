@@ -12,6 +12,7 @@ import {
 import { BrandHeader } from "@/components/BrandHeader";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { FormField } from "@/components/FormField";
+import { HiveAccuracyMeter } from "@/components/HiveAccuracyMeter";
 import { LoadingState } from "@/components/LoadingState";
 import { MetalPanel } from "@/components/MetalPanel";
 import { Metric } from "@/components/Metric";
@@ -52,7 +53,7 @@ export default function AnalysisScreen() {
   const params = useLocalSearchParams<{ id: string }>();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
   const { request } = useAuth();
-  const { analyses, builds, saveBuild } = useAppData();
+  const { analyses, builds, saveBuild, ready } = useAppData();
   const analysis = id ? analyses[id] : undefined;
   const build = id ? builds[id] : undefined;
   const [loading, setLoading] = useState(!build);
@@ -62,6 +63,9 @@ export default function AnalysisScreen() {
   const [saving, setSaving] = useState(false);
   const [intentionalCorrelation, setIntentionalCorrelation] = useState(false);
   const [intentionalThesis, setIntentionalThesis] = useState(false);
+  const [selectedPickIds, setSelectedPickIds] = useState<string[]>([]);
+  const [customCard, setCustomCard] = useState<TicketCard | null>(null);
+  const [customPreviewBusy, setCustomPreviewBusy] = useState(false);
 
   const runBuilder = useCallback(async () => {
     if (!id || !analysis) return;
@@ -80,7 +84,14 @@ export default function AnalysisScreen() {
       });
       saveBuild(id, response);
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "Ticket Builder failed");
+      const raw =
+        reason instanceof Error ? reason.message : "Ticket Builder failed";
+      // Keep ranked plays usable — official cards are secondary to the board.
+      setError(
+        /internal server error/i.test(raw)
+          ? "Official cards failed to load — tap RE-RUN TICKET BUILDER. Ranked plays below still work."
+          : raw,
+      );
     } finally {
       setLoading(false);
     }
@@ -98,11 +109,77 @@ export default function AnalysisScreen() {
     [build],
   );
 
+  const playLeanPicks = useMemo(
+    () =>
+      (analysis?.ranked_picks ?? []).filter((item) =>
+        ["PLAY", "LEAN"].includes(item.decision),
+      ),
+    [analysis],
+  );
+
+  const customLegs = useMemo(
+    () =>
+      (analysis?.ranked_picks ?? []).filter((item) => selectedPickIds.includes(item.id)),
+    [analysis, selectedPickIds],
+  );
+
+  useEffect(() => {
+    if (!customLegs.length) {
+      setCustomCard(null);
+      return;
+    }
+    let cancelled = false;
+    const ids = customLegs.map((item) => item.id);
+    const key = ids.join("|");
+    setCustomPreviewBusy(true);
+    void (async () => {
+      try {
+        const preview = await request<TicketCard>("/sports/preview-custom-card", {
+          method: "POST",
+          body: JSON.stringify({
+            recommendation_ids: ids,
+            label: `Custom ${ids.length}-${ids.length === 1 ? "leg" : "legs"}`,
+          }),
+        });
+        if (!cancelled) setCustomCard(preview);
+      } catch {
+        if (!cancelled) {
+          // Keep selection usable if preview fails — still do not invent risk locally.
+          setCustomCard(null);
+          setError("Custom card metrics unavailable — retry selection.");
+        }
+      } finally {
+        if (!cancelled) setCustomPreviewBusy(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+      void key;
+    };
+  }, [customLegs, request]);
+
+  function togglePick(id: string) {
+    setSelectedPickIds((current) =>
+      current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
+    );
+  }
+
+  function openTicketComposer(card: TicketCard) {
+    setError(null);
+    setIntentionalCorrelation(false);
+    setIntentionalThesis(false);
+    setSelectedCard(card);
+  }
+
   async function saveTicket() {
     if (!selectedCard || !id) return;
     const numericStake = Number(stake);
-    if (!Number.isFinite(numericStake) || numericStake < 0) {
-      setError("Enter a valid stake amount");
+    if (!Number.isFinite(numericStake) || numericStake <= 0) {
+      setError("Enter a valid stake amount greater than 0");
+      return;
+    }
+    if (!selectedCard.legs.length) {
+      setError("Select at least one PLAY or LEAN pick before saving");
       return;
     }
     setSaving(true);
@@ -121,12 +198,23 @@ export default function AnalysisScreen() {
         }),
       });
       setSelectedCard(null);
+      setError(null);
       router.push(`/ticket/${ticket.id}`);
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "Ticket could not be saved");
+      const message =
+        reason instanceof Error ? reason.message : "Ticket could not be saved";
+      setError(message);
     } finally {
       setSaving(false);
     }
+  }
+
+  if (!ready) {
+    return (
+      <Screen>
+        <LoadingState label="Restoring saved board…" />
+      </Screen>
+    );
   }
 
   if (!analysis) {
@@ -139,14 +227,28 @@ export default function AnalysisScreen() {
     );
   }
 
+  const canBuildCustom = playLeanPicks.length > 0;
+  // True board PASS only when no ticket-eligible picks exist.
+  // Do NOT treat empty official card templates as a board PASS — that blocked
+  // "build your own" whenever diversity/min-leg gates underfilled cards.
+  const boardPass = !canBuildCustom;
+  const hasOfficialCards = orderedCards.length > 0;
+
   return (
-    <Screen>
-      <BrandHeader title="DECISION BOARD" subtitle="FINAL SWEEP • CARD CONSTRUCTION" compact />
+    <Screen sport={analysis.ranked_picks[0]?.sport ?? analysis.stay_away[0]?.sport}>
+      <BrandHeader
+        title="DECISION BOARD"
+        subtitle="FINAL SWEEP • BUILD YOUR OWN"
+        compact
+        sport={analysis.ranked_picks[0]?.sport ?? analysis.stay_away[0]?.sport}
+      />
       <MetalPanel
         tone={
           analysis.data_quality_summary.protocol_status === "DOUBLE_CLEARED"
             ? "success"
-            : "danger"
+            : analysis.data_quality_summary.protocol_status === "WARNING"
+              ? "default"
+              : "danger"
         }
       >
         <View style={styles.summaryTop}>
@@ -164,7 +266,7 @@ export default function AnalysisScreen() {
             accent={colors.success}
           />
           <Metric
-            label="Official PASS"
+            label="Stay away"
             value={analysis.stay_away.length}
             accent={colors.danger}
           />
@@ -174,19 +276,33 @@ export default function AnalysisScreen() {
           />
         </View>
         <Text style={type.caption}>
+          {analysis.readiness ?? analysis.data_quality_summary.readiness ?? "DEMO"} •
           Model {analysis.model_version} • Analysis {analysis.analysis_id.slice(0, 8)} •
           unknown source labels {analysis.data_quality_summary.unknown_source_labels}
         </Text>
+        <HiveAccuracyMeter
+          hive={analysis.data_quality_summary.hive_learning}
+          optimumAccuracyPct={analysis.data_quality_summary.hive_optimum_accuracy_pct}
+        />
       </MetalPanel>
-      {error ? <ErrorNotice message={error} /> : null}
+      {!selectedCard && error ? <ErrorNotice message={error} /> : null}
 
       <SectionTitle
         title="Ranked Plays"
-        subtitle="Probability, price, role, cushion, script, variance, and Miss-by-1 risk are separated."
+        subtitle="Tap any PLAY or LEAN to build your own ticket. Official cards stay available below."
       />
       {analysis.ranked_picks.length ? (
         analysis.ranked_picks.map((item) => (
-          <RecommendationCard key={item.id} item={item} />
+          <RecommendationCard
+            key={item.id}
+            item={item}
+            selected={selectedPickIds.includes(item.id)}
+            onPress={
+              !canBuildCustom || !["PLAY", "LEAN"].includes(item.decision)
+                ? undefined
+                : () => togglePick(item.id)
+            }
+          />
         ))
       ) : (
         <MetalPanel tone="danger">
@@ -198,6 +314,43 @@ export default function AnalysisScreen() {
           </Text>
         </MetalPanel>
       )}
+      {canBuildCustom && customLegs.length ? (
+        <YwpButton
+          label={
+            customPreviewBusy
+              ? "LOADING CUSTOM CARD METRICS…"
+              : customCard
+                ? `SAVE CUSTOM ${customLegs.length}-LEG TICKET`
+                : "CUSTOM METRICS UNAVAILABLE"
+          }
+          onPress={() => customCard && openTicketComposer(customCard)}
+          loading={customPreviewBusy}
+        />
+      ) : null}
+      {canBuildCustom && analysis.ranked_picks.length ? (
+        <Text style={type.caption}>
+          {selectedPickIds.length
+            ? `${selectedPickIds.length} play${selectedPickIds.length === 1 ? "" : "s"} selected. You are not stuck with the printed cards.`
+            : "Tap PLAY or LEAN picks to assemble a custom ticket, or open an official card below."}
+        </Text>
+      ) : null}
+
+      {build?.quarantined.length ? (
+        <>
+          <SectionTitle
+            title="Held Out of Cards"
+            subtitle="Top board picks can be removed by edge, miss-by-1, or diversity gates. This is why #1 may not appear below."
+          />
+          <MetalPanel tone="danger">
+            {build.quarantined.map((item) => (
+              <Text key={`${item.recommendation_id}-${item.reason}`} style={styles.quarantine}>
+                ⛔ {item.selection ? `${item.selection} — ` : ""}
+                {item.reason}
+              </Text>
+            ))}
+          </MetalPanel>
+        </>
+      ) : null}
 
       <SectionTitle
         title="Official Cards"
@@ -207,26 +360,34 @@ export default function AnalysisScreen() {
       {!loading && !build ? (
         <YwpButton label="RE-RUN TICKET BUILDER" onPress={() => void runBuilder()} />
       ) : null}
-      {orderedCards.map((card) => (
-        <TicketCardView
-          key={card.key}
-          card={card}
-          onPress={card.legs.length ? () => setSelectedCard(card) : undefined}
-        />
-      ))}
-
-      {build?.quarantined.length ? (
-        <>
-          <SectionTitle title="Quarantine" subtitle="Exposure or Miss-by-1 controls removed these legs." />
-          <MetalPanel tone="danger">
-            {build.quarantined.map((item) => (
-              <Text key={`${item.recommendation_id}-${item.reason}`} style={styles.quarantine}>
-                ⛔ {item.reason}
-              </Text>
-            ))}
-          </MetalPanel>
-        </>
-      ) : null}
+      {boardPass ? (
+        <MetalPanel tone="danger">
+          <StatusPill value="PASS" />
+          <Text style={styles.title}>Official PASS. No tickets.</Text>
+          <Text style={type.body}>
+            Open and Save stay disabled. PASS is the product output—not an empty
+            board waiting for filler legs.
+          </Text>
+        </MetalPanel>
+      ) : hasOfficialCards ? (
+        orderedCards.map((card) => (
+          <TicketCardView
+            key={card.key}
+            card={card}
+            onPress={card.legs.length ? () => openTicketComposer(card) : undefined}
+          />
+        ))
+      ) : (
+        <MetalPanel tone="default">
+          <StatusPill value="BUILD YOUR OWN" />
+          <Text style={styles.title}>No official card templates filled.</Text>
+          <Text style={type.body}>
+            Ticket-eligible PLAY/LEAN picks are on the board above. Tap them to
+            build your own ticket — official multi-leg cards stay empty when
+            diversity gates refuse filler legs.
+          </Text>
+        </MetalPanel>
+      )}
 
       <SectionTitle
         title="Stay Away"
@@ -240,16 +401,40 @@ export default function AnalysisScreen() {
         visible={Boolean(selectedCard)}
         transparent
         animationType="slide"
-        onRequestClose={() => setSelectedCard(null)}
+        onRequestClose={() => {
+          setSelectedCard(null);
+          setError(null);
+        }}
       >
-        <Pressable style={styles.backdrop} onPress={() => setSelectedCard(null)}>
-          <Pressable style={styles.modal} onPress={(event) => event.stopPropagation()}>
+        <View style={styles.backdrop}>
+          <Pressable
+            style={StyleSheet.absoluteFill}
+            onPress={() => {
+              setSelectedCard(null);
+              setError(null);
+            }}
+            accessibilityLabel="Dismiss ticket composer"
+          />
+          <View style={styles.modal}>
             <Text style={type.eyebrow}>SAVE DRAFT TICKET</Text>
             <Text style={styles.modalTitle}>{selectedCard?.label}</Text>
             <Text style={type.caption}>
               Saving is not placement. Lock Check is still mandatory immediately
               before any wager.
             </Text>
+            {error ? <ErrorNotice message={error} /> : null}
+            {error?.toLowerCase().includes("intentional_correlation") ||
+            error?.toLowerCase().includes("correlated") ? (
+              <Text style={type.caption}>
+                Turn on Intentional correlation below, then save again.
+              </Text>
+            ) : null}
+            {error?.toLowerCase().includes("thesis exposure") ||
+            error?.toLowerCase().includes("intentional_thesis") ? (
+              <Text style={type.caption}>
+                Turn on Cross-ticket thesis exposure below, then save again.
+              </Text>
+            ) : null}
             <FormField
               label="Stake"
               value={stake}
@@ -281,22 +466,47 @@ export default function AnalysisScreen() {
                 thumbColor={intentionalThesis ? colors.gold : colors.silver}
               />
             </View>
-            <YwpButton label="SAVE & OPEN LOCK CENTER" onPress={() => void saveTicket()} loading={saving} />
+            <YwpButton
+              label="SAVE & OPEN LOCK CENTER"
+              onPress={() => void saveTicket()}
+              loading={saving}
+              disabled={!selectedCard?.legs.length || saving}
+            />
             <YwpButton
               label="CREATE SHARE GRAPHIC"
               variant="outline"
               onPress={() => {
                 if (!selectedCard || !id) return;
+                const existing = builds[id];
+                const nextBuild = {
+                  analysis_id: existing?.analysis_id ?? id,
+                  official_pass: existing?.official_pass ?? false,
+                  cards: {
+                    ...(existing?.cards ?? {}),
+                    [selectedCard.key]: selectedCard,
+                  },
+                  stay_away: existing?.stay_away ?? analysis?.stay_away ?? [],
+                  quarantined: existing?.quarantined ?? [],
+                };
+                saveBuild(id, nextBuild);
                 setSelectedCard(null);
+                setError(null);
                 router.push({
                   pathname: "/share-card",
                   params: { analysisId: id, cardKey: selectedCard.key },
                 });
               }}
             />
-            <YwpButton label="CANCEL" variant="danger" onPress={() => setSelectedCard(null)} />
-          </Pressable>
-        </Pressable>
+            <YwpButton
+              label="CANCEL"
+              variant="danger"
+              onPress={() => {
+                setSelectedCard(null);
+                setError(null);
+              }}
+            />
+          </View>
+        </View>
       </Modal>
     </Screen>
   );

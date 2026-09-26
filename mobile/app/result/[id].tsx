@@ -225,8 +225,8 @@ export default function ResultGradeScreen() {
             <Metric label="Miss" value={record.miss_distance ?? "—"} />
           </View>
           <Text style={type.body}>
-            This result is evidence. It cannot alter production weights without a repeated
-            pattern, bounded proposal, administrator approval, version, and rollback path.
+            This grade already trained a tiny weight shift. Repeated patterns can still
+            open a larger proposal that needs human approval.
           </Text>
         </MetalPanel>
         <YwpButton label="OPEN LEARNING LAB" onPress={() => router.replace("/(tabs)/learning")} />
@@ -246,7 +246,7 @@ export default function ResultGradeScreen() {
 
   return (
     <Screen>
-      <BrandHeader title="RESULT & PROCESS" subtitle="GRADE HONESTLY • LEARN SLOWLY" compact />
+      <BrandHeader title="RESULT & PROCESS" subtitle="GRADE HONESTLY • TRAIN THE ENGINE" compact />
       {error ? <ErrorNotice message={error} /> : null}
       <MetalPanel tone="gold">
         <Text style={type.eyebrow}>{recommendation.sport} • {recommendation.market_type.replaceAll("_", " ")}</Text>

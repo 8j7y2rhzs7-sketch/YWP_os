@@ -2,46 +2,90 @@
   "expo": {
     "name": "YWP OS",
     "slug": "ywp-os",
-    "version": "3.0.0",
+    "version": "3.3.56",
     "orientation": "portrait",
     "scheme": "ywpos",
     "userInterfaceStyle": "dark",
-    "icon": "./assets/brand/app-icon.png",
+    "icon": "./assets/brand/vision/decision-engine-emblem-square.png",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ywpos.app",
+      "buildNumber": "51",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSPhotoLibraryAddUsageDescription": "YWP OS saves share graphics to your photo library when you export a decision card.",
+        "NSPhotoLibraryUsageDescription": "YWP OS needs photo access only when you choose to save an exported decision card.",
+        "CFBundleDisplayName": "YWP OS"
+      },
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "privacyManifests": {
+        "NSPrivacyAccessedAPITypes": [
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+            "NSPrivacyAccessedAPITypeReasons": [
+              "CA92.1"
+            ]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+            "NSPrivacyAccessedAPITypeReasons": [
+              "C617.1",
+              "0A2A.1"
+            ]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryDiskSpace",
+            "NSPrivacyAccessedAPITypeReasons": [
+              "E174.1"
+            ]
+          }
+        ]
       }
     },
     "android": {
       "package": "com.ywpos.app",
+      "versionCode": 51,
+      "usesCleartextTraffic": true,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/brand/app-icon.png",
-        "backgroundColor": "#050505"
+        "foregroundImage": "./assets/brand/vision/decision-engine-emblem-square.png",
+        "backgroundColor": "#02050A"
       }
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/brand/ywp-crest.png"
+      "favicon": "./assets/brand/vision/decision-engine-emblem-square.png"
     },
     "plugins": [
       "expo-router",
+      "expo-video",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/brand/splash-logo.png",
+          "image": "./assets/brand/vision/decision-engine-emblem-square.png",
           "imageWidth": 280,
           "resizeMode": "contain",
-          "backgroundColor": "#050505",
+          "backgroundColor": "#02050A",
           "dark": {
-            "image": "./assets/brand/splash-logo.png",
-            "backgroundColor": "#050505"
+            "image": "./assets/brand/vision/decision-engine-emblem-square.png",
+            "backgroundColor": "#02050A"
           }
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          },
+          "ios": {
+            "deploymentTarget": "16.4"
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

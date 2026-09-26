@@ -6,20 +6,26 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
-import type { AnalyzeResponse, BuildTicketResponse } from "@/types";
+import { getApiUrl } from "@/lib/api";
+import type { AnalyzeResponse, BuildTicketResponse, SlateResponse } from "@/types";
 
-const ANALYSES_KEY = "ywp.os.analyses.v3";
-const BUILDS_KEY = "ywp.os.builds.v3";
+const CACHE_SCHEMA = "v6";
 const MAX_CACHED = 20;
 
 interface AppDataValue {
   analyses: Record<string, AnalyzeResponse>;
   builds: Record<string, BuildTicketResponse>;
+  lastSlate: SlateResponse | null;
+  lastMarketBoard: SlateResponse | null;
   saveAnalysis: (analysis: AnalyzeResponse) => void;
   saveBuild: (analysisId: string, build: BuildTicketResponse) => void;
+  saveSlate: (slate: SlateResponse) => void;
+  saveMarketBoard: (board: SlateResponse) => void;
+  clearCache: () => Promise<void>;
   ready: boolean;
 }
 
@@ -36,37 +42,72 @@ function trimToRecent<T>(record: Record<string, T>, max: number): Record<string,
   return trimmed;
 }
 
-export function AppDataProvider({ children }: { children: ReactNode }) {
+function scopeKey(
+  kind: "analyses" | "builds" | "slate" | "marketBoard",
+  userId: string | null,
+): string {
+  const api = getApiUrl().replace(/\/$/, "");
+  const user = userId ?? "anonymous";
+  return `ywp.os.${kind}.${CACHE_SCHEMA}.${user}.${api}`;
+}
+
+export function AppDataProvider({
+  children,
+  userId,
+}: {
+  children: ReactNode;
+  userId: string | null;
+}) {
   const [analyses, setAnalyses] = useState<Record<string, AnalyzeResponse>>({});
   const [builds, setBuilds] = useState<Record<string, BuildTicketResponse>>({});
+  const [lastSlate, setLastSlate] = useState<SlateResponse | null>(null);
+  const [lastMarketBoard, setLastMarketBoard] = useState<SlateResponse | null>(null);
   const [ready, setReady] = useState(false);
+  const hydrateGen = useRef(0);
 
   useEffect(() => {
-    (async () => {
+    const gen = ++hydrateGen.current;
+    setReady(false);
+    setAnalyses({});
+    setBuilds({});
+    setLastSlate(null);
+    setLastMarketBoard(null);
+    void (async () => {
       try {
-        const [rawA, rawB] = await Promise.all([
-          AsyncStorage.getItem(ANALYSES_KEY),
-          AsyncStorage.getItem(BUILDS_KEY),
+        const [rawA, rawB, rawS, rawBoard] = await Promise.all([
+          AsyncStorage.getItem(scopeKey("analyses", userId)),
+          AsyncStorage.getItem(scopeKey("builds", userId)),
+          AsyncStorage.getItem(scopeKey("slate", userId)),
+          AsyncStorage.getItem(scopeKey("marketBoard", userId)),
         ]);
+        if (gen !== hydrateGen.current) return;
         if (rawA) setAnalyses(JSON.parse(rawA));
         if (rawB) setBuilds(JSON.parse(rawB));
+        if (rawS) setLastSlate(JSON.parse(rawS));
+        if (rawBoard) setLastMarketBoard(JSON.parse(rawBoard));
       } catch {
         /* first launch or corrupt data — start fresh */
       }
-      setReady(true);
+      if (gen === hydrateGen.current) setReady(true);
     })();
-  }, []);
+  }, [userId]);
 
-  const saveAnalysis = useCallback((analysis: AnalyzeResponse) => {
-    setAnalyses((current) => {
-      const next = trimToRecent(
-        { ...current, [analysis.analysis_id]: analysis },
-        MAX_CACHED,
-      );
-      AsyncStorage.setItem(ANALYSES_KEY, JSON.stringify(next)).catch(() => {});
-      return next;
-    });
-  }, []);
+  const saveAnalysis = useCallback(
+    (analysis: AnalyzeResponse) => {
+      setAnalyses((current) => {
+        const next = trimToRecent(
+          { ...current, [analysis.analysis_id]: analysis },
+          MAX_CACHED,
+        );
+        AsyncStorage.setItem(
+          scopeKey("analyses", userId),
+          JSON.stringify(next),
+        ).catch(() => {});
+        return next;
+      });
+    },
+    [userId],
+  );
 
   const saveBuild = useCallback(
     (analysisId: string, build: BuildTicketResponse) => {
@@ -75,21 +116,80 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
           { ...current, [analysisId]: build },
           MAX_CACHED,
         );
-        AsyncStorage.setItem(BUILDS_KEY, JSON.stringify(next)).catch(() => {});
+        AsyncStorage.setItem(
+          scopeKey("builds", userId),
+          JSON.stringify(next),
+        ).catch(() => {});
         return next;
       });
     },
-    [],
+    [userId],
   );
 
+  const saveSlate = useCallback(
+    (slate: SlateResponse) => {
+      setLastSlate(slate);
+      AsyncStorage.setItem(scopeKey("slate", userId), JSON.stringify(slate)).catch(
+        () => {},
+      );
+    },
+    [userId],
+  );
+
+  const saveMarketBoard = useCallback(
+    (board: SlateResponse) => {
+      setLastMarketBoard(board);
+      AsyncStorage.setItem(
+        scopeKey("marketBoard", userId),
+        JSON.stringify(board),
+      ).catch(() => {});
+    },
+    [userId],
+  );
+
+  const clearCache = useCallback(async () => {
+    hydrateGen.current += 1;
+    setAnalyses({});
+    setBuilds({});
+    setLastSlate(null);
+    setLastMarketBoard(null);
+    await Promise.all([
+      AsyncStorage.removeItem(scopeKey("analyses", userId)),
+      AsyncStorage.removeItem(scopeKey("builds", userId)),
+      AsyncStorage.removeItem(scopeKey("slate", userId)),
+      AsyncStorage.removeItem(scopeKey("marketBoard", userId)),
+    ]).catch(() => undefined);
+    setReady(true);
+  }, [userId]);
+
   const value = useMemo(
-    () => ({ analyses, builds, saveAnalysis, saveBuild, ready }),
-    [analyses, builds, saveAnalysis, saveBuild, ready],
+    () => ({
+      analyses,
+      builds,
+      lastSlate,
+      lastMarketBoard,
+      saveAnalysis,
+      saveBuild,
+      saveSlate,
+      saveMarketBoard,
+      clearCache,
+      ready,
+    }),
+    [
+      analyses,
+      builds,
+      lastSlate,
+      lastMarketBoard,
+      saveAnalysis,
+      saveBuild,
+      saveSlate,
+      saveMarketBoard,
+      clearCache,
+      ready,
+    ],
   );
   return (
-    <AppDataContext.Provider value={value}>
-      {children}
-    </AppDataContext.Provider>
+    <AppDataContext.Provider value={value}>{children}</AppDataContext.Provider>
   );
 }
 

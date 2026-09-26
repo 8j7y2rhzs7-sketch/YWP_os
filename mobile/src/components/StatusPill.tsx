@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View } from "react-native";
+import { useEffect, useRef } from "react";
+import { Animated, StyleSheet, Text, View } from "react-native";
 
-import { colors, radius, spacing } from "@/theme";
+import { colors, fonts, radius, spacing } from "@/theme";
 
-const success = new Set(["PLAY", "LOCKED", "DOUBLE_CLEARED", "WIN", "POSITIVE"]);
-const warning = new Set(["LEAN", "WATCH", "WARNING", "PENDING"]);
-const danger = new Set(["SKIP", "LOSS", "FAILED", "CHANGE_REQUIRED", "NEGATIVE"]);
+const success = new Set(["PLAY", "LOCKED", "DOUBLE_CLEARED", "WIN", "POSITIVE", "SETTLED"]);
+const warning = new Set(["LEAN", "WATCH", "WARNING", "PENDING", "PUSH", "VOID"]);
+const danger = new Set(["SKIP", "REVIEW", "LOSS", "FAILED", "CHANGE_REQUIRED", "NEGATIVE"]);
 
 export function StatusPill({ value }: { value: string }) {
   const normalized = value.toUpperCase();
@@ -15,11 +16,39 @@ export function StatusPill({ value }: { value: string }) {
       : warning.has(normalized)
         ? "warning"
         : "neutral";
+  const stamp = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    stamp.setValue(0);
+    Animated.spring(stamp, {
+      toValue: 1,
+      friction: 6,
+      tension: 120,
+      useNativeDriver: true,
+    }).start();
+  }, [normalized, stamp]);
+
   return (
-    <View style={[styles.pill, styles[tone]]}>
+    <Animated.View
+      style={[
+        styles.pill,
+        styles[tone],
+        {
+          opacity: stamp,
+          transform: [
+            {
+              scale: stamp.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0.9, 1],
+              }),
+            },
+          ],
+        },
+      ]}
+    >
       <View style={[styles.dot, styles[`${tone}Dot`]]} />
       <Text style={[styles.text, styles[`${tone}Text`]]}>{normalized}</Text>
-    </View>
+    </Animated.View>
   );
 }
 
@@ -30,15 +59,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: spacing.sm,
     borderRadius: radius.pill,
-    borderWidth: 1,
-    paddingHorizontal: spacing.md,
+    borderWidth: StyleSheet.hairlineWidth,
+    paddingHorizontal: 12,
     paddingVertical: 7,
+    minHeight: 28,
   },
-  dot: { width: 7, height: 7, borderRadius: 4 },
-  text: { fontSize: 11, fontWeight: "900", letterSpacing: 0.8 },
-  success: { backgroundColor: colors.successDeep, borderColor: colors.success },
-  warning: { backgroundColor: colors.warningDeep, borderColor: colors.warning },
-  danger: { backgroundColor: colors.dangerDeep, borderColor: colors.danger },
+  dot: { width: 6, height: 6, borderRadius: 3 },
+  text: {
+    fontFamily: fonts.bodyBold,
+    fontSize: 11,
+    fontWeight: "700",
+    letterSpacing: 0.7,
+  },
+  success: { backgroundColor: colors.successDeep, borderColor: "rgba(46,229,154,0.55)" },
+  warning: { backgroundColor: colors.warningDeep, borderColor: "rgba(255,176,32,0.55)" },
+  danger: { backgroundColor: colors.dangerDeep, borderColor: "rgba(255,77,106,0.55)" },
   neutral: { backgroundColor: colors.surfaceRaised, borderColor: colors.border },
   successDot: { backgroundColor: colors.success },
   warningDot: { backgroundColor: colors.warning },

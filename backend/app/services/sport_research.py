@@ -1,0 +1,655 @@
+"""Trusted-source research pack for non-MLB sports (ESPN + Odds + Open-Meteo)."""
+
+from __future__ import annotations
+
+import logging
+from concurrent.futures import ThreadPoolExecutor
+from datetime import UTC, date, datetime
+from decimal import Decimal
+from typing import Any
+
+from app.schemas import CandidateInput
+from app.services.espn_provider import (
+    SOURCE_ID,
+    WEATHER_SPORTS,
+    injuries_for_teams,
+)
+from app.services.facts_cascade import league_injuries, match_schedule_game, team_recent_form
+from app.services.research_searchers import search_market_consensus, search_venue_weather
+from app.services.sport_model import SportProjection, project_matchup
+from app.services.team_art import logo_for_play
+from app.services.ticket_gates import event_market_status
+
+logger = logging.getLogger(__name__)
+
+
+def build_event_research(
+    *,
+    sport: str,
+    slate_date: date,
+    home_team: str,
+    away_team: str,
+    bookmakers: list[dict[str, Any]],
+    injury_feed: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Pull facts from the sport cascade + Odds consensus for one matchup.
+
+    Fact-source failures never raise — priced Odds plays must still be buildable.
+    """
+    sport_l = sport.lower()
+    try:
+        espn_game = match_schedule_game(
+            sport_l, slate_date, home_team=home_team, away_team=away_team
+        )
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Schedule cascade failed for %s: %s", sport_l, exc)
+        espn_game = None
+    try:
+        feed = injury_feed if injury_feed is not None else league_injuries(sport_l)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Injury cascade failed for %s: %s", sport_l, exc)
+        feed = {"verified": False, "by_team": {}}
+    home_name = (espn_game or {}).get("home_team") or home_team
+    away_name = (espn_game or {}).get("away_team") or away_team
+    home_id = (espn_game or {}).get("home_id")
+    away_id = (espn_game or {}).get("away_id")
+    home_abbrev = (espn_game or {}).get("home_abbrev")
+    away_abbrev = (espn_game or {}).get("away_abbrev")
+
+    home_form: dict[str, Any] = {"verified": False}
+    away_form: dict[str, Any] = {"verified": False}
+    with ThreadPoolExecutor(max_workers=2, thread_name_prefix="fact-form") as pool:
+        home_fut = pool.submit(
+            team_recent_form,
+            sport_l,
+            home_id,
+            slate_date,
+            team_abbrev=home_abbrev,
+            team_name=home_name,
+        )
+        away_fut = pool.submit(
+            team_recent_form,
+            sport_l,
+            away_id,
+            slate_date,
+            team_abbrev=away_abbrev,
+            team_name=away_name,
+        )
+        try:
+            home_form = home_fut.result()
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Home form failed: %s", exc)
+        try:
+            away_form = away_fut.result()
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Away form failed: %s", exc)
+
+    injury_detail = injuries_for_teams(feed, home_name, away_name)
+    if sport_l == "kbo" and feed.get("policy") == "unsupported_feed_assumed_clear":
+        injury_detail = {
+            "verified": True,
+            "home_matched": True,
+            "away_matched": True,
+            "home": [],
+            "away": [],
+            "home_out": 0,
+            "away_out": 0,
+            "source_id": feed.get("source_id"),
+            "detail": feed.get("detail"),
+            "policy": feed.get("policy"),
+        }
+    indoor = bool((espn_game or {}).get("indoor"))
+    if sport_l in WEATHER_SPORTS and espn_game and not indoor:
+        city = espn_game.get("city") or ""
+        # Prefer venue lat/lng from ESPN/CFBD when present; fall back to city map.
+        lat = espn_game.get("latitude")
+        lon = espn_game.get("longitude")
+        coords = None
+        try:
+            if lat is not None and lon is not None:
+                coords = (float(lat), float(lon))
+        except (TypeError, ValueError):
+            coords = None
+        if coords is None:
+            coords = _city_coords(city, espn_game.get("state") or "", espn_game.get("country") or "")
+        if coords:
+            try:
+                weather = search_venue_weather(
+                    latitude=coords[0], longitude=coords[1], slate_date=slate_date
+                )
+            except Exception as exc:  # noqa: BLE001
+                logger.warning("Weather search failed: %s", exc)
+                weather = {"verified": False, "error": str(exc)}
+        else:
+            weather = {
+                "verified": False,
+                "detail": f"No coordinates mapped for venue city {city!r}.",
+            }
+    else:
+        weather = {
+            "verified": True,
+            "source_id": SOURCE_ID,
+            "detail": (
+                "Indoor or non-weather sport; venue context verified."
+                if espn_game
+                else "Weather not required for this sport."
+            ),
+            "indoor": indoor,
+        }
+
+    market = search_market_consensus(bookmakers, "h2h", home_name)
+    form_verified = bool(home_form.get("verified") and away_form.get("verified"))
+    injuries_verified = bool(injury_detail.get("verified"))
+    schedule_verified = espn_game is not None
+    venue_verified = bool((espn_game or {}).get("venue"))
+    weather_verified = bool(weather.get("verified"))
+    market_verified = bool(market.get("verified"))
+
+    # Honest Strict Mode defaults for ESPN sports: schedule + injury feed is
+    # research progress, not a cleared lineup/starter sweep.
+    lineup_confirmed = False
+    starter_confirmed = False
+    motivation_verified = False
+    sport_sweep = False
+    market_movement_verified = False
+    bullpen_status = "unknown"
+    # Fields that are intentionally out of scope for a sport must not inflate
+    # "unknown source labels" on the Decision Board (was ~168 on NFL sweeps).
+    starter_status = "unknown"
+    lineup_status = "unknown"
+
+    if sport_l == "kbo":
+        # ESPN has no baseball/kbo. Odds schedule/scores + Open-Meteo + price
+        # consensus are the certified path. Full-game markets do not require
+        # posted batting orders / bullpen (see readiness KBO checklist).
+        market_movement_verified = market_verified
+        # Rotation proxy: both clubs have recent completed scores.
+        motivation_verified = form_verified
+        # Starters/lineups stay false until a certified KBO lineup feed exists.
+        sport_sweep = bool(
+            schedule_verified
+            and form_verified
+            and injuries_verified
+            and weather_verified
+            and market_verified
+        )
+        bullpen_status = "n/a"
+        starter_status = "n/a"
+        lineup_status = "n/a"
+    elif sport_l in {
+        "ncaaf",
+        "nfl",
+        "nba",
+        "ncaab",
+        "wnba",
+        "nhl",
+        "soccer",
+        "mls",
+        "epl",
+    }:
+        # Same honesty as KBO: no certified depth-chart/lineup JSON feed, so
+        # full-game markets clear on schedule + form + injuries + Odds consensus
+        # (+ weather when outdoor). Lineup/starter/bullpen are N/A — not unknown.
+        market_movement_verified = market_verified
+        motivation_verified = form_verified
+        outdoor = sport_l in {"nfl", "ncaaf", "soccer", "mls", "epl"}
+        weather_ok = weather_verified if outdoor else True
+        sport_sweep = bool(
+            schedule_verified
+            and form_verified
+            and injuries_verified
+            and weather_ok
+            and market_verified
+        )
+        bullpen_status = "n/a"
+        starter_status = "n/a"
+        lineup_status = "n/a"
+
+    indoor_team = sport_l in {"nba", "ncaab", "wnba", "nhl"}
+    if indoor_team:
+        weather_status = "n/a"
+        weather_flag = True
+    elif weather_verified:
+        weather_status = "confirmed"
+        weather_flag = True
+    else:
+        weather_status = "unknown"
+        weather_flag = False
+
+    # KBO has no certified injury JSON feed — checklist clears via policy, but
+    # the source label must stay n/a (not "confirmed") so the board is honest.
+    if sport_l == "kbo" and feed.get("policy") == "unsupported_feed_assumed_clear":
+        injuries_status = "n/a"
+    elif injuries_verified:
+        injuries_status = "confirmed"
+    else:
+        injuries_status = "unknown"
+
+    return {
+        "espn_game": espn_game,
+        "home_form": home_form,
+        "away_form": away_form,
+        "injuries": injury_detail,
+        "weather": weather,
+        "market": market,
+        "flags": {
+            "schedule_verified": schedule_verified,
+            "current_form_verified": form_verified,
+            "l5_l10_verified": form_verified,
+            "lineup_confirmed": lineup_confirmed,
+            "injuries_verified": injuries_verified,
+            "weather_verified": weather_flag,
+            "starter_confirmed": starter_confirmed,
+            "motivation_rotation_verified": motivation_verified,
+            "home_away_verified": schedule_verified,
+            "market_movement_verified": market_movement_verified,
+            "sport_specific_sweep_complete": sport_sweep,
+            "venue_verified": venue_verified,
+            "market_consensus_available": market_verified,
+        },
+        "source_status": {
+            "schedule": "confirmed" if schedule_verified else "unknown",
+            "market": "confirmed" if market_verified else "unknown",
+            "current_form": "confirmed" if form_verified else "unknown",
+            "injuries": injuries_status,
+            "starter": starter_status,
+            "lineup": lineup_status,
+            "weather": weather_status,
+            "venue": "confirmed" if venue_verified else "unknown",
+            # Bullpen is only a hard readiness key for MLB (see readiness.py).
+            "bullpen": bullpen_status,
+        },
+        "source_urls": [
+            url
+            for url in [
+                (espn_game or {}).get("source_url"),
+                home_form.get("source_url"),
+                away_form.get("source_url"),
+                feed.get("source_url"),
+                weather.get("source_url"),
+            ]
+            if url
+        ],
+    }
+
+
+def project_from_research(
+    research: dict[str, Any],
+    *,
+    market_type: str,
+    selection: str,
+    line: float | None,
+    home_team: str,
+    sport: str | None = None,
+) -> SportProjection:
+    espn_game = research.get("espn_game") or {}
+    home_name = espn_game.get("home_team") or home_team
+    is_home = home_name.lower() in (selection or "").lower()
+    injuries = research.get("injuries") or {}
+    side_markets = "ml" in selection.lower() or "spread" in market_type or "moneyline" in market_type
+    sport_l = (sport or "").lower()
+    include_draw = sport_l in {"soccer", "mls", "epl"} and (
+        "moneyline" in (market_type or "").lower()
+        or "draw" in (selection or "").lower()
+        or (market_type or "").lower() in {"h2h", "ml", "moneyline_draw"}
+    )
+    return project_matchup(
+        home_form=research.get("home_form") or {},
+        away_form=research.get("away_form") or {},
+        market_type=market_type,
+        selection=selection,
+        line=line,
+        home_out=int(injuries.get("home_out") or 0),
+        away_out=int(injuries.get("away_out") or 0),
+        is_home_selection=is_home if side_markets and "draw" not in selection.lower() else (
+            None if "draw" in selection.lower() else (is_home if side_markets else None)
+        ),
+        include_draw=include_draw,
+    )
+
+
+def build_verified_candidate(
+    *,
+    sport: str,
+    league: str,
+    candidate_id: str,
+    event_id: str,
+    event_name: str,
+    home_team: str,
+    away_team: str,
+    start_time: datetime,
+    market_type: str,
+    selection: str,
+    odds: int,
+    line: Decimal | None,
+    thesis_key: str,
+    script_key: str,
+    reason_codes: list[str],
+    reasoning: list[str],
+    research: dict[str, Any],
+    now: datetime | None = None,
+) -> CandidateInput:
+    now = now or datetime.now(UTC)
+    projection = project_from_research(
+        research,
+        market_type=market_type,
+        selection=selection,
+        line=float(line) if line is not None else None,
+        home_team=home_team,
+        sport=sport,
+    )
+    flags = research.get("flags") or {}
+    source_status = research.get("source_status") or {}
+    odds_clamped = max(-10000, min(10000, odds))
+    if odds_clamped == 0 or -100 < odds_clamped < 100:
+        odds_clamped = -100 if odds < 0 else 100
+    game_status, market_status = event_market_status(start_time, now)
+    espn_game = research.get("espn_game") or {}
+    # Cap quality while lineup/starter/sweep remain incomplete — form alone is not PLAY-grade.
+    # Once the sport sweep clears (KBO / NCAAF / NFL team-market path), floor quality
+    # above settings.minimum_data_quality so cleared research is not auto-SKIP'd.
+    if flags.get("sport_specific_sweep_complete"):
+        data_quality = max(0.68, min(0.88, float(projection.quality) * 0.9))
+    else:
+        data_quality = max(0.45, min(0.62, float(projection.quality) * 0.75))
+    missing = [
+        label
+        for key, label in [
+            ("schedule_verified", "schedule"),
+            ("current_form_verified", "current form / L5-L10"),
+            ("injuries_verified", "injuries for both teams"),
+            ("lineup_confirmed", "confirmed lineup/starters"),
+            ("starter_confirmed", "confirmed starters/roles"),
+            ("motivation_rotation_verified", "rotation/workload"),
+            ("market_movement_verified", "historical market/line movement"),
+            ("sport_specific_sweep_complete", "sport-specific strict-mode sweep"),
+        ]
+        if not flags.get(key)
+    ]
+    if sport.lower() == "kbo":
+        missing = [
+            label
+            for key, label in [
+                ("schedule_verified", "schedule"),
+                ("current_form_verified", "current form / L5-L10"),
+                ("injuries_verified", "injuries policy"),
+                ("weather_verified", "weather/venue"),
+                ("market_movement_verified", "current sportsbook price consensus"),
+                ("sport_specific_sweep_complete", "KBO strict-mode sweep"),
+            ]
+            if not flags.get(key)
+        ]
+    elif sport.lower() in {
+        "ncaaf",
+        "nfl",
+        "nba",
+        "ncaab",
+        "wnba",
+        "nhl",
+        "soccer",
+        "mls",
+        "epl",
+    }:
+        # Same honesty as NFL/KBO for every ESPN team-market sport: full-game
+        # markets do not require a certified depth-chart/lineup JSON feed.
+        missing = [
+            label
+            for key, label in [
+                ("schedule_verified", "schedule"),
+                ("current_form_verified", "current form / L5-L10"),
+                ("injuries_verified", "injuries for both teams"),
+                ("weather_verified", "weather/venue"),
+                ("market_movement_verified", "current sportsbook price consensus"),
+                ("sport_specific_sweep_complete", "sport-specific strict-mode sweep"),
+            ]
+            if not flags.get(key)
+        ]
+        # Indoor leagues do not need weather in the missing list.
+        if sport.lower() in {"nba", "ncaab", "wnba", "nhl"}:
+            missing = [label for label in missing if label != "weather/venue"]
+    market_period = "90_min" if sport.lower() in {"soccer", "mls", "epl"} and (
+        "moneyline" in market_type.lower() or "draw" in selection.lower()
+    ) else "full_game"
+    return CandidateInput(
+        candidate_id=candidate_id,
+        event_id=event_id,
+        event_name=event_name,
+        sport=sport,
+        league=league,
+        start_time=start_time,
+        home_team=home_team,
+        away_team=away_team,
+        market_type=market_type,
+        market_period=market_period,
+        selection=selection,
+        line=line,
+        american_odds=odds_clamped,
+        estimated_probability=projection.win_probability,
+        probability_source="model",
+        variance=0.36,
+        data_quality=data_quality,
+        factors={
+            "matchup": max(
+                -1.0,
+                min(
+                    1.0,
+                    (projection.home_strength - 0.5) * 2
+                    if home_team.lower() in selection.lower()
+                    else (projection.away_strength - 0.5) * 2,
+                ),
+            ),
+            "current_form": max(-1.0, min(1.0, (projection.win_probability - 0.5) * 2)),
+            "market_value": 0.0,
+        },
+        reason_codes=reason_codes,
+        reasoning=[
+            *reasoning,
+            *projection.notes,
+            (
+                "KBO Strict Mode uses Odds schedule/scores + weather + price consensus "
+                "(ESPN has no baseball/kbo path)."
+                if sport.lower() == "kbo"
+                else (
+                    "ESPN team-market Strict Mode: schedule + form + injuries + Odds "
+                    "consensus clear the sweep (no certified depth-chart feed yet)."
+                    if sport.lower()
+                    in {"ncaaf", "nfl", "nba", "ncaab", "wnba", "nhl", "soccer", "mls", "epl"}
+                    and flags.get("sport_specific_sweep_complete")
+                    else (
+                        "ESPN team-market Strict Mode incomplete until schedule, form, "
+                        "injuries, and Odds consensus verify."
+                        if sport.lower()
+                        in {"ncaaf", "nfl", "nba", "ncaab", "wnba", "nhl", "soccer", "mls", "epl"}
+                        else "Strict Mode incomplete until confirmed lineups/starters clear the sweep."
+                    )
+                )
+            ),
+        ],
+        data_source="FACT_CASCADE+THE_ODDS_API",
+        source_urls=list(research.get("source_urls") or []),
+        source_timestamp=now,
+        source_status=source_status,  # type: ignore[arg-type]
+        schedule_verified=bool(flags.get("schedule_verified")),
+        universe_scan_complete=True,
+        current_form_verified=bool(flags.get("current_form_verified")),
+        l5_l10_verified=bool(flags.get("l5_l10_verified")),
+        lineup_confirmed=bool(flags.get("lineup_confirmed")),
+        injuries_verified=bool(flags.get("injuries_verified")),
+        weather_verified=bool(flags.get("weather_verified")),
+        starter_confirmed=bool(flags.get("starter_confirmed")),
+        motivation_rotation_verified=bool(flags.get("motivation_rotation_verified")),
+        home_away_verified=bool(flags.get("home_away_verified")),
+        market_movement_verified=bool(flags.get("market_movement_verified")),
+        sport_specific_sweep_complete=bool(flags.get("sport_specific_sweep_complete")),
+        recent_hit_rate=(
+            (
+                float(((research.get("home_form") or {}).get("l10") or {}).get("win_pct"))
+                if ((research.get("home_form") or {}).get("l10") or {}).get("win_pct") is not None
+                else None
+            )
+            if home_team.lower() in selection.lower()
+            else (
+                float(((research.get("away_form") or {}).get("l10") or {}).get("win_pct"))
+                if ((research.get("away_form") or {}).get("l10") or {}).get("win_pct") is not None
+                else None
+            )
+        ),
+        # Unknown market-specific cushion / script / role stay null — never invent
+        # convincing constants that look like verified research.
+        average_cushion=None,
+        matchup_score=max(0.0, min(1.0, projection.home_strength)),
+        script_alignment=None,
+        multiple_paths_score=None,
+        role_stability=None,
+        miss_by_one_count_l10=None,
+        ain_checks={
+            "recent_form_l5_l10": bool(flags.get("l5_l10_verified")),
+            "situational_angles": bool(flags.get("injuries_verified")),
+            "h2h_context": bool(espn_game),
+        },
+        thesis_key=thesis_key,
+        script_key=script_key,
+        team_image_url=logo_for_play(sport, selection, event_name),
+        safer_alternative=f"Safer version of {selection}",
+        higher_upside=f"Higher-upside version of {selection}",
+        invalidation_conditions=["Key player ruled out", "Large line movement"],
+        live_trigger="Recheck price and availability before any live entry.",
+        hedge="Compare cash-out offer with fair remaining value before acting.",
+        game_status=game_status,
+        market_status=market_status,
+        missing_fields=missing,
+    )
+
+
+_CITY_COORDS: dict[str, tuple[float, float]] = {
+    "indianapolis": (39.7684, -86.1581),
+    "nashville": (36.1627, -86.7816),
+    "new york": (40.7128, -74.0060),
+    "los angeles": (34.0522, -118.2437),
+    "chicago": (41.8781, -87.6298),
+    "miami": (25.7617, -80.1918),
+    "dallas": (32.7767, -96.7970),
+    "denver": (39.7392, -104.9903),
+    "seattle": (47.6062, -122.3321),
+    "boston": (42.3601, -71.0589),
+    "philadelphia": (39.9526, -75.1652),
+    "atlanta": (33.7490, -84.3880),
+    "phoenix": (33.4484, -112.0740),
+    "detroit": (42.3314, -83.0458),
+    "minneapolis": (44.9778, -93.2650),
+    "kansas city": (39.0997, -94.5786),
+    "green bay": (44.5133, -88.0133),
+    "pittsburgh": (40.4406, -79.9959),
+    "baltimore": (39.2904, -76.6122),
+    "cleveland": (41.4993, -81.6944),
+    "cincinnati": (39.1031, -84.5120),
+    "tampa": (27.9506, -82.4572),
+    "jacksonville": (30.3322, -81.6557),
+    "charlotte": (35.2271, -80.8431),
+    "houston": (29.7604, -95.3698),
+    "san francisco": (37.7749, -122.4194),
+    "london": (51.5074, -0.1278),
+    "manchester": (53.4808, -2.2426),
+    # KBO park cities
+    "seoul": (37.5665, 126.9780),
+    "busan": (35.1796, 129.0756),
+    "daegu": (35.8714, 128.6014),
+    "incheon": (37.4563, 126.7052),
+    "gwangju": (35.1595, 126.8526),
+    "daejeon": (36.3504, 127.3845),
+    "suwon": (37.2636, 127.0286),
+    "changwon": (35.2280, 128.6811),
+    # Major NCAAF / college towns (weather Strict Mode for outdoor football)
+    "richmond": (37.5407, -77.4360),
+    "newark": (39.6837, -75.7497),
+    "charlottesville": (38.0293, -78.4767),
+    "blacksburg": (37.2296, -80.4139),
+    "lexington": (38.0406, -84.5037),
+    "louisville": (38.2527, -85.7585),
+    "knoxville": (35.9606, -83.9207),
+    "nashville": (36.1627, -86.7816),
+    "tuscaloosa": (33.2098, -87.5692),
+    "auburn": (32.6099, -85.4808),
+    "athens": (33.9519, -83.3576),
+    "clemson": (34.6834, -82.8374),
+    "columbia": (34.0007, -81.0348),
+    "tallahassee": (30.4383, -84.2807),
+    "gainesville": (29.6516, -82.3248),
+    "orlando": (28.5383, -81.3792),
+    "baton rouge": (30.4515, -91.1871),
+    "oxford": (34.3668, -89.5192),
+    "starkville": (33.4504, -88.8184),
+    "fayetteville": (36.0626, -94.1574),
+    "norman": (35.2226, -97.4395),
+    "stillwater": (36.1156, -97.0584),
+    "lubbock": (33.5779, -101.8552),
+    "waco": (31.5493, -97.1467),
+    "college station": (30.6280, -96.3344),
+    "austin": (30.2672, -97.7431),
+    "san antonio": (29.4241, -98.4936),
+    "fort worth": (32.7555, -97.3308),
+    "south bend": (41.6764, -86.2520),
+    "ann arbor": (42.2808, -83.7430),
+    "east lansing": (42.7369, -84.4839),
+    "columbus": (39.9612, -82.9988),
+    "west lafayette": (40.4259, -86.9081),
+    "bloomington": (39.1653, -86.5264),
+    "iowa city": (41.6611, -91.5302),
+    "ames": (42.0308, -93.6319),
+    "madison": (43.0731, -89.4012),
+    "minneapolis": (44.9778, -93.2650),
+    "lincoln": (40.8136, -96.7026),
+    "lawrence": (38.9717, -95.2353),
+    "boulder": (40.0150, -105.2705),
+    "provo": (40.2338, -111.6585),
+    "salt lake city": (40.7608, -111.8910),
+    "eugene": (44.0521, -123.0868),
+    "corvallis": (44.5646, -123.2620),
+    "pullman": (46.7298, -117.1817),
+    "seattle": (47.6062, -122.3321),
+    "tucson": (32.2226, -110.9747),
+    "tempe": (33.4255, -111.9400),
+    "berkeley": (37.8715, -122.2730),
+    "stanford": (37.4275, -122.1697),
+    "los angeles": (34.0522, -118.2437),
+    "pasadena": (34.1478, -118.1445),
+    "san diego": (32.7157, -117.1611),
+    "fresno": (36.7378, -119.7871),
+    "sacramento": (38.5816, -121.4944),
+    "chapel hill": (35.9132, -79.0558),
+    "durham": (35.9940, -78.8986),
+    "raleigh": (35.7796, -78.6382),
+    "winston-salem": (36.0999, -80.2442),
+    "syracuse": (43.0481, -76.1474),
+    "state college": (40.7934, -77.8600),
+    "pittsburgh": (40.4406, -79.9959),
+    "morgantown": (39.6295, -79.9559),
+    "charlottesville": (38.0293, -78.4767),
+    "chestnut hill": (42.3309, -71.1662),
+    "south orange": (40.7490, -74.2610),
+    "piscataway": (40.5549, -74.4643),
+    "storrs": (41.8084, -72.2495),
+    "memphis": (35.1495, -90.0490),
+    "tulsa": (36.1540, -95.9928),
+    "honolulu": (21.3069, -157.8583),
+    "boise": (43.6150, -116.2023),
+    "reno": (39.5296, -119.8138),
+    "albuquerque": (35.0844, -106.6504),
+    "laramie": (41.3114, -105.5911),
+    "moscow": (46.7324, -117.0002),
+    "logan": (41.7369, -111.8338),
+    "fort collins": (40.5853, -105.0844),
+    "manhattan": (39.1836, -96.5717),
+    "champaign": (40.1164, -88.2434),
+    "evanston": (42.0447, -87.6931),
+    "south bend": (41.6764, -86.2520),
+}
+
+
+def _city_coords(city: str, state: str, country: str) -> tuple[float, float] | None:
+    del state, country
+    key = (city or "").strip().lower()
+    if key in _CITY_COORDS:
+        return _CITY_COORDS[key]
+    first = key.split(",")[0].strip()
+    return _CITY_COORDS.get(first)

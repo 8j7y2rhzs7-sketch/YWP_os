@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import logging
-from datetime import date
+import time
+from datetime import UTC, date, datetime
 from decimal import Decimal
 from uuid import uuid4
+from zoneinfo import ZoneInfo
 
 logger = logging.getLogger(__name__)
 
@@ -12,7 +14,14 @@ from sqlalchemy import or_, select
 
 from app.core.config import settings
 from app.core.security import utcnow
-from app.deps import DB, CurrentUser
+from app.deps import DB, SubscribedUser
+from app.hive.service import (
+    blend_hive_probability,
+    capture_hive_prediction,
+    get_hive_signal,
+    hive_learning_maturity,
+    resolve_hive_outcome,
+)
 from app.models import (
     GameSnapshot,
     LearningEvent,
@@ -24,22 +33,204 @@ from app.models import (
 from app.schemas import (
     AnalyzeResponse,
     BuildTicketRequest,
+    CustomCardPreviewRequest,
     BuildTicketResponse,
+    CandidateInput,
+    DayForgeResponse,
+    ExternalResultCreate,
+    ExternalResultOut,
+    PropWarmRequest,
+    PropWarmResponse,
     RecommendationOut,
     ResultCreate,
     ResultOut,
+    RiskProfile,
+    SettleDayResponse,
+    SettlementItemOut,
     SlateResponse,
     SportsAnalyzeRequest,
+    TicketCardOut,
 )
-from app.services.decision_engine import decision_engine, implied_probability, money
+from app.services.day_forge import (
+    cook_progress_from_slate,
+    day_forge_sport_queue,
+    resolve_day_forge_sport,
+    select_day_forge_play,
+    trim_forge_candidates,
+)
+from app.services.decision_engine import (
+    decision_engine,
+    implied_probability,
+    input_hash,
+    money,
+)
+from app.services.learning import apply_micro_learning, load_feature_weights, record_usage_event
 from app.services.protocols import run_protocol_health_check
 from app.services.providers import demo_slate
-from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate
-from app.services.live_mlb_slate import live_mlb_slate
-from app.services.live_wnba_slate import live_wnba_slate
-from app.services.ticket_builder import build_cards
+from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate, upcoming_odds_dates
+from app.services.live_mlb_slate import live_mlb_slate, props_slate_notice
+from app.services.live_wnba_slate import (
+    live_wnba_slate,
+    upcoming_wnba_dates,
+    wnba_props_slate_notice,
+)
+from app.services.market_board import build_market_board
+from app.services.odds_provider import (
+    app_sport_in_season,
+    build_app_sports_catalog,
+    get_last_fetch_status,
+    odds_api_configured,
+    prefetch_in_season_app_odds,
+)
+from app.services.readiness import slate_readiness, verification_summary
+from app.services.settlement import settle_user_day
+from app.services.ticket_builder import build_cards, preview_custom_card
 
 router = APIRouter(prefix="/sports", tags=["sports"])
+
+
+@router.get("/catalog")
+def sports_catalog(
+    _: SubscribedUser,
+    force_refresh: bool = Query(default=False),
+) -> dict[str, object]:
+    """App sport list enriched with free Odds /v4/sports in-season flags (0 credits)."""
+    sports = build_app_sports_catalog(force_refresh=force_refresh)
+    return {
+        "sports": sports,
+        "credit_cost": 0,
+        "source": "odds_api_free_sports_catalog",
+        "in_season_count": sum(1 for row in sports if row.get("in_season") is True),
+        "note": (
+            "In-season flags come from the free Odds /sports catalog. "
+            "Priced slate refresh still costs markets×regions credits per sport."
+        ),
+    }
+
+
+@router.post("/prefetch-odds")
+def prefetch_odds(_: SubscribedUser) -> dict[str, object]:
+    """Warm paid odds for all in-season app sports (uses credits once, then TTL cache)."""
+    if not odds_api_configured():
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="ODDS_API_KEY is not configured",
+        )
+    return prefetch_in_season_app_odds()
+
+
+def _prop_research_stats(
+    candidates: list[CandidateInput],
+) -> tuple[int, int, int, float]:
+    props = [
+        c
+        for c in candidates
+        if str(c.market_type or "").startswith("player_")
+    ]
+    total = len(props)
+    modeled = sum(1 for c in props if c.probability_source in {"model", "manual_verified"})
+    pending = total - modeled
+    coverage = round((modeled / total) * 100.0, 1) if total else 100.0
+    return total, modeled, pending, coverage
+
+
+@router.post("/warm-props", response_model=PropWarmResponse)
+def warm_props(payload: PropWarmRequest, _: SubscribedUser) -> PropWarmResponse:
+    """Spend a bounded slice of ESPN form research, then return updated candidates.
+
+    Render free kills ~30s requests. Full 500+ prop boards need several warm
+    passes — the mobile LAUNCH flow loops this until ready, then calls /analyze
+    so the engine is not rushed into grading sportsbook-only lines.
+    """
+    sport_l = (payload.sport or "").lower()
+    before_total, before_modeled, before_pending, _ = _prop_research_stats(payload.candidates)
+    if before_pending <= 0 or sport_l not in {
+        "wnba",
+        "nba",
+        "basketball",
+        "nfl",
+        "ncaaf",
+    }:
+        total, modeled, pending, coverage = _prop_research_stats(payload.candidates)
+        return PropWarmResponse(
+            sport=payload.sport,
+            date=payload.date,
+            candidates=payload.candidates,
+            prop_total=total,
+            prop_modeled=modeled,
+            prop_pending=pending,
+            coverage_pct=coverage,
+            enriched_this_pass=0,
+            ready=True,
+            notice=(
+                "No pending player-prop research — ready to LAUNCH."
+                if pending <= 0
+                else "This sport does not use ESPN prop form warm."
+            ),
+        )
+
+    from app.services.player_prop_research import enrich_player_prop_candidates
+
+    enriched = enrich_player_prop_candidates(
+        list(payload.candidates),
+        slate_date=payload.date,
+        budget_seconds=float(payload.budget_seconds),
+    )
+    total, modeled, pending, coverage = _prop_research_stats(enriched)
+    gained = max(0, modeled - before_modeled)
+    # Only "ready" when coverage is high or nothing left. Never stop after a
+    # single zero-gain pass — ESPN lookups often spend a slice with no upgrades
+    # before the next pass finds models. The client decides when to stall-out.
+    ready = pending <= 0 or coverage >= 92.0
+    notice = (
+        f"Research {modeled}/{total} props modeled ({coverage:.0f}%). "
+        + (
+            "Ready to grade."
+            if ready and pending <= 0
+            else "Ready to grade — remaining lines stay SKIP until sources resolve."
+            if ready
+            else f"+{gained} this pass — keep warming."
+        )
+    )
+    return PropWarmResponse(
+        sport=payload.sport,
+        date=payload.date,
+        candidates=enriched,
+        prop_total=total,
+        prop_modeled=modeled,
+        prop_pending=pending,
+        coverage_pct=coverage,
+        enriched_this_pass=gained,
+        ready=ready,
+        notice=notice,
+    )
+
+
+def _slate_response(
+    *,
+    sport: str,
+    slate_date: date,
+    mode: str,
+    notice: str,
+    candidates: list,
+) -> SlateResponse:
+    # DEMO only when mode is demo (or candidates are demo-sourced). Empty live
+    # boards are PARTIAL so KBO/US-date misses never show as "DEMO DATA".
+    if mode == "demo":
+        readiness = "DEMO"
+    else:
+        readiness = slate_readiness(candidates)
+        if not candidates and readiness == "DEMO":
+            readiness = "PARTIAL"
+    return SlateResponse(
+        sport=sport,
+        date=slate_date,
+        mode=mode,
+        readiness=readiness,
+        notice=notice,
+        verification_summary=verification_summary(candidates),
+        candidates=candidates,
+    )
 
 
 def _owned_recommendation(db: DB, recommendation_id: str, user_id: str) -> Recommendation:
@@ -54,118 +245,895 @@ def _owned_recommendation(db: DB, recommendation_id: str, user_id: str) -> Recom
     return recommendation
 
 
+def _candidate_event_local_date(
+    candidate: CandidateInput, *, timezone_name: str | None = None
+) -> date:
+    start = candidate.start_time
+    if start.tzinfo is None:
+        start = start.replace(tzinfo=UTC)
+    sport_l = (candidate.sport or "").lower()
+    zone_name = timezone_name or (
+        "Asia/Seoul" if sport_l == "kbo" else "America/New_York"
+    )
+    try:
+        zone = ZoneInfo(zone_name)
+    except Exception:  # noqa: BLE001
+        zone = ZoneInfo("America/New_York")
+    return start.astimezone(zone).date()
+
+
+def _assert_candidates_match_slate_date(payload: SportsAnalyzeRequest) -> None:
+    mismatched = [
+        candidate.candidate_id
+        for candidate in payload.candidates
+        if _candidate_event_local_date(candidate) != payload.date
+    ]
+    if mismatched:
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "Candidate events do not match the requested slate date. "
+                "Reload the slate for that date before analyzing."
+                + (
+                    " KBO uses Korea (Asia/Seoul) calendar dates."
+                    if payload.sport.lower() == "kbo"
+                    else ""
+                )
+            ),
+        )
+
+
+def _candidates_look_like_sheet_menu(candidates: list[CandidateInput]) -> bool:
+    """True when any candidate came from Pick Sheet sportsbook menu."""
+    for candidate in candidates:
+        if candidate.data_source == "THE_ODDS_API_BOARD":
+            return True
+        if "SPORTSBOOK_MENU" in (candidate.reason_codes or []):
+            return True
+    return False
+
+
 @router.get("/slate", response_model=SlateResponse)
 def slate(
-    _: CurrentUser,
+    _: SubscribedUser,
     sport_name: str = Query(alias="sport", min_length=2, max_length=24),
     slate_date: date = Query(alias="date"),
 ) -> SlateResponse:
     sport_lower = sport_name.lower()
 
-    if not settings.demo_mode and sport_lower == "mlb" and settings.odds_api_key:
+    # Odds-only sports: skip paid refresh when free catalog says out of season.
+    # MLB still loads schedule/model facts even without book prices.
+    if sport_lower != "mlb" and app_sport_in_season(sport_lower) is False:
+        return _slate_response(
+            sport=sport_lower,
+            slate_date=slate_date,
+            mode="live",
+            notice=(
+                f"{sport_lower.upper()} is out of season on The Odds API free sports catalog. "
+                "Paid odds refresh was skipped to save credits. Pick an in-season sport "
+                "(see /sports/catalog) or wait until books list games again."
+            ),
+            candidates=[],
+        )
+
+    if not settings.demo_mode and sport_lower == "mlb":
         try:
             candidates = live_mlb_slate(slate_date)
             if candidates:
-                return SlateResponse(
+                has_book_markets = any(
+                    item.market_type
+                    in {"moneyline", "run_line", "game_total_over", "game_total_under"}
+                    for item in candidates
+                )
+                odds_status = get_last_fetch_status()
+                if has_book_markets:
+                    notice = (
+                        "Live MLB: independent YWP model from official MLB Stats API facts, "
+                        "filled by the trusted-source research searchers, compared against "
+                        "real sportsbook prices from The Odds API. "
+                        + props_slate_notice()
+                    )
+                elif odds_status.get("error") == "sport_out_of_season":
+                    notice = (
+                        "Live MLB schedule and model inputs loaded, but baseball_mlb is "
+                        "out of season on the free Odds sports catalog — paid book odds "
+                        "were skipped to save credits."
+                    )
+                elif not odds_api_configured():
+                    notice = (
+                        "Live MLB schedule and model inputs loaded, but ODDS_API_KEY is missing. "
+                        "No actionable candidates without a real sportsbook price. "
+                        "Set ODDS_API_KEY on Render, redeploy, then refresh."
+                    )
+                else:
+                    detail = odds_status.get("error") or "book_odds_unavailable"
+                    fingerprint = odds_status.get("fingerprint") or "unknown"
+                    key_len = odds_status.get("length") or 0
+                    hex_note = (
+                        "key looks like hex"
+                        if odds_status.get("looks_like_hex")
+                        else "key is not hex — Odds API keys are 0-9 and a-f only"
+                    )
+                    notice = (
+                        "Live MLB model inputs loaded, but book odds were unavailable "
+                        f"({detail}). Server key fingerprint {fingerprint} "
+                        f"({key_len} chars, {hex_note}). "
+                        "After changing ODDS_API_KEY on Render, use Manual Deploy, "
+                        "wait for version 3.2.1+, then refresh."
+                    )
+                return _slate_response(
                     sport=sport_lower,
-                    date=slate_date,
+                    slate_date=slate_date,
                     mode="live",
-                    notice=(
-                        "Live MLB data from MLB.com Stats API + The Odds API. "
-                        "Verify all inputs before wagering."
-                    ),
+                    notice=notice,
                     candidates=candidates,
                 )
-        except Exception as exc:
-            logger.exception("Live MLB slate failed, falling back to demo")
+        except Exception:
+            logger.exception("Live MLB slate failed")
 
     if not settings.demo_mode and sport_lower in ("wnba", "basketball") and settings.odds_api_key:
         try:
             candidates = live_wnba_slate(slate_date)
             if candidates:
-                return SlateResponse(
+                return _slate_response(
                     sport=sport_lower,
-                    date=slate_date,
+                    slate_date=slate_date,
                     mode="live",
                     notice=(
-                        "Live WNBA data from The Odds API. "
-                        "Player props and L5/L10 stats require manual verification."
+                        "Live WNBA from The Odds API: full-game markets plus expanded "
+                        "player props (PTS/REB/AST/3s/PRA/PR/PA/RA/BLK/STL/TO/DD and more). "
+                        + wnba_props_slate_notice()
                     ),
                     candidates=candidates,
                 )
+            nearby = upcoming_wnba_dates()
+            notice = (
+                f"No WNBA Odds events on {slate_date.isoformat()} (America/New_York). "
+                + (
+                    f"Nearest dates with prices: {', '.join(nearby)}. "
+                    if nearby
+                    else "No priced WNBA events in the current Odds upcoming feed. "
+                )
+                + "Change the slate date and refresh — demo data is not substituted."
+            )
+            return _slate_response(
+                sport=sport_lower,
+                slate_date=slate_date,
+                mode="live",
+                notice=notice,
+                candidates=[],
+            )
         except Exception:
-            logger.exception("Live WNBA slate failed, falling back to demo")
+            logger.exception("Live WNBA slate failed")
 
     if not settings.demo_mode and sport_lower in SPORT_KEYS and settings.odds_api_key:
         try:
             candidates = live_generic_slate(sport_lower, slate_date)
             if candidates:
-                return SlateResponse(
+                if sport_lower == "kbo":
+                    notice = (
+                        "Live KBO prices from The Odds API. Research uses Odds scores + "
+                        "Open-Meteo (ESPN has no baseball/kbo path). Full-game markets can "
+                        "clear when schedule, recent form, weather, and price consensus verify."
+                    )
+                elif sport_lower in {"nfl", "ncaaf"}:
+                    prop_n = sum(
+                        1
+                        for c in candidates
+                        if str(c.market_type or "").startswith("player_")
+                    )
+                    model_n = sum(
+                        1
+                        for c in candidates
+                        if str(c.market_type or "").startswith("player_")
+                        and c.probability_source == "model"
+                    )
+                    notice = (
+                        f"Live {sport_lower.upper()} from The Odds API: full-game markets plus "
+                        f"expanded player props ({prop_n} lines, {model_n} ESPN form-modeled). "
+                        "Thin-cushion / miss-by-1 closes hard-SKIP before PLAY."
+                    )
+                else:
+                    notice = (
+                        f"Live {sport_lower.upper()} prices from The Odds API with "
+                        "multi-source fact cascade (NHL Web API / ESPN / Open-Meteo). "
+                        "Missing research stays PARTIAL — priced plays are still shown."
+                    )
+                return _slate_response(
                     sport=sport_lower,
-                    date=slate_date,
+                    slate_date=slate_date,
                     mode="live",
-                    notice=(
-                        f"Live {sport_lower.upper()} data from The Odds API. "
-                        "Verify all inputs before wagering."
-                    ),
+                    notice=notice,
                     candidates=candidates,
                 )
+            nearby = upcoming_odds_dates(sport_lower)
+            if nearby:
+                return _slate_response(
+                    sport=sport_lower,
+                    slate_date=slate_date,
+                    mode="live",
+                    notice=(
+                        f"No {sport_lower.upper()} Odds events on {slate_date.isoformat()}. "
+                        f"Nearest dates with prices: {', '.join(nearby)}. "
+                        "Change the slate date and refresh — demo data is not substituted."
+                    ),
+                    candidates=[],
+                )
         except Exception:
-            logger.exception("Live %s slate failed, falling back to demo", sport_lower)
+            logger.exception("Live %s slate failed", sport_lower)
 
-    if not settings.demo_mode and sport_lower not in ("mlb", "wnba", "basketball") and sport_lower not in SPORT_KEYS:
+    if not settings.demo_mode:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=(
-                "No live provider for this sport. Supply licensed provider data "
-                "through POST /sports/analyze or enable demo mode."
+                "No verified live slate is available. The server will not silently substitute "
+                "demo data in production. Check provider configuration or pick a date that "
+                "has Odds API events, then refresh. You can still submit verified candidates "
+                "through POST /sports/analyze."
             ),
         )
 
-    return SlateResponse(
+    candidates = demo_slate(sport_name, slate_date)
+    return _slate_response(
         sport=sport_lower,
-        date=slate_date,
+        slate_date=slate_date,
         mode="demo",
         notice=(
             "Synthetic demonstration data only. It is intentionally not a live slate and must "
             "not be used for wagering."
         ),
-        candidates=demo_slate(sport_name, slate_date),
+        candidates=candidates,
     )
 
 
-@router.post("/analyze", response_model=AnalyzeResponse, status_code=status.HTTP_201_CREATED)
-def analyze(payload: SportsAnalyzeRequest, user: CurrentUser, db: DB) -> AnalyzeResponse:
+@router.get("/market-board", response_model=SlateResponse)
+def market_board(
+    _: SubscribedUser,
+    sport_name: str = Query(alias="sport", min_length=2, max_length=24),
+    slate_date: date = Query(alias="date"),
+    include_props: bool = Query(default=True),
+    overlay_model: bool = Query(
+        default=False,
+        description=(
+            "When true, matching markets from the model slate replace market-implied "
+            "probabilities so Check can still clear PLAY/LEAN. Default false so the "
+            "sportsbook menu returns quickly; non-matching book markets still grade."
+        ),
+    ),
+) -> SlateResponse:
+    """Full sportsbook-style menu for Pick Sheet (not the model-filtered Run slate)."""
+    sport_lower = sport_name.lower()
+    # Force book-only board for reliability. Model overlay re-runs live research and
+    # was 503/timing-out Sheet on Render while Run still worked. Clients may still
+    # send overlay_model=true from older APKs — ignore it here.
+    overlay_model = False
+    if sport_lower != "mlb" and app_sport_in_season(sport_lower) is False:
+        return _slate_response(
+            sport=sport_lower,
+            slate_date=slate_date,
+            mode="live",
+            notice=(
+                f"{sport_lower.upper()} is out of season — sportsbook menu skipped to save credits."
+            ),
+            candidates=[],
+        )
+
+    if settings.demo_mode:
+        candidates = demo_slate(sport_name, slate_date)
+        return _slate_response(
+            sport=sport_lower,
+            slate_date=slate_date,
+            mode="demo",
+            notice=(
+                "Demo sportsbook menu (synthetic). Live Pick Sheet uses The Odds API full board."
+            ),
+            candidates=candidates,
+        )
+
+    try:
+        candidates, notice = build_market_board(
+            sport_lower,
+            slate_date,
+            include_props=include_props,
+            overlay_model=overlay_model,
+        )
+    except Exception:
+        logger.exception("Market board failed for %s", sport_lower)
+        # Prefer an empty board + honest notice over a hard 503 — Sheet can still retry.
+        return _slate_response(
+            sport=sport_lower,
+            slate_date=slate_date,
+            mode="live",
+            notice=(
+                "Sportsbook menu hit a temporary error while loading prices. "
+                "Try Load again (props load in smaller chunks), or use Run for the model slate."
+            ),
+            candidates=[],
+        )
+
+    if not candidates:
+        return _slate_response(
+            sport=sport_lower,
+            slate_date=slate_date,
+            mode="live",
+            notice=notice or "No priced markets on the sportsbook menu for this date.",
+            candidates=[],
+        )
+
+    return _slate_response(
+        sport=sport_lower,
+        slate_date=slate_date,
+        mode="live",
+        notice=notice,
+        candidates=candidates,
+    )
+
+
+def _persist_day_forge_evaluations(
+    *,
+    db: DB,
+    user_id: str,
+    sport: str,
+    slate_date: date,
+    mode: str,
+    candidates: list[CandidateInput],
+) -> tuple[str, list[Recommendation]]:
+    """Grade a trimmed forge slate and persist like a light analyze run."""
     analysis_id = str(uuid4())
     protocol_run = run_protocol_health_check(
         db,
         analysis_id=analysis_id,
-        user_id=user.id,
-        sport=payload.sport,
-        candidates=payload.candidates,
+        user_id=user_id,
+        sport=sport,
+        candidates=candidates,
     )
-    evaluations = decision_engine.rank(
-        [
-            decision_engine.evaluate(candidate, payload.user_risk_profile)
-            for candidate in payload.candidates
-        ]
-    )
+    del protocol_run  # health recorded; response uses forge messaging
 
+    weight_cache: dict[tuple[str, str], dict[str, float]] = {}
+    raw_evaluations = []
+    from app.hive.self_improve import get_active_policy
+    from app.hive.service import hive_bucket_key
+
+    hive_policy = get_active_policy(db=db)
+    for candidate in candidates:
+        evaluation = decision_engine.evaluate(
+            candidate,
+            RiskProfile.balanced,
+            learned_weights=weight_cache.setdefault(
+                (candidate.sport.lower(), candidate.market_type),
+                load_feature_weights(db, candidate.sport.lower(), candidate.market_type),
+            ),
+        )
+        base_probability = (
+            float(evaluation.adjusted_probability)
+            if candidate.probability_source in {"model", "manual_verified", "demo"}
+            else None
+        )
+        hive_signal = get_hive_signal(
+            db=db,
+            sport=candidate.sport,
+            league=candidate.league,
+            market=candidate.market_type,
+            market_scope=candidate.market_period,
+            model_version=settings.model_version,
+        )
+        hive_adjusted, hive_meta = blend_hive_probability(
+            base_probability=base_probability,
+            hive_signal=hive_signal,
+            policy=hive_policy.to_dict(),
+            bucket_key=hive_bucket_key(
+                candidate.sport,
+                candidate.league,
+                candidate.market_type,
+                candidate.market_period,
+                settings.model_version,
+            ),
+        )
+        evaluation.payload["model_probability"] = base_probability
+        evaluation.payload["hive_adjusted_probability"] = hive_adjusted
+        evaluation.payload["hive"] = hive_meta
+        evaluation.payload["day_forge"] = True
+        if (
+            hive_meta.get("used")
+            and hive_adjusted is not None
+            and base_probability is not None
+        ):
+            evaluation = decision_engine.apply_hive_calibration(
+                evaluation,
+                float(hive_adjusted),
+                shift_applied=float(hive_meta.get("shift_applied") or 0.0),
+            )
+        from app.services.metacognition import reflect_on_decision
+
+        evaluation.payload["metacognition"] = reflect_on_decision(
+            decision=evaluation.decision,
+            reason_codes=evaluation.reason_codes,
+            warnings=evaluation.warnings,
+            reasoning_summary=evaluation.reasoning_summary,
+            selection=candidate.selection,
+            hive_meta=hive_meta if isinstance(hive_meta, dict) else None,
+            probability_source=candidate.probability_source,
+        )
+        raw_evaluations.append(evaluation)
+
+    evaluations = decision_engine.rank(raw_evaluations)
     records: list[Recommendation] = []
     for rank, evaluation in enumerate(evaluations, start=1):
         candidate = evaluation.candidate
+        reason_codes = list(evaluation.reason_codes or [])
+        if "DAY_FORGE_CANDIDATE" not in reason_codes:
+            reason_codes.append("DAY_FORGE_CANDIDATE")
         db.add(
             GameSnapshot(
                 analysis_id=analysis_id,
                 event_id=candidate.event_id,
                 sport=candidate.sport.lower(),
-                slate_date=payload.date,
+                slate_date=slate_date,
                 data_source=candidate.data_source,
                 source_timestamp=candidate.source_timestamp,
                 input_hash=evaluation.input_hash,
                 payload=evaluation.payload,
             )
         )
+        record = Recommendation(
+            analysis_id=analysis_id,
+            created_by_user_id=user_id,
+            candidate_id=candidate.candidate_id,
+            event_id=candidate.event_id,
+            event_name=candidate.event_name,
+            sport=candidate.sport.lower(),
+            league=candidate.league,
+            slate_date=slate_date,
+            mode=mode,
+            market_type=candidate.market_type,
+            market_period=candidate.market_period,
+            selection=candidate.selection,
+            line=candidate.line,
+            american_odds=candidate.american_odds,
+            estimated_probability=money(candidate.estimated_probability),
+            implied_probability=money(evaluation.implied_probability),
+            adjusted_probability=money(evaluation.adjusted_probability),
+            edge=money(evaluation.edge),
+            expected_value=money(evaluation.expected_value),
+            confidence_score=evaluation.confidence_score,
+            ywp_rating=money(evaluation.ywp_intelligence_score, "0.01"),
+            vision_score=money(evaluation.vision_score, "0.01"),
+            miss_by_one_risk=money(evaluation.miss_by_one_risk, "0.0001"),
+            reliability=money(evaluation.reliability, "0.0001"),
+            stability=money(evaluation.stability, "0.0001"),
+            variance=money(candidate.variance, "0.0001"),
+            data_quality=money(candidate.data_quality, "0.0001"),
+            risk=evaluation.risk,
+            risk_tier=evaluation.risk_tier,
+            variance_rating=evaluation.variance_rating,
+            edge_class=evaluation.edge_class,
+            expected_value_label=evaluation.expected_value_label,
+            suggested_stake_pct=money(evaluation.suggested_stake_pct, "0.0001"),
+            decision=evaluation.decision,
+            recommendation_tier=evaluation.recommendation_tier,
+            rank=rank,
+            reason_codes=reason_codes,
+            reasoning_summary=evaluation.reasoning_summary,
+            warnings=evaluation.warnings,
+            safer_alternative=candidate.safer_alternative,
+            higher_upside=candidate.higher_upside,
+            invalidation_conditions=candidate.invalidation_conditions,
+            live_trigger=candidate.live_trigger,
+            hedge=candidate.hedge,
+            quick_cash=candidate.quick_cash,
+            chain_reaction_key=candidate.chain_reaction_key,
+            thesis_key=candidate.thesis_key,
+            script_key=candidate.script_key,
+            player_key=candidate.player_key,
+            data_source=candidate.data_source,
+            source_timestamp=candidate.source_timestamp,
+            model_version=settings.model_version,
+            protocol_version=settings.protocol_version,
+            input_hash=evaluation.input_hash,
+            snapshot=evaluation.payload,
+        )
+        db.add(record)
+        records.append(record)
+
+    record_usage_event(
+        db,
+        event_type="DAY_FORGE",
+        sport=sport.lower(),
+        analysis={
+            "analysis_id": analysis_id,
+            "user_id": user_id,
+            "candidate_count": len(candidates),
+            "forge": True,
+        },
+    )
+    db.commit()
+    for record in records:
+        db.refresh(record)
+    return analysis_id, records
+
+
+@router.get("/day-forge", response_model=DayForgeResponse)
+def day_forge(
+    user: SubscribedUser,
+    db: DB,
+    sport_name: str | None = Query(default=None, alias="sport", min_length=2, max_length=24),
+    slate_date: date | None = Query(default=None, alias="date"),
+    force: bool = Query(default=False),
+) -> DayForgeResponse:
+    """Home Day Forge — cook until data is ready, then reveal one cash-band play."""
+    today = slate_date or datetime.now(ZoneInfo("America/New_York")).date()
+    catalog = build_app_sports_catalog()
+    sport_queue = day_forge_sport_queue(catalog, sport_name)
+    sport = sport_queue[0] if sport_queue else resolve_day_forge_sport(catalog, sport_name)
+
+    # Reuse today's forged pick when already sealed (unless force).
+    if not force:
+        # Check sealed picks across the queue so a prior NFL seal still wins
+        # even if catalog priority flips overnight.
+        existing = list(
+            db.scalars(
+                select(Recommendation)
+                .where(
+                    Recommendation.created_by_user_id == user.id,
+                    Recommendation.slate_date == today,
+                    Recommendation.sport.in_(sport_queue or [sport]),
+                )
+                .order_by(Recommendation.created_at.desc())
+                .limit(120)
+            ).all()
+        )
+        forged = [
+            row
+            for row in existing
+            if "DAY_FORGE_PICK" in (row.reason_codes or [])
+            or "DAY_FORGE_CANDIDATE" in (row.reason_codes or [])
+        ]
+        pick = select_day_forge_play(forged or existing)
+        if pick and "DAY_FORGE_PICK" in (pick.reason_codes or []):
+            sealed_sport = str(getattr(pick, "sport", None) or sport)
+            out = RecommendationOut.model_validate(pick)
+            return DayForgeResponse(
+                status="ready",
+                phase="ready",
+                progress=1.0,
+                message="Day Forge sealed — today's cash-band play is ready.",
+                sport=sealed_sport,
+                date=today,
+                readiness=None,
+                cook_reasons=[],
+                forgeable_count=1,
+                graded_count=len(forged or existing),
+                analysis_id=pick.analysis_id,
+                play=out,
+                notification_title="DAY FORGE READY",
+                notification_body=f"{out.selection} · {out.american_odds:+d}"
+                if out.american_odds
+                else out.selection,
+            )
+
+    board = None
+    last_503_detail: str | None = None
+    tried: list[str] = []
+    for candidate_sport in sport_queue or [sport]:
+        tried.append(candidate_sport)
+        try:
+            board = slate(user, sport_name=candidate_sport, slate_date=today)
+            sport = candidate_sport
+            # Prefer a board that actually has candidates; otherwise keep looking.
+            if board.candidates:
+                break
+        except HTTPException as exc:
+            if exc.status_code == status.HTTP_503_SERVICE_UNAVAILABLE:
+                last_503_detail = str(exc.detail)
+                board = None
+                continue
+            raise
+
+    if board is None:
+        # Soft stand-by so Home keeps polling — do not freeze at 5% forever.
+        return DayForgeResponse(
+            status="cooking",
+            phase="waiting_slate",
+            progress=0.08,
+            message="Day Forge standing by — scanning live slate heat…",
+            sport=sport,
+            date=today,
+            cook_reasons=["slate_unavailable", *([f"tried:{','.join(tried)}"] if tried else [])],
+            pass_reason=last_503_detail,
+        )
+
+    cook = cook_progress_from_slate(board.candidates)
+    if cook.status == "unavailable":
+        return DayForgeResponse(
+            status="cooking",
+            phase="waiting_slate",
+            progress=max(0.08, cook.progress),
+            message=cook.message or "Day Forge standing by — waiting on priced board…",
+            sport=sport,
+            date=today,
+            readiness=board.readiness,
+            cook_reasons=cook.cook_reasons or ["empty_slate"],
+            forgeable_count=cook.forgeable_count,
+            pass_reason="empty_slate",
+        )
+
+    fuel = trim_forge_candidates(board.candidates)
+    if cook.phase in {"gathering_heat", "waiting_slate"} or (
+        cook.status == "cooking" and cook.phase != "grading" and not force
+    ):
+        return DayForgeResponse(
+            status="cooking",
+            phase=cook.phase,
+            progress=cook.progress,
+            message=cook.message,
+            sport=sport,
+            date=today,
+            readiness=board.readiness,
+            cook_reasons=cook.cook_reasons,
+            forgeable_count=len(fuel),
+        )
+
+    if not fuel:
+        return DayForgeResponse(
+            status="cooking",
+            phase="gathering_heat",
+            progress=max(0.35, cook.progress),
+            message="Vault sealed — still waiting on cash-band candidates.",
+            sport=sport,
+            date=today,
+            readiness=board.readiness,
+            cook_reasons=["no_forge_fuel"],
+            forgeable_count=0,
+        )
+
+    analysis_id, records = _persist_day_forge_evaluations(
+        db=db,
+        user_id=user.id,
+        sport=sport,
+        slate_date=today,
+        mode=board.mode,
+        candidates=fuel,
+    )
+    pick = select_day_forge_play(records)
+    if pick is None:
+        return DayForgeResponse(
+            status="pass",
+            phase="pass",
+            progress=1.0,
+            message="Forge complete — no cash-band PLAY cleared the gates. PASS stands.",
+            sport=sport,
+            date=today,
+            readiness=board.readiness,
+            cook_reasons=[],
+            pass_reason="no_eligible_play",
+            forgeable_count=len(fuel),
+            graded_count=len(records),
+            analysis_id=analysis_id,
+            notification_title="DAY FORGE PASS",
+            notification_body="Nothing in the cash band cleared. No forced play.",
+        )
+
+    codes = list(pick.reason_codes or [])
+    if "DAY_FORGE_PICK" not in codes:
+        codes.append("DAY_FORGE_PICK")
+        pick.reason_codes = codes
+        db.add(pick)
+        db.commit()
+        db.refresh(pick)
+
+    out = RecommendationOut.model_validate(pick)
+    odds_label = f"{out.american_odds:+d}" if out.american_odds else "priced"
+    return DayForgeResponse(
+        status="ready",
+        phase="ready",
+        progress=1.0,
+        message="Day Forge open — one process play sealed for today.",
+        sport=sport,
+        date=today,
+        readiness=board.readiness,
+        cook_reasons=[],
+        forgeable_count=len(fuel),
+        graded_count=len(records),
+        analysis_id=analysis_id,
+        play=out,
+        notification_title="DAY FORGE READY",
+        notification_body=f"{out.selection} · {odds_label}",
+    )
+
+
+@router.post("/analyze", response_model=AnalyzeResponse, status_code=status.HTTP_201_CREATED)
+def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> AnalyzeResponse:
+    # Render free proxy hard-kills ~30s. Keep wall-clock headroom so huge WNBA/NFL
+    # prop boards return 201 instead of a client-facing 502.
+    analyze_started = time.monotonic()
+    analyze_deadline = analyze_started + 22.0
+    _assert_candidates_match_slate_date(payload)
+    analysis_id = str(uuid4())
+    candidates = list(payload.candidates)
+    huge_board = len(candidates) >= 200
+    overlay_upgraded = 0
+    if payload.overlay_model_on_sheet and _candidates_look_like_sheet_menu(candidates):
+        from app.services.market_board import overlay_selected_with_model
+
+        candidates, overlay_upgraded = overlay_selected_with_model(
+            payload.sport, payload.date, candidates
+        )
+        if overlay_upgraded:
+            logger.info(
+                "Sheet Check overlay upgraded %s/%s selected legs for %s %s",
+                overlay_upgraded,
+                len(candidates),
+                payload.sport,
+                payload.date,
+            )
+
+    # Player props arrive as market_implied from Odds; attach ESPN form so Strict
+    # Mode can PLAY instead of hard-SKIP for missing independent model.
+    # Budget enrichment so 400+ prop boards do not 502 on Render.
+    sport_l = (payload.sport or "").lower()
+    if sport_l in {"wnba", "nba", "basketball", "nfl", "ncaaf"} and any(
+        str(c.market_type or "").startswith("player_")
+        and c.probability_source == "market_implied"
+        for c in candidates
+    ):
+        from app.services.player_prop_research import enrich_player_prop_candidates
+
+        remaining = max(0.5, analyze_deadline - time.monotonic())
+        if len(candidates) >= 400:
+            enrich_budget = min(5.0, remaining)
+        elif huge_board:
+            enrich_budget = min(8.0, remaining)
+        else:
+            enrich_budget = min(14.0, remaining)
+        candidates = enrich_player_prop_candidates(
+            candidates, slate_date=payload.date, budget_seconds=enrich_budget
+        )
+
+    protocol_run = run_protocol_health_check(
+        db,
+        analysis_id=analysis_id,
+        user_id=user.id,
+        sport=payload.sport,
+        candidates=candidates,
+    )
+    weight_cache: dict[tuple[str, str], dict[str, float]] = {}
+    raw_evaluations = []
+    from app.hive.self_improve import get_active_policy
+    from app.hive.service import hive_bucket_key
+
+    hive_policy = get_active_policy(db=db)
+    hive_signal_cache: dict[tuple[str, str, str, str, str], object] = {}
+    for candidate in candidates:
+        evaluation = decision_engine.evaluate(
+            candidate,
+            payload.user_risk_profile,
+            learned_weights=weight_cache.setdefault(
+                (candidate.sport.lower(), candidate.market_type),
+                load_feature_weights(db, candidate.sport.lower(), candidate.market_type),
+            ),
+        )
+        # Hive may only adjust an existing independent model probability; never invent one.
+        base_probability = (
+            float(evaluation.adjusted_probability)
+            if candidate.probability_source in {"model", "manual_verified"}
+            else None
+        )
+        hive_key = (
+            candidate.sport.lower(),
+            (candidate.league or "").lower(),
+            candidate.market_type,
+            candidate.market_period,
+            settings.model_version,
+        )
+        if hive_key not in hive_signal_cache:
+            hive_signal_cache[hive_key] = get_hive_signal(
+                db=db,
+                sport=candidate.sport,
+                league=candidate.league,
+                market=candidate.market_type,
+                market_scope=candidate.market_period,
+                model_version=settings.model_version,
+            )
+        hive_signal = hive_signal_cache[hive_key]
+        hive_adjusted, hive_meta = blend_hive_probability(
+            base_probability=base_probability,
+            hive_signal=hive_signal,
+            policy=hive_policy.to_dict(),
+            bucket_key=hive_bucket_key(
+                candidate.sport,
+                candidate.league,
+                candidate.market_type,
+                candidate.market_period,
+                settings.model_version,
+            ),
+        )
+        evaluation.payload["model_probability"] = base_probability
+        evaluation.payload["hive_adjusted_probability"] = hive_adjusted
+        evaluation.payload["hive"] = hive_meta
+        # Living Hive: when evidence is mature, the bounded blend must affect
+        # edge/EV/decision — not only the maturity meter payload.
+        if (
+            hive_meta.get("used")
+            and hive_adjusted is not None
+            and base_probability is not None
+        ):
+            evaluation = decision_engine.apply_hive_calibration(
+                evaluation,
+                float(hive_adjusted),
+                shift_applied=float(hive_meta.get("shift_applied") or 0.0),
+            )
+        from app.services.metacognition import reflect_on_decision
+
+        evaluation.payload["metacognition"] = reflect_on_decision(
+            decision=evaluation.decision,
+            reason_codes=evaluation.reason_codes,
+            warnings=evaluation.warnings,
+            reasoning_summary=evaluation.reasoning_summary,
+            selection=candidate.selection,
+            hive_meta=hive_meta if isinstance(hive_meta, dict) else None,
+            probability_source=candidate.probability_source,
+        )
+        raw_evaluations.append(evaluation)
+    evaluations = decision_engine.rank(raw_evaluations)
+    record_usage_event(
+        db,
+        event_type="PROTOCOL_RUN",
+        sport=payload.sport.lower(),
+        analysis={
+            "analysis_id": analysis_id,
+            "user_id": user.id,
+            "candidate_count": len(candidates),
+            "sheet_overlay_upgraded": overlay_upgraded,
+            "official_pass": not any(
+                item.decision in {"PLAY", "LEAN"} for item in evaluations
+            ),
+        },
+    )
+
+    records: list[Recommendation] = []
+    stay_away_records: list[Recommendation] = []
+    persist_all_snapshots = len(evaluations) <= 250
+    # Huge boards: only persist board plays + a small stay_away sample. Writing
+    # 500+ SKIP rows (with full JSON snapshots) is what 502s Render after grade.
+    persist_skip_sample = 40 if huge_board else None
+    for rank, evaluation in enumerate(evaluations, start=1):
+        candidate = evaluation.candidate
+        is_board = evaluation.decision in {"PLAY", "LEAN", "WATCH"}
+        is_skip = evaluation.decision in {"SKIP", "REVIEW"}
+        if persist_all_snapshots or is_board:
+            db.add(
+                GameSnapshot(
+                    analysis_id=analysis_id,
+                    event_id=candidate.event_id,
+                    sport=candidate.sport.lower(),
+                    slate_date=payload.date,
+                    data_source=candidate.data_source,
+                    source_timestamp=candidate.source_timestamp,
+                    input_hash=evaluation.input_hash,
+                    payload=evaluation.payload,
+                )
+            )
+        # Slim SKIP snapshots on huge boards — display/stay_away only.
+        snapshot_payload = evaluation.payload
+        if huge_board and is_skip:
+            full_payload = evaluation.payload or {}
+            snapshot_payload = {
+                "candidate_id": candidate.candidate_id,
+                "decision": evaluation.decision,
+                "reason_codes": evaluation.reason_codes,
+                "probability_source": candidate.probability_source,
+                "data_source": candidate.data_source,
+                "model_probability": full_payload.get("model_probability"),
+                "metacognition": full_payload.get("metacognition"),
+                # Keep settle/Hive keys even on slim SKIP rows.
+                "game_pk": full_payload.get("game_pk") or getattr(candidate, "game_pk", None),
+                "mlb_game_pk": full_payload.get("mlb_game_pk")
+                or getattr(candidate, "mlb_game_pk", None),
+                "home_team": candidate.home_team,
+                "away_team": candidate.away_team,
+                "event_id": candidate.event_id,
+                "start_time": full_payload.get("start_time"),
+            }
         record = Recommendation(
             analysis_id=analysis_id,
             created_by_user_id=user.id,
@@ -221,26 +1189,142 @@ def analyze(payload: SportsAnalyzeRequest, user: CurrentUser, db: DB) -> Analyze
             model_version=settings.model_version,
             protocol_version=settings.protocol_version,
             input_hash=evaluation.input_hash,
-            snapshot=evaluation.payload,
+            snapshot=snapshot_payload,
         )
+        if is_board:
+            db.add(record)
+            records.append(record)
+        elif is_skip:
+            stay_away_records.append(record)
+
+    stay_away_all_count = len(stay_away_records)
+    stay_away_limit = persist_skip_sample if persist_skip_sample is not None else stay_away_all_count
+    stay_away_to_persist = stay_away_records[:stay_away_limit]
+    for record in stay_away_to_persist:
         db.add(record)
-        records.append(record)
 
     db.commit()
-    for record in records:
+    # Avoid refreshing hundreds of SKIP rows — that alone 502s Render on big boards.
+    board_records = [r for r in records if r.decision in {"PLAY", "LEAN", "WATCH"}]
+    for record in board_records:
         db.refresh(record)
+    for record in stay_away_to_persist:
+        db.refresh(record)
+    sheet_skips = [
+        r
+        for r in stay_away_to_persist
+        if (
+            "SPORTSBOOK_MENU" in (r.reason_codes or [])
+            or (r.snapshot or {}).get("data_source") == "THE_ODDS_API_BOARD"
+        )
+    ]
+    # Huge boards: Hive only on official plays — sheet-skip capture can wait.
+    if huge_board or time.monotonic() >= analyze_deadline:
+        hive_targets = [r for r in board_records if r.decision in {"PLAY", "LEAN"}]
+    else:
+        hive_targets = list(board_records) + sheet_skips[:80]
+    for record in hive_targets:
+        # Official board picks (PLAY/LEAN/WATCH) always feed Hive.
+        # Customer Pick Sheet sportsbook-menu legs also feed Hive even when SKIP —
+        # that is how "they picked something we didn't like and it won" becomes data
+        # without letting SKIP become an official card play.
+        snap = record.snapshot or {}
+        sheet_menu = "SPORTSBOOK_MENU" in (snap.get("reason_codes") or []) or snap.get(
+            "data_source"
+        ) == "THE_ODDS_API_BOARD"
+        if record.decision not in {"PLAY", "LEAN", "WATCH"} and not sheet_menu:
+            continue
+        # YWP recommendations are product-owned decision artifacts; Hive may use
+        # anonymized prediction/outcome rows without a separate consent toggle.
+        model_probability = snap.get("model_probability")
+        if model_probability is None and record.model_win_probability is not None:
+            model_probability = record.model_win_probability
+        feature_flags = {
+            "l5_support": bool(snap.get("l5_l10_verified")),
+            "lineup_verified": bool(snap.get("lineup_confirmed")),
+            "starter_verified": bool(snap.get("starter_confirmed")),
+            "injury_check": bool(snap.get("injuries_verified")),
+            "weather_edge": bool(snap.get("weather_verified")),
+            "market_value": bool(snap.get("market_movement_verified")),
+            "data_complete": float(record.data_quality) >= 0.85,
+            "customer_sheet_selection": sheet_menu,
+            "official_play": record.decision in {"PLAY", "LEAN"},
+        }
+        try:
+            capture_hive_prediction(
+                db=db,
+                contributor_user_id=user.id,
+                consent_to_hive=True,
+                source_recommendation_id=str(record.id),
+                sport=record.sport,
+                league=record.league,
+                event_id=record.event_id,
+                event_start_at=_coerce_event_start(record),
+                market=record.market_type,
+                market_scope=record.market_period,
+                selection=record.selection,
+                line=float(record.line) if record.line is not None else None,
+                odds_american=record.american_odds,
+                model_probability=(
+                    float(model_probability) if model_probability is not None else None
+                ),
+                quality_score=float(record.quality_score),
+                model_version=record.model_version,
+                protocol_version=record.protocol_version,
+                evidence_version=record.input_hash,
+                data_quality=float(record.data_quality),
+                feature_flags=feature_flags,
+            )
+        except RuntimeError as exc:
+            logger.warning("Hive capture skipped for %s: %s", record.id, exc)
+    db.commit()
 
-    ranked = [
-        RecommendationOut.model_validate(record) for record in records if record.decision != "SKIP"
-    ]
+    ranked = [RecommendationOut.model_validate(record) for record in board_records]
+    # Huge stay_away payloads 502 the proxy after big prop boards — keep a sample.
     stay_away = [
-        RecommendationOut.model_validate(record) for record in records if record.decision == "SKIP"
+        RecommendationOut.model_validate(record) for record in stay_away_to_persist[:40]
     ]
-    qualities = [candidate.data_quality for candidate in payload.candidates]
+    qualities = [candidate.data_quality for candidate in candidates]
     unknowns = sum(
-        value == "unknown"
-        for candidate in payload.candidates
+        1
+        for candidate in candidates
         for value in candidate.source_status.values()
+        # n/a = intentionally out of scope for this sport (not a failed source check).
+        if str(value).lower() == "unknown"
+    )
+    readiness = slate_readiness(candidates)
+    if huge_board or time.monotonic() >= analyze_deadline:
+        # Four COUNT queries on Hive tables are not worth a 502 on 500+ boards.
+        from app.hive.config import settings as hive_settings
+
+        hive_learning = {
+            "eligible_samples": 0,
+            "pending_samples": 0,
+            "resolved_samples": 0,
+            "min_sample_for_calibration": int(hive_settings.min_sample),
+            "optimal_sample": int(hive_settings.optimal_sample),
+            "volume_score_pct": 0.0,
+            "calibration_score_pct": 0.0,
+            "calibration_quality": 0.0,
+            "mean_abs_calibration_delta": None,
+            "calibrated_bucket_count": 0,
+            "wins": 0,
+            "losses": 0,
+            "optimum_accuracy_pct": 0.0,
+            "calibration_active": False,
+            "status": "deferred_large_board",
+            "release_version": hive_settings.release_version,
+        }
+    else:
+        hive_learning = hive_learning_maturity(db=db, sport=payload.sport)
+    logger.info(
+        "analyze done sport=%s candidates=%s board=%s skip_persisted=%s/%s elapsed=%.1fs",
+        payload.sport,
+        len(candidates),
+        len(board_records),
+        len(stay_away_to_persist),
+        stay_away_all_count,
+        time.monotonic() - analyze_started,
     )
     return AnalyzeResponse(
         model_version=settings.model_version,
@@ -248,42 +1332,103 @@ def analyze(payload: SportsAnalyzeRequest, user: CurrentUser, db: DB) -> Analyze
         date=payload.date,
         ranked_picks=ranked,
         stay_away=stay_away,
+        readiness=readiness,
         data_quality_summary={
             "protocol_status": protocol_run.status,
             "protocol_run_id": protocol_run.id,
-            "average_data_quality": round(sum(qualities) / len(qualities), 4),
+            "average_data_quality": round(sum(qualities) / len(qualities), 4) if qualities else 0.0,
             "missing_field_count": sum(
-                len(candidate.missing_fields) for candidate in payload.candidates
+                len(candidate.missing_fields) for candidate in candidates
             ),
             "unknown_source_labels": unknowns,
-            "candidate_count": len(payload.candidates),
-            "official_pass_count": len(stay_away),
+            "candidate_count": len(candidates),
+            "sheet_overlay_upgraded": overlay_upgraded,
+            "official_pass_count": len(ranked),
+            "official_skip_count": stay_away_all_count,
+            "stay_away_returned": len(stay_away),
+            "official_pass": len(ranked) == 0,
+            "verified_candidate_count": sum(
+                1 for candidate in candidates if slate_readiness([candidate]) == "VERIFIED"
+            ),
+            "readiness": readiness,
+            "hive_learning": hive_learning,
+            "hive_optimum_accuracy_pct": hive_learning["optimum_accuracy_pct"],
+            "analyze_elapsed_seconds": round(time.monotonic() - analyze_started, 2),
+            "huge_board_fast_path": huge_board,
         },
     )
 
 
 @router.get("/recommendations/{recommendation_id}", response_model=RecommendationOut)
-def recommendation(recommendation_id: str, user: CurrentUser, db: DB) -> RecommendationOut:
+def recommendation(recommendation_id: str, user: SubscribedUser, db: DB) -> RecommendationOut:
     return RecommendationOut.model_validate(_owned_recommendation(db, recommendation_id, user.id))
 
 
+@router.post("/preview-custom-card", response_model=TicketCardOut)
+def preview_custom_card_endpoint(
+    payload: CustomCardPreviewRequest, user: SubscribedUser, db: DB
+) -> TicketCardOut:
+    recommendations = list(
+        db.scalars(
+            select(Recommendation)
+            .where(
+                Recommendation.created_by_user_id == user.id,
+                Recommendation.id.in_(payload.recommendation_ids),
+            )
+            .order_by(Recommendation.rank)
+        ).all()
+    )
+    by_id = {item.id: item for item in recommendations}
+    ordered = [by_id[item_id] for item_id in payload.recommendation_ids if item_id in by_id]
+    if len(ordered) != len(payload.recommendation_ids):
+        raise HTTPException(status_code=404, detail="One or more recommendations were not found")
+    return preview_custom_card(ordered, label=payload.label)
+
+
 @router.post("/build-ticket", response_model=BuildTicketResponse)
-def build_ticket(payload: BuildTicketRequest, user: CurrentUser, db: DB) -> BuildTicketResponse:
+def build_ticket(payload: BuildTicketRequest, user: SubscribedUser, db: DB) -> BuildTicketResponse:
     conditions = [Recommendation.created_by_user_id == user.id]
     source_conditions = []
     if payload.analysis_id:
         source_conditions.append(Recommendation.analysis_id == payload.analysis_id)
     if payload.recommendation_ids:
         source_conditions.append(Recommendation.id.in_(payload.recommendation_ids))
+    if not source_conditions:
+        raise HTTPException(status_code=422, detail="analysis_id or recommendation_ids is required")
+
+    # Card builder only needs PLAY/LEAN (+ top ranks for quarantine notes).
+    # Re-loading/serializing every SKIP/REVIEW (often 400+) after a full prop
+    # analyze was blowing the Decision Board with Internal Server Error.
     recommendations = list(
         db.scalars(
             select(Recommendation)
-            .where(*conditions, or_(*source_conditions))
+            .where(
+                *conditions,
+                or_(*source_conditions),
+                or_(
+                    Recommendation.decision.in_(["PLAY", "LEAN"]),
+                    Recommendation.rank <= 10,
+                ),
+            )
             .order_by(Recommendation.rank)
         ).all()
     )
     if not recommendations:
-        raise HTTPException(status_code=404, detail="No recommendations found")
+        # Distinguish "analysis missing" from "true PASS (no PLAY/LEAN)".
+        any_for_analysis = db.scalar(
+            select(Recommendation.id)
+            .where(*conditions, or_(*source_conditions))
+            .limit(1)
+        )
+        if not any_for_analysis:
+            raise HTTPException(status_code=404, detail="No recommendations found")
+        return BuildTicketResponse(
+            analysis_id=payload.analysis_id,
+            official_pass=True,
+            cards={},
+            stay_away=[],
+            quarantined=[],
+        )
 
     exposed_theses = set(
         db.scalars(
@@ -296,20 +1441,34 @@ def build_ticket(payload: BuildTicketRequest, user: CurrentUser, db: DB) -> Buil
             )
         ).all()
     )
-    cards, quarantined = build_cards(
-        recommendations,
-        max_legs=payload.max_legs,
-        min_rating=payload.min_rating,
-        exposed_thesis_keys=exposed_theses,
-    )
+    try:
+        cards, quarantined = build_cards(
+            recommendations,
+            max_legs=payload.max_legs,
+            min_rating=payload.min_rating,
+            exposed_thesis_keys=exposed_theses,
+        )
+    except Exception:
+        logger.exception(
+            "build_cards failed analysis_id=%s recs=%s",
+            payload.analysis_id,
+            len(recommendations),
+        )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Ticket builder failed while assembling official cards. Retry the board.",
+        ) from None
+
+    # Official PASS means no PLAY/LEAN survived analysis — not "card templates underfilled".
+    # Eligible picks must remain custom-buildable even when diversity/min-leg gates omit cards.
+    has_play_lean = any(item.decision in {"PLAY", "LEAN"} for item in recommendations)
+    official_pass = not has_play_lean
+    # Stay-away list already shipped on /analyze; do not re-emit hundreds of SKIP rows here.
     return BuildTicketResponse(
         analysis_id=payload.analysis_id,
-        cards=cards,
-        stay_away=[
-            RecommendationOut.model_validate(item)
-            for item in recommendations
-            if item.decision == "SKIP"
-        ],
+        official_pass=official_pass,
+        cards={} if official_pass else cards,
+        stay_away=[],
         quarantined=quarantined,
     )
 
@@ -336,9 +1495,28 @@ def _line_value(
     return closing_line - bet_line
 
 
-@router.post("/result", response_model=ResultOut, status_code=status.HTTP_201_CREATED)
-def grade_result(payload: ResultCreate, user: CurrentUser, db: DB) -> ResultOut:
-    recommendation = _owned_recommendation(db, payload.recommendation_id, user.id)
+def _coerce_event_start(recommendation: Recommendation) -> datetime | None:
+    value = recommendation.start_time
+    if value is None:
+        return None
+    if isinstance(value, datetime):
+        return value if value.tzinfo else value.replace(tzinfo=UTC)
+    if isinstance(value, str):
+        try:
+            parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        except ValueError:
+            return None
+        return parsed if parsed.tzinfo else parsed.replace(tzinfo=UTC)
+    return None
+
+
+def _persist_graded_result(
+    db: DB,
+    recommendation: Recommendation,
+    payload: ResultCreate,
+    *,
+    commit: bool = True,
+) -> Result:
     if recommendation.result:
         raise HTTPException(status_code=409, detail="Recommendation is already graded")
 
@@ -425,6 +1603,7 @@ def grade_result(payload: ResultCreate, user: CurrentUser, db: DB) -> ResultOut:
                 "variance_grade": payload.variance_grade,
                 "root_cause_tags": payload.root_cause_tags,
                 "lesson": payload.lesson,
+                "external_log": "EXTERNAL_BOOK_LOG" in (payload.root_cause_tags or []),
             },
         )
     )
@@ -449,6 +1628,199 @@ def grade_result(payload: ResultCreate, user: CurrentUser, db: DB) -> ResultOut:
                 },
             )
         )
-    db.commit()
-    db.refresh(result)
+    apply_micro_learning(db, result, recommendation)
+    # Resolve Hive only when a prior capture exists (external backfill without
+    # a pre-event YWP prediction is a no-op and never trains).
+    try:
+        resolve_hive_outcome(
+            db=db,
+            source_recommendation_id=str(recommendation.id),
+            outcome=payload.outcome,
+            verified=True,
+            result_source="graded_result",
+            resolved_at=result.result_time,
+        )
+    except (RuntimeError, ValueError) as exc:
+        logger.warning("Hive resolve skipped for %s: %s", recommendation.id, exc)
+    if commit:
+        db.commit()
+        db.refresh(result)
+    return result
+
+
+@router.post("/result", response_model=ResultOut, status_code=status.HTTP_201_CREATED)
+def grade_result(payload: ResultCreate, user: SubscribedUser, db: DB) -> ResultOut:
+    recommendation = _owned_recommendation(db, payload.recommendation_id, user.id)
+    result = _persist_graded_result(db, recommendation, payload)
     return ResultOut.model_validate(result)
+
+
+@router.post(
+    "/log-external",
+    response_model=ExternalResultOut,
+    status_code=status.HTTP_201_CREATED,
+)
+def log_external_result(
+    payload: ExternalResultCreate, user: SubscribedUser, db: DB
+) -> ExternalResultOut:
+    """Create + grade a recommendation for a sportsbook pick never locked in-app."""
+    now = utcnow()
+    sport = payload.sport.lower().strip()
+    analysis_id = str(uuid4())
+    event_slug = "".join(ch if ch.isalnum() else "-" for ch in payload.event_name.lower())[:80]
+    selection_slug = "".join(ch if ch.isalnum() else "-" for ch in payload.selection.lower())[
+        :60
+    ]
+    candidate_id = f"external:{sport}:{payload.slate_date}:{event_slug}:{selection_slug}"
+    implied = implied_probability(payload.american_odds)
+    thesis = payload.thesis_key or f"external:{sport}:{payload.market_type}"
+    script = payload.script_key or f"external:{payload.market_type}:{payload.market_period}"
+    tags = list(dict.fromkeys([*(payload.root_cause_tags or []), "EXTERNAL_BOOK_LOG"]))
+    recommendation = Recommendation(
+        analysis_id=analysis_id,
+        created_by_user_id=user.id,
+        candidate_id=candidate_id[:100],
+        event_id=f"external:{event_slug}"[:100],
+        event_name=payload.event_name,
+        sport=sport,
+        league=payload.league,
+        slate_date=payload.slate_date,
+        mode="external",
+        market_type=payload.market_type,
+        market_period=payload.market_period,
+        selection=payload.selection,
+        line=payload.line,
+        american_odds=payload.american_odds,
+        estimated_probability=money(implied),
+        implied_probability=money(implied),
+        adjusted_probability=money(implied),
+        edge=money(0.0),
+        expected_value=money(0.0),
+        confidence_score=50,
+        ywp_rating=money(5.0, "0.01"),
+        vision_score=money(0.0, "0.01"),
+        miss_by_one_risk=money(0.0, "0.0001"),
+        reliability=money(0.5, "0.0001"),
+        stability=money(0.5, "0.0001"),
+        variance=money(0.5, "0.0001"),
+        data_quality=money(0.5, "0.0001"),
+        risk="Moderate",
+        risk_tier="Moderate",
+        variance_rating="Medium",
+        edge_class="No Edge",
+        expected_value_label="Neutral",
+        suggested_stake_pct=money(0.0, "0.0001"),
+        decision="PLAY",
+        recommendation_tier="EXTERNAL_LOG",
+        rank=0,
+        reason_codes=["EXTERNAL_BOOK_LOG"],
+        reasoning_summary=(
+            "Sportsbook pick logged after the fact because it was never locked in YWP OS."
+        ),
+        warnings=["EXTERNAL_BACKFILL"],
+        safer_alternative=None,
+        higher_upside=None,
+        invalidation_conditions=[],
+        live_trigger=None,
+        hedge=None,
+        quick_cash=False,
+        chain_reaction_key=None,
+        thesis_key=thesis[:160],
+        script_key=script[:160],
+        player_key=payload.player_key,
+        data_source="EXTERNAL_BOOK_LOG",
+        source_timestamp=now,
+        model_version=settings.model_version,
+        protocol_version=settings.protocol_version,
+        input_hash=input_hash(
+            {
+                "source": "EXTERNAL_BOOK_LOG",
+                "user_id": user.id,
+                "candidate_id": candidate_id,
+                "outcome": payload.outcome,
+                "odds": payload.american_odds,
+                "line": str(payload.line) if payload.line is not None else None,
+            }
+        ),
+        snapshot={
+            "external_log": True,
+            "book_logged": True,
+            "probability_source": "book_implied_only",
+        },
+    )
+    db.add(recommendation)
+    db.flush()
+
+    grade_payload = ResultCreate(
+        recommendation_id=recommendation.id,
+        outcome=payload.outcome,
+        final_score=payload.final_score,
+        stake=payload.stake,
+        profit_loss=payload.profit_loss,
+        actual_value=payload.actual_value,
+        bet_line=payload.line,
+        killed_ticket=payload.killed_ticket,
+        last_losing_leg=payload.last_losing_leg,
+        process_outcome_class=payload.process_outcome_class,
+        error_category=payload.error_category,
+        process_grade=payload.process_grade,
+        variance_grade=payload.variance_grade,
+        root_cause_tags=tags,
+        lesson=payload.lesson
+        or "Logged from sportsbook because the ticket was never locked in-app.",
+    )
+    result = _persist_graded_result(db, recommendation, grade_payload)
+    return ExternalResultOut(
+        recommendation_id=recommendation.id,
+        result=ResultOut.model_validate(result),
+        selection=recommendation.selection,
+        market_type=recommendation.market_type,
+        outcome=result.outcome,
+    )
+
+
+@router.post("/settle-day", response_model=SettleDayResponse)
+def settle_day(user: SubscribedUser, db: DB) -> SettleDayResponse:
+    """Pull finals for locked tickets, board PLAY/LEAN/WATCH, and Sheet-menu legs.
+
+    Maps each settled game outcome onto Hive captures so learning covers the
+    full board/Sheet universe, not only placed tickets.
+    """
+    result = settle_user_day(db, user.id, timezone_name=user.timezone)
+    items = result.items
+    # Product self-heal bot runs after settle — separate from Hive pick blend.
+    try:
+        from app.services.ops_heal import run_ops_heal_cycle
+
+        run_ops_heal_cycle(
+            db=db,
+            user_id=user.id,
+            timezone_name=user.timezone,
+            trigger="settle_day",
+            apply=True,
+        )
+    except Exception:  # noqa: BLE001
+        logger.exception("Ops Heal cycle failed after settle-day")
+    return SettleDayResponse(
+        graded=sum(1 for item in items if item.status == "graded"),
+        pending=sum(1 for item in items if item.status == "pending"),
+        skipped=sum(1 for item in items if item.status in {"skipped", "already_graded"}),
+        errors=sum(1 for item in items if item.status == "error"),
+        tickets_settled=sum(1 for item in items if item.status == "ticket_settled"),
+        board_graded=result.board_graded,
+        hive_outcomes_mapped=result.hive_outcomes_mapped,
+        eod_quality=result.eod_quality,
+        items=[
+            SettlementItemOut(
+                recommendation_id=item.recommendation_id,
+                ticket_id=item.ticket_id,
+                selection=item.selection,
+                status=item.status,
+                outcome=item.outcome,
+                final_score=item.final_score,
+                actual_value=item.actual_value,
+                detail=item.detail,
+            )
+            for item in items
+        ],
+    )

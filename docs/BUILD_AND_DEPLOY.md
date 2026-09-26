@@ -59,22 +59,38 @@ The delivered package was validated with seven backend tests at 82% statement co
 
 ## Native builds
 
-1. Change `ios.bundleIdentifier` and `android.package` in `mobile/app.json` if `com.ywpos.app` is not available to the owning developer accounts.
-2. Install and authenticate EAS CLI.
-3. Create a development build:
+Keep Android and iOS release pipelines separate: **[docs/RELEASE_CHANNELS.md](./RELEASE_CHANNELS.md)**.
 
-   ```bash
-   cd mobile
-   npx eas build --profile development --platform all
-   ```
+- iOS / Expo Go / TestFlight: **[docs/IOS.md](./IOS.md)**
+- Paid Android Whop delivery: **[docs/WHOP_PAID_DELIVERY.md](./WHOP_PAID_DELIVERY.md)**
 
-4. Test login, token rotation, slate run, PASS state, cards, ticket edits, Lock Check, graphic export, result grading, and account controls on real devices.
-5. Build production binaries only after the production checklist is complete:
+### Try on a phone now (Expo Go, free)
 
-   ```bash
-   npx eas build --profile production --platform all
-   ```
+```bash
+cd mobile
+npm ci
+npm run start:phone
+```
 
+Scan the QR with Expo Go. Uses the production API from `.env.production`.
+
+### Android APK (Whop sideload)
+
+```bash
+cd mobile
+npm run build:apk
+```
+
+Publish only under GitHub tag `android-vX.Y.Z`. Do not use EAS for Android in this repo.
+
+### iOS TestFlight (needs Apple Developer + EAS login)
+
+1. Change `ios.bundleIdentifier` / `android.package` in `mobile/app.json` only if `com.ywpos.app` is unavailable.
+2. `npx eas-cli login` then `npx eas-cli init` and `npx eas-cli credentials -p ios`.
+3. `npm run build:ios:preview` then TestFlight.
+4. Production: `npm run build:ios:production` then `npm run submit:ios`.
+
+Test login, token rotation, slate run, PASS state, cards, ticket edits, Lock Check, graphic export, result grading, paywall Sync, and account controls on real devices before store submission.
 ## Web deployment
 
 ```bash
@@ -86,7 +102,9 @@ Publish `mobile/dist` to the chosen static host and configure `EXPO_PUBLIC_API_U
 
 ## Live provider integration
 
-Demo records are synthetic and explicitly labeled. A live launch requires licensed adapters for schedule, odds/markets, recent logs, lineups, injuries, weather, and settlement. Normalize provider output to `CandidateInput`; do not move provider keys into the client.
+Demo records are synthetic and explicitly labeled. Non-MLB live slates use a
+**multi-source cascade** — see **[docs/DATA_SOURCES.md](./DATA_SOURCES.md)**.
+Odds-priced plays still show when fact feeds (ESPN/NHL) fail; readiness stays PARTIAL.
 
 Every live candidate must explicitly confirm the schedule, universe scan, actual L5/L10, lineup, injuries, weather, starter/role, motivation/rotation, home-away/travel, market movement, and applicable sport-specific sweep. Omitted verification flags default to `false`.
 

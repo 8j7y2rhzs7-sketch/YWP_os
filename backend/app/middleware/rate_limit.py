@@ -14,6 +14,8 @@ from fastapi import Request, Response, status
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse
 
+from app.core.config import settings
+
 RATE_LIMIT_PATHS = {
     "/api/v1/auth/login": (10, 60),
     "/api/v1/auth/register": (5, 60),
@@ -46,6 +48,8 @@ def _is_rate_limited(key: str, max_requests: int, window_seconds: int) -> bool:
 class RateLimitMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
         path = request.url.path.rstrip("/")
+        if settings.env == "test":
+            return await call_next(request)
         limit = RATE_LIMIT_PATHS.get(path)
         if limit and request.method == "POST":
             max_req, window = limit

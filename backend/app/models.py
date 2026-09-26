@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import date, datetime
+from datetime import UTC, date, datetime
 from decimal import Decimal
 from typing import Any
 from uuid import uuid4
@@ -27,6 +27,28 @@ def new_id() -> str:
     return str(uuid4())
 
 
+def _coerce_snap_datetime(value: Any) -> datetime | None:
+    """Snapshot timestamps must never crash RecommendationOut validation."""
+    if value is None:
+        return None
+    if isinstance(value, datetime):
+        return value if value.tzinfo else value.replace(tzinfo=UTC)
+    if isinstance(value, (int, float)):
+        try:
+            return datetime.fromtimestamp(float(value), tz=UTC)
+        except (OverflowError, OSError, ValueError):
+            return None
+    if isinstance(value, str):
+        text = value.strip()
+        if not text:
+            return None
+        try:
+            return datetime.fromisoformat(text.replace("Z", "+00:00"))
+        except ValueError:
+            return None
+    return None
+
+
 class TimestampMixin:
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(
@@ -45,7 +67,15 @@ class User(Base, TimestampMixin):
     risk_profile: Mapped[str] = mapped_column(String(24), default="balanced")
     role: Mapped[str] = mapped_column(String(24), default="user")
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
-
+    whop_user_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    whop_membership_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    subscription_status: Mapped[str] = mapped_column(String(24), default="none")
+    subscription_checked_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    subscription_granted_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
     bankroll: Mapped[BankrollAccount | None] = relationship(
         back_populates="user", cascade="all, delete-orphan", uselist=False
     )
@@ -198,6 +228,136 @@ class Recommendation(Base):
         back_populates="recommendation", uselist=False, cascade="all, delete-orphan"
     )
 
+    @property
+    def image_url(self) -> str | None:
+        snap = self.snapshot or {}
+        return snap.get("image_url") or snap.get("player_image_url")
+
+    @property
+    def team_image_url(self) -> str | None:
+        return (self.snapshot or {}).get("team_image_url")
+
+    @property
+    def source_urls(self) -> list[str]:
+        value = self.snapshot.get("source_urls", []) if self.snapshot else []
+        return [str(item) for item in value if item]
+
+    @property
+    def quality_score(self) -> int:
+        """YWP process/quality score 0-100. Not a win probability."""
+        return int(self.confidence_score)
+
+    @property
+    def home_team(self) -> str | None:
+        snap = self.snapshot or {}
+        if snap.get("home_team"):
+            return str(snap["home_team"])
+        from app.services.board_metrics import parse_event_teams
+
+        _, home = parse_event_teams(self.event_name)
+        return home
+
+    @property
+    def away_team(self) -> str | None:
+        snap = self.snapshot or {}
+        if snap.get("away_team"):
+            return str(snap["away_team"])
+        from app.services.board_metrics import parse_event_teams
+
+        away, _ = parse_event_teams(self.event_name)
+        return away
+
+    @property
+    def start_time(self):
+        snap = self.snapshot or {}
+        value = snap.get("start_time") or snap.get("commence_time")
+        return _coerce_snap_datetime(value)
+
+    @property
+    def bookmaker(self) -> str | None:
+        snap = self.snapshot or {}
+        value = snap.get("bookmaker") or snap.get("book")
+        return str(value) if value else None
+
+    @property
+    def bookmaker_label(self) -> str | None:
+        snap = self.snapshot or {}
+        if snap.get("bookmaker_label"):
+            return str(snap["bookmaker_label"])
+        from app.services.board_metrics import bookmaker_display_name
+
+        return bookmaker_display_name(self.bookmaker)
+
+    @property
+    def price_timestamp(self):
+        snap = self.snapshot or {}
+        return _coerce_snap_datetime(
+            snap.get("price_timestamp") or snap.get("source_timestamp")
+        )
+    @property
+    def market_scope_label(self) -> str:
+        from app.services.board_metrics import market_scope_label
+
+        return market_scope_label(self.market_type, self.market_period, sport=self.sport)
+
+    @property
+    def verification_status(self) -> str:
+        from app.services.board_metrics import verification_status_from_snapshot
+
+        return verification_status_from_snapshot(self.snapshot)
+
+    @property
+    def model_win_probability(self) -> float | None:
+        from app.services.board_metrics import model_win_probability
+
+        snap = self.snapshot or {}
+        return model_win_probability(
+            adjusted_probability=float(self.adjusted_probability),
+            probability_source=str(snap.get("probability_source") or ""),
+        )
+
+    @property
+    def model_probability(self) -> float | None:
+        snap = self.snapshot or {}
+        value = snap.get("model_probability")
+        if value is not None:
+            return float(value)
+        return self.model_win_probability
+
+    @property
+    def hive_adjusted_probability(self) -> float | None:
+        snap = self.snapshot or {}
+        value = snap.get("hive_adjusted_probability")
+        return float(value) if value is not None else None
+
+    @property
+    def hive(self) -> dict[str, Any] | None:
+        snap = self.snapshot or {}
+        value = snap.get("hive")
+        return value if isinstance(value, dict) else None
+
+    @property
+    def metacognition(self) -> dict[str, Any] | None:
+        snap = self.snapshot or {}
+        value = snap.get("metacognition")
+        return value if isinstance(value, dict) else None
+
+    @property
+    def probability_available(self) -> bool:
+        return self.model_win_probability is not None
+
+    @property
+    def probability_unavailable_reason(self) -> str | None:
+        if self.probability_available:
+            return None
+        snap = self.snapshot or {}
+        source = str(snap.get("probability_source") or "unknown")
+        return (
+            f"Independent model win probability unavailable "
+            f"(probability_source={source}). "
+            f"Quality score {self.confidence_score}/100 is not a win probability."
+        )
+
 
 class Ticket(Base, TimestampMixin):
     __tablename__ = "tickets"
@@ -223,6 +383,17 @@ class Ticket(Base, TimestampMixin):
     last_lock_expires_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
+    publication_eligible: Mapped[bool] = mapped_column(Boolean, default=False, index=True)
+    publication_eligible_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    publication_expires_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    settled_outcome: Mapped[str | None] = mapped_column(String(24), nullable=True)
+    settled_payout: Mapped[Decimal | None] = mapped_column(Numeric(14, 2), nullable=True)
+    settled_profit_loss: Mapped[Decimal | None] = mapped_column(Numeric(14, 2), nullable=True)
+    settled_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
     user: Mapped[User] = relationship(back_populates="tickets")
     legs: Mapped[list[TicketLeg]] = relationship(
@@ -258,6 +429,14 @@ class TicketLeg(Base):
     @property
     def outcome(self) -> str | None:
         return self.recommendation.outcome if self.recommendation else None
+
+    @property
+    def image_url(self) -> str | None:
+        return self.recommendation.image_url if self.recommendation else None
+
+    @property
+    def team_image_url(self) -> str | None:
+        return self.recommendation.team_image_url if self.recommendation else None
 
 
 class LockCheck(Base):
@@ -406,4 +585,64 @@ class AuditLog(Base):
     entity_type: Mapped[str] = mapped_column(String(40))
     entity_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
     details: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class ServiceCredential(Base):
+    """Scoped bot tokens (marketing feed, etc.) stored as SHA-256 hashes."""
+
+    __tablename__ = "service_credentials"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    name: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    token_hash: Mapped[str] = mapped_column(String(64))
+    rotated_by_user_id: Mapped[str | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    rotated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class ErrorReport(Base):
+    """Client crash / bug reports captured after real app use."""
+
+    __tablename__ = "error_reports"
+    __table_args__ = (Index("ix_error_reports_status_created", "status", "created_at"),)
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    user_id: Mapped[str | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    category: Mapped[str] = mapped_column(String(40), index=True)
+    message: Mapped[str] = mapped_column(Text)
+    screen: Mapped[str | None] = mapped_column(String(120), nullable=True)
+    stack: Mapped[str | None] = mapped_column(Text, nullable=True)
+    app_version: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    platform: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    analysis_id: Mapped[str | None] = mapped_column(String(36), nullable=True, index=True)
+    recommendation_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
+    ticket_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
+    context: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    status: Mapped[str] = mapped_column(String(24), default="open", index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class PendingWhopAccess(Base, TimestampMixin):
+    """Access granted via Whop before the user registers in YWP OS."""
+
+    __tablename__ = "pending_whop_access"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    email: Mapped[str] = mapped_column(String(320), index=True)
+    whop_user_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    whop_membership_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    status: Mapped[str] = mapped_column(String(24), default="active")
+
+
+class WhopWebhookDelivery(Base):
+    __tablename__ = "whop_webhook_deliveries"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    webhook_id: Mapped[str] = mapped_column(String(128), unique=True, index=True)
+    event_type: Mapped[str] = mapped_column(String(64))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
