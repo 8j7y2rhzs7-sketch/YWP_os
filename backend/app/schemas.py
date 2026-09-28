@@ -200,6 +200,8 @@ class CandidateInput(YWPModel):
     selection: str = Field(min_length=2, max_length=180)
     line: Decimal | None = None
     american_odds: int = Field(ge=-10000, le=10000)
+    # Opposite side for two-way de-vig (Stage 5). Optional until books supply it.
+    opposite_american_odds: int | None = Field(default=None, ge=-10000, le=10000)
     estimated_probability: float = Field(gt=0.01, lt=0.99)
     probability_source: Literal["model", "manual_verified", "market_implied", "demo"] = "model"
     variance: float = Field(ge=0, le=1)
@@ -412,6 +414,8 @@ class RecommendationOut(YWPModel):
     suggested_stake_pct: Decimal
     decision: str
     recommendation_tier: str
+    pipeline_threshold: Literal["qualify", "borderline", "reject"] | None = None
+    pipeline: dict[str, Any] | None = None
     rank: int
     reason_codes: list[str]
     reasoning_summary: str
@@ -448,6 +452,7 @@ class AnalyzeResponse(YWPModel):
     stay_away: list[RecommendationOut]
     readiness: Literal["DEMO", "PARTIAL", "VERIFIED"]
     data_quality_summary: dict[str, Any]
+    pipeline_stages: list[dict[str, Any]] = Field(default_factory=list)
 
 
 class SlateResponse(YWPModel):
@@ -531,6 +536,10 @@ class TicketCardOut(YWPModel):
     joint_win_probability: float | None = None
     joint_probability_status: str = "unavailable"
     joint_probability_note: str | None = None
+    monte_carlo_sims: int | None = None
+    correlation_max_rho: float | None = None
+    pipeline_threshold: Literal["qualify", "borderline", "reject"] | None = None
+    pipeline: dict[str, Any] | None = None
     weakest_leg_id: str | None
     weakest_leg_criterion: str | None = None
     weakest_leg_explanation: str | None = None
@@ -872,6 +881,13 @@ class PerformanceOut(YWPModel):
     packaging_gap: float | None = None
     by_ticket_type: list[dict[str, Any]] = Field(default_factory=list)
     packaging_note: str | None = None
+    # Stage 9 — calibration / backtesting
+    brier: float | None = None
+    mean_clv: float | None = None
+    predicted_hit_rate: float | None = None
+    actual_hit_rate: float | None = None
+    calibration_by_market: list[dict[str, Any]] = Field(default_factory=list)
+    pipeline_stages: list[dict[str, Any]] = Field(default_factory=list)
 
 
 class LearningPulseOut(YWPModel):

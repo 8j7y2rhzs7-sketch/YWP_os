@@ -1326,6 +1326,8 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         stay_away_all_count,
         time.monotonic() - analyze_started,
     )
+    from app.services.pipeline.runner import PIPELINE_STAGES
+
     return AnalyzeResponse(
         model_version=settings.model_version,
         analysis_id=analysis_id,
@@ -1333,6 +1335,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         ranked_picks=ranked,
         stay_away=stay_away,
         readiness=readiness,
+        pipeline_stages=list(PIPELINE_STAGES),
         data_quality_summary={
             "protocol_status": protocol_run.status,
             "protocol_run_id": protocol_run.id,
@@ -1355,6 +1358,11 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             "hive_optimum_accuracy_pct": hive_learning["optimum_accuracy_pct"],
             "analyze_elapsed_seconds": round(time.monotonic() - analyze_started, 2),
             "huge_board_fast_path": huge_board,
+            "pipeline_version": "1.0",
+            "qualify_count": sum(1 for item in ranked if item.pipeline_threshold == "qualify"),
+            "borderline_count": sum(
+                1 for item in ranked if item.pipeline_threshold == "borderline"
+            ),
         },
     )
 

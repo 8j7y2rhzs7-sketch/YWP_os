@@ -10,6 +10,8 @@ from typing import Any
 from app.core.config import settings
 from app.schemas import CandidateInput, Decision, RiskProfile
 from app.services.board_metrics import outlier_review_reasons
+from app.services.pipeline.market_math import compare_to_market
+from app.services.pipeline.runner import run_leg_pipeline
 from app.services.readiness import (
     ESPN_TEAM_MARKET_SPORTS,
     OUTDOOR_WEATHER_SPORTS,
@@ -185,10 +187,21 @@ class DecisionEngine:
                 adjusted += (float(weight) - 0.10) * 0.04 * quality
         adjusted = clamp(adjusted, 0.02, 0.98)
 
-        edge = adjusted - implied
+        # Stage 5 — compare model fair p to de-vigged (or vig-proxy) market.
+        market_cmp = compare_to_market(
+            model_probability=adjusted,
+            american_odds=candidate.american_odds,
+            opposite_american_odds=candidate.opposite_american_odds,
+        )
+        fair_implied = float(market_cmp["fair_implied_probability"])
+        implied = fair_implied  # edge/EV use fair market, not raw vig-inflated implied
+        edge = adjusted - fair_implied
         decimal_odds = american_to_decimal(candidate.american_odds)
         expected_value = adjusted * (decimal_odds - 1) - (1 - adjusted)
         edge_strength = clamp(max(edge, 0) / 0.12, 0, 1)
+        payload["market_comparison"] = market_cmp
+        payload["raw_implied_probability"] = market_cmp["raw_implied_probability"]
+        payload["fair_implied_probability"] = fair_implied
 
         confirmed_sources = sum(
             1 for source_status in candidate.source_status.values() if source_status == "confirmed"
@@ -527,7 +540,8 @@ class DecisionEngine:
         reasoning_parts = list(candidate.reasoning)
         if edge > 0:
             reasoning_parts.append(
-                f"Quality-adjusted probability is {adjusted:.1%} versus {implied:.1%} implied."
+                f"Quality-adjusted probability is {adjusted:.1%} versus "
+                f"{fair_implied:.1%} fair (de-vigged) implied."
             )
         if hard_skip_reasons:
             reasoning_parts.append("Official YWP output: SKIP / NO PLAY.")
@@ -540,6 +554,45 @@ class DecisionEngine:
             reasoning_parts.append(
                 "Recommendation is derived only from the supplied structured inputs."
             )
+
+        market_l = str(candidate.market_type or "").lower()
+        selection_l = str(candidate.selection or "").lower()
+        is_over = "over" in market_l or " over " in f" {selection_l} "
+        line_f = float(candidate.line) if candidate.line is not None else None
+        mean_f = None
+        if line_f is not None and candidate.average_cushion is not None:
+            mean_f = line_f + float(candidate.average_cushion) if is_over else line_f - float(
+                candidate.average_cushion
+            )
+        pipe = run_leg_pipeline(
+            decision=decision,
+            confidence_score=confidence,
+            edge=edge,
+            miss_by_one_risk=miss_by_one_risk,
+            reason_codes=reasons,
+            model_probability=adjusted,
+            american_odds=candidate.american_odds,
+            opposite_american_odds=candidate.opposite_american_odds,
+            line=line_f,
+            is_over=is_over,
+            mean=mean_f,
+            sigma=None,
+            hit_rate=candidate.recent_hit_rate,
+            cushion_scale=float(candidate.cushion_scale),
+            verification_status=readiness,
+            role_stability=candidate.role_stability,
+            context_scores={
+                "matchup_score": candidate.matchup_score,
+                "script_alignment": candidate.script_alignment,
+                "multiple_paths_score": candidate.multiple_paths_score,
+                "role_stability": candidate.role_stability,
+            },
+            readiness=readiness,
+        )
+        payload["pipeline"] = pipe
+        payload["pipeline_threshold"] = pipe["pipeline_threshold"]
+        payload["pipeline_distribution"] = pipe["distribution"]
+        payload["model_probability"] = adjusted
 
         return Evaluation(
             candidate=candidate,
@@ -594,9 +647,18 @@ class DecisionEngine:
 
         implied = evaluation.implied_probability
         adjusted = clamp(float(hive_probability), 0.01, 0.99)
-        edge = adjusted - implied
+        market_cmp = compare_to_market(
+            model_probability=adjusted,
+            american_odds=evaluation.candidate.american_odds,
+            opposite_american_odds=evaluation.candidate.opposite_american_odds,
+        )
+        fair_implied = float(market_cmp["fair_implied_probability"])
+        implied = fair_implied
+        edge = adjusted - fair_implied
         expected_value = adjusted * american_to_decimal(evaluation.candidate.american_odds) - 1
         confidence = evaluation.confidence_score
+        evaluation.payload["market_comparison"] = market_cmp
+        evaluation.payload["fair_implied_probability"] = fair_implied
 
         # Drop edge-only skip reasons so we can re-evaluate them from the Hive probability.
         soft_edge_codes = {"NO_CLEAN_EDGE", "ODDS_TOO_EXPENSIVE", "CONFIDENCE_BELOW_THRESHOLD"}

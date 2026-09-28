@@ -9,6 +9,7 @@ from app.services.board_metrics import (
     joint_win_probability_disclosure,
     select_weakest_leg,
 )
+from app.services.pipeline.runner import run_ticket_pipeline
 from app.services.ticket_gates import (
     CASH_CARD_KEYS,
     cap_pitcher_k_overs,
@@ -157,7 +158,11 @@ def _card(
     key: str, label: str, legs: list[Recommendation], warnings: list[str] | None = None
 ) -> TicketCardOut:
     warnings = list(warnings or [])
-    joint = joint_win_probability_disclosure(legs)
+    joint: dict = {
+        "joint_win_probability": None,
+        "joint_probability_status": "unavailable",
+        "joint_probability_note": "No legs; PASS.",
+    }
     out_legs: list[RecommendationOut] = []
     kept: list[Recommendation] = []
     for item in legs:
@@ -167,6 +172,8 @@ def _card(
         except Exception:
             # One bad snapshot must not 500 the whole Decision Board.
             warnings.append(f"Skipped unreadable leg: {getattr(item, 'selection', item.id)}")
+    ticket_pipe: dict | None = None
+    card_threshold = "reject"
     if not kept:
         if legs:
             warnings.append("No plays qualified. PASS is the official output.")
@@ -189,7 +196,23 @@ def _card(
         if high_near_miss:
             warnings.append("Elevated miss-by-1 leg(s): " + ", ".join(high_near_miss))
         warnings.append(explanation)
-        joint = joint_win_probability_disclosure(kept)
+        # Stages 6–7: correlation + Monte Carlo replace naive product when dependent.
+        ticket_pipe = run_ticket_pipeline(kept)
+        joint = {
+            "joint_win_probability": ticket_pipe.get("joint_win_probability"),
+            "joint_probability_status": ticket_pipe.get("joint_probability_status"),
+            "joint_probability_note": ticket_pipe.get("joint_probability_note"),
+        }
+        # Fall back to disclosure helper when MC cannot run.
+        if joint["joint_win_probability"] is None:
+            joint = joint_win_probability_disclosure(kept)
+        card_threshold = ticket_pipe.get("card_threshold")
+        if card_threshold == "reject" and kept:
+            warnings.append("Pipeline threshold: reject — do not force this card.")
+        elif card_threshold == "borderline":
+            warnings.append("Pipeline threshold: borderline — size down or PASS.")
+    corr = (ticket_pipe or {}).get("correlation") or {}
+    mc = (ticket_pipe or {}).get("monte_carlo") or {}
     return TicketCardOut(
         key=key,
         label=label,
@@ -202,6 +225,10 @@ def _card(
         joint_win_probability=joint["joint_win_probability"],
         joint_probability_status=str(joint["joint_probability_status"]),
         joint_probability_note=joint.get("joint_probability_note"),
+        monte_carlo_sims=mc.get("sims"),
+        correlation_max_rho=corr.get("max_rho"),
+        pipeline_threshold=card_threshold if kept else "reject",
+        pipeline=ticket_pipe,
         weakest_leg_id=weakest,
         weakest_leg_criterion=criterion,
         weakest_leg_explanation=explanation,

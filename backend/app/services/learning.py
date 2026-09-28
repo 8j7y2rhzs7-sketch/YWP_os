@@ -19,6 +19,8 @@ from app.models import (
     WeightChangeProposal,
 )
 from app.schemas import MissByOneOut, PatternOut, PerformanceOut
+from app.services.pipeline.calibration import summarize_calibration
+from app.services.pipeline.runner import PIPELINE_STAGES
 
 
 def _rate(wins: int, losses: int) -> float | None:
@@ -198,6 +200,20 @@ def performance(db: Session, user_id: str) -> PerformanceOut:
             "quality is never confused with pick quality."
         )
 
+    calib_rows: list[tuple[float, bool, float | None, str]] = []
+    for result, recommendation in rows:
+        if result.outcome not in {"WIN", "LOSS"}:
+            continue
+        try:
+            model_p = float(recommendation.adjusted_probability)
+        except (TypeError, ValueError):
+            continue
+        clv = float(result.clv_probability) if result.clv_probability is not None else None
+        calib_rows.append(
+            (model_p, result.outcome == "WIN", clv, recommendation.market_type)
+        )
+    calib = summarize_calibration(calib_rows)
+
     return PerformanceOut(
         settled=settled,
         wins=wins,
@@ -209,6 +225,12 @@ def performance(db: Session, user_id: str) -> PerformanceOut:
         by_sport=summarize(by_sport, "sport"),
         by_market=summarize(by_market, "market_type"),
         confidence_calibration=calibration_rows,
+        brier=calib.get("brier"),
+        mean_clv=calib.get("mean_clv"),
+        predicted_hit_rate=calib.get("predicted_hit_rate"),
+        actual_hit_rate=calib.get("actual_hit_rate"),
+        calibration_by_market=list(calib.get("by_market") or []),
+        pipeline_stages=list(PIPELINE_STAGES),
         leg_settled=settled,
         leg_wins=wins,
         leg_losses=losses,

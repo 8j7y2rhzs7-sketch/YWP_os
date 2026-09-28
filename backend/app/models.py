@@ -343,6 +343,18 @@ class Recommendation(Base):
         return value if isinstance(value, dict) else None
 
     @property
+    def pipeline(self) -> dict[str, Any] | None:
+        snap = self.snapshot or {}
+        value = snap.get("pipeline")
+        return value if isinstance(value, dict) else None
+
+    @property
+    def pipeline_threshold(self) -> str | None:
+        snap = self.snapshot or {}
+        value = snap.get("pipeline_threshold")
+        return str(value) if value is not None else None
+
+    @property
     def probability_available(self) -> bool:
         return self.model_win_probability is not None
 
