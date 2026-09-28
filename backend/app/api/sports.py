@@ -41,6 +41,8 @@ from app.schemas import (
     ExternalResultOut,
     PropWarmRequest,
     PropWarmResponse,
+    QuantAuditRequest,
+    QuantAuditResponse,
     RecommendationOut,
     ResultCreate,
     ResultOut,
@@ -1391,6 +1393,46 @@ def preview_custom_card_endpoint(
     if len(ordered) != len(payload.recommendation_ids):
         raise HTTPException(status_code=404, detail="One or more recommendations were not found")
     return preview_custom_card(ordered, label=payload.label)
+
+
+@router.post("/quant-audit", response_model=QuantAuditResponse)
+def quant_audit_endpoint(
+    payload: QuantAuditRequest, user: SubscribedUser, db: DB
+) -> QuantAuditResponse:
+    """Authoritative ywp_quant QUALIFY/REJECT audit for a candidate ticket."""
+    from app.services.quant_bridge import audit_ticket
+
+    recommendations = list(
+        db.scalars(
+            select(Recommendation).where(
+                Recommendation.created_by_user_id == user.id,
+                Recommendation.id.in_(payload.recommendation_ids),
+            )
+        ).all()
+    )
+    by_id = {item.id: item for item in recommendations}
+    ordered = [by_id[item_id] for item_id in payload.recommendation_ids if item_id in by_id]
+    if len(ordered) != len(payload.recommendation_ids):
+        raise HTTPException(status_code=404, detail="One or more recommendations were not found")
+    result = audit_ticket(
+        ordered,
+        american_odds=payload.american_odds,
+        opposite_american_odds=payload.opposite_american_odds,
+        simulations=payload.simulations,
+        intentional_correlation=payload.intentional_correlation,
+    )
+    return QuantAuditResponse(
+        decision=result.get("decision") or "REJECT",
+        pipeline_threshold=result.get("pipeline_threshold") or "reject",
+        force_pick=False,
+        blockers=list(result.get("blockers") or []),
+        ticket=dict(result.get("ticket") or {}),
+        legs=list(result.get("legs") or []),
+        policy=dict(result.get("policy") or {}),
+        bridge=dict(result.get("bridge") or {}),
+        method_notes=list(result.get("method_notes") or []),
+        engine_version=str(result.get("engine_version") or "0.1.0"),
+    )
 
 
 @router.post("/build-ticket", response_model=BuildTicketResponse)

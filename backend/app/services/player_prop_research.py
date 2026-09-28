@@ -594,6 +594,7 @@ def _enrich_one(
             "motivation_rotation_verified": True,
             "recent_hit_rate": hit_rate,
             "average_cushion": round(avg_cushion, 3),
+            "observation_values": [round(float(v), 3) for v in l10],
             "cushion_scale": cushion_scale,
             "matchup_score": probability,
             "script_alignment": min(

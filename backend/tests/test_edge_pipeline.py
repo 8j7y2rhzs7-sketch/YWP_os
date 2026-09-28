@@ -225,8 +225,15 @@ def test_build_cards_exposes_monte_carlo_fields() -> None:
     assert "elite_two" in cards
     card = cards["elite_two"]
     assert card.pipeline_threshold in {"qualify", "borderline", "reject"}
-    assert card.joint_probability_status in {"monte_carlo", "single_leg", "independent_product"}
+    assert card.joint_probability_status in {
+        "monte_carlo",
+        "single_leg",
+        "independent_product",
+        "ywp_quant",
+    }
     assert card.monte_carlo_sims is not None
+    assert card.pipeline is not None
+    assert "ywp_quant" in (card.pipeline or {})
 
 
 def test_calibration_brier_and_by_market() -> None:

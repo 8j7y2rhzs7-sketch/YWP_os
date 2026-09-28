@@ -1,6 +1,10 @@
 # YWP OS Edge Pipeline (v1.0)
 
-Nine stages from research to calibration. API **3.3.61+**.
+Nine stages from research to calibration. API **3.3.62+**.
+
+Authoritative ticket gate: vendored **ywp_quant** (`app.services.ywp_quant`) via
+`POST /api/v1/sports/quant-audit` and Decision Board card builds. Same-event
+tickets without measured correlations **REJECT**. No forced picks.
 
 | # | Stage | Status in v1 |
 |---|--------|----------------|

@@ -21,6 +21,8 @@ dependencies = [
   "redis>=6,<8",
   "sqlalchemy>=2.0.52,<2.2",
   "uvicorn[standard]>=0.35,<1",
+  "numpy>=1.26,<3",
+  "scipy>=1.11,<2",
 ]
 
 [project.optional-dependencies]

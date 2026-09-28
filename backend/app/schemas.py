@@ -245,6 +245,8 @@ class CandidateInput(YWPModel):
 
     recent_hit_rate: float | None = Field(default=None, ge=0, le=1)
     average_cushion: float | None = None
+    # Raw L10 (or similar) series for ywp_quant observation groups.
+    observation_values: list[float] | None = Field(default=None, max_length=40)
     cushion_scale: float = Field(default=3.0, gt=0, le=100)
     matchup_score: float | None = Field(default=None, ge=0, le=1)
     script_alignment: float | None = Field(default=None, ge=0, le=1)
@@ -559,6 +561,27 @@ class BuildTicketResponse(YWPModel):
     cards: dict[str, TicketCardOut]
     stay_away: list[RecommendationOut]
     quarantined: list[QuarantineItemOut]
+
+
+class QuantAuditRequest(YWPModel):
+    recommendation_ids: list[str] = Field(min_length=1, max_length=8)
+    american_odds: int | None = Field(default=None, ge=-10000, le=10000)
+    opposite_american_odds: int | None = Field(default=None, ge=-10000, le=10000)
+    simulations: int = Field(default=100_000, ge=5_000, le=300_000)
+    intentional_correlation: bool = False
+
+
+class QuantAuditResponse(YWPModel):
+    decision: Literal["QUALIFY", "REJECT"]
+    pipeline_threshold: Literal["qualify", "borderline", "reject"]
+    force_pick: bool = False
+    blockers: list[str] = Field(default_factory=list)
+    ticket: dict[str, Any] = Field(default_factory=dict)
+    legs: list[dict[str, Any]] = Field(default_factory=list)
+    policy: dict[str, Any] = Field(default_factory=dict)
+    bridge: dict[str, Any] = Field(default_factory=dict)
+    method_notes: list[str] = Field(default_factory=list)
+    engine_version: str = "0.1.0"
 
 
 class TicketAddLeg(YWPModel):

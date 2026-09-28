@@ -10,6 +10,7 @@ from app.services.board_metrics import (
     select_weakest_leg,
 )
 from app.services.pipeline.runner import run_ticket_pipeline
+from app.services.quant_bridge import audit_ticket
 from app.services.ticket_gates import (
     CASH_CARD_KEYS,
     cap_pitcher_k_overs,
@@ -196,23 +197,50 @@ def _card(
         if high_near_miss:
             warnings.append("Elevated miss-by-1 leg(s): " + ", ".join(high_near_miss))
         warnings.append(explanation)
-        # Stages 6–7: correlation + Monte Carlo replace naive product when dependent.
+        # Stages 6–7: local MC, then authoritative ywp_quant QUALIFY/REJECT gate.
         ticket_pipe = run_ticket_pipeline(kept)
         joint = {
             "joint_win_probability": ticket_pipe.get("joint_win_probability"),
             "joint_probability_status": ticket_pipe.get("joint_probability_status"),
             "joint_probability_note": ticket_pipe.get("joint_probability_note"),
         }
-        # Fall back to disclosure helper when MC cannot run.
         if joint["joint_win_probability"] is None:
             joint = joint_win_probability_disclosure(kept)
         card_threshold = ticket_pipe.get("card_threshold")
+        try:
+            quant = audit_ticket(kept)
+            ticket_pipe = {**(ticket_pipe or {}), "ywp_quant": quant}
+            card_threshold = quant.get("pipeline_threshold") or card_threshold
+            ticket_block = quant.get("ticket") or {}
+            if ticket_block.get("model_probability") is not None:
+                joint = {
+                    "joint_win_probability": ticket_block.get("model_probability"),
+                    "joint_probability_status": "ywp_quant",
+                    "joint_probability_note": (
+                        f"ywp_quant {quant.get('decision')}: "
+                        f"joint={ticket_block.get('model_probability'):.1%} "
+                        f"edge={ticket_block.get('edge')} "
+                        f"blockers={quant.get('blockers')}"
+                    ),
+                }
+            if quant.get("decision") == "REJECT":
+                blockers = quant.get("blockers") or []
+                warnings.append(
+                    "ywp_quant REJECT — "
+                    + (", ".join(blockers[:6]) if blockers else "gates failed")
+                    + ". No forced pick."
+                )
+            else:
+                warnings.append("ywp_quant QUALIFY — clears probability, dependence, and price gates.")
+        except Exception as exc:  # noqa: BLE001 — board must not 500 on quant miss
+            warnings.append(f"ywp_quant unavailable: {exc}")
         if card_threshold == "reject" and kept:
             warnings.append("Pipeline threshold: reject — do not force this card.")
         elif card_threshold == "borderline":
             warnings.append("Pipeline threshold: borderline — size down or PASS.")
     corr = (ticket_pipe or {}).get("correlation") or {}
     mc = (ticket_pipe or {}).get("monte_carlo") or {}
+    quant_ticket = ((ticket_pipe or {}).get("ywp_quant") or {}).get("ticket") or {}
     return TicketCardOut(
         key=key,
         label=label,
@@ -225,7 +253,7 @@ def _card(
         joint_win_probability=joint["joint_win_probability"],
         joint_probability_status=str(joint["joint_probability_status"]),
         joint_probability_note=joint.get("joint_probability_note"),
-        monte_carlo_sims=mc.get("sims"),
+        monte_carlo_sims=quant_ticket.get("simulations") or mc.get("sims"),
         correlation_max_rho=corr.get("max_rho"),
         pipeline_threshold=card_threshold if kept else "reject",
         pipeline=ticket_pipe,
