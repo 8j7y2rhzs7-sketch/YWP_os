@@ -1,45 +1,391 @@
-export const API_URL = (
-  process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:8000/api/v1"
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const API_URL_KEY = "ywp.os.api_url.v1";
+export const PRODUCTION_API_URL = "https://ywp-os-api.onrender.com/api/v1";
+
+const configuredApiUrl = process.env.EXPO_PUBLIC_API_URL?.trim();
+const DEFAULT_API_URL = (
+  configuredApiUrl ||
+  (__DEV__ ? "http://localhost:8000/api/v1" : PRODUCTION_API_URL)
 ).replace(/\/$/, "");
+
+let currentApiUrl = DEFAULT_API_URL;
+
+export function getApiUrl(): string {
+  return currentApiUrl || PRODUCTION_API_URL;
+}
+
+export const WHOP_CHECKOUT_URL =
+  process.env.EXPO_PUBLIC_WHOP_CHECKOUT_URL ??
+  process.env.NEXT_PUBLIC_WHOP_CHECKOUT_URL ??
+  "https://whop.com/checkout/plan_MwJ2qcFxmvqDY";
+
+export const APP_DOWNLOAD_URL =
+  process.env.EXPO_PUBLIC_APP_DOWNLOAD_URL ??
+  "https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.56/YWP-OS-3.3.56.apk";
+
+export function normalizeApiUrl(value: string): string {
+  const normalized = value.trim().replace(/\/$/, "");
+  if (!normalized) throw new Error("Enter your deployed YWP OS API URL");
+  let parsed: URL;
+  try {
+    parsed = new URL(normalized);
+  } catch {
+    throw new Error("Enter a complete API URL beginning with https://");
+  }
+  const localDevelopment = ["localhost", "127.0.0.1", "10.0.2.2"].includes(
+    parsed.hostname,
+  );
+  if (parsed.protocol !== "https:" && !(__DEV__ && localDevelopment)) {
+    throw new Error("Production API connections must use HTTPS");
+  }
+  if (!parsed.pathname.endsWith("/api/v1")) {
+    throw new Error("The API URL must end with /api/v1");
+  }
+  return normalized;
+}
+
+export async function loadApiUrl(): Promise<string> {
+  try {
+    const stored = await AsyncStorage.getItem(API_URL_KEY);
+    // Ignore stale localhost leftovers on production builds.
+    if (stored) {
+      const cleaned = stored.replace(/\/$/, "");
+      const isLocal =
+        cleaned.includes("localhost") ||
+        cleaned.includes("127.0.0.1") ||
+        cleaned.includes("10.0.2.2");
+      if (__DEV__ || !isLocal) {
+        currentApiUrl = cleaned;
+      } else {
+        currentApiUrl = DEFAULT_API_URL || PRODUCTION_API_URL;
+        await AsyncStorage.setItem(API_URL_KEY, currentApiUrl);
+      }
+    } else if (!currentApiUrl) {
+      currentApiUrl = DEFAULT_API_URL || PRODUCTION_API_URL;
+    }
+  } catch {
+    currentApiUrl = currentApiUrl || DEFAULT_API_URL || PRODUCTION_API_URL;
+  }
+  return getApiUrl();
+}
+
+export async function ensureApiUrl(): Promise<string> {
+  const url = await loadApiUrl();
+  if (!url) {
+    currentApiUrl = PRODUCTION_API_URL;
+  }
+  return getApiUrl();
+}
+
+export async function saveApiUrl(value: string): Promise<string> {
+  const next = normalizeApiUrl(value || PRODUCTION_API_URL);
+  currentApiUrl = next;
+  await AsyncStorage.setItem(API_URL_KEY, next);
+  return next;
+}
 
 export class ApiError extends Error {
   constructor(
     message: string,
     public readonly status: number,
     public readonly details?: unknown,
+    public readonly checkoutUrl?: string,
   ) {
     super(message);
     this.name = "ApiError";
   }
 }
 
+const DEFAULT_TIMEOUT_MS = 25_000;
+/** Slate + analyze pull Odds + research; Render cold starts often exceed 25s. */
+const HEAVY_TIMEOUT_MS = 90_000;
+/** Full NCAAF cards can be 250–400 candidates and need a longer analyze window. */
+const ANALYZE_TIMEOUT_MS = 180_000;
+
+/** Shown when Cloudflare (or similar) returns an HTML challenge instead of JSON. */
+export const EDGE_CHALLENGE_MESSAGE =
+  "Edge protection paused this request — waiting and retrying automatically. Avoid spamming Refresh.";
+
+const EDGE_RETRY_LIMIT = 3;
+const EDGE_RETRY_BASE_MS = 5_000;
+
+/** Detect Cloudflare / WAF challenge HTML/JS dumped into API error bodies. */
+export function looksLikeEdgeChallenge(value: unknown): boolean {
+  if (typeof value !== "string") return false;
+  const trimmed = value.trim();
+  if (!trimmed) return false;
+  // Sample head + mid — scrolled dumps often show only challenge JS / tokens.
+  const head = trimmed.slice(0, 1600).toLowerCase();
+  const mid = trimmed.slice(1600, 5000).toLowerCase();
+  const sample = `${head}\n${mid}`;
+  if (
+    head.startsWith("<!doctype html") ||
+    head.startsWith("<html") ||
+    sample.includes("just a moment") ||
+    sample.includes("challenges.cloudflare.com") ||
+    sample.includes("cf-browser-verification") ||
+    sample.includes("cdn-cgi/challenge") ||
+    sample.includes("challenge-platform") ||
+    sample.includes("attention required! | cloudflare") ||
+    sample.includes("enable javascript and cookies to continue") ||
+    sample.includes("_cf_chl_opt") ||
+    sample.includes("_cf_chl_rt_tk") ||
+    sample.includes("challenge-error-text") ||
+    sample.includes("cf-challenge") ||
+    sample.includes("chl_page")
+  ) {
+    return true;
+  }
+  if (
+    trimmed.length > 400 &&
+    /<\/?(?:html|head|body|style|script|meta)\b/i.test(head)
+  ) {
+    return true;
+  }
+  // Opaque challenge token walls (almost no whitespace, very long, not JSON).
+  if (
+    trimmed.length > 600 &&
+    !trimmed.startsWith("{") &&
+    !trimmed.startsWith("[")
+  ) {
+    const spaces = (trimmed.match(/\s/g) ?? []).length;
+    if (spaces / trimmed.length < 0.06) return true;
+  }
+  return false;
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function clipMessage(text: string, max = 280): string {
+  const trimmed = text.trim();
+  if (trimmed.length <= max) return trimmed;
+  return `${trimmed.slice(0, max - 1)}…`;
+}
+
+function formatApiDetail(detail: unknown, status: number): string {
+  if (typeof detail === "string" && detail.trim()) {
+    if (looksLikeEdgeChallenge(detail)) return EDGE_CHALLENGE_MESSAGE;
+    return clipMessage(detail);
+  }
+  if (Array.isArray(detail) && detail.length) {
+    const parts = detail.map((item) => {
+      if (typeof item === "string") {
+        return looksLikeEdgeChallenge(item) ? EDGE_CHALLENGE_MESSAGE : item;
+      }
+      if (item && typeof item === "object") {
+        const row = item as { msg?: unknown; loc?: unknown; type?: unknown };
+        const where = Array.isArray(row.loc)
+          ? row.loc
+              .filter((part) => part !== "body")
+              .map(String)
+              .join(".")
+          : "";
+        const msg = typeof row.msg === "string" ? row.msg : "Invalid request";
+        return where ? `${where}: ${msg}` : msg;
+      }
+      return "Invalid request";
+    });
+    return clipMessage(parts.slice(0, 3).join(" · "));
+  }
+  if (
+    detail &&
+    typeof detail === "object" &&
+    "message" in detail &&
+    typeof (detail as { message: unknown }).message === "string" &&
+    (detail as { message: string }).message.trim()
+  ) {
+    const nested = (detail as { message: string }).message.trim();
+    if (looksLikeEdgeChallenge(nested)) return EDGE_CHALLENGE_MESSAGE;
+    return clipMessage(nested);
+  }
+  if (status === 401) {
+    return "Session expired or not signed in — open Controls and sign in again.";
+  }
+  if (status === 403) {
+    return "Access denied — check subscription / Whop membership, then retry.";
+  }
+  if (status === 429) {
+    return "Too many requests — wait a few seconds, then retry.";
+  }
+  if (status === 502 || status === 504) {
+    return "Server timed out — wait for research to finish, then LAUNCH again. Props still score fail-closed until modeled.";
+  }
+  if (status === 503) {
+    return "Live provider is down and demo will not be substituted. Retry in a moment.";
+  }
+  if (status === 0) {
+    return "Network request failed — check connectivity and retry.";
+  }
+  return `Request failed with status ${status}`;
+}
+
+export function timeoutMsForPath(path: string, override?: number): number {
+  if (typeof override === "number" && override > 0) return override;
+  const route = path.split("?")[0] ?? path;
+  if (route.startsWith("/sports/analyze")) {
+    return ANALYZE_TIMEOUT_MS;
+  }
+  if (
+    route.startsWith("/sports/slate") ||
+    route.startsWith("/sports/prefetch-odds") ||
+    route.startsWith("/sports/warm-props") ||
+    route.startsWith("/sports/market-board") ||
+    route.startsWith("/sports/day-forge") ||
+    route.startsWith("/sports/build-ticket") ||
+    route.startsWith("/sports/settle-day")
+  ) {
+    return HEAVY_TIMEOUT_MS;
+  }
+  return DEFAULT_TIMEOUT_MS;
+}
+
+function isCanceledFetchError(error: unknown): boolean {
+  if (!(error instanceof Error)) return false;
+  if (error.name === "AbortError") return true;
+  const message = error.message.toLowerCase();
+  if (
+    message.includes("aborted") ||
+    message.includes("canceled") ||
+    message.includes("cancelled")
+  ) {
+    return true;
+  }
+  const cause = (error as Error & { cause?: unknown }).cause;
+  if (cause instanceof Error) {
+    const causeMessage = cause.message.toLowerCase();
+    return (
+      cause.name === "AbortError" ||
+      causeMessage.includes("aborted") ||
+      causeMessage.includes("canceled") ||
+      causeMessage.includes("cancelled")
+    );
+  }
+  return false;
+}
+
 export async function rawRequest<T>(
   path: string,
   init: RequestInit = {},
   accessToken?: string,
+  timeoutMs?: number,
 ): Promise<T> {
+  let lastEdgeError: ApiError | null = null;
+  for (let attempt = 0; attempt <= EDGE_RETRY_LIMIT; attempt += 1) {
+    try {
+      return await rawRequestOnce<T>(path, init, accessToken, timeoutMs);
+    } catch (error) {
+      if (!(error instanceof ApiError) || !looksLikeEdgeChallenge(error.details ?? error.message)) {
+        // Also retry when the thrown message is already the friendly edge copy.
+        const isFriendlyEdge =
+          error instanceof ApiError &&
+          (error.message === EDGE_CHALLENGE_MESSAGE ||
+            error.message.includes("Edge protection"));
+        if (!isFriendlyEdge) throw error;
+        lastEdgeError = error;
+      } else {
+        lastEdgeError = error;
+      }
+      if (attempt >= EDGE_RETRY_LIMIT) break;
+      await sleep(EDGE_RETRY_BASE_MS * (attempt + 1));
+    }
+  }
+  throw (
+    lastEdgeError ??
+    new ApiError(EDGE_CHALLENGE_MESSAGE, 503)
+  );
+}
+
+async function rawRequestOnce<T>(
+  path: string,
+  init: RequestInit = {},
+  accessToken?: string,
+  timeoutMs?: number,
+): Promise<T> {
+  const apiUrl = getApiUrl() || PRODUCTION_API_URL;
+  currentApiUrl = apiUrl;
   const headers = new Headers(init.headers);
+  if (!headers.has("Accept")) {
+    headers.set("Accept", "application/json");
+  }
+  if (!headers.has("User-Agent")) {
+    headers.set("User-Agent", "YWP-OS/3.3.56 (Android; native)");
+  }
   if (init.body && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");
   }
   if (accessToken) {
     headers.set("Authorization", `Bearer ${accessToken}`);
   }
-  const response = await fetch(`${API_URL}${path}`, { ...init, headers });
+  const waitMs = timeoutMsForPath(path, timeoutMs);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), waitMs);
+  let response: Response;
+  try {
+    response = await fetch(`${apiUrl}${path}`, {
+      ...init,
+      headers,
+      signal: init.signal ?? controller.signal,
+    });
+  } catch (error) {
+    clearTimeout(timer);
+    if (controller.signal.aborted || isCanceledFetchError(error)) {
+      throw new ApiError(
+        `Request timed out after ${Math.round(waitMs / 1000)}s — check connectivity and retry`,
+        408,
+      );
+    }
+    throw new ApiError(
+      error instanceof Error ? error.message : "Network request failed",
+      0,
+    );
+  } finally {
+    clearTimeout(timer);
+  }
   const contentType = response.headers.get("content-type") ?? "";
-  const body = contentType.includes("application/json")
-    ? await response.json()
-    : await response.text();
+  const isJson = contentType.includes("application/json");
+  let body: unknown;
+  if (isJson) {
+    try {
+      body = await response.json();
+    } catch {
+      throw new ApiError(
+        "Server returned invalid JSON — wait a moment and retry.",
+        response.status || 502,
+      );
+    }
+  } else {
+    body = await response.text();
+  }
+  // Cloudflare often serves an HTML/JS challenge with 403/503 (or rarely 200).
+  if (
+    looksLikeEdgeChallenge(body) ||
+    (!isJson &&
+      typeof body === "string" &&
+      /<\/?[a-z][\s\S]*>/i.test(body.slice(0, 200)))
+  ) {
+    throw new ApiError(
+      EDGE_CHALLENGE_MESSAGE,
+      response.status === 200 ? 503 : response.status,
+      typeof body === "string" ? body : EDGE_CHALLENGE_MESSAGE,
+    );
+  }
   if (!response.ok) {
     const detail =
       typeof body === "object" && body !== null && "detail" in body
         ? body.detail
         : body;
-    const message =
-      typeof detail === "string"
-        ? detail
-        : `Request failed with status ${response.status}`;
-    throw new ApiError(message, response.status, detail);
+    const checkoutUrl =
+      typeof detail === "object" &&
+      detail !== null &&
+      "checkout_url" in detail &&
+      typeof detail.checkout_url === "string"
+        ? detail.checkout_url
+        : undefined;
+    const message = formatApiDetail(detail, response.status);
+    throw new ApiError(message, response.status, detail, checkoutUrl);
   }
   return body as T;
 }

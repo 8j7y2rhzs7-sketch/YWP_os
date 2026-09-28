@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from app.core.config import settings
 from app.models import ProtocolRun
 from app.schemas import CandidateInput
+from app.services.readiness import ESPN_TEAM_MARKET_SPORTS, is_mlb_team_market
 
 CURRENT_PROTOCOL = {
     "name": "YWP OS Canonical Sports Protocol",
@@ -134,6 +135,13 @@ CURRENT_PROTOCOL = {
             "home_away_park_weather_and_market_movement",
             "f5_full_game_team_total_and_variance_elimination_test",
         ],
+        "nhl": [
+            "schedule_and_starting_goalies_verified",
+            "injuries_rest_travel_and_line_combinations",
+            "recent_form_home_away_and_special_teams",
+            "pace_expected_goals_proxy_and_game_script",
+            "market_value_and_weakest_leg_elimination",
+        ],
     },
     "ticket_system": {
         "official_daily_card": (
@@ -236,6 +244,32 @@ CURRENT_PROTOCOL = {
             "Version every weight and support rollback",
         ],
     },
+    "trusted_source_research_protocol": {
+        "rule": (
+            "Strict Mode may auto-verify a research field only from the certified source list. "
+            "Searchers query those sources before a slate is labeled PARTIAL."
+        ),
+        "searchers": [
+            "mlb_schedule_officials_weather_venue",
+            "mlb_live_feed_lineups_weather_park",
+            "mlb_boxscore_umpire_crew",
+            "mlb_roster_availability",
+            "mlb_bullpen_workload",
+            "espn_scoreboard_schedule_and_venue",
+            "espn_team_schedule_l5_l10_form",
+            "espn_league_injury_report",
+            "open_meteo_backup_weather",
+            "odds_api_current_price_and_multi_book_consensus",
+            "ywp_mlb_independent_model",
+            "ywp_multi_sport_independent_model",
+        ],
+        "never_trusted": [
+            "Random blogs or tip pages",
+            "Unauthenticated HTML scrapes of sportsbook sites",
+            "Social media rumor without an official confirmation",
+            "Manufactured or implied-only probabilities used as YWP projections",
+        ],
+    },
     "superseded_or_removed": [
         "Any older workflow is superseded by the newest canonical version.",
         "Incorrect ABC interpretations are removed; A/B/C use the definitions above.",
@@ -247,6 +281,24 @@ CURRENT_PROTOCOL = {
         "Do not treat completed non-causal legs as the reason a dead ticket lost.",
     ],
 }
+
+
+def _team_market_without_lineups(sport: str) -> bool:
+    sport_l = (sport or "").lower()
+    return sport_l == "kbo" or sport_l in ESPN_TEAM_MARKET_SPORTS
+
+
+def _lineup_injuries_starters_ok(candidate: CandidateInput) -> bool:
+    """Team markets must not FAIL Protocol Health solely on missing batting orders."""
+    if _team_market_without_lineups(candidate.sport):
+        return bool(candidate.injuries_verified)
+    if is_mlb_team_market(candidate):
+        return bool(candidate.injuries_verified and candidate.starter_confirmed)
+    return bool(
+        candidate.lineup_confirmed
+        and candidate.injuries_verified
+        and candidate.starter_confirmed
+    )
 
 
 def _check(
@@ -339,8 +391,21 @@ def run_protocol_health_check(
         ("h2h_context", "AIN 6 — H2H context"),
         ("market_value", "AIN 7 — Market value"),
     ]
+    # AIN 1 / AIN 5 check that matchup and script inputs were computed in-range.
+    # Do NOT require score >= 0.5 here: two-sided slates correctly include the weak
+    # side of each market (and some underdog PLAYs) below 0.5. Strength belongs in
+    # the decision engine, not the slate health sweep — otherwise every live MLB
+    # board falsely FAILS the final protocol check.
     inferred: dict[str, list[bool | None]] = {
-        "matchup_edge": [candidate.matchup_score >= 0.5 for candidate in candidates],
+        # Sheet sportsbook-menu legs often omit research scores (None). Treat
+        # missing as incomplete — never crash float(None) into a 500 on Check.
+        "matchup_edge": [
+            (
+                candidate.matchup_score is not None
+                and 0.0 <= float(candidate.matchup_score) <= 1.0
+            )
+            for candidate in candidates
+        ],
         "recent_form_l5_l10": [
             candidate.ain_checks.get("recent_form_l5_l10", candidate.current_form_verified)
             for candidate in candidates
@@ -349,10 +414,16 @@ def run_protocol_health_check(
             candidate.ain_checks.get("situational_angles") for candidate in candidates
         ],
         "injuries_and_rest": [candidate.injuries_verified for candidate in candidates],
-        "pace_or_tempo": [candidate.script_alignment >= 0.5 for candidate in candidates],
+        "pace_or_tempo": [
+            candidate.script_alignment is not None
+            and 0.0 <= float(candidate.script_alignment) <= 1.0
+            for candidate in candidates
+        ],
         "h2h_context": [candidate.ain_checks.get("h2h_context") for candidate in candidates],
         "market_value": [
-            candidate.estimated_probability > 0 and candidate.american_odds != 0
+            candidate.estimated_probability is not None
+            and float(candidate.estimated_probability) > 0
+            and candidate.american_odds != 0
             for candidate in candidates
         ],
     }
@@ -375,9 +446,7 @@ def run_protocol_health_check(
                 "lineup_injuries_starters",
                 "Lineups, injuries, starters, and role",
                 [
-                    candidate.lineup_confirmed
-                    and candidate.injuries_verified
-                    and candidate.starter_confirmed
+                    _lineup_injuries_starters_ok(candidate)
                     for candidate in candidates
                 ],
             ),
@@ -410,15 +479,51 @@ def run_protocol_health_check(
                 ],
                 required=False,
             ),
+            # Team-market sports intentionally leave miss-by-1 / multi-path null
+            # (no invented constants). Require only when the candidate populated them.
             _check(
                 "miss_by_one",
                 "Miss-by-1 inputs",
-                [candidate.miss_by_one_count_l10 >= 0 for candidate in candidates],
+                [
+                    (
+                        True
+                        if candidate.miss_by_one_count_l10 is None
+                        and _team_market_without_lineups(candidate.sport)
+                        else (
+                            candidate.miss_by_one_count_l10 is not None
+                            and candidate.miss_by_one_count_l10 >= 0
+                        )
+                    )
+                    for candidate in candidates
+                ],
+                required=False,
             ),
             _check(
                 "multiple_paths",
                 "Multiple independent cashing paths",
-                [candidate.multiple_paths_score >= 0.35 for candidate in candidates],
+                [
+                    (
+                        True
+                        if candidate.multiple_paths_score is None
+                        and _team_market_without_lineups(candidate.sport)
+                        else (
+                            candidate.multiple_paths_score is not None
+                            and candidate.multiple_paths_score >= 0.35
+                        )
+                    )
+                    for candidate in candidates
+                ],
+                required=False,
+            ),
+            _check(
+                "pre_game_only",
+                "Game status is PRE_GAME",
+                [candidate.game_status == "PRE_GAME" for candidate in candidates],
+            ),
+            _check(
+                "market_open",
+                "Market status is OPEN",
+                [candidate.market_status == "OPEN" for candidate in candidates],
             ),
         ]
     )

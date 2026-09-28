@@ -21,6 +21,11 @@ from app.models import (
 from app.schemas import MissByOneOut, PatternOut, PerformanceOut
 
 
+def _rate(wins: int, losses: int) -> float | None:
+    total = wins + losses
+    return round(wins / total, 4) if total else None
+
+
 def performance(db: Session, user_id: str) -> PerformanceOut:
     rows = db.execute(
         select(Result, Recommendation)
@@ -31,11 +36,86 @@ def performance(db: Session, user_id: str) -> PerformanceOut:
     wins = sum(1 for result, _ in rows if result.outcome == "WIN")
     losses = sum(1 for result, _ in rows if result.outcome == "LOSS")
     pushes = sum(1 for result, _ in rows if result.outcome in {"PUSH", "VOID"})
-    profit_loss = sum((result.profit_loss for result, _ in rows), start=Decimal("0.00"))
-    wagered = sum(
-        (result.stake for result, _ in rows if result.outcome in {"WIN", "LOSS", "PUSH"}),
-        start=Decimal("0.00"),
+    leg_win_rate = _rate(wins, losses)
+
+    # Money totals come from settled tickets (actual wagers), not zero-stake board grades.
+    tickets = list(
+        db.scalars(
+            select(Ticket).where(
+                Ticket.user_id == user_id,
+                Ticket.settled_profit_loss.is_not(None),
+            )
+        )
     )
+    graded_tickets = [
+        ticket
+        for ticket in tickets
+        if (ticket.settled_outcome or "").upper() in {"WIN", "LOSS", "PUSH", "VOID"}
+    ]
+    ticket_wins = sum(1 for ticket in graded_tickets if (ticket.settled_outcome or "").upper() == "WIN")
+    ticket_losses = sum(
+        1 for ticket in graded_tickets if (ticket.settled_outcome or "").upper() == "LOSS"
+    )
+    ticket_pushes = sum(
+        1
+        for ticket in graded_tickets
+        if (ticket.settled_outcome or "").upper() in {"PUSH", "VOID"}
+    )
+    ticket_settled = len(graded_tickets)
+    ticket_win_rate = _rate(ticket_wins, ticket_losses)
+
+    # Legs that actually rode on a placed/settled ticket (packaging sample).
+    locked_rows = db.execute(
+        select(Result, Recommendation, Ticket)
+        .join(Recommendation, Recommendation.id == Result.recommendation_id)
+        .join(TicketLeg, TicketLeg.recommendation_id == Recommendation.id)
+        .join(Ticket, Ticket.id == TicketLeg.ticket_id)
+        .where(
+            Recommendation.created_by_user_id == user_id,
+            Ticket.user_id == user_id,
+            Ticket.status.in_(("placed", "settled")),
+            TicketLeg.action.in_(("follow", "replace")),
+        )
+    ).all()
+    # Deduplicate if a recommendation appears on multiple tickets.
+    locked_by_rec: dict[str, str] = {}
+    for result, recommendation, _ticket in locked_rows:
+        locked_by_rec[recommendation.id] = result.outcome
+    locked_leg_wins = sum(1 for outcome in locked_by_rec.values() if outcome == "WIN")
+    locked_leg_losses = sum(1 for outcome in locked_by_rec.values() if outcome == "LOSS")
+    locked_leg_settled = len(locked_by_rec)
+    locked_leg_win_rate = _rate(locked_leg_wins, locked_leg_losses)
+
+    by_ticket_type: dict[str, dict[str, Any]] = defaultdict(
+        lambda: {"settled": 0, "wins": 0, "losses": 0, "pushes": 0}
+    )
+    for ticket in graded_tickets:
+        outcome = (ticket.settled_outcome or "").upper()
+        bucket = by_ticket_type[ticket.ticket_type or "unknown"]
+        bucket["settled"] += 1
+        bucket["wins"] += int(outcome == "WIN")
+        bucket["losses"] += int(outcome == "LOSS")
+        bucket["pushes"] += int(outcome in {"PUSH", "VOID"})
+
+    if tickets:
+        profit_loss = sum(
+            (ticket.settled_profit_loss for ticket in tickets if ticket.settled_profit_loss is not None),
+            start=Decimal("0.00"),
+        )
+        wagered = sum(
+            (
+                Decimal(str(ticket.stake))
+                for ticket in tickets
+                if ticket.settled_outcome in {"WIN", "LOSS", "PUSH"}
+            ),
+            start=Decimal("0.00"),
+        )
+    else:
+        profit_loss = sum((result.profit_loss for result, _ in rows), start=Decimal("0.00"))
+        wagered = sum(
+            (result.stake for result, _ in rows if result.outcome in {"WIN", "LOSS", "PUSH"}),
+            start=Decimal("0.00"),
+        )
 
     by_sport: dict[str, dict[str, Any]] = defaultdict(
         lambda: {"settled": 0, "wins": 0, "profit_loss": Decimal("0")}
@@ -71,6 +151,20 @@ def performance(db: Session, user_id: str) -> PerformanceOut:
             )
         return output
 
+    ticket_type_rows = []
+    for key, values in sorted(by_ticket_type.items()):
+        decided = int(values["wins"]) + int(values["losses"])
+        ticket_type_rows.append(
+            {
+                "ticket_type": key,
+                "settled": values["settled"],
+                "wins": values["wins"],
+                "losses": values["losses"],
+                "pushes": values["pushes"],
+                "win_rate": round(values["wins"] / decided, 4) if decided else None,
+            }
+        )
+
     calibration_rows = [
         {
             "confidence_band": band,
@@ -79,17 +173,59 @@ def performance(db: Session, user_id: str) -> PerformanceOut:
         }
         for band, values in sorted(calibration.items())
     ]
+    packaging_gap = None
+    if leg_win_rate is not None and ticket_win_rate is not None:
+        packaging_gap = round(leg_win_rate - ticket_win_rate, 4)
+
+    if ticket_settled == 0:
+        packaging_note = (
+            "Leg hit rate is board/pick accuracy. No settled tickets yet — "
+            "ticket hit rate appears after Sync Scores grades placed parlays."
+        )
+    elif packaging_gap is not None and packaging_gap >= 0.08:
+        packaging_note = (
+            f"Legs hit more often than full tickets (+{packaging_gap:.0%} gap). "
+            "Packaging is the leak — shorten cards and keep weak markets off core parlays."
+        )
+    elif packaging_gap is not None and packaging_gap <= -0.08:
+        packaging_note = (
+            f"Tickets are outrunning raw leg hit rate ({abs(packaging_gap):.0%} edge). "
+            "Keep using the card shapes that are clearing."
+        )
+    else:
+        packaging_note = (
+            "Leg hit rate and ticket hit rate are tracked separately so packaging "
+            "quality is never confused with pick quality."
+        )
+
     return PerformanceOut(
         settled=settled,
         wins=wins,
         losses=losses,
         pushes=pushes,
-        win_rate=round(wins / (wins + losses), 4) if wins + losses else None,
+        win_rate=leg_win_rate,
         profit_loss=profit_loss,
         roi=round(float(profit_loss / wagered), 4) if wagered else None,
         by_sport=summarize(by_sport, "sport"),
         by_market=summarize(by_market, "market_type"),
         confidence_calibration=calibration_rows,
+        leg_settled=settled,
+        leg_wins=wins,
+        leg_losses=losses,
+        leg_pushes=pushes,
+        leg_win_rate=leg_win_rate,
+        ticket_settled=ticket_settled,
+        ticket_wins=ticket_wins,
+        ticket_losses=ticket_losses,
+        ticket_pushes=ticket_pushes,
+        ticket_win_rate=ticket_win_rate,
+        locked_leg_settled=locked_leg_settled,
+        locked_leg_wins=locked_leg_wins,
+        locked_leg_losses=locked_leg_losses,
+        locked_leg_win_rate=locked_leg_win_rate,
+        packaging_gap=packaging_gap,
+        by_ticket_type=ticket_type_rows,
+        packaging_note=packaging_note,
     )
 
 
@@ -402,3 +538,182 @@ def rollback_weight_proposal(
     db.commit()
     db.refresh(proposal)
     return proposal
+
+
+def load_feature_weights(db: Session, sport: str, market_type: str) -> dict[str, float]:
+    rows = db.scalars(
+        select(ModelWeight).where(
+            ModelWeight.sport == sport,
+            ModelWeight.market_type == market_type,
+            ModelWeight.is_active.is_(True),
+        )
+    ).all()
+    return {row.feature_name: float(row.weight) for row in rows}
+
+
+def record_usage_event(
+    db: Session,
+    *,
+    event_type: str,
+    sport: str | None,
+    market_type: str | None = None,
+    recommendation_id: str | None = None,
+    analysis: dict[str, Any] | None = None,
+) -> None:
+    db.add(
+        LearningEvent(
+            recommendation_id=recommendation_id,
+            event_type=event_type,
+            sport=sport,
+            market_type=market_type,
+            analysis=analysis or {},
+        )
+    )
+
+
+def apply_micro_learning(db: Session, result: Result, recommendation: Recommendation) -> None:
+    """Apply a tiny, bounded weight shift when micro-learning is enabled.
+
+    Large structural weight proposals still require human approval separately
+    via learning_requires_human_approval. Outcome memory is always preserved.
+    """
+    if not settings.learning_allow_micro_updates:
+        record_usage_event(
+            db,
+            event_type="RESULT_GRADED_MICRO_DISABLED",
+            sport=recommendation.sport,
+            market_type=recommendation.market_type,
+            recommendation_id=recommendation.id,
+            analysis={
+                "outcome": result.outcome,
+                "lesson": result.lesson,
+                "policy": "learning_allow_micro_updates=false",
+                "human_approval_required": settings.learning_requires_human_approval,
+            },
+        )
+        return
+
+    feature = ERROR_FEATURE_MAP.get(result.error_category or "", "market_value")
+    if result.outcome == "WIN":
+        delta = settings.learning_micro_delta
+        if result.process_grade in {"A", "B"}:
+            delta *= 1.25
+    elif result.outcome == "LOSS":
+        delta = -settings.learning_micro_delta
+        if result.error_category in ERROR_FEATURE_MAP:
+            delta *= 1.5
+    else:
+        record_usage_event(
+            db,
+            event_type="RESULT_NEUTRAL",
+            sport=recommendation.sport,
+            market_type=recommendation.market_type,
+            recommendation_id=recommendation.id,
+            analysis={"outcome": result.outcome, "lesson": result.lesson},
+        )
+        return
+
+    active = db.scalar(
+        select(ModelWeight)
+        .where(
+            ModelWeight.sport == recommendation.sport,
+            ModelWeight.market_type == recommendation.market_type,
+            ModelWeight.feature_name == feature,
+            ModelWeight.is_active.is_(True),
+        )
+        .order_by(ModelWeight.version.desc())
+    )
+    current = float(active.weight) if active else 0.10
+    next_weight = min(
+        settings.learning_weight_ceiling,
+        max(settings.learning_weight_floor, current + delta),
+    )
+    if abs(next_weight - current) < 0.0001:
+        return
+    if active:
+        active.is_active = False
+        next_version = active.version + 1
+        sample = active.sample_size + 1
+    else:
+        next_version = 1
+        sample = 1
+    db.add(
+        ModelWeight(
+            sport=recommendation.sport,
+            market_type=recommendation.market_type,
+            feature_name=feature,
+            weight=Decimal(str(round(next_weight, 6))),
+            version=next_version,
+            sample_size=sample,
+            is_active=True,
+        )
+    )
+    record_usage_event(
+        db,
+        event_type="MICRO_WEIGHT_APPLIED",
+        sport=recommendation.sport,
+        market_type=recommendation.market_type,
+        recommendation_id=recommendation.id,
+        analysis={
+            "feature": feature,
+            "from": current,
+            "to": next_weight,
+            "delta": delta,
+            "outcome": result.outcome,
+            "error_category": result.error_category,
+            "lesson": result.lesson,
+        },
+    )
+
+
+def learning_pulse(db: Session, user_id: str) -> dict[str, Any]:
+    rows = db.execute(
+        select(LearningEvent, Recommendation)
+        .join(
+            Recommendation,
+            Recommendation.id == LearningEvent.recommendation_id,
+            isouter=True,
+        )
+    ).all()
+    events = [
+        event
+        for event, recommendation in rows
+        if (recommendation is not None and recommendation.created_by_user_id == user_id)
+        or (
+            event.recommendation_id is None
+            and (event.analysis or {}).get("user_id") == user_id
+        )
+    ]
+    protocol_runs = sum(1 for event in events if event.event_type == "PROTOCOL_RUN")
+    graded = sum(1 for event in events if event.event_type == "RESULT_GRADED")
+    micros = [event for event in events if event.event_type == "MICRO_WEIGHT_APPLIED"]
+    weights = list(db.scalars(select(ModelWeight).where(ModelWeight.is_active.is_(True))).all())
+    latest = None
+    if micros:
+        latest_event = max(micros, key=lambda item: item.created_at)
+        latest = str((latest_event.analysis or {}).get("lesson") or latest_event.event_type)
+    if graded or protocol_runs:
+        headline = (
+            f"Trained on {graded} grades and {protocol_runs} protocol runs. "
+            f"{len(micros)} live weight shifts are already in the engine."
+        )
+    else:
+        headline = "No training yet. Grade a result or run a slate — every use teaches it."
+    return {
+        "protocol_runs": protocol_runs,
+        "graded_results": graded,
+        "micro_updates": len(micros),
+        "active_shifts": [
+            {
+                "sport": row.sport,
+                "market_type": row.market_type,
+                "feature_name": row.feature_name,
+                "weight": float(row.weight),
+                "version": row.version,
+                "sample_size": row.sample_size,
+            }
+            for row in weights
+        ],
+        "latest_lesson": latest,
+        "headline": headline,
+    }

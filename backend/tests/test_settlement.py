@@ -1,0 +1,820 @@
+from __future__ import annotations
+
+from datetime import date, datetime, timezone
+from decimal import Decimal
+from types import SimpleNamespace
+
+from app.core.database import SessionLocal
+from app.models import Recommendation, Ticket, TicketLeg, User
+from app.services import settlement
+
+
+def _feed(*, home_runs: int = 5, away_runs: int = 3, abstract: str = "Final") -> dict:
+    return {
+        "gameData": {
+            "status": {"abstractGameState": abstract, "detailedState": abstract},
+            "teams": {
+                "home": {"name": "Home Club", "id": 10},
+                "away": {"name": "Away Club", "id": 20},
+            },
+        },
+        "liveData": {
+            "linescore": {
+                "teams": {
+                    "home": {"runs": home_runs},
+                    "away": {"runs": away_runs},
+                }
+            },
+            "boxscore": {
+                "teams": {
+                    "home": {
+                        "players": {
+                            "ID1001": {
+                                "person": {"id": 1001, "fullName": "Ace Pitcher"},
+                                "stats": {"pitching": {"strikeOuts": 8, "inningsPitched": "6.0"}},
+                            },
+                            "ID2001": {
+                                "person": {"id": 2001, "fullName": "Top Hitter"},
+                                "stats": {
+                                    "batting": {
+                                        "hits": 2,
+                                        "atBats": 4,
+                                        "runs": 1,
+                                        "rbi": 2,
+                                        "homeRuns": 1,
+                                        "totalBases": 5,
+                                        "stolenBases": 0,
+                                        "baseOnBalls": 1,
+                                    }
+                                },
+                            },
+                        }
+                    },
+                    "away": {"players": {}},
+                }
+            },
+        },
+    }
+
+
+def test_final_box_and_market_outcomes() -> None:
+    box = settlement._final_box(_feed(home_runs=6, away_runs=2))
+    assert box is not None
+    assert box["total_runs"] == 8
+    assert "Home Club" in box["final_score"]
+
+    ml = SimpleNamespace(
+        market_type="moneyline",
+        selection="Home Club ML",
+        line=None,
+        snapshot={"home_team": "Home Club", "away_team": "Away Club"},
+        player_key=None,
+    )
+    assert settlement._derive_outcome(ml, box)["outcome"] == "WIN"
+
+    total = SimpleNamespace(
+        market_type="game_total_over",
+        selection="Over 7.5 runs",
+        line=Decimal("7.5"),
+        snapshot={},
+        player_key=None,
+    )
+    assert settlement._derive_outcome(total, box)["outcome"] == "WIN"
+
+    under = SimpleNamespace(
+        market_type="game_total_under",
+        selection="Under 7.5 runs",
+        line=Decimal("7.5"),
+        snapshot={},
+        player_key=None,
+    )
+    assert settlement._derive_outcome(under, box)["outcome"] == "LOSS"
+
+    rl = SimpleNamespace(
+        market_type="run_line",
+        selection="Home Club -1.5",
+        line=Decimal("-1.5"),
+        snapshot={"home_team": "Home Club"},
+        player_key=None,
+    )
+    assert settlement._derive_outcome(rl, box)["outcome"] == "WIN"
+
+    k = SimpleNamespace(
+        market_type="pitcher_strikeouts",
+        selection="Ace Pitcher Over 6.5 strikeouts",
+        line=Decimal("6.5"),
+        snapshot={},
+        player_key="mlb-pitcher-1001",
+    )
+    assert settlement._derive_outcome(k, box)["outcome"] == "WIN"
+
+    hits = SimpleNamespace(
+        market_type="player_hits_over",
+        selection="Top Hitter Over 0.5 hits",
+        line=Decimal("0.5"),
+        snapshot={},
+        player_key="mlb-batter-2001",
+    )
+    assert settlement._derive_outcome(hits, box)["outcome"] == "WIN"
+    assert box["batters"][2001]["hits"] == 2
+
+    rbi = SimpleNamespace(
+        market_type="player_rbi_over",
+        selection="Top Hitter Over 0.5 RBIs",
+        line=Decimal("0.5"),
+        snapshot={},
+        player_key="mlb-batter-2001",
+    )
+    assert settlement._derive_outcome(rbi, box)["outcome"] == "WIN"
+
+    runs = SimpleNamespace(
+        market_type="player_runs_over",
+        selection="Top Hitter Over 0.5 runs",
+        line=Decimal("0.5"),
+        snapshot={},
+        player_key="mlb-batter-2001",
+    )
+    assert settlement._derive_outcome(runs, box)["outcome"] == "WIN"
+
+
+def _recommendation(user_id: str, **overrides: object) -> Recommendation:
+    base = {
+        "analysis_id": "analysis-1",
+        "created_by_user_id": user_id,
+        "candidate_id": "mlb-ml-home-55555",
+        "event_id": "evt-1",
+        "event_name": "Away Club @ Home Club",
+        "sport": "mlb",
+        "league": "MLB",
+        "slate_date": date.today(),
+        "market_type": "moneyline",
+        "selection": "Home Club ML",
+        "line": None,
+        "american_odds": -120,
+        "estimated_probability": Decimal("0.550000"),
+        "implied_probability": Decimal("0.545455"),
+        "adjusted_probability": Decimal("0.550000"),
+        "edge": Decimal("0.010000"),
+        "expected_value": Decimal("0.020000"),
+        "confidence_score": 72,
+        "ywp_rating": Decimal("7.20"),
+        "variance": Decimal("0.3000"),
+        "data_quality": Decimal("0.9000"),
+        "risk": "medium",
+        "decision": "PLAY",
+        "recommendation_tier": "PLAY",
+        "rank": 1,
+        "reason_codes": [],
+        "reasoning_summary": "test",
+        "warnings": [],
+        "invalidation_conditions": [],
+        "thesis_key": "thesis-home",
+        "script_key": "script-home",
+        "data_source": "MLB_STATS_API+THE_ODDS_API",
+        "source_timestamp": datetime.now(timezone.utc),
+        "model_version": "test",
+        "protocol_version": "test",
+        "input_hash": "abc",
+        "snapshot": {
+            "game_pk": 55555,
+            "home_team": "Home Club",
+            "away_team": "Away Club",
+        },
+    }
+    base.update(overrides)
+    return Recommendation(**base)  # type: ignore[arg-type]
+
+
+def test_settle_user_placed_tickets_grades_finals(monkeypatch) -> None:
+    db = SessionLocal()
+    try:
+        user = User(
+            email="settle@example.com",
+            password_hash="x",
+            name="Settle",
+            timezone="America/New_York",
+            subscription_status="active",
+        )
+        db.add(user)
+        db.flush()
+        recommendation = _recommendation(user.id)
+        db.add(recommendation)
+        db.flush()
+        ticket = Ticket(
+            user_id=user.id,
+            ticket_type="custom",
+            label="Custom 1-leg",
+            sport="mlb",
+            slate_date=date.today(),
+            status="placed",
+            stake=Decimal("10.00"),
+            potential_payout=Decimal("18.33"),
+            confidence_score=72,
+            risk="medium",
+            intentional_correlation=False,
+            intentional_thesis_exposure=False,
+        )
+        db.add(ticket)
+        db.flush()
+        db.add(
+            TicketLeg(
+                ticket_id=ticket.id,
+                recommendation_id=recommendation.id,
+                position=1,
+                action="follow",
+                selection=recommendation.selection,
+                american_odds=recommendation.american_odds,
+                thesis_key=recommendation.thesis_key,
+                script_key=recommendation.script_key,
+                status="placed",
+            )
+        )
+        db.commit()
+
+        monkeypatch.setattr(
+            settlement, "get_live_feed", lambda game_pk: _feed(home_runs=4, away_runs=1)
+        )
+
+        items = settlement.settle_user_placed_tickets(db, user.id)
+        statuses = {item.status for item in items}
+        assert "graded" in statuses
+        assert "ticket_settled" in statuses
+
+        db.refresh(recommendation)
+        db.refresh(ticket)
+        assert recommendation.outcome == "WIN"
+        assert recommendation.result is not None
+        assert recommendation.result.final_score is not None
+        assert ticket.status == "settled"
+    finally:
+        db.close()
+
+
+def test_settle_skips_non_final_games(monkeypatch) -> None:
+    db = SessionLocal()
+    try:
+        user = User(
+            email="pending-settle@example.com",
+            password_hash="x",
+            name="Pending",
+            timezone="America/New_York",
+            subscription_status="active",
+        )
+        db.add(user)
+        db.flush()
+        recommendation = _recommendation(
+            user.id,
+            analysis_id="analysis-2",
+            candidate_id="mlb-ou-66666",
+            event_id="evt-2",
+            market_type="game_total_over",
+            selection="Over 7.5 runs",
+            line=Decimal("7.5"),
+            american_odds=-110,
+            thesis_key="thesis-total",
+            script_key="script-total",
+            input_hash="def",
+            snapshot={"game_pk": 66666},
+        )
+        db.add(recommendation)
+        db.flush()
+        ticket = Ticket(
+            user_id=user.id,
+            ticket_type="custom",
+            label="Custom 1-leg",
+            sport="mlb",
+            slate_date=date.today(),
+            status="placed",
+            stake=Decimal("10.00"),
+            potential_payout=Decimal("19.09"),
+            confidence_score=70,
+            risk="medium",
+            intentional_correlation=False,
+            intentional_thesis_exposure=False,
+        )
+        db.add(ticket)
+        db.flush()
+        db.add(
+            TicketLeg(
+                ticket_id=ticket.id,
+                recommendation_id=recommendation.id,
+                position=1,
+                action="follow",
+                selection=recommendation.selection,
+                american_odds=recommendation.american_odds,
+                thesis_key=recommendation.thesis_key,
+                script_key=recommendation.script_key,
+                status="placed",
+            )
+        )
+        db.commit()
+
+        monkeypatch.setattr(
+            settlement,
+            "get_live_feed",
+            lambda game_pk: _feed(abstract="Live"),
+        )
+        items = settlement.settle_user_placed_tickets(db, user.id)
+        assert any(item.status == "pending" for item in items)
+        db.refresh(recommendation)
+        assert recommendation.outcome is None
+    finally:
+        db.close()
+
+
+def test_settle_board_grades_unlocked_play(monkeypatch) -> None:
+    """Board PLAY/LEAN/WATCH train memory even when never locked into a ticket."""
+    db = SessionLocal()
+    try:
+        user = User(
+            email="board-settle@example.com",
+            password_hash="x",
+            name="Board",
+            timezone="America/New_York",
+            subscription_status="active",
+        )
+        db.add(user)
+        db.flush()
+        recommendation = _recommendation(
+            user.id,
+            analysis_id="analysis-board",
+            candidate_id="mlb-ml-board-77777",
+            event_id="evt-board",
+            input_hash="board-hash",
+            snapshot={
+                "game_pk": 77777,
+                "home_team": "Home Club",
+                "away_team": "Away Club",
+            },
+        )
+        db.add(recommendation)
+        db.commit()
+
+        monkeypatch.setattr(
+            settlement, "get_live_feed", lambda game_pk: _feed(home_runs=5, away_runs=2)
+        )
+
+        items = settlement.settle_user_board_recommendations(db, user.id)
+        assert any(item.status == "graded" for item in items)
+        assert all(item.ticket_id == "" for item in items if item.status == "graded")
+
+        db.refresh(recommendation)
+        assert recommendation.outcome == "WIN"
+        assert recommendation.result is not None
+        assert "BOARD_SETTLED" in recommendation.result.root_cause_tags
+        assert "NOT_LOCKED" in recommendation.result.root_cause_tags
+        assert recommendation.result.stake == Decimal("0.00")
+    finally:
+        db.close()
+
+
+def test_settle_sheet_menu_skip_grades_for_hive(monkeypatch) -> None:
+    """Pick Sheet SKIP legs must settle so Hive customer-selection can learn."""
+    db = SessionLocal()
+    try:
+        user = User(
+            email="sheet-skip-settle@example.com",
+            password_hash="x",
+            name="SheetSkip",
+            timezone="America/New_York",
+            subscription_status="active",
+        )
+        db.add(user)
+        db.flush()
+        recommendation = _recommendation(
+            user.id,
+            analysis_id="analysis-sheet-skip",
+            candidate_id="board-mlb-sheet-skip-88888",
+            event_id="evt-sheet-skip",
+            decision="SKIP",
+            recommendation_tier="SKIP",
+            input_hash="sheet-skip-hash",
+            data_source="THE_ODDS_API_BOARD",
+            reason_codes=["SPORTSBOOK_MENU", "MARKET_IMPLIED", "NO_INDEPENDENT_PROBABILITY"],
+            snapshot={
+                "game_pk": 88888,
+                "home_team": "Home Club",
+                "away_team": "Away Club",
+                "data_source": "THE_ODDS_API_BOARD",
+                "reason_codes": ["SPORTSBOOK_MENU", "MARKET_IMPLIED"],
+            },
+        )
+        db.add(recommendation)
+        db.commit()
+
+        monkeypatch.setattr(
+            settlement, "get_live_feed", lambda game_pk: _feed(home_runs=5, away_runs=2)
+        )
+
+        items = settlement.settle_user_board_recommendations(db, user.id)
+        assert any(item.status == "graded" for item in items)
+
+        db.refresh(recommendation)
+        assert recommendation.outcome == "WIN"
+        assert recommendation.result is not None
+        assert "SHEET_MENU_SETTLED" in recommendation.result.root_cause_tags
+        assert "BOARD_SETTLED" in recommendation.result.root_cause_tags
+    finally:
+        db.close()
+
+
+def test_settle_skips_non_sheet_skip_decisions(monkeypatch) -> None:
+    """Run-slate SKIP without sportsbook-menu provenance must not auto-settle."""
+    db = SessionLocal()
+    try:
+        user = User(
+            email="run-skip-nosettle@example.com",
+            password_hash="x",
+            name="RunSkip",
+            timezone="America/New_York",
+            subscription_status="active",
+        )
+        db.add(user)
+        db.flush()
+        recommendation = _recommendation(
+            user.id,
+            analysis_id="analysis-run-skip",
+            candidate_id="mlb-ml-run-skip-99999",
+            event_id="evt-run-skip",
+            decision="SKIP",
+            recommendation_tier="SKIP",
+            input_hash="run-skip-hash",
+            snapshot={
+                "game_pk": 99999,
+                "home_team": "Home Club",
+                "away_team": "Away Club",
+            },
+        )
+        db.add(recommendation)
+        db.commit()
+
+        monkeypatch.setattr(
+            settlement, "get_live_feed", lambda game_pk: _feed(home_runs=5, away_runs=2)
+        )
+
+        items = settlement.settle_user_board_recommendations(db, user.id)
+        assert items == []
+        db.refresh(recommendation)
+        assert recommendation.outcome is None
+    finally:
+        db.close()
+
+
+def test_settle_user_day_includes_board_and_tickets(monkeypatch) -> None:
+    db = SessionLocal()
+    try:
+        user = User(
+            email="day-settle@example.com",
+            password_hash="x",
+            name="Day",
+            timezone="America/New_York",
+            subscription_status="active",
+        )
+        db.add(user)
+        db.flush()
+        locked = _recommendation(
+            user.id,
+            analysis_id="analysis-day-locked",
+            candidate_id="mlb-ml-day-1",
+            event_id="evt-day-1",
+            input_hash="day-1",
+            snapshot={
+                "game_pk": 80001,
+                "home_team": "Home Club",
+                "away_team": "Away Club",
+            },
+        )
+        unlocked = _recommendation(
+            user.id,
+            analysis_id="analysis-day-board",
+            candidate_id="mlb-ml-day-2",
+            event_id="evt-day-2",
+            selection="Away Club ML",
+            thesis_key="thesis-away",
+            script_key="script-away",
+            input_hash="day-2",
+            snapshot={
+                "game_pk": 80002,
+                "home_team": "Home Club",
+                "away_team": "Away Club",
+            },
+        )
+        db.add_all([locked, unlocked])
+        db.flush()
+        ticket = Ticket(
+            user_id=user.id,
+            ticket_type="custom",
+            label="Locked one",
+            sport="mlb",
+            slate_date=date.today(),
+            status="placed",
+            stake=Decimal("10.00"),
+            potential_payout=Decimal("18.33"),
+            confidence_score=72,
+            risk="medium",
+            intentional_correlation=False,
+            intentional_thesis_exposure=False,
+        )
+        db.add(ticket)
+        db.flush()
+        db.add(
+            TicketLeg(
+                ticket_id=ticket.id,
+                recommendation_id=locked.id,
+                position=1,
+                action="follow",
+                selection=locked.selection,
+                american_odds=locked.american_odds,
+                thesis_key=locked.thesis_key,
+                script_key=locked.script_key,
+                status="placed",
+            )
+        )
+        db.commit()
+
+        def _feed_for(game_pk: int) -> dict:
+            if game_pk == 80001:
+                return _feed(home_runs=4, away_runs=1)
+            return _feed(home_runs=1, away_runs=6)
+
+        monkeypatch.setattr(settlement, "get_live_feed", _feed_for)
+
+        result = settlement.settle_user_day(db, user.id, as_of=date.today())
+        items = result.items
+        statuses = [item.status for item in items]
+        assert statuses.count("graded") >= 2
+        assert "ticket_settled" in statuses
+        assert result.board_graded >= 1
+
+        db.refresh(locked)
+        db.refresh(unlocked)
+        db.refresh(ticket)
+        assert locked.outcome == "WIN"
+        assert unlocked.outcome == "WIN"
+        assert ticket.status == "settled"
+        assert "NOT_LOCKED" in unlocked.result.root_cause_tags
+    finally:
+        db.close()
+
+
+def test_future_slate_board_picks_are_ignored(monkeypatch) -> None:
+    db = SessionLocal()
+    try:
+        user = User(
+            email="future-settle@example.com",
+            password_hash="x",
+            name="Future",
+            timezone="America/New_York",
+            subscription_status="active",
+        )
+        db.add(user)
+        db.flush()
+        from datetime import timedelta
+
+        tomorrow = date.today() + timedelta(days=1)
+        recommendation = _recommendation(
+            user.id,
+            analysis_id="analysis-future",
+            candidate_id="mlb-ml-future-90001",
+            event_id="evt-future",
+            slate_date=tomorrow,
+            input_hash="future-hash",
+            snapshot={
+                "game_pk": 90001,
+                "home_team": "Home Club",
+                "away_team": "Away Club",
+            },
+        )
+        db.add(recommendation)
+        db.commit()
+
+        monkeypatch.setattr(
+            settlement, "get_live_feed", lambda game_pk: _feed(abstract="Scheduled")
+        )
+
+        result = settlement.settle_user_day(db, user.id, as_of=date.today())
+        assert result.items == []
+        db.refresh(recommendation)
+        assert recommendation.outcome is None
+    finally:
+        db.close()
+
+
+def test_sync_maps_hive_outcomes_for_unlocked_board_watch(monkeypatch) -> None:
+    """Sync must read finals for board WATCH picks and map Hive outcomes."""
+    import os
+
+    os.environ["YWP_HIVE_ANON_SECRET"] = "test-hive-anon-secret-for-board-sync"
+    os.environ["YWP_HIVE_ENABLED"] = "true"
+
+    from app.hive.models import HiveLearningEvent
+    from app.hive.service import capture_hive_prediction
+
+    db = SessionLocal()
+    try:
+        user = User(
+            email="hive-board-sync@example.com",
+            password_hash="x",
+            name="HiveBoard",
+            timezone="America/New_York",
+            subscription_status="active",
+        )
+        db.add(user)
+        db.flush()
+        recommendation = _recommendation(
+            user.id,
+            analysis_id="analysis-hive-watch",
+            candidate_id="mlb-ml-watch-91111",
+            event_id="evt-hive-watch",
+            decision="WATCH",
+            recommendation_tier="WATCH",
+            input_hash="hive-watch-hash",
+            snapshot={
+                "game_pk": 91111,
+                "home_team": "Home Club",
+                "away_team": "Away Club",
+            },
+        )
+        db.add(recommendation)
+        db.flush()
+
+        hive_event = capture_hive_prediction(
+            db=db,
+            contributor_user_id=user.id,
+            consent_to_hive=True,
+            source_recommendation_id=str(recommendation.id),
+            sport=recommendation.sport,
+            league=recommendation.league,
+            event_id=recommendation.event_id,
+            event_start_at=datetime.now(timezone.utc),
+            market=recommendation.market_type,
+            market_scope="full_game",
+            selection=recommendation.selection,
+            line=None,
+            odds_american=recommendation.american_odds,
+            model_probability=0.58,
+            quality_score=72.0,
+            model_version=recommendation.model_version,
+            protocol_version=recommendation.protocol_version,
+            evidence_version=recommendation.input_hash,
+            data_quality=0.9,
+            feature_flags={"data_complete": True},
+        )
+        db.commit()
+        assert hive_event is not None
+        assert hive_event.outcome is None
+
+        monkeypatch.setattr(
+            settlement,
+            "get_live_feed",
+            lambda game_pk: _feed(home_runs=7, away_runs=2),
+        )
+
+        result = settlement.settle_user_day(db, user.id, as_of=date.today())
+        assert result.board_graded >= 1
+        assert result.hive_outcomes_mapped >= 1
+        assert any(
+            item.status == "graded" and item.ticket_id == "" for item in result.items
+        )
+
+        db.refresh(recommendation)
+        assert recommendation.outcome == "WIN"
+
+        hive_row = (
+            db.query(HiveLearningEvent)
+            .filter(HiveLearningEvent.source_recommendation_id == str(recommendation.id))
+            .one()
+        )
+        assert hive_row.outcome == "WIN"
+        assert hive_row.outcome_verified is True
+    finally:
+        db.close()
+
+
+def test_game_pk_from_numeric_event_id_and_candidate_suffix() -> None:
+    from app.services.lock_refresh import _game_pk
+
+    via_event = _recommendation(
+        "user",
+        candidate_id="board-mlb-abc-moneyline",
+        event_id="776543",
+        snapshot={"home_team": "Tampa Bay Rays", "away_team": "Atlanta Braves"},
+    )
+    assert _game_pk(via_event) == 776543
+
+    via_suffix = _recommendation(
+        "user",
+        candidate_id="mlb-ml-home-812345",
+        event_id="odds-uuid-not-numeric",
+        snapshot={},
+    )
+    assert _game_pk(via_suffix) == 812345
+
+
+def test_mlb_settle_resolves_missing_game_pk_via_schedule(monkeypatch) -> None:
+    db = SessionLocal()
+    try:
+        user = User(
+            email="mlb-pk-resolve@example.com",
+            password_hash="x",
+            name="PkResolve",
+            timezone="America/New_York",
+            subscription_status="active",
+        )
+        db.add(user)
+        db.flush()
+        recommendation = _recommendation(
+            user.id,
+            candidate_id="board-mlb-no-pk-moneyline-rays",
+            event_id="odds-event-uuid-rays",
+            event_name="Away Club @ Home Club",
+            selection="Home Club ML",
+            snapshot={
+                "home_team": "Home Club",
+                "away_team": "Away Club",
+                "data_source": "THE_ODDS_API_BOARD",
+                "reason_codes": ["SPORTSBOOK_MENU"],
+            },
+            data_source="THE_ODDS_API_BOARD",
+        )
+        db.add(recommendation)
+        db.commit()
+
+        monkeypatch.setattr(
+            "app.services.mlb_provider.find_game_pk_for_teams",
+            lambda *a, **k: 777001,
+        )
+        monkeypatch.setattr(
+            settlement, "get_live_feed", lambda game_pk: _feed(home_runs=5, away_runs=2)
+        )
+
+        items = settlement.settle_user_board_recommendations(db, user.id)
+        assert any(item.status == "graded" for item in items)
+        db.refresh(recommendation)
+        assert recommendation.outcome == "WIN"
+        assert (recommendation.snapshot or {}).get("game_pk") == 777001
+    finally:
+        db.close()
+
+
+def test_mlb_team_market_falls_through_to_odds_when_no_game_pk(monkeypatch) -> None:
+    db = SessionLocal()
+    try:
+        user = User(
+            email="mlb-odds-fallback@example.com",
+            password_hash="x",
+            name="OddsFallback",
+            timezone="America/New_York",
+            subscription_status="active",
+        )
+        db.add(user)
+        db.flush()
+        recommendation = _recommendation(
+            user.id,
+            candidate_id="board-mlb-fallback-ml",
+            event_id="odds-uuid-fallback",
+            event_name="Away Club @ Home Club",
+            selection="Home Club ML",
+            snapshot={
+                "home_team": "Home Club",
+                "away_team": "Away Club",
+                "data_source": "THE_ODDS_API_BOARD",
+            },
+            data_source="THE_ODDS_API_BOARD",
+        )
+        db.add(recommendation)
+        db.commit()
+
+        monkeypatch.setattr(
+            "app.services.mlb_provider.find_game_pk_for_teams",
+            lambda *a, **k: None,
+        )
+
+        def _odds_grade(*_a, **_k):
+            return settlement._persist_auto_grade(
+                db,
+                recommendation,
+                derived={
+                    "outcome": "WIN",
+                    "final_score": "5-2",
+                    "actual_value": None,
+                    "detail": "Odds scores fallback",
+                },
+                stake=Decimal("1.00"),
+                extra_tags=None,
+                lesson="Odds fallback",
+                result_source="odds_scores",
+            )
+
+        monkeypatch.setattr(
+            settlement, "_grade_odds_scores_recommendation", _odds_grade
+        )
+
+        graded = settlement._grade_recommendation(
+            db, recommendation, stake=Decimal("1.00")
+        )
+        assert graded.get("status") == "graded" or recommendation.outcome == "WIN"
+        db.refresh(recommendation)
+        assert recommendation.outcome == "WIN"
+    finally:
+        db.close()

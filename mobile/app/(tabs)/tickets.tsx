@@ -1,20 +1,68 @@
 import { router } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 
 import { BrandHeader } from "@/components/BrandHeader";
+import { EngineStage } from "@/components/EngineStage";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { LoadingState } from "@/components/LoadingState";
 import { MetalPanel } from "@/components/MetalPanel";
 import { Metric } from "@/components/Metric";
+import { MotionReveal } from "@/components/MotionReveal";
 import { Screen } from "@/components/Screen";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
 import { colors, spacing, type } from "@/theme";
-import type { Ticket } from "@/types";
+import type { SettleDayResponse, Ticket } from "@/types";
 
 const PAGE_SIZE = 25;
+
+function summarizeSettle(result: SettleDayResponse): string {
+  const parts: string[] = [];
+  if (result.graded) parts.push(`${result.graded} graded WIN/LOSS`);
+  if (result.board_graded) {
+    parts.push(`${result.board_graded} board pick(s) settled from finals`);
+  }
+  if (result.hive_outcomes_mapped) {
+    parts.push(`${result.hive_outcomes_mapped} Hive outcome(s) mapped`);
+  }
+  if (result.pending) parts.push(`${result.pending} still waiting on finals`);
+  if (result.skipped) {
+    parts.push(
+      `${result.skipped} skipped (not final yet, unsupported market, or already graded)`,
+    );
+  }
+  if (result.tickets_settled) parts.push(`${result.tickets_settled} ticket(s) marked settled`);
+  if (result.errors) parts.push(`${result.errors} failed`);
+  const boardOnly = result.items.filter(
+    (item) => item.status === "graded" && !item.ticket_id,
+  ).length;
+  if (boardOnly && !result.board_graded) {
+    parts.push(`${boardOnly} unlocked board pick(s) logged for learning`);
+  }
+  const eod = result.eod_quality;
+  if (eod?.headline) {
+    parts.push(`EOD ${eod.quality_score.toFixed(0)} — ${eod.headline}`);
+    if (eod.missed_winners?.length) {
+      parts.push(`${eod.missed_winners.length} missed PLAY/LEAN winner(s)`);
+    }
+    if (eod.packaging_gap != null && Math.abs(eod.packaging_gap) >= 0.05) {
+      parts.push(`packaging gap ${eod.packaging_gap > 0 ? "+" : ""}${(eod.packaging_gap * 100).toFixed(0)} pts`);
+    }
+  }
+  if (!parts.length) {
+    return "No board picks or placed legs were ready to grade. Games must be Final (MLB + ESPN sports).";
+  }
+  const details = result.items
+    .filter((item) => item.status === "pending" || item.status === "skipped" || item.status === "error")
+    .slice(0, 4)
+    .map((item) => `• ${item.selection || item.status}: ${item.detail || item.status}`)
+    .join("\n");
+  const lessons = (eod?.lessons || []).slice(0, 3).map((lesson) => `• ${lesson}`).join("\n");
+  const extra = [details, lessons].filter(Boolean).join("\n\n");
+  return extra ? `${parts.join(" · ")}\n\n${extra}` : parts.join(" · ");
+}
 
 export default function TicketsScreen() {
   const { request } = useAuth();
@@ -24,15 +72,39 @@ export default function TicketsScreen() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [syncNote, setSyncNote] = useState<string | null>(null);
 
   const load = useCallback(
-    async (refresh = false) => {
+    async (refresh = false, announce = false) => {
       refresh ? setRefreshing(true) : setLoading(true);
       setError(null);
       try {
+        let settle: SettleDayResponse | null = null;
+        if (refresh) {
+          try {
+            settle = await request<SettleDayResponse>("/sports/settle-day", {
+              method: "POST",
+              body: "{}",
+            });
+          } catch (reason) {
+            const message =
+              reason instanceof Error ? reason.message : "Score sync failed";
+            setSyncNote(message);
+            if (announce) {
+              Alert.alert("Score sync", message);
+            }
+          }
+        }
         const page = await request<Ticket[]>(`/tickets?limit=${PAGE_SIZE}`);
         setTickets(page);
         setHasMore(page.length >= PAGE_SIZE);
+        if (settle) {
+          const summary = summarizeSettle(settle);
+          setSyncNote(summary);
+          if (announce) {
+            Alert.alert("Score sync", summary);
+          }
+        }
       } catch (reason) {
         setError(reason instanceof Error ? reason.message : "Tickets failed to load");
       } finally {
@@ -63,10 +135,45 @@ export default function TicketsScreen() {
     void load();
   }, [load]);
 
+  const placedCount = tickets.filter((ticket) => ticket.status === "placed").length;
+  const lockedDraftCount = tickets.filter((ticket) =>
+    ["draft", "locked"].includes(ticket.status),
+  ).length;
+
   return (
-    <Screen refreshing={refreshing} onRefresh={() => void load(true)}>
+    <Screen refreshing={refreshing} onRefresh={() => void load(true, true)}>
       <BrandHeader title="TICKET VAULT" subtitle="EXPOSURE • LOCKS • DECISIONS" compact />
+      <MotionReveal fromY={16}>
+        <EngineStage
+          size={160}
+          tone={placedCount ? "verified" : "idle"}
+          intensity="standard"
+          label={placedCount ? "Live" : "Vault"}
+          calloutsActive
+          callouts={[
+            { id: "placed", label: `${placedCount} PLACED`, side: "left", top: 44 },
+            { id: "draft", label: `${lockedDraftCount} OPEN`, side: "right", top: 60 },
+            { id: "total", label: `${tickets.length} TOTAL`, side: "left", top: 112 },
+            { id: "sync", label: "SYNC", side: "right", top: 128 },
+          ]}
+        />
+      </MotionReveal>
       {error ? <ErrorNotice message={error} /> : null}
+      {syncNote ? (
+        <MetalPanel tone="gold">
+          <Text style={type.eyebrow}>LAST SCORE SYNC</Text>
+          <Text style={type.body}>{syncNote}</Text>
+        </MetalPanel>
+      ) : null}
+      <YwpButton
+        label="LOG BOOK-ONLY RESULT"
+        variant="outline"
+        onPress={() => router.push("/log-result")}
+      />
+      <Text style={[type.caption, { marginBottom: spacing.sm }]}>
+        Sync grades placed tickets and unlocked board picks. Use Log Book-Only for sportsbook
+        legs that never appeared on today’s board (like a K ticket you didn’t lock).
+      </Text>
       {loading ? <LoadingState label="Loading protected tickets…" /> : null}
       {!loading && !tickets.length ? (
         <MetalPanel tone="gold">
@@ -78,14 +185,21 @@ export default function TicketsScreen() {
           <YwpButton label="RUN A SLATE" onPress={() => router.push("/(tabs)/slate")} />
         </MetalPanel>
       ) : null}
-      {tickets.map((ticket) => (
-        <MetalPanel key={ticket.id} tone={ticket.status === "placed" ? "success" : "default"}>
+      {tickets.map((ticket, index) => (
+        <MetalPanel
+          key={ticket.id}
+          motionDelay={Math.min(index, 10) * 40}
+          tone={
+            ticket.status === "placed" || ticket.status === "settled" ? "success" : "default"
+          }
+        >
           <View style={styles.row}>
             <View style={styles.flex}>
               <Text style={type.eyebrow}>{ticket.ticket_type.replaceAll("_", " ")}</Text>
               <Text style={styles.title}>{ticket.label}</Text>
               <Text style={type.caption}>
-                {ticket.sport.toUpperCase()} • {ticket.slate_date} • {ticket.legs.length} legs
+                {ticket.sport.toUpperCase()} • {ticket.slate_date} • {ticket.legs.length}{" "}
+                {ticket.legs.length === 1 ? "leg" : "legs"}
               </Text>
             </View>
             <StatusPill value={ticket.last_lock_status ?? ticket.status} />
@@ -99,6 +213,7 @@ export default function TicketsScreen() {
             <View key={leg.id} style={styles.leg}>
               <Text style={styles.legNumber}>{leg.position}</Text>
               <Text style={styles.selection}>{leg.selection}</Text>
+              {leg.outcome ? <StatusPill value={leg.outcome} /> : null}
               <Text style={styles.odds}>
                 {leg.american_odds > 0 ? "+" : ""}
                 {leg.american_odds}
@@ -109,9 +224,70 @@ export default function TicketsScreen() {
             label="OPEN LOCK CENTER"
             variant="outline"
             onPress={() => router.push(`/ticket/${ticket.id}`)}
+            disabled={ticket.legs.length === 0}
           />
+          {["draft", "locked"].includes(ticket.status) ? (
+            <YwpButton
+              label="DISCARD STUCK TICKET"
+              variant="danger"
+              onPress={() => {
+                Alert.alert(
+                  "Discard this ticket?",
+                  "It never completed Lock → Place, so it cannot grade. This removes it from the vault.",
+                  [
+                    { text: "Keep", style: "cancel" },
+                    {
+                      text: "Discard",
+                      style: "destructive",
+                      onPress: () => {
+                        void (async () => {
+                          try {
+                            await request(`/tickets/${ticket.id}/cancel`, {
+                              method: "POST",
+                            });
+                            setSyncNote(`Discarded “${ticket.label}”.`);
+                            await load();
+                          } catch (reason) {
+                            setError(
+                              reason instanceof Error
+                                ? reason.message
+                                : "Could not discard ticket",
+                            );
+                          }
+                        })();
+                      },
+                    },
+                  ],
+                );
+              }}
+            />
+          ) : null}
         </MetalPanel>
       ))}
+      {placedCount ? (
+        <YwpButton
+          label="SYNC SCORES & RESULTS"
+          onPress={() => void load(true, true)}
+          loading={refreshing}
+        />
+      ) : (
+        <YwpButton
+          label="SYNC BOARD & SCORES"
+          onPress={() => void load(true, true)}
+          loading={refreshing}
+          variant={tickets.length ? "outline" : undefined}
+        />
+      )}
+      {!placedCount && tickets.length ? (
+        <MetalPanel>
+          <Text style={styles.title}>No placed tickets yet</Text>
+          <Text style={type.body}>
+            {lockedDraftCount
+              ? "Open a ticket, run Lock Check, then Place it for vault P&L. Sync still grades unlocked board picks after Finals."
+              : "Save and place a ticket for vault P&L. Sync still grades today’s board picks after Finals."}
+          </Text>
+        </MetalPanel>
+      ) : null}
       {hasMore && tickets.length > 0 ? (
         <YwpButton
           label={loadingMore ? "Loading…" : "LOAD MORE TICKETS"}

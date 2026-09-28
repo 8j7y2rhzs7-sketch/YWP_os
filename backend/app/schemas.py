@@ -22,6 +22,7 @@ class Decision(StrEnum):
     play = "PLAY"
     lean = "LEAN"
     watch = "WATCH"
+    review = "REVIEW"
     skip = "SKIP"
 
 
@@ -57,6 +58,36 @@ class LoginRequest(YWPModel):
     password: str = Field(min_length=1, max_length=128)
 
 
+class ProvisionTesterRequest(YWPModel):
+    email: EmailStr
+    password: str = Field(min_length=8, max_length=128)
+    name: str = Field(min_length=2, max_length=120)
+    timezone: str = Field(default="America/New_York", min_length=3, max_length=64)
+    role: Literal["user", "admin"] = "user"
+
+    @field_validator("password")
+    @classmethod
+    def password_strength(cls, value: str) -> str:
+        groups = [
+            any(char.islower() for char in value),
+            any(char.isupper() for char in value),
+            any(char.isdigit() for char in value),
+            any(not char.isalnum() for char in value),
+        ]
+        if sum(groups) < 3:
+            raise ValueError("Password must use at least three character groups")
+        return value
+
+
+class ProvisionTesterOut(YWPModel):
+    email: EmailStr
+    name: str
+    created: bool
+    subscription_status: str
+    role: str
+    message: str
+
+
 class RefreshRequest(YWPModel):
     refresh_token: str
 
@@ -81,7 +112,27 @@ class UserOut(YWPModel):
     risk_profile: RiskProfile
     role: str
     is_active: bool
+    subscription_status: str = "none"
+    has_app_access: bool = True
+    checkout_url: str | None = None
+    app_download_url: str | None = None
     created_at: datetime
+
+
+class SubscriptionOut(YWPModel):
+    required: bool
+    has_access: bool
+    status: str
+    whop_user_id: str | None = None
+    checkout_url: str | None = None
+    app_download_url: str | None = None
+
+
+class WhopCheckoutOut(YWPModel):
+    checkout_url: str
+    product_id: str | None = None
+    app_download_url: str | None = None
+    message: str
 
 
 class UserUpdate(YWPModel):
@@ -135,12 +186,22 @@ class CandidateInput(YWPModel):
     sport: str = Field(min_length=2, max_length=24)
     league: str = Field(min_length=2, max_length=40)
     start_time: datetime
+    home_team: str | None = Field(default=None, max_length=80)
+    away_team: str | None = Field(default=None, max_length=80)
+    # MLB Stats API gamePk — required for auto-settle / lock refresh. Persist explicitly
+    # so board/sheet overlays and truncated candidate_ids still grade.
+    game_pk: int | None = Field(default=None, ge=1)
+    mlb_game_pk: int | None = Field(default=None, ge=1)
+    bookmaker: str | None = Field(default=None, max_length=40)
+    bookmaker_label: str | None = Field(default=None, max_length=80)
+    price_timestamp: datetime | None = None
     market_type: str = Field(min_length=2, max_length=50)
     market_period: str = Field(default="full_game", max_length=32)
     selection: str = Field(min_length=2, max_length=180)
     line: Decimal | None = None
     american_odds: int = Field(ge=-10000, le=10000)
     estimated_probability: float = Field(gt=0.01, lt=0.99)
+    probability_source: Literal["model", "manual_verified", "market_implied", "demo"] = "model"
     variance: float = Field(ge=0, le=1)
     data_quality: float = Field(ge=0, le=1)
     factors: dict[str, float] = Field(default_factory=dict)
@@ -148,9 +209,10 @@ class CandidateInput(YWPModel):
     reasoning: list[str] = Field(default_factory=list)
 
     data_source: str = Field(min_length=2, max_length=64)
+    source_urls: list[str] = Field(default_factory=list, max_length=12)
     source_timestamp: datetime
     missing_fields: list[str] = Field(default_factory=list)
-    source_status: dict[str, Literal["confirmed", "probable", "unknown"]] = Field(
+    source_status: dict[str, Literal["confirmed", "probable", "unknown", "n/a"]] = Field(
         default_factory=dict
     )
     schedule_verified: bool = False
@@ -166,6 +228,11 @@ class CandidateInput(YWPModel):
     market_movement_verified: bool = False
     sport_specific_sweep_complete: bool = False
 
+    game_status: Literal["PRE_GAME", "LIVE", "FINAL", "POSTPONED", "CANCELLED", "UNKNOWN"] = (
+        "PRE_GAME"
+    )
+    market_status: Literal["OPEN", "SUSPENDED", "CLOSED", "LOCKED"] = "OPEN"
+
     market_is_pitcher_strikeout_over: bool = False
     first_start_back: bool = False
     normal_workload_confirmed: bool = False
@@ -177,11 +244,11 @@ class CandidateInput(YWPModel):
     recent_hit_rate: float | None = Field(default=None, ge=0, le=1)
     average_cushion: float | None = None
     cushion_scale: float = Field(default=3.0, gt=0, le=100)
-    matchup_score: float = Field(default=0.5, ge=0, le=1)
-    script_alignment: float = Field(default=0.5, ge=0, le=1)
-    multiple_paths_score: float = Field(default=0.5, ge=0, le=1)
-    role_stability: float = Field(default=0.5, ge=0, le=1)
-    miss_by_one_count_l10: int = Field(default=0, ge=0, le=10)
+    matchup_score: float | None = Field(default=None, ge=0, le=1)
+    script_alignment: float | None = Field(default=None, ge=0, le=1)
+    multiple_paths_score: float | None = Field(default=None, ge=0, le=1)
+    role_stability: float | None = Field(default=None, ge=0, le=1)
+    miss_by_one_count_l10: int | None = Field(default=None, ge=0, le=10)
     ticket_killer_count: int = Field(default=0, ge=0, le=100)
     ain_checks: dict[str, bool | None] = Field(default_factory=dict)
 
@@ -201,6 +268,8 @@ class CandidateInput(YWPModel):
     thesis_key: str = Field(min_length=3, max_length=160)
     script_key: str = Field(min_length=3, max_length=160)
     player_key: str | None = Field(default=None, max_length=120)
+    image_url: str | None = Field(default=None, max_length=400)
+    team_image_url: str | None = Field(default=None, max_length=400)
     safer_alternative: str | None = Field(default=None, max_length=180)
     higher_upside: str | None = Field(default=None, max_length=180)
     invalidation_conditions: list[str] = Field(default_factory=list)
@@ -236,7 +305,19 @@ class SportsAnalyzeRequest(YWPModel):
     mode: Literal["pregame", "live"] = "pregame"
     user_risk_profile: RiskProfile = RiskProfile.balanced
     bankroll: Decimal | None = Field(default=None, ge=0)
-    candidates: list[CandidateInput] = Field(min_length=1, max_length=250)
+    # Full sport prop boards (WNBA/NFL) routinely exceed 500 priced sides.
+    # Do not truncate the user's slate — analyze whatever the raw board returns.
+    candidates: list[CandidateInput] = Field(min_length=1, max_length=10000)
+    # Sheet Check path: upgrade selected sportsbook-menu legs with model twins.
+    # Default on so older APKs get model grades without a new client build.
+    # Load board still keeps overlay forced off for reliability.
+    overlay_model_on_sheet: bool = Field(
+        default=True,
+        description=(
+            "When true, sportsbook-menu candidates are soft-overlaid with matching "
+            "model-slate projections before grading (selected legs only)."
+        ),
+    )
 
     @model_validator(mode="after")
     def candidates_match_sport(self) -> SportsAnalyzeRequest:
@@ -247,6 +328,36 @@ class SportsAnalyzeRequest(YWPModel):
         if len(candidate_ids) != len(set(candidate_ids)):
             raise ValueError("candidate_id values must be unique within an analysis")
         return self
+
+
+class PropWarmRequest(YWPModel):
+    """Chunked ESPN form warm — call repeatedly until ready, then /analyze."""
+
+    sport: str = Field(min_length=2, max_length=24)
+    date: date
+    candidates: list[CandidateInput] = Field(min_length=1, max_length=10000)
+    # Keep each pass under Render's ~30s proxy; client loops for full coverage.
+    budget_seconds: float = Field(default=18.0, ge=3.0, le=22.0)
+
+    @model_validator(mode="after")
+    def candidates_match_sport(self) -> PropWarmRequest:
+        expected = self.sport.lower()
+        if any(candidate.sport.lower() != expected for candidate in self.candidates):
+            raise ValueError("Every candidate must match the requested sport")
+        return self
+
+
+class PropWarmResponse(YWPModel):
+    sport: str
+    date: date
+    candidates: list[CandidateInput]
+    prop_total: int
+    prop_modeled: int
+    prop_pending: int
+    coverage_pct: float
+    enriched_this_pass: int
+    ready: bool
+    notice: str
 
 
 class RecommendationOut(YWPModel):
@@ -266,9 +377,26 @@ class RecommendationOut(YWPModel):
     estimated_probability: Decimal
     implied_probability: Decimal
     adjusted_probability: Decimal
+    model_probability: float | None = None
+    hive_adjusted_probability: float | None = None
+    hive: dict[str, Any] | None = None
+    metacognition: dict[str, Any] | None = None
     edge: Decimal
     expected_value: Decimal
     confidence_score: int
+    quality_score: int | None = None
+    quality_score_max: int = 100
+    model_win_probability: float | None = None
+    probability_available: bool = False
+    probability_unavailable_reason: str | None = None
+    home_team: str | None = None
+    away_team: str | None = None
+    start_time: datetime | None = None
+    bookmaker: str | None = None
+    bookmaker_label: str | None = None
+    price_timestamp: datetime | None = None
+    market_scope_label: str | None = None
+    verification_status: str | None = None
     ywp_rating: Decimal
     vision_score: Decimal
     miss_by_one_risk: Decimal
@@ -298,7 +426,10 @@ class RecommendationOut(YWPModel):
     thesis_key: str
     script_key: str
     player_key: str | None
+    image_url: str | None = None
+    team_image_url: str | None = None
     data_source: str
+    source_urls: list[str] = Field(default_factory=list)
     source_timestamp: datetime
     model_version: str
     protocol_version: str
@@ -315,6 +446,7 @@ class AnalyzeResponse(YWPModel):
     date: date
     ranked_picks: list[RecommendationOut]
     stay_away: list[RecommendationOut]
+    readiness: Literal["DEMO", "PARTIAL", "VERIFIED"]
     data_quality_summary: dict[str, Any]
 
 
@@ -322,8 +454,50 @@ class SlateResponse(YWPModel):
     sport: str
     date: date
     mode: Literal["demo", "live"]
+    readiness: Literal["DEMO", "PARTIAL", "VERIFIED"]
     notice: str
+    verification_summary: dict[str, Any]
     candidates: list[CandidateInput]
+
+
+class DayForgePlayOut(YWPModel):
+    """Compact Home reveal payload — same identity as a RecommendationOut."""
+
+    recommendation: RecommendationOut
+    label: str = "Day Forge"
+    stake_hint: str = "Cash-band process play — size small, process first."
+
+
+class DayForgeResponse(YWPModel):
+    engine: Literal["YWP Day Forge"] = "YWP Day Forge"
+    status: Literal["cooking", "ready", "pass", "unavailable"]
+    phase: Literal[
+        "waiting_slate",
+        "gathering_heat",
+        "grading",
+        "forging",
+        "ready",
+        "pass",
+        "unavailable",
+    ]
+    progress: float = Field(ge=0.0, le=1.0)
+    message: str
+    sport: str
+    date: date
+    readiness: Literal["DEMO", "PARTIAL", "VERIFIED"] | None = None
+    cook_reasons: list[str] = Field(default_factory=list)
+    pass_reason: str | None = None
+    forgeable_count: int = 0
+    graded_count: int = 0
+    analysis_id: str | None = None
+    play: RecommendationOut | None = None
+    notification_title: str | None = None
+    notification_body: str | None = None
+
+
+class CustomCardPreviewRequest(YWPModel):
+    recommendation_ids: list[str] = Field(min_length=1, max_length=12)
+    label: str | None = Field(default=None, max_length=120)
 
 
 class BuildTicketRequest(YWPModel):
@@ -347,16 +521,39 @@ class TicketCardOut(YWPModel):
     recommendation_ids: list[str]
     legs: list[RecommendationOut]
     risk: str
+    risk_explanation: str | None = None
     confidence_score: int
+    quality_score: int | None = None
+    quality_score_max: int = 100
+    quality_score_note: str = (
+        "Card score is average YWP quality (0-100), not a win probability."
+    )
+    joint_win_probability: float | None = None
+    joint_probability_status: str = "unavailable"
+    joint_probability_note: str | None = None
     weakest_leg_id: str | None
+    weakest_leg_criterion: str | None = None
+    weakest_leg_explanation: str | None = None
     warnings: list[str]
+
+
+class QuarantineItemOut(YWPModel):
+    recommendation_id: str
+    reason: str
+    selection: str | None = None
+    analysis_rank: int | None = None
 
 
 class BuildTicketResponse(YWPModel):
     analysis_id: str | None
+    official_pass: bool = False
     cards: dict[str, TicketCardOut]
     stay_away: list[RecommendationOut]
-    quarantined: list[dict[str, str]]
+    quarantined: list[QuarantineItemOut]
+
+
+class TicketAddLeg(YWPModel):
+    recommendation_id: str
 
 
 class TicketCreate(YWPModel):
@@ -381,6 +578,8 @@ class TicketLegOut(YWPModel):
     skip_reason: str | None
     status: str
     outcome: str | None
+    image_url: str | None = None
+    team_image_url: str | None = None
 
 
 class TicketOut(YWPModel):
@@ -400,6 +599,10 @@ class TicketOut(YWPModel):
     override_acknowledged: bool
     last_lock_status: str | None
     last_lock_expires_at: datetime | None
+    settled_outcome: str | None = None
+    settled_payout: Decimal | None = None
+    settled_profit_loss: Decimal | None = None
+    settled_at: datetime | None = None
     legs: list[TicketLegOut]
     created_at: datetime
     updated_at: datetime
@@ -429,6 +632,10 @@ class CurrentStateUpdate(YWPModel):
     key_injury_change: bool = False
     severe_weather_change: bool = False
     data_quality: float | None = Field(default=None, ge=0, le=1)
+    game_status: Literal["PRE_GAME", "LIVE", "FINAL", "POSTPONED", "CANCELLED", "UNKNOWN"] | None = (
+        None
+    )
+    market_status: Literal["OPEN", "SUSPENDED", "CLOSED", "LOCKED"] | None = None
     first_start_back: bool | None = None
     normal_workload_confirmed: bool | None = None
     k_duration_verified: bool | None = None
@@ -554,6 +761,88 @@ class ResultOut(YWPModel):
     result_time: datetime
 
 
+class SettlementItemOut(YWPModel):
+    recommendation_id: str
+    ticket_id: str
+    selection: str
+    status: str
+    outcome: str | None = None
+    final_score: str | None = None
+    actual_value: Decimal | None = None
+    detail: str | None = None
+
+
+class SettleDayResponse(YWPModel):
+    graded: int
+    pending: int
+    skipped: int
+    errors: int
+    tickets_settled: int
+    board_graded: int = 0
+    hive_outcomes_mapped: int = 0
+    eod_quality: dict[str, Any] | None = None
+    items: list[SettlementItemOut]
+
+
+class ExternalResultCreate(YWPModel):
+    """Log a sportsbook pick that never locked in-app so WIN/LOSS memory still learns."""
+
+    sport: str = Field(default="mlb", min_length=2, max_length=24)
+    league: str = Field(default="MLB", min_length=2, max_length=40)
+    slate_date: date
+    event_name: str = Field(min_length=3, max_length=180)
+    market_type: str = Field(min_length=2, max_length=50)
+    market_period: str = Field(default="full_game", max_length=32)
+    selection: str = Field(min_length=2, max_length=180)
+    line: Decimal | None = None
+    american_odds: int = Field(ge=-10000, le=10000)
+    outcome: Literal["WIN", "LOSS", "PUSH", "VOID"]
+    final_score: str | None = Field(default=None, max_length=120)
+    actual_value: Decimal | None = None
+    stake: Decimal = Field(default=Decimal("0.00"), ge=0, max_digits=14, decimal_places=2)
+    profit_loss: Decimal = Field(default=Decimal("0.00"), max_digits=14, decimal_places=2)
+    killed_ticket: bool = False
+    last_losing_leg: bool = False
+    process_grade: Literal["A", "B", "C", "D", "F"] = "C"
+    variance_grade: Literal["LOW", "MEDIUM", "HIGH"] = "MEDIUM"
+    process_outcome_class: Literal[
+        "GOOD_PROCESS_GOOD_OUTCOME",
+        "GOOD_PROCESS_BAD_OUTCOME",
+        "BAD_PROCESS_GOOD_OUTCOME",
+        "BAD_PROCESS_BAD_OUTCOME",
+        "UNCLASSIFIED",
+    ] = "UNCLASSIFIED"
+    error_category: (
+        Literal[
+            "BAD_DATA",
+            "BAD_WEIGHTING",
+            "BAD_SCRIPT",
+            "BAD_TIMING",
+            "BAD_PRICE",
+            "ROLE_WORKLOAD",
+            "INJURY_AVAILABILITY",
+            "CORRELATION_EXPOSURE",
+            "LINE_ESCALATION",
+            "VARIANCE",
+            "UNKNOWN",
+        ]
+        | None
+    ) = None
+    root_cause_tags: list[str] = Field(default_factory=list)
+    lesson: str | None = Field(default=None, max_length=2000)
+    player_key: str | None = Field(default=None, max_length=120)
+    thesis_key: str | None = Field(default=None, max_length=160)
+    script_key: str | None = Field(default=None, max_length=160)
+
+
+class ExternalResultOut(YWPModel):
+    recommendation_id: str
+    result: ResultOut
+    selection: str
+    market_type: str
+    outcome: str
+
+
 class PerformanceOut(YWPModel):
     settled: int
     wins: int
@@ -565,6 +854,33 @@ class PerformanceOut(YWPModel):
     by_sport: list[dict[str, Any]]
     by_market: list[dict[str, Any]]
     confidence_calibration: list[dict[str, Any]]
+    # Packaging diagnostics: board/leg accuracy vs full-ticket accuracy.
+    leg_settled: int = 0
+    leg_wins: int = 0
+    leg_losses: int = 0
+    leg_pushes: int = 0
+    leg_win_rate: float | None = None
+    ticket_settled: int = 0
+    ticket_wins: int = 0
+    ticket_losses: int = 0
+    ticket_pushes: int = 0
+    ticket_win_rate: float | None = None
+    locked_leg_settled: int = 0
+    locked_leg_wins: int = 0
+    locked_leg_losses: int = 0
+    locked_leg_win_rate: float | None = None
+    packaging_gap: float | None = None
+    by_ticket_type: list[dict[str, Any]] = Field(default_factory=list)
+    packaging_note: str | None = None
+
+
+class LearningPulseOut(YWPModel):
+    protocol_runs: int
+    graded_results: int
+    micro_updates: int
+    active_shifts: list[dict[str, Any]]
+    latest_lesson: str | None
+    headline: str
 
 
 class PatternOut(YWPModel):
@@ -646,3 +962,42 @@ class ProtocolRunOut(YWPModel):
 
 class MessageOut(YWPModel):
     message: str
+
+
+class ErrorReportCreate(YWPModel):
+    category: Literal[
+        "crash",
+        "api",
+        "pick_quality",
+        "ticket_build",
+        "ui",
+        "data",
+        "other",
+    ] = "other"
+    message: str = Field(min_length=3, max_length=4000)
+    screen: str | None = Field(default=None, max_length=120)
+    stack: str | None = Field(default=None, max_length=12000)
+    app_version: str | None = Field(default=None, max_length=32)
+    platform: str | None = Field(default=None, max_length=40)
+    analysis_id: str | None = Field(default=None, max_length=36)
+    recommendation_id: str | None = Field(default=None, max_length=36)
+    ticket_id: str | None = Field(default=None, max_length=36)
+    context: dict[str, Any] = Field(default_factory=dict)
+
+
+class ErrorReportOut(YWPModel):
+    id: str
+    user_id: str | None
+    category: str
+    message: str
+    screen: str | None
+    stack: str | None
+    app_version: str | None
+    platform: str | None
+    analysis_id: str | None
+    recommendation_id: str | None
+    ticket_id: str | None
+    context: dict[str, Any]
+    status: str
+    created_at: datetime
+

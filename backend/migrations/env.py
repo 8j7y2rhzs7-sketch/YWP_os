@@ -6,6 +6,7 @@ from sqlalchemy import engine_from_config, pool
 
 from alembic import context
 from app import models  # noqa: F401
+from app.hive import models as hive_models  # noqa: F401
 from app.core.config import settings
 from app.core.database import Base
 
