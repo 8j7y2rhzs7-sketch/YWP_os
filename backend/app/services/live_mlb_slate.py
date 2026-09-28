@@ -1293,7 +1293,7 @@ def _build_candidate(
         player_key=player_key,
         image_url=player_headshot_url(headshot_id),
         team_image_url=team_logo_url(team_id if isinstance(team_id, int) else None),
-        safer_alternative=f"Use a lower line only if its own model edge is verified: {selection}",
+        safer_alternative=None,
         higher_upside=f"Use a higher line only after a separate cushion check: {selection}",
         invalidation_conditions=[
             "Starting pitcher or batting-order change",

@@ -303,7 +303,18 @@ def build_cards(
 
     eligible = sorted(best_by_thesis.values(), key=_priority)
     strongest = eligible[:1]
+    # Ticket-killers (elevated miss-by-1) may still appear as a single Max Bet,
+    # but must NEVER be stacked onto multi-leg / parlay templates.
     safe_pool = [item for item in eligible if _safe_float(item.miss_by_one_risk) < 0.55]
+    for item in eligible:
+        if _safe_float(item.miss_by_one_risk) >= 0.55:
+            quarantined.append(
+                _quarantine(
+                    item,
+                    "Elevated miss-by-1 — excluded from multi-leg / parlay cards "
+                    "(single Max Bet only if still PLAY).",
+                )
+            )
     cash_pool = sorted(
         safe_pool,
         key=lambda item: (
@@ -314,9 +325,10 @@ def build_cards(
         ),
     )
     cash = _diverse(cash_pool, min(2, max_legs))
-    core = _diverse(eligible, min(max(3, min(max_legs, 5)), len(eligible) or 1))
+    # All stacked cards pull from safe_pool only — no thin closes on parlays.
+    core = _diverse(safe_pool, min(max(3, min(max_legs, 5)), len(safe_pool) or 1))
     edge_pool = sorted(
-        eligible,
+        safe_pool,
         key=lambda item: (
             -_safe_float(item.expected_value),
             -item.confidence_score,
@@ -324,13 +336,13 @@ def build_cards(
         ),
     )
     edge = _diverse(edge_pool, min(3, max_legs))
-    elite_two = _diverse(eligible, min(2, max_legs))
-    core_3 = _diverse(eligible, min(3, max_legs))
-    core_4 = _diverse(eligible, min(4, max_legs))
-    core_5 = _diverse(eligible, min(5, max_legs))
+    elite_two = _diverse(safe_pool, min(2, max_legs))
+    core_3 = _diverse(safe_pool, min(3, max_legs))
+    core_4 = _diverse(safe_pool, min(4, max_legs))
+    core_5 = _diverse(safe_pool, min(5, max_legs))
     fortress = _diverse(safe_pool, min(3, max_legs))
     handicap_pool = sorted(
-        eligible,
+        safe_pool,
         key=lambda item: (
             -_safe_float(item.vision_score),
             -_safe_float(item.edge),
@@ -341,7 +353,7 @@ def build_cards(
     handicap = _diverse(handicap_pool, min(3, max_legs))
     no_stress = _diverse(cash_pool, min(3, max_legs))
     scripted_pool = sorted(
-        eligible,
+        safe_pool,
         key=lambda item: (
             -_safe_float((item.snapshot or {}).get("script_alignment"), 0.0),
             -item.confidence_score,
@@ -351,25 +363,33 @@ def build_cards(
     scripted = _diverse(scripted_pool, min(3, max_legs))
     ghostt_pool = [item for item in edge_pool if _safe_float(item.edge) >= 0.03]
     ghostt = _diverse(ghostt_pool, min(4, max_legs))
-    quick_cash = _diverse([item for item in eligible if item.quick_cash], min(3, max_legs))
+    quick_cash = _diverse([item for item in safe_pool if item.quick_cash], min(3, max_legs))
     chain_reaction = _diverse(
-        [item for item in eligible if item.chain_reaction_key], min(3, max_legs)
+        [item for item in safe_pool if item.chain_reaction_key], min(3, max_legs)
     )
 
-    a = _diverse(eligible, min(3, max_legs))
+    a = _diverse(safe_pool, min(3, max_legs))
     a_entities = {item.player_key or item.event_id for item in a}
-    b = _diverse(eligible, min(3, max_legs), existing=a_entities)
+    b = _diverse(safe_pool, min(3, max_legs), existing=a_entities)
     c_pool = sorted({item.id: item for item in [*a, *b]}.values(), key=_priority)
     c = _diverse(c_pool, min(3, max_legs))
-    hybrid = _hybrid_category_legs(cash_pool, eligible, edge_pool, max_legs)
+    hybrid = _hybrid_category_legs(cash_pool, safe_pool, edge_pool, max_legs)
 
     cards = {
         "max_bet": _card("max_bet", "Max Bet — strongest single", strongest),
         "elite_two": _card("elite_two", "Elite 2-Pick", elite_two),
-        "core_parlay": _card("core_parlay", "Core Parlay", core),
-        "core_3": _card("core_3", "Official 3-Pick", core_3),
-        "core_4": _card("core_4", "Official 4-Pick", core_4),
-        "core_5": _card("core_5", "Official 5-Pick", core_5),
+        "core_parlay": _card(
+            "core_parlay",
+            "Core Parlay — low miss-by-1 legs only",
+            core,
+            [
+                "Built only from legs with miss-by-1 risk under 0.55. "
+                "Thin closes are Max Bet singles or PASS — never stacked."
+            ],
+        ),
+        "core_3": _card("core_3", "Official 3-Pick — safe cushion only", core_3),
+        "core_4": _card("core_4", "Official 4-Pick — safe cushion only", core_4),
+        "core_5": _card("core_5", "Official 5-Pick — safe cushion only", core_5),
         "cash_builder": _cash_card("cash_builder", "Cash Builder", cash, quarantined),
         "edge_plays": _card("edge_plays", "Edge Plays", edge),
         "fortress": _card("fortress", "Fortress Card", fortress),

@@ -510,7 +510,7 @@ def build_verified_candidate(
         thesis_key=thesis_key,
         script_key=script_key,
         team_image_url=logo_for_play(sport, selection, event_name),
-        safer_alternative=f"Safer version of {selection}",
+        safer_alternative=None,
         higher_upside=f"Higher-upside version of {selection}",
         invalidation_conditions=["Key player ruled out", "Large line movement"],
         live_trigger="Recheck price and availability before any live entry.",

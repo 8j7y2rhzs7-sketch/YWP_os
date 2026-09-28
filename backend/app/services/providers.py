@@ -87,7 +87,7 @@ def _base(
         thesis_key=thesis_key,
         script_key=script_key,
         player_key=player_key,
-        safer_alternative=f"Safer version of {selection}",
+        safer_alternative=None,
         higher_upside=f"Higher-upside version of {selection}",
         invalidation_conditions=["Material lineup change", "Large adverse price move"],
         live_trigger="Recheck price and underlying game state before any live entry.",

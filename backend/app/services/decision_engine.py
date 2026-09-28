@@ -44,6 +44,22 @@ def money(value: float, places: str = "0.000001") -> Decimal:
     return Decimal(str(value)).quantize(Decimal(places), rounding=ROUND_HALF_UP)
 
 
+# Board flatteners often pre-fill a generic string — that is NOT a verified safer line.
+_PLACEHOLDER_SAFER_PREFIXES = (
+    "Safer version of ",
+    "Pick a different market",
+    "Use a lower line only if",
+)
+
+
+def verified_safer_alternative(text: str | None) -> bool:
+    """True only when a concrete safer line was supplied (not a sheet placeholder)."""
+    if not text or not str(text).strip():
+        return False
+    cleaned = str(text).strip()
+    return not any(cleaned.startswith(prefix) for prefix in _PLACEHOLDER_SAFER_PREFIXES)
+
+
 @dataclass(slots=True)
 class Evaluation:
     candidate: CandidateInput
@@ -273,9 +289,12 @@ class DecisionEngine:
                     f"Player prop blocked: average L10 cushion below the {floor:g} minimum."
                 )
                 reasons.append("PROP_CUSHION_GATE")
-        elif miss_by_one_risk >= 0.80 and not candidate.safer_alternative:
+        elif miss_by_one_risk >= 0.80 and not verified_safer_alternative(
+            candidate.safer_alternative
+        ):
             hard_skip_reasons.append(
-                "Miss-by-1 risk is critical and no safer available line was supplied."
+                "Miss-by-1 risk is critical and no verified safer line was supplied "
+                "(placeholder text does not count)."
             )
             reasons.append("MISS_BY_ONE_GATE_FAILED")
 
@@ -489,9 +508,14 @@ class DecisionEngine:
             tier = "stay_away"
         elif decision == Decision.review.value:
             tier = "review"
-        elif confidence >= 90 and risk == "low":
+        elif confidence >= 90 and risk == "low" and miss_by_one_risk < 0.55:
             tier = "cash_builder"
-        elif confidence >= 88:
+        elif (
+            confidence >= 88
+            and miss_by_one_risk < 0.55
+            and risk in {"low", "medium"}
+        ):
+            # Multi-leg tag only when the leg itself is not a ticket-killer.
             tier = "core_parlay"
         elif expected_value >= 0.08:
             tier = "edge_play"
@@ -642,10 +666,14 @@ class DecisionEngine:
             yis = min(yis, 6.5)
             tier = "review"
             suggested_stake_pct = 0.0
-        elif confidence >= 90 and evaluation.risk == "low":
+        elif confidence >= 90 and evaluation.risk == "low" and evaluation.miss_by_one_risk < 0.55:
             tier = "cash_builder"
             suggested_stake_pct = evaluation.suggested_stake_pct
-        elif confidence >= 88:
+        elif (
+            confidence >= 88
+            and evaluation.miss_by_one_risk < 0.55
+            and evaluation.risk in {"low", "medium"}
+        ):
             tier = "core_parlay"
             suggested_stake_pct = evaluation.suggested_stake_pct
         elif expected_value >= 0.08:
