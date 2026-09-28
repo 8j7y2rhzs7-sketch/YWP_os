@@ -16,7 +16,20 @@ export interface User {
   risk_profile: RiskProfile;
   role: string;
   is_active: boolean;
+  subscription_status: string;
+  has_app_access: boolean;
+  checkout_url?: string | null;
+  app_download_url?: string | null;
   created_at: string;
+}
+
+export interface SubscriptionStatus {
+  required: boolean;
+  has_access: boolean;
+  status: string;
+  whop_user_id: string | null;
+  checkout_url: string | null;
+  app_download_url?: string | null;
 }
 
 export interface Bankroll {
@@ -43,16 +56,69 @@ export interface CandidateInput {
   line: string | null;
   american_odds: number;
   estimated_probability: number;
+  probability_source?: "model" | "manual_verified" | "market_implied" | "demo";
+  source_urls?: string[];
   variance: number;
   data_quality: number;
   [key: string]: unknown;
+}
+
+export type Readiness = "DEMO" | "PARTIAL" | "VERIFIED";
+
+export interface VerificationSummary {
+  readiness: Readiness;
+  candidate_count: number;
+  verified_count: number;
+  partial_count: number;
+  demo_count: number;
+  gaps_by_candidate: Record<string, string[]>;
+}
+
+export interface SportCatalogItem {
+  key: string;
+  label: string;
+  odds_key: string | null;
+  in_season: boolean | null;
+  priced_slate_available: boolean;
+  note: string;
+}
+
+export interface SportsCatalogResponse {
+  sports: SportCatalogItem[];
+  credit_cost: number;
+  source: string;
+  in_season_count: number;
+  note: string;
+}
+
+export interface OddsPrefetchResponse {
+  warmed: string[];
+  skipped_out_of_season_or_unmapped: string[];
+  credits_spent: number;
+  cache_ttl_seconds: number;
+  note: string;
+}
+
+export interface PropWarmResponse {
+  sport: string;
+  date: string;
+  candidates: CandidateInput[];
+  prop_total: number;
+  prop_modeled: number;
+  prop_pending: number;
+  coverage_pct: number;
+  enriched_this_pass: number;
+  ready: boolean;
+  notice: string;
 }
 
 export interface SlateResponse {
   sport: string;
   date: string;
   mode: "demo" | "live";
+  readiness?: Readiness;
   notice: string;
+  verification_summary?: VerificationSummary;
   candidates: CandidateInput[];
 }
 
@@ -76,6 +142,19 @@ export interface Recommendation {
   edge: string;
   expected_value: string;
   confidence_score: number;
+  quality_score?: number | null;
+  quality_score_max?: number;
+  model_win_probability?: number | null;
+  probability_available?: boolean;
+  probability_unavailable_reason?: string | null;
+  home_team?: string | null;
+  away_team?: string | null;
+  start_time?: string | null;
+  bookmaker?: string | null;
+  bookmaker_label?: string | null;
+  price_timestamp?: string | null;
+  market_scope_label?: string | null;
+  verification_status?: string | null;
   ywp_rating: string;
   vision_score: string;
   miss_by_one_risk: string;
@@ -89,11 +168,12 @@ export interface Recommendation {
   edge_class: string;
   expected_value_label: string;
   suggested_stake_pct: string;
-  decision: "PLAY" | "LEAN" | "WATCH" | "SKIP";
+  decision: "PLAY" | "LEAN" | "WATCH" | "REVIEW" | "SKIP";
   recommendation_tier: string;
   rank: number;
   reason_codes: string[];
   reasoning_summary: string;
+  metacognition?: MetacognitionReflection | null;
   warnings: string[];
   safer_alternative: string | null;
   higher_upside: string | null;
@@ -105,7 +185,10 @@ export interface Recommendation {
   thesis_key: string;
   script_key: string;
   player_key: string | null;
+  image_url?: string | null;
+  team_image_url?: string | null;
   data_source: string;
+  source_urls?: string[];
   source_timestamp: string;
   model_version: string;
   protocol_version: string;
@@ -122,6 +205,7 @@ export interface AnalyzeResponse {
   date: string;
   ranked_picks: Recommendation[];
   stay_away: Recommendation[];
+  readiness?: Readiness;
   data_quality_summary: {
     protocol_status: string;
     protocol_run_id: string;
@@ -130,7 +214,154 @@ export interface AnalyzeResponse {
     unknown_source_labels: number;
     candidate_count: number;
     official_pass_count: number;
+    official_skip_count?: number;
+    official_pass?: boolean;
+    verified_candidate_count?: number;
+    readiness?: Readiness;
+    hive_learning?: HiveLearningSummary;
+    hive_optimum_accuracy_pct?: number;
   };
+}
+
+export interface DayForgeResponse {
+  engine: "YWP Day Forge";
+  status: "cooking" | "ready" | "pass" | "unavailable";
+  phase:
+    | "waiting_slate"
+    | "gathering_heat"
+    | "grading"
+    | "forging"
+    | "ready"
+    | "pass"
+    | "unavailable";
+  progress: number;
+  message: string;
+  sport: string;
+  date: string;
+  readiness?: Readiness | null;
+  cook_reasons: string[];
+  pass_reason?: string | null;
+  forgeable_count: number;
+  graded_count: number;
+  analysis_id?: string | null;
+  play?: Recommendation | null;
+  notification_title?: string | null;
+  notification_body?: string | null;
+}
+
+export interface HiveLearningSummary {
+  eligible_samples: number;
+  pending_samples: number;
+  resolved_samples?: number;
+  min_sample_for_calibration: number;
+  optimal_sample: number;
+  volume_score_pct?: number;
+  calibration_score_pct?: number;
+  calibration_quality?: number;
+  mean_abs_calibration_delta?: number | null;
+  calibrated_bucket_count?: number;
+  wins?: number;
+  losses?: number;
+  optimum_accuracy_pct: number;
+  calibration_active: boolean;
+  status: "collecting" | "calibrating" | "optimal" | string;
+  release_version?: string;
+}
+
+export interface MetacognitionReflection {
+  kind?: string;
+  subject?: string | null;
+  why: string;
+  system_impact: string;
+  next_time: string;
+}
+
+export interface MetacognitionFeedItem {
+  id?: string;
+  created_at?: string | null;
+  promoted?: boolean | null;
+  winner?: string | null;
+  metacognition: MetacognitionReflection;
+}
+
+export interface MetacognitionFeedResponse {
+  reflections: MetacognitionFeedItem[];
+  active_policy?: Record<string, unknown>;
+  note?: string;
+}
+
+export interface HiveProgressReport {
+  id: string;
+  created_at: string | null;
+  trigger: string | null;
+  sport: string | null;
+  sample_count: number;
+  notes: string | null;
+  maturity: HiveLearningSummary | Record<string, unknown>;
+  top_buckets: Array<Record<string, unknown>>;
+  living_effect?: string | null;
+}
+
+export interface OpsHealContract {
+  contract_id: string;
+  title: string;
+  ok: boolean;
+  severity: string;
+  detail: string;
+}
+
+export interface OpsHealProposal {
+  id: string;
+  status: "pending" | "implemented" | "dismissed" | string;
+  fingerprint?: string;
+  area?: string;
+  priority?: string;
+  title: string;
+  summary?: string;
+  recommended_change?: string;
+  sightings?: number;
+  created_at?: string | null;
+  last_seen_at?: string | null;
+  auto_remediations_tried?: string[];
+}
+
+export interface OpsHealProcessCoverage {
+  process: string;
+  movements: number;
+  errors: number;
+  active: boolean;
+  error_rate: number;
+}
+
+export interface OpsHealEvidence {
+  id?: string;
+  created_at?: string | null;
+  summary?: {
+    processes_tracked?: number;
+    processes_active?: number;
+    processes_quiet?: string[];
+    total_movements?: number;
+    total_errors?: number;
+    hot_failures?: OpsHealProcessCoverage[];
+  };
+  process_coverage?: OpsHealProcessCoverage[];
+  streams?: Record<string, unknown>;
+}
+
+export interface OpsHealCycle {
+  id?: string;
+  bot?: string;
+  status: string;
+  explanation?: string;
+  trigger?: string;
+  created_at?: string | null;
+  contracts?: OpsHealContract[];
+  planned_remediations?: string[];
+  applied_remediations?: Array<{ remediation_id: string; ok: boolean; detail: string }>;
+  proposals_drafted?: string[];
+  proposals_pending?: number;
+  proposals?: OpsHealProposal[];
+  evidence?: OpsHealEvidence;
 }
 
 export interface TicketCard {
@@ -139,16 +370,31 @@ export interface TicketCard {
   recommendation_ids: string[];
   legs: Recommendation[];
   risk: string;
+  risk_explanation?: string | null;
   confidence_score: number;
+  quality_score?: number | null;
+  quality_score_max?: number;
+  quality_score_note?: string;
+  joint_win_probability?: number | null;
+  joint_probability_status?: string;
+  joint_probability_note?: string | null;
   weakest_leg_id: string | null;
+  weakest_leg_criterion?: string | null;
+  weakest_leg_explanation?: string | null;
   warnings: string[];
 }
 
 export interface BuildTicketResponse {
   analysis_id: string | null;
+  official_pass?: boolean;
   cards: Record<string, TicketCard>;
   stay_away: Recommendation[];
-  quarantined: Array<{ recommendation_id: string; reason: string }>;
+  quarantined: Array<{
+    recommendation_id: string;
+    reason: string;
+    selection?: string | null;
+    analysis_rank?: number | null;
+  }>;
 }
 
 export interface TicketLeg {
@@ -163,6 +409,8 @@ export interface TicketLeg {
   skip_reason: string | null;
   status: string;
   outcome: string | null;
+  image_url?: string | null;
+  team_image_url?: string | null;
 }
 
 export interface Ticket {
@@ -206,6 +454,56 @@ export interface LockCheck {
   created_at: string;
 }
 
+export interface SettleDayItem {
+  recommendation_id: string;
+  ticket_id: string;
+  selection: string;
+  status: string;
+  outcome: string | null;
+  final_score: string | null;
+  actual_value: string | null;
+  detail: string | null;
+}
+
+export interface EodQualityReport {
+  slate_date: string;
+  locked_graded: number;
+  locked_wins: number;
+  locked_losses: number;
+  board_uncalled_graded: number;
+  board_uncalled_wins: number;
+  board_uncalled_losses: number;
+  missed_winners: Array<{
+    recommendation_id: string;
+    selection: string;
+    decision: string;
+    recommendation_tier: string;
+    outcome: string;
+    market_type: string;
+    american_odds: number;
+  }>;
+  good_dodges: Array<{ selection: string; outcome: string }>;
+  false_skips: Array<{ selection: string; outcome: string }>;
+  locked_hit_rate: number | null;
+  uncalled_play_lean_hit_rate: number | null;
+  packaging_gap: number | null;
+  quality_score: number;
+  headline: string;
+  lessons: string[];
+}
+
+export interface SettleDayResponse {
+  graded: number;
+  pending: number;
+  skipped: number;
+  errors: number;
+  tickets_settled: number;
+  board_graded?: number;
+  hive_outcomes_mapped?: number;
+  eod_quality?: EodQualityReport | null;
+  items: SettleDayItem[];
+}
+
 export interface Performance {
   settled: number;
   wins: number;
@@ -217,6 +515,27 @@ export interface Performance {
   by_sport: Array<Record<string, string | number | null>>;
   by_market: Array<Record<string, string | number | null>>;
   confidence_calibration: Array<Record<string, string | number | null>>;
+  /** Board / pick accuracy (same as settled/wins/win_rate). */
+  leg_settled?: number;
+  leg_wins?: number;
+  leg_losses?: number;
+  leg_pushes?: number;
+  leg_win_rate?: number | null;
+  /** Full ticket / parlay accuracy after Sync Scores. */
+  ticket_settled?: number;
+  ticket_wins?: number;
+  ticket_losses?: number;
+  ticket_pushes?: number;
+  ticket_win_rate?: number | null;
+  /** Legs that actually rode on a placed/settled ticket. */
+  locked_leg_settled?: number;
+  locked_leg_wins?: number;
+  locked_leg_losses?: number;
+  locked_leg_win_rate?: number | null;
+  /** leg_win_rate - ticket_win_rate when both exist. */
+  packaging_gap?: number | null;
+  by_ticket_type?: Array<Record<string, string | number | null>>;
+  packaging_note?: string | null;
 }
 
 export interface MissByOneReport {
@@ -231,6 +550,22 @@ export interface MissByOneReport {
   by_script: Array<Record<string, string | number>>;
   by_card_type: Array<Record<string, string | number>>;
   recurring_theses: Array<Record<string, string | number>>;
+}
+
+export interface LearningPulse {
+  protocol_runs: number;
+  graded_results: number;
+  micro_updates: number;
+  active_shifts: Array<{
+    sport: string;
+    market_type: string;
+    feature_name: string;
+    weight: number;
+    version: number;
+    sample_size: number;
+  }>;
+  latest_lesson: string | null;
+  headline: string;
 }
 
 export interface ProtocolDefinition {

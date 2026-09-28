@@ -3,7 +3,7 @@ from decimal import Decimal
 from fastapi import APIRouter, HTTPException, status
 from sqlalchemy import select
 
-from app.deps import DB, CurrentUser
+from app.deps import DB, SubscribedUser
 from app.models import AuditLog, BankrollAccount, BankrollTransaction
 from app.schemas import (
     BankrollOut,
@@ -26,12 +26,12 @@ def _account(db: DB, user_id: str) -> BankrollAccount:
 
 
 @router.get("", response_model=BankrollOut)
-def get_bankroll(user: CurrentUser, db: DB) -> BankrollOut:
+def get_bankroll(user: SubscribedUser, db: DB) -> BankrollOut:
     return BankrollOut.model_validate(_account(db, user.id))
 
 
 @router.patch("", response_model=BankrollOut)
-def update_bankroll(payload: BankrollUpdate, user: CurrentUser, db: DB) -> BankrollOut:
+def update_bankroll(payload: BankrollUpdate, user: SubscribedUser, db: DB) -> BankrollOut:
     account = _account(db, user.id)
     changes = payload.model_dump(exclude_none=True)
     for key, value in changes.items():
@@ -51,7 +51,7 @@ def update_bankroll(payload: BankrollUpdate, user: CurrentUser, db: DB) -> Bankr
 
 
 @router.get("/transactions", response_model=list[BankrollTransactionOut])
-def transactions(user: CurrentUser, db: DB, limit: int = 100) -> list[BankrollTransaction]:
+def transactions(user: SubscribedUser, db: DB, limit: int = 100) -> list[BankrollTransaction]:
     account = _account(db, user.id)
     return list(
         db.scalars(
@@ -67,7 +67,7 @@ def transactions(user: CurrentUser, db: DB, limit: int = 100) -> list[BankrollTr
     "/transactions", response_model=BankrollTransactionOut, status_code=status.HTTP_201_CREATED
 )
 def add_transaction(
-    payload: BankrollTransactionCreate, user: CurrentUser, db: DB
+    payload: BankrollTransactionCreate, user: SubscribedUser, db: DB
 ) -> BankrollTransactionOut:
     account = _account(db, user.id)
     amount = Decimal(payload.amount)

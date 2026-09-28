@@ -52,30 +52,41 @@ def test_health_and_authenticated_full_flow(
         headers=auth_headers,
     )
     assert cards_response.status_code == 200, cards_response.text
-    cards = cards_response.json()["cards"]
-    assert {
-        "max_bet",
-        "elite_two",
-        "core_parlay",
-        "core_3",
-        "core_4",
-        "core_5",
-        "cash_builder",
-        "edge_plays",
-        "fortress",
-        "handicap",
-        "no_stress",
-        "scripted",
-        "quick_cash",
-        "chain_reaction",
-        "ghostt",
-        "comeback",
-        "ticket_a",
-        "ticket_b",
-        "ticket_c",
-    } == set(cards)
+    payload = cards_response.json()
+    assert payload["official_pass"] is False
+    cards = payload["cards"]
+    assert "max_bet" in cards
+    assert cards["max_bet"]["recommendation_ids"]
+    # Multi-leg templates are omitted when too few plays survive gates.
+    for key, needed in {
+        "elite_two": 2,
+        "core_3": 3,
+        "core_4": 4,
+        "core_5": 5,
+        "ticket_a": 2,
+    }.items():
+        if key in cards:
+            assert len(cards[key]["recommendation_ids"]) >= needed
 
-    recommendation_ids = cards["elite_two"]["recommendation_ids"]
+    # Empty card templates must NOT flip official_pass while PLAY/LEAN still exist.
+    strict = client.post(
+        "/api/v1/sports/build-ticket",
+        json={
+            "analysis_id": analysis["analysis_id"],
+            "max_legs": 5,
+            "min_rating": 10,
+            "risk_profile": "balanced",
+        },
+        headers=auth_headers,
+    )
+    assert strict.status_code == 200, strict.text
+    strict_payload = strict.json()
+    assert any(item["decision"] in {"PLAY", "LEAN"} for item in analysis["ranked_picks"])
+    assert strict_payload["official_pass"] is False
+
+    recommendation_ids = (
+        cards.get("elite_two", cards["max_bet"])["recommendation_ids"]
+    )
     ticket_response = client.post(
         "/api/v1/tickets",
         json={
