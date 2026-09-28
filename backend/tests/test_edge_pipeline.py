@@ -38,9 +38,9 @@ def test_devig_two_way_removes_vig() -> None:
     fair = compare_to_market(
         model_probability=0.55, american_odds=-110, opposite_american_odds=-110
     )
-    assert fair["status"] == "devigged_two_way"
-    assert fair["fair_implied_probability"] == 0.5
-    assert fair["edge_vs_fair"] == 0.05
+    assert fair["status"].startswith("devigged_")
+    assert abs(fair["fair_implied_probability"] - 0.5) < 0.002
+    assert abs(fair["edge_vs_fair"] - 0.05) < 0.002
 
 
 def test_stat_distribution_emits_mean_variance_tail() -> None:
@@ -147,7 +147,7 @@ def test_evaluate_attaches_pipeline_payload() -> None:
     evaluation = decision_engine.evaluate(candidate, RiskProfile.balanced)
     assert "pipeline" in evaluation.payload
     assert evaluation.payload["pipeline_threshold"] in {"qualify", "borderline", "reject"}
-    assert evaluation.payload["market_comparison"]["status"] == "devigged_two_way"
+    assert str(evaluation.payload["market_comparison"]["status"]).startswith("devigged_")
     assert evaluation.payload["pipeline_distribution"]["status"] == "ok"
 
 

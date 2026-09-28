@@ -1,30 +1,27 @@
-"""Stage 5 — market comparison with de-vigged fair probability."""
+"""Stage 5 — market comparison with institutional de-vig (Shin/power/multiplicative)."""
 
 from __future__ import annotations
 
 from typing import Any
 
+from app.services.ywp_quant.odds import (
+    american_to_decimal,
+    american_to_probability,
+    devig_best,
+    expected_value as quant_ev,
+    vig_proxy_fair,
+)
+
 
 def implied_from_american(odds: int) -> float:
-    if odds > 0:
-        return 100.0 / (odds + 100.0)
-    return abs(odds) / (abs(odds) + 100.0)
-
-
-def american_to_decimal(odds: int) -> float:
-    if odds > 0:
-        return 1.0 + odds / 100.0
-    return 1.0 + 100.0 / abs(odds)
+    return american_to_probability(float(odds))
 
 
 def devig_two_way(odds_a: int, odds_b: int) -> tuple[float, float]:
-    """Multiplicative de-vig for a two-way market. Returns fair probs for A and B."""
-    raw_a = implied_from_american(odds_a)
-    raw_b = implied_from_american(odds_b)
-    total = raw_a + raw_b
-    if total <= 0:
-        return 0.5, 0.5
-    return raw_a / total, raw_b / total
+    """Best de-vig for a two-way market. Returns fair probs for A and B."""
+    a = devig_best(float(odds_a), float(odds_b))
+    b = devig_best(float(odds_b), float(odds_a))
+    return float(a["fair_probability"]), float(b["fair_probability"])
 
 
 def compare_to_market(
@@ -33,21 +30,27 @@ def compare_to_market(
     american_odds: int,
     opposite_american_odds: int | None = None,
 ) -> dict[str, Any]:
-    """Compare model fair p to market. Prefer de-vigged when opposite side exists."""
+    """Compare model fair p to market. Prefer Shin/best de-vig when opposite exists."""
     raw_implied = implied_from_american(american_odds)
     if opposite_american_odds is not None:
-        fair_implied, _opposite_fair = devig_two_way(american_odds, opposite_american_odds)
-        status = "devigged_two_way"
-        vig = max(0.0, (raw_implied + implied_from_american(opposite_american_odds)) - 1.0)
+        details = devig_best(float(american_odds), float(opposite_american_odds))
+        fair_implied = float(details["fair_probability"])
+        status = f"devigged_{details.get('method', 'best')}"
+        vig = float(details.get("overround") or 0.0)
+        method_meta = {
+            "method": details.get("method"),
+            "shin_z": details.get("shin_z"),
+            "alternatives": details.get("alternatives"),
+        }
     else:
-        # Conservative single-side proxy: assume ~4.5% two-way vig on US -110/-110 books.
-        fair_implied = min(0.99, max(0.01, raw_implied / 1.045))
+        details = vig_proxy_fair(float(american_odds))
+        fair_implied = float(details["fair_probability"])
         status = "raw_implied_vig_proxy"
-        vig = None
+        vig = float(details.get("overround") or 0.0)
+        method_meta = {"method": "vig_proxy"}
 
     edge = float(model_probability) - float(fair_implied)
-    decimal_odds = american_to_decimal(american_odds)
-    expected_value = float(model_probability) * (decimal_odds - 1.0) - (1.0 - float(model_probability))
+    expected_value = quant_ev(float(model_probability), float(american_odds))
     return {
         "status": status,
         "raw_implied_probability": round(raw_implied, 6),
@@ -57,4 +60,6 @@ def compare_to_market(
         "expected_value": round(expected_value, 6),
         "vig_estimate": round(vig, 6) if vig is not None else None,
         "opposite_american_odds": opposite_american_odds,
+        "devig": method_meta,
+        "decimal_odds": american_to_decimal(float(american_odds)),
     }

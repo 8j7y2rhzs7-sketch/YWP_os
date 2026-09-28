@@ -91,12 +91,25 @@ def recommendation_to_quant_leg(item: Any) -> dict[str, Any]:
             "availability_probability": 0.98 if role_ok else 0.85,
             "blowout_probability": float(snap.get("blowout_probability") or 0.12),
             "blowout_workload_multiplier": 0.80,
+            "foul_trouble_probability": float(snap.get("foul_trouble_probability") or 0.08),
+            "foul_trouble_minutes_multiplier": 0.85,
+            "expected_minutes": snap.get("expected_minutes"),
+            "baseline_minutes": snap.get("baseline_minutes"),
+            "pace_multiplier": float(snap.get("pace_multiplier") or 1.0),
+            "opponent_multiplier": float(snap.get("opponent_multiplier") or 1.0),
+            "injury_restriction_multiplier": float(
+                snap.get("injury_restriction_multiplier") or 1.0
+            ),
             "workload_multiplier": float(getattr(item, "stability", 0.85) or 0.85),
             "workload_uncertainty": 0.08,
             "mean_multiplier": 1.0,
             "mean_add": 0.0,
             "variance_multiplier": 1.0,
         },
+        "market_family": "count"
+        if "player_" in str(getattr(item, "market_type", "")).lower()
+        or "pitcher_" in str(getattr(item, "market_type", "")).lower()
+        else "continuous",
     }
     if groups:
         leg["observation_groups"] = groups
@@ -218,7 +231,7 @@ def audit_ticket(
     result = analyze_document(document)
     result["bridge"] = {
         "engine": "ywp_quant",
-        "engine_version": "0.1.0",
+        "engine_version": str(result.get("engine_version") or "0.2.0"),
         "simulations": simulations,
         "american_odds_used": american_odds,
         "correlation_supplied": bool(correlations),

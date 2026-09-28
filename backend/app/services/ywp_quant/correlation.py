@@ -1,11 +1,11 @@
-"""Correlation validation and Gaussian-copula ticket simulation."""
+"""Correlation validation and copula ticket simulation (Gaussian + Student-t)."""
 
 from __future__ import annotations
 
 from typing import Any
 
 import numpy as np
-from scipy.stats import norm
+from scipy.stats import norm, t as student_t
 
 
 def nearest_correlation(matrix: np.ndarray) -> tuple[np.ndarray, bool]:
@@ -42,9 +42,46 @@ def build_correlation(legs: list[dict[str, Any]], ticket: dict[str, Any]) -> tup
     return matrix, sorted(set(warnings))
 
 
-def joint_probability(probabilities: list[float], correlation: np.ndarray, simulations: int = 250_000, seed: int = 19) -> float:
+def joint_probability(
+    probabilities: list[float],
+    correlation: np.ndarray,
+    simulations: int = 250_000,
+    seed: int = 19,
+    *,
+    copula: str = "gaussian",
+    df: float = 5.0,
+) -> float:
+    """P(all hit) under a Gaussian or Student-t copula."""
     p = np.clip(np.asarray(probabilities, dtype=float), 1e-6, 1 - 1e-6)
-    thresholds = norm.ppf(p)
     rng = np.random.default_rng(seed)
+    if copula == "t":
+        # Multivariate-t via normal / chi2.
+        z = rng.multivariate_normal(np.zeros(len(p)), correlation, size=simulations)
+        chi = rng.chisquare(df, size=simulations)[:, None]
+        t_draws = z * np.sqrt(df / chi)
+        # Uniform via t CDF, then compare to p (same orientation as Gaussian version).
+        u = student_t.cdf(t_draws, df)
+        return float(np.all(u <= p, axis=1).mean())
+
+    thresholds = norm.ppf(p)
     draws = rng.multivariate_normal(np.zeros(len(p)), correlation, size=simulations)
     return float(np.all(draws <= thresholds, axis=1).mean())
+
+
+def joint_probability_bundle(
+    probabilities: list[float],
+    correlation: np.ndarray,
+    simulations: int,
+    seed: int,
+) -> dict[str, float]:
+    """Report both Gaussian and t-copula joints (tail dependence matters for parlays)."""
+    g = joint_probability(probabilities, correlation, simulations, seed, copula="gaussian")
+    t_joint = joint_probability(
+        probabilities, correlation, simulations, seed + 17, copula="t", df=5.0
+    )
+    # Conservative ticket probability uses the more pessimistic copula.
+    return {
+        "gaussian": g,
+        "student_t": t_joint,
+        "conservative": min(g, t_joint),
+    }

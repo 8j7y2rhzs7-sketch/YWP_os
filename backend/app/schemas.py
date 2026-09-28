@@ -581,7 +581,7 @@ class QuantAuditResponse(YWPModel):
     policy: dict[str, Any] = Field(default_factory=dict)
     bridge: dict[str, Any] = Field(default_factory=dict)
     method_notes: list[str] = Field(default_factory=list)
-    engine_version: str = "0.1.0"
+    engine_version: str = "0.2.0"
 
 
 class TicketAddLeg(YWPModel):

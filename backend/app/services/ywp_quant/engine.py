@@ -1,15 +1,23 @@
-"""End-to-end orchestration and conservative decision policy."""
+"""End-to-end orchestration — ywp_quant v0.2 institutional decision policy."""
 
 from __future__ import annotations
 
 from copy import deepcopy
 from typing import Any
 
-from .correlation import build_correlation, joint_probability
+from .correlation import build_correlation, joint_probability_bundle
 from .model import estimate_probability
-from .odds import american_to_probability, probability_to_american, devig_two_way
+from .odds import (
+    american_to_probability,
+    devig_best,
+    expected_value,
+    probability_to_american,
+    vig_proxy_fair,
+)
+from .sizing import fractional_kelly
 from .validation import validate_leg, verification_score
 
+ENGINE_VERSION = "0.2.0"
 
 DEFAULT_POLICY = {
     "minimum_leg_probability": 0.55,
@@ -21,19 +29,36 @@ DEFAULT_POLICY = {
     "maximum_legs": 4,
     "reject_unverified_correlation": True,
     "reject_unverified_inputs": True,
+    "kelly_fraction": 0.25,
+    "copula": "conservative",  # min(gaussian, student-t)
+    "devig_method": "best",  # best | shin | multiplicative | power
 }
 
 
-def _ticket_market_probability(ticket: dict[str, Any]) -> tuple[float | None, dict[str, Any]]:
+def _ticket_market_probability(ticket: dict[str, Any], method: str) -> tuple[float | None, dict[str, Any]]:
     market = ticket.get("market", {})
     odds = market.get("american_odds")
     if odds is None:
         return None, {"warning": "NO_TICKET_PRICE"}
-    raw = american_to_probability(float(odds))
     opposite = market.get("opposite_american_odds")
     if opposite is None:
-        return raw, {"raw_probability": raw, "warning": "PRICE_NOT_DEVIGGED"}
-    details = devig_two_way(float(odds), float(opposite))
+        details = vig_proxy_fair(float(odds))
+        details["warning"] = "PRICE_NOT_DEVIGGED"
+        return details["fair_probability"], details
+    if method == "multiplicative":
+        from .odds import devig_multiplicative
+
+        details = devig_multiplicative(float(odds), float(opposite))
+    elif method == "power":
+        from .odds import devig_power
+
+        details = devig_power(float(odds), float(opposite))
+    elif method == "shin":
+        from .odds import devig_shin
+
+        details = devig_shin(float(odds), float(opposite))
+    else:
+        details = devig_best(float(odds), float(opposite))
     return details["fair_probability"], details
 
 
@@ -68,71 +93,132 @@ def analyze_document(document: dict[str, Any]) -> dict[str, Any]:
             blockers.append(f"{leg.get('id', index)}:LEG_PROBABILITY_BELOW_THRESHOLD")
         if result.get("lower_90", 0) < policy["minimum_leg_lower_90"]:
             blockers.append(f"{leg.get('id', index)}:LEG_DOWNSIDE_TOO_LOW")
-        leg_results.append({
-            "id": leg.get("id"),
-            "event_id": leg.get("event_id"),
-            "market": leg.get("market"),
-            "line": leg.get("line"),
-            "direction": leg.get("direction"),
-            "verification_score": score,
-            "verification_issues": issues,
-            "estimate": result,
-        })
+        leg_results.append(
+            {
+                "id": leg.get("id"),
+                "event_id": leg.get("event_id"),
+                "market": leg.get("market"),
+                "line": leg.get("line"),
+                "direction": leg.get("direction"),
+                "verification_score": score,
+                "verification_issues": issues,
+                "estimate": result,
+            }
+        )
 
     ticket = document.get("ticket", {})
     if len(raw_legs) > int(policy["maximum_legs"]):
         blockers.append("TOO_MANY_LEGS")
     if len(probabilities) != len(raw_legs) or not probabilities:
         return {
-            "engine_version": "0.1.0",
+            "engine_version": ENGINE_VERSION,
             "decision": "REJECT",
             "blockers": sorted(set(blockers or ["NO_VALID_LEGS"])),
             "legs": leg_results,
         }
 
     correlation, correlation_warnings = build_correlation(raw_legs, ticket)
-    if policy["reject_unverified_correlation"] and any(w.startswith("UNVERIFIED_SAME_EVENT") for w in correlation_warnings):
+    if policy["reject_unverified_correlation"] and any(
+        w.startswith("UNVERIFIED_SAME_EVENT") for w in correlation_warnings
+    ):
         blockers.append("UNVERIFIED_SAME_EVENT_CORRELATION")
+
     simulations = int(ticket.get("simulations", 250_000))
     seed = int(document.get("seed", 7)) + 10_000
-    joint = joint_probability(probabilities, correlation, simulations, seed)
-    joint_lower = joint_probability(lower_probabilities, correlation, simulations, seed + 1)
-    joint_upper = joint_probability(upper_probabilities, correlation, simulations, seed + 2)
-    market_probability, market_details = _ticket_market_probability(ticket)
+    joint_bundle = joint_probability_bundle(probabilities, correlation, simulations, seed)
+    joint_lower_bundle = joint_probability_bundle(
+        lower_probabilities, correlation, simulations, seed + 1
+    )
+    joint_upper_bundle = joint_probability_bundle(
+        upper_probabilities, correlation, simulations, seed + 2
+    )
+
+    # Conservative = min(gaussian, student-t) — protects against tail dependence on parlays.
+    joint = joint_bundle["conservative"]
+    joint_lower = joint_lower_bundle["conservative"]
+    joint_upper = joint_upper_bundle["conservative"]
+
+    market_probability, market_details = _ticket_market_probability(
+        ticket, str(policy.get("devig_method", "best"))
+    )
     edge = None if market_probability is None else joint - market_probability
     lower_edge = None if market_probability is None else joint_lower - market_probability
+    american = ticket.get("market", {}).get("american_odds")
+    ev = None if american is None else expected_value(joint, float(american))
+    kelly = None
+    if american is not None:
+        kelly = fractional_kelly(
+            joint,
+            float(american),
+            fraction=float(policy.get("kelly_fraction", 0.25)),
+            lower_90=joint_lower,
+            uncertainty_haircut=True,
+        )
+
+    # Optional closing-line value when closer is supplied on the ticket market.
+    clv = None
+    closing = ticket.get("market", {}).get("closing_american_odds")
+    closing_opposite = ticket.get("market", {}).get("closing_opposite_american_odds")
+    if closing is not None:
+        if closing_opposite is not None:
+            close_fair, close_details = _ticket_market_probability(
+                {"market": {"american_odds": closing, "opposite_american_odds": closing_opposite}},
+                str(policy.get("devig_method", "best")),
+            )
+        else:
+            close_fair = american_to_probability(float(closing))
+            close_details = {"raw_probability": close_fair, "method": "raw_close"}
+        if close_fair is not None:
+            clv = {
+                "closing_fair_probability": close_fair,
+                "model_minus_close": joint - close_fair,
+                "beat_close": joint > close_fair,
+                "close_market": close_details,
+            }
+
     if market_probability is None:
         blockers.append("NO_COMPARABLE_MARKET_PRICE")
     else:
-        if edge < policy["minimum_ticket_edge"]:
+        if edge is not None and edge < policy["minimum_ticket_edge"]:
             blockers.append("INSUFFICIENT_TICKET_EDGE")
-        if lower_edge < policy["minimum_ticket_lower_edge"]:
+        if lower_edge is not None and lower_edge < policy["minimum_ticket_lower_edge"]:
             blockers.append("DOWNSIDE_EDGE_NOT_POSITIVE")
+        if ev is not None and ev <= 0:
+            blockers.append("NEGATIVE_EXPECTED_VALUE")
 
     decision = "REJECT" if blockers else "QUALIFY"
     return {
-        "engine_version": "0.1.0",
+        "engine_version": ENGINE_VERSION,
         "decision": decision,
         "blockers": sorted(set(blockers)),
         "ticket": {
             "leg_count": len(raw_legs),
             "model_probability": joint,
+            "model_probability_gaussian": joint_bundle["gaussian"],
+            "model_probability_student_t": joint_bundle["student_t"],
             "probability_interval_90": [joint_lower, joint_upper],
             "fair_american_odds": probability_to_american(joint),
             "market_probability": market_probability,
             "market": market_details,
             "edge": edge,
             "lower_edge": lower_edge,
+            "expected_value": ev,
+            "kelly": kelly,
+            "clv": clv,
             "correlation_warnings": correlation_warnings,
             "correlation_matrix": correlation.round(4).tolist(),
             "simulations": simulations,
+            "copula": "conservative_min_gaussian_t",
         },
         "legs": leg_results,
         "policy": policy,
         "method_notes": [
-            "Probabilities are distributions with uncertainty, not confidence labels.",
-            "Same-event dependence requires measured or explicitly supplied correlations.",
-            "Qualification requires both data quality and value at the offered price.",
+            "v0.2: NegBin/Poisson when counts are overdispersed; Normal otherwise.",
+            "Minutes / foul-trouble / blowout enter as an explicit mixture, not a vibe.",
+            "De-vig prefers Shin on skewed books; multiplicative kept as comparable.",
+            "Joint probability uses the more pessimistic of Gaussian vs Student-t copula.",
+            "Sizing is fractional Kelly on the downside (lower-90) probability.",
+            "Same-event dependence requires measured correlations or the ticket REJECTS.",
             "A rejected over does not imply that the under qualifies.",
         ],
     }
