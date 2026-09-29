@@ -39,6 +39,9 @@ def candidate(**changes) -> CandidateInput:
         },
         "thesis_key": "pitcher-k-over",
         "script_key": "pitcher-duration-script",
+        "player_key": "pitcher-demo-1",
+        "observation_values": [7, 6, 8, 5, 9, 6, 7, 8, 4, 10],
+        "independent_value_verified": True,
     }
     data.update(changes)
     return CandidateInput(**data)

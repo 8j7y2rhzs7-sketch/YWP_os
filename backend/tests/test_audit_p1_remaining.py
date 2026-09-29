@@ -52,11 +52,27 @@ def test_nba_unknown_bullpen_is_not_a_hard_gap() -> None:
     assert not any(gap.startswith("source:bullpen") for gap in gaps)
 
 
-def test_mlb_unknown_bullpen_remains_a_hard_gap() -> None:
+def test_mlb_team_market_unknown_bullpen_is_soft() -> None:
+    # Full-game MLB team markets soft-gap late bullpen/lineup labels (orders post late).
     gaps = candidate_verification_gaps(
         _candidate(
             sport="mlb",
             league="MLB",
+            market_type="moneyline",
+            source_status={"schedule": "confirmed", "market": "confirmed", "bullpen": "unknown"},
+        )
+    )
+    assert "source:bullpen" not in gaps
+
+
+def test_mlb_pitcher_prop_unknown_bullpen_remains_a_hard_gap() -> None:
+    gaps = candidate_verification_gaps(
+        _candidate(
+            sport="mlb",
+            league="MLB",
+            market_type="player_strikeouts_over",
+            selection="Pitcher over 5.5 Ks",
+            player_key="pitcher-1",
             source_status={"schedule": "confirmed", "market": "confirmed", "bullpen": "unknown"},
         )
     )
