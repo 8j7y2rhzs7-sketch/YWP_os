@@ -5,7 +5,7 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
-from app.deps import AdminUser, DB, SubscribedUser
+from app.deps import DB, AdminUser, SubscribedUser
 from app.services.ops_evidence import (
     collect_all_process_evidence,
     latest_evidence_pack,
@@ -28,7 +28,9 @@ class OpsHealProposalReviewIn(BaseModel):
 
 
 def _is_admin(user: object) -> bool:
-    return str(getattr(user, "role", "") or "").lower() == "admin"
+    from app.services.demo_account import is_admin_principal
+
+    return is_admin_principal(user)
 
 
 def _public_ops_payload(payload: dict, *, admin: bool) -> dict:

@@ -9,7 +9,7 @@ from __future__ import annotations
 import logging
 import re
 import time
-from datetime import date, datetime, timedelta, timezone
+from datetime import UTC, date, datetime, timedelta
 from typing import Any
 
 import httpx
@@ -110,9 +110,7 @@ def get_team_recent_form(
     }
 
 
-def _completed_games_for_season(
-    abbrev: str, season: str, slate_date: date
-) -> list[dict[str, Any]]:
+def _completed_games_for_season(abbrev: str, season: str, slate_date: date) -> list[dict[str, Any]]:
     try:
         data = _get(f"{SOURCE_API}/club-schedule-season/{abbrev}/{season}", cache_ttl=300)
     except Exception as exc:  # noqa: BLE001
@@ -280,4 +278,4 @@ def _get(url: str, params: dict[str, Any] | None = None, *, cache_ttl: int = 120
 
 
 def utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)

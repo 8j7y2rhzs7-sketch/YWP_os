@@ -8,8 +8,10 @@ from app.services.ywp_quant.odds import (
     american_to_decimal,
     american_to_probability,
     devig_best,
-    expected_value as quant_ev,
     vig_proxy_fair,
+)
+from app.services.ywp_quant.odds import (
+    expected_value as quant_ev,
 )
 
 

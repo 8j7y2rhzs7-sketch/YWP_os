@@ -8,6 +8,7 @@ from types import SimpleNamespace
 from uuid import uuid4
 
 from app.schemas import CandidateInput, RiskProfile
+from app.services.board_metrics import select_weakest_leg
 from app.services.calculation_discipline import (
     eliminate_weakest_until_stable,
     heavy_juice_blockers,
@@ -16,7 +17,6 @@ from app.services.calculation_discipline import (
     same_player_category_conflicts,
 )
 from app.services.decision_engine import decision_engine
-from app.services.board_metrics import select_weakest_leg
 from app.services.ticket_builder import build_cards
 
 
@@ -110,7 +110,9 @@ def test_prop_identity_and_market_series_gates() -> None:
     # Force PARTIAL readiness via unverified research flags already set.
     wait_eval = decision_engine.evaluate(wait_case, RiskProfile.balanced)
     assert wait_eval.decision in {"WAIT", "SKIP"}
-    assert "NO_PICK_YET" in wait_eval.reason_codes or "MARKET_SERIES_MISSING" in wait_eval.reason_codes
+    assert (
+        "NO_PICK_YET" in wait_eval.reason_codes or "MARKET_SERIES_MISSING" in wait_eval.reason_codes
+    )
 
 
 def test_same_player_category_stack_empties_card() -> None:
@@ -197,9 +199,11 @@ def test_same_player_category_stack_empties_card() -> None:
     for key, card in cards.items():
         if key == "max_bet":
             continue
-        assert len(card.legs) <= 1 or not any(
-            "SAME_PLAYER" in w for w in card.warnings
-        ) or len(card.legs) == 0
+        assert (
+            len(card.legs) <= 1
+            or not any("SAME_PLAYER" in w for w in card.warnings)
+            or len(card.legs) == 0
+        )
 
 
 def test_weakest_leg_drop_and_recheck() -> None:
@@ -232,6 +236,4 @@ def test_official_output_labels() -> None:
         official_output_label(has_qualified_cards=False, has_play_lean=True)
         == "NO_BET_CARDS_FAILED_GATES"
     )
-    assert (
-        official_output_label(has_qualified_cards=True, has_play_lean=True) == "DECISION_CARDS"
-    )
+    assert official_output_label(has_qualified_cards=True, has_play_lean=True) == "DECISION_CARDS"

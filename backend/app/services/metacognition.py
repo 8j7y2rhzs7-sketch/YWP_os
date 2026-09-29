@@ -97,9 +97,7 @@ def reflect_on_decision(
 
     next_parts: list[str] = []
     if "RESEARCH_INCOMPLETE" in codes or "NO_INDEPENDENT_PROBABILITY" in codes:
-        next_parts.append(
-            "Warm prop research until modeled, then re-LAUNCH — do not force a PLAY."
-        )
+        next_parts.append("Warm prop research until modeled, then re-LAUNCH — do not force a PLAY.")
     elif "STALE_DATA" in codes:
         next_parts.append("Refresh the raw slate so provider timestamps are current.")
     elif "MARKET_NOT_OPEN" in codes:
@@ -110,13 +108,15 @@ def reflect_on_decision(
         )
     else:
         next_parts.append(
-            "Keep fail-closed. Next cycle should only promote if settled history proves a better tactic."
+            "Keep fail-closed. Next cycle should only promote if settled "
+            "history proves a better tactic."
         )
     if hive.get("reason") == "insufficient_hive_sample":
         next_parts.append("Need more settled samples in this bucket before Hive may blend.")
     if hive.get("reason") == "bucket_inhibited_by_self_improve":
         next_parts.append(
-            "This bucket is inhibited by self-improve — clear only if a later cycle proves recovery."
+            "This bucket is inhibited by self-improve — clear only if a "
+            "later cycle proves recovery."
         )
 
     return reflection(

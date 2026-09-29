@@ -35,7 +35,9 @@ DEFAULT_POLICY = {
 }
 
 
-def _ticket_market_probability(ticket: dict[str, Any], method: str) -> tuple[float | None, dict[str, Any]]:
+def _ticket_market_probability(
+    ticket: dict[str, Any], method: str
+) -> tuple[float | None, dict[str, Any]]:
     market = ticket.get("market", {})
     odds = market.get("american_odds")
     if odds is None:

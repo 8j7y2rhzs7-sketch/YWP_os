@@ -2,16 +2,16 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 from decimal import Decimal
+from unittest.mock import patch
 
 from app.schemas import CandidateInput, RiskProfile
+from app.services import player_prop_research
 from app.services.decision_engine import decision_engine
 from app.services.player_prop_research import (
     _hit_rate_probability,
     _raw_hit_rate,
     enrich_player_prop_candidates,
 )
-from app.services import player_prop_research
-from unittest.mock import patch
 
 
 def _modeled_prop(**overrides) -> CandidateInput:

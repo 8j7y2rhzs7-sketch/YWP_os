@@ -11,7 +11,7 @@ from app.schemas import TokenResponse
 
 
 def issue_tokens(db: Session, user: User) -> TokenResponse:
-    pair = create_token_pair(user.id)
+    pair = create_token_pair(user.id, auth_epoch=int(user.auth_epoch or 0))
     db.add(
         RefreshSession(
             user_id=user.id,

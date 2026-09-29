@@ -4,7 +4,9 @@ from datetime import date
 
 from fastapi.testclient import TestClient
 
-from app.seed import DEMO_EMAIL, DEMO_PASSWORD, seed
+from app.core.database import SessionLocal
+from app.core.security import hash_password
+from app.models import BankrollAccount, User
 
 
 def test_learning_requires_admin_approval_and_supports_rollback(
@@ -54,12 +56,26 @@ def test_learning_requires_admin_approval_and_supports_rollback(
     forbidden = client.post("/api/v1/learning/weights/propose", headers=auth_headers)
     assert forbidden.status_code == 403
 
-    seed()
+    admin_email = "protocol-admin@ywp-os.com"
+    admin_password = "AdminYwp!2026"
+    with SessionLocal() as db:
+        admin = User(
+            email=admin_email,
+            password_hash=hash_password(admin_password),
+            name="Protocol Admin",
+            timezone="America/New_York",
+            role="admin",
+            subscription_status="active",
+        )
+        db.add(admin)
+        db.flush()
+        db.add(BankrollAccount(user_id=admin.id))
+        db.commit()
     login = client.post(
         "/api/v1/auth/login",
-        json={"email": DEMO_EMAIL, "password": DEMO_PASSWORD},
+        json={"email": admin_email, "password": admin_password},
     )
-    assert login.status_code == 200
+    assert login.status_code == 200, login.text
     admin_headers = {"Authorization": f"Bearer {login.json()['access_token']}"}
 
     proposed = client.post("/api/v1/learning/weights/propose", headers=admin_headers)

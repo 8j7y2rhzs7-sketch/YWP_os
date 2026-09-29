@@ -10,7 +10,6 @@ from __future__ import annotations
 from collections.abc import Sequence
 
 import sqlalchemy as sa
-
 from alembic import op
 
 revision: str = "f2b8d4e91a30"
@@ -44,7 +43,9 @@ def upgrade() -> None:
         sa.Column("feature_flags", sa.JSON(), nullable=False),
         sa.Column("action", sa.String(length=16), nullable=True),
         sa.Column("outcome", sa.String(length=8), nullable=True),
-        sa.Column("outcome_verified", sa.Boolean(), nullable=False, server_default=sa.text("false")),
+        sa.Column(
+            "outcome_verified", sa.Boolean(), nullable=False, server_default=sa.text("false")
+        ),
         sa.Column("result_source", sa.String(length=64), nullable=True),
         sa.Column("resolved_at", sa.DateTime(timezone=True), nullable=True),
         sa.Column("consent_to_hive", sa.Boolean(), nullable=False, server_default=sa.text("false")),
@@ -149,12 +150,8 @@ def upgrade() -> None:
         sa.Column("losses", sa.Integer(), nullable=False, server_default="0"),
         sa.Column("pushes", sa.Integer(), nullable=False, server_default="0"),
         sa.Column("voids", sa.Integer(), nullable=False, server_default="0"),
-        sa.Column(
-            "sum_predicted_probability", sa.Float(), nullable=False, server_default="0"
-        ),
-        sa.Column(
-            "predicted_probability_count", sa.Integer(), nullable=False, server_default="0"
-        ),
+        sa.Column("sum_predicted_probability", sa.Float(), nullable=False, server_default="0"),
+        sa.Column("predicted_probability_count", sa.Integer(), nullable=False, server_default="0"),
         sa.Column("raw_rate", sa.Float(), nullable=True),
         sa.Column("posterior_rate", sa.Float(), nullable=True),
         sa.Column("mean_predicted_probability", sa.Float(), nullable=True),
@@ -163,9 +160,7 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("bucket_key"),
     )
-    op.create_index(
-        "ix_hive_aggregates_bucket_key", "hive_aggregates", ["bucket_key"], unique=True
-    )
+    op.create_index("ix_hive_aggregates_bucket_key", "hive_aggregates", ["bucket_key"], unique=True)
     op.create_index("ix_hive_aggregates_sport", "hive_aggregates", ["sport"], unique=False)
     op.create_index("ix_hive_aggregates_league", "hive_aggregates", ["league"], unique=False)
     op.create_index("ix_hive_aggregates_market", "hive_aggregates", ["market"], unique=False)

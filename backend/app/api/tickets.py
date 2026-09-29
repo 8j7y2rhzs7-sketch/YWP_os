@@ -11,6 +11,7 @@ from sqlalchemy.orm import selectinload
 
 from app.core.security import utcnow
 from app.deps import DB, SubscribedUser
+from app.hive.service import record_hive_action
 from app.models import (
     AuditLog,
     BankrollAccount,
@@ -29,9 +30,8 @@ from app.schemas import (
     TicketOut,
 )
 from app.services.decision_engine import american_to_decimal
-from app.services.lock_check import load_ticket_for_lock, run_lock_check
 from app.services.learning import record_usage_event
-from app.hive.service import record_hive_action
+from app.services.lock_check import load_ticket_for_lock, run_lock_check
 from app.services.ticket_gates import (
     cash_card_k_overs_ok,
     game_status_ok,
@@ -395,9 +395,7 @@ def ticket_alternatives(ticket_id: str, user: SubscribedUser, db: DB) -> list[Re
     ticket = _load_ticket(db, ticket_id, user.id)
     used = {leg.recommendation_id for leg in ticket.legs if leg.action in {"follow", "replace"}}
     analysis_ids = {
-        leg.recommendation.analysis_id
-        for leg in ticket.legs
-        if leg.recommendation is not None
+        leg.recommendation.analysis_id for leg in ticket.legs if leg.recommendation is not None
     }
     if not analysis_ids:
         return []
@@ -422,7 +420,9 @@ def ticket_alternatives(ticket_id: str, user: SubscribedUser, db: DB) -> list[Re
 
 
 @router.post("/{ticket_id}/legs", response_model=TicketOut, status_code=status.HTTP_201_CREATED)
-def add_ticket_leg(ticket_id: str, payload: TicketAddLeg, user: SubscribedUser, db: DB) -> TicketOut:
+def add_ticket_leg(
+    ticket_id: str, payload: TicketAddLeg, user: SubscribedUser, db: DB
+) -> TicketOut:
     ticket = _load_ticket(db, ticket_id, user.id)
     if ticket.status in {"placed", "settled", "cancelled"}:
         raise HTTPException(status_code=409, detail="This ticket can no longer be edited")
@@ -433,7 +433,9 @@ def add_ticket_leg(ticket_id: str, payload: TicketAddLeg, user: SubscribedUser, 
         )
     )
     if not recommendation or recommendation.decision not in {"PLAY", "LEAN"}:
-        raise HTTPException(status_code=422, detail="Only PLAY or LEAN recommendations can be added")
+        raise HTTPException(
+            status_code=422, detail="Only PLAY or LEAN recommendations can be added"
+        )
     if "DATA_ANOMALY" in (recommendation.reason_codes or []):
         raise HTTPException(status_code=422, detail="DATA_ANOMALY candidates cannot be saved")
     active = _active_legs(ticket)

@@ -1,10 +1,8 @@
 from __future__ import annotations
 
-import httpx
-
 from datetime import date
-from decimal import Decimal
-from types import SimpleNamespace
+
+import httpx
 
 from app.services import espn_provider, sport_model, sport_research
 from app.services.trusted_sources import sources_for, trusted_sources_manifest
@@ -218,7 +216,6 @@ def test_espn_get_falls_back_when_primary_host_403(monkeypatch) -> None:
             return _Resp(403)
         return _Resp(200, {"events": [{"id": "1"}]})
 
-    import httpx
     monkeypatch.setattr(espn_provider.httpx, "get", fake_get)
     data = espn_provider._get(f"{espn_provider.SOURCE_API}/football/nfl/scoreboard")
     assert data["events"][0]["id"] == "1"

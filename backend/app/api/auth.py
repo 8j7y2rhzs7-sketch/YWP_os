@@ -1,6 +1,5 @@
-from datetime import UTC
-
 import hmac
+from datetime import UTC
 
 import jwt
 from fastapi import APIRouter, Header, HTTPException, status
@@ -20,9 +19,14 @@ from app.schemas import (
     RegisterRequest,
     TokenResponse,
 )
-from app.services.whop_access import apply_pending_access, ensure_fresh_subscription
 from app.services.auth import find_refresh_session, issue_tokens, revoke_session
+from app.services.demo_account import (
+    demo_authentication_blocked,
+    is_demo_email,
+    reject_demo_authentication,
+)
 from app.services.tester_access import upsert_tester
+from app.services.whop_access import apply_pending_access, ensure_fresh_subscription
 
 router = APIRouter(prefix="/auth", tags=["authentication"])
 
@@ -34,6 +38,8 @@ def _aware(value):
 @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
 def register(payload: RegisterRequest, db: DB) -> TokenResponse:
     email = payload.email.lower()
+    if reject_demo_authentication(db, email):
+        raise HTTPException(status_code=403, detail="Demo account is disabled")
     if db.scalar(select(User).where(User.email == email)):
         raise HTTPException(status_code=409, detail="An account with that email already exists")
     user = User(
@@ -61,7 +67,10 @@ def register(payload: RegisterRequest, db: DB) -> TokenResponse:
 
 @router.post("/login", response_model=TokenResponse)
 def login(payload: LoginRequest, db: DB) -> TokenResponse:
-    user = db.scalar(select(User).where(User.email == payload.email.lower()))
+    email = payload.email.lower()
+    if reject_demo_authentication(db, email):
+        raise HTTPException(status_code=401, detail="Incorrect email or password")
+    user = db.scalar(select(User).where(User.email == email))
     if not user or not user.is_active or not verify_password(payload.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Incorrect email or password")
     user = apply_pending_access(db, user)
@@ -93,6 +102,11 @@ def provision_tester(
     provided = (x_ywp_provision_secret or "").strip()
     if not expected or not provided or not hmac.compare_digest(expected, provided):
         raise HTTPException(status_code=403, detail="Provision secret rejected")
+    if is_demo_email(str(payload.email)):
+        if demo_authentication_blocked(str(payload.email)):
+            raise HTTPException(status_code=403, detail="Demo account is disabled")
+        if payload.role == "admin":
+            raise HTTPException(status_code=403, detail="Demo account cannot be an admin")
     user, created = upsert_tester(
         db,
         email=str(payload.email),
@@ -108,9 +122,7 @@ def provision_tester(
         created=created,
         subscription_status=user.subscription_status,
         role=user.role,
-        message=(
-            f"{'Created' if created else 'Updated'} {user.role} account with active access"
-        ),
+        message=(f"{'Created' if created else 'Updated'} {user.role} account with active access"),
     )
 
 
@@ -130,6 +142,15 @@ def refresh(payload: RefreshRequest, db: DB) -> TokenResponse:
     ):
         raise HTTPException(status_code=401, detail="Refresh session is expired or revoked")
     user = db.get(User, session.user_id)
+    if user and reject_demo_authentication(db, user.email):
+        revoke_session(session)
+        db.commit()
+        raise HTTPException(status_code=401, detail="User is inactive")
+    token_epoch = int(claims.get("epoch") or 0)
+    if user and token_epoch != int(user.auth_epoch or 0):
+        revoke_session(session)
+        db.commit()
+        raise HTTPException(status_code=401, detail="User is inactive")
     if not user or not user.is_active:
         raise HTTPException(status_code=401, detail="User is inactive")
     revoke_session(session)

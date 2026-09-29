@@ -252,20 +252,14 @@ def test_stat_maps_cover_major_sports() -> None:
         == "PASS_YDS"
     )
     assert (
-        settlement._espn_stat_for_market(
-            "player_shots_on_goal", "over 2.5 shots", sport="nhl"
-        )[0]
+        settlement._espn_stat_for_market("player_shots_on_goal", "over 2.5 shots", sport="nhl")[0]
         == "SOG"
     )
     assert (
-        settlement._espn_stat_for_market(
-            "player_points", "over 22.5 points", sport="nba"
-        )[0]
+        settlement._espn_stat_for_market("player_points", "over 22.5 points", sport="nba")[0]
         == "PTS"
     )
     assert (
-        settlement._espn_stat_for_market(
-            "player_goal_scorer", "anytime scorer", sport="soccer"
-        )[0]
+        settlement._espn_stat_for_market("player_goal_scorer", "anytime scorer", sport="soccer")[0]
         == "G"
     )

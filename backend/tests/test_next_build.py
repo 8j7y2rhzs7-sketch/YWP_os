@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import UTC, datetime, date
+from datetime import UTC, date, datetime
 
 from fastapi.testclient import TestClient
 
@@ -32,7 +32,9 @@ def _analysis(client: TestClient, headers: dict[str, str], sport: str = "mlb") -
     return response.json()
 
 
-def test_demo_slate_includes_sport_graphics(client: TestClient, auth_headers: dict[str, str]) -> None:
+def test_demo_slate_includes_sport_graphics(
+    client: TestClient, auth_headers: dict[str, str]
+) -> None:
     slate = client.get(
         "/api/v1/sports/slate",
         params={"sport": "mlb", "date": str(date.today())},
@@ -155,9 +157,7 @@ def test_ticket_is_editable_with_alternatives_and_custom_save(
     )
     assert ticket.status_code == 201, ticket.text
     ticket_id = ticket.json()["id"]
-    assert any(
-        leg.get("team_image_url") or leg.get("image_url") for leg in ticket.json()["legs"]
-    )
+    assert any(leg.get("team_image_url") or leg.get("image_url") for leg in ticket.json()["legs"])
 
     alternatives = client.get(f"/api/v1/tickets/{ticket_id}/alternatives", headers=auth_headers)
     assert alternatives.status_code == 200, alternatives.text

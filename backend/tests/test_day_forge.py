@@ -119,7 +119,9 @@ def test_sport_queue_uses_key_not_missing_id_field() -> None:
 
 def test_select_prefers_cash_builder_over_juicey_play() -> None:
     class Row:
-        def __init__(self, *, decision, odds, confidence, edge, miss, ywp, tier, rank, source="demo"):
+        def __init__(
+            self, *, decision, odds, confidence, edge, miss, ywp, tier, rank, source="demo"
+        ):
             self.decision = decision
             self.american_odds = odds
             self.confidence_score = confidence
@@ -168,7 +170,9 @@ def test_select_prefers_cash_builder_over_juicey_play() -> None:
 
 def test_trim_caps_forge_candidates() -> None:
     rows = [
-        _candidate(candidate_id=f"c-{i}", american_odds=-110 - (i % 40), data_quality=0.7 + (i % 20) / 100)
+        _candidate(
+            candidate_id=f"c-{i}", american_odds=-110 - (i % 40), data_quality=0.7 + (i % 20) / 100
+        )
         for i in range(60)
     ]
     trimmed = trim_forge_candidates(rows)

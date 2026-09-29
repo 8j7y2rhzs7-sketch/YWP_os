@@ -76,8 +76,6 @@ def test_decision_threshold_mapping() -> None:
 
 
 def test_monte_carlo_same_game_below_independent_product() -> None:
-    now = datetime.now(UTC)
-
     def leg(i: int, p: float) -> SimpleNamespace:
         return SimpleNamespace(
             id=str(uuid4()),

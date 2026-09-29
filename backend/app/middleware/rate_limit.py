@@ -3,12 +3,13 @@ Simple in-memory rate limiter for auth endpoints.
 Uses a sliding window per IP. Production should use Redis,
 but this works without any infrastructure.
 """
+
 from __future__ import annotations
 
 import time
 from collections import defaultdict
+from collections.abc import Callable
 from threading import Lock
-from typing import Callable
 
 from fastapi import Request, Response, status
 from starlette.middleware.base import BaseHTTPMiddleware

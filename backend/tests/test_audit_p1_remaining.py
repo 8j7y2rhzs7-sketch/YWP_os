@@ -117,7 +117,9 @@ def test_soccer_moneyline_label_is_not_run_line() -> None:
 
 def test_custom_card_preview_uses_backend_multi_leg_risk() -> None:
     class Leg:
-        def __init__(self, risk: str, miss: float, var: float, event_id: str, conf: int, yis: float, oid: str):
+        def __init__(
+            self, risk: str, miss: float, var: float, event_id: str, conf: int, yis: float, oid: str
+        ):
             self.risk = risk
             self.miss_by_one_risk = miss
             self.variance = var

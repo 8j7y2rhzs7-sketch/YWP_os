@@ -12,6 +12,7 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
     Index,
+    Integer,
     Numeric,
     String,
     Text,
@@ -76,6 +77,9 @@ class User(Base, TimestampMixin):
     subscription_granted_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
+    # Bumped when this user's password is rotated by the owner adoption.
+    # Access tokens must carry the same epoch or they are rejected.
+    auth_epoch: Mapped[int] = mapped_column(Integer, nullable=False, default=0, server_default="0")
     bankroll: Mapped[BankrollAccount | None] = relationship(
         back_populates="user", cascade="all, delete-orphan", uselist=False
     )
@@ -291,9 +295,8 @@ class Recommendation(Base):
     @property
     def price_timestamp(self):
         snap = self.snapshot or {}
-        return _coerce_snap_datetime(
-            snap.get("price_timestamp") or snap.get("source_timestamp")
-        )
+        return _coerce_snap_datetime(snap.get("price_timestamp") or snap.get("source_timestamp"))
+
     @property
     def market_scope_label(self) -> str:
         from app.services.board_metrics import market_scope_label
@@ -604,7 +607,6 @@ class ServiceCredential(Base):
     """Scoped bot tokens (marketing feed, etc.) stored as SHA-256 hashes."""
 
     __tablename__ = "service_credentials"
-
     __table_args__ = (
         UniqueConstraint("name"),
         Index("ix_service_credentials_name", "name"),

@@ -7,6 +7,7 @@ Official endpoints (whop-sdk):
 
 Does not create a product or plan.
 """
+
 from __future__ import annotations
 
 from app.core.config import settings
@@ -15,9 +16,7 @@ from app.services.whop import product_id, whop_client
 
 def link_decision_engine_experience() -> dict[str, str]:
     if not settings.whop_api_key:
-        raise RuntimeError(
-            "WHOP_API_KEY is missing. Generate it in Whop Dashboard → Developer."
-        )
+        raise RuntimeError("WHOP_API_KEY is missing. Generate it in Whop Dashboard → Developer.")
     if not settings.whop_app_id:
         raise RuntimeError(
             "NEXT_PUBLIC_WHOP_APP_ID / WHOP_APP_ID is missing. "

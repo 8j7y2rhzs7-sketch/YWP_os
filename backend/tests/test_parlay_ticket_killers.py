@@ -7,9 +7,9 @@ from decimal import Decimal
 from types import SimpleNamespace
 from uuid import uuid4
 
+from app.schemas import CandidateInput, RiskProfile
 from app.services.decision_engine import decision_engine, verified_safer_alternative
 from app.services.ticket_builder import build_cards
-from app.schemas import CandidateInput, RiskProfile
 
 
 def test_placeholder_safer_alternative_is_not_verified() -> None:
@@ -17,7 +17,10 @@ def test_placeholder_safer_alternative_is_not_verified() -> None:
     assert verified_safer_alternative("") is False
     assert verified_safer_alternative("Safer version of Player Over 22.5") is False
     assert verified_safer_alternative("Pick a different market on this sheet") is False
-    assert verified_safer_alternative("Use a lower line only if its own model edge is verified: X") is False
+    assert (
+        verified_safer_alternative("Use a lower line only if its own model edge is verified: X")
+        is False
+    )
     assert verified_safer_alternative("Under 21.5 points (same player)") is True
 
 

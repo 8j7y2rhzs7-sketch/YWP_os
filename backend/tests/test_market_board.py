@@ -208,9 +208,7 @@ def test_overlay_selected_with_model_preserves_sheet_provenance(monkeypatch) -> 
     )
     monkeypatch.setattr(board_module, "_load_model_slate", lambda sport, slate_date: [model])
 
-    upgraded, count = board_module.overlay_selected_with_model(
-        "mlb", date(2026, 9, 8), [board_leg]
-    )
+    upgraded, count = board_module.overlay_selected_with_model("mlb", date(2026, 9, 8), [board_leg])
     assert count == 1
     assert upgraded[0].probability_source == "model"
     assert upgraded[0].estimated_probability == 0.62
@@ -474,8 +472,6 @@ def test_overlay_selected_soft_fails(monkeypatch) -> None:
         raise RuntimeError("model timeout")
 
     monkeypatch.setattr(board_module, "_overlay_model_candidates", _boom)
-    upgraded, count = board_module.overlay_selected_with_model(
-        "mlb", date(2026, 9, 8), [board_leg]
-    )
+    upgraded, count = board_module.overlay_selected_with_model("mlb", date(2026, 9, 8), [board_leg])
     assert count == 0
     assert upgraded[0].probability_source == "market_implied"

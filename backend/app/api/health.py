@@ -8,9 +8,9 @@ from app.services.cfbd_provider import cfbd_configured, probe_cfbd_api
 from app.services.espn_provider import probe_espn_api
 from app.services.football_data_provider import football_data_configured, probe_football_data
 from app.services.mlb_provider import probe_mlb_api
-from app.services.nhl_provider import probe_nhl_api
-from app.services.odds_provider import odds_api_configured, get_last_fetch_status, probe_odds_api
 from app.services.ncaa_provider import probe_ncaa_api
+from app.services.nhl_provider import probe_nhl_api
+from app.services.odds_provider import get_last_fetch_status, odds_api_configured, probe_odds_api
 
 router = APIRouter(tags=["health"])
 
@@ -72,7 +72,9 @@ def health_providers() -> dict[str, object]:
         "ncaa": ncaa,
         "kbo": {
             "status": "odds_backed",
-            "detail": "ESPN has no baseball/kbo path; KBO facts use The Odds API scores + Open-Meteo.",
+            "detail": (
+                "ESPN has no baseball/kbo path; KBO facts use The Odds API scores + Open-Meteo."
+            ),
         },
         "odds": odds,
         "coverage_note": (

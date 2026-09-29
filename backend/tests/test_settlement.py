@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from decimal import Decimal
 from types import SimpleNamespace
 
@@ -171,7 +171,7 @@ def _recommendation(user_id: str, **overrides: object) -> Recommendation:
         "thesis_key": "thesis-home",
         "script_key": "script-home",
         "data_source": "MLB_STATS_API+THE_ODDS_API",
-        "source_timestamp": datetime.now(timezone.utc),
+        "source_timestamp": datetime.now(UTC),
         "model_version": "test",
         "protocol_version": "test",
         "input_hash": "abc",
@@ -646,7 +646,7 @@ def test_sync_maps_hive_outcomes_for_unlocked_board_watch(monkeypatch) -> None:
             sport=recommendation.sport,
             league=recommendation.league,
             event_id=recommendation.event_id,
-            event_start_at=datetime.now(timezone.utc),
+            event_start_at=datetime.now(UTC),
             market=recommendation.market_type,
             market_scope="full_game",
             selection=recommendation.selection,
@@ -673,9 +673,7 @@ def test_sync_maps_hive_outcomes_for_unlocked_board_watch(monkeypatch) -> None:
         result = settlement.settle_user_day(db, user.id, as_of=date.today())
         assert result.board_graded >= 1
         assert result.hive_outcomes_mapped >= 1
-        assert any(
-            item.status == "graded" and item.ticket_id == "" for item in result.items
-        )
+        assert any(item.status == "graded" and item.ticket_id == "" for item in result.items)
 
         db.refresh(recommendation)
         assert recommendation.outcome == "WIN"
@@ -806,13 +804,9 @@ def test_mlb_team_market_falls_through_to_odds_when_no_game_pk(monkeypatch) -> N
                 result_source="odds_scores",
             )
 
-        monkeypatch.setattr(
-            settlement, "_grade_odds_scores_recommendation", _odds_grade
-        )
+        monkeypatch.setattr(settlement, "_grade_odds_scores_recommendation", _odds_grade)
 
-        graded = settlement._grade_recommendation(
-            db, recommendation, stake=Decimal("1.00")
-        )
+        graded = settlement._grade_recommendation(db, recommendation, stake=Decimal("1.00"))
         assert graded.get("status") == "graded" or recommendation.outcome == "WIN"
         db.refresh(recommendation)
         assert recommendation.outcome == "WIN"

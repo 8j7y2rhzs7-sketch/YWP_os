@@ -4,14 +4,13 @@ import hashlib
 import hmac
 import json
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from sqlalchemy.orm import Session
 
 from .config import settings
-from .models import HiveAggregate, HiveLearningEvent
-
+from .models import HiveAggregate, HiveLearningEvent, HiveModelSnapshot
 
 ALLOWED_FLAGS = {
     "l5_support",
@@ -35,7 +34,7 @@ ALLOWED_FLAGS = {
 
 
 def _utcnow() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 def _norm(value: str | None) -> str:
@@ -126,9 +125,9 @@ def _training_eligibility(event: HiveLearningEvent) -> tuple[bool, str | None]:
         created = event.created_at
         start = event.event_start_at
         if created.tzinfo is None:
-            created = created.replace(tzinfo=timezone.utc)
+            created = created.replace(tzinfo=UTC)
         if start.tzinfo is None:
-            start = start.replace(tzinfo=timezone.utc)
+            start = start.replace(tzinfo=UTC)
         if created >= start:
             return False, "prediction_not_pre_event"
     if event.model_probability is not None and not 0.0 <= event.model_probability <= 1.0:
@@ -163,14 +162,10 @@ def capture_hive_prediction(
         return None
 
     contributor = _contributor_key(contributor_user_id)
-    idem = _event_idempotency_key(
-        contributor, str(source_recommendation_id), model_version
-    )
+    idem = _event_idempotency_key(contributor, str(source_recommendation_id), model_version)
 
     existing = (
-        db.query(HiveLearningEvent)
-        .filter(HiveLearningEvent.idempotency_key == idem)
-        .one_or_none()
+        db.query(HiveLearningEvent).filter(HiveLearningEvent.idempotency_key == idem).one_or_none()
     )
     if existing:
         return existing
@@ -215,10 +210,7 @@ def record_hive_action(
 
     event = (
         db.query(HiveLearningEvent)
-        .filter(
-            HiveLearningEvent.source_recommendation_id
-            == str(source_recommendation_id)
-        )
+        .filter(HiveLearningEvent.source_recommendation_id == str(source_recommendation_id))
         .order_by(HiveLearningEvent.created_at.desc())
         .first()
     )
@@ -245,10 +237,7 @@ def resolve_hive_outcome(
 
     event = (
         db.query(HiveLearningEvent)
-        .filter(
-            HiveLearningEvent.source_recommendation_id
-            == str(source_recommendation_id)
-        )
+        .filter(HiveLearningEvent.source_recommendation_id == str(source_recommendation_id))
         .order_by(HiveLearningEvent.created_at.desc())
         .first()
     )
@@ -345,16 +334,10 @@ def rebuild_bucket(
     ]
     mean_pred = (sum(probs) / len(probs)) if probs else None
     calibration_delta = (
-        posterior - mean_pred
-        if posterior is not None and mean_pred is not None
-        else None
+        posterior - mean_pred if posterior is not None and mean_pred is not None else None
     )
 
-    agg = (
-        db.query(HiveAggregate)
-        .filter(HiveAggregate.bucket_key == key)
-        .one_or_none()
-    )
+    agg = db.query(HiveAggregate).filter(HiveAggregate.bucket_key == key).one_or_none()
     if agg is None:
         agg = HiveAggregate(
             bucket_key=key,
@@ -411,11 +394,7 @@ def get_hive_signal(
     model_version: str,
 ) -> HiveSignal:
     key = _bucket_key(sport, league, market, market_scope, model_version)
-    agg = (
-        db.query(HiveAggregate)
-        .filter(HiveAggregate.bucket_key == key)
-        .one_or_none()
-    )
+    agg = db.query(HiveAggregate).filter(HiveAggregate.bucket_key == key).one_or_none()
 
     if agg is None:
         return HiveSignal(
@@ -473,13 +452,9 @@ def hive_learning_maturity(
 
     100% means: enough settled outcomes AND tight calibration error.
     """
-    eligible_q = db.query(HiveLearningEvent).filter(
-        HiveLearningEvent.training_eligible.is_(True)
-    )
+    eligible_q = db.query(HiveLearningEvent).filter(HiveLearningEvent.training_eligible.is_(True))
     pending_q = db.query(HiveLearningEvent).filter(HiveLearningEvent.outcome.is_(None))
-    resolved_q = db.query(HiveLearningEvent).filter(
-        HiveLearningEvent.outcome.isnot(None)
-    )
+    resolved_q = db.query(HiveLearningEvent).filter(HiveLearningEvent.outcome.isnot(None))
     agg_q = db.query(HiveAggregate).filter(HiveAggregate.eligible_samples > 0)
     if sport:
         sport_n = _norm(sport)
@@ -504,8 +479,7 @@ def hive_learning_maturity(
     mature_buckets = [
         agg
         for agg in agg_q.all()
-        if int(agg.eligible_samples or 0) >= min_sample
-        and agg.calibration_delta is not None
+        if int(agg.eligible_samples or 0) >= min_sample and agg.calibration_delta is not None
     ]
     if mature_buckets:
         mean_abs_delta = sum(abs(float(agg.calibration_delta)) for agg in mature_buckets) / len(
@@ -567,8 +541,6 @@ def record_hive_progress_report(
     extra: dict[str, Any] | None = None,
 ) -> HiveModelSnapshot:
     """Persist an automatic Hive growth snapshot after real evidence moves."""
-    from app.hive.models import HiveModelSnapshot
-
     maturity = hive_learning_maturity(db=db, sport=sport)
     aggregates = (
         db.query(HiveAggregate)
@@ -623,8 +595,6 @@ def list_hive_progress_reports(
     db: Session,
     limit: int = 20,
 ) -> list[dict[str, Any]]:
-    from app.hive.models import HiveModelSnapshot
-
     rows = (
         db.query(HiveModelSnapshot)
         .filter(HiveModelSnapshot.snapshot_type == "progress_report")

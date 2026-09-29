@@ -1,16 +1,17 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from sqlalchemy import (
+    JSON,
     Boolean,
+    CheckConstraint,
     Column,
     DateTime,
     Float,
     Index,
     Integer,
-    JSON,
     String,
     Text,
     UniqueConstraint,
@@ -20,7 +21,7 @@ from app.core.database import Base
 
 
 def utcnow() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class HiveLearningEvent(Base):
@@ -79,6 +80,26 @@ class HiveLearningEvent(Base):
             "market_scope",
             "model_version",
             "training_eligible",
+        ),
+        CheckConstraint(
+            "model_probability IS NULL OR (model_probability >= 0 AND model_probability <= 1)",
+            name="ck_hive_probability",
+        ),
+        CheckConstraint(
+            "quality_score IS NULL OR (quality_score >= 0 AND quality_score <= 100)",
+            name="ck_hive_quality",
+        ),
+        CheckConstraint(
+            "data_quality IS NULL OR (data_quality >= 0 AND data_quality <= 1)",
+            name="ck_hive_data_quality",
+        ),
+        CheckConstraint(
+            "action IS NULL OR action IN ('accepted','rejected','ignored')",
+            name="ck_hive_action",
+        ),
+        CheckConstraint(
+            "outcome IS NULL OR outcome IN ('WIN','LOSS','PUSH','VOID')",
+            name="ck_hive_outcome",
         ),
     )
 

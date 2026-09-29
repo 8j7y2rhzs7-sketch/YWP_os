@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
-
 from app.models import AuditLog, ErrorReport, LearningEvent, User
 from app.services.ops_evidence import (
     APP_PROCESS_MOVEMENT,
@@ -44,8 +42,14 @@ def test_process_for_path_covers_core_surfaces() -> None:
 
 def test_should_record_skips_health_and_dedupes_gets() -> None:
     assert should_record_movement(method="GET", path="/api/v1/health", status_code=200) is False
-    assert should_record_movement(method="POST", path="/api/v1/sports/analyze", status_code=201) is True
-    assert should_record_movement(method="GET", path="/api/v1/sports/day-forge", status_code=500) is True
+    assert (
+        should_record_movement(method="POST", path="/api/v1/sports/analyze", status_code=201)
+        is True
+    )
+    assert (
+        should_record_movement(method="GET", path="/api/v1/sports/day-forge", status_code=500)
+        is True
+    )
     first = should_record_movement(method="GET", path="/api/v1/sports/slate", status_code=200)
     second = should_record_movement(method="GET", path="/api/v1/sports/slate", status_code=200)
     assert first is True
@@ -155,9 +159,9 @@ def test_ops_heal_cycle_includes_full_process_evidence(db_session, monkeypatch) 
 
     monkeypatch.setattr(
         "app.services.ops_heal._rem_run_settle_day",
-        lambda **_: (__import__("app.services.ops_heal", fromlist=["RemediationResult"]).RemediationResult(
-            remediation_id="run_settle_day", ok=True, detail="ok", evidence={}
-        )),
+        lambda **_: __import__(
+            "app.services.ops_heal", fromlist=["RemediationResult"]
+        ).RemediationResult(remediation_id="run_settle_day", ok=True, detail="ok", evidence={}),
     )
 
     cycle = run_ops_heal_cycle(

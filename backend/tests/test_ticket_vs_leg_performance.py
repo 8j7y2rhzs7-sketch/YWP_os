@@ -5,10 +5,11 @@ from __future__ import annotations
 from datetime import date
 from decimal import Decimal
 
+from test_settlement import _recommendation
+
 from app.core.database import SessionLocal
 from app.models import Result, Ticket, TicketLeg, User
 from app.services.learning import performance
-from test_settlement import _recommendation
 
 
 def test_performance_splits_leg_hit_rate_from_ticket_hit_rate() -> None:

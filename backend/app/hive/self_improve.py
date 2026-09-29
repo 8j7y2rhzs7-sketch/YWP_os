@@ -8,7 +8,7 @@ bounds; Hive proposes within those bounds and only keeps proven winners.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 from uuid import uuid4
 
@@ -17,7 +17,6 @@ from sqlalchemy.orm import Session
 from .config import settings
 from .models import HiveAggregate, HiveLearningEvent, HiveModelSnapshot
 from .service import HiveSignal, _beta_posterior_rate, _norm
-
 
 ACTIVE_POLICY_TYPE = "active_policy"
 ACTIVE_POLICY_RELEASE = "hive-policy-current"
@@ -46,7 +45,7 @@ class HivePolicy:
         }
 
     @classmethod
-    def from_dict(cls, raw: dict[str, Any] | None) -> "HivePolicy":
+    def from_dict(cls, raw: dict[str, Any] | None) -> HivePolicy:
         raw = raw or {}
         keys = raw.get("inhibited_bucket_keys") or []
         return cls(
@@ -58,11 +57,9 @@ class HivePolicy:
             inhibited_bucket_keys=tuple(str(k) for k in keys),
         )
 
-    def clamped(self) -> "HivePolicy":
+    def clamped(self) -> HivePolicy:
         return HivePolicy(
-            max_probability_shift=max(
-                0.01, min(HARD_MAX_SHIFT, float(self.max_probability_shift))
-            ),
+            max_probability_shift=max(0.01, min(HARD_MAX_SHIFT, float(self.max_probability_shift))),
             min_sample=max(
                 HARD_MIN_SAMPLE_FLOOR,
                 min(HARD_MIN_SAMPLE_CEILING, int(self.min_sample)),
@@ -96,7 +93,9 @@ def get_active_policy(*, db: Session) -> HivePolicy:
     return HivePolicy.from_dict(row.parameters).clamped()
 
 
-def save_active_policy(*, db: Session, policy: HivePolicy, notes: str | None = None) -> HiveModelSnapshot:
+def save_active_policy(
+    *, db: Session, policy: HivePolicy, notes: str | None = None
+) -> HiveModelSnapshot:
     policy = policy.clamped()
     existing = (
         db.query(HiveModelSnapshot)
@@ -118,7 +117,7 @@ def save_active_policy(*, db: Session, policy: HivePolicy, notes: str | None = N
     else:
         existing.parameters = policy.to_dict()
         existing.notes = notes
-        existing.created_at = datetime.now(timezone.utc)
+        existing.created_at = datetime.now(UTC)
     db.flush()
     return existing
 
@@ -169,8 +168,8 @@ def blend_with_policy(
     ):
         desired_shift = float(hive_signal.calibration_delta) * float(policy.shift_scale)
     else:
-        desired_shift = (float(hive_signal.posterior_rate) - base) * 0.25 * float(
-            policy.shift_scale
+        desired_shift = (
+            (float(hive_signal.posterior_rate) - base) * 0.25 * float(policy.shift_scale)
         )
 
     bound = abs(float(policy.max_probability_shift))
@@ -222,25 +221,17 @@ def _leave_one_out_signal(
     peers = [
         e
         for e in events
-        if e.id != holdout.id
-        and e.outcome in {"WIN", "LOSS"}
-        and e.training_eligible
+        if e.id != holdout.id and e.outcome in {"WIN", "LOSS"} and e.training_eligible
     ]
     if not peers:
         return None
     wins = sum(1 for e in peers if e.outcome == "WIN")
     losses = sum(1 for e in peers if e.outcome == "LOSS")
-    probs = [
-        float(e.model_probability)
-        for e in peers
-        if e.model_probability is not None
-    ]
+    probs = [float(e.model_probability) for e in peers if e.model_probability is not None]
     posterior = _beta_posterior_rate(wins, losses)
     mean_pred = (sum(probs) / len(probs)) if probs else None
     calibration_delta = (
-        posterior - mean_pred
-        if posterior is not None and mean_pred is not None
-        else None
+        posterior - mean_pred if posterior is not None and mean_pred is not None else None
     )
     return HiveSignal(
         sport=holdout.sport,
@@ -525,12 +516,12 @@ def run_self_improvement_cycle(
             best_name = name
 
     promoted = best_name != "current"
-    explanation = (
-        f"Tried {len(trials)} ideas against settled history. "
-        + (
-            f"Promoted '{best_name}' (Brier {baseline['brier']} → {best_score})."
-            if promoted
-            else f"Kept current policy (best challenger did not beat baseline {baseline['brier']} by ε={PROMOTE_EPSILON})."
+    explanation = f"Tried {len(trials)} ideas against settled history. " + (
+        f"Promoted '{best_name}' (Brier {baseline['brier']} → {best_score})."
+        if promoted
+        else (
+            f"Kept current policy (best challenger did not beat baseline "
+            f"{baseline['brier']} by ε={PROMOTE_EPSILON})."
         )
     )
 

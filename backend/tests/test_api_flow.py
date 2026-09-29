@@ -84,9 +84,7 @@ def test_health_and_authenticated_full_flow(
     assert any(item["decision"] in {"PLAY", "LEAN"} for item in analysis["ranked_picks"])
     assert strict_payload["official_pass"] is False
 
-    recommendation_ids = (
-        cards.get("elite_two", cards["max_bet"])["recommendation_ids"]
-    )
+    recommendation_ids = cards.get("elite_two", cards["max_bet"])["recommendation_ids"]
     ticket_response = client.post(
         "/api/v1/tickets",
         json={

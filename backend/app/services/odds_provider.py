@@ -6,10 +6,9 @@ Aggregates odds from Hard Rock, DraftKings, FanDuel, BetMGM, etc.
 
 from __future__ import annotations
 
-from datetime import date
-
 import logging
 import re
+from datetime import date
 from typing import Any
 
 import httpx
@@ -97,6 +96,7 @@ def soccer_odds_regions(app_sport: str | None = None) -> str:
         return KBO_ODDS_REGIONS
     return "us"
 
+
 def soccer_league_label(odds_key: str) -> str:
     for key, label in SOCCER_ODDS_LEAGUES:
         if key == odds_key:
@@ -113,9 +113,7 @@ def odds_keys_for_app_sport(app_sport: str) -> list[str]:
     return [single] if single else []
 
 
-def active_odds_keys_for_app_sport(
-    app_sport: str, *, force_refresh: bool = False
-) -> list[str]:
+def active_odds_keys_for_app_sport(app_sport: str, *, force_refresh: bool = False) -> list[str]:
     """In-season Odds keys for an app sport (empty when none mapped / all OOS).
 
     If the free catalog is empty/unavailable, returns the full mapped list so we
@@ -133,6 +131,7 @@ def active_odds_keys_for_app_sport(
     if (app_sport or "").strip().lower() == "soccer":
         return filtered[:SOCCER_MAX_LEAGUES_PER_FETCH]
     return filtered
+
 
 # Free /v4/sports cache — endpoint does not consume usage credits.
 _SPORTS_CACHE_TTL_SECONDS = 6 * 60 * 60
@@ -300,7 +299,9 @@ def list_odds_sports(
         cached = _sports_cache["all"] if include_out_of_season else _sports_cache["in_season"]
         return list(cached or [])
 
-    all_sports = [item for item in all_raw if isinstance(item, dict)] if isinstance(all_raw, list) else []
+    all_sports = (
+        [item for item in all_raw if isinstance(item, dict)] if isinstance(all_raw, list) else []
+    )
     in_season = [item for item in all_sports if item.get("active") is True]
     # If the API omits `active` on a row, treat default (no all=true semantics) as in-season.
     if not in_season and all_sports and all(item.get("active") is None for item in all_sports):
@@ -328,9 +329,7 @@ def in_season_odds_keys(*, force_refresh: bool = False) -> set[str]:
     """Odds API keys currently marked in-season (free catalog)."""
     rows = list_odds_sports(include_out_of_season=False, force_refresh=force_refresh)
     return {
-        str(item.get("key") or "").strip()
-        for item in rows
-        if str(item.get("key") or "").strip()
+        str(item.get("key") or "").strip() for item in rows if str(item.get("key") or "").strip()
     }
 
 
@@ -384,7 +383,9 @@ def build_app_sports_catalog(*, force_refresh: bool = False) -> list[dict[str, A
             active = None
         league_note = ""
         if app_key == "soccer" and active_keys:
-            labels_active = [soccer_league_label(key) for key in active_keys[:SOCCER_MAX_LEAGUES_PER_FETCH]]
+            labels_active = [
+                soccer_league_label(key) for key in active_keys[:SOCCER_MAX_LEAGUES_PER_FETCH]
+            ]
             league_note = f" Leagues: {', '.join(labels_active)}."
         rows.append(
             {
@@ -398,17 +399,15 @@ def build_app_sports_catalog(*, force_refresh: bool = False) -> list[dict[str, A
                 "in_season": active,
                 "priced_slate_available": active is True,
                 "note": (
-                    (
-                        f"In season — priced slate uses credits.{league_note}"
-                        if active is True
+                    f"In season — priced slate uses credits.{league_note}"
+                    if active is True
+                    else (
+                        "Out of season — refresh skipped to save Odds credits"
+                        if active is False
                         else (
-                            "Out of season — refresh skipped to save Odds credits"
-                            if active is False
-                            else (
-                                "Odds catalog unavailable"
-                                if catalog_error
-                                else "Odds key not configured"
-                            )
+                            "Odds catalog unavailable"
+                            if catalog_error
+                            else "Odds key not configured"
                         )
                     )
                 ),
@@ -712,7 +711,9 @@ def get_team_recent_form_from_scores(
             continue
         home = str(event.get("home_team") or "")
         away = str(event.get("away_team") or "")
-        if not (_soft_team_match(needle, _norm_team(home)) or _soft_team_match(needle, _norm_team(away))):
+        if not (
+            _soft_team_match(needle, _norm_team(home)) or _soft_team_match(needle, _norm_team(away))
+        ):
             continue
         commence = str(event.get("commence_time") or "")[:10]
         if commence and commence > slate_date.isoformat():
@@ -772,7 +773,9 @@ def get_team_recent_form_from_scores(
         "games": sample,
         "source_id": "the_odds_api_scores",
         "source_url": "https://the-odds-api.com/",
-        "detail": f"Odds scores form from {len(sample)} completed game(s) (≤{days_from}-day lookback).",
+        "detail": (
+            f"Odds scores form from {len(sample)} completed game(s) (≤{days_from}-day lookback)."
+        ),
     }
 
 

@@ -1,4 +1,5 @@
 """Shared YWP ticket and slate integrity gates."""
+
 from __future__ import annotations
 
 from collections import Counter

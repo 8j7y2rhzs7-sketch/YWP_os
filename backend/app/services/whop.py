@@ -4,6 +4,7 @@ Endpoints and helpers come from the official Whop docs / Python SDK
 (`whop-sdk`): GET /users/{id}/access/{resource_id}, verify_user_token,
 POST /experiences, POST /experiences/{id}/attach.
 """
+
 from __future__ import annotations
 
 import base64
@@ -100,9 +101,8 @@ def find_whop_user_id_by_email(email: str) -> str | None:
                 or getattr(member, "email", None)
                 or ""
             ).lower()
-            user_id = (
-                (getattr(user, "id", None) if user is not None else None)
-                or getattr(member, "user_id", None)
+            user_id = (getattr(user, "id", None) if user is not None else None) or getattr(
+                member, "user_id", None
             )
             if user_id and (not member_email or member_email == cleaned):
                 return str(user_id)

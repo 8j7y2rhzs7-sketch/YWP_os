@@ -43,6 +43,7 @@ def get_hive_settings() -> HiveSettings:
         self_improve_min_mapped=int(os.getenv("YWP_HIVE_SELF_IMPROVE_MIN_MAPPED", "5")),
     )
 
+
 class _SettingsProxy:
     """Read env on each access so tests can monkeypatch before calls."""
 

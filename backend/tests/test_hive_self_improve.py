@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from app.hive.self_improve import (
     HivePolicy,
@@ -16,7 +16,7 @@ from app.hive.service import HiveSignal, capture_hive_prediction, resolve_hive_o
 
 def _seed_bucket(db, *, n=60, true_rate=0.55, model_p=0.62):
     """Create eligible settled events where the model is overconfident."""
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     for i in range(n):
         rid = f"si-{i}"
         capture_hive_prediction(

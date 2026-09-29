@@ -13,15 +13,14 @@ import re
 from datetime import UTC, date, datetime
 from decimal import Decimal
 from typing import Any
+from zoneinfo import ZoneInfo
 
 from pydantic import ValidationError
-from zoneinfo import ZoneInfo
 
 from app.core.config import settings
 from app.schemas import CandidateInput
 from app.services.board_metrics import bookmaker_display_name
 from app.services.decision_engine import implied_probability
-from app.services.single_flight import single_flight
 from app.services.odds_provider import (
     APP_SPORT_TO_ODDS_KEY,
     PREFERRED_BOOKS,
@@ -33,6 +32,7 @@ from app.services.odds_provider import (
     soccer_league_label,
     soccer_odds_regions,
 )
+from app.services.single_flight import single_flight
 from app.services.ticket_gates import event_market_status
 
 logger = logging.getLogger(__name__)
@@ -136,9 +136,7 @@ def _build_market_board_uncached(
     regions = soccer_odds_regions(sport_lower)
     try:
         for odds_key in odds_keys:
-            batch = get_game_odds(
-                sport=odds_key, markets="h2h,spreads,totals", regions=regions
-            )
+            batch = get_game_odds(sport=odds_key, markets="h2h,spreads,totals", regions=regions)
             if not batch:
                 continue
             label = (
@@ -221,9 +219,7 @@ def _build_market_board_uncached(
         if (prop_markets or period_markets) and max_events:
             # Chunk markets — one giant props request often 422s / times out on Render.
             prop_chunks = _chunk_csv(prop_markets, size=4) if prop_markets else []
-            period_chunks = (
-                _chunk_csv(period_markets, size=3) if period_markets else []
-            )
+            period_chunks = _chunk_csv(period_markets, size=3) if period_markets else []
             priced = 0
             for event in odds_events:
                 if priced >= max_events:
@@ -305,9 +301,7 @@ def _build_market_board_uncached(
                             )
                         )
                     except Exception:
-                        logger.exception(
-                            "Flatten period markets failed for %s", event_id
-                        )
+                        logger.exception("Flatten period markets failed for %s", event_id)
 
     overlay_count = 0
     if overlay_model and board:
@@ -331,11 +325,7 @@ def _build_market_board_uncached(
         f"Sportsbook menu for {sport_lower.upper()} {slate_date.isoformat()}: "
         f"{matched_events} game(s), {len(board)} selectable market(s)"
         + (f", props priced on {props_priced} event(s)" if props_priced else "")
-        + (
-            f", 1H/1Q team markets on {period_priced} event(s)"
-            if period_priced
-            else ""
-        )
+        + (f", 1H/1Q team markets on {period_priced} event(s)" if period_priced else "")
         + (f", {props_errors} prop fetch warning(s)" if props_errors else "")
         + (
             f", {overlay_count} upgraded with independent YWP model probability"
@@ -350,7 +340,6 @@ def _build_market_board_uncached(
     return board, notice
 
 
-
 def build_market_board(
     sport: str,
     slate_date: date,
@@ -361,10 +350,7 @@ def build_market_board(
     """Coalesce concurrent Pick Sheet board builds for the same sport/date."""
     props_flag = "props" if include_props else "noprops"
     model_flag = "model" if overlay_model else "book"
-    key = (
-        f"market-board|{sport.lower().strip()}|{slate_date.isoformat()}"
-        f"|{props_flag}|{model_flag}"
-    )
+    key = f"market-board|{sport.lower().strip()}|{slate_date.isoformat()}|{props_flag}|{model_flag}"
     return single_flight(
         key,
         lambda: _build_market_board_uncached(
@@ -375,6 +361,7 @@ def build_market_board(
         ),
         ttl_seconds=45.0,
     )
+
 
 def _chunk_csv(value: str, *, size: int) -> list[str]:
     parts = [part.strip() for part in value.split(",") if part.strip()]
@@ -719,8 +706,10 @@ def _flatten_prop_markets(
             if point is None:
                 continue
         line = Decimal(str(point))
-        if direction not in {"over", "under"} and not direction.endswith(" over") and not direction.endswith(
-            " under"
+        if (
+            direction not in {"over", "under"}
+            and not direction.endswith(" over")
+            and not direction.endswith(" under")
         ):
             # Prefer Overs on the sheet menu to keep density manageable.
             if "over" not in direction:
@@ -810,7 +799,6 @@ def _prop_market_meta(market_key: str, *, is_over: bool) -> tuple[str, str, bool
         "player_rebounds_assists": ("player_ra", "reb+ast"),
         "player_blocks_steals": ("player_blocks_steals", "blk+stl"),
         "player_turnovers": ("player_turnovers", "turnovers"),
-        "player_field_goals": ("player_fg", "field goals"),
         "player_frees_made": ("player_frees_made", "FT made"),
         "player_points": ("player_points", "points"),
         "player_rebounds": ("player_rebounds", "rebounds"),
@@ -900,9 +888,9 @@ def _board_candidate(
     slug_sel = re.sub(r"[^a-z0-9]+", "-", selection.casefold()).strip("-")[:80]
     line_part = "nl" if line is None else str(line).replace(".", "p")
     period = (market_period or "full_game")[:32]
-    candidate_id = (
-        f"board-{sport}-{event_id[:18]}-{market_type}-{period}-{line_part}-{slug_sel}"
-    )[:100]
+    candidate_id = (f"board-{sport}-{event_id[:18]}-{market_type}-{period}-{line_part}-{slug_sel}")[
+        :100
+    ]
     return CandidateInput(
         candidate_id=candidate_id,
         event_id=event_id[:100],
@@ -940,9 +928,7 @@ def _board_candidate(
         market_status=market_status,  # type: ignore[arg-type]
         market_is_pitcher_strikeout_over=market_is_pitcher_strikeout_over,
         independent_value_verified=False,
-        thesis_key=f"board:{sport}:{event_id}:{market_type}:{period}:{slug_sel}:{line_part}"[
-            :160
-        ],
+        thesis_key=f"board:{sport}:{event_id}:{market_type}:{period}:{slug_sel}:{line_part}"[:160],
         script_key=f"board:{sport}:{event_id}:{market_type}:{period}"[:160],
         player_key=player_key,
         safer_alternative="Pick a different market on this sheet if this grade is SKIP.",

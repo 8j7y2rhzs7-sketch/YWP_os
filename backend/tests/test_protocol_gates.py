@@ -91,9 +91,7 @@ def test_three_identical_probabilities_are_data_anomaly() -> None:
 
 
 def test_model_edge_over_15_points_is_quarantined() -> None:
-    evaluation = decision_engine.evaluate(
-        candidate(estimated_probability=0.90, american_odds=-110)
-    )
+    evaluation = decision_engine.evaluate(candidate(estimated_probability=0.90, american_odds=-110))
     assert "MODEL_EDGE_QUARANTINE" in evaluation.reason_codes
     assert evaluation.decision == "REVIEW"
     assert any(code.startswith("OUTLIER_") for code in evaluation.reason_codes)
@@ -264,11 +262,7 @@ def test_analysis_rank_one_lands_on_max_bet() -> None:
     assert cards["max_bet"].recommendation_ids == ["rank-1"]
     assert "elite_two" in cards
     assert cards["elite_two"].recommendation_ids[0] == "rank-1"
-    held = {
-        item.recommendation_id
-        for item in quarantined
-        if "needs" not in item.reason
-    }
+    held = {item.recommendation_id for item in quarantined if "needs" not in item.reason}
     assert "rank-1" not in held
 
 
@@ -315,8 +309,7 @@ def test_underfilled_multi_leg_cards_are_dropped() -> None:
     assert "elite_two" not in cards
     assert "core_3" not in cards
     assert any(
-        "needs 2 legs" in item.reason or "needs 3 legs" in item.reason
-        for item in quarantined
+        "needs 2 legs" in item.reason or "needs 3 legs" in item.reason for item in quarantined
     )
 
 

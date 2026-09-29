@@ -136,7 +136,9 @@ def test_mlb_full_game_clears_without_batting_orders() -> None:
     )
     assert readiness.is_mlb_team_market(candidate) is True
     assert readiness.candidate_readiness(candidate) == "VERIFIED"
-    assert not any("lineup" in gap.lower() for gap in readiness.candidate_verification_gaps(candidate))
+    assert not any(
+        "lineup" in gap.lower() for gap in readiness.candidate_verification_gaps(candidate)
+    )
 
 
 def test_mlb_player_props_still_require_lineups() -> None:
@@ -213,8 +215,6 @@ def test_odds_scores_form_verifies_with_three_games() -> None:
         for i in range(3)
     ]
     with patch("app.services.odds_provider.get_scores", return_value=scores):
-        form = get_team_recent_form_from_scores(
-            "nba", "Boston Celtics", date(2026, 9, 13)
-        )
+        form = get_team_recent_form_from_scores("nba", "Boston Celtics", date(2026, 9, 13))
     assert form["verified"] is True
     assert form["l5"]["games"] == 3

@@ -10,7 +10,6 @@ from app.core.database import SessionLocal
 from app.core.security import hash_password
 from app.models import Recommendation, Ticket, TicketLeg, User
 
-
 TOKEN = "marketing-test-token-please-rotate"
 
 

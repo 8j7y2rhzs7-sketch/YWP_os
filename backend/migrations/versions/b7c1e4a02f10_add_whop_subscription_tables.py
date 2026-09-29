@@ -8,7 +8,6 @@ Create Date: 2026-09-03 16:55:00.000000
 from collections.abc import Sequence
 
 import sqlalchemy as sa
-
 from alembic import op
 
 revision: str = "b7c1e4a02f10"
@@ -22,7 +21,9 @@ def upgrade() -> None:
         batch_op.add_column(sa.Column("whop_user_id", sa.String(length=64), nullable=True))
         batch_op.add_column(sa.Column("whop_membership_id", sa.String(length=64), nullable=True))
         batch_op.add_column(
-            sa.Column("subscription_status", sa.String(length=24), nullable=False, server_default="none")
+            sa.Column(
+                "subscription_status", sa.String(length=24), nullable=False, server_default="none"
+            )
         )
         batch_op.create_index(batch_op.f("ix_users_whop_user_id"), ["whop_user_id"], unique=False)
 

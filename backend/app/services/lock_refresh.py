@@ -65,9 +65,7 @@ def ensure_lock_updates(
                 source_timestamp=now,
                 market_available=True,
                 data_quality=0.0,
-                notes=[
-                    "Provider refresh failed; no fresh sportsbook/MLB snapshot available."
-                ],
+                notes=["Provider refresh failed; no fresh sportsbook/MLB snapshot available."],
             )
         merged.append(fetched)
     return merged
@@ -146,9 +144,7 @@ def _map_game_status(abstract: str | None, detailed: str | None = None) -> str:
     return "UNKNOWN"
 
 
-def _mlb_lock_update(
-    recommendation: Recommendation, now: datetime
-) -> CurrentStateUpdate | None:
+def _mlb_lock_update(recommendation: Recommendation, now: datetime) -> CurrentStateUpdate | None:
     snap = recommendation.snapshot or {}
     notes: list[str] = []
     game_pk = _game_pk(recommendation)
@@ -167,20 +163,17 @@ def _mlb_lock_update(
             logger.exception("MLB lock refresh failed for game_pk=%s", game_pk)
             context = None
         if context:
-            game_status = _map_game_status(
-                context.get("status"), context.get("detailed_status")
-            )
+            game_status = _map_game_status(context.get("status"), context.get("detailed_status"))
             notes.append(
-                f"MLB live feed refreshed ({context.get('detailed_status') or context.get('status')})."
+                "MLB live feed refreshed "
+                f"({context.get('detailed_status') or context.get('status')})."
             )
             # Material lineup flip: was unconfirmed, now confirmed with full order, or vice-versa
             # after we already locked on a posted card — treat newly posted vs snapshot mismatch
             # only when snapshot claimed confirmed orders.
             home = context.get("home") or {}
             away = context.get("away") or {}
-            now_lineups = bool(home.get("lineup_confirmed")) and bool(
-                away.get("lineup_confirmed")
-            )
+            now_lineups = bool(home.get("lineup_confirmed")) and bool(away.get("lineup_confirmed"))
             was_lineup = bool(snap.get("lineup_confirmed"))
             if was_lineup and not now_lineups and game_status == "PRE_GAME":
                 lineup_changed = True
@@ -189,8 +182,7 @@ def _mlb_lock_update(
             if weather.get("verified"):
                 condition = str(weather.get("condition") or "").casefold()
                 if any(
-                    token in condition
-                    for token in ("rain", "snow", "delay", "postpon", "storm")
+                    token in condition for token in ("rain", "snow", "delay", "postpon", "storm")
                 ):
                     prior = " ".join(
                         str(x)
@@ -223,8 +215,7 @@ def _mlb_lock_update(
             data_quality=data_quality,
             game_status=game_status,  # type: ignore[arg-type]
             market_status="CLOSED" if game_status != "PRE_GAME" else market_status,  # type: ignore[arg-type]
-            notes=notes
-            + ["Lock refresh incomplete without a sportsbook price snapshot."],
+            notes=notes + ["Lock refresh incomplete without a sportsbook price snapshot."],
         )
 
     if odds_update is None:
@@ -318,9 +309,7 @@ def _odds_price_fields(
     notes: list[str] = []
 
     if _is_player_prop_market(market_type):
-        return _player_prop_price_fields(
-            recommendation, sport_key=sport_key, event_id=event_id
-        )
+        return _player_prop_price_fields(recommendation, sport_key=sport_key, event_id=event_id)
 
     event = get_event_odds(event_id, sport=sport_key)
     if not event:
@@ -336,13 +325,16 @@ def _odds_price_fields(
     elif "total" in market_type:
         direction = "Over" if selection.casefold().startswith("over") else "Under"
         offer = extract_best_odds(bookmakers, "totals", direction)
-        if offer and recommendation.line is not None and offer.get("point") is not None:
-            if abs(float(offer["point"]) - float(Decimal(str(recommendation.line)))) > 0.01:
-                notes.append(
-                    f"Total line moved from {recommendation.line} to {offer.get('point')}."
-                )
-                # Line move is a material market change — treat as unavailable at original line.
-                return int(offer["american_odds"]), False, notes
+        point = offer.get("point") if offer else None
+        if (
+            offer
+            and recommendation.line is not None
+            and point is not None
+            and abs(float(point) - float(Decimal(str(recommendation.line)))) > 0.01
+        ):
+            notes.append(f"Total line moved from {recommendation.line} to {offer.get('point')}.")
+            # Line move is a material market change — treat as unavailable at original line.
+            return int(offer["american_odds"]), False, notes
     elif "spread" in market_type or "run_line" in market_type:
         team = re.sub(r"\s*[+-]\d+(\.\d+)?\s*$", "", selection).strip()
         offer = extract_best_odds(bookmakers, "spreads", team)
@@ -412,9 +404,7 @@ def _odds_api_player_market_key(market_type: str) -> str:
     return _PLAYER_PROP_MARKET_ALIASES.get(mt, mt)
 
 
-def _player_prop_selection_parts(
-    selection: str, market_type: str
-) -> tuple[str, str, bool]:
+def _player_prop_selection_parts(selection: str, market_type: str) -> tuple[str, str, bool]:
     """Return (player_name, outcome_name, require_point)."""
     mt = (market_type or "").lower()
     binary = mt.endswith(("_yes", "_no")) or any(
@@ -436,9 +426,7 @@ def _player_prop_selection_parts(
         ).strip()
         outcome = "No" if mt.endswith("_no") or re.search(r"\bNo\b", selection) else "Yes"
         return player, outcome, False
-    player = re.sub(
-        r"\s+(Over|Under)\b.*$", "", selection, flags=re.IGNORECASE
-    ).strip()
+    player = re.sub(r"\s+(Over|Under)\b.*$", "", selection, flags=re.IGNORECASE).strip()
     outcome = "Under" if re.search(r"\bUnder\b", selection, flags=re.IGNORECASE) else "Over"
     return player, outcome, True
 
@@ -453,9 +441,7 @@ def _player_prop_price_fields(
         return None, False, [f"Unsupported player prop market {market_type}."]
 
     ticket_odds = (
-        int(recommendation.american_odds)
-        if recommendation.american_odds is not None
-        else None
+        int(recommendation.american_odds) if recommendation.american_odds is not None else None
     )
     props = get_player_props(event_id, sport=sport_key, markets=odds_market)
     if not props:
@@ -480,9 +466,7 @@ def _player_prop_price_fields(
             ],
         )
 
-    player_name, outcome_name, require_point = _player_prop_selection_parts(
-        selection, market_type
-    )
+    player_name, outcome_name, require_point = _player_prop_selection_parts(selection, market_type)
     target_point: float | None = None
     if require_point and recommendation.line is not None:
         target_point = float(Decimal(str(recommendation.line)))

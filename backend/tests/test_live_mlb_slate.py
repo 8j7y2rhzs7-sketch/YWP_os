@@ -144,7 +144,6 @@ def test_live_slate_uses_model_probability_and_real_market_price(monkeypatch) ->
     assert all(candidate.market_movement_verified for candidate in candidates)
 
 
-
 def test_research_ready_for_props_requires_free_source_gates() -> None:
     research = _research()
     assert slate_module._research_ready_for_props(research) is True
@@ -159,12 +158,8 @@ def test_pitcher_k_prop_intents_filter_on_free_logs_only() -> None:
         "away_pitcher": {"id": 2, "name": "Soft Toss"},
     }
     research = _research()
-    research["home_pitcher_log"] = [
-        {"strikeouts": 8, "innings_pitched": "6.0"} for _ in range(6)
-    ]
-    research["away_pitcher_log"] = [
-        {"strikeouts": 3, "innings_pitched": "4.0"} for _ in range(6)
-    ]
+    research["home_pitcher_log"] = [{"strikeouts": 8, "innings_pitched": "6.0"} for _ in range(6)]
+    research["away_pitcher_log"] = [{"strikeouts": 3, "innings_pitched": "4.0"} for _ in range(6)]
     research["home_pitcher_l5"] = {"avg_pitches": 98}
     research["away_pitcher_l5"] = {"avg_pitches": 60}
     assert slate_module._pitcher_k_prop_intents(game, research) == ["home"]
@@ -267,12 +262,8 @@ def test_props_pull_odds_only_after_gated_intent(monkeypatch) -> None:
         ],
     }
     research = _research()
-    research["home_pitcher_log"] = [
-        {"strikeouts": 8, "innings_pitched": "6.0"} for _ in range(6)
-    ]
-    research["away_pitcher_log"] = [
-        {"strikeouts": 3, "innings_pitched": "4.0"} for _ in range(6)
-    ]
+    research["home_pitcher_log"] = [{"strikeouts": 8, "innings_pitched": "6.0"} for _ in range(6)]
+    research["away_pitcher_log"] = [{"strikeouts": 3, "innings_pitched": "4.0"} for _ in range(6)]
     research["home_pitcher_l5"] = {"avg_pitches": 98}
     research["away_pitcher_l5"] = {"avg_pitches": 55}
 

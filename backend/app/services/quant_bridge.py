@@ -5,11 +5,22 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from typing import Any
 
+from app.core.config import settings
 from app.services.ywp_quant.engine import analyze_document
 
 # Board path uses fewer sims for latency; audit endpoint can raise this.
 BOARD_SIMULATIONS = 20_000
 AUDIT_SIMULATIONS = 100_000
+
+
+_UNVERIFIED_REASON_CODES = {
+    "VERIFICATION_GAP",
+    "RESEARCH_INCOMPLETE",
+    "DEMO_DATA",
+    "NO_INDEPENDENT_PROBABILITY",
+    "DATA_QUALITY_BAD",
+    "STALE_DATA",
+}
 
 
 def _direction(market_type: str, selection: str) -> str:
@@ -19,6 +30,72 @@ def _direction(market_type: str, selection: str) -> str:
     if "yes" in text and "no" not in text:
         return "yes"
     return "over"
+
+
+def _market_has_point_line(market_type: str, selection: str) -> bool:
+    text = f"{market_type} {selection}".lower()
+    if any(token in text for token in ("moneyline", "money line", "h2h")):
+        return False
+    padded = f" {text} "
+    return " ml " not in padded and not text.endswith(" ml")
+
+
+def _reason_codes(item: Any, snap: dict[str, Any]) -> set[str]:
+    codes = {str(code) for code in (getattr(item, "reason_codes", None) or [])}
+    raw = snap.get("reason_codes") or []
+    if isinstance(raw, list):
+        codes.update(str(code) for code in raw)
+    return codes
+
+
+def leg_verification_state(item: Any) -> str:
+    """Return verified, unverified, or unknown from the stored leg.
+
+    Unknown means the recommendation has no OS verification payload (older
+    fixtures). Explicit SKIP / PARTIAL / VERIFICATION_GAP must not be treated
+    as confirmed inputs.
+    """
+    snap = getattr(item, "snapshot", None) or {}
+    if not isinstance(snap, dict):
+        snap = {}
+    pipe = snap.get("pipeline") if isinstance(snap.get("pipeline"), dict) else {}
+    stages = pipe.get("stages") if isinstance(pipe, dict) else {}
+    verification = stages.get("verification") if isinstance(stages, dict) else {}
+    verification = verification if isinstance(verification, dict) else {}
+    readiness = str(
+        verification.get("readiness")
+        or verification.get("verification_status")
+        or snap.get("readiness")
+        or ""
+    ).upper()
+    stage_status = str(verification.get("status") or "").lower()
+    decision = str(getattr(item, "decision", "") or "").upper()
+    threshold = str(snap.get("pipeline_threshold") or "").lower()
+    codes = _reason_codes(item, snap)
+    source = str(snap.get("probability_source") or getattr(item, "data_source", "") or "").lower()
+    # Local YWP_DEMO_MODE fixtures may still price. Production never treats DEMO as confirmed.
+    local_demo_play = bool(
+        settings.demo_mode
+        and decision in {"PLAY", "LEAN"}
+        and (readiness == "DEMO" or "demo" in source or "synthetic" in source)
+    )
+    unverified = (not local_demo_play) and (
+        readiness in {"PARTIAL", "DEMO"}
+        or (stage_status == "partial" and readiness != "DEMO")
+        or bool(codes & _UNVERIFIED_REASON_CODES)
+        or decision in {"SKIP", "REVIEW", "WAIT"}
+        or threshold == "reject"
+    )
+    if unverified:
+        return "unverified"
+    if readiness in {"VERIFIED", "DOUBLE_CLEARED"} or stage_status == "ok":
+        return "verified"
+    return "unknown"
+
+
+def leg_blocks_card_qualify(item: Any) -> bool:
+    """Rejected or unverified legs cannot make a card qualify."""
+    return leg_verification_state(item) == "unverified"
 
 
 def _observation_groups(item: Any) -> list[dict[str, Any]] | None:
@@ -51,10 +128,7 @@ def recommendation_to_quant_leg(item: Any) -> dict[str, Any]:
     market_type = str(getattr(item, "market_type", "") or "")
     selection = str(getattr(item, "selection", "") or "")
     line = getattr(item, "line", None)
-    if line is None:
-        line = 0.5
-    else:
-        line = float(line)
+    line = 0.5 if line is None else float(line)
 
     source_ts = getattr(item, "source_timestamp", None) or snap.get("price_timestamp")
     if isinstance(source_ts, datetime):
@@ -64,16 +138,39 @@ def recommendation_to_quant_leg(item: Any) -> dict[str, Any]:
     else:
         ts = datetime.now(UTC).isoformat().replace("+00:00", "Z")
 
-    role_ok = bool(
-        snap.get("starter_confirmed")
-        or snap.get("role_stability")
-        or getattr(item, "decision", "") in {"PLAY", "LEAN"}
-    )
+    original_line = getattr(item, "line", None)
+    state = leg_verification_state(item)
+    decision = str(getattr(item, "decision", "") or "").upper()
+    mode = str(getattr(item, "mode", None) or snap.get("mode") or "pregame").lower()
+    if state == "unverified":
+        event_confirmed = False
+        line_confirmed = False
+        role_confirmed = False
+        verification_status = "unverified"
+    elif state == "verified":
+        event_confirmed = True
+        line_confirmed = original_line is not None or not _market_has_point_line(
+            market_type, selection
+        )
+        role_confirmed = True
+        verification_status = "live" if mode == "live" else "pregame"
+    else:
+        # No stored verification payload. Keep the previous bridge so older PLAY
+        # fixtures still price. Explicit SKIP / PARTIAL / VERIFICATION_GAP does not
+        # land here.
+        role_confirmed = bool(
+            snap.get("starter_confirmed")
+            or snap.get("role_confirmed")
+            or decision in {"PLAY", "LEAN"}
+        )
+        event_confirmed = bool(role_confirmed or decision in {"PLAY", "LEAN", ""})
+        line_confirmed = event_confirmed
+        verification_status = "pregame" if event_confirmed else "unverified"
     verification = {
-        "status": "pregame",
-        "event_confirmed": True,
-        "line_confirmed": line is not None,
-        "role_confirmed": role_ok,
+        "status": verification_status,
+        "event_confirmed": event_confirmed,
+        "line_confirmed": line_confirmed,
+        "role_confirmed": role_confirmed,
         "source_timestamp": ts,
         "max_age_hours": 48,
     }
@@ -93,7 +190,7 @@ def recommendation_to_quant_leg(item: Any) -> dict[str, Any]:
             "availability_probability": float(
                 snap.get("availability_probability")
                 if snap.get("availability_probability") is not None
-                else (1.0 if role_ok else 0.88)
+                else (1.0 if role_confirmed else 0.88)
             ),
             "blowout_probability": float(snap.get("blowout_probability") or 0.12),
             "blowout_workload_multiplier": 0.80,
@@ -122,10 +219,16 @@ def recommendation_to_quant_leg(item: Any) -> dict[str, Any]:
     else:
         # Honest bridge until L10 arrays are stored on every modeled prop.
         try:
-            p = float(getattr(item, "adjusted_probability"))
+            p = float(item.adjusted_probability)
         except (TypeError, ValueError):
-            p = float((snap.get("model_probability") or snap.get("pipeline_distribution", {}).get("tail_probability") or 0.5))
-        uncertainty = max(0.06, min(0.18, float(getattr(item, "miss_by_one_risk", 0.2) or 0.2) * 0.2 + 0.06))
+            p = float(
+                snap.get("model_probability")
+                or snap.get("pipeline_distribution", {}).get("tail_probability")
+                or 0.5
+            )
+        uncertainty = max(
+            0.06, min(0.18, float(getattr(item, "miss_by_one_risk", 0.2) or 0.2) * 0.2 + 0.06)
+        )
         leg["direct_probability"] = {
             "probability": max(0.02, min(0.98, p)),
             "uncertainty": uncertainty,

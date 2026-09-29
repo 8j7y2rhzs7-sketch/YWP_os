@@ -142,7 +142,10 @@ def test_sheet_menu_props_with_null_matchup_do_not_500() -> None:
 
 
 def test_wnba_team_markets_do_not_fail_for_missing_lineups() -> None:
-    """ESPN team sports have no certified lineup feed — Protocol Health must not FAIL on that alone."""
+    """ESPN team sports have no certified lineup feed.
+
+    Protocol Health must not FAIL on that alone.
+    """
     db = SessionLocal()
     try:
         row = _candidate(

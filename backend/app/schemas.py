@@ -533,9 +533,7 @@ class TicketCardOut(YWPModel):
     confidence_score: int
     quality_score: int | None = None
     quality_score_max: int = 100
-    quality_score_note: str = (
-        "Card score is average YWP quality (0-100), not a win probability."
-    )
+    quality_score_note: str = "Card score is average YWP quality (0-100), not a win probability."
     joint_win_probability: float | None = None
     joint_probability_status: str = "unavailable"
     joint_probability_note: str | None = None
@@ -667,9 +665,9 @@ class CurrentStateUpdate(YWPModel):
     key_injury_change: bool = False
     severe_weather_change: bool = False
     data_quality: float | None = Field(default=None, ge=0, le=1)
-    game_status: Literal["PRE_GAME", "LIVE", "FINAL", "POSTPONED", "CANCELLED", "UNKNOWN"] | None = (
-        None
-    )
+    game_status: (
+        Literal["PRE_GAME", "LIVE", "FINAL", "POSTPONED", "CANCELLED", "UNKNOWN"] | None
+    ) = None
     market_status: Literal["OPEN", "SUSPENDED", "CLOSED", "LOCKED"] | None = None
     first_start_back: bool | None = None
     normal_workload_confirmed: bool | None = None
@@ -1042,4 +1040,3 @@ class ErrorReportOut(YWPModel):
     context: dict[str, Any]
     status: str
     created_at: datetime
-

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from datetime import UTC, date, datetime
-from decimal import Decimal
 
 from app.schemas import CandidateInput
 from app.services import kbo_provider, readiness, sport_research
@@ -190,8 +189,24 @@ def test_kbo_research_can_clear_sweep(monkeypatch) -> None:
         "team_recent_form",
         lambda *args, **kwargs: {
             "verified": True,
-            "l5": {"games": 2, "wins": 1, "losses": 1, "win_pct": 0.5, "avg_for": 4.0, "avg_against": 3.5, "totals": []},
-            "l10": {"games": 2, "wins": 1, "losses": 1, "win_pct": 0.5, "avg_for": 4.0, "avg_against": 3.5, "totals": []},
+            "l5": {
+                "games": 2,
+                "wins": 1,
+                "losses": 1,
+                "win_pct": 0.5,
+                "avg_for": 4.0,
+                "avg_against": 3.5,
+                "totals": [],
+            },
+            "l10": {
+                "games": 2,
+                "wins": 1,
+                "losses": 1,
+                "win_pct": 0.5,
+                "avg_for": 4.0,
+                "avg_against": 3.5,
+                "totals": [],
+            },
             "source_url": "https://the-odds-api.com/",
         },
     )
@@ -277,6 +292,5 @@ def test_empty_live_slate_is_partial_not_demo() -> None:
 
 
 def test_kbo_korea_date_helper_matches_schedule() -> None:
-    from datetime import timezone as tz
-    start = datetime(2026, 9, 15, 9, 0, tzinfo=tz.utc)  # morning UTC = Korea afternoon same day
+    start = datetime(2026, 9, 15, 9, 0, tzinfo=UTC)  # morning UTC = Korea afternoon same day
     assert kbo_provider._korea_date(start) == date(2026, 9, 15)

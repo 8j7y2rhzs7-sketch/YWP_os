@@ -200,19 +200,19 @@ def find_game_pk_for_teams(
             g_away = str((teams.get("away") or {}).get("team", {}).get("name") or "")
             g_home_n = _norm_team(g_home)
             g_away_n = _norm_team(g_away)
-            home_ok = (not home_n) or _soft_team_match(home_n, g_home_n) or _soft_team_match(
-                home_n, g_away_n
+            home_ok = (
+                (not home_n)
+                or _soft_team_match(home_n, g_home_n)
+                or _soft_team_match(home_n, g_away_n)
             )
-            away_ok = (not away_n) or _soft_team_match(away_n, g_away_n) or _soft_team_match(
-                away_n, g_home_n
+            away_ok = (
+                (not away_n)
+                or _soft_team_match(away_n, g_away_n)
+                or _soft_team_match(away_n, g_home_n)
             )
             if home_n and away_n:
-                oriented = _soft_team_match(home_n, g_home_n) and _soft_team_match(
-                    away_n, g_away_n
-                )
-                flipped = _soft_team_match(home_n, g_away_n) and _soft_team_match(
-                    away_n, g_home_n
-                )
+                oriented = _soft_team_match(home_n, g_home_n) and _soft_team_match(away_n, g_away_n)
+                flipped = _soft_team_match(home_n, g_away_n) and _soft_team_match(away_n, g_home_n)
                 if not (oriented or flipped):
                     continue
             elif not (home_ok and away_ok):
@@ -514,7 +514,9 @@ def get_team_availability(team_id: int) -> dict[str, Any]:
     }
 
 
-def get_game_context(game_pk: int, *, schedule_lineups: dict[str, Any] | None = None) -> dict[str, Any]:
+def get_game_context(
+    game_pk: int, *, schedule_lineups: dict[str, Any] | None = None
+) -> dict[str, Any]:
     """Extract posted batting orders, official weather, live state, and bullpen lists.
 
     Prefer live boxscore battingOrder. Fall back to schedule hydrate=lineups
@@ -540,8 +542,7 @@ def get_game_context(game_pk: int, *, schedule_lineups: dict[str, Any] | None = 
                 {
                     "id": pid,
                     "name": name,
-                    "position": ((person.get("primaryPosition") or {}).get("abbreviation"))
-                    or "",
+                    "position": ((person.get("primaryPosition") or {}).get("abbreviation")) or "",
                 }
             )
         return rows
@@ -576,11 +577,7 @@ def get_game_context(game_pk: int, *, schedule_lineups: dict[str, Any] | None = 
     weather = game_data.get("weather") or {}
     status = game_data.get("status") or {}
     venue = game_data.get("venue") or {}
-    officials = (
-        live_data.get("boxscore", {}).get("officials")
-        or game_data.get("officials")
-        or []
-    )
+    officials = live_data.get("boxscore", {}).get("officials") or game_data.get("officials") or []
     return {
         "verified": bool(game_data),
         "status": status.get("abstractGameState", "Unknown"),

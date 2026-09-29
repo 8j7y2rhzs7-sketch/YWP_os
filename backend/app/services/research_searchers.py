@@ -21,7 +21,9 @@ def _ok(result: dict[str, Any]) -> dict[str, Any]:
     return result
 
 
-def search_mlb_umpires(game_pk: int, schedule_officials: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+def search_mlb_umpires(
+    game_pk: int, schedule_officials: list[dict[str, Any]] | None = None
+) -> dict[str, Any]:
     """Pull umpire crew from MLB schedule/boxscore (trusted primary)."""
     officials = list(schedule_officials or [])
     source_url = f"{SOURCE_API}/api/v1/schedule"
@@ -73,11 +75,7 @@ def search_mlb_umpires(game_pk: int, schedule_officials: list[dict[str, Any]] | 
 
 def search_mlb_park(game: dict[str, Any], context: dict[str, Any] | None = None) -> dict[str, Any]:
     """Confirm venue/park identity from MLB schedule or live feed."""
-    venue_name = (
-        (context or {}).get("venue")
-        or game.get("venue")
-        or ""
-    )
+    venue_name = (context or {}).get("venue") or game.get("venue") or ""
     venue_id = game.get("venue_id")
     verified = bool(venue_name)
     return _ok(
@@ -264,15 +262,15 @@ def search_venue_weather(
     )
     if primary.get("verified"):
         return primary
-    backup = search_nws_weather(
-        latitude=latitude, longitude=longitude, slate_date=slate_date
-    )
+    backup = search_nws_weather(latitude=latitude, longitude=longitude, slate_date=slate_date)
     if backup.get("verified"):
         return backup
     return primary
 
 
-def search_market_consensus(bookmakers: list[dict[str, Any]], market_key: str, selection: str) -> dict[str, Any]:
+def search_market_consensus(
+    bookmakers: list[dict[str, Any]], market_key: str, selection: str
+) -> dict[str, Any]:
     """Confirm current market from multiple trusted sportsbook quotes when available."""
     prices: list[int] = []
     books: list[str] = []
@@ -289,7 +287,9 @@ def search_market_consensus(bookmakers: list[dict[str, Any]], market_key: str, s
                             continue
                         if selection.lower().split()[0] not in name.lower():
                             continue
-                    elif name.lower() != selection.lower() and selection.lower() not in name.lower():
+                    elif (
+                        name.lower() != selection.lower() and selection.lower() not in name.lower()
+                    ):
                         continue
                 price = outcome.get("price")
                 if isinstance(price, int):
@@ -305,7 +305,7 @@ def search_market_consensus(bookmakers: list[dict[str, Any]], market_key: str, s
             "book_count": len(prices),
             "books": books,
             "price_spread": spread,
-            "consensus": True if len(prices) >= 2 else False,
+            "consensus": len(prices) >= 2,
             "detail": (
                 f"{len(prices)} trusted sportsbook quote(s); "
                 f"cross-book spread {spread} American odds points."
@@ -326,7 +326,9 @@ def run_mlb_research_searchers(
     game_pk = int(game["game_pk"])
     with ThreadPoolExecutor(max_workers=3, thread_name_prefix="ywp-search") as pool:
         umpire_future = pool.submit(
-            search_mlb_umpires, game_pk, game.get("officials") if isinstance(game.get("officials"), list) else None
+            search_mlb_umpires,
+            game_pk,
+            game.get("officials") if isinstance(game.get("officials"), list) else None,
         )
         park_future = pool.submit(search_mlb_park, game, context)
         weather_future = None
@@ -339,13 +341,17 @@ def run_mlb_research_searchers(
             )
         umpires = umpire_future.result()
         park = park_future.result()
-        weather = weather_future.result() if weather_future else {
-            "category": "weather",
-            "source_id": "mlb_stats_api",
-            "verified": bool(context.get("weather", {}).get("verified")),
-            "trusted": True,
-            "detail": "Using official MLB weather when posted.",
-        }
+        weather = (
+            weather_future.result()
+            if weather_future
+            else {
+                "category": "weather",
+                "source_id": "mlb_stats_api",
+                "verified": bool(context.get("weather", {}).get("verified")),
+                "trusted": True,
+                "detail": "Using official MLB weather when posted.",
+            }
+        )
 
     market = search_market_consensus(bookmakers or [], "h2h", str(game.get("home_team") or ""))
     return {

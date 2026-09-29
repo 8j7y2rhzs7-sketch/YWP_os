@@ -111,7 +111,9 @@ def build_event_research(
         except (TypeError, ValueError):
             coords = None
         if coords is None:
-            coords = _city_coords(city, espn_game.get("state") or "", espn_game.get("country") or "")
+            coords = _city_coords(
+                city, espn_game.get("state") or "", espn_game.get("country") or ""
+            )
         if coords:
             try:
                 weather = search_venue_weather(
@@ -286,7 +288,9 @@ def project_from_research(
     home_name = espn_game.get("home_team") or home_team
     is_home = home_name.lower() in (selection or "").lower()
     injuries = research.get("injuries") or {}
-    side_markets = "ml" in selection.lower() or "spread" in market_type or "moneyline" in market_type
+    side_markets = (
+        "ml" in selection.lower() or "spread" in market_type or "moneyline" in market_type
+    )
     sport_l = (sport or "").lower()
     include_draw = sport_l in {"soccer", "mls", "epl"} and (
         "moneyline" in (market_type or "").lower()
@@ -301,9 +305,9 @@ def project_from_research(
         line=line,
         home_out=int(injuries.get("home_out") or 0),
         away_out=int(injuries.get("away_out") or 0),
-        is_home_selection=is_home if side_markets and "draw" not in selection.lower() else (
-            None if "draw" in selection.lower() else (is_home if side_markets else None)
-        ),
+        is_home_selection=is_home
+        if side_markets and "draw" not in selection.lower()
+        else (None if "draw" in selection.lower() else (is_home if side_markets else None)),
         include_draw=include_draw,
     )
 
@@ -407,9 +411,12 @@ def build_verified_candidate(
         # Indoor leagues do not need weather in the missing list.
         if sport.lower() in {"nba", "ncaab", "wnba", "nhl"}:
             missing = [label for label in missing if label != "weather/venue"]
-    market_period = "90_min" if sport.lower() in {"soccer", "mls", "epl"} and (
-        "moneyline" in market_type.lower() or "draw" in selection.lower()
-    ) else "full_game"
+    market_period = (
+        "90_min"
+        if sport.lower() in {"soccer", "mls", "epl"}
+        and ("moneyline" in market_type.lower() or "draw" in selection.lower())
+        else "full_game"
+    )
     return CandidateInput(
         candidate_id=candidate_id,
         event_id=event_id,
@@ -460,7 +467,10 @@ def build_verified_candidate(
                         "injuries, and Odds consensus verify."
                         if sport.lower()
                         in {"ncaaf", "nfl", "nba", "ncaab", "wnba", "nhl", "soccer", "mls", "epl"}
-                        else "Strict Mode incomplete until confirmed lineups/starters clear the sweep."
+                        else (
+                            "Strict Mode incomplete until confirmed "
+                            "lineups/starters clear the sweep."
+                        )
                     )
                 )
             ),
@@ -567,7 +577,6 @@ _CITY_COORDS: dict[str, tuple[float, float]] = {
     "lexington": (38.0406, -84.5037),
     "louisville": (38.2527, -85.7585),
     "knoxville": (35.9606, -83.9207),
-    "nashville": (36.1627, -86.7816),
     "tuscaloosa": (33.2098, -87.5692),
     "auburn": (32.6099, -85.4808),
     "athens": (33.9519, -83.3576),
@@ -597,7 +606,6 @@ _CITY_COORDS: dict[str, tuple[float, float]] = {
     "iowa city": (41.6611, -91.5302),
     "ames": (42.0308, -93.6319),
     "madison": (43.0731, -89.4012),
-    "minneapolis": (44.9778, -93.2650),
     "lincoln": (40.8136, -96.7026),
     "lawrence": (38.9717, -95.2353),
     "boulder": (40.0150, -105.2705),
@@ -606,12 +614,10 @@ _CITY_COORDS: dict[str, tuple[float, float]] = {
     "eugene": (44.0521, -123.0868),
     "corvallis": (44.5646, -123.2620),
     "pullman": (46.7298, -117.1817),
-    "seattle": (47.6062, -122.3321),
     "tucson": (32.2226, -110.9747),
     "tempe": (33.4255, -111.9400),
     "berkeley": (37.8715, -122.2730),
     "stanford": (37.4275, -122.1697),
-    "los angeles": (34.0522, -118.2437),
     "pasadena": (34.1478, -118.1445),
     "san diego": (32.7157, -117.1611),
     "fresno": (36.7378, -119.7871),
@@ -622,9 +628,7 @@ _CITY_COORDS: dict[str, tuple[float, float]] = {
     "winston-salem": (36.0999, -80.2442),
     "syracuse": (43.0481, -76.1474),
     "state college": (40.7934, -77.8600),
-    "pittsburgh": (40.4406, -79.9959),
     "morgantown": (39.6295, -79.9559),
-    "charlottesville": (38.0293, -78.4767),
     "chestnut hill": (42.3309, -71.1662),
     "south orange": (40.7490, -74.2610),
     "piscataway": (40.5549, -74.4643),
@@ -642,7 +646,6 @@ _CITY_COORDS: dict[str, tuple[float, float]] = {
     "manhattan": (39.1836, -96.5717),
     "champaign": (40.1164, -88.2434),
     "evanston": (42.0447, -87.6931),
-    "south bend": (41.6764, -86.2520),
 }
 
 
