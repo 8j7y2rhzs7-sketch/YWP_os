@@ -455,6 +455,7 @@ def build_cards(
     best_by_thesis: dict[str, Recommendation] = {}
 
     for item in recommendations:
+        # WAIT / SKIP / REVIEW / WATCH cannot be placed as an official parlay leg.
         if item.decision not in {"PLAY", "LEAN"}:
             if _analysis_rank(item) <= 10:
                 quarantined.append(

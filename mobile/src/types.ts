@@ -168,7 +168,7 @@ export interface Recommendation {
   edge_class: string;
   expected_value_label: string;
   suggested_stake_pct: string;
-  decision: "PLAY" | "LEAN" | "WATCH" | "REVIEW" | "SKIP";
+  decision: "PLAY" | "LEAN" | "WATCH" | "REVIEW" | "WAIT" | "SKIP";
   recommendation_tier: string;
   rank: number;
   reason_codes: string[];

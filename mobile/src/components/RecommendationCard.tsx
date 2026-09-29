@@ -24,7 +24,7 @@ export function RecommendationCard({
   selected?: boolean;
   onPress?: () => void;
 }) {
-  const skip = item.decision === "SKIP";
+  const skip = item.decision === "SKIP" || item.decision === "WAIT";
   const sourceUrl = item.source_urls?.[0];
   const look = sportLook(item.sport);
   const enter = useRef(new Animated.Value(0)).current;

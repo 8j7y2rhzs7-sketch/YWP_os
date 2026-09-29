@@ -649,7 +649,12 @@ class DecisionEngine:
                 f"Quality-adjusted probability is {adjusted:.1%} versus "
                 f"{fair_implied:.1%} fair (de-vigged) implied."
             )
-        if hard_skip_reasons:
+        if decision == Decision.wait.value:
+            reasoning_parts.append(
+                "Official YWP output: WAIT / NO PICK YET. Evidence is incomplete, "
+                "so this is not an official play."
+            )
+        elif hard_skip_reasons:
             reasoning_parts.append("Official YWP output: SKIP / NO PLAY.")
         elif review_reasons:
             reasoning_parts.append(
@@ -788,6 +793,10 @@ class DecisionEngine:
         if hard_skip:
             decision = Decision.skip.value
             confidence = min(confidence, 69)
+        elif evaluation.decision == Decision.wait.value:
+            # Hive may not promote incomplete evidence into an official play.
+            decision = Decision.wait.value
+            confidence = min(confidence, 72)
         elif evaluation.decision == Decision.review.value or "MODEL_EDGE_QUARANTINE" in reasons:
             decision = Decision.review.value
             confidence = min(confidence, 80)
@@ -822,6 +831,10 @@ class DecisionEngine:
         if decision == Decision.skip.value:
             yis = min(yis, 5.9)
             tier = "stay_away"
+            suggested_stake_pct = 0.0
+        elif decision == Decision.wait.value:
+            yis = min(yis, 6.2)
+            tier = "wait"
             suggested_stake_pct = 0.0
         elif decision == Decision.review.value:
             yis = min(yis, 6.5)
@@ -873,17 +886,20 @@ class DecisionEngine:
 
     def rank(self, evaluations: list[Evaluation]) -> list[Evaluation]:
         gated = self.apply_slate_integrity_gates(evaluations)
+        # Unknown grades sort last. A missing key must never crash the slate.
+        unknown_rank = 99
         priority = {
             Decision.play.value: 0,
             Decision.lean.value: 1,
             Decision.watch.value: 2,
             Decision.review.value: 3,
-            Decision.skip.value: 4,
+            Decision.wait.value: 4,
+            Decision.skip.value: 5,
         }
         return sorted(
             gated,
             key=lambda item: (
-                priority[item.decision],
+                priority.get(item.decision, unknown_rank),
                 -item.confidence_score,
                 -item.edge,
                 item.candidate.variance,

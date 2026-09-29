@@ -988,74 +988,93 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
 
     hive_policy = get_active_policy(db=db)
     hive_signal_cache: dict[tuple[str, str, str, str, str], object] = {}
-    for candidate in candidates:
-        evaluation = decision_engine.evaluate(
-            candidate,
-            payload.user_risk_profile,
-            learned_weights=weight_cache.setdefault(
-                (candidate.sport.lower(), candidate.market_type),
-                load_feature_weights(db, candidate.sport.lower(), candidate.market_type),
-            ),
-        )
-        # Hive may only adjust an existing independent model probability; never invent one.
-        base_probability = (
-            float(evaluation.adjusted_probability)
-            if candidate.probability_source in {"model", "manual_verified"}
-            else None
-        )
-        hive_key = (
-            candidate.sport.lower(),
-            (candidate.league or "").lower(),
-            candidate.market_type,
-            candidate.market_period,
-            settings.model_version,
-        )
-        if hive_key not in hive_signal_cache:
-            hive_signal_cache[hive_key] = get_hive_signal(
-                db=db,
-                sport=candidate.sport,
-                league=candidate.league,
-                market=candidate.market_type,
-                market_scope=candidate.market_period,
-                model_version=settings.model_version,
+    try:
+        for candidate in candidates:
+            evaluation = decision_engine.evaluate(
+                candidate,
+                payload.user_risk_profile,
+                learned_weights=weight_cache.setdefault(
+                    (candidate.sport.lower(), candidate.market_type),
+                    load_feature_weights(db, candidate.sport.lower(), candidate.market_type),
+                ),
             )
-        hive_signal = hive_signal_cache[hive_key]
-        hive_adjusted, hive_meta = blend_hive_probability(
-            base_probability=base_probability,
-            hive_signal=hive_signal,
-            policy=hive_policy.to_dict(),
-            bucket_key=hive_bucket_key(
-                candidate.sport,
-                candidate.league,
+            # Hive may only adjust an existing independent model probability; never invent one.
+            base_probability = (
+                float(evaluation.adjusted_probability)
+                if candidate.probability_source in {"model", "manual_verified"}
+                else None
+            )
+            hive_key = (
+                candidate.sport.lower(),
+                (candidate.league or "").lower(),
                 candidate.market_type,
                 candidate.market_period,
                 settings.model_version,
-            ),
-        )
-        evaluation.payload["model_probability"] = base_probability
-        evaluation.payload["hive_adjusted_probability"] = hive_adjusted
-        evaluation.payload["hive"] = hive_meta
-        # Living Hive: when evidence is mature, the bounded blend must affect
-        # edge/EV/decision — not only the maturity meter payload.
-        if hive_meta.get("used") and hive_adjusted is not None and base_probability is not None:
-            evaluation = decision_engine.apply_hive_calibration(
-                evaluation,
-                float(hive_adjusted),
-                shift_applied=float(hive_meta.get("shift_applied") or 0.0),
             )
-        from app.services.metacognition import reflect_on_decision
+            if hive_key not in hive_signal_cache:
+                hive_signal_cache[hive_key] = get_hive_signal(
+                    db=db,
+                    sport=candidate.sport,
+                    league=candidate.league,
+                    market=candidate.market_type,
+                    market_scope=candidate.market_period,
+                    model_version=settings.model_version,
+                )
+            hive_signal = hive_signal_cache[hive_key]
+            hive_adjusted, hive_meta = blend_hive_probability(
+                base_probability=base_probability,
+                hive_signal=hive_signal,
+                policy=hive_policy.to_dict(),
+                bucket_key=hive_bucket_key(
+                    candidate.sport,
+                    candidate.league,
+                    candidate.market_type,
+                    candidate.market_period,
+                    settings.model_version,
+                ),
+            )
+            evaluation.payload["model_probability"] = base_probability
+            evaluation.payload["hive_adjusted_probability"] = hive_adjusted
+            evaluation.payload["hive"] = hive_meta
+            # Living Hive: when evidence is mature, the bounded blend must affect
+            # edge/EV/decision — not only the maturity meter payload.
+            if hive_meta.get("used") and hive_adjusted is not None and base_probability is not None:
+                evaluation = decision_engine.apply_hive_calibration(
+                    evaluation,
+                    float(hive_adjusted),
+                    shift_applied=float(hive_meta.get("shift_applied") or 0.0),
+                )
+            from app.services.metacognition import reflect_on_decision
 
-        evaluation.payload["metacognition"] = reflect_on_decision(
-            decision=evaluation.decision,
-            reason_codes=evaluation.reason_codes,
-            warnings=evaluation.warnings,
-            reasoning_summary=evaluation.reasoning_summary,
-            selection=candidate.selection,
-            hive_meta=hive_meta if isinstance(hive_meta, dict) else None,
-            probability_source=candidate.probability_source,
+            evaluation.payload["metacognition"] = reflect_on_decision(
+                decision=evaluation.decision,
+                reason_codes=evaluation.reason_codes,
+                warnings=evaluation.warnings,
+                reasoning_summary=evaluation.reasoning_summary,
+                selection=candidate.selection,
+                hive_meta=hive_meta if isinstance(hive_meta, dict) else None,
+                probability_source=candidate.probability_source,
+            )
+            raw_evaluations.append(evaluation)
+        evaluations = decision_engine.rank(raw_evaluations)
+    except HTTPException:
+        raise
+    except Exception as exc:
+        error_id = uuid4().hex[:8]
+        logger.exception(
+            "analyze grading failed error_id=%s sport=%s candidates=%s",
+            error_id,
+            payload.sport,
+            len(candidates),
         )
-        raw_evaluations.append(evaluation)
-    evaluations = decision_engine.rank(raw_evaluations)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "error": "analyze_failed",
+                "error_id": error_id,
+                "message": "Run could not finish grading this slate.",
+            },
+        ) from exc
     record_usage_event(
         db,
         event_type="PROTOCOL_RUN",
@@ -1078,7 +1097,9 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
     for rank, evaluation in enumerate(evaluations, start=1):
         candidate = evaluation.candidate
         is_board = evaluation.decision in {"PLAY", "LEAN", "WATCH"}
-        is_skip = evaluation.decision in {"SKIP", "REVIEW"}
+        # WAIT is not an official play. Keep it with SKIP/REVIEW in stay_away
+        # so a no-pick-yet row is saved and returned instead of dropped.
+        is_skip = evaluation.decision in {"SKIP", "REVIEW", "WAIT"}
         if persist_all_snapshots or is_board:
             db.add(
                 GameSnapshot(
