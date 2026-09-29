@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import logging
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
@@ -7,8 +10,8 @@ from fastapi.responses import RedirectResponse
 from app.api.router import api_router
 from app.core.config import settings
 from app.core.database import SessionLocal
-from app.middleware.rate_limit import RateLimitMiddleware
 from app.middleware.process_evidence import ProcessEvidenceMiddleware
+from app.middleware.rate_limit import RateLimitMiddleware
 from app.services.whop import (
     check_user_access,
     checkout_url,
@@ -16,6 +19,27 @@ from app.services.whop import (
     verify_whop_user_token,
 )
 from app.services.whop_access import get_or_create_whop_user
+
+logger = logging.getLogger(__name__)
+
+
+@asynccontextmanager
+async def _lifespan(_app: FastAPI):
+    """Lock the published demo account whenever this process is not in demo mode."""
+    if not settings.demo_mode:
+        db = SessionLocal()
+        try:
+            from app.services.demo_account import neutralize_demo_account
+
+            neutralize_demo_account(db)
+            db.commit()
+        except Exception:
+            db.rollback()
+            logger.exception("Could not neutralize the demo account on startup")
+        finally:
+            db.close()
+    yield
+
 
 app = FastAPI(
     title=settings.app_name,
@@ -27,6 +51,7 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc",
     openapi_url="/openapi.json",
+    lifespan=_lifespan,
 )
 
 app.add_middleware(

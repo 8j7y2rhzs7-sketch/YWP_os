@@ -140,6 +140,7 @@ def test_plus_money_high_model_probability_is_review() -> None:
     assert evaluation.decision == "REVIEW"
     assert "OUTLIER_PLUS_MONEY_PROBABILITY" in evaluation.reason_codes
     assert "OUTLIER_EDGE_REVIEW" in evaluation.reason_codes
+    assert evaluation.edge_class == "Outlier"
 
 
 def test_review_excluded_from_official_cards() -> None:

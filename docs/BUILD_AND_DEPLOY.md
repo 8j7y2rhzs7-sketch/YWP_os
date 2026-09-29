@@ -8,7 +8,7 @@ Requirements: Docker Desktop, Node.js 22, and npm.
 docker compose up --build
 ```
 
-The API container waits for PostgreSQL, applies Alembic migrations, and creates the demo account only while `YWP_DEMO_MODE=true`.
+The API container waits for PostgreSQL, applies Alembic migrations, and creates the local demo account only while `YWP_DEMO_MODE=true`. When that flag is false, startup deactivates `demo@ywp-os.com` if it is already in the database.
 
 In a second terminal:
 
@@ -19,7 +19,7 @@ npm ci
 npm run start
 ```
 
-Demo credentials:
+Local-dev demo login only (`YWP_DEMO_MODE=true`). Not an admin. These credentials do not work in production:
 
 ```text
 demo@ywp-os.com

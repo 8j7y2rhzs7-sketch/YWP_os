@@ -4,7 +4,7 @@ An auditable probability and decision gate for threshold markets and multi-leg t
 
 This is a research and decision-support engine, not a guarantee of outcomes. Its quality depends on timestamped, correctly scoped inputs and out-of-sample calibration.
 
-API version pairing: **3.3.63+**.
+API version pairing: **3.3.63+**. Card verdict consistency (one threshold, one joint probability, leg verification forwarded into the gate): **3.3.65+**.
 
 ## What institutional-grade calculation means here
 
@@ -57,6 +57,8 @@ The engine refuses to:
 ## Integration
 
 Vendored at `backend/app/services/ywp_quant`. Board and Decision Board call it through `app.services.quant_bridge.audit_ticket`. HTTP surface: `POST /api/v1/sports/quant-audit`.
+
+The bridge does not invent confirmation. SKIP, REVIEW, WAIT, `pipeline_threshold=reject`, readiness `PARTIAL`/`DEMO`, and reason codes such as `VERIFICATION_GAP` are unverified inputs, so the gate REJECTs. The published card threshold matches `pipeline.card_threshold`, and the published joint win probability matches `pipeline.monte_carlo.win_probability`.
 
 ```bash
 cd backend && uv run pytest tests/test_ywp_quant_v2.py tests/test_ywp_quant_bridge.py tests/test_edge_pipeline.py -q

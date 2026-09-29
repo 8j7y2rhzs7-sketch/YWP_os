@@ -54,14 +54,16 @@ Requirements: Docker Desktop, Node.js 22, and npm.
    npm run start
    ```
 
-3. Open the web option from Expo, or use a development build for iOS/Android. The bundled demo login is:
+3. Open the web option from Expo, or use a development build for iOS/Android.
+
+   Local development only (`docker compose` sets `YWP_DEMO_MODE=true`):
 
    ```text
    Email: demo@ywp-os.com
    Password: YwpDemo!2026
    ```
 
-The demo account exists only when `YWP_DEMO_MODE=true`.
+   That login is a normal user, not an admin. It does not authenticate when `YWP_DEMO_MODE=false`, including production. Do not reuse it as an operator or customer account.
 
 API documentation is available at `http://localhost:8000/docs`. Health is at `http://localhost:8000/api/v1/health`.
 
@@ -92,7 +94,7 @@ Never expose provider keys through `EXPO_PUBLIC_*` variables.
 ## Before production
 
 - Generate a cryptographically random `YWP_JWT_SECRET` of at least 32 bytes.
-- Set `YWP_DEMO_MODE=false` and remove demo credentials from operational runbooks.
+- Set `YWP_DEMO_MODE=false`. The published demo login must not be in production runbooks; startup and the Alembic migration deactivate `demo@ywp-os.com` and strip admin.
 - Use managed PostgreSQL and Redis with encryption, backups, and private networking.
 - Apply migrations with `alembic upgrade head` during deployment.
 - Configure exact CORS origins and HTTPS.

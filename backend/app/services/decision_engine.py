@@ -99,6 +99,21 @@ class Evaluation:
     input_hash: str
 
 
+def _edge_class_label(edge: float, confidence: int, reasons: list[str]) -> str:
+    """Magnitude label. Unresolved outliers are not Strong or Elite."""
+    if any(code == "MODEL_EDGE_QUARANTINE" or code.startswith("OUTLIER_") for code in reasons):
+        return "Outlier"
+    if edge >= 0.08 and confidence >= 90:
+        return "Elite"
+    if edge >= 0.05:
+        return "Strong"
+    if edge >= 0.03:
+        return "Moderate"
+    if edge >= settings.minimum_edge:
+        return "Marginal"
+    return "No Edge"
+
+
 class DecisionEngine:
     """Deterministic YWP v3 scoring plus constitutional and loss-audit gates."""
 
@@ -567,16 +582,7 @@ class DecisionEngine:
         else:
             variance_rating = "Very High"
 
-        if edge >= 0.08 and confidence >= 90:
-            edge_class = "Elite"
-        elif edge >= 0.05:
-            edge_class = "Strong"
-        elif edge >= 0.03:
-            edge_class = "Moderate"
-        elif edge >= settings.minimum_edge:
-            edge_class = "Marginal"
-        else:
-            edge_class = "No Edge"
+        edge_class = _edge_class_label(edge, confidence, reasons)
         expected_value_label = (
             "Positive"
             if expected_value > 0.01
@@ -791,16 +797,7 @@ class DecisionEngine:
             decision = Decision.skip.value
             reasons.append("CONFIDENCE_BELOW_THRESHOLD")
 
-        if edge >= 0.08 and confidence >= 90:
-            edge_class = "Elite"
-        elif edge >= 0.05:
-            edge_class = "Strong"
-        elif edge >= 0.03:
-            edge_class = "Moderate"
-        elif edge >= settings.minimum_edge:
-            edge_class = "Marginal"
-        else:
-            edge_class = "No Edge"
+        edge_class = _edge_class_label(edge, confidence, reasons)
         expected_value_label = (
             "Positive"
             if expected_value > 0.01

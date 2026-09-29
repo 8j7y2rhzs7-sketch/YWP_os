@@ -20,8 +20,7 @@ def payment_required(message: str | None = None) -> HTTPException:
     return HTTPException(
         status_code=status.HTTP_402_PAYMENT_REQUIRED,
         detail={
-            "message": message
-            or "Daily Access required. Complete checkout on Whop, then return.",
+            "message": message or "Daily Access required. Complete checkout on Whop, then return.",
             "checkout_url": url,
         },
         headers={"Location": url},
@@ -60,6 +59,12 @@ def get_current_user(
     user = db.get(User, payload["sub"])
     if not user or not user.is_active:
         raise unauthorized
+    from app.services.demo_account import demo_authentication_blocked, neutralize_demo_account
+
+    if demo_authentication_blocked(user.email):
+        neutralize_demo_account(db)
+        db.commit()
+        raise unauthorized
     return user
 
 
@@ -84,7 +89,9 @@ OptionalUser = Annotated[User | None, Depends(get_optional_user)]
 
 
 def require_admin(user: CurrentUser) -> User:
-    if user.role != "admin":
+    from app.services.demo_account import is_admin_principal
+
+    if not is_admin_principal(user):
         raise HTTPException(status_code=403, detail="Admin role required")
     return user
 
@@ -93,10 +100,11 @@ AdminUser = Annotated[User, Depends(require_admin)]
 
 
 def require_subscription(user: CurrentUser, db: DB) -> User:
+    from app.services.demo_account import is_admin_principal
     from app.services.whop import whop_enabled
     from app.services.whop_access import ensure_fresh_subscription, user_has_app_access
 
-    if not whop_enabled() or user.role == "admin":
+    if not whop_enabled() or is_admin_principal(user):
         return user
     user = ensure_fresh_subscription(db, user, force=False)
     db.commit()

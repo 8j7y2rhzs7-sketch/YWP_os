@@ -28,7 +28,9 @@ class OpsHealProposalReviewIn(BaseModel):
 
 
 def _is_admin(user: object) -> bool:
-    return str(getattr(user, "role", "") or "").lower() == "admin"
+    from app.services.demo_account import is_admin_principal
+
+    return is_admin_principal(user)
 
 
 def _public_ops_payload(payload: dict, *, admin: bool) -> dict:

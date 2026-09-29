@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 from app.core.config import settings
 from app.core.security import hash_password, utcnow
 from app.models import AuditLog, BankrollAccount, PendingWhopAccess, User
+from app.services.demo_account import is_admin_principal
 from app.services.whop import (
     app_download_url,
     check_user_access,
@@ -26,7 +27,7 @@ logger = logging.getLogger(__name__)
 def user_has_app_access(user: User) -> bool:
     if not whop_enabled():
         return True
-    if user.role == "admin":
+    if is_admin_principal(user):
         return True
     return user.subscription_status == "active"
 
@@ -95,8 +96,8 @@ def apply_pending_access(db: Session, user: User) -> User:
 
 def sync_user_subscription(db: Session, user: User) -> User:
     """Live Whop checkAccess when possible; never treat unlock as permanent."""
-    if not whop_enabled() or user.role == "admin":
-        if user.role == "admin":
+    if not whop_enabled() or is_admin_principal(user):
+        if is_admin_principal(user):
             user.subscription_status = "active"
             user.subscription_checked_at = utcnow()
             if user.subscription_granted_at is None:
@@ -156,7 +157,7 @@ def _revoke_if_stale(user: User, *, api_failed: bool) -> None:
 def needs_subscription_recheck(user: User, *, force: bool = False) -> bool:
     if force:
         return True
-    if not whop_enabled() or user.role == "admin":
+    if not whop_enabled() or is_admin_principal(user):
         return False
     now = utcnow()
     checked = _aware(user.subscription_checked_at)
@@ -176,7 +177,7 @@ def needs_subscription_recheck(user: User, *, force: bool = False) -> bool:
 
 def ensure_fresh_subscription(db: Session, user: User, *, force: bool = False) -> User:
     """Apply pending grants and re-sync with Whop on a TTL schedule."""
-    if not whop_enabled() or user.role == "admin":
+    if not whop_enabled() or is_admin_principal(user):
         return sync_user_subscription(db, user)
     user = apply_pending_access(db, user)
     if needs_subscription_recheck(user, force=force):

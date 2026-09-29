@@ -37,3 +37,7 @@ Encoded in `app.services.calculation_discipline` and wired through `decision_eng
 15. Final output `DECISION_CARDS` or explicit `NO_BET` (`BuildTicketResponse.official_output`)
 
 API **3.3.64+**.
+
+Card preview publishes one threshold and one joint win probability (API **3.3.65+**).
+`ywp_quant` receives each leg's readiness, reason codes, and pipeline threshold.
+A card built from SKIP / PARTIAL / `VERIFICATION_GAP` legs is `reject`, not `qualify`.
