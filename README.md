@@ -63,7 +63,7 @@ Requirements: Docker Desktop, Node.js 22, and npm.
    Password: YwpDemo!2026
    ```
 
-   That login is a normal user, not an admin. It does not authenticate when `YWP_DEMO_MODE=false`, including production. Do not reuse it as an operator or customer account.
+   That login is a normal user, not an admin. It does not authenticate when `YWP_DEMO_MODE=false`, including production. Do not reuse it as an operator or customer account. Production moves an existing `demo@ywp-os.com` row to `YWP_OWNER_EMAIL` when `YWP_OWNER_INITIAL_PASSWORD` is set.
 
 API documentation is available at `http://localhost:8000/docs`. Health is at `http://localhost:8000/api/v1/health`.
 
@@ -94,7 +94,7 @@ Never expose provider keys through `EXPO_PUBLIC_*` variables.
 ## Before production
 
 - Generate a cryptographically random `YWP_JWT_SECRET` of at least 32 bytes.
-- Set `YWP_DEMO_MODE=false`. The published demo login must not be in production runbooks; startup and the Alembic migration deactivate `demo@ywp-os.com` and strip admin.
+- Set `YWP_DEMO_MODE=false`. Set `YWP_OWNER_EMAIL` (production: `ywpossports@gmail.com`) and `YWP_OWNER_INITIAL_PASSWORD` (a private password, at least 10 characters, not the published demo password) before boot. Startup renames an existing `demo@ywp-os.com` row to that email and keeps its admin role and history. If the password is missing, the demo row is left unchanged so the owner is not locked out.
 - Use managed PostgreSQL and Redis with encryption, backups, and private networking.
 - Apply migrations with `alembic upgrade head` during deployment.
 - Configure exact CORS origins and HTTPS.

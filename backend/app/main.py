@@ -25,17 +25,16 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def _lifespan(_app: FastAPI):
-    """Lock the published demo account whenever this process is not in demo mode."""
+    """Move the published demo row to the owner, then lock any leftover demo login."""
     if not settings.demo_mode:
         db = SessionLocal()
         try:
-            from app.services.demo_account import neutralize_demo_account
+            from app.services.demo_account import prepare_production_identities
 
-            neutralize_demo_account(db)
-            db.commit()
+            prepare_production_identities(db)
         except Exception:
             db.rollback()
-            logger.exception("Could not neutralize the demo account on startup")
+            logger.exception("Could not prepare the owner account on startup")
         finally:
             db.close()
     yield

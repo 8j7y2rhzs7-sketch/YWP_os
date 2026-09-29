@@ -6,22 +6,18 @@ from app.services.demo_account import (
     DEMO_EMAIL,
     DEMO_PASSWORD,
     ensure_local_demo_user,
-    neutralize_demo_account,
+    prepare_production_identities,
 )
 
 __all__ = ["DEMO_EMAIL", "DEMO_PASSWORD", "seed"]
 
 
 def seed() -> None:
-    """Local demo login when YWP_DEMO_MODE is true; otherwise lock that account."""
+    """Local demo login when YWP_DEMO_MODE is true; otherwise adopt or lock it."""
     with SessionLocal() as db:
         if not settings.demo_mode:
-            changed = neutralize_demo_account(db)
-            db.commit()
-            if changed:
-                print("YWP_DEMO_MODE is false; demo account deactivated (not an admin).")
-            else:
-                print("YWP_DEMO_MODE is false; demo account is not active.")
+            outcome = prepare_production_identities(db)
+            print(f"YWP_DEMO_MODE is false; owner adoption result: {outcome}")
             return
         user = ensure_local_demo_user(db)
         db.commit()

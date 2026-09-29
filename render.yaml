@@ -18,6 +18,10 @@ services:
         value: production
       - key: YWP_DEMO_MODE
         value: "false"
+      - key: YWP_OWNER_EMAIL
+        value: ywpossports@gmail.com
+      - key: YWP_OWNER_INITIAL_PASSWORD
+        sync: false
       - key: WHOP_SUBSCRIPTION_REQUIRED
         value: "true"
       - key: WHOP_COMPANY_ID

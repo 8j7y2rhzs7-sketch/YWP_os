@@ -8,7 +8,7 @@ Requirements: Docker Desktop, Node.js 22, and npm.
 docker compose up --build
 ```
 
-The API container waits for PostgreSQL, applies Alembic migrations, and creates the local demo account only while `YWP_DEMO_MODE=true`. When that flag is false, startup deactivates `demo@ywp-os.com` if it is already in the database.
+The API container waits for PostgreSQL, applies Alembic migrations, and creates the local demo account only while `YWP_DEMO_MODE=true`. When that flag is false, startup renames an existing `demo@ywp-os.com` row to `YWP_OWNER_EMAIL` if `YWP_OWNER_INITIAL_PASSWORD` is set, and otherwise leaves that row unchanged.
 
 In a second terminal:
 

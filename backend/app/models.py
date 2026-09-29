@@ -12,6 +12,7 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
     Index,
+    Integer,
     Numeric,
     String,
     Text,
@@ -76,6 +77,9 @@ class User(Base, TimestampMixin):
     subscription_granted_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
+    # Bumped when this user's password is rotated by the owner adoption.
+    # Access tokens must carry the same epoch or they are rejected.
+    auth_epoch: Mapped[int] = mapped_column(Integer, nullable=False, default=0, server_default="0")
     bankroll: Mapped[BankrollAccount | None] = relationship(
         back_populates="user", cascade="all, delete-orphan", uselist=False
     )

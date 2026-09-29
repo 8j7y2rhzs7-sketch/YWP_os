@@ -7,12 +7,20 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "YWP OS API"
-    app_version: str = "3.3.65"
+    app_version: str = "3.3.66"
     api_prefix: str = "/api/v1"
     env: Literal["development", "test", "staging", "production"] = Field(
         default="development", validation_alias="YWP_ENV"
     )
     demo_mode: bool = Field(default=False, validation_alias="YWP_DEMO_MODE")
+    owner_email: str = Field(default="", validation_alias="YWP_OWNER_EMAIL")
+    owner_initial_password: str = Field(
+        default="",
+        validation_alias="YWP_OWNER_INITIAL_PASSWORD",
+        repr=False,
+    )
+    # Set at runtime when the published demo row is still the owner's real account.
+    owner_adoption_pending: bool = False
 
     jwt_secret: str = Field(
         default="local-development-secret-change-before-production-12345",

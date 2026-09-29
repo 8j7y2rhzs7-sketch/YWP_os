@@ -16,7 +16,7 @@
 
 ## Security and privacy
 
-- [ ] `YWP_DEMO_MODE=false` in production. `demo@ywp-os.com` must not authenticate, refresh, or hold admin. The migration and API startup lock that row; do not point a real Whop membership at that email.
+- [ ] `YWP_DEMO_MODE=false` in production. `YWP_OWNER_EMAIL=ywpossports@gmail.com` and `YWP_OWNER_INITIAL_PASSWORD` (private, 10+ characters, not `YwpDemo!2026`) are set before the first boot of this release. Startup moves `demo@ywp-os.com` onto that email and keeps admin, subscription, and history. The published demo password must then fail. If the password env var is missing, the demo row is left active so the owner is not locked out.
 - [ ] Unique production secret is stored in a secret manager.
 - [ ] Database/Redis use private networking, TLS, backups, and least-privilege users.
 - [ ] CORS allowlist contains exact production origins.

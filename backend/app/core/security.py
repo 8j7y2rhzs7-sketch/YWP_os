@@ -55,17 +55,19 @@ def create_token(
     return token, expires_at, jti
 
 
-def create_token_pair(subject: str) -> dict[str, Any]:
+def create_token_pair(subject: str, *, auth_epoch: int = 0) -> dict[str, Any]:
+    epoch = {"epoch": int(auth_epoch)}
     access_token, access_expires, _ = create_token(
         subject,
         "access",
         timedelta(minutes=settings.access_token_minutes),
+        epoch,
     )
     refresh_token, refresh_expires, refresh_jti = create_token(
         subject,
         "refresh",
         timedelta(days=settings.refresh_token_days),
-        {"nonce": secrets.token_hex(8)},
+        {"nonce": secrets.token_hex(8), **epoch},
     )
     return {
         "access_token": access_token,

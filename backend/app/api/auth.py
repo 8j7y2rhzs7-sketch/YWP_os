@@ -23,7 +23,7 @@ from app.services.auth import find_refresh_session, issue_tokens, revoke_session
 from app.services.demo_account import (
     demo_authentication_blocked,
     is_demo_email,
-    neutralize_demo_account,
+    reject_demo_authentication,
 )
 from app.services.tester_access import upsert_tester
 from app.services.whop_access import apply_pending_access, ensure_fresh_subscription
@@ -38,7 +38,7 @@ def _aware(value):
 @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
 def register(payload: RegisterRequest, db: DB) -> TokenResponse:
     email = payload.email.lower()
-    if demo_authentication_blocked(email):
+    if reject_demo_authentication(db, email):
         raise HTTPException(status_code=403, detail="Demo account is disabled")
     if db.scalar(select(User).where(User.email == email)):
         raise HTTPException(status_code=409, detail="An account with that email already exists")
@@ -68,9 +68,7 @@ def register(payload: RegisterRequest, db: DB) -> TokenResponse:
 @router.post("/login", response_model=TokenResponse)
 def login(payload: LoginRequest, db: DB) -> TokenResponse:
     email = payload.email.lower()
-    if demo_authentication_blocked(email):
-        neutralize_demo_account(db)
-        db.commit()
+    if reject_demo_authentication(db, email):
         raise HTTPException(status_code=401, detail="Incorrect email or password")
     user = db.scalar(select(User).where(User.email == email))
     if not user or not user.is_active or not verify_password(payload.password, user.password_hash):
@@ -144,8 +142,12 @@ def refresh(payload: RefreshRequest, db: DB) -> TokenResponse:
     ):
         raise HTTPException(status_code=401, detail="Refresh session is expired or revoked")
     user = db.get(User, session.user_id)
-    if user and demo_authentication_blocked(user.email):
-        neutralize_demo_account(db)
+    if user and reject_demo_authentication(db, user.email):
+        revoke_session(session)
+        db.commit()
+        raise HTTPException(status_code=401, detail="User is inactive")
+    token_epoch = int(claims.get("epoch") or 0)
+    if user and token_epoch != int(user.auth_epoch or 0):
         revoke_session(session)
         db.commit()
         raise HTTPException(status_code=401, detail="User is inactive")

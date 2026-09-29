@@ -59,11 +59,14 @@ def get_current_user(
     user = db.get(User, payload["sub"])
     if not user or not user.is_active:
         raise unauthorized
-    from app.services.demo_account import demo_authentication_blocked, neutralize_demo_account
+    from app.services.demo_account import reject_demo_authentication
 
-    if demo_authentication_blocked(user.email):
-        neutralize_demo_account(db)
-        db.commit()
+    if reject_demo_authentication(db, user.email):
+        raise unauthorized
+    db.refresh(user)
+    if not user.is_active:
+        raise unauthorized
+    if int(payload.get("epoch") or 0) != int(user.auth_epoch or 0):
         raise unauthorized
     return user
 

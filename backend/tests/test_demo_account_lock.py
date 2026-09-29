@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 from fastapi.testclient import TestClient
-from sqlalchemy import func, select
+from sqlalchemy import select
 
 from app.core.config import settings
 from app.core.database import SessionLocal
 from app.core.security import hash_password, verify_password
-from app.models import AuditLog, BankrollAccount, RefreshSession, User
+from app.models import BankrollAccount, User
 from app.seed import DEMO_EMAIL, DEMO_PASSWORD, seed
 from app.services.auth import issue_tokens
 from app.services.demo_account import neutralize_demo_account
@@ -80,22 +80,17 @@ def test_demo_mode_off_blocks_login_tokens_and_refresh(client: TestClient, monke
     monkeypatch.setattr(settings, "demo_mode", True)
     with SessionLocal() as db:
         user = _demo_user(db)
+        original_id = user.id
         tokens = issue_tokens(db, user)
         access = tokens.access_token
         refresh = tokens.refresh_token
 
     monkeypatch.setattr(settings, "demo_mode", False)
+    monkeypatch.setattr(settings, "owner_email", "ywpossports@gmail.com")
+    monkeypatch.setattr(settings, "owner_initial_password", "OwnerPrivate!2026")
 
-    # Existing refresh and access tokens fail while the row is still active.
     refreshed = client.post("/api/v1/auth/refresh", json={"refresh_token": refresh})
     assert refreshed.status_code == 401
-    with SessionLocal() as db:
-        user = db.scalar(select(User).where(User.email == DEMO_EMAIL))
-        assert user is not None
-        user.is_active = True
-        user.role = "admin"
-        user.subscription_status = "active"
-        db.commit()
     me = client.get("/api/v1/users/me", headers={"Authorization": f"Bearer {access}"})
     assert me.status_code == 401
 
@@ -117,48 +112,34 @@ def test_demo_mode_off_blocks_login_tokens_and_refresh(client: TestClient, monke
     assert register.status_code == 403
 
     with SessionLocal() as db:
-        user = db.scalar(select(User).where(func.lower(User.email) == DEMO_EMAIL))
-        assert user is not None
-        assert user.role == "user"
-        assert user.is_active is False
-        assert user.subscription_status == "inactive"
-        assert user.subscription_granted_at is None
-        assert verify_password(DEMO_PASSWORD, user.password_hash) is False
-        open_sessions = db.scalars(
-            select(RefreshSession).where(
-                RefreshSession.user_id == user.id,
-                RefreshSession.revoked_at.is_(None),
-            )
-        ).all()
-        assert open_sessions == []
-        bankroll = db.scalar(select(BankrollAccount).where(BankrollAccount.user_id == user.id))
+        moved = db.scalar(select(User).where(User.email == "ywpossports@gmail.com"))
+        assert moved is not None
+        assert moved.id == original_id
+        assert moved.role == "admin"
+        assert moved.is_active is True
+        assert verify_password(DEMO_PASSWORD, moved.password_hash) is False
+        assert verify_password("OwnerPrivate!2026", moved.password_hash) is True
+        bankroll = db.scalar(select(BankrollAccount).where(BankrollAccount.user_id == moved.id))
         assert bankroll is not None
-        owner = db.scalar(select(User).where(User.email == "real-owner@ywp-os.com"))
-        assert owner is not None
-        assert owner.role == "admin"
-        assert owner.is_active is True
-        assert owner.subscription_status == "active"
-        assert (
-            db.scalar(
-                select(AuditLog).where(
-                    AuditLog.user_id == user.id,
-                    AuditLog.action == "DEMO_ACCOUNT_NEUTRALIZED",
-                )
-            )
-            is not None
-        )
+        other = db.scalar(select(User).where(User.email == "real-owner@ywp-os.com"))
+        assert other is not None and other.role == "admin" and other.is_active is True
 
 
-def test_seed_neutralizes_existing_demo_without_deleting_others(monkeypatch) -> None:
+def test_seed_moves_existing_demo_without_deleting_others(monkeypatch) -> None:
     monkeypatch.setattr(settings, "demo_mode", True)
     with SessionLocal() as db:
-        _demo_user(db, role="admin")
+        demo = _demo_user(db, role="admin")
+        demo_id = demo.id
     monkeypatch.setattr(settings, "demo_mode", False)
+    monkeypatch.setattr(settings, "owner_email", "ywpossports@gmail.com")
+    monkeypatch.setattr(settings, "owner_initial_password", "OwnerPrivate!2026")
     seed()
     with SessionLocal() as db:
-        user = db.scalar(select(User).where(User.email == DEMO_EMAIL))
+        moved = db.scalar(select(User).where(User.email == "ywpossports@gmail.com"))
         owner = db.scalar(select(User).where(User.email == "real-owner@ywp-os.com"))
-        assert user is not None and user.role == "user" and user.is_active is False
+        assert moved is not None and moved.id == demo_id
+        assert moved.role == "admin" and moved.is_active is True
+        assert db.scalar(select(User).where(User.email == DEMO_EMAIL)) is None
         assert owner is not None and owner.role == "admin" and owner.is_active is True
         assert neutralize_demo_account(db) is False
 
