@@ -127,6 +127,46 @@ def resolve_team_name(label: str, *, year: int | None = None) -> str | None:
     return best if best_score >= 2 else None
 
 
+def _completed_form_games(
+    games: list[dict[str, Any]],
+    *,
+    school: str,
+    slate_date: date,
+) -> list[dict[str, Any]]:
+    """Normalize completed CFBD games into dated for/against rows before the slate."""
+    completed: list[dict[str, Any]] = []
+    cutoff = slate_date.isoformat()
+    for game in games:
+        if not game.get("completed"):
+            continue
+        start = str(game.get("startDate") or game.get("start_date") or "")[:10]
+        if start and start >= cutoff:
+            continue
+        home = str(game.get("homeTeam") or game.get("home_team") or "")
+        away = str(game.get("awayTeam") or game.get("away_team") or "")
+        home_points = game.get("homePoints", game.get("home_points"))
+        away_points = game.get("awayPoints", game.get("away_points"))
+        if home_points is None or away_points is None:
+            continue
+        is_home = _norm(home) == _norm(school) or school.lower() in home.lower()
+        try:
+            scored = float(home_points if is_home else away_points)
+            against = float(away_points if is_home else home_points)
+        except (TypeError, ValueError):
+            continue
+        completed.append(
+            {
+                "date": start,
+                "opponent": away if is_home else home,
+                "home": is_home,
+                "score_for": scored,
+                "score_against": against,
+                "win": scored > against,
+            }
+        )
+    return completed
+
+
 def get_team_recent_form(team_label: str, slate_date: date) -> dict[str, Any]:
     """Build L5/L10 form from completed CFBD games for one school."""
     if not cfbd_configured():

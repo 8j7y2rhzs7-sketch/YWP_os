@@ -143,12 +143,14 @@ def test_injuries_omitted_healthy_club_still_verifies() -> None:
     }
     both = espn_provider.injuries_for_teams(feed, "Home Club", "Away Club")
     assert both["verified"] is True
-    assert both["away_matched"] is True
+    # Identity stays honest (unmatched), but Strict Mode still verifies on a good feed.
+    assert both["away_matched"] is False
     assert both["away"] == []
     assert both["home_out"] == 1
     feed["by_team"]["Away Club"] = [{"status": "Out", "name": "Other"}]
     both = espn_provider.injuries_for_teams(feed, "Home Club", "Away Club")
     assert both["verified"] is True
+    assert both["away_matched"] is True
     assert both["away_out"] == 1
 
 

@@ -407,7 +407,8 @@ def _demo_generic(sport: str, slate_date: date) -> list[CandidateInput]:
             league=f"Demo {sport.title()}",
             market_type="moneyline",
             selection=f"Demo selection {index}",
-            odds=-120 + index * 5,
+            # Keep American odds legal for every index (avoid -99..+99 band).
+            odds=-110 - index * 5,
             probability=0.62 - index * 0.01,
             variance=0.27 + index * 0.03,
             quality=0.90,

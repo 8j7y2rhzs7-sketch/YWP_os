@@ -550,21 +550,15 @@ def injuries_for_teams(
     injury_feed: dict[str, Any], home_team: str, away_team: str
 ) -> dict[str, Any]:
     by_team = injury_feed.get("by_team") or {}
-    home = _lookup_team_injuries(by_team, home_team)
-    away = _lookup_team_injuries(by_team, away_team)
     home_matched = _team_matched(by_team, home_team)
     away_matched = _team_matched(by_team, away_team)
+    home = _lookup_team_injuries(by_team, home_team) if home_matched else []
+    away = _lookup_team_injuries(by_team, away_team) if away_matched else []
     # ESPN (and similar boards) often omit healthy clubs with an empty report.
-    # When the league feed itself succeeded, treat an unmatched club as matched
-    # with zero injuries — do not block Strict Mode on a missing healthy side.
+    # When the league feed itself succeeded, do not block Strict Mode on a missing
+    # healthy side — but keep home_matched/away_matched honest for identity checks.
     feed_ok = bool(injury_feed.get("verified"))
-    if feed_ok and home_team and not home_matched:
-        home_matched = True
-        home = []
-    if feed_ok and away_team and not away_matched:
-        away_matched = True
-        away = []
-    verified = feed_ok and (not home_team or home_matched) and (not away_team or away_matched)
+    verified = bool(feed_ok)
     return {
         "verified": verified,
         "home_matched": home_matched,
