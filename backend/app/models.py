@@ -613,7 +613,7 @@ class ServiceCredential(Base):
     )
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
-    name: Mapped[str] = mapped_column(String(64))
+    name: Mapped[str] = mapped_column(String(64), nullable=False)
     token_hash: Mapped[str] = mapped_column(String(64))
     rotated_by_user_id: Mapped[str | None] = mapped_column(
         ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True
