@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: ywp-os-marketing-bot
+    runtime: docker
+    plan: starter
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 8787
+      - key: PUBLIC_BASE_URL
+        sync: false
+      - key: ADMIN_KEY
+        generateValue: true
+      - key: YWP_OS_API_BASE_URL
+        value: https://ywp-os-api.onrender.com
+      - key: YWP_OS_MARKETING_FEED_PATH
+        value: /api/v1/marketing/approved-cards
+      - key: YWP_OS_API_TOKEN
+        sync: false
+      - key: IG_PUBLISH_ENABLED
+        value: "false"
+      - key: IG_USER_ID
+        sync: false
+      - key: IG_ACCESS_TOKEN
+        sync: false
+      - key: META_GRAPH_VERSION
+        value: v24.0
+      - key: YWP_TIMEZONE
+        value: America/New_York

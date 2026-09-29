@@ -6,14 +6,19 @@ This file is the implementation contract for every screen, exported decision car
 
 | Asset | Source path | Required use |
 |---|---|---|
-| Metallic crown crest | `mobile/assets/brand/ywp-crest.png` | App icon, splash, dark UI header, decision graphics |
+| Metallic Decision Engine emblem | `mobile/assets/brand/vision/decision-engine-emblem-square.png` | App icon, splash, dark UI header, Home tab mark |
+| Legacy crown crest | `mobile/assets/brand/ywp-crest.png` | Archival / `crownLegacy` only — do not ship as launcher icon |
 | Minimal YWP os mark | `mobile/assets/brand/ywp-minimal.png` | Light documents, monochrome/light surfaces, partner material |
-| App icon copy | `mobile/assets/brand/app-icon.png` | Expo iOS/Android icon configuration |
-| Splash copy | `mobile/assets/brand/splash-logo.png` | Expo Splash Screen plugin |
+| Boot sequence GIF | `mobile/assets/brand/boot-sequence.gif` | Short app entrance (artwork only — not live progress) |
+| Boot still frame | `mobile/assets/brand/boot-frame.png` | Reduced-motion / static fallback for boot |
+| Decision engine poster | `mobile/assets/brand/decision-engine.png` | Command Center brand hero |
+| Control banner | `mobile/assets/brand/control-banner.png` | Login brand strip |
+| App icon copy | `mobile/assets/brand/app-icon.png` | Synced from Decision Engine emblem for Expo/native |
+| Splash copy | `mobile/assets/brand/splash-logo.png` | Synced from Decision Engine emblem for Expo Splash Screen |
 | Original design references | `mobile/assets/brand/reference-cards/` | Visual QA for panels, hierarchy, PASS/PLAY status, card density |
 | Untouched originals | `mobile/assets/brand/originals/` | Archival source; do not optimize, redraw, or overwrite |
 
-`mobile/src/brandAssets.ts` statically imports every canonical asset so Expo and downstream app builders preserve them. `mobile/app.json` independently points native icon and splash generation to the crest.
+`mobile/src/brandAssets.ts` statically imports every canonical asset so Expo and downstream app builders preserve them. `mobile/app.json` points native icon and splash generation at the Decision Engine emblem. After changing the emblem, run `python3 mobile/scripts/sync_android_brand_icons.py` before `npm run build:apk` so mipmaps and splash drawables match.
 
 ## Visual direction
 
