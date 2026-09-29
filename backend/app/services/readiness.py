@@ -141,15 +141,15 @@ def candidate_verification_gaps(candidate: CandidateInput) -> list[str]:
         for label, state in candidate.source_status.items()
         if state == "unknown" and label in hard_source_keys
     ]
-    # KBO / ESPN team sports / MLB full-game: starter/lineup never block via source labels.
-    if (
-        sport_l == "kbo"
-        or sport_l in ESPN_TEAM_MARKET_SPORTS
-        or is_mlb_team_market(candidate)
-    ):
+    # KBO / ESPN team sports have no certified lineup or bullpen feed.
+    # MLB full-game markets soft-gap starter/lineup only: batting orders post late.
+    # Unknown bullpen stays a hard MLB gap for team markets and pitcher props.
+    if sport_l == "kbo" or sport_l in ESPN_TEAM_MARKET_SPORTS:
         unknown_sources = [
             label for label in unknown_sources if label not in {"starter", "lineup", "bullpen"}
         ]
+    elif is_mlb_team_market(candidate):
+        unknown_sources = [label for label in unknown_sources if label not in {"starter", "lineup"}]
 
     gaps.extend(f"source:{label}" for label in unknown_sources)
 
