@@ -111,6 +111,17 @@ class HiveAggregate(Base):
 
     updated_at = Column(DateTime(timezone=True), nullable=False, default=utcnow, onupdate=utcnow)
 
+    __table_args__ = (
+        Index(
+            "ix_hive_aggregate_lookup",
+            "sport",
+            "league",
+            "market",
+            "market_scope",
+            "model_version",
+        ),
+    )
+
 
 class HiveModelSnapshot(Base):
     __tablename__ = "hive_model_snapshots"
