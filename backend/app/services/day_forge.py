@@ -161,6 +161,9 @@ def _rec_snapshot(rec: Any) -> dict[str, Any]:
 
 def recommendation_is_day_forge_eligible(rec: Any, *, allow_lean: bool = False) -> bool:
     decision = str(getattr(rec, "decision", "") or "")
+    # WAIT is incomplete evidence, never today's sealed forge play.
+    if decision in {"WAIT", "SKIP", "REVIEW"}:
+        return False
     allowed_decisions = {"PLAY"} if not allow_lean else {"PLAY", "LEAN"}
     if decision not in allowed_decisions:
         return False

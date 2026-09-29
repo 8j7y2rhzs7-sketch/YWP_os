@@ -4,7 +4,7 @@ import { Animated, StyleSheet, Text, View } from "react-native";
 import { colors, fonts, radius, spacing } from "@/theme";
 
 const success = new Set(["PLAY", "LOCKED", "DOUBLE_CLEARED", "WIN", "POSITIVE", "SETTLED"]);
-const warning = new Set(["LEAN", "WATCH", "WARNING", "PENDING", "PUSH", "VOID"]);
+const warning = new Set(["LEAN", "WATCH", "WAIT", "WARNING", "PENDING", "PUSH", "VOID"]);
 const danger = new Set(["SKIP", "REVIEW", "LOSS", "FAILED", "CHANGE_REQUIRED", "NEGATIVE"]);
 
 export function StatusPill({ value }: { value: string }) {

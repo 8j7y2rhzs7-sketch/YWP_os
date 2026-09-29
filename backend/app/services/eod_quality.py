@@ -165,7 +165,7 @@ def run_eod_quality_pass(
                 else:
                     uncalled_play_lean_losses += 1
 
-        if sheet and decision in {"SKIP", "REVIEW"}:
+        if sheet and decision in {"SKIP", "REVIEW", "WAIT"}:
             if outcome == "LOSS":
                 report.good_dodges.append(_pick_ref(recommendation))
             elif outcome == "WIN":

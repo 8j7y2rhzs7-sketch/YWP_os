@@ -418,7 +418,7 @@ export default function PickSheetScreen() {
             />
             <Text style={type.caption}>
               Grades every selected market. PLAY/LEAN legs can build a ticket and open Lock Check.
-              SKIP/REVIEW legs stay visible so you see why YWP would not approve them — that is the
+              SKIP/REVIEW/WAIT legs stay visible so you see why YWP would not approve them — that is the
               point of this sheet.
             </Text>
           </MetalPanel>

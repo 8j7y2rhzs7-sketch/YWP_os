@@ -23,7 +23,8 @@ from app.services.board_metrics import (
 )
 
 ACTIVE_LEG_ACTIONS = frozenset({"follow", "replace"})
-BLOCKED_DECISIONS = frozenset({"SKIP", "REVIEW"})
+# WAIT is not an official play and must not ship as a verified marketing card.
+BLOCKED_DECISIONS = frozenset({"SKIP", "REVIEW", "WAIT"})
 DEMO_SOURCE_TOKENS = ("demo", "synthetic", "ywp_demo")
 
 
@@ -91,7 +92,10 @@ def _card_status(ticket: Ticket, legs: list[Recommendation]) -> str:
     if any(s == "DEMO" for s in statuses):
         return "DEMO"
     if any(s in BLOCKED_DECISIONS for s in statuses):
-        return "SKIP" if "SKIP" in statuses else "REVIEW"
+        for label in ("SKIP", "WAIT", "REVIEW"):
+            if label in statuses:
+                return label
+        return "SKIP"
     if any(s == "EXPIRED" for s in statuses):
         return "EXPIRED"
     if any(s != "VERIFIED" for s in statuses):

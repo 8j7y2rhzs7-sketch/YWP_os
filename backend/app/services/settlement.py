@@ -48,7 +48,8 @@ class SettlementItem:
 
 BOARD_DECISIONS = frozenset({"PLAY", "LEAN", "WATCH"})
 # Sheet sportsbook-menu legs are Hive-captured even on SKIP — settle them too.
-SHEET_LEARNING_DECISIONS = frozenset({"PLAY", "LEAN", "WATCH", "SKIP", "REVIEW"})
+# WAIT is not an official board call. Sheet-menu WAIT still settles with SKIP.
+SHEET_LEARNING_DECISIONS = frozenset({"PLAY", "LEAN", "WATCH", "SKIP", "REVIEW", "WAIT"})
 
 
 @dataclass
@@ -314,7 +315,7 @@ def settle_user_board_recommendations(
         if sheet_menu:
             tags.append("SHEET_MENU_SETTLED")
         lesson = (
-            "Auto-settled Pick Sheet sportsbook-menu leg (incl. SKIP). "
+            "Auto-settled Pick Sheet sportsbook-menu leg (incl. SKIP/WAIT). "
             "Outcome trains Hive customer-selection calibration."
             if sheet_menu
             else ("Auto-settled board pick (never locked). Outcome still trains next-day weights.")

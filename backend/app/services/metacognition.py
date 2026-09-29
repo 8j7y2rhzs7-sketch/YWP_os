@@ -55,6 +55,11 @@ def reflect_on_decision(
         )
     elif decision_u == "WATCH":
         why_parts.append("Issued WATCH — edge or verification is incomplete, not a forced fill.")
+    elif decision_u == "WAIT":
+        why_parts.append(
+            "Issued WAIT / NO PICK YET because evidence is incomplete. "
+            "This is not an official play."
+        )
     else:
         why_parts.append(
             f"Issued {decision_u} because one or more constitutional gates blocked a play."
@@ -81,6 +86,10 @@ def reflect_on_decision(
     if decision_u in {"PLAY", "LEAN"}:
         impact_parts.append(
             "This pick can enter tickets, Lock Check, settlement, and Hive training if placed."
+        )
+    elif decision_u == "WAIT":
+        impact_parts.append(
+            "WAIT stays off official cards and parlays until the missing research is verified."
         )
     else:
         impact_parts.append(

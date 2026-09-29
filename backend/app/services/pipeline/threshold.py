@@ -26,6 +26,15 @@ def map_decision_threshold(
             "reason_codes": codes,
         }
 
+    if decision_u == "WAIT":
+        return {
+            "threshold": "reject",
+            "decision": "WAIT",
+            "force_pick": False,
+            "note": "WAIT / NO PICK YET — incomplete evidence is not an official play.",
+            "reason_codes": codes,
+        }
+
     if decision_u in {"LEAN", "WATCH", "REVIEW"} or (
         decision_u == "PLAY" and (miss_by_one_risk >= 0.55 or edge < 0.03)
     ):
