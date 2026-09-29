@@ -291,9 +291,8 @@ class Recommendation(Base):
     @property
     def price_timestamp(self):
         snap = self.snapshot or {}
-        return _coerce_snap_datetime(
-            snap.get("price_timestamp") or snap.get("source_timestamp")
-        )
+        return _coerce_snap_datetime(snap.get("price_timestamp") or snap.get("source_timestamp"))
+
     @property
     def market_scope_label(self) -> str:
         from app.services.board_metrics import market_scope_label
@@ -604,9 +603,13 @@ class ServiceCredential(Base):
     """Scoped bot tokens (marketing feed, etc.) stored as SHA-256 hashes."""
 
     __tablename__ = "service_credentials"
+    __table_args__ = (
+        UniqueConstraint("name"),
+        Index("ix_service_credentials_name", "name"),
+    )
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
-    name: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    name: Mapped[str] = mapped_column(String(64))
     token_hash: Mapped[str] = mapped_column(String(64))
     rotated_by_user_id: Mapped[str | None] = mapped_column(
         ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True

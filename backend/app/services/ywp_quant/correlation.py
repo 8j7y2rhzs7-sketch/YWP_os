@@ -5,7 +5,8 @@ from __future__ import annotations
 from typing import Any
 
 import numpy as np
-from scipy.stats import norm, t as student_t
+from scipy.stats import norm
+from scipy.stats import t as student_t
 
 
 def nearest_correlation(matrix: np.ndarray) -> tuple[np.ndarray, bool]:
@@ -20,7 +21,9 @@ def nearest_correlation(matrix: np.ndarray) -> tuple[np.ndarray, bool]:
     return rebuilt, changed
 
 
-def build_correlation(legs: list[dict[str, Any]], ticket: dict[str, Any]) -> tuple[np.ndarray, list[str]]:
+def build_correlation(
+    legs: list[dict[str, Any]], ticket: dict[str, Any]
+) -> tuple[np.ndarray, list[str]]:
     size = len(legs)
     matrix = np.eye(size)
     warnings: list[str] = []

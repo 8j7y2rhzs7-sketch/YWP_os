@@ -27,13 +27,9 @@ def _prop(i: int, *, source: str = "market_implied") -> dict:
         "probability_source": source,
         "variance": 0.4,
         "data_quality": 0.4 if source == "market_implied" else 0.75,
-        "data_source": (
-            "ESPN_PLAYER_PROP_MODEL" if source == "model" else "THE_ODDS_API_BOARD"
-        ),
+        "data_source": ("ESPN_PLAYER_PROP_MODEL" if source == "model" else "THE_ODDS_API_BOARD"),
         "source_timestamp": now.isoformat().replace("+00:00", "Z"),
-        "missing_fields": (
-            ["independent_model_projection"] if source == "market_implied" else []
-        ),
+        "missing_fields": (["independent_model_projection"] if source == "market_implied" else []),
         "source_status": {"market": "confirmed", "schedule": "confirmed"},
         "schedule_verified": True,
         "market_movement_verified": True,

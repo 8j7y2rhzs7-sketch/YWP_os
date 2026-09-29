@@ -47,7 +47,6 @@
     "android": {
       "package": "com.ywpos.app",
       "versionCode": 51,
-      "usesCleartextTraffic": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/brand/vision/decision-engine-emblem-square.png",
         "backgroundColor": "#02050A"
@@ -85,7 +84,8 @@
             "deploymentTarget": "16.4"
           }
         }
-      ]
+      ],
+      "expo-sharing"
     ],
     "experiments": {
       "typedRoutes": true

@@ -4,10 +4,9 @@ from datetime import UTC, date, datetime
 from decimal import Decimal
 from unittest.mock import patch
 
-from app.schemas import CandidateInput
+from app.schemas import CandidateInput, RiskProfile
 from app.services import player_prop_research, readiness
 from app.services.decision_engine import decision_engine
-from app.schemas import RiskProfile
 
 
 def _board_prop(**overrides) -> CandidateInput:

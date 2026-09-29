@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from datetime import UTC, date, datetime
-from decimal import Decimal
 from unittest.mock import patch
 
 from app.schemas import CandidateInput
@@ -84,9 +83,7 @@ def test_nfl_na_source_labels_do_not_block_or_count_as_unknown() -> None:
     gaps = readiness.candidate_verification_gaps(candidate)
     assert not any(g.startswith("source:") for g in gaps)
     unknowns = sum(
-        1
-        for value in candidate.source_status.values()
-        if str(value).lower() == "unknown"
+        1 for value in candidate.source_status.values() if str(value).lower() == "unknown"
     )
     assert unknowns == 0
 
@@ -123,12 +120,8 @@ def test_espn_form_backfills_prior_season_when_current_thin() -> None:
         assert slate_date
         return list(prior if season == 2025 else current)
 
-    with patch.object(
-        espn_provider, "_completed_games_from_schedule", side_effect=fake_completed
-    ):
-        form = espn_provider.get_team_recent_form(
-            "nfl", "5", date(2026, 9, 12), last_n=10
-        )
+    with patch.object(espn_provider, "_completed_games_from_schedule", side_effect=fake_completed):
+        form = espn_provider.get_team_recent_form("nfl", "5", date(2026, 9, 12), last_n=10)
 
     assert form["verified"] is True
     assert form["prior_season_backfill"] is True

@@ -12,6 +12,7 @@ manual grade — learning still records RESULT_GRADED with auto defaults.
 
 from __future__ import annotations
 
+import contextlib
 import logging
 import re
 from dataclasses import dataclass
@@ -24,8 +25,8 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session, joinedload
 
 from app.core.security import utcnow
-from app.models import LearningEvent, Recommendation, Result, Ticket, TicketLeg, User
 from app.hive.service import resolve_hive_outcome
+from app.models import LearningEvent, Recommendation, Result, Ticket, TicketLeg, User
 from app.services.learning import apply_micro_learning
 from app.services.lock_refresh import _game_pk
 from app.services.mlb_provider import get_live_feed
@@ -60,15 +61,11 @@ class SettleDayResult:
 
     @property
     def board_graded(self) -> int:
-        return sum(
-            1 for item in self.items if item.status == "graded" and not item.ticket_id
-        )
+        return sum(1 for item in self.items if item.status == "graded" and not item.ticket_id)
 
     @property
     def ticket_legs_graded(self) -> int:
-        return sum(
-            1 for item in self.items if item.status == "graded" and bool(item.ticket_id)
-        )
+        return sum(1 for item in self.items if item.status == "graded" and bool(item.ticket_id))
 
 
 def _local_today(timezone_name: str | None = None) -> date:
@@ -160,6 +157,7 @@ def settle_user_day(
         eod_quality=eod_quality,
     )
 
+
 def _settlement_coverage_snapshot(items: list[SettlementItem]) -> dict[str, Any]:
     """Summarize which sports/markets settled vs still need engine coverage."""
     graded = [item for item in items if item.status == "graded"]
@@ -203,9 +201,7 @@ def sync_hive_outcomes_for_graded(db: Session, user_id: str) -> int:
     from app.hive.models import HiveLearningEvent
 
     pending = list(
-        db.scalars(
-            select(HiveLearningEvent).where(HiveLearningEvent.outcome.is_(None))
-        ).all()
+        db.scalars(select(HiveLearningEvent).where(HiveLearningEvent.outcome.is_(None))).all()
     )
     if not pending:
         return 0
@@ -234,11 +230,7 @@ def sync_hive_outcomes_for_graded(db: Session, user_id: str) -> int:
                 source_recommendation_id=str(recommendation.id),
                 outcome=str(recommendation.outcome),
                 verified=True,
-                result_source=(
-                    "official_mlb"
-                    if result is not None
-                    else "board_sync"
-                ),
+                result_source=("official_mlb" if result is not None else "board_sync"),
                 resolved_at=getattr(result, "result_time", None) or utcnow(),
             )
             updated += 1
@@ -258,9 +250,9 @@ def settle_user_placed_tickets(
             select(Ticket)
             .where(Ticket.user_id == user_id, Ticket.status == "placed")
             .options(
-                joinedload(Ticket.legs).joinedload(TicketLeg.recommendation).joinedload(
-                    Recommendation.result
-                )
+                joinedload(Ticket.legs)
+                .joinedload(TicketLeg.recommendation)
+                .joinedload(Recommendation.result)
             )
             .order_by(Ticket.created_at.desc())
         ).unique()
@@ -325,10 +317,7 @@ def settle_user_board_recommendations(
             "Auto-settled Pick Sheet sportsbook-menu leg (incl. SKIP). "
             "Outcome trains Hive customer-selection calibration."
             if sheet_menu
-            else (
-                "Auto-settled board pick (never locked). "
-                "Outcome still trains next-day weights."
-            )
+            else ("Auto-settled board pick (never locked). Outcome still trains next-day weights.")
         )
         try:
             graded = _grade_recommendation(
@@ -394,11 +383,7 @@ def _settle_ticket(db: Session, ticket: Ticket) -> list[SettlementItem]:
                     status="ticket_settled",
                     detail=(
                         "All active legs already graded; ticket marked settled."
-                        + (
-                            f" Wager P&L {money}."
-                            if money is not None
-                            else ""
-                        )
+                        + (f" Wager P&L {money}." if money is not None else "")
                     ),
                 )
             )
@@ -491,9 +476,7 @@ def _finalize_ticket_wager(ticket: Ticket) -> Decimal | None:
         ticket.settled_profit_loss = (-stake).quantize(Decimal("0.01"))
     else:
         scoring = [
-            leg
-            for leg in active
-            if leg.recommendation and leg.recommendation.outcome == "WIN"
+            leg for leg in active if leg.recommendation and leg.recommendation.outcome == "WIN"
         ]
         if not scoring:
             ticket.settled_outcome = "PUSH" if "PUSH" in outcomes else "VOID"
@@ -510,6 +493,7 @@ def _finalize_ticket_wager(ticket: Ticket) -> Decimal | None:
 
     ticket.settled_at = utcnow()
     return ticket.settled_profit_loss
+
 
 def _grade_recommendation(
     db: Session,
@@ -546,8 +530,10 @@ def _grade_recommendation(
         )
         if odds_result.get("status") != "skipped":
             return odds_result
-        detail = mlb_result.get("detail") or odds_result.get("detail") or (
-            f"Automatic settlement does not support MLB {recommendation.market_type}."
+        detail = (
+            mlb_result.get("detail")
+            or odds_result.get("detail")
+            or (f"Automatic settlement does not support MLB {recommendation.market_type}.")
         )
         _record_settlement_gap(db, recommendation, detail=str(detail))
         return {"status": "skipped", "detail": str(detail)}
@@ -586,8 +572,10 @@ def _grade_recommendation(
     if odds_result.get("status") != "skipped":
         return odds_result
 
-    detail = (espn_result or {}).get("detail") or odds_result.get("detail") or (
-        f"Automatic settlement does not support {sport.upper()} {recommendation.market_type}."
+    detail = (
+        (espn_result or {}).get("detail")
+        or odds_result.get("detail")
+        or (f"Automatic settlement does not support {sport.upper()} {recommendation.market_type}.")
     )
     _record_settlement_gap(db, recommendation, detail=str(detail))
     return {
@@ -793,9 +781,9 @@ def _grade_odds_scores_recommendation(
     from app.services.board_metrics import parse_event_teams
     from app.services.odds_provider import (
         APP_SPORT_TO_ODDS_KEY,
+        _norm_team,
         get_scores,
         odds_keys_for_app_sport,
-        _norm_team,
     )
 
     sport = (recommendation.sport or "").lower()
@@ -852,7 +840,9 @@ def _grade_odds_scores_recommendation(
                     "home_runs": int(float(home_score)),
                     "away_runs": int(float(away_score)),
                     "total_runs": int(float(home_score)) + int(float(away_score)),
-                    "final_score": f"{away} {int(float(away_score))} @ {home} {int(float(home_score))}",
+                    "final_score": (
+                        f"{away} {int(float(away_score))} @ {home} {int(float(home_score))}"
+                    ),
                     "pitchers": [],
                     "batters": [],
                     "odds_key": odds_key,
@@ -890,8 +880,10 @@ def _grade_odds_scores_recommendation(
 def _is_player_prop_market(market: str, selection: str) -> bool:
     market_l = (market or "").lower()
     selection_l = (selection or "").lower()
-    if market_l.startswith("player_") or market_l.startswith("batter_") or market_l.startswith(
-        "pitcher_"
+    if (
+        market_l.startswith("player_")
+        or market_l.startswith("batter_")
+        or market_l.startswith("pitcher_")
     ):
         return True
     tokens = (
@@ -956,14 +948,14 @@ def _derive_espn_player_prop(
     stat_key, label = _espn_stat_for_market(
         market,
         selection_l,
-        sport=str((recommendation.sport or "")).lower(),
+        sport=str(recommendation.sport or "").lower(),
     )
     raw = _lookup_player_stat(
         best,
         market,
         selection_l,
         preferred=stat_key,
-        sport=str((recommendation.sport or "")).lower(),
+        sport=str(recommendation.sport or "").lower(),
     )
     if raw is None:
         return {
@@ -1045,9 +1037,7 @@ def _player_name_from_selection(selection: str) -> str:
     return re.split(r"\s+[+-]?\d", text, maxsplit=1)[0].strip()
 
 
-def _espn_stat_for_market(
-    market: str, selection_l: str, *, sport: str = ""
-) -> tuple[str, str]:
+def _espn_stat_for_market(market: str, selection_l: str, *, sport: str = "") -> tuple[str, str]:
     """Map market/selection language → ESPN boxscore keys (multi-sport)."""
     text = f"{market} {selection_l}".lower()
     sport_l = (sport or "").lower()
@@ -1237,7 +1227,7 @@ def _persist_auto_grade(
         )
     )
     apply_micro_learning(db, result, recommendation)
-    try:
+    with contextlib.suppress(RuntimeError, ValueError):
         resolve_hive_outcome(
             db=db,
             source_recommendation_id=str(recommendation.id),
@@ -1246,8 +1236,6 @@ def _persist_auto_grade(
             result_source=result_source,
             resolved_at=result.result_time,
         )
-    except (RuntimeError, ValueError):
-        pass
     db.flush()
     return {
         "status": "graded",
@@ -1278,7 +1266,7 @@ def _final_box(feed: dict[str, Any]) -> dict[str, Any] | None:
     # Fallback when linescore is thin but boxscore team batting totals exist.
     boxscore = (live_data.get("boxscore") or {}).get("teams") or {}
     if not home_runs and not away_runs:
-        for side, key in (("home", "home_runs"), ("away", "away_runs")):
+        for side, _key in (("home", "home_runs"), ("away", "away_runs")):
             batting = ((boxscore.get(side) or {}).get("teamStats") or {}).get("batting") or {}
             runs = batting.get("runs")
             if runs is not None:
@@ -1345,9 +1333,7 @@ def _final_box(feed: dict[str, Any]) -> dict[str, Any] | None:
     }
 
 
-def _derive_outcome(
-    recommendation: Recommendation, box: dict[str, Any]
-) -> dict[str, Any] | None:
+def _derive_outcome(recommendation: Recommendation, box: dict[str, Any]) -> dict[str, Any] | None:
     market = (recommendation.market_type or "").lower()
     selection = recommendation.selection or ""
     selection_l = selection.lower()
@@ -1589,8 +1575,10 @@ def _match_pitcher(recommendation: Recommendation, box: dict[str, Any]) -> dict[
         full = str(pitcher.get("name") or "")
         if full and full.lower() in selection.lower():
             return pitcher
-        if name_guess and full and (
-            name_guess.lower() in full.lower() or full.lower() in name_guess.lower()
+        if (
+            name_guess
+            and full
+            and (name_guess.lower() in full.lower() or full.lower() in name_guess.lower())
         ):
             return pitcher
     return None
@@ -1618,8 +1606,10 @@ def _match_batter(recommendation: Recommendation, box: dict[str, Any]) -> dict[s
         full = str(batter.get("name") or "")
         if full and full.lower() in selection.lower():
             return batter
-        if name_guess and full and (
-            name_guess.lower() in full.lower() or full.lower() in name_guess.lower()
+        if (
+            name_guess
+            and full
+            and (name_guess.lower() in full.lower() or full.lower() in name_guess.lower())
         ):
             return batter
     return None

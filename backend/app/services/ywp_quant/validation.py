@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
-
 
 VALID_STATUSES = {"pregame", "live"}
 
@@ -25,7 +24,7 @@ def validate_leg(leg: dict[str, Any]) -> list[str]:
     if timestamp:
         try:
             seen = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
-            age_hours = (datetime.now(timezone.utc) - seen.astimezone(timezone.utc)).total_seconds() / 3600
+            age_hours = (datetime.now(UTC) - seen.astimezone(UTC)).total_seconds() / 3600
             max_age = float(verification.get("max_age_hours", 12))
             if age_hours > max_age:
                 issues.append("STALE_SOURCE")
@@ -48,6 +47,8 @@ def validate_leg(leg: dict[str, Any]) -> list[str]:
 
 
 def verification_score(leg: dict[str, Any], issues: list[str]) -> float:
-    hard = sum(issue.startswith(("MISSING_", "UNVERIFIED_", "INVALID_", "EVENT_")) for issue in issues)
+    hard = sum(
+        issue.startswith(("MISSING_", "UNVERIFIED_", "INVALID_", "EVENT_")) for issue in issues
+    )
     soft = len(issues) - hard
     return max(0.0, 1.0 - 0.18 * hard - 0.06 * soft)

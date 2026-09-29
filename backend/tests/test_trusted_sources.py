@@ -1,8 +1,10 @@
 from __future__ import annotations
 
-from datetime import date
-
-from app.services.research_searchers import search_market_consensus, search_mlb_park, search_mlb_umpires
+from app.services.research_searchers import (
+    search_market_consensus,
+    search_mlb_park,
+    search_mlb_umpires,
+)
 from app.services.trusted_sources import trusted_sources_manifest
 
 

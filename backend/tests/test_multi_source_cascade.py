@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from datetime import UTC, date, datetime
-from types import SimpleNamespace
+from datetime import date
 
 from app.services import live_generic_slate
 
@@ -35,7 +34,9 @@ def test_live_generic_keeps_plays_when_espn_research_fails(monkeypatch) -> None:
         lambda sport, **kwargs: ["soccer_epl"],
     )
     monkeypatch.setattr(live_generic_slate, "get_game_odds", lambda **kwargs: [event])
-    monkeypatch.setattr(live_generic_slate, "league_injuries", lambda sport: {"verified": False, "by_team": {}})
+    monkeypatch.setattr(
+        live_generic_slate, "league_injuries", lambda sport: {"verified": False, "by_team": {}}
+    )
 
     def boom(**kwargs):
         raise RuntimeError("espn 403")

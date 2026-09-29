@@ -11,7 +11,7 @@ from __future__ import annotations
 import logging
 import re
 import time
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from typing import Any
 
 import httpx
@@ -135,7 +135,7 @@ def _parse_game(game: dict[str, Any], *, year: int, week: int) -> dict[str, Any]
     start_iso: str | None = None
     try:
         if start_epoch is not None:
-            start_dt = datetime.fromtimestamp(int(start_epoch), tz=timezone.utc)
+            start_dt = datetime.fromtimestamp(int(start_epoch), tz=UTC)
             start_date = start_dt.date().isoformat()
             start_iso = start_dt.isoformat()
     except (TypeError, ValueError, OSError):
@@ -161,8 +161,7 @@ def _parse_game(game: dict[str, Any], *, year: int, week: int) -> dict[str, Any]
         "week": week,
         "source_id": SOURCE_ID,
         "source_url": (
-            f"{SOURCE_API}/casablanca/scoreboard/football/fbs/"
-            f"{year}/{week:02d}/scoreboard.json"
+            f"{SOURCE_API}/casablanca/scoreboard/football/fbs/{year}/{week:02d}/scoreboard.json"
         ),
     }
 

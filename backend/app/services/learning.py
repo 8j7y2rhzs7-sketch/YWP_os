@@ -54,14 +54,14 @@ def performance(db: Session, user_id: str) -> PerformanceOut:
         for ticket in tickets
         if (ticket.settled_outcome or "").upper() in {"WIN", "LOSS", "PUSH", "VOID"}
     ]
-    ticket_wins = sum(1 for ticket in graded_tickets if (ticket.settled_outcome or "").upper() == "WIN")
+    ticket_wins = sum(
+        1 for ticket in graded_tickets if (ticket.settled_outcome or "").upper() == "WIN"
+    )
     ticket_losses = sum(
         1 for ticket in graded_tickets if (ticket.settled_outcome or "").upper() == "LOSS"
     )
     ticket_pushes = sum(
-        1
-        for ticket in graded_tickets
-        if (ticket.settled_outcome or "").upper() in {"PUSH", "VOID"}
+        1 for ticket in graded_tickets if (ticket.settled_outcome or "").upper() in {"PUSH", "VOID"}
     )
     ticket_settled = len(graded_tickets)
     ticket_win_rate = _rate(ticket_wins, ticket_losses)
@@ -101,7 +101,11 @@ def performance(db: Session, user_id: str) -> PerformanceOut:
 
     if tickets:
         profit_loss = sum(
-            (ticket.settled_profit_loss for ticket in tickets if ticket.settled_profit_loss is not None),
+            (
+                ticket.settled_profit_loss
+                for ticket in tickets
+                if ticket.settled_profit_loss is not None
+            ),
             start=Decimal("0.00"),
         )
         wagered = sum(
@@ -209,9 +213,7 @@ def performance(db: Session, user_id: str) -> PerformanceOut:
         except (TypeError, ValueError):
             continue
         clv = float(result.clv_probability) if result.clv_probability is not None else None
-        calib_rows.append(
-            (model_p, result.outcome == "WIN", clv, recommendation.market_type)
-        )
+        calib_rows.append((model_p, result.outcome == "WIN", clv, recommendation.market_type))
     calib = summarize_calibration(calib_rows)
 
     return PerformanceOut(
@@ -690,8 +692,7 @@ def apply_micro_learning(db: Session, result: Result, recommendation: Recommenda
 
 def learning_pulse(db: Session, user_id: str) -> dict[str, Any]:
     rows = db.execute(
-        select(LearningEvent, Recommendation)
-        .join(
+        select(LearningEvent, Recommendation).join(
             Recommendation,
             Recommendation.id == LearningEvent.recommendation_id,
             isouter=True,
@@ -701,10 +702,7 @@ def learning_pulse(db: Session, user_id: str) -> dict[str, Any]:
         event
         for event, recommendation in rows
         if (recommendation is not None and recommendation.created_by_user_id == user_id)
-        or (
-            event.recommendation_id is None
-            and (event.analysis or {}).get("user_id") == user_id
-        )
+        or (event.recommendation_id is None and (event.analysis or {}).get("user_id") == user_id)
     ]
     protocol_runs = sum(1 for event in events if event.event_type == "PROTOCOL_RUN")
     graded = sum(1 for event in events if event.event_type == "RESULT_GRADED")

@@ -7,7 +7,7 @@ from datetime import datetime
 from fastapi import APIRouter, Header, HTTPException, status
 from pydantic import BaseModel, Field
 
-from app.deps import AdminUser, DB
+from app.deps import DB, AdminUser
 from app.models import AuditLog, Ticket
 from app.services.marketing_auth import (
     marketing_token_configured,
@@ -136,9 +136,7 @@ def set_publication_eligibility(
             entity_id=ticket.id,
             details={
                 "eligible": payload.eligible,
-                "expires_at": (
-                    payload.expires_at.isoformat() if payload.expires_at else None
-                ),
+                "expires_at": (payload.expires_at.isoformat() if payload.expires_at else None),
             },
         )
     )
@@ -148,13 +146,9 @@ def set_publication_eligibility(
         "ticket_id": ticket.id,
         "publication_eligible": ticket.publication_eligible,
         "publication_eligible_at": (
-            ticket.publication_eligible_at.isoformat()
-            if ticket.publication_eligible_at
-            else None
+            ticket.publication_eligible_at.isoformat() if ticket.publication_eligible_at else None
         ),
         "publication_expires_at": (
-            ticket.publication_expires_at.isoformat()
-            if ticket.publication_expires_at
-            else None
+            ticket.publication_expires_at.isoformat() if ticket.publication_expires_at else None
         ),
     }

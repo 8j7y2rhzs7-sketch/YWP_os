@@ -123,9 +123,11 @@ def market_series_blockers(candidate: Any) -> list[str]:
             values = snap.get("observation_values") or snap.get("l10_values")
     line = getattr(candidate, "line", None)
     direction = str(getattr(candidate, "selection", "") or "").lower()
-    is_under = " under" in f" {direction} " or direction.endswith(" under") or "_under" in str(
-        getattr(candidate, "market_type", "") or ""
-    ).lower()
+    is_under = (
+        " under" in f" {direction} "
+        or direction.endswith(" under")
+        or "_under" in str(getattr(candidate, "market_type", "") or "").lower()
+    )
 
     has_hit_rate = getattr(candidate, "recent_hit_rate", None) is not None
     has_cushion = getattr(candidate, "average_cushion", None) is not None
@@ -251,7 +253,13 @@ def same_player_category_conflicts(legs: list[Any]) -> list[str]:
         by_player.setdefault(str(player), set()).add(family)
     conflicts: list[str] = []
     pitcher_bundle = {"pitcher_k", "pitcher_er", "pitcher_hits", "pitcher_outs"}
-    volume_bundle = {"player_points", "player_rebounds", "player_assists", "player_threes", "player_pra"}
+    volume_bundle = {
+        "player_points",
+        "player_rebounds",
+        "player_assists",
+        "player_threes",
+        "player_pra",
+    }
     for player, families in by_player.items():
         if len(families & pitcher_bundle) >= 2:
             conflicts.append(f"SAME_PLAYER_CATEGORY_STACK:{player}:pitcher")
@@ -285,8 +293,7 @@ def eliminate_weakest_until_stable(
         miss = float(getattr(weakest, "miss_by_one_risk", 0) or 0)
         if miss >= WEAKEST_FLOOR_MISS:
             notes.append(
-                f"Card rejected after weakest-leg re-check: {explanation}. "
-                "No filler legs added."
+                f"Card rejected after weakest-leg re-check: {explanation}. No filler legs added."
             )
             return [], notes
     return kept, notes

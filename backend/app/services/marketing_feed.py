@@ -49,7 +49,9 @@ def _leg_recs(ticket: Ticket) -> list[Recommendation]:
 
 
 def _is_demo_recommendation(rec: Recommendation) -> bool:
-    source = f"{rec.data_source or ''} {(rec.snapshot or {}).get('probability_source') or ''}".lower()
+    source = (
+        f"{rec.data_source or ''} {(rec.snapshot or {}).get('probability_source') or ''}".lower()
+    )
     if any(token in source for token in DEMO_SOURCE_TOKENS):
         return True
     if verification_status_from_snapshot(rec.snapshot) == "DEMO":
@@ -173,7 +175,6 @@ def serialize_ticket_card(ticket: Ticket) -> dict[str, Any] | None:
     if event_start is None or expires_at is None or verified_as_of is None:
         return None
 
-    qualities = [float(rec.data_quality or 0) for rec in legs]
     # Aggregate model probability only when every leg has an independent model.
     model_probs: list[float] = []
     for rec in legs:
@@ -260,9 +261,7 @@ def build_approved_marketing_feed(db: Session) -> dict[str, Any]:
         if item.get("dataQuality") != "COMPLETE":
             continue
         try:
-            expires_at = datetime.fromisoformat(
-                str(item["expiresAt"]).replace("Z", "+00:00")
-            )
+            expires_at = datetime.fromisoformat(str(item["expiresAt"]).replace("Z", "+00:00"))
         except (TypeError, ValueError):
             continue
         if _aware(expires_at) is None or _aware(expires_at) <= now:

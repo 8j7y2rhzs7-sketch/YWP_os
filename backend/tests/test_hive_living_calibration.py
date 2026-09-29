@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from app.hive.service import HiveSignal, blend_hive_probability
 from app.schemas import CandidateInput, RiskProfile
@@ -14,7 +14,7 @@ def _candidate(**overrides):
         event_name="Away @ Home",
         sport="mlb",
         league="MLB",
-        start_time=datetime.now(timezone.utc),
+        start_time=datetime.now(UTC),
         market_type="moneyline",
         market_period="full_game",
         selection="Away ML",
@@ -24,7 +24,7 @@ def _candidate(**overrides):
         variance=0.2,
         data_quality=0.95,
         data_source="mlb_stats",
-        source_timestamp=datetime.now(timezone.utc),
+        source_timestamp=datetime.now(UTC),
         thesis_key="thesis-away-ml",
         script_key="script-away-ml",
         schedule_verified=True,

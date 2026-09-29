@@ -77,10 +77,8 @@ def project_matchup(
         else:
             gap = expected_total - float(line)
             base = 0.5 + max(-0.22, min(0.22, gap / 12.0))
-            if "under" in selection_l or "under" in market:
-                prob = 1.0 - base
-            else:
-                prob = base
+            under = "under" in selection_l or "under" in market
+            prob = 1.0 - base if under else base
         quality = 0.55 if home_form.get("verified") and away_form.get("verified") else 0.40
         prob = 0.5 + (prob - 0.5) * 0.55
         return SportProjection(

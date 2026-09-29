@@ -10,7 +10,9 @@ from .engine import analyze_document
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Analyze a market ticket with the YWP quantitative gate")
+    parser = argparse.ArgumentParser(
+        description="Analyze a market ticket with the YWP quantitative gate"
+    )
     parser.add_argument("input", type=Path, help="JSON input document")
     parser.add_argument("--output", type=Path, help="Optional JSON output path")
     args = parser.parse_args()

@@ -2,8 +2,13 @@ from __future__ import annotations
 
 from datetime import date
 
-from app.services import cfbd_provider, espn_provider, facts_cascade, ncaa_provider
-from app.services import research_searchers
+from app.services import (
+    cfbd_provider,
+    espn_provider,
+    facts_cascade,
+    ncaa_provider,
+    research_searchers,
+)
 from app.services.trusted_sources import sources_for, trusted_sources_manifest
 
 
@@ -37,7 +42,9 @@ def test_trusted_sources_include_validated_free_providers() -> None:
     assert "open_meteo" in ncaaf_weather
 
     ncaa_meta = next(s for s in trusted_sources_manifest()["sources"] if s["id"] == "ncaa_data_api")
-    nws_meta = next(s for s in trusted_sources_manifest()["sources"] if s["id"] == "nws_weather_gov")
+    nws_meta = next(
+        s for s in trusted_sources_manifest()["sources"] if s["id"] == "nws_weather_gov"
+    )
     assert ncaa_meta["tier"] == "secondary"
     assert nws_meta["tier"] == "secondary"
 

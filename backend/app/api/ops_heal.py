@@ -5,7 +5,7 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
-from app.deps import AdminUser, DB, SubscribedUser
+from app.deps import DB, AdminUser, SubscribedUser
 from app.services.ops_evidence import (
     collect_all_process_evidence,
     latest_evidence_pack,

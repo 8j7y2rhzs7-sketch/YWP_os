@@ -221,7 +221,9 @@ def _summarize(games: list[dict[str, Any]]) -> dict[str, Any]:
         "win_pct": wins / len(games),
         "avg_for": round(avg_for, 3),
         "avg_against": round(avg_against, 3),
-        "totals": [float(g.get("goals_for") or 0) + float(g.get("goals_against") or 0) for g in games],
+        "totals": [
+            float(g.get("goals_for") or 0) + float(g.get("goals_against") or 0) for g in games
+        ],
     }
 
 
@@ -245,7 +247,9 @@ def _empty_form() -> dict[str, Any]:
     }
 
 
-def _get(path: str, *, params: dict[str, Any] | None = None, cache_ttl: float = 300) -> dict[str, Any]:
+def _get(
+    path: str, *, params: dict[str, Any] | None = None, cache_ttl: float = 300
+) -> dict[str, Any]:
     key = f"{path}|{sorted((params or {}).items())}"
     cached = _CACHE.get(key)
     if cached and time.time() - cached[0] < cache_ttl:

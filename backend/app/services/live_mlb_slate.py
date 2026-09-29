@@ -17,6 +17,7 @@ from typing import Any
 
 from app.core.config import settings
 from app.schemas import CandidateInput
+from app.services.board_metrics import bookmaker_display_name
 from app.services.mlb_model import MLBProjection, pitcher_l5_summary, project_mlb_game
 from app.services.mlb_provider import (
     get_bullpen_usage,
@@ -30,7 +31,6 @@ from app.services.mlb_provider import (
     player_headshot_url,
     team_logo_url,
 )
-from app.services.single_flight import single_flight
 from app.services.odds_provider import (
     extract_best_odds,
     extract_player_prop,
@@ -40,8 +40,8 @@ from app.services.odds_provider import (
     match_game_to_event,
 )
 from app.services.research_searchers import run_mlb_research_searchers
+from app.services.single_flight import single_flight
 from app.services.ticket_gates import event_market_status
-from app.services.board_metrics import bookmaker_display_name
 
 logger = logging.getLogger(__name__)
 
@@ -270,7 +270,6 @@ def _build_live_mlb_slate(slate_date: date) -> list[CandidateInput]:
     return candidates
 
 
-
 def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
     """Coalesce concurrent MLB slate builds for the same date (multi-phone safe)."""
     return single_flight(
@@ -278,6 +277,7 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
         lambda: _build_live_mlb_slate(slate_date),
         ttl_seconds=45.0,
     )
+
 
 def _build_matched_game_bundle(
     game: dict[str, Any],
@@ -320,9 +320,8 @@ def _build_matched_game_bundle(
     if searchers["park"].get("verified"):
         context["park_verified"] = True
         context["venue"] = searchers["park"].get("venue") or context.get("venue")
-    if (
-        not context.get("weather", {}).get("verified")
-        and searchers["weather_backup"].get("verified")
+    if not context.get("weather", {}).get("verified") and searchers["weather_backup"].get(
+        "verified"
     ):
         context["weather"] = {
             "verified": True,
@@ -516,7 +515,6 @@ def _game_market_candidates(
     return candidates
 
 
-
 def _research_ready_for_props(research: dict[str, Any]) -> bool:
     """True when free MLB sources cleared the checks props still need later.
 
@@ -707,9 +705,9 @@ def _batter_prop_candidates(
                 _build_candidate(
                     game=game,
                     research=research,
-                    candidate_id=(
-                        f"mlb-{field}-{side}-{intent['player_id']}-{game['game_pk']}"
-                    )[:100],
+                    candidate_id=(f"mlb-{field}-{side}-{intent['player_id']}-{game['game_pk']}")[
+                        :100
+                    ],
                     event_id=event_id,
                     event_name=event_name,
                     start_time=start_time,
@@ -726,7 +724,10 @@ def _batter_prop_candidates(
                     reason_codes=["INDEPENDENT_MODEL", "ACTUAL_L5_L10", "CURRENT_FORM"],
                     reasoning=[
                         f"Official MLB L10: {round(avg, 2)} average {label}.",
-                        f"Actual {offer.get('book')} line and price are used only for value comparison.",
+                        (
+                            f"Actual {offer.get('book')} line and price are used "
+                            "only for value comparison."
+                        ),
                     ],
                     factors={
                         f"recent_{field}": _scale(avg - float(line), scale),
@@ -763,9 +764,9 @@ def _batter_prop_candidates(
                     _build_candidate(
                         game=game,
                         research=research,
-                        candidate_id=(
-                            f"mlb-hrr-{side}-{intent['player_id']}-{game['game_pk']}"
-                        )[:100],
+                        candidate_id=(f"mlb-hrr-{side}-{intent['player_id']}-{game['game_pk']}")[
+                            :100
+                        ],
                         event_id=event_id,
                         event_name=event_name,
                         start_time=start_time,
@@ -782,7 +783,10 @@ def _batter_prop_candidates(
                         reason_codes=["INDEPENDENT_MODEL", "ACTUAL_L5_L10", "CURRENT_FORM"],
                         reasoning=[
                             f"Official MLB L10: {round(avg, 2)} average hits+runs+RBIs.",
-                            "Sportsbook price used only for value comparison after form projection.",
+                            (
+                                "Sportsbook price used only for value comparison "
+                                "after form projection."
+                            ),
                         ],
                         factors={"recent_hrr": _scale(avg - float(line), 2.0)},
                         recent_hit_rate=_series_hit_rate(series, float(line)),
@@ -922,7 +926,9 @@ def _pitcher_peripheral_candidates(
                 hit_rate = round(rate, 3)
                 cushion = float(line) - avg
                 miss1 = sum(
-                    1 for value in series if value >= float(line) and abs(value - float(line)) <= 1.0
+                    1
+                    for value in series
+                    if value >= float(line) and abs(value - float(line)) <= 1.0
                 )
             if (is_over and avg + 0.2 < float(line)) or (not is_over and avg - 0.2 > float(line)):
                 continue
@@ -1162,7 +1168,8 @@ def _build_candidate(
     ]
     if not lineups_confirmed and starters_confirmed:
         soft_notes.append(
-            "Probable starters listed; batting orders not yet posted — full-game markets still eligible."
+            "Probable starters listed; batting orders not yet posted — "
+            "full-game markets still eligible."
         )
     if market_search.get("book_count"):
         soft_notes.append(str(market_search.get("detail")))
@@ -1183,12 +1190,12 @@ def _build_candidate(
 
     team_id = None
     headshot_id = None
-    if player_key and player_key.startswith("mlb-pitcher-"):
-        try:
-            headshot_id = int(player_key.rsplit("-", 1)[-1])
-        except ValueError:
-            headshot_id = None
-    elif player_key and player_key.startswith("mlb-batter-"):
+    if (
+        player_key
+        and player_key.startswith("mlb-pitcher-")
+        or player_key
+        and player_key.startswith("mlb-batter-")
+    ):
         try:
             headshot_id = int(player_key.rsplit("-", 1)[-1])
         except ValueError:
@@ -1208,9 +1215,13 @@ def _build_candidate(
         "schedule": "confirmed",
         "market": "confirmed" if market_movement_verified else "unknown",
         "current_form": "confirmed" if form_verified else "unknown",
-        "lineup": "confirmed" if lineups_confirmed else ("probable" if starters_confirmed else "unknown"),
+        "lineup": "confirmed"
+        if lineups_confirmed
+        else ("probable" if starters_confirmed else "unknown"),
         "injuries": "confirmed" if availability_verified else "unknown",
-        "weather": "confirmed" if weather_verified else ("probable" if park_verified else "unknown"),
+        "weather": "confirmed"
+        if weather_verified
+        else ("probable" if park_verified else "unknown"),
         "starter": "confirmed" if starters_confirmed else "probable",
         "bullpen": "confirmed" if bullpen_verified else "unknown",
         "motivation": "confirmed" if motivation_rotation_verified else "unknown",
@@ -1306,6 +1317,8 @@ def _build_candidate(
             "do not hedge solely because the price moved."
         ),
     )
+
+
 def _game_research(game: dict[str, Any], slate_date: date) -> dict[str, Any]:
     """Fetch independent official inputs concurrently with safe partial defaults."""
     home_id = game.get("home_id")

@@ -5,14 +5,15 @@ Covers NFL, NBA, NHL, NCAAF, NCAAB, soccer/MLS/EPL, KBO.
 Odds prices are required to show a play. Fact sources (NHL Web API, ESPN, …)
 enrich research; if they fail, priced plays still return as PARTIAL.
 """
+
 from __future__ import annotations
 
 import logging
 from datetime import UTC, date, datetime
 from decimal import Decimal
 
-from app.schemas import CandidateInput
 from app.core.config import settings
+from app.schemas import CandidateInput
 from app.services.espn_provider import espn_path_for
 from app.services.facts_cascade import league_injuries
 from app.services.market_board import _PROP_MARKETS_BY_SPORT, _flatten_prop_markets
@@ -78,15 +79,15 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
     regions = soccer_odds_regions(sport_lower)
     for odds_key in odds_keys:
         try:
-            batch = get_game_odds(
-                sport=odds_key, markets="h2h,spreads,totals", regions=regions
-            )
+            batch = get_game_odds(sport=odds_key, markets="h2h,spreads,totals", regions=regions)
         except Exception:
             logger.exception("Failed to fetch %s odds (%s)", sport, odds_key)
             continue
         if not batch:
             continue
-        leagues_fetched.append(soccer_league_label(odds_key) if sport_lower in SOCCER_KEYS else default_league)
+        leagues_fetched.append(
+            soccer_league_label(odds_key) if sport_lower in SOCCER_KEYS else default_league
+        )
         for event in batch:
             enriched = dict(event)
             enriched["_ywp_odds_key"] = odds_key
@@ -113,9 +114,10 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
         start_time = _parse_start(event.get("commence_time"))
         if start_time is None:
             continue
-        if start_time.astimezone(UTC).date() != slate_date and _event_local_date(
-            start_time, sport=sport_lower
-        ) != slate_date:
+        if (
+            start_time.astimezone(UTC).date() != slate_date
+            and _event_local_date(start_time, sport=sport_lower) != slate_date
+        ):
             continue
         matched_events += 1
         event_id = event.get("id", "")
@@ -136,7 +138,9 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
                 injury_feed=injury_feed,
             )
         except Exception:
-            logger.exception("Research failed for %s %s — keeping Odds-priced play", sport, event_name)
+            logger.exception(
+                "Research failed for %s %s — keeping Odds-priced play", sport, event_name
+            )
             research = _odds_only_research(bookmakers, home_team=home, sport=sport)
 
         if event_id and sport_lower in {"nfl", "ncaaf"}:
@@ -172,9 +176,7 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
     prop_candidates: list[CandidateInput] = []
     if sport_lower in {"nfl", "ncaaf"} and prop_event_contexts:
         max_events = int(
-            getattr(settings, "nfl_max_prop_events", None)
-            if sport_lower == "nfl"
-            else 4
+            getattr(settings, "nfl_max_prop_events", None) if sport_lower == "nfl" else 4
         )
         prop_candidates = _append_football_player_props(
             prop_event_contexts,
@@ -234,7 +236,11 @@ def _append_football_player_props(
                 payload = get_player_props(event_id, sport=odds_key, markets=chunk)
             except Exception:
                 logger.warning(
-                    "%s props chunk failed for %s (%s)", sport.upper(), event_id, chunk, exc_info=True
+                    "%s props chunk failed for %s (%s)",
+                    sport.upper(),
+                    event_id,
+                    chunk,
+                    exc_info=True,
                 )
                 continue
             if not payload:
@@ -262,16 +268,10 @@ def _append_football_player_props(
     if out:
         # Keep slate refresh under Render's ~30s proxy; background warm continues.
         budget = 10.0 if len(out) >= 200 else 14.0
-        out = enrich_player_prop_candidates(
-            out, slate_date=slate_date, budget_seconds=budget
-        )
-        remaining = [
-            row for row in out if row.probability_source == "market_implied"
-        ]
+        out = enrich_player_prop_candidates(out, slate_date=slate_date, budget_seconds=budget)
+        remaining = [row for row in out if row.probability_source == "market_implied"]
         if remaining:
-            schedule_background_prop_enrich(
-                remaining, slate_date=slate_date, budget_seconds=90.0
-            )
+            schedule_background_prop_enrich(remaining, slate_date=slate_date, budget_seconds=90.0)
     return out
 
 
@@ -292,9 +292,7 @@ def upcoming_odds_dates(sport: str, *, limit: int = 5) -> list[str]:
     regions = soccer_odds_regions(sport_lower)
     for odds_key in odds_keys:
         try:
-            events = get_game_odds(
-                sport=odds_key, markets="h2h,spreads,totals", regions=regions
-            )
+            events = get_game_odds(sport=odds_key, markets="h2h,spreads,totals", regions=regions)
         except Exception:
             continue
         for event in events:

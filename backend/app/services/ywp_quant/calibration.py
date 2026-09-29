@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 import math
-from typing import Any, Iterable
+from collections.abc import Iterable
+from typing import Any
 
 
 def brier_score(probabilities: Iterable[float], outcomes: Iterable[int]) -> float:

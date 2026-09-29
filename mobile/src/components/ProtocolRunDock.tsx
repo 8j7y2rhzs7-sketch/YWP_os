@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   railSheen: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     backgroundColor: "rgba(255,255,255,0.03)",
   },
   meta: {
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
   },
   sport: {
     ...type.eyebrow,
-    color: colors.textMuted,
+    color: colors.muted,
   },
   plays: {
     fontFamily: fonts.display,

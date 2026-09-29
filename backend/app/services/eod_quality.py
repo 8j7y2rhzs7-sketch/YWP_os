@@ -13,6 +13,7 @@ Does not invent certainty language — only process forensics.
 
 from __future__ import annotations
 
+import contextlib
 from dataclasses import asdict, dataclass, field
 from datetime import date
 from typing import Any
@@ -155,14 +156,12 @@ def run_eod_quality_pass(
                 if outcome == "WIN":
                     uncalled_play_lean_wins += 1
                     report.missed_winners.append(_pick_ref(recommendation))
-                    try:
+                    with contextlib.suppress(Exception):
                         record_hive_action(
                             db=db,
                             source_recommendation_id=str(recommendation.id),
                             action="ignored",
                         )
-                    except Exception:  # noqa: BLE001 — never fail settle on Hive tagging
-                        pass
                 else:
                     uncalled_play_lean_losses += 1
 
@@ -176,10 +175,7 @@ def run_eod_quality_pass(
     report.uncalled_play_lean_hit_rate = _hit_rate(
         uncalled_play_lean_wins, uncalled_play_lean_losses
     )
-    if (
-        report.locked_hit_rate is not None
-        and report.uncalled_play_lean_hit_rate is not None
-    ):
+    if report.locked_hit_rate is not None and report.uncalled_play_lean_hit_rate is not None:
         report.packaging_gap = round(
             report.uncalled_play_lean_hit_rate - report.locked_hit_rate,
             4,
@@ -202,8 +198,7 @@ def _score_day(report: EodQualityReport) -> tuple[float, str, list[str]]:
     if report.locked_hit_rate is not None:
         score += (report.locked_hit_rate - 0.5) * 40
         lessons.append(
-            f"Locked legs hit {report.locked_wins}/"
-            f"{report.locked_wins + report.locked_losses}."
+            f"Locked legs hit {report.locked_wins}/{report.locked_wins + report.locked_losses}."
         )
     else:
         lessons.append("No locked legs graded today — board memory still recorded.")
@@ -227,9 +222,7 @@ def _score_day(report: EodQualityReport) -> tuple[float, str, list[str]]:
         )
     if report.good_dodges:
         score += min(8.0, len(report.good_dodges) * 2.0)
-        lessons.append(
-            f"{len(report.good_dodges)} Sheet SKIP(s) lost — good dodge(s) logged."
-        )
+        lessons.append(f"{len(report.good_dodges)} Sheet SKIP(s) lost — good dodge(s) logged.")
 
     if report.packaging_gap is not None:
         if report.packaging_gap >= 0.08:
@@ -240,9 +233,7 @@ def _score_day(report: EodQualityReport) -> tuple[float, str, list[str]]:
             )
         elif report.packaging_gap <= -0.05:
             score += 5.0
-            lessons.append(
-                "Locked package outperformed leftover PLAY/LEAN board — packaging held."
-            )
+            lessons.append("Locked package outperformed leftover PLAY/LEAN board — packaging held.")
 
     score = max(0.0, min(100.0, round(score, 1)))
     if score >= 75:

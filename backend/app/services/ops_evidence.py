@@ -12,7 +12,7 @@ import logging
 import re
 import time
 from collections import Counter
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from threading import Lock
 from typing import Any
 from uuid import uuid4
@@ -133,7 +133,7 @@ _GET_DEDUPE_SECONDS = 20.0
 
 
 def _utcnow() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 def process_for_path(path: str) -> str:
@@ -291,12 +291,8 @@ def collect_all_process_evidence(
     # --- Audit trail ---
     audit_q = select(AuditLog).where(AuditLog.created_at >= since)
     if user_id:
-        audit_q = audit_q.where(
-            (AuditLog.user_id == user_id) | (AuditLog.user_id.is_(None))
-        )
-    audits = list(
-        db.scalars(audit_q.order_by(AuditLog.created_at.desc()).limit(400)).all()
-    )
+        audit_q = audit_q.where((AuditLog.user_id == user_id) | (AuditLog.user_id.is_(None)))
+    audits = list(db.scalars(audit_q.order_by(AuditLog.created_at.desc()).limit(400)).all())
     audit_by_action: Counter[str] = Counter()
     for row in audits:
         audit_by_action[row.action] += 1
@@ -362,7 +358,7 @@ def collect_all_process_evidence(
     process_counts["lock_check"] += len(locks)
     streams["lock_checks"] = {
         "count": len(locks),
-        "by_status": dict(Counter(l.lock_status for l in locks)),
+        "by_status": dict(Counter(lock.lock_status for lock in locks)),
     }
 
     results = list(

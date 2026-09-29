@@ -39,9 +39,7 @@ def outlier_review_reasons(
     implied = _implied_probability(american_odds)
     edge = adjusted_probability - implied
     threshold = (
-        OUTLIER_EDGE_REVIEW
-        if edge_review_threshold is None
-        else float(edge_review_threshold)
+        OUTLIER_EDGE_REVIEW if edge_review_threshold is None else float(edge_review_threshold)
     )
     if abs(edge) > threshold:
         reasons.append("OUTLIER_EDGE_REVIEW")
@@ -81,8 +79,7 @@ def market_scope_label(
     elif "total" in market:
         kind = "Game total"
     elif "run_line" in market or (
-        ("spread" in market or "handicap" in market)
-        and sport_l in {"mlb", "baseball", "kbo"}
+        ("spread" in market or "handicap" in market) and sport_l in {"mlb", "baseball", "kbo"}
     ):
         kind = "Run line"
     elif "handicap" in market and sport_l in {"soccer", "mls", "epl", "football"}:

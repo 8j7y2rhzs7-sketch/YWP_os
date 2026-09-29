@@ -137,7 +137,9 @@ class DecisionEngine:
         readiness = candidate_readiness(candidate)
         # Local YWP_DEMO_MODE fixtures may PLAY for end-to-end testing.
         # Production / non-demo runs never promote demo/synthetic probabilities.
-        if (readiness == "DEMO" or candidate.probability_source == "demo") and not settings.demo_mode:
+        if (
+            readiness == "DEMO" or candidate.probability_source == "demo"
+        ) and not settings.demo_mode:
             hard_skip_reasons.append(
                 "Official play blocked: demo/synthetic probability is not live evidence."
             )
@@ -182,8 +184,10 @@ class DecisionEngine:
         sport_l = (candidate.sport or "").lower()
         # No certified lineup feed for ESPN team sports / KBO — do not scare the board.
         # MLB full-game markets also skip lineup as a hard unverified flag (orders post late).
-        if sport_l not in ESPN_TEAM_MARKET_SPORTS and sport_l != "kbo" and not is_mlb_team_market(
-            candidate
+        if (
+            sport_l not in ESPN_TEAM_MARKET_SPORTS
+            and sport_l != "kbo"
+            and not is_mlb_team_market(candidate)
         ):
             verification_checks["lineup"] = candidate.lineup_confirmed
             verification_checks["starter"] = candidate.starter_confirmed
@@ -240,21 +244,15 @@ class DecisionEngine:
         role_stability = (
             0.5 if candidate.role_stability is None else float(candidate.role_stability)
         )
-        matchup_score = (
-            0.5 if candidate.matchup_score is None else float(candidate.matchup_score)
-        )
+        matchup_score = 0.5 if candidate.matchup_score is None else float(candidate.matchup_score)
         script_alignment = (
             0.5 if candidate.script_alignment is None else float(candidate.script_alignment)
         )
         multiple_paths = (
-            0.5
-            if candidate.multiple_paths_score is None
-            else float(candidate.multiple_paths_score)
+            0.5 if candidate.multiple_paths_score is None else float(candidate.multiple_paths_score)
         )
         miss_by_one_count = (
-            0
-            if candidate.miss_by_one_count_l10 is None
-            else int(candidate.miss_by_one_count_l10)
+            0 if candidate.miss_by_one_count_l10 is None else int(candidate.miss_by_one_count_l10)
         )
         stability = clamp(
             0.35 * role_stability
@@ -303,14 +301,18 @@ class DecisionEngine:
             reasons.append("MISS_BY_ONE_RISK")
             confidence_penalty += 6 if miss_by_one_risk < 0.80 else 10
         market_l = str(candidate.market_type or "").lower()
-        is_modeled_prop_sport = (
-            sport_l in {"wnba", "nba", "basketball", "nfl", "ncaaf", "mlb"}
-            and (
-                market_l.startswith("player_")
-                or market_l.startswith("pitcher_")
-                or market_l.startswith("batter_")
-                or "strikeout" in market_l
-            )
+        is_modeled_prop_sport = sport_l in {
+            "wnba",
+            "nba",
+            "basketball",
+            "nfl",
+            "ncaaf",
+            "mlb",
+        } and (
+            market_l.startswith("player_")
+            or market_l.startswith("pitcher_")
+            or market_l.startswith("batter_")
+            or "strikeout" in market_l
         )
         # Mimic the human filter: thin player-prop closes never become official plays,
         # even when the sheet pre-filled a generic safer_alternative string.
@@ -383,8 +385,7 @@ class DecisionEngine:
         # Weekly-report calculation discipline (lessons 1–4, 11–12).
         for code in identity_blockers(candidate):
             hard_skip_reasons.append(
-                "Identity verification failed before any market math could run "
-                f"({code})."
+                f"Identity verification failed before any market math could run ({code})."
             )
             reasons.append(code)
         for code in market_series_blockers(candidate):
@@ -437,15 +438,20 @@ class DecisionEngine:
 
         from app.services.board_metrics import FORM_PROP_OUTLIER_EDGE_REVIEW
 
-        form_prop = bool(candidate.l5_l10_verified) and candidate.probability_source in {
-            "model",
-            "manual_verified",
-        } and (
-            str(candidate.market_type or "").startswith("player_")
-            or str(candidate.market_type or "").startswith("pitcher_")
-            or "strikeout" in str(candidate.market_type or "").lower()
-            or str(candidate.data_source or "") == "ESPN_PLAYER_PROP_MODEL"
-            or "MLB_STATS" in str(candidate.data_source or "").upper()
+        form_prop = (
+            bool(candidate.l5_l10_verified)
+            and candidate.probability_source
+            in {
+                "model",
+                "manual_verified",
+            }
+            and (
+                str(candidate.market_type or "").startswith("player_")
+                or str(candidate.market_type or "").startswith("pitcher_")
+                or "strikeout" in str(candidate.market_type or "").lower()
+                or str(candidate.data_source or "") == "ESPN_PLAYER_PROP_MODEL"
+                or "MLB_STATS" in str(candidate.data_source or "").upper()
+            )
         )
         outlier_codes = outlier_review_reasons(
             adjusted_probability=adjusted,
@@ -627,11 +633,7 @@ class DecisionEngine:
             tier = "review"
         elif confidence >= 90 and risk == "low" and miss_by_one_risk < 0.55:
             tier = "cash_builder"
-        elif (
-            confidence >= 88
-            and miss_by_one_risk < 0.55
-            and risk in {"low", "medium"}
-        ):
+        elif confidence >= 88 and miss_by_one_risk < 0.55 and risk in {"low", "medium"}:
             # Multi-leg tag only when the leg itself is not a ticket-killer.
             tier = "core_parlay"
         elif expected_value >= 0.08:
@@ -665,8 +667,10 @@ class DecisionEngine:
         line_f = float(candidate.line) if candidate.line is not None else None
         mean_f = None
         if line_f is not None and candidate.average_cushion is not None:
-            mean_f = line_f + float(candidate.average_cushion) if is_over else line_f - float(
-                candidate.average_cushion
+            mean_f = (
+                line_f + float(candidate.average_cushion)
+                if is_over
+                else line_f - float(candidate.average_cushion)
             )
         pipe = run_leg_pipeline(
             decision=decision,
@@ -889,9 +893,7 @@ class DecisionEngine:
     def apply_slate_integrity_gates(self, evaluations: list[Evaluation]) -> list[Evaluation]:
         from collections import Counter
 
-        counts = Counter(
-            round(item.candidate.estimated_probability, 4) for item in evaluations
-        )
+        counts = Counter(round(item.candidate.estimated_probability, 4) for item in evaluations)
         anomalous = {prob for prob, count in counts.items() if count >= 3}
         if not anomalous:
             return evaluations

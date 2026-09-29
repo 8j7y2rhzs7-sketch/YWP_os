@@ -1,4 +1,5 @@
 """Whop subscription state synced to YWP OS users."""
+
 from __future__ import annotations
 
 import logging
@@ -67,11 +68,7 @@ def _mark_active(user: User, *, membership_id: str | None = None) -> None:
     granted = _aware(user.subscription_granted_at)
     day_pass = timedelta(seconds=settings.whop_day_pass_seconds)
     renewed_membership = bool(membership_id and membership_id != previous_membership)
-    if (
-        granted is None
-        or renewed_membership
-        or now - granted >= day_pass
-    ):
+    if granted is None or renewed_membership or now - granted >= day_pass:
         user.subscription_granted_at = now
 
 
@@ -166,13 +163,11 @@ def needs_subscription_recheck(user: User, *, force: bool = False) -> bool:
         return True
     if now - checked >= timedelta(seconds=settings.whop_access_recheck_seconds):
         return True
-    if (
+    return bool(
         user.subscription_status == "active"
         and granted is not None
         and now - granted >= timedelta(seconds=settings.whop_day_pass_seconds)
-    ):
-        return True
-    return False
+    )
 
 
 def ensure_fresh_subscription(db: Session, user: User, *, force: bool = False) -> User:
@@ -258,9 +253,7 @@ def apply_subscription_from_webhook(
         if whop_user_id:
             conditions.append(PendingWhopAccess.whop_user_id == whop_user_id)
         existing = (
-            db.scalar(select(PendingWhopAccess).where(or_(*conditions)))
-            if conditions
-            else None
+            db.scalar(select(PendingWhopAccess).where(or_(*conditions))) if conditions else None
         )
         if existing:
             existing.whop_user_id = whop_user_id or existing.whop_user_id

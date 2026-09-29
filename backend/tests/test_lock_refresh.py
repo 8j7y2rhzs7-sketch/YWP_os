@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime
 from decimal import Decimal
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -94,13 +94,16 @@ def test_ensure_lock_updates_fetches_when_client_sends_empty() -> None:
 def test_mlb_fetch_builds_update_from_providers() -> None:
     rec = _recommendation()
     with (
-        patch("app.services.lock_refresh.get_game_context", return_value={
-            "status": "Preview",
-            "detailed_status": "Pre-Game",
-            "home": {"lineup_confirmed": True},
-            "away": {"lineup_confirmed": True},
-            "weather": {"verified": True, "condition": "Clear"},
-        }),
+        patch(
+            "app.services.lock_refresh.get_game_context",
+            return_value={
+                "status": "Preview",
+                "detailed_status": "Pre-Game",
+                "home": {"lineup_confirmed": True},
+                "away": {"lineup_confirmed": True},
+                "weather": {"verified": True, "condition": "Clear"},
+            },
+        ),
         patch("app.services.lock_refresh.odds_api_configured", return_value=True),
         patch(
             "app.services.lock_refresh.get_event_odds",
@@ -259,8 +262,9 @@ def test_run_lock_check_empty_updates_uses_server_refresh(db_session=None) -> No
     loaded = session.get(Ticket, ticket.id)
     assert loaded is not None
     # Re-load with relationship
-    from sqlalchemy.orm import selectinload
     from sqlalchemy import select
+    from sqlalchemy.orm import selectinload
+
     from app.models import Ticket as TicketModel
 
     loaded = session.scalar(

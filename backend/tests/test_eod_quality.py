@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from decimal import Decimal
 
 from sqlalchemy import select
@@ -44,7 +44,7 @@ def _recommendation(user_id: str, **overrides: object) -> Recommendation:
         "thesis_key": "thesis-home",
         "script_key": "script-home",
         "data_source": "MLB_STATS_API+THE_ODDS_API",
-        "source_timestamp": datetime.now(timezone.utc),
+        "source_timestamp": datetime.now(UTC),
         "model_version": "test",
         "protocol_version": "test",
         "input_hash": "eod-abc",

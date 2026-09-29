@@ -295,9 +295,7 @@ def _lineup_injuries_starters_ok(candidate: CandidateInput) -> bool:
     if is_mlb_team_market(candidate):
         return bool(candidate.injuries_verified and candidate.starter_confirmed)
     return bool(
-        candidate.lineup_confirmed
-        and candidate.injuries_verified
-        and candidate.starter_confirmed
+        candidate.lineup_confirmed and candidate.injuries_verified and candidate.starter_confirmed
     )
 
 
@@ -400,10 +398,7 @@ def run_protocol_health_check(
         # Sheet sportsbook-menu legs often omit research scores (None). Treat
         # missing as incomplete — never crash float(None) into a 500 on Check.
         "matchup_edge": [
-            (
-                candidate.matchup_score is not None
-                and 0.0 <= float(candidate.matchup_score) <= 1.0
-            )
+            (candidate.matchup_score is not None and 0.0 <= float(candidate.matchup_score) <= 1.0)
             for candidate in candidates
         ],
         "recent_form_l5_l10": [
@@ -445,10 +440,7 @@ def run_protocol_health_check(
             _check(
                 "lineup_injuries_starters",
                 "Lineups, injuries, starters, and role",
-                [
-                    _lineup_injuries_starters_ok(candidate)
-                    for candidate in candidates
-                ],
+                [_lineup_injuries_starters_ok(candidate) for candidate in candidates],
             ),
             _check(
                 "motivation_rotation",

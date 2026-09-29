@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import logging
 import re
-from datetime import date, datetime, timedelta, timezone
+from datetime import UTC, date, datetime
 from typing import Any
 
 from app.services.odds_provider import get_game_odds, get_scores
@@ -59,7 +59,7 @@ def match_odds_event_to_kbo(
         if start is None:
             continue
         # Require UTC or Korea-local calendar match — do not accept arbitrary dates.
-        if start.astimezone(timezone.utc).date() != slate_date and _korea_date(start) != slate_date:
+        if start.astimezone(UTC).date() != slate_date and _korea_date(start) != slate_date:
             continue
         city = KBO_TEAM_CITY.get(ev_home) or KBO_TEAM_CITY.get(home_l) or "Seoul"
         return {
@@ -107,7 +107,7 @@ def get_team_recent_form(team_name: str, slate_date: date) -> dict[str, Any]:
         if not (_soft_match(team_l, _norm(home)) or _soft_match(team_l, _norm(away))):
             continue
         start = _parse_start(event.get("commence_time") or event.get("last_update"))
-        if start and start.astimezone(timezone.utc).date() > slate_date:
+        if start and start.astimezone(UTC).date() > slate_date:
             continue
         score_map = {
             str(row.get("name") or ""): _to_int(row.get("score"))
@@ -166,7 +166,8 @@ def injuries_policy() -> dict[str, Any]:
         "source_id": SOURCE_ID,
         "detail": (
             "No certified KBO injury feed (ESPN baseball/kbo unsupported). "
-            "Treated as clear for full-game markets; prop/strict lineup work stays blocked elsewhere."
+            "Treated as clear for full-game markets; prop/strict lineup work "
+            "stays blocked elsewhere."
         ),
         "policy": "unsupported_feed_assumed_clear",
     }

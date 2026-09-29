@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from app.hive.models import HiveLearningEvent
 from app.models import ErrorReport, LearningEvent, User
@@ -136,7 +136,7 @@ def test_board_errors_trigger_allowlisted_remediations(db_session, monkeypatch) 
 
 def test_hive_pending_drain_warns_and_plans_settle(db_session, monkeypatch) -> None:
     user = _user(db_session)
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     for i in range(22):
         db_session.add(
             HiveLearningEvent(
@@ -209,7 +209,7 @@ def test_observe_only_skips_apply(db_session) -> None:
 
 def test_coverage_gaps_contract(db_session, monkeypatch) -> None:
     user = _user(db_session)
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     for i in range(12):
         db_session.add(
             LearningEvent(
@@ -314,7 +314,9 @@ def test_improvement_proposals_collect_analyze_and_human_review(db_session, monk
 
     pending = list_ops_heal_proposals(db=db_session, status="pending", limit=20)
     assert pending
-    boardish = [p for p in pending if "fingerprint" in p and "decision_board" in str(p.get("fingerprint"))]
+    boardish = [
+        p for p in pending if "fingerprint" in p and "decision_board" in str(p.get("fingerprint"))
+    ]
     assert boardish or any("error_cluster" in str(p.get("fingerprint")) for p in pending)
     for row in pending:
         assert row["status"] == "pending"
@@ -364,7 +366,7 @@ def test_ops_heal_proposals_api_review(client, auth_headers, monkeypatch) -> Non
     db = SessionLocal()
     try:
         user = db.query(U).filter(U.email == "owner@ywp-os.com").one()
-        for i in range(2):
+        for _i in range(2):
             db.add(
                 ER(
                     user_id=user.id,

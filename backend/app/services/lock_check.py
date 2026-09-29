@@ -95,9 +95,7 @@ def run_lock_check(
             warnings.append(f"Stake exceeds the configured per-ticket cap of {cap:.2f}.")
             status = _raise_status(status, "SKIP")
 
-    active_recs = [
-        leg.recommendation for leg in ticket.legs if leg.action in active_actions
-    ]
+    active_recs = [leg.recommendation for leg in ticket.legs if leg.action in active_actions]
     if not cash_card_k_overs_ok(ticket.ticket_type, active_recs):
         checks["correlation"] = "FAIL"
         warnings.append("Cash cards cannot include more than one pitcher strikeout over.")
@@ -151,9 +149,7 @@ def run_lock_check(
 
         if update is None and not is_demo:
             # Should be rare after ensure_lock_updates; still fail closed.
-            changes.append(
-                "No fresh provider snapshot could be loaded from MLB/Odds providers."
-            )
+            changes.append("No fresh provider snapshot could be loaded from MLB/Odds providers.")
             leg_status = "SKIP"
             checks["data_quality"] = "FAIL"
         elif update is not None:

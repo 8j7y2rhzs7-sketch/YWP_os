@@ -358,9 +358,7 @@ def enrich_player_prop_candidates(
     for i in work_idx:
         token = _player_token(candidates[i])
         player_freq[token] = player_freq.get(token, 0) + 1
-    work_idx.sort(
-        key=lambda i: _enrich_priority(candidates[i], player_freq=player_freq)
-    )
+    work_idx.sort(key=lambda i: _enrich_priority(candidates[i], player_freq=player_freq))
 
     enriched = 0
     skipped_budget = 0
@@ -516,9 +514,7 @@ def _enrich_one(
         return None
 
     season = (slate_date or candidate.start_time.date()).year
-    log = espn_provider.get_athlete_gamelog(
-        sport, athlete["id"], season=season, last_n=12
-    )
+    log = espn_provider.get_athlete_gamelog(sport, athlete["id"], season=season, last_n=12)
     values = _stat_series(log.get("games") or [], stat_key)
     if len(values) < 5:
         prior = espn_provider.get_athlete_gamelog(
@@ -545,8 +541,8 @@ def _enrich_one(
     hit_rate = _raw_hit_rate(l10, line, is_over=is_over)
     cushions = [(v - line) if is_over else (line - v) for v in l10]
     avg_cushion = sum(cushions) / len(cushions)
-    miss_by_one = sum(1 for c in l10 if -1.0 <= c < 0) if is_over else sum(
-        1 for c in l10 if 0 < c <= 1.0
+    miss_by_one = (
+        sum(1 for c in l10 if -1.0 <= c < 0) if is_over else sum(1 for c in l10 if 0 < c <= 1.0)
     )
     if is_binary:
         miss_by_one = sum(1 for v in l10 if v < line)
@@ -576,9 +572,7 @@ def _enrich_one(
                 "current_form": "confirmed",
             },
             "source_urls": list(
-                dict.fromkeys(
-                    [*(candidate.source_urls or []), str(log.get("source_url") or "")]
-                )
+                dict.fromkeys([*(candidate.source_urls or []), str(log.get("source_url") or "")])
             )[:12],
             "schedule_verified": True,
             "universe_scan_complete": True,
@@ -597,9 +591,7 @@ def _enrich_one(
             "observation_values": [round(float(v), 3) for v in l10],
             "cushion_scale": cushion_scale,
             "matchup_score": probability,
-            "script_alignment": min(
-                0.95, max(0.05, 0.5 + avg_cushion / max(cushion_scale, 1.0))
-            ),
+            "script_alignment": min(0.95, max(0.05, 0.5 + avg_cushion / max(cushion_scale, 1.0))),
             "multiple_paths_score": min(1.0, 0.45 + hit_rate * 0.5),
             "role_stability": 0.7,
             "miss_by_one_count_l10": int(miss_by_one),
@@ -660,9 +652,7 @@ def _injury_state(
             if not name:
                 continue
             if not (
-                name.casefold() == needle
-                or needle in name.casefold()
-                or name.casefold() in needle
+                name.casefold() == needle or needle in name.casefold() or name.casefold() in needle
             ):
                 continue
             if espn_provider._is_out(str(entry.get("status") or "")):
@@ -894,16 +884,12 @@ def _raw_hit_rate(values: list[float], line: float, *, is_over: bool) -> float:
         return 0.5
     hits = 0
     for value in values:
-        if is_over and value > line:
-            hits += 1
-        elif not is_over and value < line:
+        if is_over and value > line or not is_over and value < line:
             hits += 1
     return hits / len(values)
 
 
-def _hit_rate_probability(
-    values: list[float], line: float, *, is_over: bool
-) -> float | None:
+def _hit_rate_probability(values: list[float], line: float, *, is_over: bool) -> float | None:
     """Conservative form projection — strong L10 should edge the book, not claim 95%."""
     if len(values) < 5:
         return None

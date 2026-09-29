@@ -110,10 +110,12 @@ def get_team_recent_form(
         return _empty_form()
     rows: list[dict[str, Any]] = []
     for game in data.get("data") or []:
-        if not game.get("status") or "Final" not in str(game.get("status")):
-            # Also accept numeric scores as completed.
-            if game.get("home_team_score") is None or game.get("visitor_team_score") is None:
-                continue
+        # Status text is optional; numeric scores also mark a completed game.
+        scores_missing = (
+            game.get("home_team_score") is None or game.get("visitor_team_score") is None
+        )
+        if "Final" not in str(game.get("status") or "") and scores_missing:
+            continue
         stamp = str(game.get("date") or "")[:10]
         if not stamp or stamp > slate_date.isoformat():
             continue
@@ -219,7 +221,9 @@ def _summarize(games: list[dict[str, Any]]) -> dict[str, Any]:
         "win_pct": wins / len(games),
         "avg_for": round(avg_for, 3),
         "avg_against": round(avg_against, 3),
-        "totals": [float(g.get("goals_for") or 0) + float(g.get("goals_against") or 0) for g in games],
+        "totals": [
+            float(g.get("goals_for") or 0) + float(g.get("goals_against") or 0) for g in games
+        ],
     }
 
 
@@ -242,7 +246,9 @@ def _empty_form() -> dict[str, Any]:
     }
 
 
-def _get(path: str, *, params: dict[str, Any] | None = None, cache_ttl: float = 300) -> dict[str, Any]:
+def _get(
+    path: str, *, params: dict[str, Any] | None = None, cache_ttl: float = 300
+) -> dict[str, Any]:
     key = f"{path}|{sorted((params or {}).items())}"
     cached = _CACHE.get(key)
     if cached and time.time() - cached[0] < cache_ttl:

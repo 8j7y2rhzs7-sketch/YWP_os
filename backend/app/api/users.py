@@ -2,8 +2,8 @@ from fastapi import APIRouter
 
 from app.deps import DB, CurrentUser
 from app.models import AuditLog
-from app.services.whop_access import ensure_fresh_subscription, serialize_user
 from app.schemas import UserOut, UserUpdate
+from app.services.whop_access import ensure_fresh_subscription, serialize_user
 
 router = APIRouter(prefix="/users", tags=["users"])
 

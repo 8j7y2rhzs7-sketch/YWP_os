@@ -193,11 +193,7 @@ def team_recent_form(
 
     if sport_l in {"soccer", "mls", "epl"} and team_name:
         try:
-            hit = _keep(
-                football_data_provider.get_team_recent_form(
-                    sport_l, team_name, slate_date
-                )
-            )
+            hit = _keep(football_data_provider.get_team_recent_form(sport_l, team_name, slate_date))
             if hit:
                 return hit
         except Exception as exc:  # noqa: BLE001
@@ -218,9 +214,7 @@ def team_recent_form(
     }:
         try:
             hit = _keep(
-                odds_provider.get_team_recent_form_from_scores(
-                    sport_l, team_name, slate_date
-                )
+                odds_provider.get_team_recent_form_from_scores(sport_l, team_name, slate_date)
             )
             if hit:
                 return hit
@@ -250,9 +244,7 @@ def team_recent_form(
         resolved = espn_provider.resolve_team_id(sport_l, team_name)
         if resolved and str(resolved) != str(team_id or ""):
             try:
-                hit = _keep(
-                    espn_provider.get_team_recent_form(sport_l, resolved, slate_date)
-                )
+                hit = _keep(espn_provider.get_team_recent_form(sport_l, resolved, slate_date))
                 if hit:
                     return hit
             except Exception as exc:  # noqa: BLE001

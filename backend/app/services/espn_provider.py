@@ -10,7 +10,7 @@ from __future__ import annotations
 import logging
 import re
 import time
-from datetime import date, datetime, timedelta, timezone
+from datetime import UTC, date, datetime, timedelta
 from typing import Any
 
 import httpx
@@ -803,8 +803,7 @@ def get_athlete_gamelog(
         return {"verified": False, "names": [], "games": [], "source_id": SOURCE_ID}
     season = season or date.today().year
     url = (
-        f"https://site.web.api.espn.com/apis/common/v3/sports/{path}/athletes/"
-        f"{athlete_id}/gamelog"
+        f"https://site.web.api.espn.com/apis/common/v3/sports/{path}/athletes/{athlete_id}/gamelog"
     )
     try:
         data = _get(url, params={"season": season}, cache_ttl=900)
@@ -900,9 +899,7 @@ def _get(url: str, params: dict[str, Any] | None = None, *, cache_ttl: int = 120
     last_error: Exception | None = None
     for candidate in urls:
         try:
-            response = httpx.get(
-                candidate, params=params, timeout=TIMEOUT, headers=_HEADERS
-            )
+            response = httpx.get(candidate, params=params, timeout=TIMEOUT, headers=_HEADERS)
             response.raise_for_status()
             data = response.json()
             if not isinstance(data, dict):
@@ -917,4 +914,4 @@ def _get(url: str, params: dict[str, Any] | None = None, *, cache_ttl: int = 120
 
 
 def utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)

@@ -1,6 +1,7 @@
 """
 Live WNBA slate: Odds API prices + ESPN trusted facts + independent model.
 """
+
 from __future__ import annotations
 
 import logging
@@ -81,9 +82,10 @@ def live_wnba_slate(slate_date: date) -> list[CandidateInput]:
     for event in odds_events:
         start_time = _parse_start(event.get("commence_time"), slate_date)
         # Same gate as /sports/analyze: America/New_York calendar date (or UTC match).
-        if start_time.astimezone(UTC).date() != slate_date and _event_local_date(
-            start_time
-        ) != slate_date:
+        if (
+            start_time.astimezone(UTC).date() != slate_date
+            and _event_local_date(start_time) != slate_date
+        ):
             continue
         matched_events += 1
         event_id = str(event.get("id") or "")
@@ -202,10 +204,7 @@ def live_wnba_slate(slate_date: date) -> list[CandidateInput]:
         slate_date=slate_date,
         max_events=max(
             0,
-            int(
-                getattr(settings, "wnba_max_prop_events", None)
-                or 10
-            ),
+            int(getattr(settings, "wnba_max_prop_events", None) or 10),
         ),
     )
     candidates.extend(prop_candidates)
@@ -230,7 +229,13 @@ def _append_wnba_player_props(
     """Price WNBA player props onto the Run/raw slate and attach ESPN form models."""
     if max_events <= 0 or not contexts:
         _last_props_status.update(
-            {"enabled": True, "events_priced": 0, "prop_candidates": 0, "model_props": 0, "errors": 0}
+            {
+                "enabled": True,
+                "events_priced": 0,
+                "prop_candidates": 0,
+                "model_props": 0,
+                "errors": 0,
+            }
         )
         return []
     chunks = _chunk_csv(WNBA_PROP_MARKETS, size=3)
@@ -282,16 +287,10 @@ def _append_wnba_player_props(
         # Request-path budget stays short for Render. Background warm continues
         # filling the process cache so a later LAUNCH sees far more model rows.
         budget = 10.0 if len(out) >= 200 else 14.0
-        out = enrich_player_prop_candidates(
-            out, slate_date=slate_date, budget_seconds=budget
-        )
-        remaining = [
-            row for row in out if row.probability_source == "market_implied"
-        ]
+        out = enrich_player_prop_candidates(out, slate_date=slate_date, budget_seconds=budget)
+        remaining = [row for row in out if row.probability_source == "market_implied"]
         if remaining:
-            schedule_background_prop_enrich(
-                remaining, slate_date=slate_date, budget_seconds=90.0
-            )
+            schedule_background_prop_enrich(remaining, slate_date=slate_date, budget_seconds=90.0)
     model_n = sum(1 for row in out if row.probability_source == "model")
     _last_props_status.update(
         {

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from app.hive.models import HiveAggregate, HiveLearningEvent
 from app.hive.service import (
@@ -22,7 +22,7 @@ def _capture(
     consent=True,
     event_id="game-123",
 ):
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     return capture_hive_prediction(
         db=db,
         contributor_user_id=user_id,
@@ -68,7 +68,7 @@ def test_feature_flags_are_allowlisted(db_session):
     assert "private_note" not in event.feature_flags
     assert "email" not in event.feature_flags
     assert "stake" not in event.feature_flags
-    assert "user_id" not in event.__dict__ or True
+    assert "user_id" not in event.__dict__
     assert not hasattr(event, "email")
     assert event.contributor_key != "user-123"
 
@@ -82,7 +82,7 @@ def test_sheet_calibration_flags_are_persisted(db_session):
         sport="mlb",
         league="MLB",
         event_id="game-sheet",
-        event_start_at=datetime.now(timezone.utc),
+        event_start_at=datetime.now(UTC),
         market="moneyline",
         market_scope="full_game",
         selection="TEAM_A",

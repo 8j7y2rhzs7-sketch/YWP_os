@@ -5,7 +5,6 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
-
 Outcome = Literal["WIN", "LOSS", "PUSH", "VOID"]
 HiveAction = Literal["accepted", "rejected", "ignored"]
 

@@ -8,7 +8,6 @@ never lottery longshots). Process language only — never claim a lock will hit.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import date
 from typing import Any, Literal
 
 from app.core.config import settings
@@ -92,9 +91,7 @@ def candidate_is_forge_fuel(candidate: CandidateInput) -> bool:
         return False
     if candidate.probability_source not in _allowed_probability_sources():
         return False
-    if candidate_readiness(candidate) == "PARTIAL" and not settings.demo_mode:
-        return False
-    return True
+    return candidate_readiness(candidate) != "PARTIAL" or settings.demo_mode
 
 
 def cook_progress_from_slate(candidates: list[CandidateInput]) -> DayForgeSelection:
@@ -111,9 +108,7 @@ def cook_progress_from_slate(candidates: list[CandidateInput]) -> DayForgeSelect
 
     forgeable = [c for c in candidates if candidate_is_forge_fuel(c)]
     priced = sum(1 for c in candidates if int(c.american_odds) != 0)
-    modelish = sum(
-        1 for c in candidates if c.probability_source in _allowed_probability_sources()
-    )
+    modelish = sum(1 for c in candidates if c.probability_source in _allowed_probability_sources())
     verified = sum(1 for c in candidates if candidate_readiness(c) == "VERIFIED")
 
     # Progress blends board coverage + forge fuel.
@@ -133,9 +128,11 @@ def cook_progress_from_slate(candidates: list[CandidateInput]) -> DayForgeSelect
     if priced == 0:
         reasons.append("waiting_book_prices")
 
-    ready_to_grade = len(forgeable) >= MIN_COOK_CANDIDATES or (
-        readiness == "VERIFIED" and len(forgeable) >= 1
-    ) or (settings.demo_mode and len(forgeable) >= 1)
+    ready_to_grade = (
+        len(forgeable) >= MIN_COOK_CANDIDATES
+        or (readiness == "VERIFIED" and len(forgeable) >= 1)
+        or (settings.demo_mode and len(forgeable) >= 1)
+    )
 
     if not ready_to_grade:
         return DayForgeSelection(
@@ -213,10 +210,7 @@ def recommendation_is_day_forge_eligible(rec: Any, *, allow_lean: bool = False) 
     market_status = str(snap.get("market_status") or "OPEN")
     if game_status not in {"PRE_GAME", ""}:
         return False
-    if market_status not in {"OPEN", ""}:
-        return False
-
-    return True
+    return market_status in {"OPEN", ""}
 
 
 def _sort_key(rec: Any) -> tuple:

@@ -7,8 +7,6 @@ from decimal import Decimal
 from uuid import uuid4
 from zoneinfo import ZoneInfo
 
-logger = logging.getLogger(__name__)
-
 from fastapi import APIRouter, HTTPException, Query, status
 from sqlalchemy import or_, select
 
@@ -33,9 +31,9 @@ from app.models import (
 from app.schemas import (
     AnalyzeResponse,
     BuildTicketRequest,
-    CustomCardPreviewRequest,
     BuildTicketResponse,
     CandidateInput,
+    CustomCardPreviewRequest,
     DayForgeResponse,
     ExternalResultCreate,
     ExternalResultOut,
@@ -67,8 +65,6 @@ from app.services.decision_engine import (
     money,
 )
 from app.services.learning import apply_micro_learning, load_feature_weights, record_usage_event
-from app.services.protocols import run_protocol_health_check
-from app.services.providers import demo_slate
 from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate, upcoming_odds_dates
 from app.services.live_mlb_slate import live_mlb_slate, props_slate_notice
 from app.services.live_wnba_slate import (
@@ -84,9 +80,13 @@ from app.services.odds_provider import (
     odds_api_configured,
     prefetch_in_season_app_odds,
 )
+from app.services.protocols import run_protocol_health_check
+from app.services.providers import demo_slate
 from app.services.readiness import slate_readiness, verification_summary
 from app.services.settlement import settle_user_day
 from app.services.ticket_builder import build_cards, preview_custom_card
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/sports", tags=["sports"])
 
@@ -124,11 +124,7 @@ def prefetch_odds(_: SubscribedUser) -> dict[str, object]:
 def _prop_research_stats(
     candidates: list[CandidateInput],
 ) -> tuple[int, int, int, float]:
-    props = [
-        c
-        for c in candidates
-        if str(c.market_type or "").startswith("player_")
-    ]
+    props = [c for c in candidates if str(c.market_type or "").startswith("player_")]
     total = len(props)
     modeled = sum(1 for c in props if c.probability_source in {"model", "manual_verified"})
     pending = total - modeled
@@ -184,15 +180,12 @@ def warm_props(payload: PropWarmRequest, _: SubscribedUser) -> PropWarmResponse:
     # single zero-gain pass — ESPN lookups often spend a slice with no upgrades
     # before the next pass finds models. The client decides when to stall-out.
     ready = pending <= 0 or coverage >= 92.0
-    notice = (
-        f"Research {modeled}/{total} props modeled ({coverage:.0f}%). "
-        + (
-            "Ready to grade."
-            if ready and pending <= 0
-            else "Ready to grade — remaining lines stay SKIP until sources resolve."
-            if ready
-            else f"+{gained} this pass — keep warming."
-        )
+    notice = f"Research {modeled}/{total} props modeled ({coverage:.0f}%). " + (
+        "Ready to grade."
+        if ready and pending <= 0
+        else "Ready to grade — remaining lines stay SKIP until sources resolve."
+        if ready
+        else f"+{gained} this pass — keep warming."
     )
     return PropWarmResponse(
         sport=payload.sport,
@@ -254,9 +247,7 @@ def _candidate_event_local_date(
     if start.tzinfo is None:
         start = start.replace(tzinfo=UTC)
     sport_l = (candidate.sport or "").lower()
-    zone_name = timezone_name or (
-        "Asia/Seoul" if sport_l == "kbo" else "America/New_York"
-    )
+    zone_name = timezone_name or ("Asia/Seoul" if sport_l == "kbo" else "America/New_York")
     try:
         zone = ZoneInfo(zone_name)
     except Exception:  # noqa: BLE001
@@ -332,8 +323,7 @@ def slate(
                     notice = (
                         "Live MLB: independent YWP model from official MLB Stats API facts, "
                         "filled by the trusted-source research searchers, compared against "
-                        "real sportsbook prices from The Odds API. "
-                        + props_slate_notice()
+                        "real sportsbook prices from The Odds API. " + props_slate_notice()
                     )
                 elif odds_status.get("error") == "sport_out_of_season":
                     notice = (
@@ -420,9 +410,7 @@ def slate(
                     )
                 elif sport_lower in {"nfl", "ncaaf"}:
                     prop_n = sum(
-                        1
-                        for c in candidates
-                        if str(c.market_type or "").startswith("player_")
+                        1 for c in candidates if str(c.market_type or "").startswith("player_")
                     )
                     model_n = sum(
                         1
@@ -635,11 +623,7 @@ def _persist_day_forge_evaluations(
         evaluation.payload["hive_adjusted_probability"] = hive_adjusted
         evaluation.payload["hive"] = hive_meta
         evaluation.payload["day_forge"] = True
-        if (
-            hive_meta.get("used")
-            and hive_adjusted is not None
-            and base_probability is not None
-        ):
+        if hive_meta.get("used") and hive_adjusted is not None and base_probability is not None:
             evaluation = decision_engine.apply_hive_calibration(
                 evaluation,
                 float(hive_adjusted),
@@ -974,8 +958,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
     # Budget enrichment so 400+ prop boards do not 502 on Render.
     sport_l = (payload.sport or "").lower()
     if sport_l in {"wnba", "nba", "basketball", "nfl", "ncaaf"} and any(
-        str(c.market_type or "").startswith("player_")
-        and c.probability_source == "market_implied"
+        str(c.market_type or "").startswith("player_") and c.probability_source == "market_implied"
         for c in candidates
     ):
         from app.services.player_prop_research import enrich_player_prop_candidates
@@ -1054,11 +1037,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         evaluation.payload["hive"] = hive_meta
         # Living Hive: when evidence is mature, the bounded blend must affect
         # edge/EV/decision — not only the maturity meter payload.
-        if (
-            hive_meta.get("used")
-            and hive_adjusted is not None
-            and base_probability is not None
-        ):
+        if hive_meta.get("used") and hive_adjusted is not None and base_probability is not None:
             evaluation = decision_engine.apply_hive_calibration(
                 evaluation,
                 float(hive_adjusted),
@@ -1086,9 +1065,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             "user_id": user.id,
             "candidate_count": len(candidates),
             "sheet_overlay_upgraded": overlay_upgraded,
-            "official_pass": not any(
-                item.decision in {"PLAY", "LEAN"} for item in evaluations
-            ),
+            "official_pass": not any(item.decision in {"PLAY", "LEAN"} for item in evaluations),
         },
     )
 
@@ -1200,7 +1177,9 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             stay_away_records.append(record)
 
     stay_away_all_count = len(stay_away_records)
-    stay_away_limit = persist_skip_sample if persist_skip_sample is not None else stay_away_all_count
+    stay_away_limit = (
+        persist_skip_sample if persist_skip_sample is not None else stay_away_all_count
+    )
     stay_away_to_persist = stay_away_records[:stay_away_limit]
     for record in stay_away_to_persist:
         db.add(record)
@@ -1231,9 +1210,10 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         # that is how "they picked something we didn't like and it won" becomes data
         # without letting SKIP become an official card play.
         snap = record.snapshot or {}
-        sheet_menu = "SPORTSBOOK_MENU" in (snap.get("reason_codes") or []) or snap.get(
-            "data_source"
-        ) == "THE_ODDS_API_BOARD"
+        sheet_menu = (
+            "SPORTSBOOK_MENU" in (snap.get("reason_codes") or [])
+            or snap.get("data_source") == "THE_ODDS_API_BOARD"
+        )
         if record.decision not in {"PLAY", "LEAN", "WATCH"} and not sheet_menu:
             continue
         # YWP recommendations are product-owned decision artifacts; Hive may use
@@ -1283,9 +1263,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
 
     ranked = [RecommendationOut.model_validate(record) for record in board_records]
     # Huge stay_away payloads 502 the proxy after big prop boards — keep a sample.
-    stay_away = [
-        RecommendationOut.model_validate(record) for record in stay_away_to_persist[:40]
-    ]
+    stay_away = [RecommendationOut.model_validate(record) for record in stay_away_to_persist[:40]]
     qualities = [candidate.data_quality for candidate in candidates]
     unknowns = sum(
         1
@@ -1342,9 +1320,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             "protocol_status": protocol_run.status,
             "protocol_run_id": protocol_run.id,
             "average_data_quality": round(sum(qualities) / len(qualities), 4) if qualities else 0.0,
-            "missing_field_count": sum(
-                len(candidate.missing_fields) for candidate in candidates
-            ),
+            "missing_field_count": sum(len(candidate.missing_fields) for candidate in candidates),
             "unknown_source_labels": unknowns,
             "candidate_count": len(candidates),
             "sheet_overlay_upgraded": overlay_upgraded,
@@ -1466,9 +1442,7 @@ def build_ticket(payload: BuildTicketRequest, user: SubscribedUser, db: DB) -> B
     if not recommendations:
         # Distinguish "analysis missing" from "true PASS (no PLAY/LEAN)".
         any_for_analysis = db.scalar(
-            select(Recommendation.id)
-            .where(*conditions, or_(*source_conditions))
-            .limit(1)
+            select(Recommendation.id).where(*conditions, or_(*source_conditions)).limit(1)
         )
         if not any_for_analysis:
             raise HTTPException(status_code=404, detail="No recommendations found")
@@ -1510,7 +1484,8 @@ def build_ticket(payload: BuildTicketRequest, user: SubscribedUser, db: DB) -> B
             detail="Ticket builder failed while assembling official cards. Retry the board.",
         ) from None
 
-    # Official PASS / NO BET means no PLAY/LEAN survived analysis — not "card templates underfilled".
+    # Official PASS / NO BET means no PLAY/LEAN survived analysis —
+    # not "card templates underfilled".
     # Eligible picks must remain custom-buildable even when diversity/min-leg gates omit cards.
     from app.services.calculation_discipline import official_output_label
 
@@ -1726,9 +1701,7 @@ def log_external_result(
     sport = payload.sport.lower().strip()
     analysis_id = str(uuid4())
     event_slug = "".join(ch if ch.isalnum() else "-" for ch in payload.event_name.lower())[:80]
-    selection_slug = "".join(ch if ch.isalnum() else "-" for ch in payload.selection.lower())[
-        :60
-    ]
+    selection_slug = "".join(ch if ch.isalnum() else "-" for ch in payload.selection.lower())[:60]
     candidate_id = f"external:{sport}:{payload.slate_date}:{event_slug}:{selection_slug}"
     implied = implied_probability(payload.american_odds)
     thesis = payload.thesis_key or f"external:{sport}:{payload.market_type}"

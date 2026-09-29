@@ -1,4 +1,9 @@
 from .router import router
+from .self_improve import (
+    get_active_policy,
+    list_self_improvement_cycles,
+    run_self_improvement_cycle,
+)
 from .service import (
     blend_hive_probability,
     capture_hive_prediction,
@@ -9,11 +14,6 @@ from .service import (
     record_hive_action,
     record_hive_progress_report,
     resolve_hive_outcome,
-)
-from .self_improve import (
-    get_active_policy,
-    list_self_improvement_cycles,
-    run_self_improvement_cycle,
 )
 
 __all__ = [

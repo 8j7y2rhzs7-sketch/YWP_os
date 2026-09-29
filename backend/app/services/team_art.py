@@ -1,4 +1,5 @@
 """Public team-logo URLs used as sports graphics when player photos are unavailable."""
+
 from __future__ import annotations
 
 from app.services.mlb_provider import team_logo_url

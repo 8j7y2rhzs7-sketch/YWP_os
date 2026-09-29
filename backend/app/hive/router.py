@@ -2,7 +2,15 @@ from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException
 
+from app.deps import DB, CurrentUser
+from app.services.metacognition import list_metacognition_feed
+
 from .schemas import HiveActionIn, HiveOutcomeIn, HivePredictionIn, HiveSignalOut
+from .self_improve import (
+    get_active_policy,
+    list_self_improvement_cycles,
+    run_self_improvement_cycle,
+)
 from .service import (
     capture_hive_prediction,
     get_hive_signal,
@@ -11,14 +19,6 @@ from .service import (
     record_hive_action,
     resolve_hive_outcome,
 )
-from .self_improve import (
-    get_active_policy,
-    list_self_improvement_cycles,
-    run_self_improvement_cycle,
-)
-from app.services.metacognition import list_metacognition_feed
-
-from app.deps import CurrentUser, DB
 
 router = APIRouter(prefix="/hive", tags=["hive-learning"])
 
@@ -99,9 +99,7 @@ def outcome(
     return {
         "updated": event is not None,
         "training_eligible": getattr(event, "training_eligible", False),
-        "ineligibility_reason": getattr(
-            event, "training_ineligibility_reason", None
-        ),
+        "ineligibility_reason": getattr(event, "training_ineligibility_reason", None),
     }
 
 

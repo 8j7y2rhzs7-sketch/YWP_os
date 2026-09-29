@@ -113,7 +113,12 @@ def resolve_team_name(label: str, *, year: int | None = None) -> str | None:
         school = str(row.get("school") or "")
         mascot = str(row.get("mascot") or "")
         display = f"{school} {mascot}".strip()
-        for candidate in (school, display, str(row.get("alt_name1") or ""), str(row.get("alt_name2") or "")):
+        for candidate in (
+            school,
+            display,
+            str(row.get("alt_name1") or ""),
+            str(row.get("alt_name2") or ""),
+        ):
             if not candidate:
                 continue
             hay = _norm(candidate)

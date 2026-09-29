@@ -142,11 +142,7 @@ def candidate_verification_gaps(candidate: CandidateInput) -> list[str]:
         if state == "unknown" and label in hard_source_keys
     ]
     # KBO / ESPN team sports / MLB full-game: starter/lineup never block via source labels.
-    if (
-        sport_l == "kbo"
-        or sport_l in ESPN_TEAM_MARKET_SPORTS
-        or is_mlb_team_market(candidate)
-    ):
+    if sport_l == "kbo" or sport_l in ESPN_TEAM_MARKET_SPORTS or is_mlb_team_market(candidate):
         unknown_sources = [
             label for label in unknown_sources if label not in {"starter", "lineup", "bullpen"}
         ]

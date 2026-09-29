@@ -72,16 +72,14 @@ def simulate_ticket(
                 p = float(item.adjusted_probability)
             except (TypeError, ValueError):
                 p = None
-        source = str(snap.get("probability_source") or "").lower()
-        if p is None or source not in {"model", "manual_verified", "demo", ""}:
-            # Still allow adjusted_probability when source missing on unit tests.
-            if p is None:
-                return {
-                    "win_probability": None,
-                    "sims": 0,
-                    "status": "unavailable",
-                    "note": "One or more legs lack a model probability for Monte Carlo.",
-                }
+        # A present probability is used even when the source tag is absent.
+        if p is None:
+            return {
+                "win_probability": None,
+                "sims": 0,
+                "status": "unavailable",
+                "note": "One or more legs lack a model probability for Monte Carlo.",
+            }
         probs.append(_clamp01(float(p)))
 
     if len(probs) == 1:

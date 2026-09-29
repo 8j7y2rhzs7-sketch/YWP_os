@@ -41,7 +41,9 @@ class ProbabilityEstimate:
         return asdict(self)
 
 
-def _pooled_summary(groups: list[dict[str, Any]]) -> tuple[float, float, float, np.ndarray, list[str]]:
+def _pooled_summary(
+    groups: list[dict[str, Any]],
+) -> tuple[float, float, float, np.ndarray, list[str]]:
     means: list[float] = []
     variances: list[float] = []
     weights: list[float] = []
@@ -62,12 +64,18 @@ def _pooled_summary(groups: list[dict[str, Any]]) -> tuple[float, float, float, 
             # Weighted mean/var via decay on the series order (assumes newest first).
             decay = decay / decay.sum()
             mean_g = float(np.dot(values_w, decay))
-            var_g = float(np.dot((values_w - mean_g) ** 2, decay) * values.size / max(values.size - 1, 1))
-            effective_n = min(float(values.size), float(group.get("max_effective_n", 12.0))) * raw_weight
+            var_g = float(
+                np.dot((values_w - mean_g) ** 2, decay) * values.size / max(values.size - 1, 1)
+            )
+            effective_n = (
+                min(float(values.size), float(group.get("max_effective_n", 12.0))) * raw_weight
+            )
             means.append(mean_g)
             variances.append(max(var_g, 0.05))
         else:
-            effective_n = min(float(values.size), float(group.get("max_effective_n", 12.0))) * raw_weight
+            effective_n = (
+                min(float(values.size), float(group.get("max_effective_n", 12.0))) * raw_weight
+            )
             means.append(float(values.mean()))
             variances.append(float(values.var(ddof=1)))
         overlap = group.get("overlap_group")

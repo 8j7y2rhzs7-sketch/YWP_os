@@ -128,10 +128,7 @@ def recommendation_to_quant_leg(item: Any) -> dict[str, Any]:
     market_type = str(getattr(item, "market_type", "") or "")
     selection = str(getattr(item, "selection", "") or "")
     line = getattr(item, "line", None)
-    if line is None:
-        line = 0.5
-    else:
-        line = float(line)
+    line = 0.5 if line is None else float(line)
 
     source_ts = getattr(item, "source_timestamp", None) or snap.get("price_timestamp")
     if isinstance(source_ts, datetime):
@@ -222,10 +219,16 @@ def recommendation_to_quant_leg(item: Any) -> dict[str, Any]:
     else:
         # Honest bridge until L10 arrays are stored on every modeled prop.
         try:
-            p = float(getattr(item, "adjusted_probability"))
+            p = float(item.adjusted_probability)
         except (TypeError, ValueError):
-            p = float((snap.get("model_probability") or snap.get("pipeline_distribution", {}).get("tail_probability") or 0.5))
-        uncertainty = max(0.06, min(0.18, float(getattr(item, "miss_by_one_risk", 0.2) or 0.2) * 0.2 + 0.06))
+            p = float(
+                snap.get("model_probability")
+                or snap.get("pipeline_distribution", {}).get("tail_probability")
+                or 0.5
+            )
+        uncertainty = max(
+            0.06, min(0.18, float(getattr(item, "miss_by_one_risk", 0.2) or 0.2) * 0.2 + 0.06)
+        )
         leg["direct_probability"] = {
             "probability": max(0.02, min(0.98, p)),
             "uncertainty": uncertainty,

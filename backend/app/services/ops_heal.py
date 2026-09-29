@@ -12,9 +12,10 @@ from __future__ import annotations
 
 import logging
 import re
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta, timezone
-from typing import Any, Callable
+from datetime import UTC, datetime, timedelta
+from typing import Any
 from uuid import uuid4
 
 from sqlalchemy import func, select
@@ -62,7 +63,7 @@ class RemediationResult:
 
 
 def _utcnow() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 def run_ops_heal_cycle(
@@ -101,8 +102,10 @@ def run_ops_heal_cycle(
             )
 
     failing = [c for c in contracts if not c.ok]
-    status = "healthy" if not failing else (
-        "critical" if any(c.severity == "critical" for c in failing) else "degraded"
+    status = (
+        "healthy"
+        if not failing
+        else ("critical" if any(c.severity == "critical" for c in failing) else "degraded")
     )
     explanation = (
         "Ops Heal: all product health contracts green."
@@ -138,9 +141,7 @@ def run_ops_heal_cycle(
     drafts.extend(proposals_from_process_evidence(evidence))
     proposals = upsert_improvement_proposals(db=db, drafts=drafts)
 
-    pending_count = len(
-        [p for p in list_ops_heal_proposals(db=db, status="pending", limit=40)]
-    )
+    pending_count = len([p for p in list_ops_heal_proposals(db=db, status="pending", limit=40)])
     evidence_summary = evidence.get("summary") if isinstance(evidence.get("summary"), dict) else {}
     if proposals:
         explanation += (
@@ -388,8 +389,8 @@ def upsert_improvement_proposals(
             params = dict(existing.parameters) if isinstance(existing.parameters, dict) else {}
             params["evidence"] = draft.get("evidence") or params.get("evidence")
             params["summary"] = draft.get("summary") or params.get("summary")
-            params["recommended_change"] = (
-                draft.get("recommended_change") or params.get("recommended_change")
+            params["recommended_change"] = draft.get("recommended_change") or params.get(
+                "recommended_change"
             )
             params["last_seen_at"] = _utcnow().isoformat()
             params["sightings"] = int(params.get("sightings") or 1) + 1
@@ -511,14 +512,8 @@ def _contract_board_errors(*, db: Session, user_id: str) -> ContractResult:
         ).all()
     )
     # Prefer this user's reports; still include anonymous crashes.
-    scoped = [
-        r for r in rows if r.user_id is None or r.user_id == user_id or not user_id
-    ]
-    boardish = [
-        r
-        for r in scoped
-        if _looks_like_board_failure(r.message or "", r.screen)
-    ]
+    scoped = [r for r in rows if r.user_id is None or r.user_id == user_id or not user_id]
+    boardish = [r for r in scoped if _looks_like_board_failure(r.message or "", r.screen)]
     ok = len(boardish) == 0
     return ContractResult(
         contract_id="decision_board_errors",
@@ -666,9 +661,7 @@ def _apply_remediation(
         ),
     }
     try:
-        return handlers[remediation_id](
-            db=db, user_id=user_id, timezone_name=timezone_name
-        )
+        return handlers[remediation_id](db=db, user_id=user_id, timezone_name=timezone_name)
     except Exception as exc:  # noqa: BLE001
         logger.exception("Ops Heal remediation %s failed", remediation_id)
         return RemediationResult(
@@ -699,9 +692,7 @@ def _rem_run_settle_day(
     )
 
 
-def _rem_sync_hive(
-    *, db: Session, user_id: str, timezone_name: str | None
-) -> RemediationResult:
+def _rem_sync_hive(*, db: Session, user_id: str, timezone_name: str | None) -> RemediationResult:
     del timezone_name
     from app.services.settlement import sync_hive_outcomes_for_graded
 
@@ -728,17 +719,12 @@ def _rem_probe_day_forge(
     return RemediationResult(
         remediation_id="probe_day_forge",
         ok=ok,
-        detail=(
-            f"Day Forge probe: status={cook.status} phase={cook.phase} "
-            f"queue={queue[:5]}"
-        ),
+        detail=(f"Day Forge probe: status={cook.status} phase={cook.phase} queue={queue[:5]}"),
         evidence={"status": cook.status, "phase": cook.phase, "queue": queue[:8]},
     )
 
 
-def _rem_ack_errors(
-    *, db: Session, user_id: str, timezone_name: str | None
-) -> RemediationResult:
+def _rem_ack_errors(*, db: Session, user_id: str, timezone_name: str | None) -> RemediationResult:
     del timezone_name
     from app.models import AuditLog, ErrorReport
 
@@ -779,9 +765,7 @@ def _rem_ack_errors(
     )
 
 
-def _rem_record_gaps(
-    *, db: Session, user_id: str, timezone_name: str | None
-) -> RemediationResult:
+def _rem_record_gaps(*, db: Session, user_id: str, timezone_name: str | None) -> RemediationResult:
     del timezone_name
     from app.hive.service import record_hive_progress_report
     from app.models import LearningEvent
@@ -861,7 +845,8 @@ def _proposal_from_contract(
             "title": "Unstick Hive pending outcomes so learning can leave 0%",
             "recommended_change": (
                 "Ensure settle-day covers every app sport (ESPN + Odds) and maps grades onto "
-                "Hive captures automatically. Add monitoring if pending stays high with low eligible."
+                "Hive captures automatically. Add monitoring if pending stays "
+                "high with low eligible."
             ),
         },
         "settlement_coverage_gaps": {
@@ -885,9 +870,7 @@ def _proposal_from_contract(
         "summary": contract.detail,
         "recommended_change": template["recommended_change"],
         "source_contracts": [contract.contract_id],
-        "auto_remediations_tried": [
-            r for r in applied_ids if r in (contract.remediations or [])
-        ],
+        "auto_remediations_tried": [r for r in applied_ids if r in (contract.remediations or [])],
         "evidence": {
             "contract": _contract_dict(contract),
             "trigger": trigger,
@@ -993,9 +976,7 @@ def _proposals_from_coverage_gaps(*, db: Session, trigger: str) -> list[dict[str
                     "market_type": market,
                     "count": len(group),
                     "samples": [
-                        (g.analysis or {}).get("detail")
-                        if isinstance(g.analysis, dict)
-                        else None
+                        (g.analysis or {}).get("detail") if isinstance(g.analysis, dict) else None
                         for g in group[:5]
                     ],
                     "trigger": trigger,

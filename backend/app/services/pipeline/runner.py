@@ -160,9 +160,7 @@ def run_ticket_pipeline(legs: list[Any], *, sims: int = 4000) -> dict[str, Any]:
     for item in legs:
         snap = getattr(item, "snapshot", None) or {}
         thresholds.append(snap.get("pipeline_threshold") or "reject")
-    if not legs:
-        card_threshold = "reject"
-    elif any(t == "reject" for t in thresholds):
+    if not legs or any(t == "reject" for t in thresholds):
         card_threshold = "reject"
     elif any(t == "borderline" for t in thresholds):
         card_threshold = "borderline"

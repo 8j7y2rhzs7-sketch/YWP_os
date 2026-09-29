@@ -190,9 +190,7 @@ def test_build_cards_tolerates_bad_price_timestamp(db_session, client, auth_head
     assert isinstance(quarantined, list)
 
 
-def test_build_ticket_skips_bulk_stay_away_on_large_board(
-    client, auth_headers, db_session
-) -> None:
+def test_build_ticket_skips_bulk_stay_away_on_large_board(client, auth_headers, db_session) -> None:
     me = client.get("/api/v1/users/me", headers=auth_headers)
     assert me.status_code == 200, me.text
     from app.models import User

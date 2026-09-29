@@ -9,6 +9,7 @@ from datetime import date, timedelta
 from decimal import Decimal
 
 from sqlalchemy import select
+from test_settlement import _feed, _recommendation
 
 from app.core.config import settings
 from app.core.database import SessionLocal
@@ -16,7 +17,6 @@ from app.models import ModelWeight, Ticket, TicketLeg, User
 from app.services import settlement
 from app.services.learning import performance
 from app.services.sport_model import project_matchup
-from test_settlement import _feed, _recommendation
 
 
 def test_easier_spread_cannot_lower_cover_probability():
@@ -59,7 +59,9 @@ def test_analyze_rejects_candidates_from_a_different_slate_date(client, auth_hea
         },
         headers=auth_headers,
     )
-    print(f"Loaded Sept 3; submitted Sept 10 with unchanged candidates: HTTP {response.status_code}")
+    print(
+        f"Loaded Sept 3; submitted Sept 10 with unchanged candidates: HTTP {response.status_code}"
+    )
     assert response.status_code in {409, 422}, "Reject a date that does not match loaded events"
 
 
@@ -104,17 +106,19 @@ def test_settled_two_leg_ticket_preserves_wager_profit(monkeypatch):
         db.add(ticket)
         db.flush()
         for position, pick in enumerate(picks, 1):
-            db.add(TicketLeg(
-                ticket_id=ticket.id,
-                recommendation_id=pick.id,
-                position=position,
-                action="follow",
-                selection=pick.selection,
-                american_odds=100,
-                thesis_key=pick.thesis_key,
-                script_key=pick.script_key,
-                status="placed",
-            ))
+            db.add(
+                TicketLeg(
+                    ticket_id=ticket.id,
+                    recommendation_id=pick.id,
+                    position=position,
+                    action="follow",
+                    selection=pick.selection,
+                    american_odds=100,
+                    thesis_key=pick.thesis_key,
+                    script_key=pick.script_key,
+                    status="placed",
+                )
+            )
         db.commit()
         settlement.settle_user_placed_tickets(db, user.id)
         db.refresh(ticket)
@@ -122,10 +126,14 @@ def test_settled_two_leg_ticket_preserves_wager_profit(monkeypatch):
         assert all(pick.outcome == "WIN" for pick in picks)
         report = performance(db, user.id)
         print(f"$10 two-leg winner / $40 return: P&L={report.profit_loss}; ROI={report.roi}")
-        assert report.profit_loss == Decimal("30.00"), "Ticket-level P&L must include the settled parlay"
+        assert report.profit_loss == Decimal("30.00"), (
+            "Ticket-level P&L must include the settled parlay"
+        )
 
 
-def test_required_learning_approval_does_not_activate_external_log_weights(client, auth_headers, monkeypatch):
+def test_required_learning_approval_does_not_activate_external_log_weights(
+    client, auth_headers, monkeypatch
+):
     # Split policy (YWP-10): micro-updates are gated by learning_allow_micro_updates;
     # learning_requires_human_approval remains for large structural proposals.
     monkeypatch.setattr(settings, "learning_allow_micro_updates", False)
@@ -153,8 +161,16 @@ def test_required_learning_approval_does_not_activate_external_log_weights(clien
     assert response.status_code == 201, response.text
     with SessionLocal() as db:
         weights = list(db.scalars(select(ModelWeight).where(ModelWeight.is_active.is_(True))))
-        print("Active weights after one external result with micro disabled:", [
-            {"sport": w.sport, "feature": w.feature_name, "weight": str(w.weight), "samples": w.sample_size}
-            for w in weights
-        ])
+        print(
+            "Active weights after one external result with micro disabled:",
+            [
+                {
+                    "sport": w.sport,
+                    "feature": w.feature_name,
+                    "weight": str(w.weight),
+                    "samples": w.sample_size,
+                }
+                for w in weights
+            ],
+        )
         assert weights == [], "Logging a result must honor the configured micro-learning gate"

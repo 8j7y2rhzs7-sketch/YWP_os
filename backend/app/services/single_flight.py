@@ -12,19 +12,17 @@ import copy
 import logging
 import threading
 import time
+from collections.abc import Callable
 from concurrent.futures import Future
-from typing import Callable, TypeVar
 
 logger = logging.getLogger(__name__)
-
-T = TypeVar("T")
 
 _lock = threading.Lock()
 _inflight: dict[str, Future] = {}
 _cache: dict[str, tuple[float, object]] = {}
 
 
-def single_flight(
+def single_flight[T](
     key: str,
     fn: Callable[[], T],
     *,

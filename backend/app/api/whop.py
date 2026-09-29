@@ -1,23 +1,24 @@
 """Whop subscription: webhooks, checkout link, access sync."""
+
 from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException, Request
 from sqlalchemy import select
 
 from app.core.config import settings
-from app.deps import CurrentUser, DB
+from app.deps import DB, CurrentUser
 from app.models import WhopWebhookDelivery
 from app.schemas import MessageOut, SubscriptionOut, WhopCheckoutOut
 from app.services.whop import (
     WhopWebhookError,
     app_download_url,
+    check_user_access,
     checkout_url,
     extract_membership_fields,
     membership_grants_access,
     product_id,
     verify_webhook,
     verify_whop_user_token,
-    check_user_access,
     whop_enabled,
 )
 from app.services.whop_access import (
@@ -39,7 +40,8 @@ def get_checkout_url() -> WhopCheckoutOut:
         message=(
             "Pay on Whop with the same email as your YWP OS login. "
             "If you already have the app installed, return and Sync my access. "
-            "First-time buyers: download the Android APK from Whop (or the backup link), install, then Sync."
+            "First-time buyers: download the Android APK from Whop "
+            "(or the backup link), install, then Sync."
         ),
     )
 
