@@ -1475,6 +1475,7 @@ def build_ticket(payload: BuildTicketRequest, user: SubscribedUser, db: DB) -> B
         return BuildTicketResponse(
             analysis_id=payload.analysis_id,
             official_pass=True,
+            official_output="NO_BET",
             cards={},
             stay_away=[],
             quarantined=[],
@@ -1509,14 +1510,21 @@ def build_ticket(payload: BuildTicketRequest, user: SubscribedUser, db: DB) -> B
             detail="Ticket builder failed while assembling official cards. Retry the board.",
         ) from None
 
-    # Official PASS means no PLAY/LEAN survived analysis — not "card templates underfilled".
+    # Official PASS / NO BET means no PLAY/LEAN survived analysis — not "card templates underfilled".
     # Eligible picks must remain custom-buildable even when diversity/min-leg gates omit cards.
+    from app.services.calculation_discipline import official_output_label
+
     has_play_lean = any(item.decision in {"PLAY", "LEAN"} for item in recommendations)
+    has_qualified_cards = any(card.legs for card in cards.values())
     official_pass = not has_play_lean
+    official_output = official_output_label(
+        has_qualified_cards=has_qualified_cards, has_play_lean=has_play_lean
+    )
     # Stay-away list already shipped on /analyze; do not re-emit hundreds of SKIP rows here.
     return BuildTicketResponse(
         analysis_id=payload.analysis_id,
         official_pass=official_pass,
+        official_output=official_output,
         cards={} if official_pass else cards,
         stay_away=[],
         quarantined=quarantined,

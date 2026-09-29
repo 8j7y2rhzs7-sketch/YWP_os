@@ -9,6 +9,11 @@ from app.services.board_metrics import (
     joint_win_probability_disclosure,
     select_weakest_leg,
 )
+from app.services.calculation_discipline import (
+    card_standard_blockers,
+    eliminate_weakest_until_stable,
+    same_player_category_conflicts,
+)
 from app.services.pipeline.runner import run_ticket_pipeline
 from app.services.quant_bridge import audit_ticket
 from app.services.ticket_gates import (
@@ -155,6 +160,39 @@ def preview_custom_card(
     )
 
 
+def _empty_card(
+    key: str,
+    label: str,
+    warnings: list[str],
+    *,
+    ticket_pipe: dict | None = None,
+) -> TicketCardOut:
+    warnings = list(warnings)
+    if not any("NO BET" in w or "No plays qualified" in w for w in warnings):
+        warnings.append("No plays qualified. NO BET is the official output.")
+    return TicketCardOut(
+        key=key,
+        label=label,
+        recommendation_ids=[],
+        legs=[],
+        risk="none",
+        risk_explanation="No legs; NO BET.",
+        confidence_score=0,
+        quality_score=0,
+        joint_win_probability=None,
+        joint_probability_status="unavailable",
+        joint_probability_note="No legs; NO BET.",
+        monte_carlo_sims=None,
+        correlation_max_rho=None,
+        pipeline_threshold="reject",
+        pipeline=ticket_pipe,
+        weakest_leg_id=None,
+        weakest_leg_criterion=None,
+        weakest_leg_explanation=None,
+        warnings=warnings,
+    )
+
+
 def _card(
     key: str, label: str, legs: list[Recommendation], warnings: list[str] | None = None
 ) -> TicketCardOut:
@@ -162,82 +200,140 @@ def _card(
     joint: dict = {
         "joint_win_probability": None,
         "joint_probability_status": "unavailable",
-        "joint_probability_note": "No legs; PASS.",
+        "joint_probability_note": "No legs; NO BET.",
     }
-    out_legs: list[RecommendationOut] = []
-    kept: list[Recommendation] = []
+    readable: list[Recommendation] = []
     for item in legs:
         try:
-            out_legs.append(RecommendationOut.model_validate(item))
-            kept.append(item)
+            RecommendationOut.model_validate(item)
+            readable.append(item)
         except Exception:
             # One bad snapshot must not 500 the whole Decision Board.
             warnings.append(f"Skipped unreadable leg: {getattr(item, 'selection', item.id)}")
+
+    # Lesson 6 — same-player category stack (K≠ER, points≠rebounds) kills the card.
+    cat_conflicts = same_player_category_conflicts(readable)
+    if cat_conflicts:
+        warnings.append(
+            "Same-player category stack blocked: "
+            + ", ".join(cat_conflicts)
+            + ". High performance in one market does not prove another."
+        )
+        return _empty_card(key, label, warnings)
+
+    # Lesson 9 — drop weakest below floor, re-check new weakest; no filler.
+    min_keep = 1 if key == "max_bet" else 2
+    kept, weak_notes = eliminate_weakest_until_stable(
+        readable, min_legs=min_keep, select_weakest=select_weakest_leg
+    )
+    warnings.extend(weak_notes)
+    if not kept and readable:
+        return _empty_card(key, label, warnings)
+
+    # Lesson 8 — card-specific evidence standards.
+    std_blockers = card_standard_blockers(key, kept)
+    if std_blockers:
+        warnings.append(
+            f"{label} failed card standard: " + ", ".join(std_blockers) + ". NO BET for this card."
+        )
+        return _empty_card(key, label, warnings)
+
     ticket_pipe: dict | None = None
     card_threshold = "reject"
+    out_legs: list[RecommendationOut] = []
     if not kept:
-        if legs:
-            warnings.append("No plays qualified. PASS is the official output.")
-        else:
-            warnings.append("No plays qualified. PASS is the official output.")
-        confidence = 0
-        risk = "none"
-        risk_explanation = "No legs; PASS."
-        weakest = None
-        criterion = None
-        explanation = None
-    else:
-        confidence = round(sum(item.confidence_score for item in kept) / len(kept))
-        weakest_item, criterion, explanation = select_weakest_leg(kept)
-        weakest = weakest_item.id
-        risk, risk_explanation = card_risk(kept)
-        high_near_miss = [
-            item.selection for item in kept if _safe_float(item.miss_by_one_risk) >= 0.55
-        ]
-        if high_near_miss:
-            warnings.append("Elevated miss-by-1 leg(s): " + ", ".join(high_near_miss))
-        warnings.append(explanation)
-        # Stages 6–7: local MC, then authoritative ywp_quant QUALIFY/REJECT gate.
-        ticket_pipe = run_ticket_pipeline(kept)
-        joint = {
-            "joint_win_probability": ticket_pipe.get("joint_win_probability"),
-            "joint_probability_status": ticket_pipe.get("joint_probability_status"),
-            "joint_probability_note": ticket_pipe.get("joint_probability_note"),
-        }
-        if joint["joint_win_probability"] is None:
-            joint = joint_win_probability_disclosure(kept)
-        card_threshold = ticket_pipe.get("card_threshold")
-        try:
-            quant = audit_ticket(kept)
-            ticket_pipe = {**(ticket_pipe or {}), "ywp_quant": quant}
-            card_threshold = quant.get("pipeline_threshold") or card_threshold
-            ticket_block = quant.get("ticket") or {}
-            if ticket_block.get("model_probability") is not None:
-                joint = {
-                    "joint_win_probability": ticket_block.get("model_probability"),
-                    "joint_probability_status": "ywp_quant",
-                    "joint_probability_note": (
-                        f"ywp_quant {quant.get('decision')}: "
-                        f"joint={ticket_block.get('model_probability'):.1%} "
-                        f"edge={ticket_block.get('edge')} "
-                        f"blockers={quant.get('blockers')}"
-                    ),
+        return _empty_card(key, label, warnings)
+    confidence = round(sum(item.confidence_score for item in kept) / len(kept))
+    weakest_item, criterion, explanation = select_weakest_leg(kept)
+    weakest = weakest_item.id
+    risk, risk_explanation = card_risk(kept)
+    high_near_miss = [
+        item.selection for item in kept if _safe_float(item.miss_by_one_risk) >= 0.55
+    ]
+    if high_near_miss:
+        warnings.append("Elevated miss-by-1 leg(s): " + ", ".join(high_near_miss))
+    warnings.append(explanation)
+    # Stages 6–7: local MC, then authoritative ywp_quant QUALIFY/REJECT gate.
+    ticket_pipe = run_ticket_pipeline(kept)
+    joint = {
+        "joint_win_probability": ticket_pipe.get("joint_win_probability"),
+        "joint_probability_status": ticket_pipe.get("joint_probability_status"),
+        "joint_probability_note": ticket_pipe.get("joint_probability_note"),
+    }
+    if joint["joint_win_probability"] is None:
+        joint = joint_win_probability_disclosure(kept)
+    card_threshold = ticket_pipe.get("card_threshold")
+    try:
+        quant = audit_ticket(kept)
+        ticket_pipe = {**(ticket_pipe or {}), "ywp_quant": quant}
+        card_threshold = quant.get("pipeline_threshold") or card_threshold
+        ticket_block = quant.get("ticket") or {}
+        if ticket_block.get("model_probability") is not None:
+            joint = {
+                "joint_win_probability": ticket_block.get("model_probability"),
+                "joint_probability_status": "ywp_quant",
+                "joint_probability_note": (
+                    f"ywp_quant {quant.get('decision')}: "
+                    f"joint={ticket_block.get('model_probability'):.1%} "
+                    f"edge={ticket_block.get('edge')} "
+                    f"blockers={quant.get('blockers')}"
+                ),
+            }
+        if quant.get("decision") == "REJECT":
+            blockers = list(quant.get("blockers") or [])
+            soft_edge = {
+                "DOWNSIDE_EDGE_NOT_POSITIVE",
+                "INSUFFICIENT_TICKET_EDGE",
+            }
+            # Leg-floor blockers on a Max Bet single are size-down signals when the
+            # board already graded PLAY/LEAN; multi-leg still hard-stops on them.
+            if key == "max_bet":
+                soft_edge |= {
+                    "LEG_PROBABILITY_BELOW_THRESHOLD",
+                    "LEG_DOWNSIDE_TOO_LOW",
                 }
-            if quant.get("decision") == "REJECT":
-                blockers = quant.get("blockers") or []
+            # Prefix form: "leg-id:LEG_PROBABILITY_BELOW_THRESHOLD"
+            def _is_soft(code: str) -> bool:
+                if code in soft_edge:
+                    return True
+                return any(code.endswith(f":{s}") or code == s for s in soft_edge)
+
+            structural = [b for b in blockers if not _is_soft(b)]
+            # Lesson 15: structural quant failure → card is NO BET (not a warning on a live slip).
+            # Soft edge failures size-down / borderline — weakest-leg + card standards already ran.
+            if structural:
                 warnings.append(
                     "ywp_quant REJECT — "
                     + (", ".join(blockers[:6]) if blockers else "gates failed")
-                    + ". No forced pick."
+                    + ". NO BET for this card."
                 )
-            else:
-                warnings.append("ywp_quant QUALIFY — clears probability, dependence, and price gates.")
-        except Exception as exc:  # noqa: BLE001 — board must not 500 on quant miss
-            warnings.append(f"ywp_quant unavailable: {exc}")
-        if card_threshold == "reject" and kept:
-            warnings.append("Pipeline threshold: reject — do not force this card.")
-        elif card_threshold == "borderline":
-            warnings.append("Pipeline threshold: borderline — size down or PASS.")
+                return _empty_card(key, label, warnings, ticket_pipe=ticket_pipe)
+            warnings.append(
+                "ywp_quant REJECT (edge) — "
+                + (", ".join(blockers[:6]) if blockers else "gates failed")
+                + ". Not a forced QUALIFY; size down or NO BET."
+            )
+            card_threshold = "borderline"
+        else:
+            warnings.append(
+                "ywp_quant QUALIFY — clears probability, dependence, and price gates."
+            )
+    except Exception as exc:  # noqa: BLE001 — board must not 500 on quant miss
+        warnings.append(f"ywp_quant unavailable: {exc}")
+    if card_threshold == "borderline":
+        warnings.append("Pipeline threshold: borderline — size down or NO BET.")
+    elif card_threshold == "reject" and kept and key != "max_bet":
+        # Only hard-drop multi-leg cards when the ticket pipeline explicitly rejects.
+        # Leg snapshots often omit pipeline_threshold; missing ≠ reject.
+        snap_thresholds = [
+            str((getattr(item, "snapshot", None) or {}).get("pipeline_threshold") or "")
+            for item in kept
+        ]
+        if any(t == "reject" for t in snap_thresholds):
+            warnings.append("Pipeline threshold: reject — NO BET for this card.")
+            return _empty_card(key, label, warnings, ticket_pipe=ticket_pipe)
+    for item in kept:
+        out_legs.append(RecommendationOut.model_validate(item))
     corr = (ticket_pipe or {}).get("correlation") or {}
     mc = (ticket_pipe or {}).get("monte_carlo") or {}
     quant_ticket = ((ticket_pipe or {}).get("ywp_quant") or {}).get("ticket") or {}

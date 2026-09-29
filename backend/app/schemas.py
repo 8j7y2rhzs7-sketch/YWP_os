@@ -23,6 +23,7 @@ class Decision(StrEnum):
     lean = "LEAN"
     watch = "WATCH"
     review = "REVIEW"
+    wait = "WAIT"  # Evidence incomplete — NO PICK YET (not a forced SKIP story)
     skip = "SKIP"
 
 
@@ -558,6 +559,8 @@ class QuarantineItemOut(YWPModel):
 class BuildTicketResponse(YWPModel):
     analysis_id: str | None
     official_pass: bool = False
+    # Lesson 15 — usable final output: DECISION_CARDS | NO_BET | NO_BET_CARDS_FAILED_GATES
+    official_output: str = "NO_BET"
     cards: dict[str, TicketCardOut]
     stay_away: list[RecommendationOut]
     quarantined: list[QuarantineItemOut]

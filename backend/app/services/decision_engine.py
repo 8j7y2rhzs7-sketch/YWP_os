@@ -10,6 +10,15 @@ from typing import Any
 from app.core.config import settings
 from app.schemas import CandidateInput, Decision, RiskProfile
 from app.services.board_metrics import outlier_review_reasons
+from app.services.calculation_discipline import (
+    heavy_juice_blockers,
+    identity_blockers,
+    line_shave_blockers,
+    market_series_blockers,
+    minutes_not_production_blockers,
+    protective_dog_spread_blockers,
+    wait_reasons,
+)
 from app.services.pipeline.market_math import compare_to_market
 from app.services.pipeline.runner import run_leg_pipeline
 from app.services.readiness import (
@@ -111,7 +120,9 @@ class DecisionEngine:
         confidence_penalty = 0.0
 
         readiness = candidate_readiness(candidate)
-        if readiness == "DEMO" or candidate.probability_source == "demo":
+        # Local YWP_DEMO_MODE fixtures may PLAY for end-to-end testing.
+        # Production / non-demo runs never promote demo/synthetic probabilities.
+        if (readiness == "DEMO" or candidate.probability_source == "demo") and not settings.demo_mode:
             hard_skip_reasons.append(
                 "Official play blocked: demo/synthetic probability is not live evidence."
             )
@@ -354,6 +365,49 @@ class DecisionEngine:
             hard_skip_reasons.append("Heavily priced filler leg has no independent value case.")
             reasons.append("FILLER_LEG_TAX")
 
+        # Weekly-report calculation discipline (lessons 1–4, 11–12).
+        for code in identity_blockers(candidate):
+            hard_skip_reasons.append(
+                "Identity verification failed before any market math could run "
+                f"({code})."
+            )
+            reasons.append(code)
+        for code in market_series_blockers(candidate):
+            hard_skip_reasons.append(
+                "Exact market series (L5/L10 / median vs line) is missing or fails "
+                f"the offered threshold ({code})."
+            )
+            reasons.append(code)
+        for code in line_shave_blockers(candidate):
+            hard_skip_reasons.append(
+                "Shorter line is not automatically safer without outcome-distribution "
+                f"evidence ({code})."
+            )
+            reasons.append(code)
+        for code in protective_dog_spread_blockers(candidate):
+            hard_skip_reasons.append(
+                "Protective underdog spread lacks an affirmative matchup/script/cushion "
+                f"case ({code})."
+            )
+            reasons.append(code)
+        for code in minutes_not_production_blockers(candidate):
+            hard_skip_reasons.append(
+                "Minutes/opportunity alone are not production evidence for this volume "
+                f"prop ({code})."
+            )
+            reasons.append(code)
+        for code in heavy_juice_blockers(
+            american_odds=int(candidate.american_odds),
+            edge=float(edge),
+            independent_value_verified=bool(candidate.independent_value_verified),
+            heavily_juiced_filler=bool(candidate.heavily_juiced_filler),
+        ):
+            hard_skip_reasons.append(
+                "Heavy juice / short price is not evidence of safety without independent "
+                f"edge ({code})."
+            )
+            reasons.append(code)
+
         if candidate.game_status != "PRE_GAME":
             hard_skip_reasons.append(
                 f"Game status is {candidate.game_status}; only PRE_GAME markets are eligible."
@@ -430,7 +484,47 @@ class DecisionEngine:
             reasons.extend(["NO_CLEAN_EDGE", "ODDS_TOO_EXPENSIVE"])
 
         confidence = int(clamp(confidence, 35, 97))
-        if hard_skip_reasons:
+        wait_codes = wait_reasons(candidate, hard_skip_reasons + reasons)
+        fatal_codes = {
+            "IDENTITY_PLAYER_KEY_MISSING",
+            "IDENTITY_SELECTION_TOO_THIN",
+            "IDENTITY_EVENT_MISSING",
+            "HEAVY_JUICE_NOT_SAFETY",
+            "FILLER_LEG_TAX",
+            "PROTECTIVE_DOG_WITHOUT_AFFIRMATIVE_CASE",
+            "LINE_SHAVE_WITHOUT_DISTRIBUTION",
+            "MARKET_MEDIAN_DOES_NOT_CLEAR_LINE",
+            "MARKET_SERIES_TOO_SHORT",
+            "MARKET_SERIES_UNPARSEABLE",
+            "PROP_THIN_CLOSE_GATE",
+            "PROP_CUSHION_GATE",
+            "MISS_BY_ONE_GATE_FAILED",
+            "NO_CLEAN_EDGE",
+            "ODDS_TOO_EXPENSIVE",
+            "DEMO_DATA",
+            "NO_INDEPENDENT_PROBABILITY",
+            "DATA_QUALITY_BAD",
+            "GAME_NOT_PRE_GAME",
+            "MARKET_NOT_OPEN",
+            "FIRST_START_BACK_EXCLUSION",
+            "K_DURATION_GATE_FAILED",
+            "LINE_ESCALATION_BLOCKED",
+            "LOW_TOTAL_TWO_PATH_GATE_FAILED",
+            "PREVIOUS_GAME_RECENCY_BLOCK",
+            "EXTRA_TIME_TRAP",
+        }
+        has_fatal = bool(set(reasons) & fatal_codes)
+        if hard_skip_reasons and has_fatal:
+            decision = Decision.skip.value
+            confidence = min(confidence, 69)
+        elif hard_skip_reasons and wait_codes and not has_fatal:
+            # Lesson 13 — incomplete evidence → WAIT / NO PICK YET.
+            decision = Decision.wait.value
+            confidence = min(confidence, 72)
+            reasons.extend(wait_codes)
+            reasons.append("NO_PICK_YET")
+            warnings.append("WAIT — evidence incomplete. Correct output can be NO BET.")
+        elif hard_skip_reasons:
             decision = Decision.skip.value
             confidence = min(confidence, 69)
         elif review_reasons:
@@ -501,10 +595,12 @@ class DecisionEngine:
         )
         if decision == Decision.skip.value:
             yis = min(yis, 5.9)
+        elif decision == Decision.wait.value:
+            yis = min(yis, 6.2)
         elif decision == Decision.review.value:
             yis = min(yis, 6.5)
 
-        if decision in {Decision.skip.value, Decision.review.value}:
+        if decision in {Decision.skip.value, Decision.review.value, Decision.wait.value}:
             suggested_stake_pct = 0.0
         elif confidence >= 92 and risk in {"low", "medium"}:
             suggested_stake_pct = 0.02
@@ -519,6 +615,8 @@ class DecisionEngine:
 
         if decision == Decision.skip.value:
             tier = "stay_away"
+        elif decision == Decision.wait.value:
+            tier = "wait"
         elif decision == Decision.review.value:
             tier = "review"
         elif confidence >= 90 and risk == "low" and miss_by_one_risk < 0.55:

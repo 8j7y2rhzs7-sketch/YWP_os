@@ -88,7 +88,13 @@ def recommendation_to_quant_leg(item: Any) -> dict[str, Any]:
         "data_quality": float(getattr(item, "data_quality", 0.7) or 0.7),
         "verification": verification,
         "context": {
-            "availability_probability": 0.98 if role_ok else 0.85,
+            # Do not silently haircut board PLAY/LEAN probabilities below the 0.55 floor.
+            # Explicit snapshot availability still wins when provided.
+            "availability_probability": float(
+                snap.get("availability_probability")
+                if snap.get("availability_probability") is not None
+                else (1.0 if role_ok else 0.88)
+            ),
             "blowout_probability": float(snap.get("blowout_probability") or 0.12),
             "blowout_workload_multiplier": 0.80,
             "foul_trouble_probability": float(snap.get("foul_trouble_probability") or 0.08),
@@ -156,8 +162,10 @@ def build_quant_document(
             "maximum_legs": 4,
             "minimum_leg_probability": 0.55,
             "minimum_leg_lower_90": 0.40,
-            "minimum_ticket_edge": 0.04,
-            "minimum_ticket_lower_edge": 0.0,
+            # Singles: require clear edge but allow a thin downside haircut.
+            # Multi-leg: joint downside must stay non-negative (weakest-leg discipline).
+            "minimum_ticket_edge": 0.03 if len(quant_legs) <= 1 else 0.04,
+            "minimum_ticket_lower_edge": -0.02 if len(quant_legs) <= 1 else 0.0,
             "reject_unverified_correlation": True,
             "reject_unverified_inputs": True,
         },
