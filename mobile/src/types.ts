@@ -615,3 +615,77 @@ export interface ResultRecord {
   lesson: string | null;
   result_time: string;
 }
+
+export interface MarketPriceGap {
+  code: string;
+  sportsbook_implied: number;
+  kalshi_fair: number;
+  gap: number;
+  note: string;
+}
+
+export interface MarketCall {
+  id: string;
+  venue: string;
+  venue_group: "crypto" | "sports_exchange";
+  instrument_id: string;
+  call_type: string;
+  title: string;
+  selection: string;
+  entry: number | null;
+  target: number | null;
+  stop: number | null;
+  horizon_hours: number | null;
+  market_price: number | null;
+  fair_price: number | null;
+  model_probability: number | null;
+  edge: number | null;
+  expected_value: number | null;
+  confidence: number;
+  verdict: string;
+  reason_codes: string[];
+  reasons: string[];
+  warnings: string[];
+  price_gap: MarketPriceGap | null;
+  read_only: boolean;
+  created_at: string | null;
+  outcome: string | null;
+  realized_return: number | null;
+}
+
+export interface MarketCallList {
+  venue_group: string;
+  read_only: boolean;
+  calls: MarketCall[];
+}
+
+export interface MarketCalibrationBucket {
+  bin_low: number;
+  bin_high: number;
+  count: number;
+  mean_forecast: number;
+  hit_rate: number;
+}
+
+export interface MarketsTrackRecord {
+  venue_group: string;
+  scope: string;
+  separate_from_sports: boolean;
+  n_calls: number;
+  n_graded: number;
+  hit_rate: number | null;
+  mean_ev: number | null;
+  brier: number | null;
+  calibration_buckets: MarketCalibrationBucket[];
+  by_verdict: Record<string, number>;
+  note: string;
+}
+
+export interface MarketsHealth {
+  status: string;
+  read_only: boolean;
+  version: string;
+  enabled: boolean;
+  orders_enabled: boolean;
+  venues: Array<{ venue: string; kind: string; enabled: boolean; role: string }>;
+}

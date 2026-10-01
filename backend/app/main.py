@@ -65,6 +65,7 @@ app.add_middleware(
         "x-whop-user-token",
         "X-YWP-Provision-Secret",
         "X-YWP-Marketing-Token",
+        "X-YWP-Markets-Token",
     ],
 )
 

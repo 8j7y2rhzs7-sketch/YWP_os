@@ -84,3 +84,16 @@ services:
         value: "20"
       - key: YWP_MARKETING_SERVICE_TOKEN
         sync: false
+      # Markets mode Phase 1 is public read-only data. On by default.
+      # Set a venue to "false" to shut that exchange off without a code change.
+      # Leave the scan token empty until a scheduler (GitHub Actions or Render cron) should run.
+      - key: YWP_MARKETS_ENABLED
+        value: "true"
+      - key: YWP_MARKETS_COINBASE_ENABLED
+        value: "true"
+      - key: YWP_MARKETS_KRAKEN_ENABLED
+        value: "true"
+      - key: YWP_MARKETS_KALSHI_ENABLED
+        value: "true"
+      - key: YWP_MARKETS_SCAN_TOKEN
+        sync: false

@@ -96,6 +96,10 @@ export default function RootLayout() {
               name="share-card"
               options={{ title: "YWP Graphic Studio", headerBackTitle: "Home" }}
             />
+            <Stack.Screen
+              name="market/[id]"
+              options={{ title: "Market Call", headerBackTitle: "Markets" }}
+            />
           </Stack>
         </ScopedAppData>
       </AuthProvider>

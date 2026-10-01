@@ -110,6 +110,10 @@ export default function TabLayout() {
         options={{ title: "Learning", tabBarIcon: tabIcon(brandAssets.tabLearning, "Learning") }}
       />
       <Tabs.Screen
+        name="markets"
+        options={{ title: "Markets", tabBarIcon: tabIcon(brandAssets.crest, "Markets") }}
+      />
+      <Tabs.Screen
         name="settings"
         options={{ title: "Controls", tabBarIcon: tabIcon(brandAssets.tabControls, "Controls") }}
       />
