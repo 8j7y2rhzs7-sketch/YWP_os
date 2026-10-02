@@ -311,7 +311,7 @@ async function rawRequestOnce<T>(
     headers.set("Accept", "application/json");
   }
   if (!headers.has("User-Agent")) {
-    headers.set("User-Agent", "YWP-OS/3.3.56 (Android; native)");
+    headers.set("User-Agent", "YWP-OS/3.3.69 (Android; native)");
   }
   if (init.body && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");
