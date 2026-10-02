@@ -1,0 +1,47 @@
+# Markets mode scheduler (Phase 1).
+#
+# This job is a no-op until both repository secrets exist. Nothing here
+# places an order. The API still refuses the call unless the same token is
+# set on Render as YWP_MARKETS_SCAN_TOKEN.
+#
+# Secrets the owner can add later (GitHub → Settings → Secrets → Actions):
+#   YWP_MARKETS_API_URL
+#       Public API origin, with no path. Example: https://ywp-os-api.onrender.com
+#   YWP_MARKETS_SCAN_TOKEN
+#       Long random string. Put the same value in Render as YWP_MARKETS_SCAN_TOKEN.
+#
+# The workflow wakes the free web service and asks it to scan, then grade.
+# GitHub may delay a scheduled run. A paid Render cron is the later upgrade.
+# Leave the secrets unset and this file does nothing.
+
+name: Markets scan
+
+on:
+  schedule:
+    - cron: "17,47 * * * *"
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Scan and grade if the secrets exist
+        env:
+          API: ${{ secrets.YWP_MARKETS_API_URL }}
+          TOKEN: ${{ secrets.YWP_MARKETS_SCAN_TOKEN }}
+        run: |
+          if [ -z "$API" ] || [ -z "$TOKEN" ]; then
+            echo "Markets scheduler secrets are not set. No-op. No request was sent."
+            exit 0
+          fi
+          base="${API%/}"
+          curl --fail-with-body --silent --show-error --max-time 120 \
+            -X POST "${base}/api/v1/markets/scan" \
+            -H "X-YWP-Markets-Token: ${TOKEN}" \
+            -H "Content-Type: application/json"
+          echo
+          curl --fail-with-body --silent --show-error --max-time 120 \
+            -X POST "${base}/api/v1/markets/grade" \
+            -H "X-YWP-Markets-Token: ${TOKEN}" \
+            -H "Content-Type: application/json"
+          echo

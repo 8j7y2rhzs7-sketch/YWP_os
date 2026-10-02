@@ -16,6 +16,7 @@ os.environ["YWP_HIVE_MIN_SAMPLE"] = "40"
 import pytest
 from fastapi.testclient import TestClient
 
+from app import models_markets as markets_models  # noqa: F401
 from app.core.config import settings
 from app.core.database import Base, SessionLocal, engine
 from app.hive import models as hive_models  # noqa: F401

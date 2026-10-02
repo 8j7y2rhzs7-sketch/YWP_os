@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "YWP OS API"
-    app_version: str = "3.3.68"
+    app_version: str = "3.3.69"
     api_prefix: str = "/api/v1"
     env: Literal["development", "test", "staging", "production"] = Field(
         default="development", validation_alias="YWP_ENV"
@@ -70,6 +70,25 @@ class Settings(BaseSettings):
             "Scoped Bearer token for GET /marketing/approved-cards. "
             "Read-only; never use the mobile JWT secret for the marketing bot."
         ),
+    )
+    # Phase 1 markets mode is public read-only data. Defaults are on because
+    # this phase has no keys and no order code, so turning it on cannot move
+    # money. The scan token stays empty so nothing runs on a schedule until
+    # the owner sets the same secret on Render and in GitHub.
+    markets_enabled: bool = Field(default=True, validation_alias="YWP_MARKETS_ENABLED")
+    markets_coinbase_enabled: bool = Field(
+        default=True, validation_alias="YWP_MARKETS_COINBASE_ENABLED"
+    )
+    markets_kraken_enabled: bool = Field(
+        default=True, validation_alias="YWP_MARKETS_KRAKEN_ENABLED"
+    )
+    markets_kalshi_enabled: bool = Field(
+        default=True, validation_alias="YWP_MARKETS_KALSHI_ENABLED"
+    )
+    markets_scan_token: str | None = Field(
+        default=None,
+        validation_alias="YWP_MARKETS_SCAN_TOKEN",
+        description="Shared secret for POST /markets/scan and /markets/grade. Unset = admin only.",
     )
     mlb_props_enabled: bool = Field(
         default=True,
@@ -227,6 +246,7 @@ class Settings(BaseSettings):
         "whop_webhook_secret",
         "whop_app_id",
         "openai_api_key",
+        "markets_scan_token",
         mode="before",
     )
     @classmethod

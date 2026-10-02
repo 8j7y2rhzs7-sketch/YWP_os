@@ -7,6 +7,7 @@ from app.api import (
     health,
     learning,
     marketing,
+    markets,
     ops_heal,
     protocols,
     sports,
@@ -28,5 +29,6 @@ api_router.include_router(learning.router)
 api_router.include_router(errors.router)
 api_router.include_router(ops_heal.router)
 api_router.include_router(marketing.router)
+api_router.include_router(markets.router)
 api_router.include_router(whop.router)
 api_router.include_router(hive_router)
