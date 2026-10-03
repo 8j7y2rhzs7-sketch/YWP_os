@@ -6,7 +6,13 @@ import httpx
 from fastapi.testclient import TestClient
 
 from app.core.config import settings
-from app.models_markets import MarketCall, MarketCandle, MarketModelVersion, MarketOutcome
+from app.models_markets import (
+    MarketCall,
+    MarketCandle,
+    MarketJobRun,
+    MarketModelVersion,
+    MarketOutcome,
+)
 from app.services.markets.adapters.coinbase import CoinbaseAdapter
 from app.services.markets.adapters.kalshi import KalshiAdapter
 from app.services.markets.adapters.kraken import KrakenAdapter
@@ -236,6 +242,68 @@ def test_scan_persists_calls_and_board_is_readable(
     assert record.status_code == 200
     assert record.json()["separate_from_sports"] is True
     assert record.json()["n_calls"] == 3
+
+
+def test_opening_the_board_reads_prices_once(
+    client: TestClient, auth_headers: dict[str, str], monkeypatch
+) -> None:
+    reads: list[int] = []
+
+    def fake_scan(db, **kwargs):
+        reads.append(int(kwargs.get("n_paths") or 0))
+        now = datetime.now(UTC)
+        db.add(
+            MarketJobRun(
+                job_name="scan",
+                started_at=now,
+                finished_at=now,
+                status="ok",
+                items_processed=0,
+                error_count=0,
+                errors=[],
+            )
+        )
+        db.commit()
+        return {
+            "status": "ok",
+            "crypto_calls": 0,
+            "exchange_calls": 0,
+            "errors": [],
+            "read_only": True,
+        }
+
+    monkeypatch.setattr("app.services.markets.scheduler_jobs.run_scan", fake_scan)
+    first = client.get("/api/v1/markets/calls?venue=crypto", headers=auth_headers)
+    assert first.status_code == 200, first.text
+    second = client.get("/api/v1/markets/calls?venue=crypto", headers=auth_headers)
+    assert second.status_code == 200, second.text
+    assert reads == [800]
+
+
+def test_a_fresh_read_is_not_repeated(
+    client: TestClient, auth_headers: dict[str, str], db_session, monkeypatch
+) -> None:
+    now = datetime.now(UTC)
+    db_session.add(
+        MarketJobRun(
+            job_name="scan",
+            started_at=now,
+            finished_at=now,
+            status="ok",
+            items_processed=1,
+            error_count=0,
+            errors=[],
+        )
+    )
+    db_session.commit()
+
+    def fail_scan(db, **kwargs):
+        del db, kwargs
+        raise AssertionError("a fresh board must not read prices again")
+
+    monkeypatch.setattr("app.services.markets.scheduler_jobs.run_scan", fail_scan)
+    board = client.get("/api/v1/markets/calls?venue=crypto", headers=auth_headers)
+    assert board.status_code == 200, board.text
 
 
 def test_grade_crypto_from_stored_candles(db_session) -> None:

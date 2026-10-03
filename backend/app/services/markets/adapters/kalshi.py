@@ -81,6 +81,44 @@ def sport_from_ticker(ticker: str) -> str | None:
     return None
 
 
+# Game-winner series the sports model already prices, in the order we want them.
+PREFERRED_GAME_SERIES = (
+    "KXNFLGAME",
+    "KXWNBAGAME",
+    "KXMLBGAME",
+    "KXNBAGAME",
+    "KXNHLGAME",
+    "KXNCAAFGAME",
+    "KXNCAABGAME",
+)
+# Futures, awards, and drafts are not the same question as a game winner.
+_SKIP_SERIES_MARKERS = ("DRAFT", "CHAMP", "FUTURE", "MVP", "AWARD", "PICK")
+
+
+def rank_game_series(tickers: list[str]) -> list[str]:
+    """Put NFL, WNBA, MLB, and the other modeled leagues first. Drop drafts."""
+    preferred: list[str] = []
+    other_games: list[str] = []
+    for ticker in tickers:
+        upper = ticker.upper()
+        if any(marker in upper for marker in _SKIP_SERIES_MARKERS):
+            continue
+        if any(marker in upper for marker in PREFERRED_GAME_SERIES):
+            preferred.append(ticker)
+        elif "GAME" in upper and sport_from_ticker(ticker):
+            other_games.append(ticker)
+
+    def preferred_order(ticker: str) -> int:
+        upper = ticker.upper()
+        for index, marker in enumerate(PREFERRED_GAME_SERIES):
+            if marker in upper:
+                return index
+        return len(PREFERRED_GAME_SERIES)
+
+    preferred.sort(key=preferred_order)
+    return preferred + other_games
+
+
 def parse_market(market: dict[str, object]) -> Instrument:
     ticker = str(market.get("ticker") or "")
     title = str(market.get("title") or market.get("yes_sub_title") or ticker)
@@ -149,35 +187,33 @@ class KalshiAdapter:
         series_rows = series_payload.get("series") if isinstance(series_payload, dict) else []
         if not isinstance(series_rows, list):
             series_rows = []
-        game_series = []
-        for row in series_rows:
-            if not isinstance(row, dict):
-                continue
-            ticker = str(row.get("ticker") or "")
-            if "GAME" in ticker.upper() or sport_from_ticker(ticker):
-                game_series.append(ticker)
-        if not game_series:
-            game_series = [
-                str(row.get("ticker"))
-                for row in series_rows
-                if isinstance(row, dict) and row.get("ticker")
-            ][:4]
+        raw_tickers = [
+            str(row.get("ticker"))
+            for row in series_rows
+            if isinstance(row, dict) and row.get("ticker")
+        ]
+        game_series = rank_game_series(raw_tickers)
         instruments: list[Instrument] = []
-        for series_ticker in game_series[:4]:
+        for series_ticker in game_series[:6]:
             payload = self.http.get_json(
                 f"{self.base_url}/markets",
-                params={"series_ticker": series_ticker, "status": "open", "limit": 8},
+                params={"series_ticker": series_ticker, "status": "open", "limit": 4},
             )
             markets = payload.get("markets") if isinstance(payload, dict) else []
             if not isinstance(markets, list):
                 continue
+            taken = 0
             for market in markets:
-                if isinstance(market, dict):
-                    market.setdefault("series_ticker", series_ticker)
-                    instruments.append(parse_market(market))
-            if len(instruments) >= 12:
+                if not isinstance(market, dict):
+                    continue
+                market.setdefault("series_ticker", series_ticker)
+                instruments.append(parse_market(market))
+                taken += 1
+                if taken >= 4 or len(instruments) >= 18:
+                    break
+            if len(instruments) >= 18:
                 break
-        return instruments[:12]
+        return instruments[:18]
 
     def get_market(self, instrument_id: str) -> dict[str, object]:
         self._require()

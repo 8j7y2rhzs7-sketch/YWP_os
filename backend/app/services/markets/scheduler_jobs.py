@@ -7,6 +7,7 @@ copy of the same call. Grading only fills calls that do not have an outcome yet.
 from __future__ import annotations
 
 import logging
+import threading
 from datetime import UTC, datetime, timedelta
 
 from sqlalchemy import select
@@ -53,6 +54,11 @@ from app.services.markets.markets_engine import MarketDraft, build_crypto_call, 
 logger = logging.getLogger(__name__)
 
 HORIZONS = (4.0, 24.0)
+# Opening the Markets tab reads prices itself when the last read is older than this.
+SCAN_FRESH_FOR = timedelta(minutes=15)
+# Fewer paths than a full admin scan so the phone's 25-second wait still finishes.
+PHONE_SCAN_PATHS = 800
+_SCAN_LOCK = threading.Lock()
 
 
 def freeze_model_version(
@@ -182,6 +188,52 @@ def run_scan(
         "read_only": True,
         "job_id": job.id,
     }
+
+
+def _as_utc(value: datetime) -> datetime:
+    if value.tzinfo is None:
+        return value.replace(tzinfo=UTC)
+    return value
+
+
+def _scan_is_fresh(db: Session, max_age: timedelta) -> bool:
+    last = db.scalar(
+        select(MarketJobRun)
+        .where(MarketJobRun.job_name == "scan")
+        .order_by(MarketJobRun.started_at.desc())
+    )
+    if last is None or last.finished_at is None:
+        return False
+    age = datetime.now(UTC) - _as_utc(last.finished_at)
+    if last.status in {"ok", "completed_with_errors"} and age < max_age:
+        return True
+    # A failed read should not hammer the exchanges on every pull.
+    return last.status == "error" and age < timedelta(minutes=2)
+
+
+def ensure_recent_scan(db: Session, *, max_age: timedelta = SCAN_FRESH_FOR) -> None:
+    """Read public prices when Markets is opened and the last read is stale.
+
+    Any logged-in subscriber can reach this through the board. It never places
+    an order. A second request that arrives mid-read waits for that read.
+    """
+    if not settings.markets_enabled:
+        return
+    if _scan_is_fresh(db, max_age):
+        return
+    acquired = _SCAN_LOCK.acquire(blocking=False)
+    if not acquired:
+        _SCAN_LOCK.acquire()
+        _SCAN_LOCK.release()
+        db.expire_all()
+        return
+    try:
+        if _scan_is_fresh(db, max_age):
+            return
+        run_scan(db, n_paths=PHONE_SCAN_PATHS)
+    finally:
+        _SCAN_LOCK.release()
+    db.expire_all()
 
 
 def run_grade(

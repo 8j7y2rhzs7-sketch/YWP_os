@@ -112,8 +112,8 @@ export default function MarketsScreen() {
       {calls.length === 0 ? (
         <MetalPanel>
           <Text style={styles.empty}>
-            No calls yet. An admin scan fills this board from public prices. A scan does not buy or
-            sell anything.
+            No calls yet. Pull down and the phone reads public prices on its own. Nothing on this
+            screen buys or sells.
           </Text>
         </MetalPanel>
       ) : (

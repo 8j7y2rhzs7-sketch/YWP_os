@@ -6,7 +6,7 @@ import httpx
 
 from app.services.markets.adapter import VenueDisabled
 from app.services.markets.adapters.coinbase import CoinbaseAdapter
-from app.services.markets.adapters.kalshi import KalshiAdapter, parse_market
+from app.services.markets.adapters.kalshi import KalshiAdapter, parse_market, rank_game_series
 from app.services.markets.adapters.kraken import KrakenAdapter
 
 
@@ -204,3 +204,20 @@ def test_kalshi_market_orderbook_and_settlement() -> None:
     parsed = parse_market({"ticker": "KXMLBGAME-1", "title": "Yankees winner", "status": "active"})
     assert parsed.sport == "mlb"
     adapter.close()
+
+
+def test_game_series_prefers_leagues_the_model_already_prices() -> None:
+    ranked = rank_game_series(
+        [
+            "KXLNBPGAME",
+            "KXNBADRAFTPICK",
+            "KXNBANEWCHAMPION",
+            "KXMLBGAME",
+            "KXWNBAGAME",
+            "KXNFLGAME",
+        ]
+    )
+    assert ranked == ["KXNFLGAME", "KXWNBAGAME", "KXMLBGAME"]
+    assert "KXNBADRAFTPICK" not in ranked
+    assert "KXNBANEWCHAMPION" not in ranked
+    assert "KXLNBPGAME" not in ranked

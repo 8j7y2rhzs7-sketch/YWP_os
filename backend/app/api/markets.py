@@ -19,7 +19,7 @@ from app.deps import DB, SubscribedUser, bearer
 from app.models_markets import MarketCall, MarketJobRun, MarketOutcome
 from app.services.demo_account import is_admin_principal
 from app.services.markets.performance import track_record
-from app.services.markets.scheduler_jobs import run_grade, run_scan
+from app.services.markets.scheduler_jobs import ensure_recent_scan, run_grade, run_scan
 
 logger = logging.getLogger(__name__)
 
@@ -160,6 +160,7 @@ def list_calls(
     limit: int = Query(default=40, ge=1, le=100),
 ) -> dict[str, object]:
     group = _venue_group(venue)
+    ensure_recent_scan(db)
     rows = db.scalars(
         select(MarketCall)
         .where(MarketCall.venue_group == group)
@@ -189,6 +190,7 @@ def performance(
     db: DB,
     venue: str = Query(default="crypto"),
 ) -> dict[str, object]:
+    ensure_recent_scan(db)
     return track_record(db, _venue_group(venue))
 
 
