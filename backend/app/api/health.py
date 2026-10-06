@@ -1,5 +1,8 @@
+import logging
+
 from fastapi import APIRouter
 from sqlalchemy import text
+from sqlalchemy.exc import SQLAlchemyError
 
 from app.core.config import settings
 from app.deps import DB
@@ -13,21 +16,31 @@ from app.services.nhl_provider import probe_nhl_api
 from app.services.odds_provider import get_last_fetch_status, odds_api_configured, probe_odds_api
 
 router = APIRouter(tags=["health"])
+logger = logging.getLogger(__name__)
 
 
 @router.get("/health")
 def health(db: DB) -> dict[str, str | bool | None]:
-    db.execute(text("SELECT 1"))
+    database = "ok"
+    try:
+        db.execute(text("SELECT 1"))
+    except SQLAlchemyError:
+        logger.exception("health check could not reach the database")
+        database = "unavailable"
+        try:
+            db.rollback()
+        except SQLAlchemyError:
+            logger.exception("health check could not roll the database session back")
     odds_remaining = get_last_fetch_status().get("remaining")
     return {
-        "status": "ok",
+        "status": "ok" if database == "ok" else "degraded",
         "service": settings.app_name,
         "version": settings.app_version,
         "protocol_version": settings.protocol_version,
         "demo_mode": settings.demo_mode,
         "odds_api_configured": odds_api_configured(),
         "odds_requests_remaining": odds_remaining,
-        "database": "ok",
+        "database": database,
     }
 
 
