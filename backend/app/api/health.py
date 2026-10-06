@@ -1,10 +1,18 @@
+import logging
+import os
+
 from fastapi import APIRouter
 from sqlalchemy import text
 
 from app.core.config import settings
-from app.deps import DB
+from app.core.database import SessionLocal
 from app.services.balldontlie_provider import balldontlie_configured, probe_balldontlie
 from app.services.cfbd_provider import cfbd_configured, probe_cfbd_api
+from app.services.database_guard import (
+    DATABASE_UNAVAILABLE_MESSAGE,
+    MIGRATION_FAILED_MESSAGE,
+    is_database_unavailable,
+)
 from app.services.espn_provider import probe_espn_api
 from app.services.football_data_provider import football_data_configured, probe_football_data
 from app.services.mlb_provider import probe_mlb_api
@@ -12,23 +20,54 @@ from app.services.ncaa_provider import probe_ncaa_api
 from app.services.nhl_provider import probe_nhl_api
 from app.services.odds_provider import get_last_fetch_status, odds_api_configured, probe_odds_api
 
+logger = logging.getLogger(__name__)
+
 router = APIRouter(tags=["health"])
 
 
 @router.get("/health")
-def health(db: DB) -> dict[str, str | bool | None]:
-    db.execute(text("SELECT 1"))
+def health() -> dict[str, str | bool | None]:
+    """Process is up. HTTP 200 even when Postgres is down so a deploy can finish.
+
+    Render treats any non-2xx health check as a failed deploy. A suspended
+    database used to kill the container before this route existed. `status`
+    is `degraded` in that case; account and board routes return 503.
+    """
+    database = "ok"
+    status = "ok"
+    message: str | None = None
+    db = SessionLocal()
+    try:
+        db.execute(text("SELECT 1"))
+    except Exception as exc:
+        if not is_database_unavailable(exc):
+            raise
+        database = "unavailable"
+        status = "degraded"
+        message = DATABASE_UNAVAILABLE_MESSAGE
+        logger.warning("health: database unavailable (%s)", type(exc).__name__)
+    finally:
+        try:
+            db.close()
+        except Exception:
+            logger.warning("health: closing the database session failed")
+    if status == "ok" and os.environ.get("YWP_DB_BOOT_FAILED") == "1":
+        status = "degraded"
+        message = MIGRATION_FAILED_MESSAGE
     odds_remaining = get_last_fetch_status().get("remaining")
-    return {
-        "status": "ok",
+    payload: dict[str, str | bool | None] = {
+        "status": status,
         "service": settings.app_name,
         "version": settings.app_version,
         "protocol_version": settings.protocol_version,
         "demo_mode": settings.demo_mode,
         "odds_api_configured": odds_api_configured(),
         "odds_requests_remaining": odds_remaining,
-        "database": "ok",
+        "database": database,
     }
+    if message is not None:
+        payload["message"] = message
+    return payload
 
 
 @router.get("/health/providers")

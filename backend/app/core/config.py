@@ -4,10 +4,13 @@ from typing import Literal
 from pydantic import AliasChoices, Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+# Published local default. Production must set YWP_JWT_SECRET to something else.
+DEV_JWT_SECRET = "local-development-secret-change-before-production-12345"
+
 
 class Settings(BaseSettings):
     app_name: str = "YWP OS API"
-    app_version: str = "3.3.69"
+    app_version: str = "3.3.70"
     api_prefix: str = "/api/v1"
     env: Literal["development", "test", "staging", "production"] = Field(
         default="development", validation_alias="YWP_ENV"
@@ -23,7 +26,7 @@ class Settings(BaseSettings):
     owner_adoption_pending: bool = False
 
     jwt_secret: str = Field(
-        default="local-development-secret-change-before-production-12345",
+        default=DEV_JWT_SECRET,
         validation_alias="YWP_JWT_SECRET",
     )
     jwt_algorithm: str = "HS256"

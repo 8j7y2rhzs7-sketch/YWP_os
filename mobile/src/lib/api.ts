@@ -22,7 +22,7 @@ export const WHOP_CHECKOUT_URL =
 
 export const APP_DOWNLOAD_URL =
   process.env.EXPO_PUBLIC_APP_DOWNLOAD_URL ??
-  "https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.56/YWP-OS-3.3.56.apk";
+  "https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.69/YWP-OS-3.3.69.apk";
 
 export function normalizeApiUrl(value: string): string {
   const normalized = value.trim().replace(/\/$/, "");
@@ -107,6 +107,10 @@ const ANALYZE_TIMEOUT_MS = 180_000;
 export const EDGE_CHALLENGE_MESSAGE =
   "Edge protection paused this request — waiting and retrying automatically. Avoid spamming Refresh.";
 
+/** Shown when the API process or its database is down, including a Render error page. */
+export const SERVICE_DOWN_MESSAGE =
+  "YWP OS is not responding. The server may be waking up, or the database is unavailable. Wait a minute and try again.";
+
 const EDGE_RETRY_LIMIT = 3;
 const EDGE_RETRY_BASE_MS = 5_000;
 
@@ -120,8 +124,6 @@ export function looksLikeEdgeChallenge(value: unknown): boolean {
   const mid = trimmed.slice(1600, 5000).toLowerCase();
   const sample = `${head}\n${mid}`;
   if (
-    head.startsWith("<!doctype html") ||
-    head.startsWith("<html") ||
     sample.includes("just a moment") ||
     sample.includes("challenges.cloudflare.com") ||
     sample.includes("cf-browser-verification") ||
@@ -134,12 +136,6 @@ export function looksLikeEdgeChallenge(value: unknown): boolean {
     sample.includes("challenge-error-text") ||
     sample.includes("cf-challenge") ||
     sample.includes("chl_page")
-  ) {
-    return true;
-  }
-  if (
-    trimmed.length > 400 &&
-    /<\/?(?:html|head|body|style|script|meta)\b/i.test(head)
   ) {
     return true;
   }
@@ -214,7 +210,7 @@ function formatApiDetail(detail: unknown, status: number): string {
     return "Server timed out — wait for research to finish, then LAUNCH again. Props still score fail-closed until modeled.";
   }
   if (status === 503) {
-    return "Live provider is down and demo will not be substituted. Retry in a moment.";
+    return "YWP OS is unavailable right now. The database or a live provider is down. Wait a minute and try again.";
   }
   if (status === 0) {
     return "Network request failed — check connectivity and retry.";
@@ -235,7 +231,9 @@ export function timeoutMsForPath(path: string, override?: number): number {
     route.startsWith("/sports/market-board") ||
     route.startsWith("/sports/day-forge") ||
     route.startsWith("/sports/build-ticket") ||
-    route.startsWith("/sports/settle-day")
+    route.startsWith("/sports/settle-day") ||
+    route.startsWith("/markets/calls") ||
+    route.startsWith("/markets/performance")
   ) {
     return HEAVY_TIMEOUT_MS;
   }
@@ -333,7 +331,7 @@ async function rawRequestOnce<T>(
     clearTimeout(timer);
     if (controller.signal.aborted || isCanceledFetchError(error)) {
       throw new ApiError(
-        `Request timed out after ${Math.round(waitMs / 1000)}s — check connectivity and retry`,
+        `Request timed out after ${Math.round(waitMs / 1000)}s. If the app was idle, the server can take about a minute to wake up — wait and try again.`,
         408,
       );
     }
@@ -360,16 +358,23 @@ async function rawRequestOnce<T>(
     body = await response.text();
   }
   // Cloudflare often serves an HTML/JS challenge with 403/503 (or rarely 200).
-  if (
-    looksLikeEdgeChallenge(body) ||
-    (!isJson &&
-      typeof body === "string" &&
-      /<\/?[a-z][\s\S]*>/i.test(body.slice(0, 200)))
-  ) {
+  if (typeof body === "string" && looksLikeEdgeChallenge(body)) {
     throw new ApiError(
       EDGE_CHALLENGE_MESSAGE,
       response.status === 200 ? 503 : response.status,
-      typeof body === "string" ? body : EDGE_CHALLENGE_MESSAGE,
+      body,
+    );
+  }
+  // Render's gateway page is HTML too. It is not an edge challenge.
+  if (
+    !isJson &&
+    typeof body === "string" &&
+    /<\/?[a-z][\s\S]*>/i.test(body.slice(0, 200))
+  ) {
+    throw new ApiError(
+      SERVICE_DOWN_MESSAGE,
+      response.status === 200 ? 503 : response.status || 502,
+      body,
     );
   }
   if (!response.ok) {

@@ -8,6 +8,7 @@ from datetime import UTC, datetime
 
 import httpx
 
+from app.core.config import settings
 from app.services.markets.adapter import AdapterError
 
 
@@ -46,7 +47,7 @@ class PublicHttp:
         self.client = client or httpx.Client(
             timeout=httpx.Timeout(timeout, connect=5.0),
             headers={
-                "User-Agent": "YWP-OS-markets/3.3.69 (read-only)",
+                "User-Agent": f"YWP-OS-markets/{settings.app_version} (read-only)",
                 "Accept": "application/json",
             },
         )
