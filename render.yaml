@@ -1,5 +1,15 @@
 # Render Blueprint — deploy the YWP OS API from this GitHub repo.
 # https://dashboard.render.com/blueprints
+#
+# Plans stay `free` here so syncing this file does not start a charge.
+# Upgrade the EXISTING services in the Dashboard, in this order:
+#   1. ywp-os-db → Postgres plan 0.1c-256mb ($6/month, 256 MB, 100 connections,
+#      1 GB storage included). Do this before the free-expiry grace ends or
+#      Render deletes the database. Do not create a second empty database.
+#   2. Redeploy ywp-os-api after the database accepts connections.
+#   3. For a public launch, ywp-os-api → web plan 0.5c-512mb ($7/month, always on).
+#      The free web service sleeps after 15 idle minutes and takes about a minute
+#      to wake. The phone stops waiting on login at 25 seconds.
 
 databases:
   - name: ywp-os-db
@@ -35,7 +45,7 @@ services:
       - key: NEXT_PUBLIC_WHOP_CHECKOUT_URL
         value: https://whop.com/checkout/plan_MwJ2qcFxmvqDY
       - key: YWP_APP_DOWNLOAD_URL
-        value: https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.56/YWP-OS-3.3.56.apk
+        value: https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.69/YWP-OS-3.3.69.apk
       - key: YWP_CORS_ORIGINS
         value: https://whop.com,http://localhost:8081,http://localhost:19006
       - key: DATABASE_URL

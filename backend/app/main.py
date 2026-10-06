@@ -1,17 +1,24 @@
 from __future__ import annotations
 
 import logging
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import RedirectResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 
 from app.api.router import api_router
 from app.core.config import settings
 from app.core.database import SessionLocal
 from app.middleware.process_evidence import ProcessEvidenceMiddleware
 from app.middleware.rate_limit import RateLimitMiddleware
+from app.services.database_guard import (
+    DATABASE_UNAVAILABLE_MESSAGE,
+    enforce_production_secrets,
+    is_database_unavailable,
+    start_database_recovery,
+)
 from app.services.whop import (
     check_user_access,
     checkout_url,
@@ -26,6 +33,9 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def _lifespan(_app: FastAPI):
     """Move the published demo row to the owner, then lock any leftover demo login."""
+    enforce_production_secrets()
+    if os.environ.get("YWP_DB_BOOT_PENDING") == "1":
+        start_database_recovery()
     if not settings.demo_mode:
         db = SessionLocal()
         try:
@@ -90,6 +100,24 @@ async def security_headers(request: Request, call_next):
         "no-store" if request.url.path.startswith(settings.api_prefix) else "no-cache"
     )
     return response
+
+
+@app.middleware("http")
+async def database_unavailable_guard(request: Request, call_next):
+    """Account and board routes get a plain 503 when Postgres cannot be reached."""
+    try:
+        return await call_next(request)
+    except Exception as exc:
+        if not is_database_unavailable(exc):
+            raise
+        logger.warning(
+            "request failed because the database is unavailable (%s)",
+            type(exc).__name__,
+        )
+        return JSONResponse(
+            status_code=503,
+            content={"detail": DATABASE_UNAVAILABLE_MESSAGE},
+        )
 
 
 @app.get("/", include_in_schema=False)

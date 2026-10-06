@@ -11,7 +11,9 @@ class Base(DeclarativeBase):
 
 
 _is_sqlite = settings.database_url.startswith("sqlite")
-connect_args = {"check_same_thread": False} if _is_sqlite else {}
+# Fail a dead Postgres host in seconds. A suspended Render database does not
+# resolve, and the default driver wait outlives the platform health check.
+connect_args = {"check_same_thread": False} if _is_sqlite else {"connect_timeout": 8}
 
 # Free-tier Postgres has a tight connection budget. Keep the pool small and
 # fail fast under pressure instead of hanging request threads forever.

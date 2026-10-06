@@ -227,7 +227,7 @@ def test_wait_is_blocked_from_marketing() -> None:
 def test_health_reports_api_version(client: TestClient) -> None:
     health = client.get("/api/v1/health")
     assert health.status_code == 200
-    assert health.json()["version"] == "3.3.69"
+    assert health.json()["version"] == "3.3.70"
 
 
 def test_analyze_partial_mlb_wait_is_returned_in_stay_away(
