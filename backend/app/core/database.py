@@ -11,7 +11,9 @@ class Base(DeclarativeBase):
 
 
 _is_sqlite = settings.database_url.startswith("sqlite")
-connect_args = {"check_same_thread": False} if _is_sqlite else {}
+# Postgres on the free host can be asleep. A bounded connect keeps a cold
+# start from sitting forever before the web port opens.
+connect_args = {"check_same_thread": False} if _is_sqlite else {"connect_timeout": 15}
 
 # Free-tier Postgres has a tight connection budget. Keep the pool small and
 # fail fast under pressure instead of hanging request threads forever.

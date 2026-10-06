@@ -92,6 +92,15 @@ async def security_headers(request: Request, call_next):
     return response
 
 
+@app.get("/healthz", include_in_schema=False)
+def healthz() -> dict[str, str]:
+    """Process is listening. Does not touch the database.
+
+    Render uses this so a sleeping database cannot keep the site from opening.
+    """
+    return {"status": "ok", "version": settings.app_version}
+
+
 @app.get("/", include_in_schema=False)
 def root() -> dict[str, str]:
     return {
