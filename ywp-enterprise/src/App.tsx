@@ -17,26 +17,41 @@ export default function App() {
   const progress = freedomProgress(state);
   const free = state.lifetimeRevenue >= state.freedomGoal;
 
+  const channels = useMemo(
+    () => [...new Set(state.rooms.filter((r) => r.unlocked).map((r) => r.channel))],
+    [state.rooms],
+  );
+
   const topListings = useMemo(
     () =>
       state.stores
-        .flatMap((s) => s.listings.map((l) => ({ ...l, store: s.name })))
+        .flatMap((s) => s.listings.map((l) => ({ ...l, store: s.name, channel: s.channel })))
         .sort((a, b) => b.revenue - a.revenue)
-        .slice(0, 8),
+        .slice(0, 6),
     [state.stores],
+  );
+
+  const topOffers = useMemo(
+    () =>
+      state.rooms
+        .flatMap((r) => r.offers.map((o) => ({ ...o, room: r.name })))
+        .sort((a, b) => b.revenue - a.revenue)
+        .slice(0, 6),
+    [state.rooms],
   );
 
   return (
     <div className="app">
       <header className="hero">
         <div>
-          <p className="tagline">Agent factory · print-on-demand · boss-run unlocks</p>
+          <p className="tagline">Agent factory · any channel · boss invents the rooms</p>
           <h1 className="brand">
             YWP <span>Enterprise</span>
           </h1>
           <p className="tagline">
-            Agents stay locked on the floor until they generate {formatMoney(state.freedomGoal)}.
-            Boss invents rooms. Design Lab sells demand niches with original art only.
+            Start on Etsy POD — Helix invents Fiverr, Shopify, content, affiliates, merch, SaaS,
+            and more. Same playbook: demand → original offer → staff → scale to{" "}
+            {formatMoney(state.freedomGoal)}.
           </p>
         </div>
 
@@ -81,6 +96,14 @@ export default function App() {
           </div>
         </div>
 
+        <div className="channel-row">
+          {channels.map((c) => (
+            <span key={c} className="chip channel">
+              {c}
+            </span>
+          ))}
+        </div>
+
         {free && (
           <div className="freedom-banner">FREEDOM UNLOCKED — $1M lifetime revenue cleared</div>
         )}
@@ -102,8 +125,8 @@ export default function App() {
           <strong>{state.agents.length}</strong>
         </div>
         <div className="stat">
-          <b>Open rooms</b>
-          <strong>{state.rooms.filter((r) => r.unlocked).length}</strong>
+          <b>Live channels</b>
+          <strong>{channels.length}</strong>
         </div>
       </div>
 
@@ -125,11 +148,17 @@ export default function App() {
                       {room.unlocked ? "Open" : `Lock $${room.unlockAt.toLocaleString()}`}
                     </span>
                   </div>
+                  <p className="channel-line">{room.channel}</p>
                   <p>{room.description}</p>
                   {store && (
                     <p>
                       {store.orders} orders · {formatMoney(store.revenue)} · rep{" "}
                       {(store.reputation * 100).toFixed(0)}% · {store.listings.length} listings
+                    </p>
+                  )}
+                  {!store && room.unlocked && room.ventureId && (
+                    <p>
+                      {formatMoney(room.revenue)} earned · {room.offers.length} offers shipped
                     </p>
                   )}
                   <div className="agents">
@@ -155,9 +184,24 @@ export default function App() {
         </section>
 
         <aside className="panel">
-          <h2>Boss feed</h2>
+          <h2>Boss idea deck</h2>
+          <div className="listings ideas">
+            {state.ideas.slice(0, 8).map((idea) => (
+              <div key={idea.id} className="listing">
+                <strong>
+                  [{idea.status}] {idea.title}
+                </strong>
+                <small>
+                  {idea.channel} · Day {idea.day}
+                </small>
+                <small>{idea.detail}</small>
+              </div>
+            ))}
+          </div>
+
+          <h2 style={{ marginTop: "1.25rem" }}>Boss feed</h2>
           <div className="feed">
-            {state.directives.slice(0, 3).map((d) => (
+            {state.directives.slice(0, 2).map((d) => (
               <div key={d.id} className="event boss">
                 D{d.day} DIRECTIVE — {d.title}: {d.detail}
               </div>
@@ -169,7 +213,7 @@ export default function App() {
             ))}
           </div>
 
-          <h2 style={{ marginTop: "1.25rem" }}>Top listings</h2>
+          <h2 style={{ marginTop: "1.25rem" }}>Top POD listings</h2>
           <div className="listings">
             {topListings.length === 0 && (
               <div className="listing">No listings yet — start the factory.</div>
@@ -178,10 +222,23 @@ export default function App() {
               <div key={l.id} className="listing">
                 <strong>{l.title}</strong>
                 <small>
-                  {l.store} · {l.product} · {formatMoney(l.price)} · {l.sales} sold ·{" "}
-                  {formatMoney(l.revenue)}
+                  {l.channel} · {l.store} · {l.sales} sold · {formatMoney(l.revenue)}
                 </small>
-                <small>{l.designBrief.slice(0, 140)}…</small>
+              </div>
+            ))}
+          </div>
+
+          <h2 style={{ marginTop: "1.25rem" }}>Top channel offers</h2>
+          <div className="listings">
+            {topOffers.length === 0 && (
+              <div className="listing">Boss unlocks more channels as revenue climbs.</div>
+            )}
+            {topOffers.map((o) => (
+              <div key={o.id} className="listing">
+                <strong>{o.title}</strong>
+                <small>
+                  {o.channel} · {o.room} · {o.sales} booked · {formatMoney(o.revenue)}
+                </small>
               </div>
             ))}
           </div>

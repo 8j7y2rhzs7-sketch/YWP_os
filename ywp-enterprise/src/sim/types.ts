@@ -6,8 +6,16 @@ export type RoomKind =
   | "fulfillment"
   | "ads_desk"
   | "freelance_desk"
+  | "shopify_store"
+  | "digital_downloads"
   | "content_studio"
-  | "wholesale_bay";
+  | "affiliate_desk"
+  | "merch_marketplace"
+  | "newsletter_desk"
+  | "youtube_studio"
+  | "wholesale_bay"
+  | "micro_saas"
+  | "lead_gen";
 
 export type ProductKind = "mug" | "candle" | "personalized";
 
@@ -32,6 +40,18 @@ export interface Listing {
   revenue: number;
 }
 
+/** Non-POD offer the Boss rooms ship (gigs, downloads, clips, etc.) */
+export interface VentureOffer {
+  id: string;
+  roomId: string;
+  title: string;
+  channel: string;
+  nicheId: string;
+  createdDay: number;
+  sales: number;
+  revenue: number;
+}
+
 export interface Agent {
   id: string;
   name: string;
@@ -47,17 +67,23 @@ export interface Room {
   id: string;
   kind: RoomKind;
   name: string;
+  channel: string;
   unlocked: boolean;
   unlockAt: number;
   description: string;
   agentIds: string[];
   storeId?: string;
+  /** Set when Boss invents from the venture deck */
+  ventureId?: string;
+  revenue: number;
+  offers: VentureOffer[];
 }
 
 export interface Store {
   id: string;
   name: string;
   focus: ProductKind;
+  channel: string;
   listings: Listing[];
   revenue: number;
   orders: number;
@@ -70,6 +96,15 @@ export interface BossDirective {
   title: string;
   detail: string;
   roomId?: string;
+}
+
+export interface BossIdea {
+  id: string;
+  day: number;
+  channel: string;
+  title: string;
+  detail: string;
+  status: "queued" | "building" | "live";
 }
 
 export interface SimEvent {
@@ -93,6 +128,7 @@ export interface SimState {
   stores: Store[];
   niches: TrendNiche[];
   directives: BossDirective[];
+  ideas: BossIdea[];
   events: SimEvent[];
   compliance: {
     originalDesignsOnly: true;

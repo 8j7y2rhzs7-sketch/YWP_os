@@ -1,5 +1,6 @@
 import type { Agent, Room, SimState, Store } from "./types";
 import { SEED_NICHES } from "./trends";
+import { VENTURE_DECK } from "./ventures";
 
 const FREEDOM_GOAL = 1_000_000;
 
@@ -9,6 +10,7 @@ export function createInitialState(): SimState {
       id: "store-mugs",
       name: "Forge & Fill Mugs",
       focus: "mug",
+      channel: "Etsy POD",
       listings: [],
       revenue: 0,
       orders: 0,
@@ -18,6 +20,7 @@ export function createInitialState(): SimState {
       id: "store-candles",
       name: "Nightshift Candles",
       focus: "candle",
+      channel: "Etsy POD",
       listings: [],
       revenue: 0,
       orders: 0,
@@ -27,6 +30,7 @@ export function createInitialState(): SimState {
       id: "store-personal",
       name: "Nameplate Co.",
       focus: "personalized",
+      channel: "Etsy POD",
       listings: [],
       revenue: 0,
       orders: 0,
@@ -34,92 +38,86 @@ export function createInitialState(): SimState {
     },
   ];
 
-  const rooms: Room[] = [
+  const starterRooms: Room[] = [
     {
       id: "room-boss",
       kind: "fulfillment",
       name: "Boss Deck",
+      channel: "HQ",
       unlocked: true,
       unlockAt: 0,
-      description: "Oversees KPIs, invents jobs, audits agents.",
+      description: "Invents any money room (Etsy, Fiverr, Shopify, content…). Audits agents.",
       agentIds: ["agent-boss"],
+      revenue: 0,
+      offers: [],
     },
     {
       id: "room-design",
       kind: "design_lab",
       name: "Design Lab",
+      channel: "Internal",
       unlocked: true,
       unlockAt: 0,
-      description: "Turns niche demand into original POD artwork briefs.",
+      description: "Original niche art & offer briefs for every channel — never competitor clones.",
       agentIds: ["agent-design"],
+      revenue: 0,
+      offers: [],
     },
     {
       id: "room-mugs",
       kind: "pod_store",
-      name: "Room A — Mugs",
+      name: "Room A — Mugs (Etsy)",
+      channel: "Etsy POD",
       unlocked: true,
       unlockAt: 0,
-      description: "Print-on-demand mug storefront.",
+      description: "Starter POD mug storefront. Boss can clone this playbook onto other platforms.",
       agentIds: ["agent-store-mugs", "agent-ops-mugs"],
       storeId: "store-mugs",
+      revenue: 0,
+      offers: [],
     },
     {
       id: "room-candles",
       kind: "pod_store",
-      name: "Room B — Candles",
+      name: "Room B — Candles (Etsy)",
+      channel: "Etsy POD",
       unlocked: true,
       unlockAt: 0,
-      description: "Scented candle POD listings.",
+      description: "Starter candle POD room.",
       agentIds: ["agent-store-candles", "agent-ops-candles"],
       storeId: "store-candles",
+      revenue: 0,
+      offers: [],
     },
     {
       id: "room-personal",
       kind: "pod_store",
-      name: "Room C — Personalized",
+      name: "Room C — Personalized (Etsy)",
+      channel: "Etsy POD",
       unlocked: true,
       unlockAt: 0,
-      description: "Custom name/date products.",
+      description: "Starter personalized POD room.",
       agentIds: ["agent-store-personal", "agent-ops-personal"],
       storeId: "store-personal",
-    },
-    {
-      id: "room-ads",
-      kind: "ads_desk",
-      name: "Room D — Ads Desk",
-      unlocked: false,
-      unlockAt: 2500,
-      description: "Paid traffic + listing boosts. Boss unlocks at $2.5k lifetime.",
-      agentIds: [],
-    },
-    {
-      id: "room-freelance",
-      kind: "freelance_desk",
-      name: "Room E — Freelance Bay",
-      unlocked: false,
-      unlockAt: 12000,
-      description: "Sell design packs & store audits as services.",
-      agentIds: [],
-    },
-    {
-      id: "room-content",
-      kind: "content_studio",
-      name: "Room F — Content Studio",
-      unlocked: false,
-      unlockAt: 40000,
-      description: "Short-form product clips that feed the stores.",
-      agentIds: [],
-    },
-    {
-      id: "room-wholesale",
-      kind: "wholesale_bay",
-      name: "Room G — Wholesale Bay",
-      unlocked: false,
-      unlockAt: 150000,
-      description: "Bulk gift sets for corporate & events.",
-      agentIds: [],
+      revenue: 0,
+      offers: [],
     },
   ];
+
+  /** Locked rooms the Boss will invent from the full venture deck. */
+  const inventedRooms: Room[] = VENTURE_DECK.map((v) => ({
+    id: `room-${v.id}`,
+    kind: v.kind,
+    name: v.name,
+    channel: v.channel,
+    unlocked: false,
+    unlockAt: v.unlockAt,
+    description: v.pitch,
+    agentIds: [],
+    ventureId: v.id,
+    revenue: 0,
+    offers: [],
+  }));
 
   const agents: Agent[] = [
     {
@@ -129,7 +127,7 @@ export function createInitialState(): SimState {
       roomId: "room-boss",
       status: "working",
       morale: 0.9,
-      lastAction: "Booting factory floor",
+      lastAction: "Scanning idea deck beyond Etsy",
       outputToday: 0,
     },
     {
@@ -213,16 +211,27 @@ export function createInitialState(): SimState {
     lifetimeRevenue: 0,
     freedomGoal: FREEDOM_GOAL,
     agents,
-    rooms,
+    rooms: [...starterRooms, ...inventedRooms],
     stores,
     niches: SEED_NICHES,
     directives: [
       {
         id: "dir-0",
         day: 1,
-        title: "Stand up three POD rooms",
+        title: "Prove the POD playbook, then expand channels",
         detail:
-          "Ship original niche designs only. Sell demand categories — never clone another seller's art.",
+          "Stand up three Etsy POD rooms. Helix will invent Fiverr, Shopify, content, affiliate, merch, SaaS, and more — same demand → original offer loop.",
+      },
+    ],
+    ideas: [
+      {
+        id: "idea-0",
+        day: 1,
+        channel: "Multi-channel",
+        title: "Boss idea engine armed",
+        detail:
+          "Deck loaded: Fiverr, Shopify, Gumroad, TikTok, affiliates, Merch, Substack, YouTube, wholesale, micro-SaaS, local leads.",
+        status: "queued",
       },
     ],
     events: [
@@ -232,12 +241,12 @@ export function createInitialState(): SimState {
         tick: 0,
         kind: "boss",
         message:
-          "Helix online. Agents locked to the factory until $1,000,000 lifetime revenue. Original designs only.",
+          "Helix online. Not limited to Etsy — will invent any money room that fits the playbook. Agents locked until $1,000,000. Original offers only.",
       },
     ],
     compliance: {
       originalDesignsOnly: true,
-      note: "Trend niches OK. Copying competitor artwork is blocked by policy.",
+      note: "Any channel OK. Copying competitor artwork, gigs, or listings is blocked — sell demand categories with original offers.",
     },
   };
 }

@@ -269,6 +269,31 @@ button {
   color: var(--ink);
 }
 
+.chip.channel {
+  background: var(--signal);
+  color: #fff;
+}
+
+.channel-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+}
+
+.channel-line {
+  font-family: var(--font-mono);
+  font-size: 0.7rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--amber) !important;
+  margin: 0.25rem 0 0 !important;
+}
+
+.listings.ideas {
+  max-height: 220px;
+}
+
 .feed {
   display: grid;
   gap: 0.45rem;
