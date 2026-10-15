@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createInitialState } from "./sim/seed";
 import { formatMoney, freedomProgress, tick } from "./sim/engine";
 import type { SimState } from "./sim/types";
+import { FactoryMap } from "./world/FactoryMap";
 
 export default function App() {
   const [state, setState] = useState<SimState>(() => createInitialState());
@@ -44,7 +45,7 @@ export default function App() {
     <div className="app">
       <header className="hero">
         <div>
-          <p className="tagline">Agent factory · any channel · boss invents the rooms</p>
+          <p className="tagline">Pixel factory · any channel · boss invents the rooms</p>
           <h1 className="brand">
             YWP <span>Enterprise</span>
           </h1>
@@ -108,6 +109,8 @@ export default function App() {
           <div className="freedom-banner">FREEDOM UNLOCKED — $1M lifetime revenue cleared</div>
         )}
       </header>
+
+      <FactoryMap state={state} />
 
       <div className="stats">
         <div className="stat">

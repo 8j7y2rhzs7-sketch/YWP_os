@@ -9,6 +9,10 @@ Agent factory simulation: a **Boss** invents money rooms on **any channel** (not
 3. Staff agents  
 4. Scale → Boss invents the next channel  
 
+## Overworld
+
+Pokémon-style top-down map: pixel agents walk room ↔ room while jobs run, carrying coins / products / gig boxes to the **VAULT** and stations.
+
 ## Starter floor
 
 - 3× **Etsy POD** rooms (mugs / candles / personalized)  
