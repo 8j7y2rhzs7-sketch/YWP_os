@@ -4,12 +4,12 @@ WNBA doesn't have a free public stats API like MLB's statsapi.mlb.com,
 so we build candidates from odds data with manual stat entry supported
 through the existing CandidateInput fields.
 """
+
 from __future__ import annotations
 
 import logging
 from datetime import UTC, date, datetime
 from decimal import Decimal
-from typing import Any
 
 from app.schemas import CandidateInput
 from app.services.odds_provider import (
@@ -60,21 +60,25 @@ def live_wnba_slate(slate_date: date) -> list[CandidateInput]:
             prob = odds_to_implied_probability(odds_val)
             side = "home" if team == home else "away"
 
-            candidates.append(_build(
-                candidate_id=f"wnba-ml-{side}-{event_id[:12]}",
-                event_id=event_id,
-                event_name=event_name,
-                start_time=start_time,
-                market_type="moneyline",
-                selection=f"{team} ML",
-                odds=odds_val,
-                probability=prob,
-                thesis_key=f"wnba-{_slug(team)}-ml-{slate_date}",
-                script_key=f"wnba-{_slug(event_name)}-{side}-control",
-                reason_codes=["HOME_FIELD", "CURRENT_FORM"] if side == "home" else ["CURRENT_FORM"],
-                reasoning=[f"{team} moneyline."],
-                now=now,
-            ))
+            candidates.append(
+                _build(
+                    candidate_id=f"wnba-ml-{side}-{event_id[:12]}",
+                    event_id=event_id,
+                    event_name=event_name,
+                    start_time=start_time,
+                    market_type="moneyline",
+                    selection=f"{team} ML",
+                    odds=odds_val,
+                    probability=prob,
+                    thesis_key=f"wnba-{_slug(team)}-ml-{slate_date}",
+                    script_key=f"wnba-{_slug(event_name)}-{side}-control",
+                    reason_codes=["HOME_FIELD", "CURRENT_FORM"]
+                    if side == "home"
+                    else ["CURRENT_FORM"],
+                    reasoning=[f"{team} moneyline."],
+                    now=now,
+                )
+            )
 
         # --- Spreads ---
         for team in (home, away):
@@ -85,22 +89,24 @@ def live_wnba_slate(slate_date: date) -> list[CandidateInput]:
             spread_odds = spread["american_odds"]
             side = "home" if team == home else "away"
 
-            candidates.append(_build(
-                candidate_id=f"wnba-spread-{side}-{event_id[:12]}",
-                event_id=event_id,
-                event_name=event_name,
-                start_time=start_time,
-                market_type="spread",
-                selection=f"{team} {spread_line:+}",
-                line=spread_line,
-                odds=spread_odds,
-                probability=odds_to_implied_probability(spread_odds),
-                thesis_key=f"wnba-{_slug(team)}-spread-{spread_line}-{slate_date}",
-                script_key=f"wnba-{_slug(event_name)}-{side}-margin",
-                reason_codes=["GAME_SCRIPT", "CURRENT_FORM"],
-                reasoning=[f"{team} spread {spread_line:+}."],
-                now=now,
-            ))
+            candidates.append(
+                _build(
+                    candidate_id=f"wnba-spread-{side}-{event_id[:12]}",
+                    event_id=event_id,
+                    event_name=event_name,
+                    start_time=start_time,
+                    market_type="spread",
+                    selection=f"{team} {spread_line:+}",
+                    line=spread_line,
+                    odds=spread_odds,
+                    probability=odds_to_implied_probability(spread_odds),
+                    thesis_key=f"wnba-{_slug(team)}-spread-{spread_line}-{slate_date}",
+                    script_key=f"wnba-{_slug(event_name)}-{side}-margin",
+                    reason_codes=["GAME_SCRIPT", "CURRENT_FORM"],
+                    reasoning=[f"{team} spread {spread_line:+}."],
+                    now=now,
+                )
+            )
 
         # --- Totals ---
         total_over = extract_best_odds(bookmakers, "totals", "Over")
@@ -109,42 +115,46 @@ def live_wnba_slate(slate_date: date) -> list[CandidateInput]:
         if total_over and total_over.get("point"):
             line_val = Decimal(str(total_over["point"]))
             over_odds = total_over["american_odds"]
-            candidates.append(_build(
-                candidate_id=f"wnba-over-{event_id[:12]}",
-                event_id=event_id,
-                event_name=event_name,
-                start_time=start_time,
-                market_type="game_total_over",
-                selection=f"Over {line_val}",
-                line=line_val,
-                odds=over_odds,
-                probability=odds_to_implied_probability(over_odds),
-                thesis_key=f"wnba-{_slug(event_name)}-over-{line_val}-{slate_date}",
-                script_key=f"wnba-{_slug(event_name)}-pace",
-                reason_codes=["GAME_SCRIPT", "L10_CUSHION"],
-                reasoning=[f"Game total Over {line_val}. Pace and scoring environment."],
-                now=now,
-            ))
+            candidates.append(
+                _build(
+                    candidate_id=f"wnba-over-{event_id[:12]}",
+                    event_id=event_id,
+                    event_name=event_name,
+                    start_time=start_time,
+                    market_type="game_total_over",
+                    selection=f"Over {line_val}",
+                    line=line_val,
+                    odds=over_odds,
+                    probability=odds_to_implied_probability(over_odds),
+                    thesis_key=f"wnba-{_slug(event_name)}-over-{line_val}-{slate_date}",
+                    script_key=f"wnba-{_slug(event_name)}-pace",
+                    reason_codes=["GAME_SCRIPT", "L10_CUSHION"],
+                    reasoning=[f"Game total Over {line_val}. Pace and scoring environment."],
+                    now=now,
+                )
+            )
 
         if total_under and total_under.get("point"):
             line_val = Decimal(str(total_under["point"]))
             under_odds = total_under["american_odds"]
-            candidates.append(_build(
-                candidate_id=f"wnba-under-{event_id[:12]}",
-                event_id=event_id,
-                event_name=event_name,
-                start_time=start_time,
-                market_type="game_total_under",
-                selection=f"Under {line_val}",
-                line=line_val,
-                odds=under_odds,
-                probability=odds_to_implied_probability(under_odds),
-                thesis_key=f"wnba-{_slug(event_name)}-under-{line_val}-{slate_date}",
-                script_key=f"wnba-{_slug(event_name)}-defense",
-                reason_codes=["GAME_SCRIPT", "ROLE_STABILITY"],
-                reasoning=[f"Game total Under {line_val}. Defensive matchup."],
-                now=now,
-            ))
+            candidates.append(
+                _build(
+                    candidate_id=f"wnba-under-{event_id[:12]}",
+                    event_id=event_id,
+                    event_name=event_name,
+                    start_time=start_time,
+                    market_type="game_total_under",
+                    selection=f"Under {line_val}",
+                    line=line_val,
+                    odds=under_odds,
+                    probability=odds_to_implied_probability(under_odds),
+                    thesis_key=f"wnba-{_slug(event_name)}-under-{line_val}-{slate_date}",
+                    script_key=f"wnba-{_slug(event_name)}-defense",
+                    reason_codes=["GAME_SCRIPT", "ROLE_STABILITY"],
+                    reasoning=[f"Game total Under {line_val}. Defensive matchup."],
+                    now=now,
+                )
+            )
 
     logger.info("Built %d live WNBA candidates for %s", len(candidates), slate_date)
     return candidates

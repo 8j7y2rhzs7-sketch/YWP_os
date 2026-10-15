@@ -2,11 +2,11 @@
 Live MLB data provider using the official MLB Stats API (statsapi.mlb.com).
 Free, no API key required.
 """
+
 from __future__ import annotations
 
 import logging
-from datetime import UTC, date, datetime, timedelta
-from decimal import Decimal
+from datetime import date
 from typing import Any
 
 import httpx
@@ -35,6 +35,7 @@ def _get_sync(path: str, params: dict[str, Any] | None = None) -> dict[str, Any]
 # Schedule
 # ---------------------------------------------------------------------------
 
+
 def get_schedule(slate_date: date) -> list[dict[str, Any]]:
     """Return today's MLB games with probable pitchers and venue."""
     data = _get_sync(
@@ -49,20 +50,28 @@ def get_schedule(slate_date: date) -> list[dict[str, Any]]:
                 continue
             away = g.get("teams", {}).get("away", {})
             home = g.get("teams", {}).get("home", {})
-            games.append({
-                "game_pk": g["gamePk"],
-                "game_date": g.get("gameDate"),
-                "status": status,
-                "away_team": away.get("team", {}).get("name", ""),
-                "away_id": away.get("team", {}).get("id"),
-                "away_record": f"{away.get('leagueRecord', {}).get('wins', 0)}-{away.get('leagueRecord', {}).get('losses', 0)}",
-                "away_pitcher": _pitcher_info(away.get("probablePitcher")),
-                "home_team": home.get("team", {}).get("name", ""),
-                "home_id": home.get("team", {}).get("id"),
-                "home_record": f"{home.get('leagueRecord', {}).get('wins', 0)}-{home.get('leagueRecord', {}).get('losses', 0)}",
-                "home_pitcher": _pitcher_info(home.get("probablePitcher")),
-                "venue": g.get("venue", {}).get("name", ""),
-            })
+            games.append(
+                {
+                    "game_pk": g["gamePk"],
+                    "game_date": g.get("gameDate"),
+                    "status": status,
+                    "away_team": away.get("team", {}).get("name", ""),
+                    "away_id": away.get("team", {}).get("id"),
+                    "away_record": (
+                        f"{away.get('leagueRecord', {}).get('wins', 0)}-"
+                        f"{away.get('leagueRecord', {}).get('losses', 0)}"
+                    ),
+                    "away_pitcher": _pitcher_info(away.get("probablePitcher")),
+                    "home_team": home.get("team", {}).get("name", ""),
+                    "home_id": home.get("team", {}).get("id"),
+                    "home_record": (
+                        f"{home.get('leagueRecord', {}).get('wins', 0)}-"
+                        f"{home.get('leagueRecord', {}).get('losses', 0)}"
+                    ),
+                    "home_pitcher": _pitcher_info(home.get("probablePitcher")),
+                    "venue": g.get("venue", {}).get("name", ""),
+                }
+            )
     return games
 
 
@@ -80,7 +89,10 @@ def _pitcher_info(p: dict[str, Any] | None) -> dict[str, Any] | None:
 # Player game logs (L5 / L10)
 # ---------------------------------------------------------------------------
 
-def get_player_game_log(player_id: int, season: int | None = None, last_n: int = 10) -> list[dict[str, Any]]:
+
+def get_player_game_log(
+    player_id: int, season: int | None = None, last_n: int = 10
+) -> list[dict[str, Any]]:
     """Fetch a batter's recent game log."""
     season = season or date.today().year
     data = _get_sync(
@@ -90,24 +102,28 @@ def get_player_game_log(player_id: int, season: int | None = None, last_n: int =
     logs: list[dict[str, Any]] = []
     for split in _extract_splits(data):
         stat = split.get("stat", {})
-        logs.append({
-            "date": split.get("date"),
-            "opponent": split.get("opponent", {}).get("name", ""),
-            "hits": stat.get("hits", 0),
-            "at_bats": stat.get("atBats", 0),
-            "home_runs": stat.get("homeRuns", 0),
-            "rbi": stat.get("rbi", 0),
-            "strikeouts": stat.get("strikeOuts", 0),
-            "walks": stat.get("baseOnBalls", 0),
-            "total_bases": stat.get("totalBases", 0),
-            "avg": stat.get("avg"),
-            "ops": stat.get("ops"),
-        })
+        logs.append(
+            {
+                "date": split.get("date"),
+                "opponent": split.get("opponent", {}).get("name", ""),
+                "hits": stat.get("hits", 0),
+                "at_bats": stat.get("atBats", 0),
+                "home_runs": stat.get("homeRuns", 0),
+                "rbi": stat.get("rbi", 0),
+                "strikeouts": stat.get("strikeOuts", 0),
+                "walks": stat.get("baseOnBalls", 0),
+                "total_bases": stat.get("totalBases", 0),
+                "avg": stat.get("avg"),
+                "ops": stat.get("ops"),
+            }
+        )
     logs.sort(key=lambda x: x.get("date", ""), reverse=True)
     return logs[:last_n]
 
 
-def get_pitcher_game_log(player_id: int, season: int | None = None, last_n: int = 10) -> list[dict[str, Any]]:
+def get_pitcher_game_log(
+    player_id: int, season: int | None = None, last_n: int = 10
+) -> list[dict[str, Any]]:
     """Fetch a pitcher's recent game log."""
     season = season or date.today().year
     data = _get_sync(
@@ -117,18 +133,20 @@ def get_pitcher_game_log(player_id: int, season: int | None = None, last_n: int 
     logs: list[dict[str, Any]] = []
     for split in _extract_splits(data):
         stat = split.get("stat", {})
-        logs.append({
-            "date": split.get("date"),
-            "opponent": split.get("opponent", {}).get("name", ""),
-            "innings_pitched": stat.get("inningsPitched", "0"),
-            "strikeouts": stat.get("strikeOuts", 0),
-            "hits_allowed": stat.get("hits", 0),
-            "runs": stat.get("runs", 0),
-            "earned_runs": stat.get("earnedRuns", 0),
-            "walks": stat.get("baseOnBalls", 0),
-            "era": stat.get("era"),
-            "pitches": stat.get("numberOfPitches", 0),
-        })
+        logs.append(
+            {
+                "date": split.get("date"),
+                "opponent": split.get("opponent", {}).get("name", ""),
+                "innings_pitched": stat.get("inningsPitched", "0"),
+                "strikeouts": stat.get("strikeOuts", 0),
+                "hits_allowed": stat.get("hits", 0),
+                "runs": stat.get("runs", 0),
+                "earned_runs": stat.get("earnedRuns", 0),
+                "walks": stat.get("baseOnBalls", 0),
+                "era": stat.get("era"),
+                "pitches": stat.get("numberOfPitches", 0),
+            }
+        )
     logs.sort(key=lambda x: x.get("date", ""), reverse=True)
     return logs[:last_n]
 
@@ -144,7 +162,10 @@ def _extract_splits(data: dict[str, Any]) -> list[dict[str, Any]]:
 # Season stats
 # ---------------------------------------------------------------------------
 
-def get_player_season_stats(player_id: int, group: str = "hitting", season: int | None = None) -> dict[str, Any]:
+
+def get_player_season_stats(
+    player_id: int, group: str = "hitting", season: int | None = None
+) -> dict[str, Any]:
     season = season or date.today().year
     data = _get_sync(
         f"/v1/people/{player_id}/stats",
@@ -160,23 +181,27 @@ def get_player_season_stats(player_id: int, group: str = "hitting", season: int 
 # Team roster
 # ---------------------------------------------------------------------------
 
+
 def get_team_roster(team_id: int, roster_type: str = "active") -> list[dict[str, Any]]:
     data = _get_sync(f"/v1/teams/{team_id}/roster", {"rosterType": roster_type})
     roster: list[dict[str, Any]] = []
     for entry in data.get("roster", []):
         person = entry.get("person", {})
-        roster.append({
-            "id": person.get("id"),
-            "name": person.get("fullName", ""),
-            "position": entry.get("position", {}).get("abbreviation", ""),
-            "status": entry.get("status", {}).get("description", ""),
-        })
+        roster.append(
+            {
+                "id": person.get("id"),
+                "name": person.get("fullName", ""),
+                "position": entry.get("position", {}).get("abbreviation", ""),
+                "status": entry.get("status", {}).get("description", ""),
+            }
+        )
     return roster
 
 
 # ---------------------------------------------------------------------------
 # Standings
 # ---------------------------------------------------------------------------
+
 
 def get_standings(season: int | None = None) -> list[dict[str, Any]]:
     season = season or date.today().year
@@ -185,24 +210,30 @@ def get_standings(season: int | None = None) -> list[dict[str, Any]]:
     for record in data.get("records", []):
         div = record.get("division", {}).get("name", "")
         for tr in record.get("teamRecords", []):
-            teams.append({
-                "team": tr.get("team", {}).get("name", ""),
-                "team_id": tr.get("team", {}).get("id"),
-                "division": div,
-                "wins": tr.get("wins", 0),
-                "losses": tr.get("losses", 0),
-                "pct": tr.get("winningPercentage", ""),
-                "runs_scored": tr.get("runsScored", 0),
-                "runs_allowed": tr.get("runsAllowed", 0),
-                "streak": tr.get("streak", {}).get("streakCode", ""),
-                "last_10": f"{tr.get('records', {}).get('splitRecords', [{}])[-1].get('wins', '?')}-{tr.get('records', {}).get('splitRecords', [{}])[-1].get('losses', '?')}",
-            })
+            teams.append(
+                {
+                    "team": tr.get("team", {}).get("name", ""),
+                    "team_id": tr.get("team", {}).get("id"),
+                    "division": div,
+                    "wins": tr.get("wins", 0),
+                    "losses": tr.get("losses", 0),
+                    "pct": tr.get("winningPercentage", ""),
+                    "runs_scored": tr.get("runsScored", 0),
+                    "runs_allowed": tr.get("runsAllowed", 0),
+                    "streak": tr.get("streak", {}).get("streakCode", ""),
+                    "last_10": (
+                        f"{tr.get('records', {}).get('splitRecords', [{}])[-1].get('wins', '?')}-"
+                        f"{tr.get('records', {}).get('splitRecords', [{}])[-1].get('losses', '?')}"
+                    ),
+                }
+            )
     return teams
 
 
 # ---------------------------------------------------------------------------
 # Live game feed
 # ---------------------------------------------------------------------------
+
 
 def get_live_feed(game_pk: int) -> dict[str, Any]:
     return _get_sync(f"/v1.1/game/{game_pk}/feed/live")
@@ -211,6 +242,7 @@ def get_live_feed(game_pk: int) -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 # Helpers for candidate building
 # ---------------------------------------------------------------------------
+
 
 def compute_l5_stats(logs: list[dict[str, Any]], stat_key: str) -> dict[str, Any]:
     """Given a game log list, compute L5 avg, floor, misses vs a threshold."""

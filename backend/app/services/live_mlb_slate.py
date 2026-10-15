@@ -2,6 +2,7 @@
 Live MLB slate builder: merges MLB Stats API schedule/stats with
 The Odds API lines into CandidateInput objects for the decision engine.
 """
+
 from __future__ import annotations
 
 import logging
@@ -11,9 +12,7 @@ from typing import Any
 
 from app.schemas import CandidateInput
 from app.services.mlb_provider import (
-    compute_l5_stats,
     get_pitcher_game_log,
-    get_player_game_log,
     get_schedule,
     pitcher_k_stats,
 )
@@ -46,7 +45,9 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
     for game in games:
         matched_event = match_game_to_event(game, odds_events) if odds_events else None
         bookmakers = matched_event.get("bookmakers", []) if matched_event else []
-        event_id = matched_event.get("id", str(game["game_pk"])) if matched_event else str(game["game_pk"])
+        event_id = (
+            matched_event.get("id", str(game["game_pk"])) if matched_event else str(game["game_pk"])
+        )
         event_name = f"{game['away_team']} @ {game['home_team']}"
 
         start_time = _parse_start(game.get("game_date"), slate_date)
@@ -67,21 +68,28 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
             pitcher = game.get(f"{side}_pitcher")
             pitcher_name = pitcher["name"] if pitcher else "TBD"
 
-            candidates.append(_build_candidate(
-                candidate_id=f"mlb-ml-{side}-{game['game_pk']}",
-                event_id=event_id,
-                event_name=event_name,
-                start_time=start_time,
-                market_type="moneyline",
-                selection=f"{team} ML",
-                odds=odds_val,
-                probability=prob,
-                thesis_key=f"mlb-{_slug(team)}-moneyline-{slate_date}",
-                script_key=f"mlb-{_slug(event_name)}-{side}-control",
-                reason_codes=_ml_reason_codes(pitcher),
-                reasoning=[f"{team} moneyline. Probable pitcher: {pitcher_name}. Record: {game[f'{side}_record']}."],
-                now=now,
-            ))
+            candidates.append(
+                _build_candidate(
+                    candidate_id=f"mlb-ml-{side}-{game['game_pk']}",
+                    event_id=event_id,
+                    event_name=event_name,
+                    start_time=start_time,
+                    market_type="moneyline",
+                    selection=f"{team} ML",
+                    odds=odds_val,
+                    probability=prob,
+                    thesis_key=f"mlb-{_slug(team)}-moneyline-{slate_date}",
+                    script_key=f"mlb-{_slug(event_name)}-{side}-control",
+                    reason_codes=_ml_reason_codes(pitcher),
+                    reasoning=[
+                        (
+                            f"{team} moneyline. Probable pitcher: {pitcher_name}. "
+                            f"Record: {game[f'{side}_record']}."
+                        )
+                    ],
+                    now=now,
+                )
+            )
 
         # --- Totals (over/under) ---
         total = extract_best_odds(bookmakers, "totals", "Over")
@@ -89,41 +97,50 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
         if total and total.get("point"):
             line_val = Decimal(str(total["point"]))
             over_odds = total["american_odds"]
-            candidates.append(_build_candidate(
-                candidate_id=f"mlb-over-{game['game_pk']}",
-                event_id=event_id,
-                event_name=event_name,
-                start_time=start_time,
-                market_type="game_total_over",
-                selection=f"Over {line_val} runs",
-                line=line_val,
-                odds=over_odds,
-                probability=odds_to_implied_probability(over_odds),
-                thesis_key=f"mlb-{_slug(event_name)}-over-{line_val}-{slate_date}",
-                script_key=f"mlb-{_slug(event_name)}-runs",
-                reason_codes=["LINEUP_EDGE", "BULLPEN_EDGE"],
-                reasoning=[f"Game total Over {line_val}. Both lineups and bullpens factor into scoring expectation."],
-                now=now,
-            ))
+            candidates.append(
+                _build_candidate(
+                    candidate_id=f"mlb-over-{game['game_pk']}",
+                    event_id=event_id,
+                    event_name=event_name,
+                    start_time=start_time,
+                    market_type="game_total_over",
+                    selection=f"Over {line_val} runs",
+                    line=line_val,
+                    odds=over_odds,
+                    probability=odds_to_implied_probability(over_odds),
+                    thesis_key=f"mlb-{_slug(event_name)}-over-{line_val}-{slate_date}",
+                    script_key=f"mlb-{_slug(event_name)}-runs",
+                    reason_codes=["LINEUP_EDGE", "BULLPEN_EDGE"],
+                    reasoning=[
+                        (
+                            f"Game total Over {line_val}. Both lineups and bullpens "
+                            "factor into scoring expectation."
+                        )
+                    ],
+                    now=now,
+                )
+            )
         if total_under and total_under.get("point"):
             line_val = Decimal(str(total_under["point"]))
             under_odds = total_under["american_odds"]
-            candidates.append(_build_candidate(
-                candidate_id=f"mlb-under-{game['game_pk']}",
-                event_id=event_id,
-                event_name=event_name,
-                start_time=start_time,
-                market_type="game_total_under",
-                selection=f"Under {line_val} runs",
-                line=line_val,
-                odds=under_odds,
-                probability=odds_to_implied_probability(under_odds),
-                thesis_key=f"mlb-{_slug(event_name)}-under-{line_val}-{slate_date}",
-                script_key=f"mlb-{_slug(event_name)}-low-scoring",
-                reason_codes=["STARTING_PITCHER_EDGE", "BULLPEN_EDGE"],
-                reasoning=[f"Game total Under {line_val}. Pitching matchup drives the thesis."],
-                now=now,
-            ))
+            candidates.append(
+                _build_candidate(
+                    candidate_id=f"mlb-under-{game['game_pk']}",
+                    event_id=event_id,
+                    event_name=event_name,
+                    start_time=start_time,
+                    market_type="game_total_under",
+                    selection=f"Under {line_val} runs",
+                    line=line_val,
+                    odds=under_odds,
+                    probability=odds_to_implied_probability(under_odds),
+                    thesis_key=f"mlb-{_slug(event_name)}-under-{line_val}-{slate_date}",
+                    script_key=f"mlb-{_slug(event_name)}-low-scoring",
+                    reason_codes=["STARTING_PITCHER_EDGE", "BULLPEN_EDGE"],
+                    reasoning=[f"Game total Under {line_val}. Pitching matchup drives the thesis."],
+                    now=now,
+                )
+            )
 
         # --- Spreads (run line) ---
         for spread_side in ("home", "away"):
@@ -133,22 +150,24 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
                 continue
             spread_line = Decimal(str(spread["point"]))
             spread_odds = spread["american_odds"]
-            candidates.append(_build_candidate(
-                candidate_id=f"mlb-rl-{spread_side}-{game['game_pk']}",
-                event_id=event_id,
-                event_name=event_name,
-                start_time=start_time,
-                market_type="run_line",
-                selection=f"{team} {spread_line:+}",
-                line=spread_line,
-                odds=spread_odds,
-                probability=odds_to_implied_probability(spread_odds),
-                thesis_key=f"mlb-{_slug(team)}-runline-{spread_line}-{slate_date}",
-                script_key=f"mlb-{_slug(event_name)}-{spread_side}-margin",
-                reason_codes=["STARTING_PITCHER_EDGE", "LINEUP_EDGE"],
-                reasoning=[f"{team} run line {spread_line:+}. Margin of victory thesis."],
-                now=now,
-            ))
+            candidates.append(
+                _build_candidate(
+                    candidate_id=f"mlb-rl-{spread_side}-{game['game_pk']}",
+                    event_id=event_id,
+                    event_name=event_name,
+                    start_time=start_time,
+                    market_type="run_line",
+                    selection=f"{team} {spread_line:+}",
+                    line=spread_line,
+                    odds=spread_odds,
+                    probability=odds_to_implied_probability(spread_odds),
+                    thesis_key=f"mlb-{_slug(team)}-runline-{spread_line}-{slate_date}",
+                    script_key=f"mlb-{_slug(event_name)}-{spread_side}-margin",
+                    reason_codes=["STARTING_PITCHER_EDGE", "LINEUP_EDGE"],
+                    reasoning=[f"{team} run line {spread_line:+}. Margin of victory thesis."],
+                    now=now,
+                )
+            )
 
         # --- Pitcher strikeout props (if we have pitcher data) ---
         for side in ("home", "away"):
@@ -168,30 +187,35 @@ def live_mlb_slate(slate_date: date) -> list[CandidateInput]:
                     continue
                 k_line_dec = Decimal(str(k_line)) + Decimal("0.5")
 
-                candidates.append(_build_candidate(
-                    candidate_id=f"mlb-k-{side}-{game['game_pk']}",
-                    event_id=event_id,
-                    event_name=event_name,
-                    start_time=start_time,
-                    market_type="player_strikeouts_over",
-                    selection=f"{pitcher['name']} Over {k_line_dec} Ks",
-                    line=k_line_dec,
-                    odds=-115,
-                    probability=0.60,
-                    thesis_key=f"mlb-{_slug(pitcher['name'])}-k-over-{k_line_dec}-{slate_date}",
-                    script_key=f"mlb-{_slug(event_name)}-{_slug(pitcher['name'])}-strikeouts",
-                    player_key=f"mlb-pitcher-{pitcher['id']}",
-                    reason_codes=["STRIKEOUT_MATCHUP"],
-                    reasoning=[
-                        f"{pitcher['name']} L5 avg: {k_stats['avg_k']} Ks, floor: {k_stats['floor_k']}, "
-                        f"avg IP: {k_stats['avg_ip']}. Line set at {k_line_dec}."
-                    ],
-                    now=now,
-                    market_is_pitcher_strikeout_over=True,
-                    average_cushion=round(k_stats["avg_k"] - float(k_line_dec), 2),
-                    recent_hit_rate=_k_hit_rate(k_log, float(k_line_dec)),
-                    miss_by_one_count_l10=_k_miss_by_one(k_log, float(k_line_dec)),
-                ))
+                candidates.append(
+                    _build_candidate(
+                        candidate_id=f"mlb-k-{side}-{game['game_pk']}",
+                        event_id=event_id,
+                        event_name=event_name,
+                        start_time=start_time,
+                        market_type="player_strikeouts_over",
+                        selection=f"{pitcher['name']} Over {k_line_dec} Ks",
+                        line=k_line_dec,
+                        odds=-115,
+                        probability=0.60,
+                        thesis_key=f"mlb-{_slug(pitcher['name'])}-k-over-{k_line_dec}-{slate_date}",
+                        script_key=f"mlb-{_slug(event_name)}-{_slug(pitcher['name'])}-strikeouts",
+                        player_key=f"mlb-pitcher-{pitcher['id']}",
+                        reason_codes=["STRIKEOUT_MATCHUP"],
+                        reasoning=[
+                            (
+                                f"{pitcher['name']} L5 avg: {k_stats['avg_k']} Ks, "
+                                f"floor: {k_stats['floor_k']}, "
+                                f"avg IP: {k_stats['avg_ip']}. Line set at {k_line_dec}."
+                            )
+                        ],
+                        now=now,
+                        market_is_pitcher_strikeout_over=True,
+                        average_cushion=round(k_stats["avg_k"] - float(k_line_dec), 2),
+                        recent_hit_rate=_k_hit_rate(k_log, float(k_line_dec)),
+                        miss_by_one_count_l10=_k_miss_by_one(k_log, float(k_line_dec)),
+                    )
+                )
             except Exception:
                 logger.warning("Failed to get K stats for pitcher %s", pitcher.get("name"))
                 continue
