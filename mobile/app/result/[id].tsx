@@ -205,7 +205,7 @@ export default function ResultGradeScreen() {
   if (loading) {
     return (
       <Screen>
-        <BrandHeader title="RESULT & PROCESS" compact />
+        <BrandHeader title="Result and process" compact />
         <LoadingState label="Loading the stored recommendation…" />
       </Screen>
     );
@@ -214,7 +214,7 @@ export default function ResultGradeScreen() {
   if (record) {
     return (
       <Screen>
-        <BrandHeader title="RESULT RECORDED" subtitle="OUTCOME ≠ PROCESS" compact />
+        <BrandHeader title="Result recorded" subtitle="Outcome is not the process" compact />
         <MetalPanel tone={record.outcome === "WIN" ? "success" : "gold"}>
           <StatusPill value={record.outcome} />
           <Text style={styles.title}>Learning ledger updated</Text>
@@ -229,8 +229,8 @@ export default function ResultGradeScreen() {
             open a larger proposal that needs human approval.
           </Text>
         </MetalPanel>
-        <YwpButton label="OPEN LEARNING LAB" onPress={() => router.replace("/(tabs)/learning")} />
-        <YwpButton label="BACK" variant="outline" onPress={() => router.back()} />
+        <YwpButton label="Open learning lab" onPress={() => router.replace("/(tabs)/learning")} />
+        <YwpButton label="Back" variant="outline" onPress={() => router.back()} />
       </Screen>
     );
   }
@@ -239,14 +239,14 @@ export default function ResultGradeScreen() {
     return (
       <Screen>
         <ErrorNotice message={error ?? "Recommendation not found"} />
-        <YwpButton label="BACK" onPress={() => router.back()} />
+        <YwpButton label="Back" onPress={() => router.back()} />
       </Screen>
     );
   }
 
   return (
     <Screen>
-      <BrandHeader title="RESULT & PROCESS" subtitle="GRADE HONESTLY • TRAIN THE ENGINE" compact />
+      <BrandHeader title="Result and process" subtitle="Grade honestly · train the engine" compact />
       {error ? <ErrorNotice message={error} /> : null}
       <MetalPanel tone="gold">
         <Text style={type.eyebrow}>{recommendation.sport} • {recommendation.market_type.replaceAll("_", " ")}</Text>
@@ -324,7 +324,7 @@ export default function ResultGradeScreen() {
         <FormField label="Lesson" value={lesson} onChangeText={setLesson} multiline />
       </MetalPanel>
 
-      <YwpButton label="RECORD RESULT & PROCESS" onPress={() => void submit()} loading={saving} />
+      <YwpButton label="Record result" onPress={() => void submit()} loading={saving} />
       <Text style={styles.footer}>Result entry is immutable. Review every field before saving.</Text>
     </Screen>
   );

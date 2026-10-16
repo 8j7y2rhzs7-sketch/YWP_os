@@ -143,7 +143,7 @@ export const type = {
     fontFamily: fonts.displaySemi,
     fontSize: 15,
     fontWeight: "700",
-    letterSpacing: 0.4,
+    letterSpacing: 0.15,
   } satisfies TextStyle,
   label: {
     color: colors.silver,

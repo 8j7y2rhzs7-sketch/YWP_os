@@ -34,23 +34,16 @@ export function YwpButton({
   useEffect(() => {
     if (variant !== "gold" || inactive) return;
     sweep.setValue(0);
-    const loop = Animated.loop(
-      Animated.sequence([
-        Animated.timing(sweep, {
-          toValue: 1,
-          duration: 1600,
-          useNativeDriver: true,
-        }),
-        Animated.delay(900),
-        Animated.timing(sweep, {
-          toValue: 0,
-          duration: 0,
-          useNativeDriver: true,
-        }),
-      ]),
-    );
-    loop.start();
-    return () => loop.stop();
+    const pass = Animated.sequence([
+      Animated.delay(240),
+      Animated.timing(sweep, {
+        toValue: 1,
+        duration: 780,
+        useNativeDriver: true,
+      }),
+    ]);
+    pass.start();
+    return () => pass.stop();
   }, [inactive, sweep, variant]);
 
   const sweepX = sweep.interpolate({
@@ -87,7 +80,9 @@ export function YwpButton({
           {loading ? (
             <ActivityIndicator color={colors.background} />
           ) : (
-            <Text style={styles.goldText}>{label}</Text>
+            <Text style={styles.goldText} numberOfLines={2}>
+              {label}
+            </Text>
           )}
         </LinearGradient>
       ) : (
@@ -109,7 +104,9 @@ export function YwpButton({
           {loading ? (
             <ActivityIndicator color={colors.gold} />
           ) : (
-            <Text style={styles.outlineText}>{label}</Text>
+            <Text style={styles.outlineText} numberOfLines={2}>
+              {label}
+            </Text>
           )}
         </LinearGradient>
       )}
@@ -139,10 +136,12 @@ const styles = StyleSheet.create({
   goldText: {
     ...type.button,
     color: colors.background,
+    textAlign: "center",
   },
   outlineText: {
     ...type.button,
     color: colors.white,
+    textAlign: "center",
   },
   pressed: { transform: [{ scale: 0.985 }], opacity: 0.92 },
   disabled: { opacity: 0.45 },

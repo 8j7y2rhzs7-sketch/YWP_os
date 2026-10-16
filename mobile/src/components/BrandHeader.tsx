@@ -101,11 +101,8 @@ const styles = StyleSheet.create({
     opacity: 0.95,
   },
   crestGlow: {
-    borderRadius: 18,
-    padding: 3,
-    backgroundColor: "rgba(26,168,240,0.12)",
-    borderWidth: 1,
-    borderColor: "rgba(26,168,240,0.38)",
+    borderRadius: 16,
+    padding: 0,
   },
   logo: { width: 64, height: 64, borderRadius: 14 },
   logoCompact: { width: 44, height: 44, borderRadius: 11 },

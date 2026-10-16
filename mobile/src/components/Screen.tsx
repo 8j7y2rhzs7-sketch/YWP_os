@@ -41,7 +41,7 @@ export function Screen({
   const enter = useRef(new Animated.Value(0)).current;
   const scrollY = useRef(new Animated.Value(0)).current;
   const insets = useSafeAreaInsets();
-  const bottomPad = 86 + Math.max(insets.bottom, 10);
+  const bottomPad = 108 + Math.max(insets.bottom, 8);
 
   useEffect(() => {
     Animated.spring(enter, {
