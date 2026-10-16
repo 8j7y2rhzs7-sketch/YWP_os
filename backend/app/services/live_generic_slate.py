@@ -2,12 +2,12 @@
 Generic live slate builder for any sport supported by The Odds API.
 Covers NFL, NBA, NHL, college football, college basketball, soccer, etc.
 """
+
 from __future__ import annotations
 
 import logging
 from datetime import UTC, date, datetime
 from decimal import Decimal
-from typing import Any
 
 from app.schemas import CandidateInput
 from app.services.odds_provider import (
@@ -84,23 +84,25 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
             prob = odds_to_implied_probability(odds_val)
             side = "home" if team == home else "away"
 
-            candidates.append(_build(
-                sport=sport_code,
-                league=league,
-                candidate_id=f"{sport_lower}-ml-{side}-{event_id[:12]}",
-                event_id=event_id,
-                event_name=event_name,
-                start_time=start_time,
-                market_type="moneyline",
-                selection=f"{team} ML",
-                odds=odds_val,
-                probability=prob,
-                thesis_key=f"{sport_lower}-{_slug(team)}-ml-{slate_date}",
-                script_key=f"{sport_lower}-{_slug(event_name)}-{side}",
-                reason_codes=["MATCHUP_EDGE", "CURRENT_FORM"],
-                reasoning=[f"{team} moneyline."],
-                now=now,
-            ))
+            candidates.append(
+                _build(
+                    sport=sport_code,
+                    league=league,
+                    candidate_id=f"{sport_lower}-ml-{side}-{event_id[:12]}",
+                    event_id=event_id,
+                    event_name=event_name,
+                    start_time=start_time,
+                    market_type="moneyline",
+                    selection=f"{team} ML",
+                    odds=odds_val,
+                    probability=prob,
+                    thesis_key=f"{sport_lower}-{_slug(team)}-ml-{slate_date}",
+                    script_key=f"{sport_lower}-{_slug(event_name)}-{side}",
+                    reason_codes=["MATCHUP_EDGE", "CURRENT_FORM"],
+                    reasoning=[f"{team} moneyline."],
+                    now=now,
+                )
+            )
 
         # --- Spreads ---
         for team in (home, away):
@@ -111,24 +113,26 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
             spread_odds = spread["american_odds"]
             side = "home" if team == home else "away"
 
-            candidates.append(_build(
-                sport=sport_code,
-                league=league,
-                candidate_id=f"{sport_lower}-spread-{side}-{event_id[:12]}",
-                event_id=event_id,
-                event_name=event_name,
-                start_time=start_time,
-                market_type="spread",
-                selection=f"{team} {spread_line:+}",
-                line=spread_line,
-                odds=spread_odds,
-                probability=odds_to_implied_probability(spread_odds),
-                thesis_key=f"{sport_lower}-{_slug(team)}-spread-{spread_line}-{slate_date}",
-                script_key=f"{sport_lower}-{_slug(event_name)}-{side}-margin",
-                reason_codes=["GAME_SCRIPT", "MATCHUP_EDGE"],
-                reasoning=[f"{team} spread {spread_line:+}."],
-                now=now,
-            ))
+            candidates.append(
+                _build(
+                    sport=sport_code,
+                    league=league,
+                    candidate_id=f"{sport_lower}-spread-{side}-{event_id[:12]}",
+                    event_id=event_id,
+                    event_name=event_name,
+                    start_time=start_time,
+                    market_type="spread",
+                    selection=f"{team} {spread_line:+}",
+                    line=spread_line,
+                    odds=spread_odds,
+                    probability=odds_to_implied_probability(spread_odds),
+                    thesis_key=f"{sport_lower}-{_slug(team)}-spread-{spread_line}-{slate_date}",
+                    script_key=f"{sport_lower}-{_slug(event_name)}-{side}-margin",
+                    reason_codes=["GAME_SCRIPT", "MATCHUP_EDGE"],
+                    reasoning=[f"{team} spread {spread_line:+}."],
+                    now=now,
+                )
+            )
 
         # --- Totals ---
         for label in ("Over", "Under"):
@@ -139,24 +143,26 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
             total_odds = total["american_odds"]
             mtype = "game_total_over" if label == "Over" else "game_total_under"
 
-            candidates.append(_build(
-                sport=sport_code,
-                league=league,
-                candidate_id=f"{sport_lower}-{label.lower()}-{event_id[:12]}",
-                event_id=event_id,
-                event_name=event_name,
-                start_time=start_time,
-                market_type=mtype,
-                selection=f"{label} {line_val}",
-                line=line_val,
-                odds=total_odds,
-                probability=odds_to_implied_probability(total_odds),
-                thesis_key=f"{sport_lower}-{_slug(event_name)}-{label.lower()}-{line_val}-{slate_date}",
-                script_key=f"{sport_lower}-{_slug(event_name)}-scoring",
-                reason_codes=["GAME_SCRIPT", "CURRENT_FORM"],
-                reasoning=[f"Game total {label} {line_val}."],
-                now=now,
-            ))
+            candidates.append(
+                _build(
+                    sport=sport_code,
+                    league=league,
+                    candidate_id=f"{sport_lower}-{label.lower()}-{event_id[:12]}",
+                    event_id=event_id,
+                    event_name=event_name,
+                    start_time=start_time,
+                    market_type=mtype,
+                    selection=f"{label} {line_val}",
+                    line=line_val,
+                    odds=total_odds,
+                    probability=odds_to_implied_probability(total_odds),
+                    thesis_key=f"{sport_lower}-{_slug(event_name)}-{label.lower()}-{line_val}-{slate_date}",
+                    script_key=f"{sport_lower}-{_slug(event_name)}-scoring",
+                    reason_codes=["GAME_SCRIPT", "CURRENT_FORM"],
+                    reasoning=[f"Game total {label} {line_val}."],
+                    now=now,
+                )
+            )
 
     logger.info("Built %d live %s candidates for %s", len(candidates), sport, slate_date)
     return candidates

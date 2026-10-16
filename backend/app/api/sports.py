@@ -5,8 +5,6 @@ from datetime import date
 from decimal import Decimal
 from uuid import uuid4
 
-logger = logging.getLogger(__name__)
-
 from fastapi import APIRouter, HTTPException, Query, status
 from sqlalchemy import or_, select
 
@@ -32,12 +30,14 @@ from app.schemas import (
     SportsAnalyzeRequest,
 )
 from app.services.decision_engine import decision_engine, implied_probability, money
-from app.services.protocols import run_protocol_health_check
-from app.services.providers import demo_slate
 from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate
 from app.services.live_mlb_slate import live_mlb_slate
 from app.services.live_wnba_slate import live_wnba_slate
+from app.services.protocols import run_protocol_health_check
+from app.services.providers import demo_slate
 from app.services.ticket_builder import build_cards
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/sports", tags=["sports"])
 
@@ -76,7 +76,7 @@ def slate(
                     ),
                     candidates=candidates,
                 )
-        except Exception as exc:
+        except Exception:
             logger.exception("Live MLB slate failed, falling back to demo")
 
     if not settings.demo_mode and sport_lower in ("wnba", "basketball") and settings.odds_api_key:
@@ -113,7 +113,11 @@ def slate(
         except Exception:
             logger.exception("Live %s slate failed, falling back to demo", sport_lower)
 
-    if not settings.demo_mode and sport_lower not in ("mlb", "wnba", "basketball") and sport_lower not in SPORT_KEYS:
+    if (
+        not settings.demo_mode
+        and sport_lower not in ("mlb", "wnba", "basketball")
+        and sport_lower not in SPORT_KEYS
+    ):
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=(

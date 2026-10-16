@@ -3,6 +3,7 @@ Live odds provider using The Odds API (the-odds-api.com).
 Requires a free API key (500 req/month on free tier).
 Aggregates odds from Hard Rock, DraftKings, FanDuel, BetMGM, etc.
 """
+
 from __future__ import annotations
 
 import logging
@@ -52,6 +53,7 @@ def _get_sync(path: str, params: dict[str, Any] | None = None) -> dict[str, Any]
 # Game odds (moneyline, spread, totals)
 # ---------------------------------------------------------------------------
 
+
 def get_game_odds(
     sport: str = SPORT_KEY,
     markets: str = "h2h,spreads,totals",
@@ -95,6 +97,7 @@ def get_event_odds(
 # Player props
 # ---------------------------------------------------------------------------
 
+
 def get_player_props(
     event_id: str,
     sport: str = SPORT_KEY,
@@ -125,6 +128,7 @@ def get_player_props(
 # Parsing helpers
 # ---------------------------------------------------------------------------
 
+
 def extract_best_odds(
     bookmakers: list[dict[str, Any]],
     market_key: str,
@@ -146,13 +150,17 @@ def extract_best_odds(
             for outcome in market.get("outcomes", []):
                 if selection_name and outcome.get("name") != selection_name:
                     continue
-                candidates.append({
-                    "book": book_key,
-                    "name": outcome.get("name", ""),
-                    "price": outcome.get("price", 0),
-                    "point": outcome.get("point"),
-                    "preferred_rank": preferred.index(book_key) if book_key in preferred else 999,
-                })
+                candidates.append(
+                    {
+                        "book": book_key,
+                        "name": outcome.get("name", ""),
+                        "price": outcome.get("price", 0),
+                        "point": outcome.get("point"),
+                        "preferred_rank": preferred.index(book_key)
+                        if book_key in preferred
+                        else 999,
+                    }
+                )
 
     if not candidates:
         return None
