@@ -222,6 +222,14 @@ def _set_status(**kwargs: Any) -> None:
     _last_fetch_status.update(key_diagnostics())
 
 
+def _raise_without_api_key(resp: httpx.Response) -> None:
+    """Raise a redacted error so tracebacks cannot keep the Odds API key."""
+    try:
+        resp.raise_for_status()
+    except httpx.HTTPError as exc:
+        raise RuntimeError(_safe_error_message(exc)) from None
+
+
 def _get_sync(path: str, params: dict[str, Any] | None = None) -> dict[str, Any] | list[Any]:
     with httpx.Client(timeout=TIMEOUT) as client:
         all_params = {"apiKey": _api_key(), **(params or {})}
@@ -248,8 +256,8 @@ def _get_sync(path: str, params: dict[str, Any] | None = None) -> dict[str, Any]
                 _set_status(ok=False, events=0, error="odds_api_quota_exceeded")
             else:
                 _set_status(ok=False, events=0, error="invalid_or_unauthorized_odds_api_key")
-            resp.raise_for_status()
-        resp.raise_for_status()
+            _raise_without_api_key(resp)
+        _raise_without_api_key(resp)
         return resp.json()
 
 
