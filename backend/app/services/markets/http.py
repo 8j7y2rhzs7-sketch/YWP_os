@@ -46,7 +46,7 @@ class PublicHttp:
         self.client = client or httpx.Client(
             timeout=httpx.Timeout(timeout, connect=5.0),
             headers={
-                "User-Agent": "YWP-OS-markets/3.3.69 (read-only)",
+                "User-Agent": "YWP-OS-markets/3.3.70 (read-only)",
                 "Accept": "application/json",
             },
         )

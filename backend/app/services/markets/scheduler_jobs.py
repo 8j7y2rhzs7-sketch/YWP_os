@@ -223,8 +223,12 @@ def ensure_recent_scan(db: Session, *, max_age: timedelta = SCAN_FRESH_FOR) -> N
         return
     acquired = _SCAN_LOCK.acquire(blocking=False)
     if not acquired:
-        _SCAN_LOCK.acquire()
-        _SCAN_LOCK.release()
+        # The phone opens the board and the track record together. The second
+        # call should not sit forever if the price read is still going.
+        if _SCAN_LOCK.acquire(timeout=30):
+            _SCAN_LOCK.release()
+        else:
+            logger.warning("markets price read still running; serving the last saved board")
         db.expire_all()
         return
     try:

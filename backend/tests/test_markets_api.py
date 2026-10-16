@@ -143,7 +143,7 @@ def test_reads_require_login_and_scan_is_admin_only(
     body = health.json()
     assert body["read_only"] is True
     assert body["orders_enabled"] is False
-    assert body["version"] == "3.3.69"
+    assert body["version"] == "3.3.70"
 
     denied = client.post("/api/v1/markets/scan", headers=auth_headers)
     assert denied.status_code == 403

@@ -227,7 +227,31 @@ def test_wait_is_blocked_from_marketing() -> None:
 def test_health_reports_api_version(client: TestClient) -> None:
     health = client.get("/api/v1/health")
     assert health.status_code == 200
-    assert health.json()["version"] == "3.3.69"
+    assert health.json()["version"] == "3.3.70"
+    assert health.json()["database"] == "ok"
+    live = client.get("/healthz")
+    assert live.status_code == 200
+    assert live.json()["status"] == "ok"
+    assert live.json()["version"] == "3.3.70"
+
+
+def test_health_stays_up_when_database_is_down(client: TestClient, monkeypatch) -> None:
+    from sqlalchemy.exc import OperationalError
+    from sqlalchemy.orm import Session
+
+    def boom(*_args, **_kwargs):
+        raise OperationalError("SELECT 1", {}, Exception("database is asleep"))
+
+    monkeypatch.setattr(Session, "execute", boom)
+    health = client.get("/api/v1/health")
+    assert health.status_code == 200
+    body = health.json()
+    assert body["status"] == "degraded"
+    assert body["database"] == "unavailable"
+    assert body["version"] == "3.3.70"
+    live = client.get("/healthz")
+    assert live.status_code == 200
+    assert live.json()["status"] == "ok"
 
 
 def test_analyze_partial_mlb_wait_is_returned_in_stay_away(

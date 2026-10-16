@@ -22,7 +22,7 @@ export const WHOP_CHECKOUT_URL =
 
 export const APP_DOWNLOAD_URL =
   process.env.EXPO_PUBLIC_APP_DOWNLOAD_URL ??
-  "https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.56/YWP-OS-3.3.56.apk";
+  "https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.69/YWP-OS-3.3.69.apk";
 
 export function normalizeApiUrl(value: string): string {
   const normalized = value.trim().replace(/\/$/, "");
@@ -235,7 +235,8 @@ export function timeoutMsForPath(path: string, override?: number): number {
     route.startsWith("/sports/market-board") ||
     route.startsWith("/sports/day-forge") ||
     route.startsWith("/sports/build-ticket") ||
-    route.startsWith("/sports/settle-day")
+    route.startsWith("/sports/settle-day") ||
+    route.startsWith("/markets/")
   ) {
     return HEAVY_TIMEOUT_MS;
   }

@@ -12,7 +12,9 @@ services:
     dockerfilePath: ./backend/Dockerfile
     dockerContext: ./backend
     plan: free
-    healthCheckPath: /api/v1/health
+    # Process liveness only. The database check stays on /api/v1/health so a
+    # sleeping Postgres host cannot keep the web port from opening.
+    healthCheckPath: /healthz
     envVars:
       - key: YWP_ENV
         value: production
@@ -35,7 +37,7 @@ services:
       - key: NEXT_PUBLIC_WHOP_CHECKOUT_URL
         value: https://whop.com/checkout/plan_MwJ2qcFxmvqDY
       - key: YWP_APP_DOWNLOAD_URL
-        value: https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.56/YWP-OS-3.3.56.apk
+        value: https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/android-v3.3.69/YWP-OS-3.3.69.apk
       - key: YWP_CORS_ORIGINS
         value: https://whop.com,http://localhost:8081,http://localhost:19006
       - key: DATABASE_URL
