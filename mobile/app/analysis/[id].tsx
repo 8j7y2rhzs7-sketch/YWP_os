@@ -220,9 +220,9 @@ export default function AnalysisScreen() {
   if (!analysis) {
     return (
       <Screen>
-        <BrandHeader title="ANALYSIS EXPIRED" compact />
+        <BrandHeader title="Analysis expired" compact />
         <ErrorNotice message="This in-memory analysis is no longer available. Run the slate again; stored recommendations remain protected on the server." />
-        <YwpButton label="BACK TO PROTOCOL RUN" onPress={() => router.replace("/(tabs)/slate")} />
+        <YwpButton label="Back to protocol run" onPress={() => router.replace("/(tabs)/slate")} />
       </Screen>
     );
   }
@@ -237,8 +237,8 @@ export default function AnalysisScreen() {
   return (
     <Screen sport={analysis.ranked_picks[0]?.sport ?? analysis.stay_away[0]?.sport}>
       <BrandHeader
-        title="DECISION BOARD"
-        subtitle="FINAL SWEEP • BUILD YOUR OWN"
+        title="Decision board"
+        subtitle="Final sweep · build your own"
         compact
         sport={analysis.ranked_picks[0]?.sport ?? analysis.stay_away[0]?.sport}
       />
@@ -358,7 +358,7 @@ export default function AnalysisScreen() {
       />
       {loading ? <LoadingState label="Eliminating weakest legs and duplicate theses…" /> : null}
       {!loading && !build ? (
-        <YwpButton label="RE-RUN TICKET BUILDER" onPress={() => void runBuilder()} />
+        <YwpButton label="Re-run ticket builder" onPress={() => void runBuilder()} />
       ) : null}
       {boardPass ? (
         <MetalPanel tone="danger">
@@ -467,13 +467,13 @@ export default function AnalysisScreen() {
               />
             </View>
             <YwpButton
-              label="SAVE & OPEN LOCK CENTER"
+              label="Save and open lock center"
               onPress={() => void saveTicket()}
               loading={saving}
               disabled={!selectedCard?.legs.length || saving}
             />
             <YwpButton
-              label="CREATE SHARE GRAPHIC"
+              label="Create share graphic"
               variant="outline"
               onPress={() => {
                 if (!selectedCard || !id) return;
@@ -498,7 +498,7 @@ export default function AnalysisScreen() {
               }}
             />
             <YwpButton
-              label="CANCEL"
+              label="Cancel"
               variant="danger"
               onPress={() => {
                 setSelectedCard(null);

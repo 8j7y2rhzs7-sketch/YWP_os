@@ -142,7 +142,7 @@ export default function TicketsScreen() {
 
   return (
     <Screen refreshing={refreshing} onRefresh={() => void load(true, true)}>
-      <BrandHeader title="TICKET VAULT" subtitle="EXPOSURE • LOCKS • DECISIONS" compact />
+      <BrandHeader title="Ticket vault" subtitle="Exposure, locks, decisions" compact />
       <MotionReveal fromY={16}>
         <EngineStage
           size={160}
@@ -166,7 +166,7 @@ export default function TicketsScreen() {
         </MetalPanel>
       ) : null}
       <YwpButton
-        label="LOG BOOK-ONLY RESULT"
+        label="Log a book-only result"
         variant="outline"
         onPress={() => router.push("/log-result")}
       />
@@ -182,7 +182,7 @@ export default function TicketsScreen() {
           <Text style={type.body}>
             This is clean exposure. Run the protocol when a verified slate is ready.
           </Text>
-          <YwpButton label="RUN A SLATE" onPress={() => router.push("/(tabs)/slate")} />
+          <YwpButton label="Run a slate" onPress={() => router.push("/(tabs)/slate")} />
         </MetalPanel>
       ) : null}
       {tickets.map((ticket, index) => (
@@ -221,14 +221,14 @@ export default function TicketsScreen() {
             </View>
           ))}
           <YwpButton
-            label="OPEN LOCK CENTER"
+            label="Open lock center"
             variant="outline"
             onPress={() => router.push(`/ticket/${ticket.id}`)}
             disabled={ticket.legs.length === 0}
           />
           {["draft", "locked"].includes(ticket.status) ? (
             <YwpButton
-              label="DISCARD STUCK TICKET"
+              label="Discard stuck ticket"
               variant="danger"
               onPress={() => {
                 Alert.alert(
@@ -266,13 +266,13 @@ export default function TicketsScreen() {
       ))}
       {placedCount ? (
         <YwpButton
-          label="SYNC SCORES & RESULTS"
+          label="Sync scores and results"
           onPress={() => void load(true, true)}
           loading={refreshing}
         />
       ) : (
         <YwpButton
-          label="SYNC BOARD & SCORES"
+          label="Sync board and scores"
           onPress={() => void load(true, true)}
           loading={refreshing}
           variant={tickets.length ? "outline" : undefined}
