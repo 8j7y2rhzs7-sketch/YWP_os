@@ -125,6 +125,35 @@ class DecisionEngine:
         learned_weights: dict[str, float] | None = None,
     ) -> Evaluation:
         now = now or datetime.now(UTC)
+        if candidate.market_type == "schedule" or candidate.american_odds == 0:
+            payload = candidate.model_dump(mode="json")
+            summary = "Scoreboard only. Sportsbooks have not posted a price, so this is not a play."
+            return Evaluation(
+                candidate=candidate,
+                payload=payload,
+                implied_probability=0.0,
+                adjusted_probability=0.5,
+                edge=0.0,
+                expected_value=0.0,
+                confidence_score=0,
+                vision_score=0.0,
+                ywp_intelligence_score=0.0,
+                miss_by_one_risk=1.0,
+                reliability=0.0,
+                stability=0.0,
+                risk="high",
+                risk_tier="avoid",
+                variance_rating="extreme",
+                edge_class="No Edge",
+                expected_value_label="none",
+                suggested_stake_pct=0.0,
+                decision=Decision.skip.value,
+                recommendation_tier="stay_away",
+                reason_codes=["NO_SPORTSBOOK_PRICE", "ESPN_SCHEDULE_ONLY"],
+                warnings=["No sportsbook price on this game."],
+                reasoning_summary=summary,
+                input_hash=input_hash(payload),
+            )
         payload = candidate.model_dump(mode="json")
         implied = implied_probability(candidate.american_odds)
 

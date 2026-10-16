@@ -64,6 +64,7 @@ from app.services.decision_engine import (
     input_hash,
     money,
 )
+from app.services.espn_schedule import espn_unpriced_schedule
 from app.services.learning import apply_micro_learning, load_feature_weights, record_usage_event
 from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate, upcoming_odds_dates
 from app.services.live_mlb_slate import live_mlb_slate, props_slate_notice
@@ -201,6 +202,28 @@ def warm_props(payload: PropWarmRequest, _: SubscribedUser) -> PropWarmResponse:
     )
 
 
+def _schedule_fallback(sport: str, slate_date: date) -> SlateResponse | None:
+    """Show the ESPN scoreboard when books have no prices for this date."""
+    rows = espn_unpriced_schedule(sport, slate_date)
+    if not rows:
+        return None
+    sample = ", ".join(row.event_name for row in rows[:6])
+    extra = len(rows) - 6
+    more = f", and {extra} more" if extra > 0 else ""
+    return _slate_response(
+        sport=sport,
+        slate_date=slate_date,
+        mode="live",
+        notice=(
+            f"{len(rows)} {sport.upper()} games are on the ESPN scoreboard for "
+            f"{slate_date.isoformat()}: {sample}{more}. "
+            "Sportsbooks are not posting prices for this slate yet, so these rows are "
+            "the schedule only — not plays. A 0 in the odds column means no price."
+        ),
+        candidates=rows,
+    )
+
+
 def _slate_response(
     *,
     sport: str,
@@ -297,6 +320,9 @@ def slate(
     # Odds-only sports: skip paid refresh when free catalog says out of season.
     # MLB still loads schedule/model facts even without book prices.
     if sport_lower != "mlb" and app_sport_in_season(sport_lower) is False:
+        scheduled = _schedule_fallback(sport_lower, slate_date)
+        if scheduled is not None:
+            return scheduled
         return _slate_response(
             sport=sport_lower,
             slate_date=slate_date,
@@ -436,6 +462,9 @@ def slate(
                     notice=notice,
                     candidates=candidates,
                 )
+            scheduled = _schedule_fallback(sport_lower, slate_date)
+            if scheduled is not None:
+                return scheduled
             nearby = upcoming_odds_dates(sport_lower)
             if nearby:
                 return _slate_response(
@@ -498,6 +527,9 @@ def market_board(
     # send overlay_model=true from older APKs — ignore it here.
     overlay_model = False
     if sport_lower != "mlb" and app_sport_in_season(sport_lower) is False:
+        scheduled = _schedule_fallback(sport_lower, slate_date)
+        if scheduled is not None:
+            return scheduled
         return _slate_response(
             sport=sport_lower,
             slate_date=slate_date,
@@ -542,6 +574,9 @@ def market_board(
         )
 
     if not candidates:
+        scheduled = _schedule_fallback(sport_lower, slate_date)
+        if scheduled is not None:
+            return scheduled
         return _slate_response(
             sport=sport_lower,
             slate_date=slate_date,

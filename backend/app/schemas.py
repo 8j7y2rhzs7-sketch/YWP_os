@@ -286,7 +286,8 @@ class CandidateInput(YWPModel):
     @field_validator("american_odds")
     @classmethod
     def odds_cannot_be_zero(cls, value: int) -> int:
-        if value == 0 or -100 < value < 100:
+        # 0 is allowed only on schedule rows (no book price). Enforced below.
+        if value != 0 and -100 < value < 100:
             raise ValueError("American odds must be <= -100 or >= +100")
         return value
 
@@ -299,6 +300,8 @@ class CandidateInput(YWPModel):
 
     @model_validator(mode="after")
     def line_escalation_is_explicit(self) -> CandidateInput:
+        if self.american_odds == 0 and self.market_type != "schedule":
+            raise ValueError("American odds must be <= -100 or >= +100")
         if self.base_line is not None and self.line is None:
             raise ValueError("line is required when base_line is supplied")
         return self
