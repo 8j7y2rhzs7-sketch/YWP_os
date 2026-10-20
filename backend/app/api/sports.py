@@ -409,7 +409,7 @@ def slate(
                         "Open-Meteo (ESPN has no baseball/kbo path). Full-game markets can "
                         "clear when schedule, recent form, weather, and price consensus verify."
                     )
-                elif sport_lower in {"nfl", "ncaaf"}:
+                elif sport_lower in {"nfl", "ncaaf", "nba"}:
                     prop_n = sum(
                         1 for c in candidates if str(c.market_type or "").startswith("player_")
                     )
@@ -419,9 +419,14 @@ def slate(
                         if str(c.market_type or "").startswith("player_")
                         and c.probability_source == "model"
                     )
+                    prop_menu = (
+                        "points, rebounds, assists, threes, and PRA"
+                        if sport_lower == "nba"
+                        else "the expanded player-prop menu"
+                    )
                     notice = (
                         f"Live {sport_lower.upper()} from The Odds API: full-game markets plus "
-                        f"expanded player props ({prop_n} lines, {model_n} ESPN form-modeled). "
+                        f"{prop_menu} ({prop_n} lines, {model_n} ESPN form-modeled). "
                         "Thin-cushion / miss-by-1 closes hard-SKIP before PLAY."
                     )
                 else:
