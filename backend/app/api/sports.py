@@ -65,6 +65,7 @@ from app.services.decision_engine import (
     money,
 )
 from app.services.learning import apply_micro_learning, load_feature_weights, record_usage_event
+from app.services.live_cashout import locked_live_trigger
 from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate, upcoming_odds_dates
 from app.services.live_mlb_slate import live_mlb_slate, props_slate_notice
 from app.services.live_wnba_slate import (
@@ -408,7 +409,7 @@ def slate(
                         "Open-Meteo (ESPN has no baseball/kbo path). Full-game markets can "
                         "clear when schedule, recent form, weather, and price consensus verify."
                     )
-                elif sport_lower in {"nfl", "ncaaf"}:
+                elif sport_lower in {"nfl", "ncaaf", "nba"}:
                     prop_n = sum(
                         1 for c in candidates if str(c.market_type or "").startswith("player_")
                     )
@@ -418,9 +419,14 @@ def slate(
                         if str(c.market_type or "").startswith("player_")
                         and c.probability_source == "model"
                     )
+                    prop_menu = (
+                        "points, rebounds, assists, threes, and PRA"
+                        if sport_lower == "nba"
+                        else "the expanded player-prop menu"
+                    )
                     notice = (
                         f"Live {sport_lower.upper()} from The Odds API: full-game markets plus "
-                        f"expanded player props ({prop_n} lines, {model_n} ESPN form-modeled). "
+                        f"{prop_menu} ({prop_n} lines, {model_n} ESPN form-modeled). "
                         "Thin-cushion / miss-by-1 closes hard-SKIP before PLAY."
                     )
                 else:
@@ -704,7 +710,8 @@ def _persist_day_forge_evaluations(
             safer_alternative=candidate.safer_alternative,
             higher_upside=candidate.higher_upside,
             invalidation_conditions=candidate.invalidation_conditions,
-            live_trigger=candidate.live_trigger,
+            live_trigger=locked_live_trigger(candidate.sport, candidate.market_type)
+            or candidate.live_trigger,
             hedge=candidate.hedge,
             quick_cash=candidate.quick_cash,
             chain_reaction_key=candidate.chain_reaction_key,
@@ -1177,7 +1184,8 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             safer_alternative=candidate.safer_alternative,
             higher_upside=candidate.higher_upside,
             invalidation_conditions=candidate.invalidation_conditions,
-            live_trigger=candidate.live_trigger,
+            live_trigger=locked_live_trigger(candidate.sport, candidate.market_type)
+            or candidate.live_trigger,
             hedge=candidate.hedge,
             quick_cash=candidate.quick_cash,
             chain_reaction_key=candidate.chain_reaction_key,

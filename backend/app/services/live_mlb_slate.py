@@ -18,6 +18,7 @@ from typing import Any
 from app.core.config import settings
 from app.schemas import CandidateInput
 from app.services.board_metrics import bookmaker_display_name
+from app.services.live_cashout import locked_live_trigger
 from app.services.mlb_model import MLBProjection, pitcher_l5_summary, project_mlb_game
 from app.services.mlb_provider import (
     get_bullpen_usage,
@@ -1311,7 +1312,10 @@ def _build_candidate(
             "Material weather change",
             "Large adverse price move",
         ],
-        live_trigger="Rebuild from current MLB game state and a fresh price before live entry.",
+        live_trigger=(
+            locked_live_trigger("mlb", market_type)
+            or "Rebuild from current MLB game state and a fresh price before live entry."
+        ),
         hedge=(
             "Compare cash-out value with the current independent remaining-game estimate; "
             "do not hedge solely because the price moved."
