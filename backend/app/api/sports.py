@@ -65,6 +65,7 @@ from app.services.decision_engine import (
     money,
 )
 from app.services.learning import apply_micro_learning, load_feature_weights, record_usage_event
+from app.services.live_cashout import locked_live_trigger
 from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate, upcoming_odds_dates
 from app.services.live_mlb_slate import live_mlb_slate, props_slate_notice
 from app.services.live_wnba_slate import (
@@ -704,7 +705,8 @@ def _persist_day_forge_evaluations(
             safer_alternative=candidate.safer_alternative,
             higher_upside=candidate.higher_upside,
             invalidation_conditions=candidate.invalidation_conditions,
-            live_trigger=candidate.live_trigger,
+            live_trigger=locked_live_trigger(candidate.sport, candidate.market_type)
+            or candidate.live_trigger,
             hedge=candidate.hedge,
             quick_cash=candidate.quick_cash,
             chain_reaction_key=candidate.chain_reaction_key,
@@ -1177,7 +1179,8 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             safer_alternative=candidate.safer_alternative,
             higher_upside=candidate.higher_upside,
             invalidation_conditions=candidate.invalidation_conditions,
-            live_trigger=candidate.live_trigger,
+            live_trigger=locked_live_trigger(candidate.sport, candidate.market_type)
+            or candidate.live_trigger,
             hedge=candidate.hedge,
             quick_cash=candidate.quick_cash,
             chain_reaction_key=candidate.chain_reaction_key,
