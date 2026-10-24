@@ -1,10 +1,9 @@
-import { useEffect, useRef } from "react";
 import {
   ActivityIndicator,
-  Animated,
   Pressable,
   StyleSheet,
   Text,
+  View,
   type ViewStyle,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -29,34 +28,6 @@ export function YwpButton({
   style,
 }: YwpButtonProps) {
   const inactive = disabled || loading;
-  const sweep = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    if (variant !== "gold" || inactive) return;
-    sweep.setValue(0);
-    const loop = Animated.loop(
-      Animated.sequence([
-        Animated.timing(sweep, {
-          toValue: 1,
-          duration: 1600,
-          useNativeDriver: true,
-        }),
-        Animated.delay(900),
-        Animated.timing(sweep, {
-          toValue: 0,
-          duration: 0,
-          useNativeDriver: true,
-        }),
-      ]),
-    );
-    loop.start();
-    return () => loop.stop();
-  }, [inactive, sweep, variant]);
-
-  const sweepX = sweep.interpolate({
-    inputRange: [0, 1],
-    outputRange: [-160, 320],
-  });
 
   return (
     <Pressable
@@ -72,24 +43,13 @@ export function YwpButton({
       ]}
     >
       {variant === "gold" ? (
-        <LinearGradient colors={gradients.gold} style={styles.inner}>
-          <Animated.View
-            pointerEvents="none"
-            style={[styles.energy, { transform: [{ translateX: sweepX }] }]}
-          >
-            <LinearGradient
-              colors={["transparent", "rgba(255,255,255,0.42)", "transparent"]}
-              start={{ x: 0, y: 0.5 }}
-              end={{ x: 1, y: 0.5 }}
-              style={StyleSheet.absoluteFill}
-            />
-          </Animated.View>
+        <View style={[styles.inner, styles.gold]}>
           {loading ? (
-            <ActivityIndicator color={colors.background} />
+            <ActivityIndicator color={colors.ink} />
           ) : (
             <Text style={styles.goldText}>{label}</Text>
           )}
-        </LinearGradient>
+        </View>
       ) : (
         <LinearGradient
           colors={
@@ -127,18 +87,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     overflow: "hidden",
   },
-  energy: {
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    width: 88,
-  },
-  outline: { borderWidth: 1.5, borderColor: "rgba(196,152,42,0.55)" },
+  gold: { backgroundColor: colors.gold },
+  outline: { borderWidth: 1, borderColor: colors.border },
   danger: { borderColor: colors.danger },
   success: { borderColor: colors.success },
   goldText: {
     ...type.button,
-    color: colors.background,
+    color: colors.ink,
   },
   outlineText: {
     ...type.button,

@@ -72,11 +72,8 @@ export function FrontDesk() {
 
   return (
     <View>
-      <SectionTitle
-        title="Front desk"
-        subtitle="One next step from the board and your tickets."
-      />
-      <MetalPanel tone="gold" accent={colors.circuitBlue}>
+      <SectionTitle title="Next step" subtitle="From today's board and your tickets." />
+      <MetalPanel>
         {desk ? (
           <View style={styles.copy}>
             <Text style={styles.headline}>{desk.headline}</Text>
