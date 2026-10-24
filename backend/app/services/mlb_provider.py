@@ -105,6 +105,59 @@ def team_logo_url(team_id: int | None) -> str | None:
     return f"https://midfield.mlbstatic.com/v1/team/{team_id}/spots/96"
 
 
+def get_day_board(slate_date: date) -> list[dict[str, Any]]:
+    """Every MLB game today, including live and final, with the score."""
+    data = _get_sync(
+        "/v1/schedule",
+        {
+            "sportId": 1,
+            "date": slate_date.isoformat(),
+            "hydrate": "team,linescore",
+        },
+        cache_ttl=30,
+    )
+    games: list[dict[str, Any]] = []
+    for day in data.get("dates", []):
+        for game in day.get("games", []):
+            status_data = game.get("status") or {}
+            abstract = str(status_data.get("abstractGameState") or "")
+            linescore = game.get("linescore") or {}
+            line_teams = linescore.get("teams") or {}
+            away = (game.get("teams") or {}).get("away") or {}
+            home = (game.get("teams") or {}).get("home") or {}
+            away_runs = (line_teams.get("away") or {}).get("runs")
+            home_runs = (line_teams.get("home") or {}).get("runs")
+            if away_runs is None:
+                away_runs = away.get("score")
+            if home_runs is None:
+                home_runs = home.get("score")
+            inning = str(linescore.get("currentInningOrdinal") or "")
+            half = str(linescore.get("inningState") or "")
+            detail = f"{half} {inning}".strip() or str(status_data.get("detailedState") or abstract)
+            if abstract == "Live":
+                phase = "LIVE"
+            elif abstract == "Final":
+                phase = "FINAL"
+            elif abstract == "Preview":
+                phase = "PRE"
+            else:
+                phase = "OTHER"
+            games.append(
+                {
+                    "sport": "mlb",
+                    "event_id": str(game.get("gamePk") or ""),
+                    "away_team": (away.get("team") or {}).get("name") or "",
+                    "home_team": (home.get("team") or {}).get("name") or "",
+                    "away_score": away_runs,
+                    "home_score": home_runs,
+                    "status": phase,
+                    "detail": detail,
+                    "start_time": game.get("gameDate"),
+                }
+            )
+    return games
+
+
 def get_schedule(slate_date: date) -> list[dict[str, Any]]:
     """Return today's MLB games with probable pitchers and venue."""
     data = _get_sync(

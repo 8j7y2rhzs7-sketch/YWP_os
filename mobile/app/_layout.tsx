@@ -85,6 +85,10 @@ export default function RootLayout() {
               options={{ title: "Ready Plays", headerBackTitle: "Home" }}
             />
             <Stack.Screen
+              name="live"
+              options={{ title: "Live", headerBackTitle: "Home" }}
+            />
+            <Stack.Screen
               name="ticket/[id]"
               options={{ title: "Ticket Lock Center", headerBackTitle: "Home" }}
             />
