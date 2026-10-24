@@ -665,3 +665,92 @@ class WhopWebhookDelivery(Base):
     webhook_id: Mapped[str] = mapped_column(String(128), unique=True, index=True)
     event_type: Mapped[str] = mapped_column(String(64))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class DayPrepDay(Base):
+    """One Eastern-time slate: free schedule pull, then one priced pull."""
+
+    __tablename__ = "day_prep_days"
+
+    slate_date: Mapped[date] = mapped_column(Date, primary_key=True)
+    status: Mapped[str] = mapped_column(String(32), default="scheduled", index=True)
+    notice: Mapped[str] = mapped_column(Text, default="")
+    schedule_pulled_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    priced_pulled_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    pricing_started_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    pull2_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    earliest_start: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    latest_start: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    lead_minutes: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    binding_sport: Mapped[str | None] = mapped_column(String(24), nullable=True)
+    completeness: Mapped[Decimal | None] = mapped_column(Numeric(5, 4), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow, onupdate=utcnow
+    )
+
+
+class DayPrepGame(Base):
+    __tablename__ = "day_prep_games"
+    __table_args__ = (
+        UniqueConstraint("slate_date", "sport", "event_id", name="uq_day_prep_game"),
+        Index("ix_day_prep_games_slate", "slate_date", "commence_time"),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    slate_date: Mapped[date] = mapped_column(Date, index=True)
+    sport: Mapped[str] = mapped_column(String(24), index=True)
+    event_id: Mapped[str] = mapped_column(String(100))
+    event_name: Mapped[str] = mapped_column(String(180))
+    home_team: Mapped[str] = mapped_column(String(80), default="")
+    away_team: Mapped[str] = mapped_column(String(80), default="")
+    commence_time: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+
+
+class DayPrepPlay(Base):
+    """Engine PLAY/LEAN saved before any user opens the app."""
+
+    __tablename__ = "day_prep_plays"
+    __table_args__ = (Index("ix_day_prep_plays_slate", "slate_date", "sport", "rank"),)
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    slate_date: Mapped[date] = mapped_column(Date, index=True)
+    sport: Mapped[str] = mapped_column(String(24), index=True)
+    decision: Mapped[str] = mapped_column(String(20))
+    rank: Mapped[int] = mapped_column(Integer, default=0)
+    event_id: Mapped[str] = mapped_column(String(100))
+    selection: Mapped[str] = mapped_column(String(180))
+    market_type: Mapped[str] = mapped_column(String(50))
+    payload: Mapped[dict[str, Any]] = mapped_column(JSON)
+
+
+class DayPrepLead(Base):
+    """Per-sport minutes-before-first-pitch the priced pull should use next time."""
+
+    __tablename__ = "day_prep_leads"
+
+    sport: Mapped[str] = mapped_column(String(24), primary_key=True)
+    lead_minutes: Mapped[int] = mapped_column(Integer, default=75)
+    samples: Mapped[int] = mapped_column(Integer, default=0)
+    last_completeness: Mapped[Decimal | None] = mapped_column(Numeric(5, 4), nullable=True)
+    last_minutes_before: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class DayPrepClaim(Base):
+    """Copies the system board onto one user so tickets and grades stay theirs."""
+
+    __tablename__ = "day_prep_claims"
+    __table_args__ = (UniqueConstraint("user_id", "slate_date", name="uq_day_prep_claim"),)
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    slate_date: Mapped[date] = mapped_column(Date, index=True)
+    analysis_id: Mapped[str] = mapped_column(String(36), index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)

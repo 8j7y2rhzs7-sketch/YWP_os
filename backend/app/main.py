@@ -37,6 +37,10 @@ async def _lifespan(_app: FastAPI):
             logger.exception("Could not prepare the owner account on startup")
         finally:
             db.close()
+    if settings.env == "production" and not settings.demo_mode and settings.day_prep_enabled:
+        from app.services.day_prep import kick_day_prep
+
+        kick_day_prep()
     yield
 
 
@@ -66,6 +70,7 @@ app.add_middleware(
         "X-YWP-Provision-Secret",
         "X-YWP-Marketing-Token",
         "X-YWP-Markets-Token",
+        "X-YWP-Day-Prep-Token",
     ],
 )
 

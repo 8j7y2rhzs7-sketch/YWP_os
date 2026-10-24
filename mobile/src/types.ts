@@ -689,3 +689,30 @@ export interface MarketsHealth {
   orders_enabled: boolean;
   venues: Array<{ venue: string; kind: string; enabled: boolean; role: string }>;
 }
+
+export interface ReadyGame {
+  sport: string;
+  event_id: string;
+  event_name: string;
+  home_team: string;
+  away_team: string;
+  commence_time: string;
+}
+
+export interface ReadyBoard {
+  slate_date: string;
+  status: string;
+  notice: string;
+  schedule_pulled_at?: string | null;
+  priced_pulled_at?: string | null;
+  pull2_at?: string | null;
+  earliest_start?: string | null;
+  lead_minutes?: number | null;
+  binding_sport?: string | null;
+  completeness?: string | null;
+  analysis_id: string | null;
+  games: ReadyGame[];
+  plays: Recommendation[];
+  cards: Record<string, TicketCard>;
+  cross_parlays: Record<string, TicketCard>;
+}

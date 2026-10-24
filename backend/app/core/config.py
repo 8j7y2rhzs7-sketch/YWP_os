@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "YWP OS API"
-    app_version: str = "3.3.70"
+    app_version: str = "3.3.72"
     api_prefix: str = "/api/v1"
     env: Literal["development", "test", "staging", "production"] = Field(
         default="development", validation_alias="YWP_ENV"
@@ -89,6 +89,22 @@ class Settings(BaseSettings):
         default=None,
         validation_alias="YWP_MARKETS_SCAN_TOKEN",
         description="Shared secret for POST /markets/scan and /markets/grade. Unset = admin only.",
+    )
+    day_prep_enabled: bool = Field(
+        default=True,
+        validation_alias="YWP_DAY_PREP_ENABLED",
+        description=(
+            "When true, the Eastern-time day prep can store matchups and one priced pull "
+            "before anyone opens the app. Set false to keep Run manual only."
+        ),
+    )
+    day_prep_token: str | None = Field(
+        default=None,
+        validation_alias="YWP_DAY_PREP_TOKEN",
+        description=(
+            "Shared secret for POST /sports/day-prep/tick. "
+            "Unset rejects the scheduler. Opening the app can still catch up."
+        ),
     )
     mlb_props_enabled: bool = Field(
         default=True,
@@ -247,6 +263,7 @@ class Settings(BaseSettings):
         "whop_app_id",
         "openai_api_key",
         "markets_scan_token",
+        "day_prep_token",
         mode="before",
     )
     @classmethod
