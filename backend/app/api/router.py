@@ -4,6 +4,7 @@ from app.api import (
     auth,
     bankroll,
     day_prep,
+    desk,
     errors,
     health,
     learning,
@@ -26,6 +27,7 @@ api_router.include_router(bankroll.router)
 api_router.include_router(protocols.router)
 api_router.include_router(sports.router)
 api_router.include_router(day_prep.router)
+api_router.include_router(desk.router)
 api_router.include_router(tickets.router)
 api_router.include_router(learning.router)
 api_router.include_router(errors.router)

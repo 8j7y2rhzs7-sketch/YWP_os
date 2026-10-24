@@ -716,3 +716,26 @@ export interface ReadyBoard {
   cards: Record<string, TicketCard>;
   cross_parlays: Record<string, TicketCard>;
 }
+
+export interface FrontDeskAction {
+  label: string;
+  route: string;
+}
+
+export interface FrontDeskBeat {
+  phase: "done" | "now" | "later";
+  text: string;
+}
+
+export interface FrontDesk {
+  bot: "front_desk";
+  headline: string;
+  detail: string;
+  primary: FrontDeskAction;
+  secondary: FrontDeskAction | null;
+  beats: FrontDeskBeat[];
+  ready_status: string;
+  approved_plays: number;
+  open_tickets: number;
+  notice: string;
+}

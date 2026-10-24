@@ -1054,6 +1054,31 @@ class ReadyBoardResponse(YWPModel):
     cross_parlays: dict[str, TicketCardOut] = Field(default_factory=dict)
 
 
+class FrontDeskAction(YWPModel):
+    label: str = Field(max_length=40)
+    route: str = Field(max_length=80)
+
+
+class FrontDeskBeat(YWPModel):
+    phase: Literal["done", "now", "later"]
+    text: str = Field(max_length=80)
+
+
+class FrontDeskResponse(YWPModel):
+    """The one next step on Home. Reads state that already exists."""
+
+    bot: Literal["front_desk"] = "front_desk"
+    headline: str = Field(max_length=160)
+    detail: str = Field(max_length=400)
+    primary: FrontDeskAction
+    secondary: FrontDeskAction | None = None
+    beats: list[FrontDeskBeat] = Field(min_length=3, max_length=3)
+    ready_status: str = Field(max_length=32)
+    approved_plays: int = Field(ge=0)
+    open_tickets: int = Field(ge=0)
+    notice: str = Field(max_length=200)
+
+
 class ErrorReportOut(YWPModel):
     id: str
     user_id: str | None

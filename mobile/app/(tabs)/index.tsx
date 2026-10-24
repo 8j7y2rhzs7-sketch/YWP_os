@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { DayForgeChamber } from "@/components/DayForgeChamber";
+import { FrontDesk } from "@/components/FrontDesk";
 import { DayForgeReveal } from "@/components/DayForgeReveal";
 import { EngineStage } from "@/components/EngineStage";
 import { ErrorNotice } from "@/components/ErrorNotice";
@@ -194,6 +195,8 @@ export default function CommandCenter() {
       </View>
 
       {error ? <ErrorNotice message={error} /> : null}
+
+      <FrontDesk />
 
       <SectionTitle
         title="Ready plays"
