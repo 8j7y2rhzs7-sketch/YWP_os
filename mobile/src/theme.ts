@@ -12,8 +12,8 @@ export const fonts = {
  * Decision Engine identity:
  * black chassis + metallic gold + signature circuit blue from the logo brain.
  *
- * Layout tokens follow 2025–26 consumer-app conventions (DraftKings / Hard Rock /
- * Instagram-class): 8pt grid, 48–56pt controls, tight display tracking, soft cards.
+ * Layout stays on an 8pt grid with 48–56pt controls. Surfaces stay flat and
+ * quiet: one gold action, short labels, and room between cards.
  */
 export const colors = {
   background: "#02050A",

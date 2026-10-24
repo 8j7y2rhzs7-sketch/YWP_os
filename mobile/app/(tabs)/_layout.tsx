@@ -1,10 +1,10 @@
 import { Redirect, Tabs } from "expo-router";
-import { Image, Platform, StyleSheet, type ColorValue, type ImageSourcePropType } from "react-native";
+import { Image, StyleSheet, type ColorValue, type ImageSourcePropType } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { brandAssets } from "@/brandAssets";
 import { useAuth } from "@/context/AuthContext";
-import { colors, fonts, radius } from "@/theme";
+import { colors, fonts } from "@/theme";
 
 function BrandTabIcon({
   source,
@@ -36,9 +36,8 @@ function tabIcon(source: ImageSourcePropType, label: string) {
 export default function TabLayout() {
   const { user, loading } = useAuth();
   const insets = useSafeAreaInsets();
-  // Floating dock: clear of Android system nav, inset from screen edges.
-  const bottomInset = Math.max(insets.bottom, 10);
-  const tabBarHeight = 58 + bottomInset;
+  const bottomInset = Math.max(insets.bottom, 8);
+  const tabBarHeight = 52 + bottomInset;
 
   if (!loading && !user) return <Redirect href="/(auth)/login" />;
   if (!loading && user && !user.has_app_access) return <Redirect href="/(auth)/paywall" />;
@@ -46,32 +45,17 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.goldBright,
-        tabBarInactiveTintColor: colors.dim,
+        tabBarActiveTintColor: colors.white,
+        tabBarInactiveTintColor: colors.muted,
         tabBarHideOnKeyboard: true,
         tabBarStyle: {
-          backgroundColor: "rgba(7,14,22,0.94)",
-          borderTopWidth: 0,
-          borderWidth: StyleSheet.hairlineWidth,
-          borderColor: "rgba(240,193,74,0.28)",
-          borderRadius: radius.xl,
+          backgroundColor: colors.background,
+          borderTopWidth: StyleSheet.hairlineWidth,
+          borderTopColor: colors.border,
           height: tabBarHeight,
-          paddingTop: 8,
+          paddingTop: 6,
           paddingBottom: bottomInset,
-          position: "absolute",
-          left: 12,
-          right: 12,
-          bottom: 8,
-          elevation: 12,
-          ...Platform.select({
-            ios: {
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 10 },
-              shadowOpacity: 0.35,
-              shadowRadius: 18,
-            },
-            default: {},
-          }),
+          elevation: 0,
         },
         tabBarItemStyle: {
           paddingVertical: 2,
