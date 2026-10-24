@@ -1,11 +1,12 @@
 import { router } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { MetalPanel } from "@/components/MetalPanel";
 import { SectionTitle } from "@/components/SectionTitle";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
+import { submitErrorReport } from "@/lib/errorReporting";
 import { colors, fonts, spacing, type } from "@/theme";
 import type { FrontDesk as FrontDeskState } from "@/types";
 
@@ -34,14 +35,25 @@ export function FrontDesk() {
   const { request } = useAuth();
   const [desk, setDesk] = useState<FrontDeskState | null>(null);
   const [quiet, setQuiet] = useState(false);
+  const reported = useRef(false);
 
   const load = useCallback(async () => {
     try {
       const next = await request<FrontDeskState>("/desk");
       setDesk(next);
       setQuiet(false);
+      reported.current = false;
     } catch {
       setQuiet(true);
+      if (!reported.current) {
+        reported.current = true;
+        void submitErrorReport({
+          category: "api",
+          message: "Front desk failed to load.",
+          screen: "Front desk",
+          context: { source: "front_desk", kind: "load_failed" },
+        }).catch(() => undefined);
+      }
     }
   }, [request]);
 
@@ -89,6 +101,7 @@ export function FrontDesk() {
               />
             ) : null}
             <Text style={styles.notice}>{desk.notice}</Text>
+            {desk.handoff ? <Text style={styles.handoff}>{desk.handoff}</Text> : null}
           </View>
         ) : (
           <Text style={type.body}>
@@ -138,5 +151,9 @@ const styles = StyleSheet.create({
   notice: {
     ...type.caption,
     color: colors.dim,
+  },
+  handoff: {
+    ...type.caption,
+    color: colors.circuitBlueBright,
   },
 });

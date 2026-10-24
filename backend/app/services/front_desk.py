@@ -2,7 +2,7 @@
 
 The back office already pulls the schedule and the priced slate. This desk
 only reads that state. It does not invent plays, spend Odds credits, kick a
-priced pull, or promise an outcome.
+priced pull, or promise an outcome. Rough steps are logged for the back office.
 """
 
 from __future__ import annotations
@@ -16,6 +16,7 @@ from sqlalchemy.orm import Session
 from app.models import DayPrepDay, DayPrepPlay, Ticket
 from app.schemas import FrontDeskAction, FrontDeskBeat, FrontDeskResponse
 from app.services.day_prep import ET, slate_date_for
+from app.services.front_desk_log import attach_front_desk_log
 
 DESK_NOTICE = "No outcome is assured. Lock Check still runs before any wager."
 _BOARD_ROUTE = "/ready"
@@ -399,7 +400,7 @@ def front_desk_for_user(
             last_lock_expires_at=newest.last_lock_expires_at,
         )
     )
-    return compose_front_desk(
+    desk = compose_front_desk(
         ready_status=day.status if day is not None else "idle",
         approved_plays=int(approved),
         pull2_at=day.pull2_at if day is not None else None,
@@ -408,3 +409,7 @@ def front_desk_for_user(
         open_tickets=len(tickets),
         now=moment,
     )
+    handoff = attach_front_desk_log(db, user_id=user_id, desk=desk, now=moment)
+    if handoff:
+        desk.handoff = handoff
+    return desk

@@ -738,4 +738,5 @@ export interface FrontDesk {
   approved_plays: number;
   open_tickets: number;
   notice: string;
+  handoff?: string | null;
 }

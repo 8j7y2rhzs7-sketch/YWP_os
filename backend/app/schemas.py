@@ -1077,6 +1077,7 @@ class FrontDeskResponse(YWPModel):
     approved_plays: int = Field(ge=0)
     open_tickets: int = Field(ge=0)
     notice: str = Field(max_length=200)
+    handoff: str | None = Field(default=None, max_length=160)
 
 
 class ErrorReportOut(YWPModel):

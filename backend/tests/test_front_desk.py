@@ -7,9 +7,14 @@ from datetime import UTC, datetime, timedelta
 from fastapi.testclient import TestClient
 from sqlalchemy import select
 
-from app.models import DayPrepDay, DayPrepPlay, Ticket, User
+from app.models import AuditLog, DayPrepDay, DayPrepPlay, ErrorReport, Ticket, User
 from app.services.day_prep import slate_date_for
 from app.services.front_desk import DeskTicket, compose_front_desk
+from app.services.ops_heal import (
+    _proposals_from_error_clusters,
+    classify_error_for_heal,
+    list_ops_heal_proposals,
+)
 
 BANNED = ("guaranteed", "can't lose", "cant lose", "sure thing", "free money", "can't miss")
 
@@ -154,6 +159,87 @@ def _ticket(user_id: str, **overrides) -> Ticket:
     }
     payload.update(overrides)
     return Ticket(**payload)
+
+
+def test_front_desk_load_failure_does_not_plan_a_settle() -> None:
+    planned = classify_error_for_heal("Front desk failed to load.", "Front desk")
+    assert planned == ["noop_observe"]
+
+
+def test_one_front_desk_report_becomes_a_fix_brief(db_session) -> None:
+    db_session.add(
+        ErrorReport(
+            category="api",
+            message="Front desk failed to load.",
+            screen="Front desk",
+            context={"source": "front_desk", "kind": "load_failed"},
+            status="open",
+        )
+    )
+    db_session.commit()
+
+    drafts = _proposals_from_error_clusters(db=db_session, trigger="test")
+
+    assert len(drafts) == 1
+    assert drafts[0]["fingerprint"] == "front_desk:load_failed"
+    assert drafts[0]["recommended_change"]
+    assert "run_settle_day" not in drafts[0]["auto_remediations_tried"]
+
+
+def test_desk_logs_each_step_once(
+    client: TestClient,
+    auth_headers: dict[str, str],
+    db_session,
+) -> None:
+    first = client.get("/api/v1/desk", headers=auth_headers)
+    second = client.get("/api/v1/desk", headers=auth_headers)
+    assert first.status_code == 200
+    assert second.status_code == 200
+    assert first.json()["handoff"] is None
+
+    user = _user(db_session)
+    steps = db_session.scalars(
+        select(AuditLog).where(
+            AuditLog.user_id == user.id,
+            AuditLog.action == "FRONT_DESK_STEP",
+        )
+    ).all()
+    assert len(steps) == 1
+    assert steps[0].details["route"] == "/ready"
+    assert db_session.scalar(select(ErrorReport).limit(1)) is None
+
+
+def test_missed_window_is_logged_for_the_back_office(
+    client: TestClient,
+    auth_headers: dict[str, str],
+    db_session,
+) -> None:
+    user = _user(db_session)
+    now = datetime.now(UTC)
+    db_session.add(
+        DayPrepDay(
+            slate_date=slate_date_for(now),
+            status="missed",
+            notice="The priced window closed.",
+        )
+    )
+    db_session.commit()
+
+    first = client.get("/api/v1/desk", headers=auth_headers)
+    second = client.get("/api/v1/desk", headers=auth_headers)
+
+    assert first.status_code == 200, first.text
+    assert first.json()["handoff"] == "Logged for the back office to fix."
+    assert second.json()["handoff"] == "Logged for the back office to fix."
+    reports = db_session.scalars(select(ErrorReport).where(ErrorReport.user_id == user.id)).all()
+    assert len(reports) == 1
+    assert reports[0].context["kind"] == "missed"
+    assert reports[0].status == "open"
+    proposals = list_ops_heal_proposals(db=db_session, status="pending")
+    assert len(proposals) == 1
+    assert proposals[0]["fingerprint"] == "front_desk:missed"
+    assert "first start" in proposals[0]["recommended_change"]
+    assert "guaranteed" not in proposals[0]["recommended_change"].lower()
 
 
 def test_desk_requires_login(client: TestClient) -> None:
