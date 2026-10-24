@@ -1,0 +1,53 @@
+# Day prep scheduler.
+#
+# Wakes the free API so today's matchups are pulled around Eastern midnight
+# and the priced pull can run before the first game. Nothing here spends Odds
+# credits by itself. The API spends them once, inside the priced pull, and
+# only when YWP_DAY_PREP_TOKEN matches and a slate is actually due.
+#
+# Secrets (GitHub → Settings → Secrets → Actions):
+#   YWP_DAY_PREP_API_URL
+#       Public API origin, no path. Example: https://ywp-os-api.onrender.com
+#       YWP_MARKETS_API_URL is used when the day-prep URL secret is empty.
+#   YWP_DAY_PREP_TOKEN
+#       Long random string. Put the same value on Render as YWP_DAY_PREP_TOKEN.
+#
+# Leave the token unset and this file sends no request.
+# GitHub may delay a scheduled run by several minutes. Opening the app also
+# catches up whatever pull is due.
+
+name: Day prep
+
+on:
+  schedule:
+    # Every 20 minutes through the US sports window, including Eastern midnight
+    # in both EDT (04:00 UTC) and EST (05:00 UTC).
+    - cron: "7,27,47 14-23 * * *"
+    - cron: "7,27,47 0-6 * * *"
+  workflow_dispatch:
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tick day prep when the secrets exist
+        env:
+          API: ${{ secrets.YWP_DAY_PREP_API_URL }}
+          FALLBACK_API: ${{ secrets.YWP_MARKETS_API_URL }}
+          TOKEN: ${{ secrets.YWP_DAY_PREP_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "YWP_DAY_PREP_TOKEN is not set. No-op. No request was sent."
+            exit 0
+          fi
+          origin="${API:-$FALLBACK_API}"
+          if [ -z "$origin" ]; then
+            echo "No API URL secret is set. No-op. No request was sent."
+            exit 0
+          fi
+          base="${origin%/}"
+          curl --fail-with-body --silent --show-error --max-time 100 \
+            -X POST "${base}/api/v1/sports/day-prep/tick" \
+            -H "X-YWP-Day-Prep-Token: ${TOKEN}" \
+            -H "Content-Type: application/json"
+          echo

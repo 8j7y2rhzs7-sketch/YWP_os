@@ -1,3 +1,4 @@
+import Constants from "expo-constants";
 import { Platform } from "react-native";
 
 import { rawRequest } from "@/lib/api";
@@ -23,7 +24,7 @@ export interface ErrorReportInput {
   context?: Record<string, unknown>;
 }
 
-const APP_VERSION = "3.3.27";
+const APP_VERSION = Constants.expoConfig?.version ?? "3.3.72";
 
 export async function submitErrorReport(input: ErrorReportInput): Promise<void> {
   let accessToken: string | undefined;

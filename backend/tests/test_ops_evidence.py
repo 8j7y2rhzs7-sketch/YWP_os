@@ -37,6 +37,7 @@ def test_process_for_path_covers_core_surfaces() -> None:
     assert process_for_path("/api/v1/learning/pulse") == "learning"
     assert process_for_path("/api/v1/hive/progress-reports") == "hive"
     assert process_for_path("/api/v1/ops-heal/run") == "ops_heal"
+    assert process_for_path("/api/v1/desk") == "front_desk"
     assert process_for_path("/api/v1/errors") == "error_reports"
 
 

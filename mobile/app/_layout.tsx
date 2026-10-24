@@ -81,6 +81,10 @@ export default function RootLayout() {
               options={{ title: "YWP Decision Board", headerBackTitle: "Home" }}
             />
             <Stack.Screen
+              name="ready"
+              options={{ title: "Ready Plays", headerBackTitle: "Home" }}
+            />
+            <Stack.Screen
               name="ticket/[id]"
               options={{ title: "Ticket Lock Center", headerBackTitle: "Home" }}
             />

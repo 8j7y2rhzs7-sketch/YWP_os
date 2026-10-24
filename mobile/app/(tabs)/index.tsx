@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { DayForgeChamber } from "@/components/DayForgeChamber";
+import { FrontDesk } from "@/components/FrontDesk";
 import { DayForgeReveal } from "@/components/DayForgeReveal";
 import { EngineStage } from "@/components/EngineStage";
 import { ErrorNotice } from "@/components/ErrorNotice";
@@ -24,6 +25,7 @@ import type {
   LearningPulse,
   Performance,
   ProtocolDefinition,
+  ReadyBoard,
   Ticket,
 } from "@/types";
 
@@ -44,6 +46,7 @@ export default function CommandCenter() {
   const [protocol, setProtocol] = useState<ProtocolDefinition | null>(null);
   const [pulse, setPulse] = useState<LearningPulse | null>(null);
   const [forge, setForge] = useState<DayForgeResponse | null>(null);
+  const [readyBoard, setReadyBoard] = useState<ReadyBoard | null>(null);
   const [revealOpen, setRevealOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -99,6 +102,11 @@ export default function CommandCenter() {
         setProtocol(nextProtocol);
         setPulse(nextPulse);
         void loadForge();
+        try {
+          setReadyBoard(await request<ReadyBoard>("/sports/ready-board"));
+        } catch {
+          // Home still opens if the ready list is warming.
+        }
       } catch (reason) {
         setError(reason instanceof Error ? reason.message : "Dashboard failed to load");
       } finally {
@@ -187,6 +195,29 @@ export default function CommandCenter() {
       </View>
 
       {error ? <ErrorNotice message={error} /> : null}
+
+      <FrontDesk />
+
+      <SectionTitle
+        title="Ready plays"
+        subtitle="Approved plays from each sport, already waiting. Run is still yours."
+      />
+      <MetalPanel tone="gold">
+        <View style={styles.protocolHeader}>
+          <View style={styles.heroCopy}>
+            <Text style={styles.panelTitle}>
+              {readyBoard?.plays.length
+                ? `${readyBoard.plays.length} approved play${readyBoard.plays.length === 1 ? "" : "s"}`
+                : "Today's list"}
+            </Text>
+            <Text style={type.caption}>
+              {readyBoard?.notice ?? "Checking matchups and the priced pull."}
+            </Text>
+          </View>
+          <StatusPill value={(readyBoard?.status ?? "idle").replace(/_/g, " ").toUpperCase()} />
+        </View>
+        <YwpButton label="OPEN READY PLAYS" onPress={() => router.push("/ready")} />
+      </MetalPanel>
 
       <SectionTitle
         title="Session pulse"
