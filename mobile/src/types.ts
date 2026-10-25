@@ -740,3 +740,39 @@ export interface FrontDesk {
   notice: string;
   handoff?: string | null;
 }
+
+export interface LiveGame {
+  sport: string;
+  event_id: string;
+  away_team: string;
+  home_team: string;
+  away_score: number | null;
+  home_score: number | null;
+  status: string;
+  detail: string;
+  start_time?: string | null;
+}
+
+export interface LivePlay {
+  id: string;
+  source: "yours" | "board";
+  sport: string;
+  selection: string;
+  market_type: string;
+  line: number | null;
+  event_name: string;
+  event_id: string;
+  status: string;
+  detail: string;
+  pace: "cashing" | "behind" | "cashed" | "missed" | "push" | "waiting" | "watching";
+  actual: number | null;
+  stat_label?: string | null;
+}
+
+export interface LiveBoard {
+  slate_date: string;
+  notice: string;
+  live_count: number;
+  games: LiveGame[];
+  plays: LivePlay[];
+}

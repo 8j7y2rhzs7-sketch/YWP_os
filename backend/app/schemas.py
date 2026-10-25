@@ -1080,6 +1080,44 @@ class FrontDeskResponse(YWPModel):
     handoff: str | None = Field(default=None, max_length=160)
 
 
+class LiveGameOut(YWPModel):
+    sport: str
+    event_id: str
+    away_team: str
+    home_team: str
+    away_score: int | None = None
+    home_score: int | None = None
+    status: str
+    detail: str = ""
+    start_time: str | None = None
+
+
+class LivePlayOut(YWPModel):
+    id: str
+    source: Literal["yours", "board"]
+    sport: str
+    selection: str
+    market_type: str
+    line: float | None = None
+    event_name: str
+    event_id: str = ""
+    status: str
+    detail: str = ""
+    pace: Literal["cashing", "behind", "cashed", "missed", "push", "waiting", "watching"]
+    actual: float | None = None
+    stat_label: str | None = None
+
+
+class LiveBoardResponse(YWPModel):
+    """Scores and play tracking. Not a bet slip."""
+
+    slate_date: date
+    notice: str
+    live_count: int = Field(ge=0)
+    games: list[LiveGameOut] = Field(default_factory=list)
+    plays: list[LivePlayOut] = Field(default_factory=list)
+
+
 class ErrorReportOut(YWPModel):
     id: str
     user_id: str | None

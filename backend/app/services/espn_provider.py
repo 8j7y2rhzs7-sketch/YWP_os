@@ -617,7 +617,8 @@ def _parse_event(event: dict[str, Any], *, sport: str) -> dict[str, Any] | None:
         return None
     venue = comps_wrap.get("venue") or {}
     address = venue.get("address") or {}
-    status = (comps_wrap.get("status") or {}).get("type") or {}
+    status_block = comps_wrap.get("status") or {}
+    status = status_block.get("type") or {}
     return {
         "sport": sport.lower(),
         "event_id": str(event.get("id") or ""),
@@ -631,6 +632,9 @@ def _parse_event(event: dict[str, Any], *, sport: str) -> dict[str, Any] | None:
         "home_score": _score_value(home.get("score")),
         "away_score": _score_value(away.get("score")),
         "status": status.get("name") or status.get("description") or "",
+        "game_state": str(status.get("state") or "").lower(),
+        "detail": str(status.get("shortDetail") or status.get("detail") or ""),
+        "clock": str(status_block.get("displayClock") or ""),
         "completed": bool(status.get("completed")),
         "venue": venue.get("fullName") or "",
         "venue_id": venue.get("id"),

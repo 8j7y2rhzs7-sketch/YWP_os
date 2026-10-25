@@ -5,6 +5,7 @@ import { StyleSheet, Text, View } from "react-native";
 
 import { DayForgeChamber } from "@/components/DayForgeChamber";
 import { FrontDesk } from "@/components/FrontDesk";
+import { LiveStrip } from "@/components/LiveStrip";
 import { DayForgeReveal } from "@/components/DayForgeReveal";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { LoadingState } from "@/components/LoadingState";
@@ -156,6 +157,8 @@ export default function CommandCenter() {
       </View>
 
       {error ? <ErrorNotice message={error} /> : null}
+
+      <LiveStrip />
 
       <FrontDesk />
 

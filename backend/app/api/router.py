@@ -8,6 +8,7 @@ from app.api import (
     errors,
     health,
     learning,
+    live,
     marketing,
     markets,
     ops_heal,
@@ -28,6 +29,7 @@ api_router.include_router(protocols.router)
 api_router.include_router(sports.router)
 api_router.include_router(day_prep.router)
 api_router.include_router(desk.router)
+api_router.include_router(live.router)
 api_router.include_router(tickets.router)
 api_router.include_router(learning.router)
 api_router.include_router(errors.router)
