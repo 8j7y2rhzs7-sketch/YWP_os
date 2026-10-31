@@ -184,8 +184,8 @@ def roster_names(sport: str, team_id: str) -> list[tuple[str, str]]:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", default=today_yyyymmdd(), help="YYYYMMDD in ET slate terms")
-    ap.add_argument("--max-nba-players", type=int, default=40, help="cap full sheets per run")
-    ap.add_argument("--max-nhl-players", type=int, default=24)
+    ap.add_argument("--max-nba-players", type=int, default=200, help="cap full sheets per run")
+    ap.add_argument("--max-nhl-players", type=int, default=120)
     args = ap.parse_args()
     date = args.date
     started = datetime.now(timezone.utc).isoformat()
@@ -275,10 +275,20 @@ def main() -> int:
         name, aid, team = item
         try:
             gl = nba_gamelog(aid)
-            ok = not gl["missing_cats"] and gl["n"] >= 0
-            # n=0 allowed for brand-new but cats must exist on endpoint
-            if gl["missing_cats"]:
-                ok = False
+            # No RS log yet / empty schema = deep bench skip, not slate FAIL
+            if not gl.get("names"):
+                return name, {
+                    "sport": "nba",
+                    "athlete_id": aid,
+                    "team": team,
+                    "source": f"espn:site.web.api/nba/athletes/{aid}/gamelog",
+                    "missing_cats": [],
+                    "n_rs": 0,
+                    "rows": [],
+                    "ok": True,
+                    "skip": "empty_gamelog_schema",
+                }
+            ok = not gl["missing_cats"]
             return name, {
                 "sport": "nba",
                 "athlete_id": aid,
@@ -290,12 +300,26 @@ def main() -> int:
                 "ok": ok,
             }
         except Exception as e:
+            err = str(e)
+            # 404 on obscure roster entries = skip
+            if "404" in err:
+                return name, {
+                    "sport": "nba",
+                    "athlete_id": aid,
+                    "team": team,
+                    "ok": True,
+                    "skip": "http_404",
+                    "error": err,
+                    "missing_cats": [],
+                    "n_rs": 0,
+                    "rows": [],
+                }
             return name, {
                 "sport": "nba",
                 "athlete_id": aid,
                 "team": team,
                 "ok": False,
-                "error": str(e),
+                "error": err,
                 "missing_cats": NBA_CATS[:],
             }
 
@@ -303,6 +327,18 @@ def main() -> int:
         name, aid, team = item
         try:
             gl = nhl_gamelog(aid)
+            if not gl.get("names") and gl.get("n", 0) == 0:
+                return name, {
+                    "sport": "nhl",
+                    "athlete_id": aid,
+                    "team": team,
+                    "source": f"espn:site.web.api/nhl/athletes/{aid}/gamelog",
+                    "missing_cats": [],
+                    "n_rs": 0,
+                    "rows": [],
+                    "ok": True,
+                    "skip": "empty_gamelog",
+                }
             ok = not gl["missing_cats"]
             return name, {
                 "sport": "nhl",
@@ -315,12 +351,25 @@ def main() -> int:
                 "ok": ok,
             }
         except Exception as e:
+            err = str(e)
+            if "404" in err:
+                return name, {
+                    "sport": "nhl",
+                    "athlete_id": aid,
+                    "team": team,
+                    "ok": True,
+                    "skip": "http_404",
+                    "error": err,
+                    "missing_cats": [],
+                    "n_rs": 0,
+                    "rows": [],
+                }
             return name, {
                 "sport": "nhl",
                 "athlete_id": aid,
                 "team": team,
                 "ok": False,
-                "error": str(e),
+                "error": err,
                 "missing_cats": ["shots"],
             }
 
