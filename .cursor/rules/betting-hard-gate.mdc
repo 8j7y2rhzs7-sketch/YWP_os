@@ -1,0 +1,14 @@
+---
+description: Hard bans for betting runs — gate required, no shortcuts, full stats
+alwaysApply: true
+---
+
+betting-hard-gate:
+
+- Before any place card, exhaustive board, or slip weed: run `python3 betting/require_gate.py`. If it exits non-zero, run `python3 betting/run_gate.py` then require again. Do not publish picks without `GATE_TODAY.json` status=PASS for today's ET date.
+- Full counting categories on every boarded NBA player: MIN, PTS, REB, AST, STL, BLK, TO (and 3P when relevant). Silent omit is forbidden — print `NOT FETCHED` if missing.
+- Every cited player must include `athlete_id` + source. No vibe numbers.
+- Delivery shape is mandatory when user asks for a run/exhaustive: SAFE · PRIMARY · **BANGERS** · STL/SOG · by-game · BAN · clean slips. SAFE-only cards are a failed task.
+- Weed labels: KEEP / RISK-KEEP / CUT only. CUT cannot contradict from-scratch KEEP/PRIMARY unless injury/DNP/true climb (print-at-or-below line in form).
+- Do not take credit for user-found legs. Do not mark gates "implemented" unless `betting/run_gate.py` + `GATE_TODAY.json` exist and PASS.
+- If the user says stop/skipped the gate: halt, run the gate, restart from step 1 — do not continue the thin answer.
