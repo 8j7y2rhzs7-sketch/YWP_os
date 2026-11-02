@@ -25,6 +25,8 @@ interface ScreenProps {
   signalField?: boolean;
   /** Lift / inset content when the software keyboard is open (login, forms). */
   keyboardAware?: boolean;
+  /** Full-screen weather. Must not capture touches. */
+  overlay?: ReactNode;
 }
 
 export function Screen({
@@ -36,6 +38,7 @@ export function Screen({
   sport,
   signalField = false,
   keyboardAware = false,
+  overlay,
 }: ScreenProps) {
   const look = sportLook(sport);
   const enter = useRef(new Animated.Value(0)).current;
@@ -141,6 +144,11 @@ export function Screen({
           content
         )}
       </SafeAreaView>
+      {overlay ? (
+        <View pointerEvents="none" style={StyleSheet.absoluteFill}>
+          {overlay}
+        </View>
+      ) : null}
     </View>
   );
 }

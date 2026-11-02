@@ -24,7 +24,7 @@ export interface ErrorReportInput {
   context?: Record<string, unknown>;
 }
 
-const APP_VERSION = Constants.expoConfig?.version ?? "3.3.74";
+const APP_VERSION = Constants.expoConfig?.version ?? "3.3.75";
 
 export async function submitErrorReport(input: ErrorReportInput): Promise<void> {
   let accessToken: string | undefined;

@@ -12,9 +12,19 @@ export const fonts = {
  * Decision Engine identity:
  * black chassis + metallic gold + signature circuit blue from the logo brain.
  *
+ * The Día de Muertos theme is a separate altar. It does not recolor the logo.
+ *
  * Layout stays on an 8pt grid with 48–56pt controls. Surfaces stay flat and
  * quiet: one gold action, short labels, and room between cards.
  */
+export const holiday = {
+  name: "Día de Muertos",
+  candle: "#FF9A2E",
+  petal: "#E25A1C",
+  wax: "#C4A574",
+  night: "#1A0C08",
+} as const;
+
 export const colors = {
   background: "#02050A",
   backgroundRaised: "#071018",
