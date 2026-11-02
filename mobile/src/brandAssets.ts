@@ -12,7 +12,7 @@ import type { ImageSourcePropType } from "react-native";
  * Drop a replacement mp4 at the same path to upgrade the art without code changes.
  */
 export const brandAssets = {
-  /** Primary mark everywhere — live read on the left, Lock Check on the right */
+  /** Primary mark — live read, Lock Check, and the Día de Muertos candle ring */
   crest: require("../assets/brand/vision/decision-engine-mark.png"),
   minimalLight: require("../assets/brand/ywp-minimal.png"),
   bootSequence: require("../assets/brand/boot-sequence.gif"),
