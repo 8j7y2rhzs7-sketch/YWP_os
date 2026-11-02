@@ -151,7 +151,9 @@ export function BootSequence({ ready, fontError, onDone }: BootSequenceProps) {
           accessibilityIgnoresInvertColors
         />
         <Text style={styles.product}>{brand.product}</Text>
-        <Text style={styles.tagline}>{brand.tagline}</Text>
+        <Text style={styles.tagline} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.72}>
+          ANALYZE · WEIGH · DECIDE · ADAPT · EXECUTE
+        </Text>
         <Text style={styles.status}>{status}</Text>
       </Animated.View>
 
@@ -220,7 +222,9 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bodyBold,
     fontSize: 12,
     fontWeight: "700",
-    letterSpacing: 2.6,
+    letterSpacing: 1.1,
+    textAlign: "center",
+    paddingHorizontal: spacing.lg,
   },
   status: {
     color: colors.silver,

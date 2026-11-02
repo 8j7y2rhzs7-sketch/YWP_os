@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "scheme": "ywpos",
     "userInterfaceStyle": "dark",
-    "icon": "./assets/brand/vision/decision-engine-emblem-square.png",
+    "icon": "./assets/brand/vision/decision-engine-mark.png",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ywpos.app",
@@ -48,14 +48,14 @@
       "package": "com.ywpos.app",
       "versionCode": 54,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/brand/vision/decision-engine-emblem-square.png",
+        "foregroundImage": "./assets/brand/vision/decision-engine-mark.png",
         "backgroundColor": "#02050A"
       }
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/brand/vision/decision-engine-emblem-square.png"
+      "favicon": "./assets/brand/vision/decision-engine-mark.png"
     },
     "plugins": [
       "expo-router",
@@ -63,12 +63,12 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/brand/vision/decision-engine-emblem-square.png",
+          "image": "./assets/brand/vision/decision-engine-mark.png",
           "imageWidth": 280,
           "resizeMode": "contain",
           "backgroundColor": "#02050A",
           "dark": {
-            "image": "./assets/brand/vision/decision-engine-emblem-square.png",
+            "image": "./assets/brand/vision/decision-engine-mark.png",
             "backgroundColor": "#02050A"
           }
         }
