@@ -4,11 +4,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { DayForgeChamber } from "@/components/DayForgeChamber";
-import { NightBoard } from "@/components/NightBoard";
 import { FrontDesk } from "@/components/FrontDesk";
 import { LiveStrip } from "@/components/LiveStrip";
 import { DayForgeReveal } from "@/components/DayForgeReveal";
 import { ErrorNotice } from "@/components/ErrorNotice";
+import { LoadingState } from "@/components/LoadingState";
 import { MetalPanel } from "@/components/MetalPanel";
 import { Metric } from "@/components/Metric";
 import { MotionReveal } from "@/components/MotionReveal";
@@ -17,7 +17,7 @@ import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
-import { colors, fonts, spacing, type } from "@/theme";
+import { brand, colors, fonts, holiday, spacing, type } from "@/theme";
 import type {
   Bankroll,
   DayForgeResponse,
@@ -134,12 +134,10 @@ export default function CommandCenter() {
   if (loading) {
     return (
       <Screen>
-        <NightBoard
-          tall
-          kicker="Día de Muertos"
-          title="The candle stays lit."
-          detail="Getting today ready…"
-        />
+        <View style={styles.header}>
+          <Text style={styles.kicker}>{brand.product}</Text>
+          <LoadingState label="Getting today ready…" />
+        </View>
       </Screen>
     );
   }
@@ -149,13 +147,14 @@ export default function CommandCenter() {
 
   return (
     <Screen refreshing={refreshing} onRefresh={() => void load(true)}>
-      <NightBoard
-        tall
-        kicker="Día de Muertos"
-        title={`${firstName}, the play is still alive.`}
-        detail={support}
-        action={<YwpButton label="Run today" onPress={() => router.push("/(tabs)/slate")} />}
-      />
+      <View style={styles.header}>
+        <Text style={styles.kicker}>{holiday.name}</Text>
+        <Text style={styles.headerTitle}>{firstName}, start here.</Text>
+        <Text style={styles.headerSupport} numberOfLines={2}>
+          {support}
+        </Text>
+        <YwpButton label="Run today" onPress={() => router.push("/(tabs)/slate")} />
+      </View>
 
       {error ? <ErrorNotice message={error} /> : null}
 
@@ -251,6 +250,28 @@ export default function CommandCenter() {
 }
 
 const styles = StyleSheet.create({
+  header: {
+    gap: spacing.md,
+    paddingTop: spacing.lg,
+    paddingBottom: spacing.sm,
+  },
+  kicker: {
+    ...type.eyebrow,
+    color: colors.gold,
+  },
+  headerTitle: {
+    color: colors.white,
+    fontFamily: fonts.display,
+    fontSize: 34,
+    fontWeight: "800",
+    letterSpacing: -1,
+    lineHeight: 38,
+  },
+  headerSupport: {
+    ...type.body,
+    color: colors.silver,
+    maxWidth: 420,
+  },
   heroCopy: { flex: 1, gap: spacing.sm },
   metrics: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
   protocolHeader: { flexDirection: "row", alignItems: "center", gap: spacing.md },

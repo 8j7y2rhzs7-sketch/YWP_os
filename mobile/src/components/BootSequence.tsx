@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   AccessibilityInfo,
   Animated,
+  Dimensions,
   Image,
   Pressable,
   StyleSheet,
@@ -11,7 +12,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 
 import { brandAssets } from "@/brandAssets";
-import { brand, colors, fonts, spacing } from "@/theme";
+import { brand, colors, fonts, gradients, spacing } from "@/theme";
 
 interface BootSequenceProps {
   ready: boolean;
@@ -23,15 +24,18 @@ const MIN_VISIBLE_MS = 2400;
 const MAX_VISIBLE_MS = 4200;
 
 /**
- * Full-screen entrance. The night board is the graphic:
- * one play has crossed the line, the lock is shut, the candle is still lit.
+ * Full-screen Decision Engine entrance — emblem on stadium night,
+ * slow fade/scale (no tiny landscape GIF).
  */
 export function BootSequence({ ready, fontError, onDone }: BootSequenceProps) {
   const [reduceMotion, setReduceMotion] = useState(false);
   const opacity = useRef(new Animated.Value(0)).current;
-  const scale = useRef(new Animated.Value(0.96)).current;
+  const scale = useRef(new Animated.Value(0.88)).current;
+  const glow = useRef(new Animated.Value(0)).current;
   const startedAt = useRef(Date.now());
   const finished = useRef(false);
+  const { width: screenW, height: screenH } = Dimensions.get("window");
+  const emblemSize = Math.min(screenW * 0.86, screenH * 0.52, 420);
 
   useEffect(() => {
     let alive = true;
@@ -62,14 +66,30 @@ export function BootSequence({ ready, fontError, onDone }: BootSequenceProps) {
         duration: 900,
         useNativeDriver: true,
       }),
-    Animated.spring(scale, {
-      toValue: 1,
-      friction: 8,
-      tension: 42,
-      useNativeDriver: true,
-    }),
+      Animated.spring(scale, {
+        toValue: 1,
+        friction: 8,
+        tension: 42,
+        useNativeDriver: true,
+      }),
     ]).start();
-  }, [opacity, reduceMotion, scale]);
+    const pulse = Animated.loop(
+      Animated.sequence([
+        Animated.timing(glow, {
+          toValue: 1,
+          duration: 1800,
+          useNativeDriver: true,
+        }),
+        Animated.timing(glow, {
+          toValue: 0,
+          duration: 1800,
+          useNativeDriver: true,
+        }),
+      ]),
+    );
+    pulse.start();
+    return () => pulse.stop();
+  }, [glow, opacity, reduceMotion, scale]);
 
   const finish = useMemo(
     () => () => {
@@ -102,20 +122,16 @@ export function BootSequence({ ready, fontError, onDone }: BootSequenceProps) {
       ? "Decision Engine online"
       : "Initializing…";
 
+  const glowOpacity = glow.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.25, 0.55],
+  });
+
   return (
     <View style={styles.root} accessibilityLabel="YWP OS boot sequence">
-      <Image
-        source={brandAssets.nightBoard}
-        style={StyleSheet.absoluteFill}
-        resizeMode="cover"
-        accessibilityLabel="Night board. The play has crossed the line. The lock is shut. One candle is still lit."
-        accessibilityIgnoresInvertColors
-      />
-      <LinearGradient
-        colors={["transparent", "rgba(2,5,10,0.15)", "rgba(2,5,10,0.94)"]}
-        locations={[0, 0.45, 1]}
-        style={styles.scrim}
-      />
+      <LinearGradient colors={gradients.pageDeep} style={StyleSheet.absoluteFill} />
+      <View style={styles.blueGlow} />
+      <View style={styles.goldGlow} />
 
       <Animated.View
         style={[
@@ -126,10 +142,16 @@ export function BootSequence({ ready, fontError, onDone }: BootSequenceProps) {
           },
         ]}
       >
+        <Animated.View style={[styles.emblemAura, { opacity: glowOpacity, width: emblemSize + 48, height: emblemSize + 48 }]} />
+        <Image
+          source={brandAssets.decisionEngineEmblem}
+          style={{ width: emblemSize, height: emblemSize }}
+          resizeMode="contain"
+          accessibilityLabel="YWP Decision Engine"
+          accessibilityIgnoresInvertColors
+        />
         <Text style={styles.product}>{brand.product}</Text>
-        <Text style={styles.tagline} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.72}>
-          ANALYZE · WEIGH · DECIDE · ADAPT · EXECUTE
-        </Text>
+        <Text style={styles.tagline}>{brand.tagline}</Text>
         <Text style={styles.status}>{status}</Text>
       </Animated.View>
 
@@ -149,23 +171,41 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: colors.background,
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "center",
   },
-  scrim: {
+  blueGlow: {
     position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: "46%",
+    top: -80,
+    left: -100,
+    width: 340,
+    height: 340,
+    borderRadius: 170,
+    backgroundColor: colors.circuitBlue,
+    opacity: 0.28,
+  },
+  goldGlow: {
+    position: "absolute",
+    bottom: 80,
+    right: -90,
+    width: 300,
+    height: 300,
+    borderRadius: 150,
+    backgroundColor: colors.gold,
+    opacity: 0.16,
   },
   stage: {
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "center",
     gap: spacing.md,
     paddingHorizontal: spacing.lg,
-    paddingBottom: 108,
     width: "100%",
+  },
+  emblemAura: {
+    position: "absolute",
+    borderRadius: 999,
+    backgroundColor: colors.circuitBlue,
+    top: "12%",
   },
   product: {
     color: colors.goldBright,
@@ -180,9 +220,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bodyBold,
     fontSize: 12,
     fontWeight: "700",
-    letterSpacing: 1.1,
-    textAlign: "center",
-    paddingHorizontal: spacing.lg,
+    letterSpacing: 2.6,
   },
   status: {
     color: colors.silver,

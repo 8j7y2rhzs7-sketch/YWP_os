@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   panel: {
     borderRadius: radius.lg,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.border,
+    borderColor: "rgba(255,154,46,0.45)",
     backgroundColor: colors.surface,
     padding: spacing.lg,
     gap: spacing.md,
@@ -106,6 +106,6 @@ const styles = StyleSheet.create({
   },
   gold: {
     backgroundColor: colors.surfaceRaised,
-    borderColor: colors.border,
+    borderColor: colors.gold,
   },
 });

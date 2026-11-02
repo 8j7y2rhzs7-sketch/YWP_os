@@ -12,8 +12,8 @@ import type { ImageSourcePropType } from "react-native";
  * Drop a replacement mp4 at the same path to upgrade the art without code changes.
  */
 export const brandAssets = {
-  /** Night board — the line, the cross, the shut lock, one candle */
-  crest: require("../assets/brand/vision/decision-engine-mark.png"),
+  /** Primary mark everywhere — Decision Engine emblem */
+  crest: require("../assets/brand/vision/decision-engine-emblem-square.png"),
   minimalLight: require("../assets/brand/ywp-minimal.png"),
   bootSequence: require("../assets/brand/boot-sequence.gif"),
   bootFrame: require("../assets/brand/boot-frame.png"),
@@ -22,9 +22,7 @@ export const brandAssets = {
   /** Looping Decision Engine hero render (mp4) */
   decisionEngineLoop: require("../assets/brand/vision/decision-engine-loop.mp4"),
   /** User vision pack — metallic Decision Engine / YWP OS identity */
-  decisionEngineEmblem: require("../assets/brand/vision/decision-engine-mark.png"),
-  /** Boot scene: the same board, standing, with the candle and marigolds */
-  nightBoard: require("../assets/brand/vision/decision-engine-night-board.jpg"),
+  decisionEngineEmblem: require("../assets/brand/vision/decision-engine-emblem-square.png"),
   decisionEnginePoster: require("../assets/brand/vision/decision-engine-poster.jpg"),
   ywpOsPoster: require("../assets/brand/vision/ywp-os-poster.jpg"),
   ywpOsControlEmblem: require("../assets/brand/vision/ywp-os-control-emblem.jpg"),

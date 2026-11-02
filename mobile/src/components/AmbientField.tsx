@@ -137,7 +137,7 @@ export function AmbientField({
         ]}
       >
         <LinearGradient
-          colors={["rgba(240,193,74,0)", "rgba(240,193,74,0.28)", "rgba(26,168,240,0)", "transparent"]}
+          colors={["rgba(255,154,46,0)", "rgba(255,154,46,0.32)", "rgba(26,168,240,0)", "transparent"]}
           start={{ x: 0, y: 0.5 }}
           end={{ x: 1, y: 0.5 }}
           style={styles.scan}
