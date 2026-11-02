@@ -12,7 +12,7 @@ import type { ImageSourcePropType } from "react-native";
  * Drop a replacement mp4 at the same path to upgrade the art without code changes.
  */
 export const brandAssets = {
-  /** Primary mark — live read, Lock Check, and the Día de Muertos candle ring */
+  /** Night board — the line, the cross, the shut lock, one candle */
   crest: require("../assets/brand/vision/decision-engine-mark.png"),
   minimalLight: require("../assets/brand/ywp-minimal.png"),
   bootSequence: require("../assets/brand/boot-sequence.gif"),
@@ -23,6 +23,8 @@ export const brandAssets = {
   decisionEngineLoop: require("../assets/brand/vision/decision-engine-loop.mp4"),
   /** User vision pack — metallic Decision Engine / YWP OS identity */
   decisionEngineEmblem: require("../assets/brand/vision/decision-engine-mark.png"),
+  /** Boot scene: the same board, standing, with the candle and marigolds */
+  nightBoard: require("../assets/brand/vision/decision-engine-night-board.jpg"),
   decisionEnginePoster: require("../assets/brand/vision/decision-engine-poster.jpg"),
   ywpOsPoster: require("../assets/brand/vision/ywp-os-poster.jpg"),
   ywpOsControlEmblem: require("../assets/brand/vision/ywp-os-control-emblem.jpg"),

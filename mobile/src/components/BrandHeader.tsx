@@ -56,7 +56,7 @@ export function BrandHeader({
           source={brandAssets.crest}
           style={[styles.logo, compact && styles.logoCompact]}
           resizeMode="contain"
-          accessibilityLabel="YWP Decision Engine"
+          accessibilityLabel="YWP night board"
         />
       </MetalShimmer>
       <View style={styles.copy}>
