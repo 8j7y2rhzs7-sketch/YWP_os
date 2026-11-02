@@ -17,7 +17,7 @@ import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
-import { brand, colors, fonts, holiday, spacing, type } from "@/theme";
+import { brand, colors, fonts, spacing, type } from "@/theme";
 import type {
   Bankroll,
   DayForgeResponse,
@@ -148,7 +148,7 @@ export default function CommandCenter() {
   return (
     <Screen refreshing={refreshing} onRefresh={() => void load(true)}>
       <View style={styles.header}>
-        <Text style={styles.kicker}>{holiday.name}</Text>
+        <Text style={styles.kicker}>Today</Text>
         <Text style={styles.headerTitle}>{firstName}, start here.</Text>
         <Text style={styles.headerSupport} numberOfLines={2}>
           {support}
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
   },
   kicker: {
     ...type.eyebrow,
-    color: colors.gold,
+    color: colors.muted,
   },
   headerTitle: {
     color: colors.white,

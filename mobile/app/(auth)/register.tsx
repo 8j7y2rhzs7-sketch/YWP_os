@@ -37,7 +37,7 @@ export default function RegisterScreen() {
   }
 
   return (
-    <Screen contentStyle={styles.content} keyboardAware>
+    <Screen contentStyle={styles.content} keyboardAware altar={false}>
       <BrandHeader title="CREATE ACCOUNT" compact />
       <MetalPanel tone="gold">
         <Text style={styles.title}>YOUR PROCESS. YOUR DATA.</Text>

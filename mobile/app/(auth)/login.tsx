@@ -64,7 +64,7 @@ export default function LoginScreen() {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       keyboardVerticalOffset={Platform.OS === "ios" ? 12 : 0}
     >
-      <Screen contentStyle={styles.content} keyboardAware>
+      <Screen contentStyle={styles.content} keyboardAware altar={false}>
         {!keyboardOpen ? (
           <>
             <MotionReveal fromY={24}>

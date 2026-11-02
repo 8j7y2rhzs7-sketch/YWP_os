@@ -10,6 +10,7 @@ import {
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { AmbientField } from "@/components/AmbientField";
+import { Ofrenda } from "@/components/Ofrenda";
 import { SignalField } from "@/components/SignalField";
 import { sportLook } from "@/sportVisuals";
 import { colors, spacing } from "@/theme";
@@ -25,6 +26,8 @@ interface ScreenProps {
   signalField?: boolean;
   /** Lift / inset content when the software keyboard is open (login, forms). */
   keyboardAware?: boolean;
+  /** Día de Muertos altar above the screen. Off on gates and keyboards. */
+  altar?: boolean;
 }
 
 export function Screen({
@@ -36,6 +39,7 @@ export function Screen({
   sport,
   signalField = false,
   keyboardAware = false,
+  altar = true,
 }: ScreenProps) {
   const look = sportLook(sport);
   const enter = useRef(new Animated.Value(0)).current;
@@ -90,6 +94,7 @@ export function Screen({
         },
       ]}
     >
+      {altar ? <Ofrenda /> : null}
       {children}
     </Animated.View>
   );
