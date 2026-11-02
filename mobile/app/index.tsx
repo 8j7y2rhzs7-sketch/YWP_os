@@ -8,7 +8,7 @@ export default function Index() {
   const { user, loading } = useAuth();
   if (loading) {
     return (
-      <Screen scroll={false} contentStyle={{ justifyContent: "center" }} altar={false}>
+      <Screen scroll={false} contentStyle={{ justifyContent: "center" }}>
         <LoadingState label="Loading YWP OS…" />
       </Screen>
     );

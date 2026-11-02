@@ -33,7 +33,7 @@ export default function ExperienceScreen() {
 
   if (loading) {
     return (
-      <Screen scroll={false} contentStyle={{ justifyContent: "center" }} altar={false}>
+      <Screen scroll={false} contentStyle={{ justifyContent: "center" }}>
         <LoadingState label="Checking DECISION ENGINE access…" />
       </Screen>
     );
@@ -42,7 +42,7 @@ export default function ExperienceScreen() {
   if (!user) return <Redirect href="/(auth)/login" />;
   if (checkout) return <Redirect href="/(auth)/paywall" />;
   return (
-    <Screen scroll={false} contentStyle={{ justifyContent: "center" }} altar={false}>
+    <Screen scroll={false} contentStyle={{ justifyContent: "center" }}>
       <LoadingState label="Checking DECISION ENGINE access…" />
     </Screen>
   );

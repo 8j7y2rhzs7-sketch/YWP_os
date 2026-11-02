@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { DayForgeChamber } from "@/components/DayForgeChamber";
+import { FallWeather } from "@/components/FallWeather";
 import { FrontDesk } from "@/components/FrontDesk";
 import { LiveStrip } from "@/components/LiveStrip";
 import { DayForgeReveal } from "@/components/DayForgeReveal";
@@ -131,9 +132,13 @@ export default function CommandCenter() {
     };
   }, [forge?.status, loadForge]);
 
+  const thawed = forge?.status === "ready" || forge?.status === "pass";
+  const heat = thawed ? 1 : forge?.progress ?? 0.08;
+  const weather = <FallWeather heat={heat} thawed={thawed} />;
+
   if (loading) {
     return (
-      <Screen>
+      <Screen overlay={<FallWeather heat={0.08} />}>
         <View style={styles.header}>
           <Text style={styles.kicker}>{brand.product}</Text>
           <LoadingState label="Getting today ready…" />
@@ -146,7 +151,7 @@ export default function CommandCenter() {
   const support = pulse?.headline ?? "Pick a play, check the lock, then place it.";
 
   return (
-    <Screen refreshing={refreshing} onRefresh={() => void load(true)}>
+    <Screen refreshing={refreshing} onRefresh={() => void load(true)} overlay={weather}>
       <View style={styles.header}>
         <Text style={styles.kicker}>Today</Text>
         <Text style={styles.headerTitle}>{firstName}, start here.</Text>
