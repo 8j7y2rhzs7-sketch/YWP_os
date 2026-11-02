@@ -12,6 +12,7 @@ from typing import Any, Literal
 
 from app.core.config import settings
 from app.schemas import CandidateInput, RecommendationOut
+from app.services.odds_provider import canonical_app_sport
 from app.services.readiness import candidate_readiness, slate_readiness
 
 DayForgeStatus = Literal["cooking", "ready", "pass", "unavailable"]
@@ -281,7 +282,7 @@ def day_forge_sport_queue(
     seen: set[str] = set()
 
     def _push(sport: str) -> None:
-        key = (sport or "").lower().strip()
+        key = canonical_app_sport(sport)
         if not key or key in seen:
             return
         seen.add(key)

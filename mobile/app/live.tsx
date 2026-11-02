@@ -7,6 +7,7 @@ import { MetalPanel } from "@/components/MetalPanel";
 import { Screen } from "@/components/Screen";
 import { SectionTitle } from "@/components/SectionTitle";
 import { useAuth } from "@/context/AuthContext";
+import { sportLabel } from "@/sportVisuals";
 import { colors, fonts, spacing, type } from "@/theme";
 import type { LiveBoard, LiveGame, LivePlay } from "@/types";
 
@@ -87,12 +88,15 @@ export default function LiveScreen() {
         </>
       ) : null}
 
-      <SectionTitle title="Major games" subtitle="NBA, NFL, NHL, MLB, and college football." />
+      <SectionTitle
+        title="Major games"
+        subtitle="NBA, NCAAM, NFL, NHL, MLB, college football, and WNBA."
+      />
       {(board?.games ?? []).map((game) => (
         <MetalPanel key={`${game.sport}-${game.event_id}`}>
           <View style={styles.row}>
             <View style={styles.copy}>
-              <Text style={styles.sport}>{game.sport.toUpperCase()}</Text>
+              <Text style={styles.sport}>{sportLabel(game.sport)}</Text>
               <Text style={styles.title}>
                 {game.away_team} at {game.home_team}
               </Text>

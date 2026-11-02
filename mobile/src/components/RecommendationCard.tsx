@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Animated, Linking, Pressable, StyleSheet, Text, View } from "react-native";
 
-import { sportLook } from "@/sportVisuals";
+import { sportLabel, sportLook } from "@/sportVisuals";
 import { colors, fonts, radius, spacing, type } from "@/theme";
 import type { Recommendation } from "@/types";
 
@@ -70,7 +70,7 @@ export function RecommendationCard({
           />
           <View style={styles.titleWrap}>
             <Text style={[styles.market, { color: look.accent }]}>
-              {item.sport.toUpperCase()} • {item.market_type.replaceAll("_", " ")}
+              {sportLabel(item.sport)} • {item.market_type.replaceAll("_", " ")}
             </Text>
             <Text style={styles.selection}>{item.selection}</Text>
             <Text style={type.caption}>{item.event_name}</Text>

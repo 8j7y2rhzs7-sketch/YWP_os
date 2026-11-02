@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { brandAssets } from "@/brandAssets";
+import { sportLabel } from "@/sportVisuals";
 import { brand, colors } from "@/theme";
 import type { Readiness, TicketCard } from "@/types";
 
@@ -111,7 +112,7 @@ export const ShareCard = forwardRef<
         <View style={styles.titleCopy}>
           <Text style={styles.title}>{card.label.toUpperCase()}</Text>
           <Text style={styles.subtitle}>
-            {sport.toUpperCase()} • CUSHION • VALUE • SCRIPT • MISS-BY-1
+            {sportLabel(sport)} • CUSHION • VALUE • SCRIPT • MISS-BY-1
           </Text>
         </View>
         <View
@@ -161,7 +162,7 @@ export const ShareCard = forwardRef<
               </View>
               <View style={styles.legCopy}>
                 <Text style={styles.legMeta}>
-                  {leg.sport.toUpperCase()} • {leg.edge_class.toUpperCase()} EDGE
+                  {sportLabel(leg.sport)} • {leg.edge_class.toUpperCase()} EDGE
                   {leg.event_name ? ` • ${leg.event_name}` : ""}
                 </Text>
                 <Text style={styles.selection}>{leg.selection.toUpperCase()}</Text>

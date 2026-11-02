@@ -51,7 +51,10 @@ WEATHER_SPORTS = {"nfl", "ncaaf", "soccer", "mls", "epl", "kbo"}
 
 
 def espn_path_for(sport: str) -> str | None:
-    return ESPN_SPORT_PATHS.get(sport.lower())
+    key = (sport or "").strip().lower()
+    if key == "ncaam":
+        key = "ncaab"
+    return ESPN_SPORT_PATHS.get(key)
 
 
 def get_scoreboard(

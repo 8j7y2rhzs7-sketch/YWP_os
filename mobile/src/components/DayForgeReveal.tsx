@@ -19,6 +19,7 @@ import { PlayerPortrait } from "@/components/PlayerPortrait";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useReduceMotion } from "@/hooks/useReduceMotion";
+import { sportLabel } from "@/sportVisuals";
 import { colors, fonts, radius, spacing, type } from "@/theme";
 import type { DayForgeResponse, Recommendation } from "@/types";
 
@@ -42,7 +43,7 @@ function PlayRevealCard({ play }: { play: Recommendation }) {
         />
         <View style={styles.cardCopy}>
           <Text style={styles.market}>
-            {play.sport.toUpperCase()} · {play.market_type.replaceAll("_", " ")}
+            {sportLabel(play.sport)} · {play.market_type.replaceAll("_", " ")}
           </Text>
           <Text style={styles.selection}>{play.selection}</Text>
           <Text style={type.caption}>{play.event_name}</Text>

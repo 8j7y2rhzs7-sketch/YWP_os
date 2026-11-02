@@ -16,6 +16,7 @@ import { TicketCardView } from "@/components/TicketCardView";
 import { YwpButton } from "@/components/YwpButton";
 import { useAppData } from "@/context/AppDataContext";
 import { useAuth } from "@/context/AuthContext";
+import { sportLabel } from "@/sportVisuals";
 import { colors, radius, spacing, type } from "@/theme";
 import type { ReadyBoard, Recommendation, Ticket, TicketCard } from "@/types";
 
@@ -100,7 +101,7 @@ export default function ReadyScreen() {
   const groups = useMemo(() => {
     const map = new Map<string, Recommendation[]>();
     for (const play of plays) {
-      const key = play.sport.toUpperCase();
+      const key = sportLabel(play.sport);
       map.set(key, [...(map.get(key) ?? []), play]);
     }
     return [...map.entries()];
@@ -273,7 +274,7 @@ export default function ReadyScreen() {
                     <Text style={styles.ticketTitle}>{game.event_name}</Text>
                     <Text style={type.caption}>{formatWhen(game.commence_time)}</Text>
                   </View>
-                  <StatusPill value={game.sport.toUpperCase()} />
+                  <StatusPill value={sportLabel(game.sport)} />
                 </View>
               </MetalPanel>
             ))

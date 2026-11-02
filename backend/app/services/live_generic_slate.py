@@ -1,7 +1,7 @@
 """
 Generic live slate builder for Odds API sports with multi-source fact cascade.
 
-Covers NFL, NBA, NHL, NCAAF, NCAAB, soccer/MLS/EPL, KBO.
+Covers NFL, NBA, NHL, NCAAF, NCAAM, soccer/MLS/EPL, KBO.
 Odds prices are required to show a play. Fact sources (NHL Web API, ESPN, …)
 enrich research; if they fail, priced plays still return as PARTIAL.
 """
@@ -19,6 +19,7 @@ from app.services.facts_cascade import league_injuries
 from app.services.market_board import _PROP_MARKETS_BY_SPORT, _flatten_prop_markets
 from app.services.odds_provider import (
     active_odds_keys_for_app_sport,
+    canonical_app_sport,
     extract_best_odds,
     get_game_odds,
     get_player_props,
@@ -52,7 +53,7 @@ SPORT_DISPLAY: dict[str, tuple[str, str]] = {
     "nba": ("nba", "NBA"),
     "nhl": ("nhl", "NHL"),
     "ncaaf": ("ncaaf", "NCAAF"),
-    "ncaab": ("ncaab", "NCAAB"),
+    "ncaab": ("ncaab", "NCAAM"),
     "soccer": ("soccer", "Soccer"),
     "epl": ("soccer", "EPL"),
     "mls": ("soccer", "MLS"),
@@ -63,7 +64,7 @@ SOCCER_KEYS = {"soccer", "epl", "mls"}
 
 
 def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
-    sport_lower = sport.lower()
+    sport_lower = canonical_app_sport(sport)
     if sport_lower not in SPORT_KEYS:
         logger.warning("No Odds API sport key for %s", sport)
         return []

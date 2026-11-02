@@ -22,7 +22,7 @@ import {
   EDGE_CHALLENGE_MESSAGE,
   looksLikeEdgeChallenge,
 } from "@/lib/api";
-import { sportLook } from "@/sportVisuals";
+import { sportLabel, sportLook } from "@/sportVisuals";
 import { colors, fonts, radius, spacing, type } from "@/theme";
 import type {
   AnalyzeResponse,
@@ -36,7 +36,7 @@ import type {
 } from "@/types";
 
 const CANDIDATE_PAGE = 20;
-const PROP_SPORTS = new Set(["wnba", "nba", "nfl", "ncaaf"]);
+const PROP_SPORTS = new Set(["wnba", "nba", "ncaab", "nfl", "ncaaf"]);
 /** Chunked warm passes — each stays under Render's ~30s proxy. */
 const MAX_WARM_ROUNDS = 14;
 /** Stop only after this many consecutive zero-gain passes. */
@@ -138,6 +138,7 @@ const sports = [
   { key: "mlb", label: "MLB", icon: "⚾" },
   { key: "wnba", label: "WNBA", icon: "🏀" },
   { key: "nba", label: "NBA", icon: "🏀" },
+  { key: "ncaab", label: "NCAAM", icon: "🏀" },
   { key: "nfl", label: "NFL", icon: "🏈" },
   { key: "ncaaf", label: "NCAAF", icon: "🏈" },
   { key: "nhl", label: "NHL", icon: "🏒" },
@@ -477,7 +478,7 @@ export default function SlateScreen() {
             callouts={[
               {
                 id: "sport",
-                label: sport.toUpperCase(),
+                label: sportLabel(sport),
                 side: "left",
                 top: 48,
               },
@@ -512,8 +513,8 @@ export default function SlateScreen() {
                 ? "Pulling live candidates"
                 : slate
                   ? launchArmed
-                    ? `${sport.toUpperCase()} ready · gold LAUNCH`
-                    : `${sport.toUpperCase()} slate · ${slate.candidates.length} candidates`
+                    ? `${sportLabel(sport)} ready · gold LAUNCH`
+                    : `${sportLabel(sport)} slate · ${slate.candidates.length} candidates`
                   : "Select sport · load slate"}
           </Text>
         </MotionReveal>
@@ -629,7 +630,7 @@ export default function SlateScreen() {
           </MetalPanel>
 
           <SectionTitle
-            title={`Raw ${sport.toUpperCase()} Candidate List`}
+            title={`Raw ${sportLabel(sport)} Candidate List`}
             subtitle="Compressed view — use LAUNCH below. Expand only if you need to scan rows."
           />
           <MetalPanel tone="gold" accent={look.accent}>

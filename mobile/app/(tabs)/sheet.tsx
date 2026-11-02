@@ -15,6 +15,7 @@ import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAppData } from "@/context/AppDataContext";
 import { useAuth } from "@/context/AuthContext";
+import { sportLabel } from "@/sportVisuals";
 import { colors, radius, spacing, type } from "@/theme";
 import type {
   AnalyzeResponse,
@@ -29,6 +30,7 @@ const sports = [
   { key: "mlb", label: "MLB" },
   { key: "wnba", label: "WNBA" },
   { key: "nba", label: "NBA" },
+  { key: "ncaab", label: "NCAAM" },
   { key: "nfl", label: "NFL" },
   { key: "ncaaf", label: "NCAAF" },
   { key: "nhl", label: "NHL" },
@@ -138,7 +140,7 @@ export default function PickSheetScreen() {
         );
       } else {
         setNote(
-          `Loaded ${response.candidates.length} sportsbook markets for ${response.sport.toUpperCase()} ${response.date}.`,
+          `Loaded ${response.candidates.length} sportsbook markets for ${sportLabel(response.sport)} ${response.date}.`,
         );
       }
     } catch (reason) {
@@ -276,7 +278,7 @@ export default function PickSheetScreen() {
           label={loadingBoard ? "Loading" : board ? "Board" : "Sheet"}
           calloutsActive={Boolean(board)}
           callouts={[
-            { id: "sport", label: sport.toUpperCase(), side: "left", top: 44 },
+            { id: "sport", label: sportLabel(sport), side: "left", top: 44 },
             {
               id: "games",
               label: board ? `${games.length} GAMES` : "LOAD",

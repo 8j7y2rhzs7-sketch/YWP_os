@@ -71,6 +71,26 @@ export const sportLooks: Record<string, SportLook> = {
     page: ["#0A160C", "#080A0C", "#180C08"],
     label: "CAMPUS",
   },
+  ncaab: {
+    emoji: "🏀",
+    accent: "#FF8A1E",
+    accentSoft: "rgba(255,138,30,0.18)",
+    field: "#1A140C",
+    glow: "#F4D35E",
+    stripe: "#FFE0C2",
+    page: ["#140C06", "#080A0E", "#1A1208"],
+    label: "CAMPUS",
+  },
+  ncaam: {
+    emoji: "🏀",
+    accent: "#FF8A1E",
+    accentSoft: "rgba(255,138,30,0.18)",
+    field: "#1A140C",
+    glow: "#F4D35E",
+    stripe: "#FFE0C2",
+    page: ["#140C06", "#080A0E", "#1A1208"],
+    label: "CAMPUS",
+  },
   soccer: {
     emoji: "⚽",
     accent: "#2EE59A",
@@ -116,4 +136,11 @@ const DEFAULT_SPORT_LOOK: SportLook = {
 
 export function sportLook(sport?: string): SportLook {
   return sportLooks[(sport ?? "").toLowerCase()] ?? DEFAULT_SPORT_LOOK;
+}
+
+/** Men's college basketball is stored as ncaab and shown as NCAAM. */
+export function sportLabel(sport?: string): string {
+  const key = (sport ?? "").toLowerCase();
+  if (key === "ncaab" || key === "ncaam") return "NCAAM";
+  return (sport ?? "").toUpperCase();
 }
