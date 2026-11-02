@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { ErrorNotice } from "@/components/ErrorNotice";
+import { NightBoard } from "@/components/NightBoard";
 import { LoadingState } from "@/components/LoadingState";
 import { MetalPanel } from "@/components/MetalPanel";
 import { Screen } from "@/components/Screen";
@@ -67,8 +68,12 @@ export default function LiveScreen() {
 
   return (
     <Screen refreshing={false} onRefresh={() => void load()}>
+      <NightBoard
+        kicker="Día de Muertos"
+        title="The line is on the glass."
+        detail={board?.notice}
+      />
       {error ? <ErrorNotice message={error} /> : null}
-      <Text style={styles.notice}>{board?.notice}</Text>
 
       <SectionTitle title="Your plays" subtitle="How the ones you saved are tracking." />
       {yours.length ? (
@@ -134,11 +139,6 @@ function PlayRow({ play }: { play: LivePlay }) {
 }
 
 const styles = StyleSheet.create({
-  notice: {
-    ...type.caption,
-    color: colors.dim,
-    paddingTop: spacing.md,
-  },
   row: { flexDirection: "row", alignItems: "center", gap: spacing.md },
   copy: { flex: 1, gap: 2 },
   sport: {
