@@ -30,7 +30,7 @@ from app.services.settlement import (
 logger = logging.getLogger(__name__)
 
 NOTICE = "Live stats, not a wager. A read can change before the game ends."
-MAJOR_SPORTS = ("nba", "nfl", "nhl", "mlb", "ncaaf", "wnba")
+MAJOR_SPORTS = ("nba", "ncaab", "nfl", "nhl", "mlb", "ncaaf", "wnba")
 _PACE_RANK = {
     "cashing": 0,
     "behind": 1,

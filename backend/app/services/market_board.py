@@ -25,17 +25,29 @@ from app.services.odds_provider import (
     APP_SPORT_TO_ODDS_KEY,
     PREFERRED_BOOKS,
     active_odds_keys_for_app_sport,
+    canonical_app_sport,
     get_game_odds,
     get_last_fetch_status,
     get_player_props,
     odds_api_configured,
     soccer_league_label,
     soccer_odds_regions,
+    sport_public_label,
 )
 from app.services.single_flight import single_flight
 from app.services.ticket_gates import event_market_status
 
 logger = logging.getLogger(__name__)
+
+# Same basketball player menu Hard Rock prices for NBA, WNBA, and NCAAM.
+# College books are thinner; a missing market chunk is skipped, not fatal.
+_BASKETBALL_PLAYER_PROPS = (
+    "player_points,player_rebounds,player_assists,player_threes,"
+    "player_points_rebounds_assists,player_points_rebounds,player_points_assists,"
+    "player_rebounds_assists,player_blocks,player_steals,player_blocks_steals,"
+    "player_turnovers,player_double_double,player_triple_double,"
+    "player_field_goals,player_frees_made"
+)
 
 _PROP_MARKETS_BY_SPORT: dict[str, str] = {
     # Full DK/Hard-Rock-style MLB prop board (credits scale with markets×events).
@@ -44,20 +56,9 @@ _PROP_MARKETS_BY_SPORT: dict[str, str] = {
         "batter_hits,batter_runs_scored,batter_rbis,batter_home_runs,batter_total_bases,"
         "batter_hits_runs_rbis,batter_stolen_bases,batter_walks"
     ),
-    "nba": (
-        "player_points,player_rebounds,player_assists,player_threes,"
-        "player_points_rebounds_assists,player_points_rebounds,player_points_assists,"
-        "player_rebounds_assists,player_blocks,player_steals,player_blocks_steals,"
-        "player_turnovers,player_double_double,player_triple_double,"
-        "player_field_goals,player_frees_made"
-    ),
-    "wnba": (
-        "player_points,player_rebounds,player_assists,player_threes,"
-        "player_points_rebounds_assists,player_points_rebounds,player_points_assists,"
-        "player_rebounds_assists,player_blocks,player_steals,player_blocks_steals,"
-        "player_turnovers,player_double_double,player_triple_double,"
-        "player_field_goals,player_frees_made"
-    ),
+    "nba": _BASKETBALL_PLAYER_PROPS,
+    "wnba": _BASKETBALL_PLAYER_PROPS,
+    "ncaab": _BASKETBALL_PLAYER_PROPS,
     # NFL Sheet: same breadth as NCAAF all-categories sweep (credits × events).
     "nfl": (
         "player_pass_yds,player_pass_tds,player_pass_completions,player_pass_attempts,"
@@ -88,6 +89,8 @@ _PROP_MARKETS_BY_SPORT: dict[str, str] = {
 _PERIOD_MARKETS_BY_SPORT: dict[str, str] = {
     "ncaaf": "h2h_h1,spreads_h1,totals_h1,h2h_q1,spreads_q1,totals_q1",
     "nfl": "h2h_h1,spreads_h1,totals_h1,h2h_q1,spreads_q1,totals_q1",
+    # Men's college basketball is two halves. No quarter menu.
+    "ncaab": "h2h_h1,spreads_h1,totals_h1",
 }
 
 # Cap prop/period event fan-out for huge Saturday NCAAF slates.
@@ -96,6 +99,8 @@ _BOARD_MAX_PROP_EVENTS_BY_SPORT: dict[str, int] = {
     "nfl": 8,
     "wnba": 10,
     "nba": 8,
+    # Saturday slates are large. Six events keeps a props pull from burning the quota.
+    "ncaab": 6,
 }
 
 _LEAGUE: dict[str, str] = {
@@ -104,7 +109,7 @@ _LEAGUE: dict[str, str] = {
     "nba": "NBA",
     "nfl": "NFL",
     "ncaaf": "NCAAF",
-    "ncaab": "NCAAB",
+    "ncaab": "NCAAM",
     "nhl": "NHL",
     "soccer": "Soccer",
     "mls": "MLS",
@@ -121,7 +126,7 @@ def _build_market_board_uncached(
     overlay_model: bool = True,
 ) -> tuple[list[CandidateInput], str]:
     """Return (candidates, notice) for a DraftKings-style selectable board."""
-    sport_lower = sport.lower().strip()
+    sport_lower = canonical_app_sport(sport)
     odds_keys = active_odds_keys_for_app_sport(sport_lower)
     if not odds_keys:
         legacy = APP_SPORT_TO_ODDS_KEY.get(sport_lower)
@@ -322,7 +327,7 @@ def _build_market_board_uncached(
         league_note = f" Leagues: {', '.join(leagues_hit)}."
 
     notice = (
-        f"Sportsbook menu for {sport_lower.upper()} {slate_date.isoformat()}: "
+        f"Sportsbook menu for {sport_public_label(sport_lower)} {slate_date.isoformat()}: "
         f"{matched_events} game(s), {len(board)} selectable market(s)"
         + (f", props priced on {props_priced} event(s)" if props_priced else "")
         + (f", 1H/1Q team markets on {period_priced} event(s)" if period_priced else "")
@@ -350,7 +355,10 @@ def build_market_board(
     """Coalesce concurrent Pick Sheet board builds for the same sport/date."""
     props_flag = "props" if include_props else "noprops"
     model_flag = "model" if overlay_model else "book"
-    key = f"market-board|{sport.lower().strip()}|{slate_date.isoformat()}|{props_flag}|{model_flag}"
+    key = (
+        f"market-board|{canonical_app_sport(sport)}|{slate_date.isoformat()}"
+        f"|{props_flag}|{model_flag}"
+    )
     return single_flight(
         key,
         lambda: _build_market_board_uncached(

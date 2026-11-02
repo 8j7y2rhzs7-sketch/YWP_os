@@ -170,6 +170,7 @@ ESPN_LEAGUE = {
     "nhl": "nhl",
     "ncaaf": "ncaa/500",
     "ncaab": "ncaa/500",
+    "ncaam": "ncaa/500",
 }
 
 

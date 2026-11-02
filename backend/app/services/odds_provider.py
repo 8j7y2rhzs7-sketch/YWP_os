@@ -43,6 +43,7 @@ _last_fetch_status: dict[str, Any] = {
 # App sport key → Odds API sport key (single-league sports).
 # Soccer uses SOCCER_ODDS_LEAGUES via odds_keys_for_app_sport() so EPL/La Liga/UCL
 # etc. appear under the SOCCER picker — not MLS-only.
+# NCAAM is men's college basketball. The Odds key stays basketball_ncaab.
 APP_SPORT_TO_ODDS_KEY: dict[str, str] = {
     "mlb": "baseball_mlb",
     "wnba": "basketball_wnba",
@@ -97,6 +98,25 @@ def soccer_odds_regions(app_sport: str | None = None) -> str:
     return "us"
 
 
+def canonical_app_sport(app_sport: str) -> str:
+    """Map user-facing names onto the stored sport key.
+
+    NCAAM and NCAAB are the same men's college basketball slate.
+    """
+    key = (app_sport or "").strip().lower()
+    if key == "ncaam":
+        return "ncaab"
+    return key
+
+
+def sport_public_label(app_sport: str) -> str:
+    """Name shown on a slate. Men's college basketball reads NCAAM."""
+    key = canonical_app_sport(app_sport)
+    if key == "ncaab":
+        return "NCAAM"
+    return key.upper()
+
+
 def soccer_league_label(odds_key: str) -> str:
     for key, label in SOCCER_ODDS_LEAGUES:
         if key == odds_key:
@@ -106,7 +126,7 @@ def soccer_league_label(odds_key: str) -> str:
 
 def odds_keys_for_app_sport(app_sport: str) -> list[str]:
     """Odds API sport keys used when the app loads this sport."""
-    key = (app_sport or "").strip().lower()
+    key = canonical_app_sport(app_sport)
     if key == "soccer":
         return [odds_key for odds_key, _ in SOCCER_ODDS_LEAGUES]
     single = APP_SPORT_TO_ODDS_KEY.get(key)
@@ -366,7 +386,7 @@ def build_app_sports_catalog(*, force_refresh: bool = False) -> list[dict[str, A
         "nba": "NBA",
         "nfl": "NFL",
         "ncaaf": "NCAAF",
-        "ncaab": "NCAAB",
+        "ncaab": "NCAAM",
         "nhl": "NHL",
         "soccer": "SOCCER",
         "kbo": "KBO",

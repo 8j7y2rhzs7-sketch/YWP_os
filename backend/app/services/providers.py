@@ -104,7 +104,7 @@ def demo_slate(sport: str, slate_date: date) -> list[CandidateInput]:
     sport_key = sport.lower()
     if sport_key == "mlb":
         return _demo_mlb(slate_date)
-    if sport_key in {"wnba", "nba", "basketball"}:
+    if sport_key in {"wnba", "nba", "basketball", "ncaab", "ncaam"}:
         return _demo_basketball(sport_key, slate_date)
     if sport_key == "soccer":
         return _demo_soccer(slate_date)
@@ -289,7 +289,12 @@ def _demo_mlb(slate_date: date) -> list[CandidateInput]:
 
 
 def _demo_basketball(sport: str, slate_date: date) -> list[CandidateInput]:
-    league = sport.upper() if sport != "basketball" else "WNBA"
+    if sport in {"ncaab", "ncaam"}:
+        league = "NCAAM"
+    elif sport != "basketball":
+        league = sport.upper()
+    else:
+        league = "WNBA"
     rows = [
         ("1", "Demo Comets @ Demo Waves", "K. Reed 15+ points", -150, 0.69, 0.26, "points"),
         ("2", "Demo Sparks @ Demo Flight", "M. Cole 5+ assists", -135, 0.66, 0.29, "assists"),

@@ -12,6 +12,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useReduceMotion } from "@/hooks/useReduceMotion";
+import { sportLabel } from "@/sportVisuals";
 import { colors, fonts, gradients, radius, spacing, type } from "@/theme";
 
 interface ProtocolRunDockProps {
@@ -168,7 +169,7 @@ export function ProtocolRunDock({
         <LinearGradient colors={railColors} style={styles.rail}>
           <View style={styles.railSheen} />
           <View style={styles.meta}>
-            <Text style={styles.sport}>{sport.toUpperCase()}</Text>
+            <Text style={styles.sport}>{sportLabel(sport)}</Text>
             <Text style={styles.plays}>
               {playCount} PLAY{playCount === 1 ? "" : "S"}
             </Text>

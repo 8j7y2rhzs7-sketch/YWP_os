@@ -14,6 +14,7 @@ import { SlipBuilder } from "@/components/SlipBuilder";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
+import { sportLabel } from "@/sportVisuals";
 import { colors, spacing, type } from "@/theme";
 import type { LockCheck, Recommendation, SettleDayResponse, Ticket } from "@/types";
 
@@ -261,7 +262,7 @@ export default function TicketDetailScreen() {
             <Text style={type.eyebrow}>{ticket.ticket_type.replaceAll("_", " ")}</Text>
             <Text style={styles.title}>{ticket.label}</Text>
             <Text style={type.caption}>
-              {ticket.sport.toUpperCase()} • {ticket.slate_date} • {ticket.status.toUpperCase()}
+              {sportLabel(ticket.sport)} • {ticket.slate_date} • {ticket.status.toUpperCase()}
             </Text>
           </View>
           <StatusPill value={ticket.last_lock_status ?? ticket.status} />

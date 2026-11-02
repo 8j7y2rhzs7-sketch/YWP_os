@@ -13,6 +13,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { brandAssets } from "@/brandAssets";
 import { MetalShimmer } from "@/components/MetalShimmer";
 import { useReduceMotion } from "@/hooks/useReduceMotion";
+import { sportLabel } from "@/sportVisuals";
 import { colors, fonts, radius, spacing, type } from "@/theme";
 import type { DayForgeResponse } from "@/types";
 
@@ -164,7 +165,7 @@ export function DayForgeChamber({
             </Text>
             <Text style={styles.heatMeta}>
               {heatLabel(progress, status)} · {Math.round(progress * 100)}%
-              {forge?.sport ? ` · ${forge.sport.toUpperCase()}` : ""}
+              {forge?.sport ? ` · ${sportLabel(forge.sport)}` : ""}
             </Text>
           </View>
         </View>

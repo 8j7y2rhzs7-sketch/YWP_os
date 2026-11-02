@@ -89,6 +89,8 @@ def _odds_sport_key(sport: str) -> str:
         "nfl": "americanfootball_nfl",
         "ncaaf": "americanfootball_ncaaf",
         "nba": "basketball_nba",
+        "ncaab": "basketball_ncaab",
+        "ncaam": "basketball_ncaab",
         "wnba": "basketball_wnba",
         "nhl": "icehockey_nhl",
         "soccer": "soccer_epl",
