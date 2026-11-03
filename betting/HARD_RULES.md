@@ -267,3 +267,11 @@ The "1 player" is usually the **climb we weeded** or a **soft-cush PRIMARY** tha
 ### Applied
 - Sabonis O10.5+ demoted from auto-SAFE habit.
 - Next NBA glass SAFE preference: soft floors first (O4.5–O6.5 true centers), then mid, then high-line.
+
+## Locked 2026-11-03 — Troy -2.5 outright loss (early-season model fav)
+**Incident:** Boarded TROY -2.5/-3.5 as KEEP off ESPN predictor ~68% (do not take UMass +). Final **UMass 71, Troy 60** — favorite lost outright, not a near-miss cover.
+### Rules
+1. Early-season mid-major model favs in the **~65-72%** band are **not SAFE spreads**. ML or skip.
+2. Spread KEEP bar: market agrees with model **and** model ≥**78%**, still prefer ML when RS sample is opener-thin.
+3. Teen covers (−10 to −14) remain RISK even at 85-90% — win first, cover second (same chalk-just-wins lesson).
+4. Never rebuild a Troy-class spine as SAFE3 identity the next day without a higher bar.
