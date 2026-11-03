@@ -1,0 +1,802 @@
+{
+  "date": "2026-11-03",
+  "tz": "America/New_York",
+  "generated_et": "2026-11-03T10:06:35.941864-05:00",
+  "gate": {
+    "status": "PASS",
+    "date": "20261103",
+    "sheets_ok": 620,
+    "sheets_total": 620
+  },
+  "slate": {
+    "NBA": 0,
+    "NFL": 0,
+    "NHL": 11,
+    "NCAAF": 2,
+    "NCAAM_featured_ranked": 5
+  },
+  "rules_applied": [
+    "require_gate PASS",
+    "NHL O1.5 default SAFE; Kap-class O2.5 = BANGER only",
+    "soft-floor SOG ranking (clear vs line, min cushion) not vanity averages",
+    "NCAAM BAN \u226520 covers; model-vs-market for sides",
+    "NCAAF matchup/model first",
+    "roster team verify before board",
+    "gate NHL cap raised + team interleave (full 22-team coverage)"
+  ],
+  "SAFE_NHL_SOG": [
+    {
+      "player": "Cutter Gauthier",
+      "team": "ANA",
+      "athlete_id": "5080145",
+      "source": "espn:site.web.api/nhl/athletes/5080145/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        5.0,
+        10.0,
+        4.0,
+        4.0,
+        2.0
+      ],
+      "clear": "5/5",
+      "min": 2.0,
+      "avg": 5.0,
+      "n_rs": 13,
+      "game": "ANA @ VAN",
+      "ou": 6.5,
+      "odds": "ANA -155"
+    },
+    {
+      "player": "Connor McDavid",
+      "team": "EDM",
+      "athlete_id": "3895074",
+      "source": "espn:site.web.api/nhl/athletes/3895074/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        6.0,
+        3.0,
+        3.0,
+        2.0,
+        3.0
+      ],
+      "clear": "5/5",
+      "min": 2.0,
+      "avg": 3.4,
+      "n_rs": 15,
+      "game": "EDM @ NJ",
+      "ou": 6.5,
+      "odds": "NJ -155"
+    },
+    {
+      "player": "Leon Draisaitl",
+      "team": "EDM",
+      "athlete_id": "3114727",
+      "source": "espn:site.web.api/nhl/athletes/3114727/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        3.0,
+        2.0,
+        2.0,
+        3.0,
+        7.0
+      ],
+      "clear": "5/5",
+      "min": 2.0,
+      "avg": 3.4,
+      "n_rs": 15,
+      "game": "EDM @ NJ",
+      "ou": 6.5,
+      "odds": "NJ -155"
+    },
+    {
+      "player": "Jack Hughes",
+      "team": "NJ",
+      "athlete_id": "4565222",
+      "source": "espn:site.web.api/nhl/athletes/4565222/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        7.0,
+        2.0,
+        6.0,
+        2.0,
+        2.0
+      ],
+      "clear": "5/5",
+      "min": 2.0,
+      "avg": 3.8,
+      "n_rs": 14,
+      "game": "EDM @ NJ",
+      "ou": 6.5,
+      "odds": "NJ -155"
+    },
+    {
+      "player": "Brandon Hagel",
+      "team": "TB",
+      "athlete_id": "4065019",
+      "source": "espn:site.web.api/nhl/athletes/4065019/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        3.0,
+        5.0,
+        7.0,
+        2.0,
+        3.0
+      ],
+      "clear": "5/5",
+      "min": 2.0,
+      "avg": 4.0,
+      "n_rs": 13,
+      "game": "DET @ TB",
+      "ou": 6.5,
+      "odds": "TB -265"
+    },
+    {
+      "player": "Kirill Kaprizov",
+      "team": "MIN",
+      "athlete_id": "3942335",
+      "source": "espn:site.web.api/nhl/athletes/3942335/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        2.0,
+        3.0,
+        4.0,
+        2.0,
+        4.0
+      ],
+      "clear": "5/5",
+      "min": 2.0,
+      "avg": 3.0,
+      "n_rs": 16,
+      "game": "MIN @ PHI",
+      "ou": 5.5,
+      "odds": "MIN -175"
+    },
+    {
+      "player": "Kyle Connor",
+      "team": "WPG",
+      "athlete_id": "3899952",
+      "source": "espn:site.web.api/nhl/athletes/3899952/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        2.0,
+        2.0,
+        4.0,
+        3.0,
+        5.0
+      ],
+      "clear": "5/5",
+      "min": 2.0,
+      "avg": 3.2,
+      "n_rs": 15,
+      "game": "WPG @ MTL",
+      "ou": 5.5,
+      "odds": "MTL -192"
+    },
+    {
+      "player": "Nathan MacKinnon",
+      "team": "COL",
+      "athlete_id": "3041969",
+      "source": "espn:site.web.api/nhl/athletes/3041969/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        2.0,
+        6.0,
+        2.0,
+        2.0,
+        4.0
+      ],
+      "clear": "5/5",
+      "min": 2.0,
+      "avg": 3.2,
+      "n_rs": 15,
+      "game": "COL @ CBJ",
+      "ou": 6.5,
+      "odds": "COL -125"
+    }
+  ],
+  "PRIMARY_NHL_SOG": [
+    {
+      "player": "Nick Suzuki",
+      "team": "MTL",
+      "athlete_id": "4233594",
+      "source": "espn:site.web.api/nhl/athletes/4233594/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        4.0,
+        2.0,
+        3.0,
+        5.0,
+        3.0
+      ],
+      "clear": "5/5",
+      "min": 2.0,
+      "avg": 3.4,
+      "n_rs": 9,
+      "game": "WPG @ MTL",
+      "ou": 5.5,
+      "odds": "MTL -192"
+    },
+    {
+      "player": "Matt Boldy",
+      "team": "MIN",
+      "athlete_id": "4565233",
+      "source": "espn:site.web.api/nhl/athletes/4565233/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        3.0,
+        4.0,
+        2.0,
+        3.0,
+        5.0
+      ],
+      "clear": "5/5",
+      "min": 2.0,
+      "avg": 3.4,
+      "n_rs": 16,
+      "game": "MIN @ PHI",
+      "ou": 5.5,
+      "odds": "MIN -175"
+    },
+    {
+      "player": "Joel Eriksson Ek",
+      "team": "MIN",
+      "athlete_id": "3904091",
+      "source": "espn:site.web.api/nhl/athletes/3904091/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        3.0,
+        3.0,
+        4.0,
+        5.0,
+        2.0
+      ],
+      "clear": "5/5",
+      "min": 2.0,
+      "avg": 3.4,
+      "n_rs": 16,
+      "game": "MIN @ PHI",
+      "ou": 5.5,
+      "odds": "MIN -175"
+    },
+    {
+      "player": "Alex DeBrincat",
+      "team": "DET",
+      "athlete_id": "4063433",
+      "source": "espn:site.web.api/nhl/athletes/4063433/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        4.0,
+        3.0,
+        4.0,
+        2.0,
+        3.0
+      ],
+      "clear": "5/5",
+      "min": 2.0,
+      "avg": 3.2,
+      "n_rs": 15,
+      "game": "DET @ TB",
+      "ou": 6.5,
+      "odds": "TB -265"
+    },
+    {
+      "player": "Cole Perfetti",
+      "team": "WPG",
+      "athlete_id": "4697392",
+      "source": "espn:site.web.api/nhl/athletes/4697392/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        3.0,
+        2.0,
+        3.0,
+        3.0,
+        4.0
+      ],
+      "clear": "5/5",
+      "min": 2.0,
+      "avg": 3.0,
+      "n_rs": 15,
+      "game": "WPG @ MTL",
+      "ou": 5.5,
+      "odds": "MTL -192"
+    },
+    {
+      "player": "Adam Fantilli",
+      "team": "CBJ",
+      "athlete_id": "5136617",
+      "source": "espn:site.web.api/nhl/athletes/5136617/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        3.0,
+        4.0,
+        2.0,
+        2.0,
+        6.0
+      ],
+      "clear": "5/5",
+      "min": 2.0,
+      "avg": 3.4,
+      "n_rs": 12,
+      "game": "COL @ CBJ",
+      "ou": 6.5,
+      "odds": "COL -125"
+    },
+    {
+      "player": "Vincent Trocheck",
+      "team": "UTA",
+      "athlete_id": "2563036",
+      "source": "espn:site.web.api/nhl/athletes/2563036/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        2.0,
+        4.0,
+        5.0,
+        2.0,
+        4.0
+      ],
+      "clear": "5/5",
+      "min": 2.0,
+      "avg": 3.4,
+      "n_rs": 15,
+      "game": "UTA @ TOR",
+      "ou": 6.5,
+      "odds": "UTAH -130"
+    },
+    {
+      "player": "Roman Josi",
+      "team": "NSH",
+      "athlete_id": "5436",
+      "source": "espn:site.web.api/nhl/athletes/5436/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        5.0,
+        6.0,
+        2.0,
+        4.0,
+        2.0
+      ],
+      "clear": "5/5",
+      "min": 2.0,
+      "avg": 3.8,
+      "n_rs": 14,
+      "game": "CAR @ NSH",
+      "ou": 6.5,
+      "odds": "CAR -198"
+    },
+    {
+      "player": "Auston Matthews",
+      "team": "TOR",
+      "athlete_id": "4024123",
+      "source": "espn:site.web.api/nhl/athletes/4024123/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        2.0,
+        4.0,
+        1.0,
+        2.0,
+        4.0
+      ],
+      "clear": "4/5",
+      "min": 1.0,
+      "avg": 2.6,
+      "n_rs": 16,
+      "game": "UTA @ TOR",
+      "ou": 6.5,
+      "odds": "UTAH -130"
+    },
+    {
+      "player": "William Nylander",
+      "team": "TOR",
+      "athlete_id": "3114736",
+      "source": "espn:site.web.api/nhl/athletes/3114736/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        2.0,
+        3.0,
+        4.0,
+        3.0,
+        1.0
+      ],
+      "clear": "4/5",
+      "min": 1.0,
+      "avg": 2.6,
+      "n_rs": 16,
+      "game": "UTA @ TOR",
+      "ou": 6.5,
+      "odds": "UTAH -130"
+    },
+    {
+      "player": "Jason Robertson",
+      "team": "DAL",
+      "athlete_id": "4233875",
+      "source": "espn:site.web.api/nhl/athletes/4233875/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        1.0,
+        4.0,
+        3.0,
+        3.0,
+        4.0
+      ],
+      "clear": "4/5",
+      "min": 1.0,
+      "avg": 3.0,
+      "n_rs": 14,
+      "game": "DAL @ WSH",
+      "ou": 5.5,
+      "odds": "DAL -108"
+    },
+    {
+      "player": "Brayden Point",
+      "team": "TB",
+      "athlete_id": "3151187",
+      "source": "espn:site.web.api/nhl/athletes/3151187/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        3.0,
+        3.0,
+        2.0,
+        3.0,
+        1.0
+      ],
+      "clear": "4/5",
+      "min": 1.0,
+      "avg": 2.4,
+      "n_rs": 13,
+      "game": "DET @ TB",
+      "ou": 6.5,
+      "odds": "TB -265"
+    },
+    {
+      "player": "Clayton Keller",
+      "team": "UTA",
+      "athlete_id": "4024857",
+      "source": "espn:site.web.api/nhl/athletes/4024857/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        4.0,
+        3.0,
+        3.0,
+        1.0,
+        2.0
+      ],
+      "clear": "4/5",
+      "min": 1.0,
+      "avg": 2.6,
+      "n_rs": 15,
+      "game": "UTA @ TOR",
+      "ou": 6.5,
+      "odds": "UTAH -130"
+    },
+    {
+      "player": "Filip Forsberg",
+      "team": "NSH",
+      "athlete_id": "2968772",
+      "source": "espn:site.web.api/nhl/athletes/2968772/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        2.0,
+        3.0,
+        4.0,
+        3.0,
+        1.0
+      ],
+      "clear": "4/5",
+      "min": 1.0,
+      "avg": 2.6,
+      "n_rs": 14,
+      "game": "CAR @ NSH",
+      "ou": 6.5,
+      "odds": "CAR -198"
+    },
+    {
+      "player": "Nico Hischier",
+      "team": "NJ",
+      "athlete_id": "4233555",
+      "source": "espn:site.web.api/nhl/athletes/4233555/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        1.0,
+        3.0,
+        3.0,
+        4.0,
+        2.0
+      ],
+      "clear": "4/5",
+      "min": 1.0,
+      "avg": 2.6,
+      "n_rs": 14,
+      "game": "EDM @ NJ",
+      "ou": 6.5,
+      "odds": "NJ -155"
+    },
+    {
+      "player": "Seth Jarvis",
+      "team": "CAR",
+      "athlete_id": "4697396",
+      "source": "espn:site.web.api/nhl/athletes/4697396/gamelog",
+      "market": "O1.5 SOG",
+      "L5": [
+        3.0,
+        3.0,
+        0.0,
+        3.0,
+        3.0
+      ],
+      "clear": "4/5",
+      "min": 0.0,
+      "avg": 2.4,
+      "n_rs": 5,
+      "game": "CAR @ NSH",
+      "ou": 6.5,
+      "odds": "CAR -198"
+    }
+  ],
+  "BANGERS_NHL_SOG": [
+    {
+      "player": "Cutter Gauthier",
+      "team": "ANA",
+      "athlete_id": "5080145",
+      "source": "espn:site.web.api/nhl/athletes/5080145/gamelog",
+      "market": "O2.5 SOG",
+      "L5": [
+        5.0,
+        10.0,
+        4.0,
+        4.0,
+        2.0
+      ],
+      "clear": "4/5",
+      "min": 2.0,
+      "avg": 5.0,
+      "n_rs": 13,
+      "game": "ANA @ VAN",
+      "ou": 6.5,
+      "odds": "ANA -155"
+    },
+    {
+      "player": "Brandon Hagel",
+      "team": "TB",
+      "athlete_id": "4065019",
+      "source": "espn:site.web.api/nhl/athletes/4065019/gamelog",
+      "market": "O2.5 SOG",
+      "L5": [
+        3.0,
+        5.0,
+        7.0,
+        2.0,
+        3.0
+      ],
+      "clear": "4/5",
+      "min": 2.0,
+      "avg": 4.0,
+      "n_rs": 13,
+      "game": "DET @ TB",
+      "ou": 6.5,
+      "odds": "TB -265"
+    },
+    {
+      "player": "Connor McDavid",
+      "team": "EDM",
+      "athlete_id": "3895074",
+      "source": "espn:site.web.api/nhl/athletes/3895074/gamelog",
+      "market": "O2.5 SOG",
+      "L5": [
+        6.0,
+        3.0,
+        3.0,
+        2.0,
+        3.0
+      ],
+      "clear": "4/5",
+      "min": 2.0,
+      "avg": 3.4,
+      "n_rs": 15,
+      "game": "EDM @ NJ",
+      "ou": 6.5,
+      "odds": "NJ -155"
+    },
+    {
+      "player": "Nick Suzuki",
+      "team": "MTL",
+      "athlete_id": "4233594",
+      "source": "espn:site.web.api/nhl/athletes/4233594/gamelog",
+      "market": "O2.5 SOG",
+      "L5": [
+        4.0,
+        2.0,
+        3.0,
+        5.0,
+        3.0
+      ],
+      "clear": "4/5",
+      "min": 2.0,
+      "avg": 3.4,
+      "n_rs": 9,
+      "game": "WPG @ MTL",
+      "ou": 5.5,
+      "odds": "MTL -192"
+    },
+    {
+      "player": "Matt Boldy",
+      "team": "MIN",
+      "athlete_id": "4565233",
+      "source": "espn:site.web.api/nhl/athletes/4565233/gamelog",
+      "market": "O2.5 SOG",
+      "L5": [
+        3.0,
+        4.0,
+        2.0,
+        3.0,
+        5.0
+      ],
+      "clear": "4/5",
+      "min": 2.0,
+      "avg": 3.4,
+      "n_rs": 16,
+      "game": "MIN @ PHI",
+      "ou": 5.5,
+      "odds": "MIN -175"
+    },
+    {
+      "player": "Joel Eriksson Ek",
+      "team": "MIN",
+      "athlete_id": "3904091",
+      "source": "espn:site.web.api/nhl/athletes/3904091/gamelog",
+      "market": "O2.5 SOG",
+      "L5": [
+        3.0,
+        3.0,
+        4.0,
+        5.0,
+        2.0
+      ],
+      "clear": "4/5",
+      "min": 2.0,
+      "avg": 3.4,
+      "n_rs": 16,
+      "game": "MIN @ PHI",
+      "ou": 5.5,
+      "odds": "MIN -175"
+    },
+    {
+      "player": "Alex DeBrincat",
+      "team": "DET",
+      "athlete_id": "4063433",
+      "source": "espn:site.web.api/nhl/athletes/4063433/gamelog",
+      "market": "O2.5 SOG",
+      "L5": [
+        4.0,
+        3.0,
+        4.0,
+        2.0,
+        3.0
+      ],
+      "clear": "4/5",
+      "min": 2.0,
+      "avg": 3.2,
+      "n_rs": 15,
+      "game": "DET @ TB",
+      "ou": 6.5,
+      "odds": "TB -265"
+    },
+    {
+      "player": "Cole Perfetti",
+      "team": "WPG",
+      "athlete_id": "4697392",
+      "source": "espn:site.web.api/nhl/athletes/4697392/gamelog",
+      "market": "O2.5 SOG",
+      "L5": [
+        3.0,
+        2.0,
+        3.0,
+        3.0,
+        4.0
+      ],
+      "clear": "4/5",
+      "min": 2.0,
+      "avg": 3.0,
+      "n_rs": 15,
+      "game": "WPG @ MTL",
+      "ou": 5.5,
+      "odds": "MTL -192"
+    }
+  ],
+  "NCAAF": {
+    "plays": [
+      {
+        "market": "OHIO ML",
+        "vs": "@ AKR",
+        "spread_posted": "OHIO -14.5",
+        "model_win_pct": 83.9,
+        "verdict": "KEEP ML / RISK cover -14.5",
+        "note": "model crush; -14.5 is cover variance not SAFE"
+      },
+      {
+        "market": "M-OH -6 / ML",
+        "vs": "vs BUFF",
+        "spread_posted": "M-OH -6",
+        "model_win_pct": 66.7,
+        "verdict": "KEEP",
+        "note": "model aligns with market fav"
+      }
+    ],
+    "cuts": [
+      "BUFF +6 as identity",
+      "AKR +14.5 dog trap"
+    ]
+  },
+  "NCAAM": {
+    "ban_cover": [
+      "TENN -25.5",
+      "UK -33.5",
+      "UVA -31.5",
+      "ALA -26.5",
+      "ARK -41.5",
+      "VT -31.5",
+      "URI -21.5",
+      "IOWA -21.5",
+      "UNLV -21.5",
+      "LSU -26.5",
+      "MIZ -26.5",
+      "TA&M -32.5",
+      "SC -19.5",
+      "BC -19.5",
+      "any +20/+25/+30/+40 dog"
+    ],
+    "ml_only_if_grind": [
+      "TENN ML",
+      "UK ML",
+      "UVA ML",
+      "ALA ML",
+      "ARK ML"
+    ],
+    "play_risk": [
+      {
+        "market": "DUQ ML (not -10.5 spine)",
+        "model": 79.1,
+        "note": "PFW@DUQ"
+      },
+      {
+        "market": "GT ML (not -14.5 spine)",
+        "model": 86.3,
+        "note": "HAMP@GT"
+      },
+      {
+        "market": "KSU ML / RISK -11.5",
+        "model": 84.6,
+        "note": "SDST@KSU"
+      },
+      {
+        "market": "CBU ML / RISK -11.5",
+        "model": 77.9,
+        "note": "UNF@CBU"
+      },
+      {
+        "market": "SDSU ML",
+        "model": 91.8,
+        "note": "CSUF@SDSU \u2014 cover -16.5 RISK"
+      }
+    ],
+    "skip_props": "early-season NCAAM RS logs thin; no counting SAFE tonight"
+  },
+  "SLIPS": {
+    "SAFE3": "Gauthier O1.5 \u00b7 McDavid O1.5 \u00b7 Hughes O1.5",
+    "SAFE4": "Gauthier O1.5 \u00b7 McDavid O1.5 \u00b7 Draisaitl O1.5 \u00b7 Hughes O1.5",
+    "SAFE5": "Gauthier O1.5 \u00b7 McDavid O1.5 \u00b7 Draisaitl O1.5 \u00b7 Hughes O1.5 \u00b7 Hagel O1.5",
+    "MIX6": "Gauthier O1.5 \u00b7 McDavid O1.5 \u00b7 Hughes O1.5 \u00b7 Kaprizov O1.5 \u00b7 Connor O1.5 \u00b7 MacKinnon O1.5",
+    "EDM_SGP": "McDavid O1.5 \u00b7 Draisaitl O1.5 \u00b7 Bouchard O1.5",
+    "MIN_SGP": "Kaprizov O1.5 \u00b7 Boldy O1.5 \u00b7 Eriksson Ek O1.5",
+    "NCAAF2": "OHIO ML \u00b7 M-OH -6",
+    "BANGER3": "Gauthier O2.5 \u00b7 Hagel O2.5 \u00b7 McDavid O2.5"
+  },
+  "CUTS": [
+    "Rantanen O1.5 (2/5)",
+    "Eichel O1.5 (2/5)",
+    "Crosby O1.5 (2/5)",
+    "Aho O1.5 (2/5)",
+    "Any O2.5 SOG as SAFE spine",
+    "NCAAM monster covers \u226520",
+    "AKR/BUFF as dog identity"
+  ]
+}

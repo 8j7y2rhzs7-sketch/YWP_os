@@ -138,6 +138,31 @@ def nhl_gamelog(aid: str) -> dict:
     }
 
 
+def ncaam_gamelog(aid: str) -> dict:
+    """Current RS only (season=2027 => 2026-27). Empty early-season logs are OK."""
+    d = get(
+        f"https://site.web.api.espn.com/apis/common/v3/sports/basketball/mens-college-basketball/athletes/{aid}/gamelog?season=2027"
+    )
+    names = d.get("names") or []
+    if not names:
+        return {"names": [], "missing_cats": [], "rows": [], "n": 0, "skip": "empty_2026_27"}
+    missing = [c for c in NBA_CATS if c not in names]
+    idx = {c: names.index(c) for c in NBA_CATS if c in names}
+    rows = []
+    for st in d.get("seasonTypes", []):
+        label = st.get("displayName") or ""
+        if "pre" in label.lower():
+            continue
+        for cat in st.get("categories", []):
+            for ev in cat.get("events", []):
+                vals = ev.get("stats") or []
+                row = {"eventId": str(ev.get("eventId"))}
+                for c, i in idx.items():
+                    row[c] = vals[i] if i < len(vals) else "NOT_FETCHED"
+                rows.append(row)
+    return {"names": names, "missing_cats": missing, "rows": rows[:12], "n": len(rows)}
+
+
 def parse_games(sb: dict, sport: str) -> list[dict]:
     out = []
     for e in sb.get("events") or []:
@@ -165,6 +190,8 @@ def parse_games(sb: dict, sport: str) -> list[dict]:
 def roster_names(sport: str, team_id: str) -> list[tuple[str, str]]:
     if sport == "nba":
         url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/{team_id}/roster"
+    elif sport == "ncaam":
+        url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/{team_id}/roster"
     else:
         url = f"https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/teams/{team_id}/roster"
     d = get(url)
@@ -185,7 +212,13 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", default=today_yyyymmdd(), help="YYYYMMDD in ET slate terms")
     ap.add_argument("--max-nba-players", type=int, default=200, help="cap full sheets per run")
-    ap.add_argument("--max-nhl-players", type=int, default=120)
+    ap.add_argument(
+        "--max-nhl-players",
+        type=int,
+        default=400,
+        help="cap NHL sheets; must cover full slate teams (was 120 → truncated late games)",
+    )
+    ap.add_argument("--max-ncaam-players", type=int, default=180, help="cap NCAAM featured sheets")
     args = ap.parse_args()
     date = args.date
     started = datetime.now(timezone.utc).isoformat()
@@ -229,6 +262,17 @@ def main() -> int:
         failures.append(f"WNBA scoreboard fetch failed: {e}")
         sports_present["WNBA"] = []
 
+    ncaam_sb: dict = {}
+    try:
+        ncaam_sb = scoreboard(
+            "basketball/mens-college-basketball", date, "&groups=50&limit=300"
+        )
+        sports_present["NCAAM"] = parse_games(ncaam_sb, "ncaam")
+    except Exception as e:
+        failures.append(f"NCAAM scoreboard fetch failed: {e}")
+        sports_present["NCAAM"] = []
+        ncaam_sb = {}
+
     active = {k: v for k, v in sports_present.items() if v}
     if not active and not failures:
         failures.append("No sports found for date — confirm date or refetch")
@@ -237,6 +281,7 @@ def main() -> int:
     sheets: dict[str, dict] = {}
     nba_ids: list[tuple[str, str, str]] = []  # name, id, team
     nhl_ids: list[tuple[str, str, str]] = []
+    ncaam_ids: list[tuple[str, str, str]] = []
 
     for g in sports_present.get("NBA") or []:
         for tid, abbr in ((g["away_id"], g["away"]), (g["home_id"], g["home"])):
@@ -254,6 +299,63 @@ def main() -> int:
             except Exception as e:
                 failures.append(f"NHL roster {abbr}: {e}")
 
+    # NCAAM: featured only (ranked or |spread|<=12) — early season / huge slate
+    def _spread_mag(details: str | None) -> float | None:
+        if not details:
+            return None
+        parts = str(details).replace("−", "-").split()
+        for p in reversed(parts):
+            try:
+                return abs(float(p))
+            except Exception:
+                continue
+        return None
+
+    ncaam_featured_teams: set[str] = set()
+    for g in sports_present.get("NCAAM") or []:
+        # ranks live on scoreboard parse? re-enrich from stored odds only
+        mag = _spread_mag(g.get("odds"))
+        # always include if we cannot parse spread and name suggests VS ranked later;
+        # featured filter applied after enrichment below
+        if mag is not None and mag <= 12:
+            ncaam_featured_teams.add(g["away_id"])
+            ncaam_featured_teams.add(g["home_id"])
+
+    # Enrich featured with ranked teams from raw scoreboard
+    try:
+        for e in ncaam_sb.get("events") or []:
+            comp = e["competitions"][0]
+            away = next(t for t in comp["competitors"] if t["homeAway"] == "away")
+            home = next(t for t in comp["competitors"] if t["homeAway"] == "home")
+            ar = (away.get("curatedRank") or {}).get("current") or 99
+            hr = (home.get("curatedRank") or {}).get("current") or 99
+            if ar <= 25 or hr <= 25:
+                ncaam_featured_teams.add(away["team"]["id"])
+                ncaam_featured_teams.add(home["team"]["id"])
+            odds = (comp.get("odds") or [{}])[0]
+            mag = _spread_mag(odds.get("details"))
+            if mag is not None and mag <= 12:
+                ncaam_featured_teams.add(away["team"]["id"])
+                ncaam_featured_teams.add(home["team"]["id"])
+    except Exception as e:
+        failures.append(f"NCAAM featured enrich failed: {e}")
+
+    for tid in sorted(ncaam_featured_teams):
+        try:
+            for name, aid in roster_names("ncaam", tid):
+                # team abbr from first matching game
+                abbr = next(
+                    (
+                        g["away"] if g["away_id"] == tid else g["home"]
+                        for g in (sports_present.get("NCAAM") or [])
+                        if tid in (g["away_id"], g["home_id"])
+                    ),
+                    tid,
+                )
+                ncaam_ids.append((name, aid, abbr))
+        except Exception as e:
+            failures.append(f"NCAAM roster {tid}: {e}")
+
     # de-dupe preserve order
     def dedupe(seq):
         seen = set()
@@ -266,7 +368,34 @@ def main() -> int:
         return out
 
     nba_ids = dedupe(nba_ids)[: args.max_nba_players]
-    nhl_ids = dedupe(nhl_ids)[: args.max_nhl_players]
+    nhl_ids = dedupe(nhl_ids)
+    ncaam_ids = dedupe(ncaam_ids)[: args.max_ncaam_players]
+
+    # Round-robin NHL by team so late slate games are not truncated by the cap
+    # (2026-11-03: default 120 only covered UTA/TOR/WPG/MTL/DET — missed EDM/MIN/etc.)
+    def interleave_by_team(seq: list[tuple[str, str, str]]) -> list[tuple[str, str, str]]:
+        buckets: dict[str, list[tuple[str, str, str]]] = {}
+        order: list[str] = []
+        for item in seq:
+            team = item[2]
+            if team not in buckets:
+                buckets[team] = []
+                order.append(team)
+            buckets[team].append(item)
+        out: list[tuple[str, str, str]] = []
+        i = 0
+        while True:
+            progressed = False
+            for team in order:
+                if i < len(buckets[team]):
+                    out.append(buckets[team][i])
+                    progressed = True
+            if not progressed:
+                break
+            i += 1
+        return out
+
+    nhl_ids = interleave_by_team(nhl_ids)[: args.max_nhl_players]
 
     # Prefer known high-usage names first if present — still fetch cap
     # (full roster gate is team coverage; player sheets prove category fetch)
@@ -373,11 +502,69 @@ def main() -> int:
                 "missing_cats": ["shots"],
             }
 
-    with ThreadPoolExecutor(16) as ex:
-        futs = [ex.submit(fetch_nba, it) for it in nba_ids] + [ex.submit(fetch_nhl, it) for it in nhl_ids]
+    def fetch_ncaam(item):
+        name, aid, team = item
+        try:
+            gl = ncaam_gamelog(aid)
+            if not gl.get("names") or gl.get("n", 0) == 0:
+                return name, {
+                    "sport": "ncaam",
+                    "athlete_id": aid,
+                    "team": team,
+                    "source": f"espn:site.web.api/mbb/athletes/{aid}/gamelog?season=2027",
+                    "missing_cats": [],
+                    "n_rs": 0,
+                    "rows": [],
+                    "ok": True,
+                    "skip": gl.get("skip") or "empty_2026_27_rs",
+                }
+            ok = not gl["missing_cats"]
+            return name, {
+                "sport": "ncaam",
+                "athlete_id": aid,
+                "team": team,
+                "source": f"espn:site.web.api/mbb/athletes/{aid}/gamelog?season=2027",
+                "missing_cats": gl["missing_cats"],
+                "n_rs": gl["n"],
+                "rows": gl["rows"],
+                "ok": ok,
+            }
+        except Exception as e:
+            err = str(e)
+            if "404" in err:
+                return name, {
+                    "sport": "ncaam",
+                    "athlete_id": aid,
+                    "team": team,
+                    "ok": True,
+                    "skip": "http_404",
+                    "error": err,
+                    "missing_cats": [],
+                    "n_rs": 0,
+                    "rows": [],
+                }
+            return name, {
+                "sport": "ncaam",
+                "athlete_id": aid,
+                "team": team,
+                "ok": False,
+                "error": err,
+                "missing_cats": NBA_CATS[:],
+            }
+
+    with ThreadPoolExecutor(20) as ex:
+        futs = (
+            [ex.submit(fetch_nba, it) for it in nba_ids]
+            + [ex.submit(fetch_nhl, it) for it in nhl_ids]
+            + [ex.submit(fetch_ncaam, it) for it in ncaam_ids]
+        )
         for f in as_completed(futs):
             name, sheet = f.result()
-            sheets[name] = sheet
+            # avoid NBA/NHL name collisions overwriting — prefix sport if needed
+            key = name
+            if key in sheets and sheets[key].get("sport") != sheet.get("sport"):
+                key = f"{name} [{sheet.get('sport')}]"
+            sheets[key] = sheet
             if not sheet.get("ok"):
                 failures.append(
                     f"SHEET FAIL {name} ({sheet.get('athlete_id')}): missing={sheet.get('missing_cats')} err={sheet.get('error')}"
@@ -388,6 +575,8 @@ def main() -> int:
         failures.append("NBA games present but zero roster ids collected")
     if sports_present.get("NHL") and not nhl_ids:
         failures.append("NHL games present but zero roster ids collected")
+    if sports_present.get("NCAAM") and ncaam_featured_teams and not ncaam_ids:
+        failures.append("NCAAM featured teams present but zero roster ids collected")
 
     # Require at least some successful full sheets when that sport is active
     if sports_present.get("NBA"):
@@ -437,10 +626,14 @@ def main() -> int:
         "rules": [
             "No place card / weed / exhaustive without status=PASS",
             "Full NBA cats required: MIN/PTS/REB/AST/STL/BLK/TO/3P",
+            "NCAAM gated: slate discovery + featured roster sheets (rank<=25 or |spread|<=12)",
+            "NCAAM early-season: empty 2026-27 logs OK; no prior-year as SAFE counting",
             "BANGERS board required in delivery after gate",
             "Weed cannot contradict from-scratch KEEP/PRIMARY",
             "Show athlete_id + source on every cited player",
         ],
+        "ncaam_featured_team_ids": sorted(ncaam_featured_teams),
+        "ncaam_sheets": sum(1 for s in sheets.values() if s.get("sport") == "ncaam"),
     }
 
     status_txt = (
