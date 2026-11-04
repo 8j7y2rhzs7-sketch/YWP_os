@@ -1,0 +1,5 @@
+YWP postmortem 2026-11-04 — Arsenal −1.5
+Ticket: City TT O1.5 + Haaland SOA (HIT) · ARS TT O1.5 (HIT) · ARS −1.5 (MISS) · Bedard O1.5 / Will Smith O1.5 pending
+Final: RBL 2-3 MCI · SLP 1-2 ARS
+Kill: Arsenal won by 1 — TT cashed, −1.5 dead. Slip Lost before NHL.
+Lesson: Do not KEEP mismatch −1.5 next to same-team TT O1.5. Correct rebuild was TT-only (or Dortmund DC) without −1.5.
