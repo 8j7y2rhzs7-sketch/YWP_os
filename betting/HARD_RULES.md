@@ -276,6 +276,14 @@ The "1 player" is usually the **climb we weeded** or a **soft-cush PRIMARY** tha
 3. Teen covers (−10 to −14) remain RISK even at 85-90% — win first, cover second (same chalk-just-wins lesson).
 4. Never rebuild a Troy-class spine as SAFE3 identity the next day without a higher bar.
 
+## Locked 2026-11-04 — Arsenal −1.5 kill (chalk just wins)
+**Incident:** Slip cashed City TT+Haaland SOA + **Arsenal TT O1.5**, died on **ARS −1.5**. Final **Slavia 1–2 Arsenal** — won by 1. User called −1.5 a setup; agent had KEEP'd TT+−1.5 together.
+### Rules
+1. **Mismatch −1.5 is NOT KEEP/SAFE** when the ticket already has that team's **TT O1.5** (or ML). Cover tax on 2-1 / 1-0 scripts.
+2. Prefer **TT O1.5 alone** or **ML/DC** — never stack **TT + −1.5** as the "clean" soccer spine.
+3. **ARS/City/Bayern-class −1.5** = RISK/BANG only.
+4. If user doubts −1.5, **CUT it** — do not KEEP-validate the trap.
+
 ## Locked 2026-11-04 — soccer is multi-category (not ML-only)
 **User:** “Remember for soccer there’s other categories you can get picks from.”
 ### Rules
