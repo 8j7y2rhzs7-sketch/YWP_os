@@ -71,59 +71,73 @@ MIX4: Bedard O1.5 · Quinn O1.5 · OTT +1.5 · SJ +1.5
 UPSIDE: Bedard O2.5 alone / or + one soft PL
 DO NOT: 3+ SOG · FLA −258 ML · O2.5 as SAFE · U6.5 multi-stack
 
-=== UCL — MATCHDAY (ET 2026-11-04) ===
-RMA @ AEK    in   28'        RMA -550     ou=3.5 | RMA 0-1 AEK
-             ML home/away (None, '+1200') / (None, '-550') · AH home ('+2.5', '-175') · O/U ('o3.5', '-125') / ('u3.5', '+100') · Draw 700
-LIV @ FEN    in   28'        LIV -185     ou=3.5 | LIV 1-0 FEN
-             ML home/away (None, '+450') / (None, '-185') · AH home ('+1.5', '-190') · O/U ('o3.5', '+110') / ('u3.5', '-140') · Draw 360
-BET @ DOR    pre  Scheduled  DOR -145     ou=3.5 | BET 0-0 DOR
-             ML home/away (None, '-145') / (None, '+350') · AH home ('-0.5', '-160') · O/U ('o3.5', '+115') / ('u3.5', '-145') · Draw 330
-NAP @ FCP    pre  Scheduled  FCP +100     ou=2.5 | NAP 0-0 FCP
-             ML home/away (None, '+100') / (None, '+275') · AH home ('-0.5', '-110') · O/U ('o2.5', '-120') / ('u2.5', '+100') · Draw 255
-COMO @ RCL   pre  Scheduled  COMO -115    ou=3.5 | COMO 0-0 RCL
-             ML home/away (None, '+285') / (None, '-115') · AH home ('+0.5', '-110') · O/U ('o3.5', '+140') / ('u3.5', '-170') · Draw 290
-BRU @ PSV    pre  Scheduled  PSV -105     ou=3.5 | BRU 0-0 PSV
-             ML home/away (None, '-105') / (None, '+235') · AH home ('-0.5', '-115') · O/U ('o3.5', '-115') / ('u3.5', '-105') · Draw 330
-MNC @ RBL    pre  Scheduled  MNC -180     ou=3.5 | MNC 0-0 RBL
-             ML home/away (None, '+400') / (None, '-180') · AH home ('+0.5', '+135') · O/U ('o3.5', '-140') / ('u3.5', '+110') · Draw 370
-ARS @ SLP    pre  Scheduled  ARS -425     ou=2.5 | ARS 0-0 SLP
-             ML home/away (None, '+1300') / (None, '-425') · AH home ('+1.5', '+100') · O/U ('o2.5', '-140') / ('u2.5', '+110') · Draw 500
-SAB @ VFK    pre  Scheduled  VFK -210     ou=3.5 | SAB 0-0 VFK
-             ML home/away (None, '-210') / (None, '+475') · AH home ('-1.5', '+110') · O/U ('o3.5', '-130') / ('u3.5', '+105') · Draw 400
+=== UCL — MULTI-CATEGORY BOARD (locked: not ML-only) ===
+Categories: SOA/ATG · Shots/SOT · Team totals · Match O/U · BTTS · Corners · (Cards RISK only)
+Form source: ESPN club RS gamelogs (G/A/SHOT/SOT). Confirm XI before SOA spine.
 
-=== UCL SAFE / PRIMARY (pre-match only) ===
-★ Dortmund ML / −0.5 vs Betis (−145) — priced home chalk PRIMARY
-★ PSV ML / −0.5 vs Club Brugge (−105) — coin-lean PRIMARY
-★ Como ML / −0.5 @ Lens (−115) — slight away chalk PRIMARY
-• Man City ML / −0.5 @ Leipzig (−180) RISK-KEEP — mid chalk OK; prefer −0.5/AH over deep juice
-• Viking ML vs Sabah (−210) RISK-KEEP — mismatch class; not −250 skip yet
+=== SOA / ATG (ranked by form + script) ===
+★ Erling Haaland SOA / ATG [MNC @ RBL] id=253989
+   EPL L9: G=[0,1,2,1,1,1,1,2,…] SOA 7/9 · SH 9/9 O1.5 avgSH=3.8 — best SOA on slate
+★ Bukayo Saka SOA (not ATG-first) [ARS @ SLP] id=280555
+   EPL L7: SOA 3/7 · SH O1.5 6/7 avg=2.4 — mismatch script elevates; ATG secondary
+★ Serhou Guirassy SOA [BET @ DOR] id=186381
+   Bundesliga L8: SOA 4/8 · SH O1.5 7/8 avg=3.1 — Dortmund #9 vs Betis
+• Julian Brandt SOA [BET @ DOR] id=197628 — SOA 5/10; correlated w/ Guirassy (pick ONE)
+• Ricardo Pepi SOA/ATG [BRU @ PSV] id=289120 — SOA 4/8 · SH 6/8 O1.5
+• Nico Paz shots-first [COMO @ RCL] id=337970 — SOA 4/10 thin; SH O1.5 9/10 avg=4.3 → SHOTS prop
+• Phil Foden SOA [MNC @ RBL] — 2/7 thin; Haaland preferred
+CUT/fade: Gyökeres SOA (EPL log cold 0/9 G — confirm role/XI) · Eze · Cutrone · Galeno SOA
 
-=== UCL RISK / SKIP ===
-SKIP-ML: Arsenal −425 @ Slavia — use ARS −1.5 / −2.5 AH or team total (BAN juice ML)
-COIN: Porto/Napoli (FCP +100 listed) — PASS straight ML; Porto DNB / +0.5 only if forced
-LIVE (no new spine): Real Madrid @ AEK (RMA −550) · Liverpool @ Fenerbahce (LIV −185)
-BAN: Correlated Under stacks across 3.5 boards · mega-fav MLs (−250+)
+=== SHOTS / SOT ===
+★ Haaland O1.5 / O2.5 shots [MNC @ RBL] — L9 SH clears O1.5 9/9 (vals 4,3,5,2,4,2,4,5)
+★ Nico Paz O1.5 / O2.5 shots [COMO @ RCL] — 9/10 O1.5 avg 4.3
+★ Guirassy O1.5 shots [BET @ DOR] — 7/8
+★ Saka O1.5 shots [ARS @ SLP] — 6/7
+• Saibari O1.5 shots [PSV] — 6/8
+• Marmoush O1.5 shots — 5/8 (alt City)
 
-=== UCL BANGERS ===
-⚡ Arsenal −1.5 / −2.5 AH @ Slavia
-⚡ Man City −1.5 @ Leipzig
-⚡ Dortmund −1.5 vs Betis
-⚡ O3.5 singles (Dortmund / PSV / City games) — NOT a 3-under or 3-over ladder spine
-⚡ BTTS-Yes on open 3.5 scripts only as add, not SAFE3 identity
+=== TEAM TOTALS (vs juice ML) ===
+★ Arsenal TT O1.5 / O2.5 @ Slavia — SKIP ARS −425 ML; TT/AH path
+★ Man City TT O1.5 / O2.5 @ Leipzig — pairs with Haaland SOA
+★ Dortmund TT O1.5 vs Betis
+• PSV TT O1.5 vs Brugge
+• Viking TT O1.5 vs Sabah (mismatch)
 
-=== UCL CLEAN SLIPS ===
-SAFE3: Dortmund ML · PSV ML · Como ML
-SAFE3-alt: Dortmund −0.5 · City −0.5 · Viking ML
-AH2: Arsenal −1.5 · City −1.5
-MIX NHL+UCL: Bedard O1.5 · Quinn O1.5 · Dortmund ML · OTT +1.5
-DO NOT: ARS −425 ML · RMA −550 ML · 3 SOG + UCL unders mash
+=== MATCH O/U + BTTS ===
+O3.5 boards: DOR / PSV / City / Como — O3.5 as SINGLE add only (not 3-over ladder)
+O2.5 boards: Arsenal @ Slavia · Porto/Napoli — lean ARS team script over match under stack
+BTTS-Yes: RISK-KEEP only on open 3.5 games (Dortmund/Betis, PSV/Brugge, City/Leipzig) — max 1 BTTS on ticket
+BAN: 3+ BTTS acca · correlated multi-under across slate
+
+=== CORNERS (secondary) ===
+• Arsenal team corners O4.5 / O5.5 @ Slavia — territorial mismatch add
+• Man City team corners O5.5 @ Leipzig — add not spine
+• Match corners O8.5/O9.5 on City/Dortmund games — RISK
+Cards: BAN as SAFE (YC variance)
+
+=== 1X2 / AH (still boarded — not the only lane) ===
+PRIMARY ML: Dortmund −145 · PSV −105 · Como −115
+RISK-KEEP: City −180 / −0.5 · Viking −210
+SKIP ML → AH/TT: Arsenal −425 → ARS −1.5/−2.5 + TT O1.5
+COIN PASS: Porto/Napoli
+LIVE no new spine: RMA @ AEK · LIV @ Fenerbahce
+
+=== UCL CLEAN SLIPS (multi-cat) ===
+SOA2: Haaland SOA · Saka SOA
+SOA+SHOT: Haaland SOA · Guirassy O1.5 shots
+TT+AH: Arsenal TT O1.5 · Arsenal −1.5 · Dortmund ML
+SAFE3 mix: Haaland SOA · Dortmund ML · Saka O1.5 shots
+SAFE4: Haaland SOA · Guirassy SOA · Arsenal TT O1.5 · PSV ML
+BANG: City −1.5 · Arsenal −2.5 · Haaland ATG · Paz O2.5 shots
+MIX NHL+UCL: Bedard O1.5 · Quinn O1.5 · Haaland SOA · Dortmund ML
+DO NOT: ARS −425 ML · 2 City SOA (Haaland+Foden) · 3 BTTS · Gyökeres cold-log spine without XI
 
 === BAN ===
 NHL: ≥3 SOG · O2.5 SAFE · FLA −258 ML · multi U6.5
-UCL: chalk ML ≤−250 · correlated unders · live chase without rebuild
+UCL: chalk ML ≤−250 · correlated unders · live chase · cards SAFE · SOA teammate doubles
 
 DONE CHECK
 - require_gate: PASS date=20261104 sheets_ok=505/505
 - GATE_TODAY.json date=20261104 status=PASS
 - sheets_path=/cursor/stores/self/betting/GATE_SHEETS_20261104.json
-- BANGERS: yes · athlete_ids: yes · SOG cap: yes · soccer chalk skip: yes
+- BANGERS: yes · athlete_ids: yes · soccer multi-cat: yes · SOA/shots/TT/BTTS/corners: yes

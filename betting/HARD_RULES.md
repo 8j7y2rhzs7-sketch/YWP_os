@@ -276,6 +276,20 @@ The "1 player" is usually the **climb we weeded** or a **soft-cush PRIMARY** tha
 3. Teen covers (−10 to −14) remain RISK even at 85-90% — win first, cover second (same chalk-just-wins lesson).
 4. Never rebuild a Troy-class spine as SAFE3 identity the next day without a higher bar.
 
+## Locked 2026-11-04 — soccer is multi-category (not ML-only)
+**User:** “Remember for soccer there’s other categories you can get picks from.”
+### Rules
+1. Every soccer/UCL run must board **all playable categories**, not just 1X2/AH:
+   - **SOA / ATG** (score-or-assist / anytime goal) — primary prop lane
+   - **Shots / SOT** player props (O0.5 / O1.5 / O2.5 by volume)
+   - **Team totals** (O1.5 / O2.5) — preferred vs juice ML on −250+ chalk
+   - **Match O/U** + **BTTS** — singles/adds only; BAN correlated multi-under or 4-leg BTTS acca as spine
+   - **Corners** (match/team) when boardable — secondary, not SAFE3 identity alone
+   - **Cards** only as RISK/BANGER — high variance
+2. **Category order when building:** SOA/shots floors + team totals → priced ML/AH → BTTS/corners adds. Mega-fav ML (−250+) stays SKIP in favor of AH/TT/SOA.
+3. Confirm XI before SOA/ATG spine; creator ≠ ATG (Yamal/Saka-class: SOA > ATG).
+4. Max **2 SOA** on a blessed slip unless ticket is single-match SGP; don’t stack correlated teammates as “diversified.”
+
 ## Locked 2026-11-03 — still losing by 1–2 (McDavid 1 SOG / U7.5 / KSU)
 **User:** winning ≥1 parlay; rest die by 1–2 legs — need higher accuracy.
 **Receipts:** McDavid O1.5 → **1 SOG** killed main SGPMAX; MacKinnon/Kaprizov/Hagel also printed 1; COL@CBJ **U7.5** died (final 9) on soft 8-leg; **KSU** (model 84.6%) lost outright to SDST 66-68 (Troy 2.0). Soft PLs (PIT+2.5, STL+2.5, Utah+1.5) and Ohio −5.5 cashed. Jets +1.5 we cut would have hit.

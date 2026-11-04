@@ -162,14 +162,38 @@
     ]
   },
   "ucl_slips": {
-    "SAFE3": [
-      "Dortmund ML",
-      "PSV ML",
-      "Como ML"
+    "SOA2": [
+      "Haaland SOA",
+      "Saka SOA"
     ],
-    "AH2": [
+    "SAFE3": [
+      "Haaland SOA",
+      "Dortmund ML",
+      "Saka O1.5 shots"
+    ],
+    "SAFE4": [
+      "Haaland SOA",
+      "Guirassy SOA",
+      "Arsenal TT O1.5",
+      "PSV ML"
+    ],
+    "TT_AH": [
+      "Arsenal TT O1.5",
       "Arsenal -1.5",
-      "City -1.5"
+      "Dortmund ML"
     ]
-  }
+  },
+  "soccer_categories": [
+    "SOA",
+    "ATG",
+    "shots",
+    "SOT",
+    "team_totals",
+    "match_OU",
+    "BTTS",
+    "corners",
+    "AH",
+    "ML"
+  ],
+  "rule": "soccer multi-category locked 2026-11-04"
 }
