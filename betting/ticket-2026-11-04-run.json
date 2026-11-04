@@ -1,18 +1,67 @@
 {
   "date": "2026-11-04",
-  "generated_et": "2026-11-04T11:49:13.651509-05:00",
-  "gate": {
-    "status": "PASS",
-    "sheets_ok": "505/505"
-  },
-  "safe3": "Diabate O4.5 REB \u00b7 Kessler O4.5 REB \u00b7 Trae O3.5 AST",
-  "safe4": "Diabate O4.5 \u00b7 Kessler O4.5 \u00b7 Trae O3.5 \u00b7 Maxey O14.5",
-  "sog2": "Bedard O1.5 \u00b7 Reinhart O1.5",
-  "ncaaf": "CMU +1.5 \u00b7 UMass ML",
-  "demotions": [
-    "Ware short minutes",
-    "Embiid ACTIVE gate",
-    "Hartenstein O7.5",
-    "Giannis O24.5"
-  ]
+  "method": "L10_near_perfect_then_matchup_weed",
+  "gate": "PASS",
+  "sheets_ok": "505/505",
+  "safe": [
+    {
+      "player": "Moussa Diabate",
+      "line": 4.5,
+      "cat": "REB",
+      "team": "CHA"
+    },
+    {
+      "player": "Walker Kessler",
+      "line": 4.5,
+      "cat": "REB",
+      "team": "LAL"
+    },
+    {
+      "player": "Jalen Johnson",
+      "line": 4.5,
+      "cat": "REB",
+      "team": "ATL"
+    },
+    {
+      "player": "Trae Young",
+      "line": 3.5,
+      "cat": "AST",
+      "team": "WSH"
+    },
+    {
+      "player": "Tyrese Maxey",
+      "line": 14.5,
+      "cat": "PTS",
+      "team": "PHI"
+    }
+  ],
+  "demoted": [
+    "Jayson Tatum O3.5 AST \u2014 BOS -11.5 coast"
+  ],
+  "cut": [
+    "Naz Reid short min",
+    "Ware short min",
+    "Embiid ACTIVE",
+    "hook ASTs",
+    "floor-5 glass"
+  ],
+  "slips": {
+    "SAFE3": [
+      "Diabate O4.5 REB",
+      "Kessler O4.5 REB",
+      "Trae O3.5 AST"
+    ],
+    "SAFE4": [
+      "Diabate O4.5 REB",
+      "Kessler O4.5 REB",
+      "Trae O3.5 AST",
+      "Maxey O14.5 PTS"
+    ],
+    "SAFE4_alt": [
+      "Diabate O4.5 REB",
+      "Johnson O4.5 REB",
+      "Trae O3.5 AST",
+      "Maxey O14.5 PTS"
+    ]
+  }
 }
