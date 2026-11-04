@@ -1,74 +1,110 @@
-YWP 2026-11-04 — RUN TOMORROW (built night of 11/3)
-GATE PASS date=20261104 sheets=503/503
+YWP 2026-11-04 — FROM SCRATCH EXHAUSTIVE (ET refresh)
+GATE PASS date=20261104 sheets_ok=505/505
 Active: NBA 14 · NHL 4 · NCAAF 3 · NCAAM 26 · NFL 0
-RULES APPLIED (post 11/3 wipe): ≤2 SOG/ticket · split SOG vs sides · no early NCAAM SAFE sides · alt-under +2 only · max 4 legs on primary money · soft glass > vanity REB
+Rules: soft-floor glass > vanity · AST cush≥2 · ≤2 SOG/ticket · split SOG vs sides · no early NCAAM SAFE · alt-under +2 only · short-minutes glass demoted · max 4 on primary cash
 
-=== YDAY CARRY ===
-McDavid 1 SOG / U7.5 / KSU outright = lost-by-1. Do NOT revenge-stack. Smaller card.
-
-=== SAFE — NBA soft glass / AST ===
+=== SAFE — NBA ===
 ★ Moussa Diabate (CHA) O4.5 REB [CHA @ BKN] id=4433249
-   L5 REB=[9, 8, 12, 9, 17] 5/5 cush≥3.5 | soft-floor glass
-★ Kel'el Ware (MIL) O4.5 REB [MIL @ BOS] id=5105623
-   L5 REB=[9, 10, 8, 14, 13] 5/5 | true center soft floor
+   G1 MIN24 PTS7 REB9 AST2 STL3 BLK1
+   G2 MIN28 PTS10 REB8 AST3 STL0 BLK2
+   G3 MIN31 PTS10 REB12 AST1 STL2 BLK0
+   G4 MIN35 PTS9 REB9 AST2 STL0 BLK1
+   G5 MIN35 PTS11 REB17 AST3 STL1 BLK3
+   L5 REB=[9,8,12,9,17] 5/5 cush≥3.5
+★ Walker Kessler (LAL) O4.5 REB [LAL @ SAC] id=4433136
+   G1 MIN32 PTS15 REB15 AST2 STL2 BLK0
+   G2 MIN31 PTS16 REB15 AST1 STL1 BLK3
+   G3 MIN31 PTS10 REB13 AST2 STL0 BLK5
+   G4 MIN26 PTS11 REB9 AST1 STL2 BLK1
+   G5 MIN33 PTS13 REB8 AST0 STL1 BLK2
+   L5 REB=[15,15,13,9,8] 5/5 · O6.5 also 5/5 (PRIMARY climb OK)
 ★ Jalen Johnson (ATL) O4.5 REB [ATL @ WSH] id=4701230
-   L5 REB=[7, 8, 9, 9, 9] 5/5 min7
+   L5 REB=[7,8,9,9,9] 5/5 · full sheet mins 28–38
 ★ Trae Young (WSH) O3.5 AST [ATL @ WSH] id=4277905
-   L5 AST=[9, 9, 8, 10, 9] 5/5 cush≥4.5
+   L5 AST=[9,9,8,10,9] 5/5 cush≥4.5 · O7.5=PRIMARY (two 8s)
 ★ Jayson Tatum (BOS) O3.5 AST [MIL @ BOS] id=4065648
-   L5 AST=[9, 7, 7, 8, 6] 5/5 cush≥2.5
+   L5 AST=[9,7,7,8,6] 5/5 cush≥2.5
+★ Tyrese Maxey (PHI) O14.5 PTS [PHI @ DET] id=4431678
+   L5 PTS=[26,38,27,27,29] 5/5 cush≥6.5 · O19.5 also clears (PRIMARY)
 
 === PRIMARY — NBA ===
 • Karl-Anthony Towns (NY) O4.5 REB [CHI @ NY] id=3136195 L5=[16,12,13,20,14]
-   soft alt OK; if only O10.5+ posted = PRIMARY not SAFE3-only identity
-• Cameron Boozer (MEM) O4.5 REB [IND @ MEM] id=5041935 L5=[9,9,12,7,11]
-• Cedric Coward (MEM) O4.5 REB [IND @ MEM] id=4903027 L5=[9,7,7,11,11]
-• Tyrese Maxey (PHI) O14.5 PTS [PHI @ DET] id=4431678 L5=[26,38,27,27,29]
-• Cade Cunningham (DET) O14.5 PTS [PHI @ DET] id=4432166 L5=[33,20,30,19,26]
-• Jalen Brunson (NY) O14.5 PTS [CHI @ NY] id=3934672 L5=[19,24,38,23,28]
-• Josh Giddey (CHI) O3.5 AST [CHI @ NY] RISK — L5=[10,5,11,4,10] has a 4 (hook)
-
-=== RISK / NO SAFE ===
-Joel Embiid O4.5+ REB — form clears but ACTIVE gate; RISK only until confirmed in
-Nic Claxton REB — L5 has 4s; not 5/5 vs O4.5
-Jalen Duren — n=2 thin; no SAFE
+   soft alt OK · O9.5 PRIMARY (not SAFE3-only vanity)
+• Kessler O6.5 REB · Johnson O6.5 REB · Diabate O6.5 REB
+• Trae O5.5/O7.5 AST (O7.5 L10 7/7 but hook 8s)
+• Cade Cunningham (DET) O14.5 PTS id=4432166 L5=[33,20,30,19,26]
+• Jalen Brunson (NY) O14.5 PTS id=3934672 L5=[19,24,38,23,28]
+• Deni Avdija (POR) O19.5 PTS id=6413189 L5=[28,24,24,23,26] RISK-KEEP (had 18 in L10)
+• Luka Doncic (LAL) O29.5 PTS id=3945274 L5=[42,45,37,41,52] RISK (L10 5/7; 23/28 + LAL −12.5 sit)
+• Cameron Boozer (MEM) O4.5 REB · Cedric Coward (MEM) O4.5 REB
+• Hartenstein O6.5 REB ONLY (not O7.5 — L5 has a 7; L10 4/7 at 7.5)
 
 === BANGERS ===
-⚡ Ware O6.5 REB · Diabate O6.5 REB · Johnson O6.5 REB
-⚡ Trae O5.5 AST · Tatum O5.5 AST
-⚡ Maxey O22.5 PTS · Cade O20.5 PTS
-⚡ Towns O10.5 REB (BANGER only — not instead of soft glass)
+⚡ Kessler O8.5 REB · Diabate O8.5/O9.5 · KAT O12.5
+⚡ Trae O8.5 AST · Tatum O5.5 AST
+⚡ Maxey O22.5/O24.5 · Cade O22.5 · Luka O32.5
+⚡ Giannis O19.5 PTS (not O24.5) · Deni O22.5
+⚡ Dyson Daniels O0.5 STL [ATL @ WSH] L5=[3,3,1,3,1] matchup thief
 
-=== NHL SOG (cap ≤2 on any blessed slip) ===
-★ Connor Bedard (CHI) O1.5 SOG [CHI @ FLA] id=5149125 L5=[4,6,4,3,2] 5/5 avg3.8
+=== STL (matchup-first, not spine stack) ===
+🗡 Dyson Daniels (ATL) O0.5 STL — real POA thief vs WSH
+🗡 Tyrese Maxey (PHI) O0.5 STL — usage @ DET
+🗡 Josh Hart (NY) O0.5 STL — variance; add not SAFE3
+BAN as spines: White/Champagnie/Thybulle-class role D
+
+=== RISK / NO SAFE ===
+Kel'el Ware O4.5 REB — REB clears but MIN L5=[17,24,17,19,29] short-minutes kill risk
+Joel Embiid any — ACTIVE confirm before SAFE (load manage)
+Giannis O24.5 — L5 has 14 · only 3/5 · use O19.5 or skip
+Hartenstein O7.5 — CUT (printed 7) · O6.5 max
+Nic Claxton / thin n samples
+
+=== NHL SOG (≤2 on blessed slip) ===
+★ Connor Bedard (CHI) O1.5 SOG [CHI @ FLA] id=5149125 L5=[4,6,4,3,2] 5/5
 ★ Sam Reinhart (FLA) O1.5 SOG [CHI @ FLA] id=3114722 L5=[3,4,2,2,6] 5/5
 ★ Jack Quinn (BUF) O1.5 SOG [OTT @ BUF] id=4697389 L5=[2,4,3,3,4] 5/5
-• Sam Bennett (FLA) O1.5 · Will Smith (SJ) O1.5 · Rasmus Dahlin (BUF) O1.5
-BAN: 3+ SOG stack · McDavid-class revenge add
+• Sam Bennett · Will Smith · Rasmus Dahlin O1.5
+BAN: 3+ SOG stack · revenge McDavid-class identity
+
+=== NHL sides (optional ticket B) ===
+FLA ML / −1.5 RISK (FLA −258 juice) · LA ML · SEA ML thin
+Prefer PL softs over chalk juice if building sides-only
 
 === NCAAF ===
-★ UMass -3.5 / UMass ML vs Ball State — model 72.8% · RISK-KEEP
-★ Central Michigan +1.5 / ML vs Eastern Michigan — MODEL≠BOARD (EMU -1.5, model CMU 54%) · KEEP flip
-• Toledo ML only vs Sacramento State — BAN -25.5 cover
-CUT: EMU -1.5 · Ball State +3.5 · Toledo -25.5
+★ Central Michigan +1.5 / ML vs Eastern Michigan — MODEL≠BOARD (EMU −1.5, model CMU ~54%) KEEP flip
+★ UMass −3 / ML vs Ball State — model 73% RISK-KEEP
+• Toledo ML only vs Sacramento State — BAN −25.5 cover
+CUT: EMU −1.5 · Ball State + · TOL −25.5
 
 === NCAAM ===
-NO SAFE SIDES (Troy + KSU week). BAN ≥20 covers. Not primary money day-after-wipe.
+NO SAFE SIDES (Troy + KSU week). BAN ≥20 covers (HPU/BTLR/AUB…).
+RISK only if forced: Saint Joseph's −10.5 (model 80%) · LMU −8.5 (75%) · NKU −2.5 coin SKIP
 
-=== CLEAN SLIPS (max 4) ===
-A NBA SAFE3: Diabate O4.5 REB · Ware O4.5 REB · Trae O3.5 AST
-B NBA SAFE4: Diabate · Ware · Trae O3.5 AST · Tatum O3.5 AST
-C SOG only (2): Bedard O1.5 · Reinhart O1.5   | ALT: Bedard · Quinn
-D sides only: CMU +1.5 · UMass ML
-E MIX4 max: Bedard O1.5 · Reinhart O1.5 · Diabate O4.5 · Ware O4.5
+=== BY GAME (NBA spines) ===
+ATL@WSH: Johnson O4.5 REB · Trae O3.5 AST · Daniels STL add
+CHA@BKN: Diabate O4.5 REB
+LAL@SAC: Kessler O4.5/O6.5 REB · Luka PTS PRIMARY not SAFE3 alone
+PHI@DET: Maxey O14.5/O19.5 · Cade O14.5
+MIL@BOS: Tatum O3.5 AST · Ware RISK only
+CHI@NY: KAT O4.5 soft / O9.5 PRIMARY · Brunson O14.5
+CLE@OKC: Hartenstein O6.5 max
+POR@PHX: Deni O19.5 RISK-KEEP
+MIA@LAC: Giannis O19.5 not O24.5
 
-DO NOT: 6–10 legs · revenge McDavid · NCAAM SAFE · U7.5-on-6.5 · Embiid SAFE
+=== CLEAN SLIPS ===
+SAFE3: Diabate O4.5 · Kessler O4.5 · Trae O3.5 AST
+SAFE4: Diabate O4.5 · Kessler O4.5 · Trae O3.5 · Maxey O14.5
+SOG2: Bedard O1.5 · Reinhart O1.5
+MIX4: Kessler O4.5 · Diabate O4.5 · Bedard O1.5 · Reinhart O1.5
+SIDES3: CMU +1.5 · UMass ML · (opt) FLA ML
+UPSIDE4: Kessler O6.5 · Maxey O19.5 · Trae O7.5 · Johnson O6.5
+DO NOT: 8–10 leg climb stack · Ware+Embiid SAFE · Hartenstein O7.5 · Giannis O24.5 · NCAAM SAFE
 
 === BAN ===
-Early NCAAM SAFE sides · ≥3 SOG · alt under without +2 · TOL -25.5 · Embiid before ACTIVE
+Early NCAAM SAFE · ≥3 SOG · U7.5 on 6.5 main · short-minutes glass SAFE · hook O7.5 Hartenstein · TOL −25.5
 
 DONE CHECK
-- require_gate: PASS date=20261104 sheets_ok=503/503
-- GATE date=20261104 status=PASS
+- require_gate: PASS date=20261104 sheets_ok=505/505
+- GATE_TODAY.json date=20261104 status=PASS
 - sheets_path=/cursor/stores/self/betting/GATE_SHEETS_20261104.json
-- BANGERS: yes · athlete_ids: yes · lost-by-1 rules: yes · run tomorrow: yes
+- BANGERS: yes · athlete_ids: yes · from-scratch: yes · lost-by-1 rules: yes
