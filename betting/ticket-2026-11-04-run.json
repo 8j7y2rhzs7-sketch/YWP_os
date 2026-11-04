@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-04",
+  "gate": "PASS",
+  "rules": [
+    "sog_cap_2",
+    "split_tickets",
+    "max4_day_after_wipe",
+    "no_early_ncaam_safe",
+    "soft_glass_first"
+  ],
+  "safe3": "Diabate O4.5 REB \u00b7 Ware O4.5 REB \u00b7 Trae O3.5 AST",
+  "sog2": "Bedard O1.5 \u00b7 Reinhart O1.5",
+  "ncaaf": "CMU +1.5 \u00b7 MASS ML",
+  "generated_et": "2026-11-03T22:54:36.774159-05:00"
+}
