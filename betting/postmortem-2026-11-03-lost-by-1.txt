@@ -1,0 +1,57 @@
+POSTMORTEM 2026-11-03 — lost-by-1/2 accuracy review
+Generated 2026-11-03 10:48 PM EST
+
+=== USER PATTERN ===
+Winning ≥1 parlay; losing the rest by 1–2 legs. Not sabotage — construction + false SAFE floors.
+
+=== GRADE: OUR SAFE SOG BOARD ===
+HIT: Gauthier 3 · Hughes 5 · Draisaitl 4 · Kyle Connor 8 · Boldy 4
+MISS (printed 1): McDavid 1 · MacKinnon 1 · Kaprizov 1 · Hagel 1
+→ SAFE O1.5 "star floors" went 4/8 on the name-brand spines. McDavid killed the main $50 SGPMAX.
+
+=== GRADE: USER SLIPS WE BLESSED ===
+SGPMAX (McDavid/Hughes/Drai + Ohio -4.5 + M-OH -5.5 + Gauthier):
+  SOG: Hughes HIT · Drai HIT · McDavid MISS(1) · Gauthier HIT
+  CFB: Ohio -4.5 HIT (28-20) · M-OH -5.5 live covering Q4
+  → Dead on McDavid alone if grade sticks — classic lost-by-1
+
+8-leg soft PL/totals (after cutting Jets + 1H):
+  HIT: Ohio -5.5 · DAL/WSH O3.5 · Utah +1.5 · TB ML · STL +2.5 · PIT +2.5
+  MISS: COL/CBJ U7.5 (final 2-7 = 9 goals)
+  LIVE: ANA ML (led after 2)
+  → U7.5 was the 1-leg kill on an otherwise soft ticket
+  NOTE: Jets +1.5 we CUT would have HIT (WPG 5-4 OT) — over-weed risk real
+
+NHL sides weed:
+  Correct CUT: NJ ML (EDM lost SO but NJ won — wait NJ won 4-3 SO so NJ ML HIT)
+  Actually NJ ML would have HIT — our CUT was wrong on result
+  CAR +1.5 MISS (CAR 1-4 NSH) — heavy fav PL still died
+  UTA/TOR O6.5 MISS (5 goals)
+
+NCAAM:
+  KSU ML/-11.5 BEST play → SDST 68 KSU 66 OUTRIGHT LOSS (Troy 2.0)
+  DUQ won by 7 (−6.5 covers, −9.5 dies) — soft alt right
+  GT ML crushed 75-55
+
+=== ROOT CAUSES ===
+1. STAR SOG FALSE LOCKS — McDavid/MacKinnon/Kaprizov/Hagel all 1 SOG. L5 5/5 min≥2 ≠ tonight. Stacking 3 EDM/NJ SOG as ticket identity = one cold star nukes everything.
+2. ALT UNDER TOO TIGHT — main 6.5 → U7.5 only +1 cushion; game went 9. Soft under needs more air than soft over/PL.
+3. EARLY NCAAM SIDES — KSU @84.6% home lost outright. Same class as Troy 68%. November week-1/2 sides are upset week; model % lying.
+4. CORRELATED FAILURE — same-game multi-SOG (McD+Drai+Hughes) looks diversified; McDavid still unique variance. Two Oilers SOG enough.
+5. OVER-WEED vs UNDER-WEED — cut Jets +1.5 that cashed; kept McDavid that died. Weed bias toward cutting dogs/PL and keeping star props.
+
+=== RULES TO INCREASE ACCURACY (lock) ===
+1. SOG ticket cap: max TWO O1.5 SOG legs on any blessed parlay unless the third is volume-floor avg≥4 AND min≥3 L5 (Gauthier-class). McDavid-class stars count as 1 each — no free pass.
+2. Never make McDavid/MacKinnon/Kaprizov the sole remaining undecided spine without a SAFER ALT named (different player O1.5 or drop him).
+3. Split products: Ticket A = SOG only (≤4 legs). Ticket B = sides/PL/totals only. Stop cross-stacking so one McDavid void doesn't kill Ohio+M-OH too.
+4. Alt UNDER cushion: soft under must be ≥ main_ou + 2.0 (e.g. main 6.5 → U8.5 only). U7.5 on a 6.5 main = PRIMARY not SAFE.
+5. Early-season NCAAM (first 2 weeks): NO side/ML as SAFE. RISK only if model ≥90% AND ranked fav AND not a mid-major visitor trap — or skip sides entirely. KSU/Troy = ban as SAFE identity.
+6. Soft PL KEEP stays (PIT/STL/Utah cashed) — that tier outperformed star SOG today. Prefer +1.5/+2.5 on close moneylines over third star SOG.
+7. Weed check: before CUT on dog +1.5, ask "is this the Perfetti/Jets cash we always cut?" — require a failure mode, not vibes.
+
+=== WHAT TO BOARD TOMORROW (shape) ===
+SAFE3 example: Gauthier O1.5 · soft PL · soft PL   (not 3 star SOG)
+SAFE4: 2 SOG + 2 soft PL/ML
+Avoid: McDavid+Drai+Hughes+Gauthier as one identity
+Avoid: NCAAM spreads as SAFE
+Avoid: U7.5 when market is 6.5

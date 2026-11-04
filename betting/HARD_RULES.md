@@ -275,3 +275,14 @@ The "1 player" is usually the **climb we weeded** or a **soft-cush PRIMARY** tha
 2. Spread KEEP bar: market agrees with model **and** model ≥**78%**, still prefer ML when RS sample is opener-thin.
 3. Teen covers (−10 to −14) remain RISK even at 85-90% — win first, cover second (same chalk-just-wins lesson).
 4. Never rebuild a Troy-class spine as SAFE3 identity the next day without a higher bar.
+
+## Locked 2026-11-03 — still losing by 1–2 (McDavid 1 SOG / U7.5 / KSU)
+**User:** winning ≥1 parlay; rest die by 1–2 legs — need higher accuracy.
+**Receipts:** McDavid O1.5 → **1 SOG** killed main SGPMAX; MacKinnon/Kaprizov/Hagel also printed 1; COL@CBJ **U7.5** died (final 9) on soft 8-leg; **KSU** (model 84.6%) lost outright to SDST 66-68 (Troy 2.0). Soft PLs (PIT+2.5, STL+2.5, Utah+1.5) and Ohio −5.5 cashed. Jets +1.5 we cut would have hit.
+### Rules
+1. **SOG cap:** ≤2× O1.5 SOG on a blessed parlay unless 3rd is volume-floor (L5 avg≥4 and min≥3). Star names get no exemption.
+2. **Split tickets:** SOG card separate from sides/PL card — do not let one McDavid miss nuke CFB/NHL sides.
+3. **Alt under cushion ≥ +2.0** vs main total (main 6.5 → only U8.5 as soft). U7.5 on 6.5 = PRIMARY/BANGER, not SAFE spine.
+4. **Early NCAAM (openers ≤2 weeks):** no side/ML as SAFE. Troy + KSU outright losses. Skip or RISK-only with ≥90% + ranked chalk.
+5. **Prefer soft PL (+1.5/+2.5 on near-pick'em) over a third star SOG** when building mix length.
+6. **Weed bias check:** dog +1.5 needs an explicit failure mode before CUT (Jets/Perfetti class).
