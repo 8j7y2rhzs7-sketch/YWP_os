@@ -1,0 +1,29 @@
+UNDERDOG 6-PICK WEED 2026-11-05 (ESPN verified)
+1 Bedard H1.5 SOG
+2 Henry H49.5 rush (BAL)
+3 Flowers H4.5 rec (BAL)
+4 Strange H34.5 rec yds (JAX)
+5 Tuten H62.5 rush (JAX)
+6 Tuten H12.5 rec yds (JAX)
+
+KEEP / RISK-KEEP:
+★ Zay Flowers HIGHER 4.5 REC — [8,6,8,8,5,5] 6/6 (ignore 0-target outlier) id=4429615
+★ Derrick Henry HIGHER 49.5 RUSH — [53,45,58,102,73,89,68,144] 7/8 miss=45 id=3043078
+• Bhayshul Tuten HIGHER 62.5 RUSH — [104,39,72,73,73,65,66] 6/7 miss=39 — RISK-KEEP (JAX fav script helps)
+• Connor Bedard HIGHER 1.5 SOG — 9/10 avg5=4.2 BUT CHI @ TB −470 BLOWDOG — RISK not SAFE (blank path live)
+
+CUT:
+✗ Brenton Strange H34.5 REC YDS — [55,44,68,95,32,17,23] 4/7 — three unders including 17/23
+✗ Tuten H12.5 REC YDS as 2nd Tuten — correlated dual; cut the rec side (keep rush only)
+
+MATCHUP NOTES (NFL first):
+- Market JAX −10 / −550: BAL dog script → Henry/Flowers still OK at soft floors; don't also stack 3 JAX skill
+- Max one Tuten leg
+
+REBUILD max4:
+1) Flowers H4.5 REC
+2) Henry H49.5 RUSH
+3) Tuten H62.5 RUSH
+4) Bedard H1.5 SOG (accept blowdog RISK) OR skip Bedard → 3-pick only
+
+BEST3: Flowers · Henry · Tuten rush
