@@ -1,0 +1,79 @@
+YWP 2026-11-05 — UNDER TICKET (posted mains only)
+GATE PASS date=20261105 sheets_ok=649/649
+Sources: LineSmart DK/FD · BetSharp DK · Betravon · MatchWiz · ESPN RS logs
+OUT: Banchero/Suggs/Isaac · M.Williams · Butler/Porzingis/Moody
+
+════════════════════════════════════
+SPINE UNDERS (bet these numbers)
+════════════════════════════════════
+★ Bam Adebayo UNDER 10.5 REB — KEEP
+   DK/FD LineSmart main (opened 9.5▲). L8 REB max=10 → 8/8 under 10.5
+   If your book still has 9.5: UNDER 9.5 = RISK-KEEP (7/8; one 10) — SI also on U9.5
+
+★ Draymond Green UNDER 5.5 PTS — KEEP
+   Betravon main 5.5. L6 PTS=[4,2,3,3,5,2] 6/6 max=5 cush=+0.5
+
+★ Bam Adebayo UNDER 4.5 AST — KEEP (if 4.5 posted)
+   Betravon AST 4.5. L8 AST all ≤4 → 8/8. LineSmart shows 3.5 — do NOT force U3.5 (only 4/8)
+
+★ Connor McDavid UNDER 3.5 SOG — RISK-KEEP
+   MatchWiz/FD main 3.5. L10 under 8/10 (printed 6 once)
+
+★ Nikita Kucherov UNDER 3.5 SOG — RISK-KEEP
+   MatchWiz main 3.5. L10 under 8/10
+
+════════════════════════════════════
+PRIMARY / ADD UNDERS
+════════════════════════════════════
+• Brandin Podziemski UNDER 4.5 AST — RISK-KEEP (8/9)
+• Desmond Bane UNDER 4.5 AST — RISK-KEEP (6/7)
+• Franz Wagner UNDER 6.5 REB — RISK (6/7; had 13 — not spine)
+• Draymond UNDER 5.5 REB — RISK (5/6)
+• Bam UNDER 1.5 threes — RISK-KEEP form (7/8) but DK juice ~−207 — skip in parlays
+• Bam UNDER 13.5 RA (LineSmart) — PRIMARY combo if posted (7/8-ish under)
+• NFL JAX@BAL UNDER 39.5 — RISK (TNF / low total) — not SAFE3 alone
+• JMU@USM UNDER 58.5 — RISK only
+
+════════════════════════════════════
+CUT (do not under these)
+════════════════════════════════════
+✗ Carter U8.5/U9.5 REB — lean OVER path
+✗ Giannis U10.5 REB / U28.5 PTS — lean OVER
+✗ Curry U27.5 PTS — coin / lean OVER
+✗ Melton U4.5 REB · Bane U2.5 threes · Podz U15.5 PTS · Black U14.5
+✗ Hughes/Connor/Bedard/Perfetti/Horvat SOG unders — volume lean OVER
+✗ UTSA@FAU U72.5 — pass high-event
+
+════════════════════════════════════
+UNDER SLIPS (max 4)
+════════════════════════════════════
+SAFE3 UNDER:
+  1. Bam UNDER 10.5 REB   (or U9.5 if that’s your DK number — accept RISK)
+  2. Draymond UNDER 5.5 PTS
+  3. Bam UNDER 4.5 AST     (only if 4.5 is up; else swap Podz U4.5 AST)
+
+SAFE4 UNDER:
+  + McDavid UNDER 3.5 SOG
+  OR Kucherov UNDER 3.5 SOG
+  OR Podz UNDER 4.5 AST
+
+MIX UNDER4 (NBA-heavy):
+  Bam U10.5 REB · Draymond U5.5 PTS · Bam U4.5 AST · Podz U4.5 AST
+  (same-game Bam double OK as SGP — correlated glass/dimes, not dual climb)
+
+TNF sprinkle (solo or 5th never):
+  UNDER 39.5 JAX@BAL — RISK single
+
+DO NOT: stack Bam U9.5 REB + Bam U1.5 threes + juice as “safe”
+DO NOT: under star SOG volume (Hughes/Connor/Bedard)
+
+════════════════════════════════════
+HOW TO FIND ON DK
+════════════════════════════════════
+MIA @ GS → Bam Adebayo → Rebounds → Under 9.5 or 10.5
+MIA @ GS → Bam → Assists → Under 4.5 (if shown; else skip)
+GS vs MIA → Draymond → Points → Under 5.5
+ANA @ EDM → McDavid → Shots → Under 3.5
+CHI @ TB → Kucherov → Shots → Under 3.5
+
+DONE CHECK: gate PASS · posted unders only · OUT check · max 4
