@@ -1,0 +1,24 @@
+SLIP WEED 2026-11-05 (user screenshot ~2:30 ET)
+Legs: Curry O17.5 + Bam O6.5 SGP | Wagner O4.5 AST + Carter O5.5 SGP | UTSA ML | JMU ML | Juve ML | Hughes 2+ SOG
+
+CUT (yday miss-by-1 twins):
+- Bam O6.5 REB — climb; SAFE was O4.5 (Diabate 6-on-6.5 class)
+- Carter O5.5 REB — climb; SAFE was O4.5
+- Wagner O4.5 AST — climb; PRIMARY was O3.5 cush+1.5 → O4.5 cush+0.5
+- Curry O17.5 — mid climb; PRIMARY floor O14.5 (mn=23 so playable as PRIMARY alone, not SGP climb stack)
+- JMU ML −700 — juice ghost; keep only as solo or drop (ML OK vs −13.5 but −700 kills slip EV)
+
+KEEP:
+- UTSA ML (−260)
+- Juventus ML (+105) — best price on card
+- Hughes 2+ / O1.5 (−1000) — volume SAFE; juice but form true
+
+REBUILD max4 soft:
+1) Bam O4.5 REB
+2) Carter O4.5 REB
+3) Hughes O1.5 / 2+ SOG
+4) Juve ML  OR  UTSA ML  OR  Curry O14.5 (pick one)
+
+ALT3 cash: Carter O4.5 · Bam O4.5 · Hughes O1.5
+ALT4 mix: + Juve ML
+DO NOT: both SGPs as built · Bam/Carter climbs · Wagner O4.5 · JMU −700 in same slip as juice SOG
