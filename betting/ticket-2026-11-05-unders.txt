@@ -1,88 +1,55 @@
-YWP 2026-11-05 — UNDER TICKET (posted mains only)
+YWP 2026-11-05 — UNDER TICKET (STATS VERIFIED, NO GUESSES)
 GATE PASS date=20261105 sheets_ok=649/649
-Sources: LineSmart DK/FD · BetSharp DK · Betravon · MatchWiz · ESPN RS logs
-OUT: Banchero/Suggs/Isaac · M.Williams · Butler/Porzingis/Moody
+Pulled: ESPN RS gamelogs only · athlete IDs confirmed via search · NHL S column = shotsTotal (label index 5)
 
 ════════════════════════════════════
-SPINE UNDERS (bet these numbers)
+VERIFIED LEGS (source = ESPN eventIds)
 ════════════════════════════════════
-★ Bam Adebayo UNDER 9.5 REB — RISK-KEEP (USER BOOK)
-   Posted on user book at 9.5 (DK U9.5 ~+104). L8=[10,9,9,9,8,8,6,7] → 7/8 under
-   Miss path = print 10 (did it once, OT vs LAC). Not full KEEP; still #1 under spine.
-   Prefer this number — do not wait on 10.5 if your book is 9.5.
 
-★ Draymond Green UNDER 5.5 PTS — KEEP
-   Betravon main 5.5. L6 PTS=[4,2,3,3,5,2] 6/6 max=5 cush=+0.5
+1) Bam Adebayo UNDER 9.5 REB — RISK-KEEP ★ SPINE
+   id=4066261 · RS n=8
+   REB = [10, 9, 9, 9, 8, 8, 6, 7]
+   U9.5 = 7/8 · miss = 10 (event 401909935, 41 MIN)
+   User book line = 9.5 ✓
 
-✗ Bam Adebayo UNDER 3.5 AST — CUT (USER BOOK)
-   Posted 3.5 on user book. L8 AST=[4,4,3,3,3,4,3,4] → U3.5 only 4/8. Coin. Do not play.
-   U4.5 would be 8/8 KEEP but NOT on this book — skip Bam AST entirely.
+2) Draymond Green UNDER 5.5 PTS — KEEP ★ SPINE
+   id=6589 · RS n=6
+   PTS = [4, 2, 3, 3, 5, 2]
+   U5.5 = 6/6 · max=5
+   Posted main ~5.5 ✓
 
-✗ Andrew Wiggins UNDER 1.5 AST — CUT (USER BOOK)
-   User posts 1.5 not 2.5. L8 AST=[1,2,1,2,1,1,2,1] → U1.5 only 5/8 (prints 2 often). U2.5 was KEEP; U1.5 is not.
-
-★ Connor McDavid UNDER 3.5 SOG — RISK-KEEP
-   MatchWiz/FD main 3.5. L10 under 8/10 (printed 6 once)
-
-★ Nikita Kucherov UNDER 3.5 SOG — RISK-KEEP
-   MatchWiz main 3.5. L10 under 8/10
+3) Connor McDavid UNDER 3.5 SOG — RISK-KEEP ★ SPINE
+   id=3895074 · RS · S column confirmed (labels: G A PTS +/- PIM S …)
+   L10 SOG = [1, 6, 3, 3, 2, 3, 3, 4, 2, 2]
+   U3.5 = 8/10 · misses = 6 and 4
+   Posted main ~3.5 ✓
 
 ════════════════════════════════════
-PRIMARY / ADD UNDERS
+OPTIONAL 4TH (verified)
 ════════════════════════════════════
-✗ Brandin Podziemski UNDER 4.5 AST — CUT (user catch)
-   Fresh ID log AST=[2,8,6,6,5,3] → U4.5 only 2/6. Line moved 3.5→4.5 Hot. Prior board used wrong athlete id.
-• Desmond Bane UNDER 4.5 AST — RISK-KEEP (6/7)
-• Franz Wagner UNDER 6.5 REB — RISK (6/7; had 13 — not spine)
-• Draymond UNDER 5.5 REB — RISK (5/6)
-• Bam UNDER 1.5 threes — RISK-KEEP form (7/8) but DK juice ~−207 — skip in parlays
-• Bam UNDER 13.5 RA (LineSmart) — PRIMARY combo if posted (7/8-ish under)
-• NFL JAX@BAL UNDER 39.5 — RISK (TNF / low total) — not SAFE3 alone
-• JMU@USM UNDER 58.5 — RISK only
+• Desmond Bane UNDER 4.5 AST — RISK-KEEP
+  id=4066320 · RS n=7
+  AST = [3, 1, 6, 4, 2, 0, 2]
+  U4.5 = 6/7 · miss = 6
+  Only if your book shows 4.5 (confirm before adding)
 
-════════════════════════════════════
-CUT (do not under these)
-════════════════════════════════════
-✗ Carter U8.5/U9.5 REB — lean OVER path
-✗ Giannis U10.5 REB / U28.5 PTS — lean OVER
-✗ Curry U27.5 PTS — coin / lean OVER
-✗ Melton U4.5 REB · Bane U2.5 threes · Podz U15.5 PTS · Black U14.5
-✗ Hughes/Connor/Bedard/Perfetti/Horvat SOG unders — volume lean OVER
-✗ UTSA@FAU U72.5 — pass high-event
+• Nikita Kucherov UNDER 3.5 SOG — RISK-KEEP
+  id=2563060
+  L10 SOG = [3, 1, 3, 3, 2, 2, 7, 8, 2, 1]
+  U3.5 = 8/10 · misses = 7 and 8 (volatile)
 
 ════════════════════════════════════
-UNDER SLIPS (max 4)
+CUT — verified bad at USER lines
 ════════════════════════════════════
-SAFE3 UNDER:
-  1. Bam UNDER 9.5 REB
-  2. Draymond UNDER 5.5 PTS
-  3. McDavid UNDER 3.5 SOG
-
-SAFE4 UNDER:
-  + Bane UNDER 4.5 AST (if 4.5 posted)
-  OR Kucherov UNDER 3.5 SOG
-  OR Draymond UNDER 5.5 REB (RISK 5/6)
-
-MIX UNDER4:
-  Bam U9.5 REB · Draymond U5.5 PTS · McDavid U3.5 SOG · Bane U4.5 AST
-  NO Bam AST 3.5 · NO Podz U4.5 · NO Wiggins U1.5
-
-TNF sprinkle (solo or 5th never):
-  UNDER 39.5 JAX@BAL — RISK single
-
-NOTE: Bam U9.5 is RISK-KEEP not iron SAFE — one 10 already this week. Pair with cleaner unders (Draymond U5.5 PTS).
-DO NOT: stack Bam U9.5 REB + Bam U1.5 threes + juice as “safe”
-DO NOT: under star SOG volume (Hughes/Connor/Bedard)
+✗ Bam AST U3.5 — id=4066261 AST=[4,4,3,3,3,4,3,4] → U3.5 = 4/8
+✗ Podziemski AST U4.5 — id=4709138 AST=[2,8,6,6,5,3] → U4.5 = 2/6
+✗ Wiggins AST U1.5 — id=3059319 AST=[1,2,1,2,1,1,2,1] → U1.5 = 5/8
+  (Wiggins U2.5 would be 8/8 — not on your book)
 
 ════════════════════════════════════
-HOW TO FIND ON DK
+PLAY (max 4)
 ════════════════════════════════════
-MIA @ GS → Bam Adebayo → Rebounds → Under 9.5  ← USER NUMBER
-MIA @ GS → Bam → Assists → Under 4.5 (if shown; else skip)
-GS vs MIA → Draymond → Points → Under 5.5
-ANA @ EDM → McDavid → Shots → Under 3.5
-ORL @ PHX → Bane → Assists → Under 4.5 (confirm 4.5)
-ANA @ EDM → McDavid → Shots → Under 3.5
-CHI @ TB → Kucherov → Shots → Under 3.5
+SAFE3: Bam U9.5 REB · Draymond U5.5 PTS · McDavid U3.5 SOG
+SAFE4: + Bane U4.5 AST   OR   Kucherov U3.5 SOG
 
-DONE CHECK: gate PASS · posted unders only · OUT check · max 4
+No other legs until their posted number + ESPN log both clear.
