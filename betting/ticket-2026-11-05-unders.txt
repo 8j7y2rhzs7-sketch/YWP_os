@@ -14,8 +14,9 @@ SPINE UNDERS (bet these numbers)
 ★ Draymond Green UNDER 5.5 PTS — KEEP
    Betravon main 5.5. L6 PTS=[4,2,3,3,5,2] 6/6 max=5 cush=+0.5
 
-★ Bam Adebayo UNDER 4.5 AST — KEEP (if 4.5 posted)
-   Betravon AST 4.5. L8 AST all ≤4 → 8/8. LineSmart shows 3.5 — do NOT force U3.5 (only 4/8)
+✗ Bam Adebayo UNDER 3.5 AST — CUT (USER BOOK)
+   Posted 3.5 on user book. L8 AST=[4,4,3,3,3,4,3,4] → U3.5 only 4/8. Coin. Do not play.
+   U4.5 would be 8/8 KEEP but NOT on this book — skip Bam AST entirely.
 
 ★ Connor McDavid UNDER 3.5 SOG — RISK-KEEP
    MatchWiz/FD main 3.5. L10 under 8/10 (printed 6 once)
@@ -51,16 +52,16 @@ UNDER SLIPS (max 4)
 SAFE3 UNDER:
   1. Bam UNDER 9.5 REB
   2. Draymond UNDER 5.5 PTS
-  3. Bam UNDER 4.5 AST     (only if 4.5 is up; else swap Podz U4.5 AST)
+  3. Podziemski UNDER 4.5 AST   (Bam AST is 3.5 on user book = CUT)
 
 SAFE4 UNDER:
   + McDavid UNDER 3.5 SOG
   OR Kucherov UNDER 3.5 SOG
-  OR Podz UNDER 4.5 AST
+  OR Bane UNDER 4.5 AST
 
-MIX UNDER4 (NBA-heavy):
-  Bam U9.5 REB · Draymond U5.5 PTS · Bam U4.5 AST · Podz U4.5 AST
-  (same-game Bam double OK as SGP — correlated glass/dimes, not dual climb)
+MIX UNDER4:
+  Bam U9.5 REB · Draymond U5.5 PTS · Podz U4.5 AST · McDavid U3.5 SOG
+  NO Bam AST at 3.5
 
 TNF sprinkle (solo or 5th never):
   UNDER 39.5 JAX@BAL — RISK single
