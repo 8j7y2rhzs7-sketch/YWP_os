@@ -1,0 +1,119 @@
+YWP 2026-11-05 — FROM SCRATCH EXHAUSTIVE (ET)
+GATE PASS date=20261105 sheets_ok=649/649
+Active: NBA 2 · NHL 11 · NCAAF 2 · NFL 1 (TNF) · NCAAM 8 · Europa League
+YDAY LOCKS IN FORCE: soft floors only on SAFE · no climb spines · no mismatch −1.5+TT · SOG2 volume bar · live OUT check · max 4 cash
+
+=== OUT / DNP (banned from SAFE) ===
+ORL: Paolo Banchero · Jalen Suggs · Jonathan Isaac · Noah Penda · Izaiyah Nelson — OUT
+PHX: Mark Williams — OUT
+GS: Jimmy Butler III · Kristaps Porzingis · Moses Moody · Gui Santos — OUT
+(Do not board these names.)
+
+=== SAFE — NBA (soft floor only) ===
+★ Wendell Carter Jr. (ORL) O4.5 REB [ORL @ PHX] id=4277847
+   L7 REB=[9,10,7,10,10,9,7] 7/7 cush=+2.5 min≥26
+   (Banchero OUT → Carter glass usage OK; still soft O4.5 only — O6.5=PRIMARY not SAFE)
+★ Bam Adebayo (MIA) O4.5 REB [MIA @ GS] id=4066261
+   L8 REB=[10,9,9,9,8,8,6,7] 8/8 cush=+1.5 min≥30
+★ Giannis Antetokounmpo (MIA) O4.5 REB [MIA @ GS] id=3032977
+   L8 REB=[14,12,18,18,14,6,12,6] 8/8 cush=+1.5 min≥31
+   BAN Giannis O24.5/O19.5 as SAFE (L10 has 14) — soft REB only
+
+=== PRIMARY — NBA ===
+• Stephen Curry (GS) O14.5 PTS id=3975 L6=[34,31,44,24,24,23] 6/6 cush=+8.5 min≥27
+   Butler/Porzingis OUT → usage up; GS −7.5 mild sit risk → PRIMARY not SAFE3-alone
+• Franz Wagner (ORL) O3.5 AST id=4566434 L7=[6,12,11,5,9,5,5] 7/7 cush=+1.5
+   cush<2 → not SAFE; Banchero OUT elevates creation
+• Wendell Carter O6.5 REB — PRIMARY climb only (cush +0.5) — yday Diabate-6-on-6.5 rule
+• Miles Bridges (PHX) O4.5 REB — L6 has a 4 → RISK-KEEP
+• Bam O6.5 REB — BANGER/PRIMARY not SAFE
+
+=== BANGERS — NBA ===
+⚡ Curry O19.5 / O24.5 PTS (floor 23)
+⚡ Giannis O19.5 PTS RISK (had 14) — not spine
+⚡ Carter O8.5 REB · Bam O8.5 REB
+⚡ Wagner O5.5 AST
+⚡ Booker O24.5 only as BANGER (L has a 3)
+⚡ Podziemski / Melton O0.5 STL adds
+
+=== STL (add not spine) ===
+🗡 Collin Gillespie (PHX) O0.5 STL L6=[2,2,4,2,2,4] 6/6
+🗡 Bam O0.5 STL L8 all clear
+BAN: role-D only spines
+
+=== NBA BY GAME ===
+ORL@PHX (PHX −1.5): Carter O4.5 REB · Wagner O3.5 AST PRIMARY · Bridges RISK-KEEP · Ban Banchero/Suggs
+MIA@GS (GS −7.5): Bam O4.5 · Giannis O4.5 REB · Curry O14.5 PRIMARY · Ban Butler/Porzingis props
+
+=== NHL SOG (≤2 · volume bar) ===
+★ Jack Hughes (NJ) O1.5 SOG [STL @ NJ] id=4565222
+   L5=[5,7,2,6,2] 5/5 · L10 10/10 mn=2 avg=4.2 — TRUE volume SAFE
+★ Kyle Connor (WPG) O1.5 SOG [VAN @ WPG] id=3899952
+   L5=[8,2,2,4,3] 5/5 · L10 10/10 mn=2 avg=3.8 — TRUE volume SAFE
+
+PRIMARY / strong RISK-KEEP (not auto SOG2):
+• Alex DeBrincat (DET) L10 10/10 mn=2 avg=3.5 [VGK @ DET]
+• Cole Perfetti (WPG) L10 10/10 mn=2 — correlated w/ Connor (pick ONE Jets)
+• Adam Fantilli (CBJ) · Bo Horvat (NYI) · Lucas Raymond (DET) · Nick Suzuki (MTL)
+• Connor Bedard (CHI) L5 avg=4.2 mn=3 — VOLUME but CHI @ TB −455 BLOWDOG → RISK (yday Smith blank lesson)
+• Cutter Gauthier (ANA) avg5=5.8 — VOLUME but ANA @ EDM BLOWDOG → RISK
+
+BANGERS O2.5: Hughes / Gauthier / Bedard only if volume — still not SAFE spine
+BAN: ≥3 SOG · McDavid-class revenge stack · soft SOG2 (Quinn/Smith class) · CHI/ANA dogs as SOG spine
+
+=== NHL SIDES (Ticket B — split from SOG) ===
+★ BOS +1.5 / PIT +1.5 [BOS @ PIT pick'em −108] — soft PL preferred
+★ CBJ +1.5 @ DAL (−130) · MTL +1.5 vs UTAH (−122)
+★ DET +1.5 vs VGK (−142)
+• NYR ML / −1.5 RISK vs PHI
+BAN: TB −455 ML juice · NJ/WPG/COL/EDM −200+ ML as spine (use PL/−1.5 or skip)
+Prefer soft PL over 3rd SOG
+
+=== NFL TNF — JAX @ BAL ===
+Market: JAX −10 / JAX −520 ML · O/U 39.5 (line flipped from BAL open fav)
+MATCHUP-FIRST: do not chase −520 juice or −10 cover tax (ARS −1.5 twin).
+★ JAX ML only if forced — still heavy juice RISK
+• JAX −3 / −3.5 RISK-KEEP max as alt number (not −10)
+• BAL +10 soft PL RISK-KEEP (market overreaction lane)
+• Under 39.5 RISK (script-dependent)
+BAN: JAX −10 as SAFE · JAX −520 as SAFE spine · stack pass overs without role confirm
+
+=== NCAAF ===
+★ UTSA ML vs FAU — model ~75% away · board UTSA −6.5 → ML KEEP / −6.5 RISK-KEEP (not SAFE spread)
+★ JMU ML vs USM — model ~86% · board −13.5 → ML only; BAN −13.5 cover tax (teen chalk)
+CUT: FAU + / USM + as identity · JMU −13.5 SAFE
+
+=== NCAAM ===
+NO SAFE SIDES (Troy+KSU week lock + all boards ≥18). BAN ≥20 covers (FLA −35.5, DUKE −41.5, TEX −41.5, ILL −30.5, ARIZ −30.5, MSU −26.5, TTU −29.5, VAN −18.5).
+
+=== EUROPA (multi-cat — not ML-only) ===
+LIVE (no new spine): Milan, Palace, Bournemouth, Lyon/Sociedad groups already kicked.
+PRE-MATCH PRIMARY:
+★ Juventus ML / −0.5 @ AZ (−115) — priced slight chalk
+• Sturm Graz ML (−195) RISK-KEEP mid chalk
+• Torino ML / −0.5 (−135) RISK-KEEP
+SKIP-ML → AH/TT: Leverkusen −330 · Benfica −900 · Sunderland −230
+COIN/DOG: Celta +140 · Celtic/BES boards — PASS ML or DNB only
+SOA/SHOTS/TT: board favorites' #9 SOA only after XI (Juve / Leverkusen / Benfica mismatch TT O1.5 > juice ML)
+BAN: −250+ ML juice · TT + −1.5 same team stack · multi BTTS acca · cards SAFE
+
+=== CLEAN SLIPS (max 4) ===
+SAFE3 NBA: Carter O4.5 REB · Bam O4.5 REB · Giannis O4.5 REB
+SAFE4 NBA: + Curry O14.5 PTS (PRIMARY accept) OR Wagner O3.5 AST
+SOG2: Hughes O1.5 · Connor O1.5
+SOG2-alt: Hughes O1.5 · DeBrincat O1.5 (no Jets double)
+SIDES3: BOS/PIT +1.5 · CBJ +1.5 · DET +1.5
+MIX4: Carter O4.5 · Bam O4.5 · Hughes O1.5 · UTSA ML
+NFL: BAL +10 or JAX −3.5 alone — not −10
+UCL/EL: Juve ML · (opt) Sturm ML — no −1.5+TT
+UPSIDE4: Curry O19.5 · Carter O6.5 · Hughes O2.5 · JMU ML
+DO NOT: Banchero/Butler/Porzingis · Diabate-class O6.5 spines · ARS-style −1.5+TT · Bedard@TB SOG2 · JMU −13.5 · NCAAM SAFE · ≥3 SOG
+
+=== BAN ===
+OUT players · climb glass SAFE · mismatch −1.5 with TT · juice ML ≤−250 soccer/NHL · NCAAM ≥20 · NFL −10 SAFE · soft SOG2 · 5–6 leg cash after yday
+
+DONE CHECK
+- require_gate: PASS date=20261105 sheets_ok=649/649
+- GATE_TODAY.json date=20261105 status=PASS
+- sheets_path=/cursor/stores/self/betting/GATE_SHEETS_20261105.json
+- BANGERS: yes · athlete_ids: yes · OUT check: yes · soft-floor only: yes · yday locks: yes
