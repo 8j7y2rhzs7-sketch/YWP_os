@@ -1,0 +1,62 @@
+YWP 2026-11-05 — ALL KEEPS + RISK-KEEPS (combined)
+Gate PASS · ESPN-verified where noted · posted/user-confirmed lines only
+CUTS omitted. Ghost soft floors omitted unless alt confirmed on a book/app.
+
+════════════════════════════════════
+KEEP
+════════════════════════════════════
+
+NBA
+★ Draymond Green UNDER / LOWER 5.5 PTS — 6/6 [4,2,3,3,5,2] id=6589
+★ Collin Gillespie HIGHER 1.5 STL (Underdog) — 6/6 [2,2,4,2,2,4] id=4278585
+★ Andrew Wiggins LOWER 2.5 AST (Underdog) — 8/8 [1,2,1,2,1,1,2,1] id=3059319
+   (DK/HR at 1.5 = CUT — only 2.5 is KEEP)
+★ Gillespie O0.5 STL (sportsbook main if posted) — 6/6
+★ Stephen Curry O17.5 PTS (DK alt) — 6/6 mn=23
+★ Wendell Carter Jr. O5.5 REB (DK alt) — 7/7 mn=7
+
+NHL
+★ Jack Hughes 2+ / O1.5 SOG (alt) — L10 10/10 mn=2 avg5=4.4 id=4565222
+★ Kyle Connor 2+ / O1.5 SOG (alt) — L10 10/10 mn=2 avg5=3.8 id=3899952
+
+NFL (TNF)
+★ Zay Flowers HIGHER 4.5 REC (Underdog) — 6/6 [8,6,8,8,5,5] id=4429615
+★ Derrick Henry HIGHER 49.5 RUSH (Underdog) — 7/8 miss=45 id=3043078
+
+SIDES
+★ Juventus ML (~+110) — Europa
+★ UTSA ML (~−260) — NCAAF (not −6.5/−7 spread)
+
+════════════════════════════════════
+RISK-KEEP
+════════════════════════════════════
+
+NBA
+• Bam Adebayo UNDER 9.5 REB (user book) — 7/8 miss=10 id=4066261 ★ under spine
+• Wendell Carter Jr. HIGHER 0.5 STL (Underdog) — 6/7
+• Franz Wagner O4.5 AST (DK alt) — 7/7 cush+0.5
+• Bhayshul Tuten HIGHER 62.5 RUSH (Underdog) — 6/7 miss=39 id=4882093
+
+NHL
+• Connor McDavid UNDER 3.5 SOG — L10 8/10 id=3895074 ★ under spine
+• Nikita Kucherov UNDER 3.5 SOG — L10 8/10 id=2563060
+• Connor Bedard HIGHER 1.5 SOG — 9/10 avg5=4.2 BUT CHI@TB blowdog
+• Alex DeBrincat / Perfetti / Horvat / Fantilli / Raymond O1.5–O2.5 SOG — volume RISK-KEEP (not auto SOG2)
+• MTL +1.5 · CBJ +1.5 · DET +1.5 · BOS/PIT +1.5 — soft PL
+• PHX +10.5 (alt PL) · COL ML — soft chalk only
+
+NFL / NCAAF / EUROPA
+• BAL +10 or JAX −3/−3.5 (not JAX −10 / −550)
+• UTSA −6.5/−7 — RISK-KEEP cover (prefer ML)
+• Sturm Graz ML · Torino ML — mid Europa chalk
+
+════════════════════════════════════
+READY SLIPS (from this list only)
+════════════════════════════════════
+UNDER3: Bam U9.5 REB · Draymond U5.5 PTS · McDavid U3.5 SOG
+UD4 NBA: Wiggins L2.5 AST · Gillespie H1.5 STL · Draymond L5.5 PTS · Carter H0.5 STL
+UD3 TNF: Flowers H4.5 REC · Henry H49.5 rush · Tuten H62.5 rush
+DK ALT4: Curry O17.5 · Carter O5.5 REB · Hughes 2+ · Juve ML
+SOG2: Hughes 2+ · Connor 2+
+
+DO NOT mix CUTS back in (Podz AST, Curry AST H4.5, Strange 34.5, Bam AST 3.5, Wiggins AST 1.5, JMU −700 stacks, etc.)
