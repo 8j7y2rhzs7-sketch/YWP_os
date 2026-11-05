@@ -276,6 +276,15 @@ The "1 player" is usually the **climb we weeded** or a **soft-cush PRIMARY** tha
 3. Teen covers (−10 to −14) remain RISK even at 85-90% — win first, cover second (same chalk-just-wins lesson).
 4. Never rebuild a Troy-class spine as SAFE3 identity the next day without a higher bar.
 
+## Locked 2026-11-04 — NBA miss-by-1 climbs (same pattern as ARS −1.5)
+**User:** Basketball too — same miss-by-1. Receipts: Diabate **6 on O6.5**, Bailey **5 on O5.5**, Miller **4 on O4.5**, KAT **12 on O12.5**, Trae **6 on O7.5**; soft floors (Diabate/Kessler/Trae O3.5/Maxey O16.5) cashed. **Jalen Johnson SAFE was OUT**.
+### Rules
+1. **Soft floor is the spine. Climbs are not "almost SAFE."** If O4.5 is the KEEP, do not KEEP O6.5/O8.5/O12.5 on the same player for cash slips or hedges.
+2. **Print-the-number = loss.** Dying 4 vs 4.5 / 5 vs 5.5 / 6 vs 6.5 / 12 vs 12.5 is the basketball version of Arsenal −1.5. Ban stacking climb + soft on one ticket.
+3. **OUT/DNP check is mandatory** the hour before tip for every SAFE/PRIMARY name. Johnson Out = failed task if still boarded.
+4. **Hedge/More slips:** only soft floors + proven volume. No vanity REB (Trae/Maxey REB), no star PTS climbs, no O8.5 glass.
+5. After any miss-by-1 day: autopsy must list soft-floor counterfactual that would have cashed.
+
 ## Locked 2026-11-04 — Will Smith 0 SOG + Arsenal −1.5 (double miss-by-1)
 **Incident:** Same $25 slip. Soccer died on ARS −1.5 (2-1). NHL: Bedard **4 SOG HIT**, Will Smith **0 SOG MISS** (21 min, SJ @ LA blowout). Dropping only −1.5 still loses; cash path was TT-only + Bedard without soft SOG2.
 ### Rules
