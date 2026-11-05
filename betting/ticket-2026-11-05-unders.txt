@@ -6,9 +6,10 @@ OUT: Banchero/Suggs/Isaac · M.Williams · Butler/Porzingis/Moody
 ════════════════════════════════════
 SPINE UNDERS (bet these numbers)
 ════════════════════════════════════
-★ Bam Adebayo UNDER 10.5 REB — KEEP
-   DK/FD LineSmart main (opened 9.5▲). L8 REB max=10 → 8/8 under 10.5
-   If your book still has 9.5: UNDER 9.5 = RISK-KEEP (7/8; one 10) — SI also on U9.5
+★ Bam Adebayo UNDER 9.5 REB — RISK-KEEP (USER BOOK)
+   Posted on user book at 9.5 (DK U9.5 ~+104). L8=[10,9,9,9,8,8,6,7] → 7/8 under
+   Miss path = print 10 (did it once, OT vs LAC). Not full KEEP; still #1 under spine.
+   Prefer this number — do not wait on 10.5 if your book is 9.5.
 
 ★ Draymond Green UNDER 5.5 PTS — KEEP
    Betravon main 5.5. L6 PTS=[4,2,3,3,5,2] 6/6 max=5 cush=+0.5
@@ -48,7 +49,7 @@ CUT (do not under these)
 UNDER SLIPS (max 4)
 ════════════════════════════════════
 SAFE3 UNDER:
-  1. Bam UNDER 10.5 REB   (or U9.5 if that’s your DK number — accept RISK)
+  1. Bam UNDER 9.5 REB
   2. Draymond UNDER 5.5 PTS
   3. Bam UNDER 4.5 AST     (only if 4.5 is up; else swap Podz U4.5 AST)
 
@@ -58,19 +59,20 @@ SAFE4 UNDER:
   OR Podz UNDER 4.5 AST
 
 MIX UNDER4 (NBA-heavy):
-  Bam U10.5 REB · Draymond U5.5 PTS · Bam U4.5 AST · Podz U4.5 AST
+  Bam U9.5 REB · Draymond U5.5 PTS · Bam U4.5 AST · Podz U4.5 AST
   (same-game Bam double OK as SGP — correlated glass/dimes, not dual climb)
 
 TNF sprinkle (solo or 5th never):
   UNDER 39.5 JAX@BAL — RISK single
 
+NOTE: Bam U9.5 is RISK-KEEP not iron SAFE — one 10 already this week. Pair with cleaner unders (Draymond U5.5 PTS).
 DO NOT: stack Bam U9.5 REB + Bam U1.5 threes + juice as “safe”
 DO NOT: under star SOG volume (Hughes/Connor/Bedard)
 
 ════════════════════════════════════
 HOW TO FIND ON DK
 ════════════════════════════════════
-MIA @ GS → Bam Adebayo → Rebounds → Under 9.5 or 10.5
+MIA @ GS → Bam Adebayo → Rebounds → Under 9.5  ← USER NUMBER
 MIA @ GS → Bam → Assists → Under 4.5 (if shown; else skip)
 GS vs MIA → Draymond → Points → Under 5.5
 ANA @ EDM → McDavid → Shots → Under 3.5
