@@ -1,98 +1,80 @@
-YWP 2026-11-05 — REDO FROM LIVE POSTED LINES (ET ~2:35)
-Gate PASS date=20261105 · sheets 649/649
-Sources (scraped, not guessed):
-  Betravon REB/AST/PTS boards · Dynatyze DK prices · Optimal/Propvig NHL SOG
-  PlayerProps.ai FanDuel SOG · user DK slip (alts confirmed live)
-  ESPN NCAAF/NFL · Europa ML screens
+YWP 2026-11-05 — FRESH FROM SCRATCH (ET ~2:45)
+GATE PASS date=20261105 sheets_ok=649/649
+Sources: Betravon · LineSmart (DK/FD) · MatchWiz/Optimal SOG · ESPN scoreboard/injuries · user DK slip alts
 
-RULE: every KEEP below cites a posted main OR a confirmed alt. No ghost O4.5/O3.5/O14.5 instructions.
+Active: NBA 2 · NHL 11 · NCAAF 2 · NFL 1 · Europa (pre left)
+OUT: ORL Banchero/Suggs/Isaac · PHX Mark Williams · GS Butler/Porzingis/Moody/Santos
 
 ════════════════════════════════════
-A) MAINS — what books actually post (use these first)
+1) POSTED MAINS — look for these numbers
 ════════════════════════════════════
 
-NBA PTS (Betravon/Dynatyze)
-  Curry 27.5 · Giannis 28.5 · Bam 21.5 · Wagner 23.5 · Booker 24.5/25.5
-  Bane 20.5 · Carter 12.5 · Black 14.5 · Gillespie 9.5 · Melton 11.5 · Podz 15.5
-  GRADE: ALL star PTS mains = CUT/PASS as OVER spines (Curry 3/6 vs 27.5 mn=23)
-  ★ Curry O4.5 threes — POSTED (FD ~+122 / SI board) — PRIMARY (L3 cleared 5+)
-
-NBA REB (Betravon — 14–15 books)
-  Giannis 10.5 · Carter 9.5 (some books 8.5) · Bam 9.5 · Bridges 6.5 · Wagner 6.5
-  Melton 4.5 · Podz 5.5 · Draymond 5.5 · Bane/Brooks 4.5 · Wiggins/Curry 3.5
-  ★ Bam UNDER 9.5 REB — KEEP MAIN (1/8 over · mn=6 · SI also on Under)
-  • Carter O8.5 REB (books that post 8.5) — RISK only 5/7 · CUT O9.5 (3/7)
-  • Melton O4.5 REB — RISK 5/8 mn=1 — not spine
-  ✗ Giannis O10.5 · Bam O9.5 · Carter O9.5 · Bridges O6.5 — CUT OVER
-
-NBA AST (Betravon)
-  Wagner 6.5 · Davion 6.5 · Draymond 6.5 · Booker 5.5 · Giannis 5.5 · Curry 4.5 · Bam 4.5/3.5
-  ✗ Wagner O6.5 AST — CUT/PASS as spine (3/7) — alt only
-  ✗ Bam O4.5 AST — CUT (0/8)
-
-NBA STL (usually posted O0.5)
-  ★ Collin Gillespie O0.5 STL — KEEP (6/6 mn=2) — confirm in DK/FD player props
-  • Bam O0.5 STL — RISK-KEEP add (8/8) if posted
-
-NHL SOG MAINS (Optimal / FanDuel PlayerProps / Propvig)
-  Hughes 3.5 · Connor 4.5 · McDavid 3.5 · Bedard 2.5 · Perfetti 2.5
-  ✗ Hughes O3.5 — PASS (5/10) — not SAFE
-  ✗ Connor O4.5 — CUT OVER (3/10)
-  ✗ McDavid O3.5 — CUT OVER (2/10)
-  • Bedard O2.5 — RISK only (7/10 · CHI @ TB blowdog)
-  • Perfetti O2.5 — RISK (7/10)
-
-NCAAF / NFL / EUROPA
-  ★ UTSA ML (~−260) — KEEP · spread −7 RISK-KEEP (not SAFE)
-  ✗ JMU −14.5 — BAN cover · JMU ML (~−650/−700) solo only, not parlay juice
-  ★ Juventus ML / DC (~+100 to −115) — KEEP
-  NFL: JAX −10 / −520 — BAN SAFE · max JAX −3.5 or BAL +10 RISK
+NBA PTS (DK/FD LineSmart)
+  Curry 27.5 · Bam 21.5 · Giannis 28.5 · Wagner 23.5 · Booker 25.5 · Bane 20.5 · Carter 11.5 · Black 14.5 · Podz 15.5
+NBA REB (Betravon / LineSmart)
+  Giannis 10.5 · Bam 10.5 (opened 9.5▲) · Carter 9.5 (LineSmart 8.5) · Bridges/Wagner/Maluach 6.5 · Melton 4.5 · Podz/Draymond 5.5
+NBA AST
+  Wagner 6.5 · Giannis/Davion/Draymond 6.5 · Booker 5.5 · Curry/Bam/Gillespie/Black 4.5
+NBA 3PM
+  Curry 4.5 · Bane 2.5 · Lendeborg 2+ (FD) · Booker 1.5
+NHL SOG (MatchWiz/DK/FD)
+  Hughes 3.5 · Connor 3.5 · McDavid 3.5 · Bedard 2.5 · Perfetti 2.5 · Horvat 2.5 · DeBrincat 3.5 · Robertson 2.5
+NCAAF: UTSA −6.5 / ML~−260 · JMU −13.5 / ML~−650 · OU 72.5 / 58.5
+NFL: JAX −10 / ML−520 · OU 39.5
+Europa pre: Juve +110 · Leverkusen −255 · Benfica −400 · Sturm −180 · Torino −140
 
 ════════════════════════════════════
-B) ALTS CONFIRMED ON DRAFTKINGS (your slip = live proof)
+2) GRADES vs POSTED (L10/RS)
 ════════════════════════════════════
-These are the soft numbers DK actually lets you build — use when mains suck.
 
-  ★ Stephen Curry O17.5 PTS — KEEP (6/6 mn=23 cush=+5.5)
-  ★ Wendell Carter Jr. O5.5 REB — KEEP (7/7 mn=7 cush=+1.5)
-  ★ Jack Hughes 2+ SOG (O1.5) — KEEP (10/10 mn=2) — juice ~−1000 OK for cash spine
-  • Franz Wagner O4.5 AST — RISK-KEEP (7/7 cush=+0.5) — add not spine
-  ✗ Bam Adebayo O6.5 REB — CUT spine (7/8 mn=6 print-number)
-  • Kyle Connor 2+ SOG — KEEP alt if shown (10/10) — pair w/ Hughes as SOG2 max
+KEEP (playable now)
+  ★ Bam Adebayo UNDER 9.5/10.5 REB — MAIN (0–1/8 over 9.5+; LineSmart Bam REB 10.5)
+  ★ Collin Gillespie O0.5 STL — if listed (6/6 mn=2)
+  ★ Juventus ML (+110) — MAIN
+  ★ UTSA ML (~−260) — MAIN (not −6.5 SAFE)
 
-If DK shows lower alts than mains, prefer: Carter ≤O5.5 · Curry ≤O19.5 · Wagner ≤O4.5 · Hughes 2+ · Bam ≤O5.5 only
+KEEP — DK ALTS confirmed on book today
+  ★ Stephen Curry O17.5 PTS (6/6 mn=23) — alt under main 27.5
+  ★ Wendell Carter Jr. O5.5 REB (7/7 mn=7) — alt under main 8.5/9.5
+  ★ Jack Hughes 2+ SOG (10/10 mn=2) — alt under main 3.5
+  ★ Kyle Connor 2+ SOG (10/10 mn=2) — alt under main 3.5 — SOG2 partner
 
-════════════════════════════════════
-C) CASH SLIPS — ONLY POSTED / CONFIRMED
-════════════════════════════════════
-SAFE3 (DK alts you already had):
-  1. Curry O17.5 PTS
-  2. Carter O5.5 REB
-  3. Hughes 2+ SOG
+RISK-KEEP
+  • Franz Wagner O4.5 AST alt (7/7 cush+0.5) — not main 6.5
+  • DeBrincat O2.5 SOG (8/10) · Perfetti O2.5 · Bedard O2.5 (blowdog CHI@TB)
+  • Bane O2.5 threes (5/7) · Podz O15.5 PTS (7/9 thin)
+  • Soft PL: BOS/PIT +1.5 · CBJ +1.5 · DET +1.5 · BAL +10
 
-SAFE4:
-  + Juventus ML   OR   UTSA ML   OR   Gillespie O0.5 STL
+CUT / PASS
+  ✗ Curry O27.5 PTS (3/6) · Carter O9.5 REB (3/7) · Carter O8.5 (5/7 RISK only)
+  ✗ Bam O6.5/O9.5/O10.5 OVER · Wagner O6.5 AST · Wagner O23.5 PTS
+  ✗ Hughes O3.5 SOG (5/10) · Connor O3.5/4.5 · McDavid O3.5 (2/10)
+  ✗ JMU −13.5 · JMU −650 in parlays · JAX −10 · Benfica/Leverkusen juice ML
+  ✗ NCAAM chalk ≥18 · OUT players
 
-MAIN-book path (no alt dig):
-  Bam UNDER 9.5 REB · Gillespie O0.5 STL · UTSA ML · Juve ML
-
-SOG2 (alts): Hughes 2+ · Connor 2+   — do NOT use Hughes O3.5 / Connor O4.5 as the pair
-
-MIX4 no Bam climb:
-  Curry O17.5 · Carter O5.5 · Hughes 2+ · Juve ML
-
-CUT from your earlier slip:
-  Bam O6.5 · JMU −700 in the parlay · Wagner O4.5 as required spine
+BANGERS
+  ⚡ Curry O4.5 threes RISK · Lendeborg 2+ threes RISK · Booker 6+ AST FD (+172) RISK
+  ⚡ Hughes O3.5 SOG BANGER only · Robertson O2.5 SOG RISK
+  ⚡ UTSA −6.5 / Carter O8.5 REB — not cash spines
 
 ════════════════════════════════════
-D) BAN / DO NOT
+3) CASH SLIPS (max 4 · posted/confirmed only)
 ════════════════════════════════════
-Ghost soft floors (O4.5 REB / O3.5 AST / O14.5 PTS) as bet instructions
-Main overs: Curry 27.5 · Carter 9.5 · Bam 9.5 · Wagner AST 6.5 · Hughes SOG 3.5 · Connor 4.5 · McDavid 3.5
-JMU −14.5 · JAX −10 · NCAAM ≥18 · Bam O6.5 cash spine · 5–6 leg juice stacks
+A) DK-alt SAFE3: Curry O17.5 PTS · Carter O5.5 REB · Hughes 2+ SOG
+B) SAFE4: A + Juventus ML
+C) MIX4: Curry O17.5 · Carter O5.5 · Hughes 2+ · UTSA ML
+D) MAIN-only (no alt dig): Bam UNDER 10.5 REB · Gillespie O0.5 STL · UTSA ML · Juve ML
+E) SOG2 alts: Hughes 2+ · Connor 2+
+F) SIDES3: BOS/PIT +1.5 · CBJ +1.5 · DET +1.5
 
+How to find alts on DK: open player → Points/Rebounds/Shots → scroll alt ladder to 17.5 / 5.5 / 2+
+
+════════════════════════════════════
 DONE CHECK
-- Posted lines searched: YES (Betravon/Dynatyze/Optimal/Propvig/PlayerProps/user DK)
-- Grades vs posted mains + confirmed alts: YES
-- OUT check: Banchero/Suggs/Isaac/M.Williams/Butler/Porzingis/Moody still OUT
+════════════════════════════════════
+- require_gate PASS 20261105 sheets 649/649
+- Posted lines searched + cited: YES
+- OUT check: YES
+- No ghost soft floors as bet instructions: YES
 - Max 4 cash: YES
+- BANGERS included: YES
