@@ -27,11 +27,10 @@ VERIFIED LEGS (source = ESPN eventIds)
 ════════════════════════════════════
 OPTIONAL 4TH (verified)
 ════════════════════════════════════
-• Desmond Bane UNDER 4.5 AST — RISK-KEEP
+✗ Desmond Bane UNDER 3.5 AST — CUT (USER BOOK)
   id=4066320 · RS n=7
   AST = [3, 1, 6, 4, 2, 0, 2]
-  U4.5 = 6/7 · miss = 6
-  Only if your book shows 4.5 (confirm before adding)
+  U3.5 = 5/7 · misses = 6 and 4. U4.5 was 6/7 — not on your book. Skip Bane AST.
 
 • Nikita Kucherov UNDER 3.5 SOG — RISK-KEEP
   id=2563060
@@ -50,6 +49,6 @@ CUT — verified bad at USER lines
 PLAY (max 4)
 ════════════════════════════════════
 SAFE3: Bam U9.5 REB · Draymond U5.5 PTS · McDavid U3.5 SOG
-SAFE4: + Bane U4.5 AST   OR   Kucherov U3.5 SOG
+SAFE4: + Kucherov U3.5 SOG only (Bane is 3.5 on user book = CUT)
 
 No other legs until their posted number + ESPN log both clear.
