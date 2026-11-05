@@ -276,6 +276,14 @@ The "1 player" is usually the **climb we weeded** or a **soft-cush PRIMARY** tha
 3. Teen covers (−10 to −14) remain RISK even at 85-90% — win first, cover second (same chalk-just-wins lesson).
 4. Never rebuild a Troy-class spine as SAFE3 identity the next day without a higher bar.
 
+## Locked 2026-11-04 — Will Smith 0 SOG + Arsenal −1.5 (double miss-by-1)
+**Incident:** Same $25 slip. Soccer died on ARS −1.5 (2-1). NHL: Bedard **4 SOG HIT**, Will Smith **0 SOG MISS** (21 min, SJ @ LA blowout). Dropping only −1.5 still loses; cash path was TT-only + Bedard without soft SOG2.
+### Rules
+1. **SOG2 partner bar:** not just L5 5/5. Prefer L10 mn≥2 or avg L5≥3.5. Form-only wingers with L10 1s (Smith/Quinn class) = RISK add, not blessed SOG2 spine.
+2. **Dog in −1.5/−2 blowout script** (SJ @ LA −166/−7): fade soft O1.5 SOG — blank/low-event is live.
+3. **Default SOG card:** 1 volume SOG (Bedard-class) + soft PL/side — not 2 mediocre O1.5s.
+4. Post-slip autopsy must list **every** miss, not only the first settled killer.
+
 ## Locked 2026-11-04 — Arsenal −1.5 kill (chalk just wins)
 **Incident:** Slip cashed City TT+Haaland SOA + **Arsenal TT O1.5**, died on **ARS −1.5**. Final **Slavia 1–2 Arsenal** — won by 1. User called −1.5 a setup; agent had KEEP'd TT+−1.5 together.
 ### Rules
