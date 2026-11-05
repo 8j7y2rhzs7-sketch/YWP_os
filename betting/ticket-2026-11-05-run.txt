@@ -1,5 +1,6 @@
-POSTED-ONLY CARD (use this): betting/ticket-2026-11-05-posted.txt
-Soft O4.5/O3.5/O14.5 = internal grades only — bet the posted KEeps.
+POSTED REDO (bet this): betting/ticket-2026-11-05-posted.txt
+Live mains: Carter REB 9.5 · Bam REB 9.5 · Curry PTS 27.5 · Wagner AST 6.5 · Hughes SOG 3.5
+DK alts KEEP: Curry O17.5 · Carter O5.5 · Hughes 2+ · (+ Juve/UTSA). CUT Bam O6.5.
 
 YWP 2026-11-05 — FROM SCRATCH EXHAUSTIVE (ET)
 GATE PASS date=20261105 sheets_ok=649/649

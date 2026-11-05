@@ -277,12 +277,13 @@ The "1 player" is usually the **climb we weeded** or a **soft-cush PRIMARY** tha
 4. Never rebuild a Troy-class spine as SAFE3 identity the next day without a higher bar.
 
 ## Locked 2026-11-05 — POSTED lines only (no ghost soft floors)
-**User:** “None of those are there when you do the run you need to start giving me lines that I can use.” Soft O4.5 / O3.5 / O14.5 recommended after weed when the book only posted Curry O17.5 · Bam O6.5 · Wagner O4.5 · Carter O5.5.
+**User:** “None of those are there… Re do the run and search for lines online that they have so you atleast know what to look for.” Soft O4.5 / O3.5 / O14.5 recommended when books posted Carter REB **9.5**, Bam REB **9.5**, Curry PTS **27.5**, Wagner AST **6.5**, Hughes SOG **3.5**; DK alts on slip were Curry O17.5 / Carter O5.5 / Bam O6.5 / Wagner O4.5 / Hughes 2+.
 ### Rules
-1. **Card leads with posted/main lines only.** Never tell the user to bet a line that is not on the book (or not confirmed in their slip/screenshot).
-2. Soft floor is an **internal grade**, not a bet instruction. If O4.5 isn’t posted → climb to nearest posted → **re-grade that number** → KEEP/CUT that number.
-3. Deliverable format: `PLAYER · POSTED LINE · KEEP/CUT/RISK` — no “drop to O4.5” unless that alt is confirmed live.
-4. When weeding a screenshot, rebuild using **only legs visible on that book** (or clearly common mains), not theoretical alts.
+1. **Before every exhaustive card: search live posted lines** (Betravon / Dynatyze / Optimal / book slips / user screenshot). Cite source + number.
+2. **Card has two sections:** (A) MAINS as posted across books (B) CONFIRMED ALTS (screenshot or live book). Never invent soft floors as bet instructions.
+3. Soft floor is an **internal grade**. If O4.5 isn’t posted → climb to nearest posted/main → **re-grade that number** → KEEP/CUT that number. DK alt ladder OK only when confirmed.
+4. Deliverable format: `PLAYER · POSTED LINE · MAIN/ALT · KEEP/CUT/RISK · source`.
+5. When weeding a screenshot, rebuild using **only legs on that book**, then offer MAIN-path alternatives that are actually posted.
 
 ## Locked 2026-11-04 — NBA miss-by-1 climbs (same pattern as ARS −1.5)
 **User:** Basketball too — same miss-by-1. Receipts: Diabate **6 on O6.5**, Bailey **5 on O5.5**, Miller **4 on O4.5**, KAT **12 on O12.5**, Trae **6 on O7.5**; soft floors (Diabate/Kessler/Trae O3.5/Maxey O16.5) cashed. **Jalen Johnson SAFE was OUT**.
