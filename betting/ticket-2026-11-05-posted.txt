@@ -1,0 +1,38 @@
+YWP 2026-11-05 — HR PLAYABLE (POSTED LINES ONLY)
+Gate PASS · user book confirmed via slip screenshot
+RULE: no ghost soft floors — every KEEP below is a line you can actually bet
+
+=== USE THESE (posted / confirmed) ===
+★ Stephen Curry O17.5 PTS — KEEP
+   L6=[23,24,24,44,31,34] 6/6 mn=23 cush=+5.5
+★ Wendell Carter Jr. O5.5 REB — KEEP
+   L7=[7,9,10,10,7,10,9] 7/7 mn=7 cush=+1.5 (posted climb still clears)
+★ Jack Hughes 2+ SOG (O1.5) — KEEP
+   L10 10/10 mn=2 avg5=4.4
+★ Juventus ML (+105) — KEEP
+★ UTSA ML (−260) — KEEP
+
+=== RISK-KEEP (posted, thin cushion — not cash spine alone) ===
+• Franz Wagner O4.5 AST — 7/7 mn=5 cush=+0.5 → RISK-KEEP add only
+• Kyle Connor O1.5 SOG — volume SAFE if posted (pair with Hughes only as SOG2)
+
+=== CUT from cash spine (posted but print-number / juice) ===
+✗ Bam Adebayo O6.5 REB — 7/8 mn=6 cush=−0.5 (had a 6 = Diabate twin)
+✗ JMU ML −700 — juice; OK as solo only, not in parlay
+✗ Giannis REB O6.5+ if that’s the main — mn=6, same print risk
+✗ Any Bam/Carter climb above the KEEP line above
+
+=== CASH SLIPS (only posted legs) ===
+SAFE3: Curry O17.5 PTS · Carter O5.5 REB · Hughes 2+ SOG
+SAFE4: + Juventus ML
+MIX4: Curry O17.5 · Carter O5.5 · Hughes 2+ · UTSA ML
+ALT4: Carter O5.5 · Hughes 2+ · Juve ML · UTSA ML
+SGP ok: Curry O17.5 alone (MIA@GS) — do NOT pair with Bam O6.5
+SGP ok: Carter O5.5 alone (ORL@PHX) — Wagner O4.5 only as RISK add
+
+=== YOUR SLIP WEED (rebuild) ===
+KEEP: Curry O17.5 · Carter O5.5 · Hughes 2+ · Juve · UTSA
+CUT: Bam O6.5 · JMU −700
+OPTIONAL ADD: Wagner O4.5 (RISK only)
+
+Drop to max 4: Curry O17.5 · Carter O5.5 · Hughes 2+ · Juve ML
