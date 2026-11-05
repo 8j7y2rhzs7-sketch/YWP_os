@@ -18,6 +18,9 @@ SPINE UNDERS (bet these numbers)
    Posted 3.5 on user book. L8 AST=[4,4,3,3,3,4,3,4] → U3.5 only 4/8. Coin. Do not play.
    U4.5 would be 8/8 KEEP but NOT on this book — skip Bam AST entirely.
 
+★ Andrew Wiggins UNDER 2.5 AST — KEEP
+   Betravon main 2.5. L8 AST=[1,2,1,2,1,1,2,1] 8/8 max=2. Cleanest AST under on slate.
+
 ★ Connor McDavid UNDER 3.5 SOG — RISK-KEEP
    MatchWiz/FD main 3.5. L10 under 8/10 (printed 6 once)
 
@@ -27,7 +30,8 @@ SPINE UNDERS (bet these numbers)
 ════════════════════════════════════
 PRIMARY / ADD UNDERS
 ════════════════════════════════════
-• Brandin Podziemski UNDER 4.5 AST — RISK-KEEP (8/9)
+✗ Brandin Podziemski UNDER 4.5 AST — CUT (user catch)
+   Fresh ID log AST=[2,8,6,6,5,3] → U4.5 only 2/6. Line moved 3.5→4.5 Hot. Prior board used wrong athlete id.
 • Desmond Bane UNDER 4.5 AST — RISK-KEEP (6/7)
 • Franz Wagner UNDER 6.5 REB — RISK (6/7; had 13 — not spine)
 • Draymond UNDER 5.5 REB — RISK (5/6)
@@ -52,16 +56,16 @@ UNDER SLIPS (max 4)
 SAFE3 UNDER:
   1. Bam UNDER 9.5 REB
   2. Draymond UNDER 5.5 PTS
-  3. Podziemski UNDER 4.5 AST   (Bam AST is 3.5 on user book = CUT)
+  3. Wiggins UNDER 2.5 AST
 
 SAFE4 UNDER:
   + McDavid UNDER 3.5 SOG
   OR Kucherov UNDER 3.5 SOG
-  OR Bane UNDER 4.5 AST
+  OR Bane UNDER 4.5 AST (6/7 RISK-KEEP)
 
 MIX UNDER4:
-  Bam U9.5 REB · Draymond U5.5 PTS · Podz U4.5 AST · McDavid U3.5 SOG
-  NO Bam AST at 3.5
+  Bam U9.5 REB · Draymond U5.5 PTS · Wiggins U2.5 AST · McDavid U3.5 SOG
+  NO Bam AST at 3.5 · NO Podz U4.5 AST
 
 TNF sprinkle (solo or 5th never):
   UNDER 39.5 JAX@BAL — RISK single
@@ -76,6 +80,7 @@ HOW TO FIND ON DK
 MIA @ GS → Bam Adebayo → Rebounds → Under 9.5  ← USER NUMBER
 MIA @ GS → Bam → Assists → Under 4.5 (if shown; else skip)
 GS vs MIA → Draymond → Points → Under 5.5
+MIA @ GS → Andrew Wiggins → Assists → Under 2.5
 ANA @ EDM → McDavid → Shots → Under 3.5
 CHI @ TB → Kucherov → Shots → Under 3.5
 
