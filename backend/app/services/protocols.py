@@ -177,6 +177,11 @@ CURRENT_PROTOCOL = {
             "Flag the likeliest ticket-killer and offer a safer line or remove it.",
             "Do not raise a line for payout without separate hit-rate and cushion approval.",
             "Quarantine critical miss-by-one legs from Cash Builder and Fortress cards.",
+            "WNBA and NBA straight points need a cushion above one point. Two L10 games "
+            "that finish within a point of the number are a hard skip, and spreads of "
+            "1.5 or shorter are the same one-point loss.",
+            "NFL reception overs with three games at two catches or fewer, or a line of "
+            "4.5 or lower with a two-catch game in the last five, are a vanishing role.",
         ],
         "post_result": [
             "Store actual value, line, signed miss distance, whether it killed the ticket, "
@@ -211,6 +216,12 @@ CURRENT_PROTOCOL = {
             "recover the original stake.",
             "Never act on a stale screen, unavailable market, guessed probability, or unverified "
             "injury and lineup change.",
+            "Never cash out a batter prop while a plate appearance remains. A quiet box "
+            "score is not a broken thesis.",
+            "Never cash out a live ticket because a receiver is sitting on two catches. "
+            "That closes the reception leg only, and only after the catch total is final.",
+            "Never cash out a basketball points leg or a spread of 1.5 or shorter just "
+            "because the number is one point away.",
         ],
         "after_action": [
             "Record HOLD, CASH_OUT, PARTIAL_HEDGE, NOT_OFFERED, or NOT_APPLICABLE; the offer, "

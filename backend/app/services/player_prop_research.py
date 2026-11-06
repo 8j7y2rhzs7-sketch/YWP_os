@@ -450,11 +450,28 @@ def enrich_player_prop_candidates(
     return [row if row is not None else candidates[i] for i, row in enumerate(out)]
 
 
+def _prop_live_trigger(sport: str, market: str, existing: str | None) -> str | None:
+    from app.services.live_cashout import locked_live_trigger
+
+    return locked_live_trigger(sport, market) or existing
+
+
 def min_prop_cushion(candidate: CandidateInput) -> float:
     """Minimum average L10 cushion required before a modeled prop can PLAY."""
     scale = float(candidate.cushion_scale or 4.0)
     sport = (candidate.sport or "").lower()
     market = str(candidate.market_type or "").lower()
+    from app.services.calculation_discipline import (
+        is_points_count_market,
+        is_reception_count_market,
+    )
+
+    # Two-catch games sit inside a 1.0 reception cushion. Require a full extra catch.
+    if is_reception_count_market(market):
+        return 1.5
+    # One point is the basketball loss. Straight points need more than that unit.
+    if sport in {"wnba", "nba", "basketball"} and is_points_count_market(market):
+        return 1.5
     if sport in {"nfl", "ncaaf"}:
         return max(1.0, 0.20 * scale)
     if sport == "mlb":
@@ -616,6 +633,7 @@ def _enrich_one(
                 f"Average cushion {avg_cushion:+.2f}; miss-by-1 count L10={miss_by_one}.",
                 "Sportsbook price used only for value comparison after form projection.",
             ],
+            "live_trigger": _prop_live_trigger(sport, market, candidate.live_trigger),
             "ain_checks": {
                 **(candidate.ain_checks or {}),
                 "recent_form_l5_l10": True,

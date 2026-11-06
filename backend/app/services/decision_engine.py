@@ -16,7 +16,9 @@ from app.services.calculation_discipline import (
     line_shave_blockers,
     market_series_blockers,
     minutes_not_production_blockers,
+    one_point_miss_blockers,
     protective_dog_spread_blockers,
+    reception_role_blockers,
     wait_reasons,
 )
 from app.services.pipeline.market_math import compare_to_market
@@ -410,6 +412,18 @@ class DecisionEngine:
             hard_skip_reasons.append(
                 "Minutes/opportunity alone are not production evidence for this volume "
                 f"prop ({code})."
+            )
+            reasons.append(code)
+        for code in one_point_miss_blockers(candidate):
+            hard_skip_reasons.append(
+                "Basketball number can lose by a single point. That is the miss, "
+                f"not a sweat to buy ({code})."
+            )
+            reasons.append(code)
+        for code in reception_role_blockers(candidate):
+            hard_skip_reasons.append(
+                "Reception role can finish the night on two catches. That leg is "
+                f"not a lock ({code})."
             )
             reasons.append(code)
         for code in heavy_juice_blockers(

@@ -227,12 +227,12 @@ def test_wait_is_blocked_from_marketing() -> None:
 def test_health_reports_api_version(client: TestClient) -> None:
     health = client.get("/api/v1/health")
     assert health.status_code == 200
-    assert health.json()["version"] == "3.3.70"
+    assert health.json()["version"] == "3.3.71"
     assert health.json()["database"] == "ok"
     live = client.get("/healthz")
     assert live.status_code == 200
     assert live.json()["status"] == "ok"
-    assert live.json()["version"] == "3.3.70"
+    assert live.json()["version"] == "3.3.71"
 
 
 def test_health_stays_up_when_database_is_down(client: TestClient, monkeypatch) -> None:
@@ -248,7 +248,7 @@ def test_health_stays_up_when_database_is_down(client: TestClient, monkeypatch) 
     body = health.json()
     assert body["status"] == "degraded"
     assert body["database"] == "unavailable"
-    assert body["version"] == "3.3.70"
+    assert body["version"] == "3.3.71"
     live = client.get("/healthz")
     assert live.status_code == 200
     assert live.json()["status"] == "ok"

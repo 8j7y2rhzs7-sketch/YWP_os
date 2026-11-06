@@ -77,6 +77,109 @@ def market_family(market_type: str | None) -> str:
     return text or "unknown"
 
 
+def is_points_count_market(market_type: str | None) -> bool:
+    """Straight points, not a combo. One point is the whole miss."""
+    market = str(market_type or "").lower()
+    if "point" not in market:
+        return False
+    return not any(token in market for token in ("rebounds", "assists", "pra", "threes", "three"))
+
+
+def is_reception_count_market(market_type: str | None) -> bool:
+    """Catch totals only. Yards, TDs, and longest catch are different markets."""
+    market = str(market_type or "").lower()
+    if "reception" not in market:
+        return False
+    return not any(token in market for token in ("yard", "td", "touchdown", "longest"))
+
+
+def is_batter_prop_market(market_type: str | None) -> bool:
+    """Hitter props that can still cash on the next plate appearance."""
+    market = str(market_type or "").lower()
+    if market.startswith("pitcher_") or "strikeout" in market or "allowed" in market:
+        return False
+    tokens = (
+        "player_hits",
+        "player_hr",
+        "player_home_run",
+        "player_rbi",
+        "player_runs",
+        "player_total_bases",
+        "player_walks",
+        "player_hrr",
+        "batter_hits",
+        "batter_home",
+        "batter_rbis",
+        "batter_runs",
+        "batter_total_bases",
+        "batter_walks",
+        "batter_hits_runs",
+    )
+    return any(token in market for token in tokens)
+
+
+def one_point_miss_blockers(candidate: Any) -> list[str]:
+    """WNBA/NBA: a one-point miss is the loss, not noise.
+
+    Straight points props that finish within a point of the number twice in the
+    L10 are blocked even when the average cushion looks fine. Spreads of 1.5
+    or shorter lose on a one-point game.
+    """
+    sport = str(getattr(candidate, "sport", "") or "").lower()
+    market = str(getattr(candidate, "market_type", "") or "").lower()
+    if sport not in {"wnba", "nba", "basketball"}:
+        return []
+    if any(token in market for token in ("spread", "handicap")):
+        line = getattr(candidate, "line", None)
+        if line is not None and abs(float(line)) <= 1.5:
+            return ["ONE_POINT_MISS_GATE"]
+        return []
+    if not is_points_count_market(market):
+        return []
+    line = getattr(candidate, "line", None)
+    values = getattr(candidate, "observation_values", None) or []
+    if line is not None and values:
+        line_f = float(line)
+        is_under = (
+            "_under" in market
+            or " under " in f" {str(getattr(candidate, 'selection', '')).lower()} "
+        )
+        if is_under:
+            shorts = sum(1 for value in values if 0 < (float(value) - line_f) <= 1.0)
+        else:
+            shorts = sum(1 for value in values if 0 < (line_f - float(value)) <= 1.0)
+        if shorts >= 2:
+            return ["ONE_POINT_MISS_GATE"]
+    cushion = getattr(candidate, "average_cushion", None)
+    if cushion is not None and float(cushion) < 1.5:
+        return ["ONE_POINT_MISS_GATE"]
+    return []
+
+
+def reception_role_blockers(candidate: Any) -> list[str]:
+    """NFL catch overs that can end the night on two receptions.
+
+    Three games at two catches or fewer in the L10 is a role that vanishes.
+    A line of 4.5 or lower with any two-catch game in the last five is the
+    same shape: the prop dies when the target share disappears late.
+    """
+    market = str(getattr(candidate, "market_type", "") or "").lower()
+    if not is_reception_count_market(market):
+        return []
+    if "_under" in market or " under " in f" {str(getattr(candidate, 'selection', '')).lower()} ":
+        return []
+    values = [float(value) for value in (getattr(candidate, "observation_values", None) or [])]
+    if len(values) < 5:
+        return []
+    vanished = sum(1 for value in values if value <= 2.0)
+    if vanished >= 3:
+        return ["RECEPTION_ROLE_VANISH"]
+    line = getattr(candidate, "line", None)
+    if line is not None and float(line) <= 4.5 and any(value <= 2.0 for value in values[:5]):
+        return ["RECEPTION_ROLE_VANISH"]
+    return []
+
+
 def is_modeled_prop_market(sport: str | None, market_type: str | None) -> bool:
     sport_l = str(sport or "").lower()
     market_l = str(market_type or "").lower()
