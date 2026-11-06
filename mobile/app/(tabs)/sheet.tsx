@@ -263,8 +263,8 @@ export default function PickSheetScreen() {
   return (
     <Screen sport={board?.sport || sport}>
       <BrandHeader
-        title="PICK SHEET"
-        subtitle="SPORTSBOOK MENU • SELECT ANY MARKET • YWP GRADES YOUR SLIP"
+        title="Pick sheet"
+        subtitle="Sportsbook menu · pick any market · YWP grades the slip"
         compact
         sport={board?.sport || sport}
       />
@@ -322,9 +322,9 @@ export default function PickSheetScreen() {
             );
           })}
         </View>
-        <FormField label="DATE" value={date} onChangeText={setDate} />
+        <FormField label="Date" value={date} onChangeText={setDate} />
         <YwpButton
-          label={loadingBoard ? "LOADING BOARD…" : "LOAD SPORTSBOOK MENU"}
+          label={loadingBoard ? "Loading board…" : "Load sportsbook menu"}
           onPress={() => void loadBoard()}
           loading={loadingBoard}
         />
@@ -401,7 +401,7 @@ export default function PickSheetScreen() {
               <Text style={type.caption}>No markets selected yet.</Text>
             )}
             <FormField
-              label="STAKE ($)"
+              label="Stake ($)"
               value={stake}
               onChangeText={setStake}
               keyboardType="decimal-pad"
@@ -409,8 +409,8 @@ export default function PickSheetScreen() {
             <YwpButton
               label={
                 busy
-                  ? "GRADING SLIP…"
-                  : `GRADE ${Math.max(selected.length, 1)}-LEG SLIP`
+                  ? "Grading slip…"
+                  : `Grade ${Math.max(selected.length, 1)}-leg slip`
               }
               onPress={() => void checkAndBuild()}
               loading={busy}

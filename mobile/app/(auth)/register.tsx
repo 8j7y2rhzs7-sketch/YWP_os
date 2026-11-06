@@ -9,7 +9,7 @@ import { MetalPanel } from "@/components/MetalPanel";
 import { Screen } from "@/components/Screen";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
-import { colors, spacing, type } from "@/theme";
+import { colors, fonts, spacing, type } from "@/theme";
 
 export default function RegisterScreen() {
   const { user, register } = useAuth();
@@ -38,9 +38,9 @@ export default function RegisterScreen() {
 
   return (
     <Screen contentStyle={styles.content} keyboardAware>
-      <BrandHeader title="CREATE ACCOUNT" compact />
+      <BrandHeader title="Create account" compact />
       <MetalPanel tone="gold">
-        <Text style={styles.title}>YOUR PROCESS. YOUR DATA.</Text>
+        <Text style={styles.title}>Your process. Your data.</Text>
         <Text style={type.caption}>
           Recommendations, tickets, results, and learning history remain scoped to
           your authenticated account.
@@ -70,7 +70,7 @@ export default function RegisterScreen() {
           autoComplete="new-password"
           placeholder="10+ chars, upper/lower/number/symbol"
         />
-        <YwpButton label="CREATE YWP ACCOUNT" onPress={() => void submit()} loading={loading} />
+        <YwpButton label="Create account" onPress={() => void submit()} loading={loading} />
         <Link href="/(auth)/login" style={styles.link}>
           Back to login
         </Link>
@@ -81,7 +81,12 @@ export default function RegisterScreen() {
 
 const styles = StyleSheet.create({
   content: { justifyContent: "center", paddingTop: spacing.xl },
-  title: { color: colors.gold, fontSize: 20, fontWeight: "900" },
+  title: {
+    color: colors.goldBright,
+    fontFamily: fonts.displaySemi,
+    fontSize: 22,
+    letterSpacing: -0.4,
+  },
   link: {
     color: colors.gold,
     textAlign: "center",

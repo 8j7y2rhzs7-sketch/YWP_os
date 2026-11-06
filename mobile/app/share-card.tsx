@@ -89,7 +89,7 @@ export default function ShareCardScreen() {
     return (
       <Screen>
         <ErrorNotice message="Sign in required to export decision graphics." />
-        <YwpButton label="SIGN IN" onPress={() => router.replace("/(auth)/login")} />
+        <YwpButton label="Sign in" onPress={() => router.replace("/(auth)/login")} />
       </Screen>
     );
   }
@@ -98,7 +98,7 @@ export default function ShareCardScreen() {
     return (
       <Screen>
         <ErrorNotice message="The selected card is no longer in memory. Return to the Decision Board and open its graphic again." />
-        <YwpButton label="BACK TO PROTOCOL RUN" onPress={() => router.replace("/(tabs)/slate")} />
+        <YwpButton label="Back to protocol run" onPress={() => router.replace("/(tabs)/slate")} />
       </Screen>
     );
   }
@@ -123,8 +123,8 @@ export default function ShareCardScreen() {
           isCustom={card.key === "custom"}
         />
       </View>
-      <YwpButton label="EXPORT / SHARE 1080 × 1350 PNG" onPress={() => void exportCard()} loading={exporting} />
-      <YwpButton label="BACK TO DECISION BOARD" variant="outline" onPress={() => router.back()} />
+      <YwpButton label="Export share image" onPress={() => void exportCard()} loading={exporting} />
+      <YwpButton label="Back to decision board" variant="outline" onPress={() => router.back()} />
     </Screen>
   );
 }

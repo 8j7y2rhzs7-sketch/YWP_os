@@ -68,7 +68,7 @@ export default function LoginScreen() {
         {!keyboardOpen ? (
           <>
             <MotionReveal fromY={24}>
-              <EngineStage size={220} tone="idle" intensity="hero" label="Online" />
+              <EngineStage size={156} tone="idle" intensity="hero" label="Online" />
             </MotionReveal>
 
             <MotionReveal delay={140}>
@@ -94,7 +94,7 @@ export default function LoginScreen() {
 
         <MotionReveal delay={keyboardOpen ? 0 : 280}>
           <MetalPanel tone="gold">
-            <Text style={styles.panelTitle}>COMMAND CENTER LOGIN</Text>
+            <Text style={styles.panelTitle}>Sign in</Text>
             {error ? <ErrorNotice message={error} /> : null}
             <FormField
               label="Email"
@@ -116,7 +116,7 @@ export default function LoginScreen() {
               returnKeyType="go"
               onSubmitEditing={() => void submit()}
             />
-            <YwpButton label="ENTER YWP OS" onPress={() => void submit()} loading={loading} />
+            <YwpButton label="Sign in" onPress={() => void submit()} loading={loading} />
             <Link href="/(auth)/register" style={styles.link}>
               Create a protected account
             </Link>
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   brandMark: {
     color: colors.goldBright,
     fontFamily: fonts.display,
-    fontSize: 36,
+    fontSize: 32,
     fontWeight: "800",
     letterSpacing: -1.1,
   },
@@ -179,11 +179,10 @@ const styles = StyleSheet.create({
   },
   heroBody: { ...type.body, color: colors.silver },
   panelTitle: {
-    color: colors.gold,
-    fontFamily: fonts.bodyBold,
-    fontSize: 12,
-    fontWeight: "700",
-    letterSpacing: 1.2,
+    color: colors.white,
+    fontFamily: fonts.displaySemi,
+    fontSize: 22,
+    letterSpacing: -0.4,
   },
   link: {
     color: colors.circuitBlueBright,

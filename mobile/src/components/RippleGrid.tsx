@@ -71,8 +71,11 @@ export function RippleGrid({
         <View key={`row-${row}`} style={styles.row}>
           {Array.from({ length: cols }).map((__, col) => {
             const cell = cells.find((c) => c.row === row && c.col === col)!;
-            const start = Math.max(0.02, cell.dist / maxDist);
-            const peak = Math.min(0.98, start + 0.22);
+            // Keep 0 < start < peak < 1. A corner cell used to set start=1 and peak=0.98,
+            // which crashes Animated.interpolate on web.
+            const norm = cell.dist / maxDist;
+            const start = 0.08 + norm * 0.52;
+            const peak = start + 0.22;
             const lift = wave.interpolate({
               inputRange: [0, start, peak, 1],
               outputRange: [0, 0, -12, 0],

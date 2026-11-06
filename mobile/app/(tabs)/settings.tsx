@@ -16,7 +16,7 @@ import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
 import { getApiUrl, PRODUCTION_API_URL } from "@/lib/api";
 import { submitErrorReport } from "@/lib/errorReporting";
-import { colors, radius, spacing, type } from "@/theme";
+import { colors, fonts, radius, spacing, touch, type } from "@/theme";
 import type {
   Bankroll,
   ProtocolDefinition,
@@ -165,7 +165,7 @@ export default function SettingsScreen() {
 
   return (
     <Screen>
-      <BrandHeader title="SYSTEM CONTROLS" subtitle="BANKROLL • PROTOCOL • ACCOUNT" compact />
+      <BrandHeader title="Controls" subtitle="Bankroll, protocol, account" compact />
       <MotionReveal fromY={16}>
         <EngineStage size={150} tone="idle" intensity="standard" label="Controls" />
       </MotionReveal>
@@ -206,7 +206,7 @@ export default function SettingsScreen() {
               style={[styles.profile, risk === profile && styles.profileActive]}
             >
               <Text style={[styles.profileText, risk === profile && styles.profileTextActive]}>
-                {profile.toUpperCase()}
+                {profile}
               </Text>
             </Pressable>
           ))}
@@ -225,13 +225,13 @@ export default function SettingsScreen() {
             onChangeText={setTxnAmount}
           />
           <YwpButton
-            label="DEPOSIT"
+            label="Deposit"
             onPress={() => void submitTxn("deposit")}
             style={styles.txnBtn}
             loading={txnLoading}
           />
           <YwpButton
-            label="WITHDRAW"
+            label="Withdraw"
             variant="danger"
             onPress={() => void submitTxn("withdrawal")}
             style={styles.txnBtn}
@@ -247,7 +247,7 @@ export default function SettingsScreen() {
         <FormField label="Maximum daily exposure (%)" value={dailyExposure} onChangeText={setDailyExposure} keyboardType="decimal-pad" />
         <FormField label="Maximum exposure per thesis (%)" value={thesisExposure} onChangeText={setThesisExposure} keyboardType="decimal-pad" />
         <FormField label="Pause after consecutive losses" value={lossPause} onChangeText={setLossPause} keyboardType="number-pad" />
-        <YwpButton label="SAVE PROTECTED CONTROLS" onPress={() => void save()} loading={saving} />
+        <YwpButton label="Save controls" onPress={() => void save()} loading={saving} />
       </MetalPanel>
 
       <SectionTitle title="Canonical Protocol" subtitle="Visible version prevents fallback to old rules." />
@@ -277,7 +277,7 @@ export default function SettingsScreen() {
           If gambling is no longer fun, take a break. You are always in control.
         </Text>
         <YwpButton
-          label="NATIONAL PROBLEM GAMBLING HELPLINE"
+          label="Gambling helpline"
           variant="outline"
           onPress={() => {
             if (typeof window !== "undefined" && window.open) {
@@ -298,11 +298,11 @@ export default function SettingsScreen() {
         <View style={styles.profileRow}>
           {(
             [
-              ["pick_quality", "PICKS"],
-              ["ticket_build", "CARDS"],
-              ["data", "DATA"],
+              ["pick_quality", "Picks"],
+              ["ticket_build", "Cards"],
+              ["data", "Data"],
               ["ui", "UI"],
-              ["other", "OTHER"],
+              ["other", "Other"],
             ] as const
           ).map(([value, label]) => (
             <Pressable
@@ -323,20 +323,25 @@ export default function SettingsScreen() {
           placeholder="Example: #1 pick never showed on Max Bet / cards looked off"
         />
         <YwpButton
-          label="SEND ERROR REPORT"
+          label="Send report"
           onPress={() => void submitReport()}
           loading={reportLoading}
         />
         {reportMsg ? <Text style={styles.txnMsg}>{reportMsg}</Text> : null}
       </MetalPanel>
 
-      <YwpButton label="SIGN OUT" variant="danger" onPress={() => void signOut()} />
+      <YwpButton label="Sign out" variant="danger" onPress={() => void signOut()} />
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  title: { color: colors.white, fontSize: 20, fontWeight: "900" },
+  title: {
+    color: colors.white,
+    fontFamily: fonts.displaySemi,
+    fontSize: 20,
+    letterSpacing: -0.3,
+  },
   saved: { color: colors.success, fontWeight: "800" },
   profileRow: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
   profile: {
@@ -346,11 +351,19 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     backgroundColor: colors.backgroundRaised,
     borderRadius: radius.md,
-    padding: spacing.md,
+    minHeight: touch.min,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
     alignItems: "center",
+    justifyContent: "center",
   },
   profileActive: { borderColor: colors.gold, backgroundColor: colors.surfaceGold },
-  profileText: { color: colors.muted, fontWeight: "900", fontSize: 11 },
+  profileText: {
+    color: colors.muted,
+    fontFamily: fonts.bodyBold,
+    fontSize: 13,
+    textTransform: "capitalize",
+  },
   profileTextActive: { color: colors.gold },
   row: { flexDirection: "row", alignItems: "center", gap: spacing.md },
   flex: { flex: 1, gap: spacing.xs },
@@ -362,13 +375,14 @@ const styles = StyleSheet.create({
   txnInput: {
     flex: 1,
     minWidth: 100,
+    minHeight: touch.comfortable,
     borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: colors.backgroundRaised,
     borderRadius: radius.md,
     padding: spacing.md,
     color: colors.white,
-    fontWeight: "700",
+    fontFamily: fonts.body,
     fontSize: 16,
   },
   txnBtn: { minWidth: 90 },
