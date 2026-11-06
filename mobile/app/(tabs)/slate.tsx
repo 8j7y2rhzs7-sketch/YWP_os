@@ -127,8 +127,9 @@ function CompactCandidateRow({
         </Text>
       </View>
       <Text style={styles.denseOdds}>
-        {candidate.american_odds > 0 ? "+" : ""}
-        {candidate.american_odds}
+        {candidate.market_type === "schedule" || candidate.american_odds === 0
+          ? "—"
+          : `${candidate.american_odds > 0 ? "+" : ""}${candidate.american_odds}`}
       </Text>
     </View>
   );
@@ -335,20 +336,11 @@ export default function SlateScreen() {
   async function loadSlate() {
     const requestSport = sport;
     const requestDate = date;
-    const catalog = catalogByKey[requestSport];
     warmEpoch.current += 1;
     const epoch = warmEpoch.current;
     setLaunchArmed(false);
     setWarming(false);
     setResearchNote(null);
-    if (requestSport !== "mlb" && catalog?.in_season === false) {
-      setSlate(null);
-      setLoadingSlate(false);
-      setError(
-        `${catalog.label} is out of season — paid Odds refresh skipped. Pick an in-season sport.`,
-      );
-      return;
-    }
     setLoadingSlate(true);
     setError(null);
     setSlate(null);
@@ -637,7 +629,9 @@ export default function SlateScreen() {
               <View style={styles.flexGrow}>
                 <Text style={type.eyebrow}>SLATE HEAT</Text>
                 <Text style={styles.noticeTitle}>
-                  {slate.candidates.length.toLocaleString()} priced plays ready
+                  {slate.candidates.every((row) => row.market_type === "schedule")
+                    ? `${slate.candidates.length.toLocaleString()} games on the scoreboard`
+                    : `${slate.candidates.length.toLocaleString()} priced plays ready`}
                 </Text>
               </View>
               <StatusPill value={`${slate.candidates.length}`} />
