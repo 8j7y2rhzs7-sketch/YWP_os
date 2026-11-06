@@ -1,0 +1,46 @@
+CORRELATION CHECK — 2026-11-06 slip legs (RS L10 shared dates)
+
+════════════════════════════════════════
+STRUCTURAL LINKS TONIGHT
+════════════════════════════════════════
+SAME TEAM / SAME GAME (high exposure)
+  POR@LAL  Kessler (LAL) O6.5 REB + Luka (LAL) O4.5 REB
+           Pearson r = +0.48 → glass/pace lifts BOTH (not zero-sum)
+           8/8 shared dates: both cleared together at these lines
+           Risk: one low-rebound Lakers script pressures both
+           → KEEP Kessler, CUT Luka (diversify)
+
+  SJ@MIN   Boldy (MIN) O1.5 SOG + Ek (MIN) O1.5 SOG
+           Pearson r = −0.42 → they trade shot volume with each other
+           Still both clear O1.5 almost every night
+           → KEEP Boldy only, CUT Ek (no need for 2× MIN SOG)
+
+OPPOSING SAME GAME (mild pace link only)
+  BOS@CHA  Tatum (BOS) O5.5 AST + Naz (CHA) O4.5 REB
+           Different teams/stats; only linked by game pace/total
+           Not a co-bust pair → OK to keep one or both
+
+INDEPENDENT (separate games — true diversifiers)
+  LeBron O4.5 AST     PHI@CLE
+  Ace O3.5 REB        UTAH@DAL
+  Trae O5.5 AST       WSH@ATL
+  Boozer O5.5 REB     OKC@MEM
+  Fantilli O1.5       CBJ@BUF   (cut for print, not correlation)
+  Gauthier O1.5       ANA@CGY   (cut for −1300 chalk)
+
+════════════════════════════════════════
+DO THEY "HAPPEN AT THE SAME TIME"?
+════════════════════════════════════════
+YES — move together:
+  Kessler + Luka  (same Lakers glass script)
+  Boldy + Ek      (same Wild shot script; volume split but both usually 2+)
+
+MOSTLY NO — separate clocks:
+  Ace / Boozer / Trae / LeBron / Fantilli / Gauthier
+  Tatum vs Naz only share the BOS@CHA tip, not the same team outcome
+
+════════════════════════════════════════
+CORRELATION WEED
+════════════════════════════════════════
+CUT for correlation:  Luka O4.5 · Ek O1.5
+KEEP uncorrelated core: Kessler · Boozer · Boldy · Trae/Tatum · Ace O3.5
