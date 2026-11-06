@@ -1,0 +1,64 @@
+BEST L10 CLIMBS — 2026-11-06 (RS-only ESPN · form grades · HR-check before bet)
+Rule: climb = highest line still clearing SAFE (100% + cush≥0.5) or RISK (≥85%)
+Sources: nba-l10-top + nhl-l10-sog + full climb regrade
+
+════════════════════════════════════════
+TIER A — BEST SAFE CLIMBS (bet these first)
+Highest line that is still 100% clear with cushion
+════════════════════════════════════════
+ 1  Maxey O18.5 PTS        PHI@CLE   9/9  cush+0.5   L=[19,26,38,27,27,29,26,32,28]
+ 2  Kessler O6.5 REB       POR@LAL   9/9  cush+0.5   L=[8,15,15,13,9,8,7,8,9]
+ 3  Wembanyama O6.5 REB    SA@SAC    8/8  cush+0.5   L=[24,11,7,14,10,7,13,13]
+ 4  Trae Young O5.5 AST    WAS@ATL   8/8  cush+0.5   L=[6,9,9,8,10,9,12,13]
+ 5  Cameron Boozer O5.5 REB OKC@MEM  8/8  cush+0.5   L=[6,9,9,12,7,11,13,11]
+ 6  Tatum O5.5 AST         BOS@CHA   7/7  cush+0.5   L=[9,7,7,8,6,7,11]
+ 7  Naz Reid O4.5 REB      BOS@CHA   9/9  cush+0.5
+ 8  Ace Bailey O4.5 REB    UTAH@DAL  8/8  cush+0.5
+ 9  Luka O4.5 REB / AST    POR@LAL   8/8 both
+10  LeBron O4.5 AST        PHI@CLE   7/7  cush+0.5
+
+NHL SAFE (no climb past O1.5 clears 100%)
+ · Boldy / Eriksson Ek / Fantilli / Gauthier  O1.5 SOG  10/10 each
+
+DO NOT climb these past SAFE:
+ · Wemby O7.5 REB — FAIL (print floor is O6.5)
+ · Trae O6.5 AST — RISK only (one 6)
+ · Kessler O7.5 REB — RISK only (one 7)
+
+════════════════════════════════════════
+TIER B — BEST RISK CLIMBS (one miss allowed)
+Use as juice / SGP bump only — not spine
+════════════════════════════════════════
+ 1  Maxey O25.5 PTS        8/9 (89%)  miss=[19]   ← biggest PTS climb
+ 2  Gobert O8.5 REB        7/8 (88%)  miss=[4]    ← soft floor only O3.5 SAFE
+ 3  Kessler O7.5 REB       8/9 (89%)  miss=[7]
+ 4  Trae Young O7.5 AST    7/8 (88%)  miss=[6]    ← O6.5 also RISK
+ 5  Boozer O6.5 REB        7/8 (88%)  miss=[6]
+ 6  Tatum O6.5 AST         6/7 (86%)  miss=[6]
+ 7  Naz Reid O5.5 REB      8/9 (89%)  miss=[5]
+ 8  Luka O5.5 REB / AST    7/8 (88%)  miss=[5]
+ 9  Boldy O2.5 SOG         9/10(90%)  miss=[2]    ← best NHL climb
+
+════════════════════════════════════════
+RECOMMENDED CLIMB SLIPS (max 3–4 · form → HR confirm)
+════════════════════════════════════════
+CLIMB3 SAFE (highest clear lines)
+  Kessler O6.5 REB · Trae O5.5 AST · Wemby O6.5 REB
+
+CLIMB3 ALT
+  Maxey O18.5 PTS · Boozer O5.5 REB · Tatum O5.5 AST
+
+CLIMB4 MIX (NBA + NHL)
+  Kessler O6.5 REB · Trae O5.5 AST · Naz O4.5 REB · Boldy O1.5 SOG
+
+JUICE ONE-LEG (if you must bump)
+  Maxey O25.5 PTS  OR  Boldy O2.5 SOG  OR  Kessler O7.5 REB
+  — never stack two RISK climbs in the same slip
+
+════════════════════════════════════════
+CUT / ALREADY FAILED CLIMBS
+════════════════════════════════════════
+ · Wemby O7.5 / Trae O6.5 as SAFE spines (user slips) — form says RISK/CUT
+ · Soft U28.5+ PTS “clears” — not climbs
+ · Celebrini SOG climb — SJ −285 blowdog, ignore as spine
+ · SGA PR Day Forge L10 — playoff mix, invalid
