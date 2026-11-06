@@ -530,14 +530,17 @@ def _enrich_one(
     if not athlete:
         return None
 
-    season = (slate_date or candidate.start_time.date()).year
+    slate = slate_date or candidate.start_time.date()
+    season = espn_player_season(sport, slate)
     log = espn_provider.get_athlete_gamelog(sport, athlete["id"], season=season, last_n=12)
-    values = _stat_series(log.get("games") or [], stat_key)
+    values = _stat_series(_games_for_current_log(log.get("games") or []), stat_key)
     if len(values) < 5:
         prior = espn_provider.get_athlete_gamelog(
             sport, athlete["id"], season=season - 1, last_n=12
         )
-        values = _stat_series(prior.get("games") or [], stat_key) + values
+        values = (
+            _stat_series(_games_for_current_log(prior.get("games") or []), stat_key) + values
+        )
         log = prior if len(values) >= 5 and not log.get("verified") else log
     if len(values) < 5:
         return None
@@ -628,7 +631,7 @@ def _enrich_one(
                 )
             ),
             "reasoning": [
-                f"ESPN {sport.upper()} L10 {stat_key}: {[round(v, 1) for v in l10]}.",
+                f"ESPN {sport.upper()} L{len(l10)} {stat_key}: {[round(v, 1) for v in l10]}.",
                 f"Independent hit rate vs {line:g}: {hit_rate:.0%} (model p={probability:.3f}).",
                 f"Average cushion {avg_cushion:+.2f}; miss-by-1 count L10={miss_by_one}.",
                 "Sportsbook price used only for value comparison after form projection.",
@@ -676,6 +679,29 @@ def _injury_state(
             if espn_provider._is_out(str(entry.get("status") or "")):
                 return "out"
     return "clear"
+
+
+def espn_player_season(sport: str, slate: date) -> int:
+    """ESPN season id for a player log.
+
+    NBA ids are the year the season ends. A November 2026 slate is the
+    2026-27 season, so the request has to be 2027. Using the calendar year
+    returns the previous season's playoffs and labels them as current form.
+    WNBA stays inside one calendar year.
+    """
+    if (sport or "").lower() == "nba" and slate.month >= 10:
+        return slate.year + 1
+    return slate.year
+
+
+def _games_for_current_log(games: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Drop preseason once any regular-season or playoff row is present."""
+    regular = [
+        game
+        for game in games
+        if "preseason" not in str(game.get("season_phase") or "").lower()
+    ]
+    return regular or list(games)
 
 
 def _pick(game: dict[str, Any], *keys: str) -> float | None:

@@ -828,11 +828,21 @@ def get_athlete_gamelog(
                 if not event_id or not stats:
                     continue
                 meta = event_meta.get(event_id) or {}
+                phase = " ".join(
+                    str(part or "")
+                    for part in (
+                        season_type.get("displayName"),
+                        season_type.get("name"),
+                        category.get("displayName"),
+                        category.get("name"),
+                    )
+                ).strip()
                 mapped: dict[str, Any] = {
                     "event_id": event_id,
                     "game_date": str(meta.get("gameDate") or "")[:10],
                     "opponent": ((meta.get("opponent") or {}).get("displayName") or ""),
                     "result": meta.get("gameResult"),
+                    "season_phase": phase,
                 }
                 for index, name in enumerate(names):
                     if index >= len(stats):
