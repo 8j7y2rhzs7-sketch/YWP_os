@@ -276,10 +276,20 @@ The "1 player" is usually the **climb we weeded** or a **soft-cush PRIMARY** tha
 3. Teen covers (−10 to −14) remain RISK even at 85-90% — win first, cover second (same chalk-just-wins lesson).
 4. Never rebuild a Troy-class spine as SAFE3 identity the next day without a higher bar.
 
+## Locked 2026-11-06 — HARD ROCK is the book (no ghost "for sure" picks)
+**User:** "All the picks that you give me that are for sure hardrock make sure they are not there so I have to pick something that causes me to lose." Soft/DK/UD KEEPs get recommended; HR does not list them → user substitutes HR main (Bam U9.5) → miss-by-1 kills the 3-pick.
+### Rules
+1. **Primary book = Hard Rock.** Every actionable KEEP/SAFE/cash leg must be **HR-posted** (user screenshot or live HR market). If it is not on Hard Rock, it is **not a bet instruction**.
+2. **Internal soft floors stay internal.** DK/UD/alt grades may inform research but cannot be handed over as "for sure" unless HR lists that exact number.
+3. **Missing on HR → swap player/market, do not climb into a print trap.** Prefer another HR KEEP over forcing Bam U9.5 / main PTS when the soft under/alt is not offered.
+4. **HR main that prints the number (mn≈line) = CUT spine** on 2–3 picks — say CUT and give a different HR leg.
+5. Deliverable tag required: `HR · PLAYER · LINE · KEEP/CUT · (screenshot|live)`. No HR tag = do not bet it.
+6. When weeding an HR slip: rebuild **only** from legs on that slip / HR board.
+
 ## Locked 2026-11-05 — POSTED lines only (no ghost soft floors)
 **User:** “None of those are there… Re do the run and search for lines online that they have so you atleast know what to look for.” Soft O4.5 / O3.5 / O14.5 recommended when books posted Carter REB **9.5**, Bam REB **9.5**, Curry PTS **27.5**, Wagner AST **6.5**, Hughes SOG **3.5**; DK alts on slip were Curry O17.5 / Carter O5.5 / Bam O6.5 / Wagner O4.5 / Hughes 2+.
 ### Rules
-1. **Before every exhaustive card: search live posted lines** (Betravon / Dynatyze / Optimal / book slips / user screenshot). Cite source + number.
+1. **Before every exhaustive card: search live posted lines** (Betravon / Dynatyze / Optimal / book slips / user screenshot). Cite source + number. **User actionable card = Hard Rock first** (see 2026-11-06).
 2. **Card has two sections:** (A) MAINS as posted across books (B) CONFIRMED ALTS (screenshot or live book). Never invent soft floors as bet instructions.
 3. Soft floor is an **internal grade**. If O4.5 isn’t posted → climb to nearest posted/main → **re-grade that number** → KEEP/CUT that number. DK alt ladder OK only when confirmed.
 4. Deliverable format: `PLAYER · POSTED LINE · MAIN/ALT · KEEP/CUT/RISK · source`.
