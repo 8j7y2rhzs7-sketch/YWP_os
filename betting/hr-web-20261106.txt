@@ -5,31 +5,21 @@ Verify before bet — mirrors lag. Soft alts / SGP / live = screenshot only.
 === HR GAME LINES (confirmed hardrockbet) ===
 
 -- NBA --
-  Washington Wizards @ Atlanta Hawks | Nov 6, 7:10 PM EST | ML +230/-275 | spr -7.5 (-110) | tot 228.5 (-110 / -110)
-  Boston Celtics @ Charlotte Hornets | Nov 6, 7:10 PM EST | ML -350/+275 | spr +8.5 (-110) | tot 207.5 (-115 / -105)
-  Philadelphia 76ers @ Cleveland Cavaliers | Nov 6, 7:40 PM EST | ML -150/+125 | spr +2.5 (-110) | tot 229.5 (-115 / -105)
-  Utah Jazz @ Dallas Mavericks | Nov 6, 8:10 PM EST | ML +230/-275 | spr -7.5 (-115) | tot 226.5 (-115 / +100)
-  Oklahoma City Thunder @ Memphis Grizzlies | Nov 6, 8:10 PM EST | ML -175/+140 | spr +3.5 (-105) | tot 224.5 (-110 / -110)
-  Toronto Raptors @ Milwaukee Bucks | Nov 6, 8:10 PM EST | ML -260/+210 | spr +7.5 (-110) | tot 230.5 (-110 / -110)
-  Minnesota Timberwolves @ New Orleans Pelicans | Nov 6, 8:10 PM EST | ML -180/+150 | spr +4.5 (-115) | tot 230.5 (-110 / -110)
-  Portland Trail Blazers @ Los Angeles Lakers | Nov 6, 10:10 PM EST | ML +125/-150 | spr -2.5 (-115) | tot 231.5 (-110 / -110)
-  San Antonio Spurs @ Sacramento Kings | Nov 6, 10:10 PM EST | ML -1200/+750 | spr +15.5 (-110) | tot 229.5 (-105 / -115)
+  Washington Wizards @ Atlanta Hawks | Nov 6, 7:10 PM EST | ML +230/-275 | spr ★ | tot -7.5 (-115)
 
 -- NCAAB --
-  Massachusetts Minutemen @ Boston College Eagles | Nov 6, 4:00 PM EST | ML +220/-275 | spr -5.5 (-120) | tot 145.5 (-105 / -115)
+  Massachusetts Minutemen @ Boston College Eagles | Nov 6, 4:00 PM EST | ML +185/-240 | spr -5.5 (-105) | tot 143.5 (-115 / -105)
   Arkansas-Pine Bluff Golden Lions @ Baylor Bears | Nov 6, 5:00 PM EST | ML —/— | spr -37.5 (-110) | tot 160.5 (-110 / -110)
   Northeastern Huskies @ Virginia Cavaliers | Nov 6, 5:00 PM EST | ML —/— | spr -34.5 (-115) | tot 161.5 (-110 / -110)
-  Eastern Washington Eagles @ Oregon Ducks | Nov 6, 6:00 PM EST | ML +850/-2000 | spr -16.5 (-110) | tot 152.5 (+105 / -130)
+  Eastern Washington Eagles @ Oregon Ducks | Nov 6, 6:00 PM EST | ML +900/-2000 | spr -16.5 (-110) | tot 150.5 (-115 / -105)
   Youngstown St Penguins @ Ohio State Buckeyes | Nov 6, 6:30 PM EST | ML —/— | spr -25.5 (-110) | tot 154.5 (-105 / -115)
-  Valparaiso Beacons @ Purdue Boilermakers | Nov 6, 6:30 PM EST | ML +1300/-5000 | spr -18.5 (-120) | tot 146.5 (-110 / -110)
-  South Carolina St Bulldogs @ South Carolina Upstate Spartans | Nov 6, 6:30 PM EST | ML +175/-225 | spr -7.5 (+140) | tot 148.5 (-125 / +100)
-  American Eagles @ Clemson Tigers | Nov 6, 7:00 PM EST | ML +900/-2000 | spr -17.5 (+110) | tot 142.5 (-105 / -115)
-  Austin Peay Governors @ Kennesaw St Owls | Nov 6, 7:00 PM EST | ML +220/★ | spr -300 | tot -6.5 (-110)
+  Valparaiso Beacons @ Purdue Boilermakers | Nov 6, 6:30 PM EST | ML +1300/-5000 | spr -18.5 (-120) | tot 145.5 (-110 / -110)
+  South Carolina St Bulldogs @ South Carolina Upstate Spartans | Nov 6, 6:30 PM EST | ML +175/★ | spr -225 | tot -7.5 (+140)
 
 -- NCAAF --
   Virginia Tech Hokies @ SMU Mustangs | Nov 6, 7:00 PM EST | ML +180/-225 | spr -5.5 (-110) | tot 56.5 (-110 / -110)
   South Florida Bulls @ East Carolina Pirates | Nov 6, 7:30 PM EST | ML +105/-130 | spr -2.5 (-105) | tot 39.5 (-105 / -110)
-  Nebraska Cornhuskers @ Illinois Fighting Illini | Nov 6, 8:00 PM EST | ML -200/+160 | spr +4.5 (-115) | tot 50.5 (-105 / -115)
+  Nebraska Cornhuskers @ Illinois Fighting Illini | Nov 6, 8:00 PM EST | ML -190/+150 | spr +3.5 (-105) | tot 50.5 (-110 / -110)
   New Mexico Lobos @ Nevada Wolf Pack | Nov 6, 9:00 PM EST | ML -425/+325 | spr +9.5 (-110) | tot 37.5 (-110 / -110)
   TCU Horned Frogs @ Arizona Wildcats | Nov 6, 10:15 PM EST | ML +220/-275 | spr -7.5 (-105) | tot 46.5 (-110 / -110)
   BYU Cougars @ Utah Utes | Nov 7, 12:00 PM EST | ML +160/-200 | spr -4.5 (-110) | tot 48.5 (-110 / -110)
@@ -47,17 +37,18 @@ Verify before bet — mirrors lag. Soft alts / SGP / live = screenshot only.
   Cleveland Browns @ New Orleans Saints | Nov 8, 1:00 PM EST | ML +135/-160 | spr -3 (-110) | tot 42.5 (-110 / -110)
   Dallas Cowboys @ Indianapolis Colts | Nov 8, 1:00 PM EST | ML -250/+200 | spr +5.5 (-110) | tot 51.5 (-115 / -105)
   Detroit Lions @ Miami Dolphins | Nov 8, 1:00 PM EST | ML -350/+275 | spr +7 (-110) | tot 50.5 (-110 / -110)
-  New York Jets @ Kansas City Chiefs | Nov 8, 1:00 PM EST | ML +400/-550 | spr -10 (-110) | tot 47.5 (-110 / -110)
+  New York Jets @ Kansas City Chiefs | Nov 8, 1:00 PM EST | ML +400/-550 | spr -10 (-110) | tot 47.5 (-115 / -105)
   Los Angeles Rams @ Washington Commanders | Nov 8, 1:00 PM EST | ML -230/+190 | spr ★ | tot +5 (-110)
 
 -- NHL --
-  Columbus Blue Jackets @ Buffalo Sabres | Nov 6, 7:10 PM EST | ML +140/-170 | spr -1.5 (+130) | tot 6.5 (+100 / -120)
-  Anaheim Ducks @ Calgary Flames | Nov 6, 8:10 PM EST | ML +110/-130 | spr -1.5 (+175) | tot 6.5 (+100 / -120)
-  San Jose Sharks @ Minnesota Wild | Nov 6, 8:10 PM EST | ML +195/-260 | spr -1.5 (-105) | tot 6.5 (+100 / -120)
+  Columbus Blue Jackets @ Buffalo Sabres | Nov 6, 7:10 PM EST | ML +140/-170 | spr ★ | tot -1.5 (+130)
 
 === HR-CITED PLAYER PROPS (dynatyze best-price = Hard Rock) ===
-  Payton Pritchard Points 13.5 · HR under -110 Hard Rock Bet · BOS @ CHA
+  Payton Pritchard Points 13.5 · HR under -120 Hard Rock Bet · BOS @ CHA
+  Joel Embiid Rebounds 8.5 · HR under +105 Hard Rock Bet · PHI @ CLE
+  Anthony Davis Points 22.5 · HR over -105 Hard Rock Bet · WAS @ ATL
+  Courtland Sutton Receiving Yards 34.5 · HR under -110 Hard Rock Bet · DEN @ CAR
 
 === PROPS ON OTHER BOOKS ONLY (NOT HR-confirmed — do not bet as HR) ===
-  23 props mirrored without Hard Rock as best price.
+  20 props mirrored without Hard Rock as best price.
   Use for research; HR number needs app/API/screenshot.
