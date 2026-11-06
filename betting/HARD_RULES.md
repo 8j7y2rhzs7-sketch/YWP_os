@@ -285,6 +285,8 @@ The "1 player" is usually the **climb we weeded** or a **soft-cush PRIMARY** tha
 4. **HR main that prints the number (mn≈line) = CUT spine** on 2–3 picks — say CUT and give a different HR leg.
 5. Deliverable tag required: `HR · PLAYER · LINE · KEEP/CUT · (screenshot|live)`. No HR tag = do not bet it.
 6. When weeding an HR slip: rebuild **only** from legs on that slip / HR board.
+7. **Line source for HR cards:** run `python3 betting/pull_hr_odds.py` (needs `ODDS_API_KEY`). Use `hr-lines-YYYYMMDD.txt` as the posted board. If Odds API has no `hardrockbet` row for a market, that market is **not** HR-confirmed — ask for a screenshot of that market only, do not invent it.
+
 
 ## Locked 2026-11-05 — POSTED lines only (no ghost soft floors)
 **User:** “None of those are there… Re do the run and search for lines online that they have so you atleast know what to look for.” Soft O4.5 / O3.5 / O14.5 recommended when books posted Carter REB **9.5**, Bam REB **9.5**, Curry PTS **27.5**, Wagner AST **6.5**, Hughes SOG **3.5**; DK alts on slip were Curry O17.5 / Carter O5.5 / Bam O6.5 / Wagner O4.5 / Hughes 2+.
