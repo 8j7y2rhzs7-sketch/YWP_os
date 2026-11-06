@@ -1,0 +1,29 @@
+HARD ROCK vs THE ODDS API — coverage note 2026-11-06
+
+SOURCE CHECK (internet, no API key yet):
+- HR game lines published via Odds API mirrors (agentbets): NBA/NHL/NCAAF ML-spread-total present
+- Dynatyze shows HR on some NBA prop sides (e.g. Pritchard PTS U13.5) → HR props exist in feed
+- ESPN slate today: 9 NBA · 3 NHL · 5 NCAAF · 0 NFL (TNF was yesterday)
+
+WHAT THE ODDS API CAN GIVE (with ODDS_API_KEY + region us2):
+✓ Moneyline / spread / total for NBA, NHL, NCAAF, NFL
+✓ Standard player props (NBA PTS/REB/AST/3s/STL/BLK · NHL SOG/points · NFL pass/rush/rec)
+✓ hardrockbet bookmaker key (region **us2**, not us) — script fixed
+
+WHAT THE API USUALLY DOES NOT HAVE vs the Hard Rock APP:
+✗ Soft alt ladders (Curry O17.5, Carter O5.5, Bam U10.5 rungs) — often mains only
+✗ Full SGP / SGP Max builder prices
+✗ Live micro / next-play / drive props
+✗ Every team-total / period / quarter market HR lists in-app
+✗ Guaranteed parity with your state (use hardrockbet_fl / _az / _oh if IN feed differs)
+✗ Thin or missing props on low-profile NHL games even when HR app has them
+
+WORKFLOW:
+1) python3 betting/pull_hr_odds.py  → hr-lines-YYYYMMDD.txt = API HR board
+2) Anything we want that is missing there → ONE screenshot of that market only
+3) Never treat DK/UD soft floors as HR bet instructions
+
+TODAY PUBLIC HR MAINS (research mirror ~10:00 ET):
+NBA: WAS@ATL ATL -7.5 / 228.5 · BOS@CHA BOS -8.5 / 207.5 · PHI@CLE PHI -2.5ish / ~229.5
+NHL: CBJ@BUF BUF -1.5/+ · ANA@CGY CGY -1.5 · SJ@MIN MIN -1.5 / 6.5s
+NCAAF: VT@SMU SMU -5.5 / 56.5 · USF@ECU ECU -2.5 / 39.5 · NEB@ILL ILL +4.5 / 50.5

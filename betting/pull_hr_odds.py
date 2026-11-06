@@ -2,6 +2,8 @@
 """
 Pull Hard Rock–posted lines from The Odds API for today's card.
 
+NOTE: Odds API lists hardrockbet under region **us2** (not us).
+
 Usage:
   export ODDS_API_KEY=...   # or set in Cursor / env secrets — never paste in chat
   python3 betting/pull_hr_odds.py
@@ -31,6 +33,19 @@ from pathlib import Path
 
 BASE = "https://api.the-odds-api.com"
 HR_BOOK = "hardrockbet"
+# Odds API region for Hard Rock (see the-odds-api bookmaker list)
+HR_REGION = "us2"
+
+API_GAPS = """
+What The Odds API typically does NOT give you vs the Hard Rock app:
+- Alternate ladders (O17.5 / O5.5 soft rungs) — mains only in most prop feeds
+- Same-game parlay pricing / SGP builders
+- Live/in-play micro props (drive props, next play)
+- Some team totals / period markets depending on sport
+- State-specific keys (hardrockbet_fl/az/oh) if your state differs from IN feed
+- Thin NHL prop depth vs what HR app shows
+- Any market missing hardrockbet in the response = screenshot that market only
+"""
 
 SPORTS = {
     "nba": "basketball_nba",
@@ -138,7 +153,7 @@ def pull_sport(sport: str, want_props: bool) -> tuple[list[dict], dict]:
     data, headers = _get(
         f"/v4/sports/{sport_key}/odds",
         {
-            "regions": "us",
+            "regions": "us2",
             "markets": "h2h,spreads,totals",
             "oddsFormat": "american",
             "bookmakers": HR_BOOK,
@@ -164,7 +179,7 @@ def pull_sport(sport: str, want_props: bool) -> tuple[list[dict], dict]:
                 pdata, pheaders = _get(
                     f"/v4/sports/{sport_key}/events/{eid}/odds",
                     {
-                        "regions": "us",
+                        "regions": "us2",
                         "markets": PROP_MARKETS[sport],
                         "oddsFormat": "american",
                         "bookmakers": HR_BOOK,
