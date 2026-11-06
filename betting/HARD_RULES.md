@@ -285,7 +285,7 @@ The "1 player" is usually the **climb we weeded** or a **soft-cush PRIMARY** tha
 4. **HR main that prints the number (mn≈line) = CUT spine** on 2–3 picks — say CUT and give a different HR leg.
 5. Deliverable tag required: `HR · PLAYER · LINE · KEEP/CUT · (screenshot|live)`. No HR tag = do not bet it.
 6. When weeding an HR slip: rebuild **only** from legs on that slip / HR board.
-7. **Line source for HR cards:** run `python3 betting/pull_hr_odds.py` (needs `ODDS_API_KEY`). Use `hr-lines-YYYYMMDD.txt` as the posted board. If Odds API has no `hardrockbet` row for a market, that market is **not** HR-confirmed — ask for a screenshot of that market only, do not invent it.
+7. **Line source for HR cards:** prefer `python3 betting/pull_hr_web.py` (**no API key** — agentbets/dynatyze mirrors). Optional: `pull_hr_odds.py` if `ODDS_API_KEY` is set. Use `hr-lines-YYYYMMDD.txt` as the posted board. If Odds API has no `hardrockbet` row for a market, that market is **not** HR-confirmed — ask for a screenshot of that market only, do not invent it.
 
 
 ## Locked 2026-11-05 — POSTED lines only (no ghost soft floors)
