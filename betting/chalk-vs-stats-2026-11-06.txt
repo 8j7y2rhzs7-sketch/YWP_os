@@ -1,0 +1,34 @@
+CHALK vs STATS — 2026-11-06
+Rule fix: heavy juice alone is NOT a cut. Stats first.
+
+════════════════════════════════════════
+CHALK THAT MATCHES STATS → KEEP
+════════════════════════════════════════
+ Gauthier O1.5 SOG   -1300  SAFE 10/10 cush+0.5  L=[3,6,5,10,4,4,2,2,5,4]
+ Trae O5.5 AST        -850  SAFE 8/8   cush+0.5  L=[6,9,9,8,10,9,12,13]
+ Boozer O5.5 REB      -750  SAFE 8/8   cush+0.5  L=[6,9,9,12,7,11,13,11]
+ LeBron O4.5 AST      -600  SAFE 7/7   cush+0.5  L=[8,9,8,10,5,5,7]
+ Boldy O1.5 SOG       -500  SAFE 10/10 cush+0.5
+ Kessler O6.5 REB     -450  SAFE 9/9   cush+0.5
+ Ace O3.5 REB          alt  SAFE 8/8   cush+1.5
+ Tatum O5.5 / Naz O4.5      SAFE both
+
+→ Do NOT drop these just because they’re chalk. Form backs the price.
+
+════════════════════════════════════════
+STILL CUT — NOT BECAUSE CHALK
+════════════════════════════════════════
+ Ek O1.5     SAFE form but same-team SOG as Boldy (correlation)
+ Luka O4.5   SAFE form but same-team glass as Kessler (correlation)
+
+OPTIONAL CAUTION (stats still SAFE)
+ Fantilli O1.5  SAFE 10/10 but 4× exactly 2 SOG — print-aware, not auto-cut
+
+════════════════════════════════════════
+REVISED KEEP LOGIC
+════════════════════════════════════════
+Cut for: failed form, correlation stacks, length (max 3–4)
+Do NOT cut for: −600 / −850 / −1300 alone when L10 is SAFE
+
+Best3 (unchanged spines): Kessler O6.5 · Boozer O5.5 · Boldy O1.5
+Best4/5 chalk OK: Trae O5.5 · Gauthier O1.5 · LeBron O4.5 · Ace O3.5
