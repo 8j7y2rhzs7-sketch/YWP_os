@@ -1,0 +1,41 @@
+HR SLIP WEED + LOCK — 2026-11-07 · Piece 2
+Gate PASS · RS-only · screenshot legs only + mandatory soft-floor swaps
+User: "This is going to take forever" → ONE locked rebuild. No swap menu.
+
+════════════════════════════════════════════════
+ON-SLIP GRADES (posted HR lines)
+════════════════════════════════════════════════
+KEEP
+  Harper O12.5 PTS     SA@POR   9/9
+  Jrue O1.5 3PT        SA@POR   7/7
+  Siakam O12.5 PTS     DEN@IND  7/7
+  Raymond O1.5 SOG     DET@COL  10/10
+
+CUT (book climb killed floor)
+  Jokic O8.5 REB       4/7  (misses 7,7,7)  → soft floor was O6.5
+  NAW O19.5 PTS        5/7 · 6/10          → soft floor was O9.5
+  Franz O15.5 PTS      4/7  (misses 15,14,15) → soft floor was O12.5
+
+DROP / TRIM (not on locked 8)
+  Wemby O18.5 PTS      6/7 RISK (two 12s in L9) → use O6.5 REB / O9.5 PTS
+  Sharpe O4.5 REB      6/7 RISK               → O3.5 is 7/7 but dropped for length
+  Hart O6.5 REB        6/7 RISK (misses 6,6,3) → drop
+
+════════════════════════════════════════════════
+LOCKED BUILD — SEARCH THESE 8 · BET · STOP
+════════════════════════════════════════════════
+1  Dylan Harper            O12.5 PTS     SA@POR
+2  Jrue Holiday            O1.5  3PT     SA@POR
+3  Victor Wembanyama       O6.5  REB     SA@POR
+4  Pascal Siakam           O12.5 PTS     DEN@IND
+5  Nikola Jokic            O6.5  REB     DEN@IND
+6  Julius Randle           O9.5  PTS     BKN@ATL   (replaces NAW)
+7  Franz Wagner            O12.5 PTS     ORL@GS
+8  Lucas Raymond           O1.5  SOG     DET@COL
+
+If Jokic O6.5 REB missing → Jokic O4.5 AST (same game · 7/7).
+If Franz O12.5 missing → stop (do not take O15.5).
+If Randle O9.5 missing → MPJ O9.5 PTS (same game · 7/7).
+If Wemby O6.5 REB missing → Wemby O9.5 PTS.
+
+DO NOT put back: Jokic O8.5 · NAW O19.5 · Franz O15.5 · Hart O6.5 · Sharpe O4.5 · Wemby O18.5
