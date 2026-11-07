@@ -1,0 +1,100 @@
+EXHAUSTIVE — 2026-11-07 (no skip · includes LATE SA@POR 10:00pm ET)
+Gate PASS 780/780 · boards: nba-l7-all · nhl-l10-sog · hr-web
+
+════════════════════════════════════
+NBA BY TIP (7/7 SAFE featured · 6/7 RISK)
+════════════════════════════════════
+
+DEN@IND (5:00pm ET) DEN−7.5 / 229.5 · Hali OUT
+  SAFE: Jokic O6.5 REB · Jokic O4.5 AST · Walker O5.5 REB · Braun O0.5 STL · Murray O2.5 AST · Nembhard O2.5 AST
+  RISK: Jokic O7.5 AST · Murray O4.5 AST · Siakam O16.5 PTS
+  CUT HR: Jokic U9.5 AST · U26.5 PTS · Murray O22.5 PTS · Siakam O20.5 PTS
+  SGP3: Jokic O6.5 REB · Jokic O4.5 AST · Braun O0.5 STL
+
+BKN@ATL (7:30pm) ATL−6.5 · Jalen Johnson OUT
+  SAFE: Okongwu O3.5 REB · Day'Ron Sharpe O3.5 REB · Daniels O2.5 AST
+  RISK: Okongwu O8.5 REB · Daniels O3.5 AST · Randle O4.5 REB
+  SGP3: Okongwu O3.5 REB · Daniels O2.5 AST · Sharpe O3.5 REB
+
+NY@CLE (8:00pm) NY−4.5 · Allen/Hart OUT
+  SAFE: Towns O9.5 REB · Brunson O18.5 PTS · Brunson O3.5 AST · Mitchell O14.5 PTS · Harden O1.5 3PT · Harden O2.5 AST · Mobley O3.5 REB
+  RISK: Towns O10.5 REB · Mitchell O16.5 PTS · Harden O3.5 AST · Mobley O4.5 REB
+  SGP3: Towns O9.5 REB · Brunson O18.5 PTS · Harden O1.5 3PT
+  ★ BEST GLASS CLIMB TONIGHT: Towns O9.5
+
+WSH@OKC (8:00pm) OKC−11.5 · AD/Chet/JDub OUT
+  SAFE: Trae O5.5 AST · (SGA O19.5 PTS = L7 7/7 but L10 8/9 → RISK-KEEP not pure SAFE)
+  RISK: SGA O19.5/O25.5 PTS · Hartenstein O5.5 REB (L10 has a 3) · Trae O7.5 AST
+  SGP2: Trae O5.5 AST · Hartenstein O5.5 REB (RISK glass)
+  ✗ OKC ML −525 chalk trap as multi spine
+
+ORL@GS (8:40pm) GS−6.5 · Paolo/Suggs/Butler/Porzingis OUT
+  SAFE: Curry O22.5 PTS · Curry O1.5 3PT · Wendell O6.5 REB · Franz O4.5 AST · Draymond O3.5 REB · Melton O3.5 REB
+  RISK: Wendell O8.5 REB · Curry O2.5 3PT · Draymond O5.5 AST
+  SGP3: Curry O22.5 PTS · Wendell O6.5 REB · Franz O4.5 AST
+
+HOU@PHX (9:10pm) HOU−7.5 · Adams/Capela/Mark Williams OUT
+  SAFE: Sengun O6.5 REB · Sengun O4.5 AST · Sengun O14.5 PTS · Gillespie O1.5 STL · Jabari O1.5 3PT · Bridges O3.5 REB · FVV O2.5 AST
+  RISK: Booker O19.5 PTS (has a 3) · Sengun O16.5 PTS · Bridges O5.5 REB
+  SGP3: Sengun O6.5 REB · Sengun O4.5 AST · Gillespie O1.5 STL
+  ★ THIEF SPINE: Gillespie O1.5 STL 7/7
+
+SA@POR (10:00pm ET · LATE · DO NOT SKIP) SA−5.5
+  OUT: Sharpe · Morant · Krejci · Tobias Harris
+  SAFE: Wemby O6.5 REB · Wemby O1.5 BLK · Clingan O7.5 REB (L7) / prefer O6.5 if L10 miss fear
+        Deni O19.5 PTS (L7 7/7; L10 RISK miss=18 → O16.5 safer)
+        Keldon O3.5 REB · Castle O2.5 AST · Fox O2.5 AST · Vassell O0.5 STL · Jrue O1.5 3PT · Clingan O0.5 BLK
+  RISK: Wemby O22.5 PTS · Dame O18.5 PTS · Castle/Fox O3.5 AST · Clingan O8.5 REB
+  LATE SGP3: Wemby O6.5 REB · Wemby O1.5 BLK · Clingan O6.5 REB
+  LATE SGP4: + Vassell O0.5 STL  OR  Deni O16.5 PTS
+
+════════════════════════════════════
+NHL ALL 12 (SOG · blowdogs flagged)
+════════════════════════════════════
+EARLY FLA@WSH: Ryan Leonard O1.5 SAFE · Reinhart O1.5 RISK
+STL@NSH: no SAFE · Josi O1.5 RISK only
+NYR@SEA: thin — no SAFE SOG found
+MTL@TOR: Suzuki O1.5 RISK
+UTA@OTT: thin
+NJ@NYI: Hughes O1.5 SAFE · Horvat O1.5 SAFE ★
+CHI@CAR (−440): CUT CHI dog · Stankoven O2.5 RISK only on CAR
+SJ@DAL (−290): CUT SJ · Robertson O2.5 RISK · Celebrini RISK blowdog script
+TB@MIN: Boldy O1.5 SAFE · Ek O1.5 SAFE · Boldy O2.5 RISK ★
+DET@COL: Raymond O1.5 · DeBrincat O1.5 SAFE
+PIT@LA: Rakell O1.5 SAFE
+VAN@EDM (−355): CUT VAN dog · McDavid/Drai O1.5 RISK only
+
+NHL SOG3: Boldy O1.5 · Hughes O1.5 · Rakell O1.5
+NHL SOG3 ALT: Leonard O1.5 · Horvat O1.5 · Raymond O1.5
+UPSIDE: Boldy O2.5 · Robertson O2.5 · Stankoven O2.5 (one only)
+
+════════════════════════════════════
+NCAAF (HR + ranked/tight)
+════════════════════════════════════
+RISK-KEEP soft: BYU +4.5 (vs Utah−4.5) · MIZZ +2.5 (vs TEX) · PSU/WASH pick'em side · FRES/USU ±1.5
+CUT: WAKE−47.5 · UNT−16.5 · WIS−19.5 · TTU−16.5 · JXST−16.5 · LIB−15.5 · ARST−14.5 · MICH−14 · LOU−14.5
+RANKED watch: UGA−3.5 · ND−7 · ALA@LSU · OSU−7.5 · TENN−6 — not SAFE spines without ATS dive
+
+════════════════════════════════════
+PARLAY MENU (same shape as yesterday)
+════════════════════════════════════
+CASH3: Jokic O6.5 REB · Towns O9.5 REB · Trae O5.5 AST
+CASH4: + Boldy O1.5 SOG
+WEST3: Curry O22.5 · Sengun O6.5 REB · Gillespie O1.5 STL
+LATE3 (10pm): Wemby O6.5 REB · Wemby O1.5 BLK · Clingan O6.5 REB
+LATE4: + Vassell O0.5 STL
+MIX3: Jokic O6.5 REB · Boldy O1.5 SOG · BYU +4.5
+SGPMAX 6 rebuild shape:
+  SGP1 DEN: Jokic O6.5 REB + O4.5 AST
+  SGP2 NY/CLE: Towns O9.5 REB + Brunson O18.5 PTS
+  SGP3 SA@POR LATE: Wemby O6.5 REB + O1.5 BLK
++500 push adds: Maxey-class = Brunson O18.5 · Gillespie O1.5 · Hughes O1.5 · BYU +4.5
+  (do NOT add LeBron)
+
+════════════════════════════════════
+BEST CLIMBS TONIGHT
+════════════════════════════════════
+SAFE high: Towns O9.5 REB · Curry O22.5 PTS · Jokic O6.5 REB · Trae O5.5 AST
+            Wemby O6.5 REB · Sengun O6.5 REB · Gillespie O1.5 STL · Boldy O1.5 SOG
+RISK juice: Boldy O2.5 SOG · SGA O19.5 PTS · Deni O19.5 PTS · Jokic O7.5 AST · Towns O10.5 REB
+CUT climbs: Jokic O9.5 AST · SGA O25.5 · Dame O18.5 · Booker O19.5 · Luka O29.5 class

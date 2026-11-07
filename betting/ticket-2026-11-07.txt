@@ -1,0 +1,64 @@
+YWP 2026-11-07 — HARD ROCK CASH CARD (Sat)
+Gate: PASS 780/780 · NBA7 NHL12 NCAAF51 NFL0 NCAAM61
+Source: HR web mirror + ESPN RS L7/L10 · no skipped late games
+Rule: max 3–4 cash · stats>chalk · no LeBron adds · no print climbs · OUT filtered
+
+════════════════════════════════════
+OUT / HOLD (do not spine)
+════════════════════════════════════
+DEN@IND: Haliburton · McConnell · Strawther · Furphy · Sheppard
+BKN@ATL: Jalen Johnson · Landale · Gueye · Demin · Newell · Gilbert
+NY@CLE: Jarrett Allen · Josh Hart · Merrill · Tyson
+WSH@OKC: AD · Chet · Jalen Williams · Cason Wallace · Topic · +more OKC
+ORL@GS: Paolo · Suggs · Isaac · Jimmy Butler · Moody · Porzingis (ill)
+HOU@PHX: Steven Adams · Capela · Mark Williams
+SA@POR (LATE): Sharpe · Morant · Krejci · Tobias Harris
+NHL blowdogs: CHI@CAR (−440) · SJ@DAL (−290) · VAN@EDM (−355) — no dog PL spines
+
+════════════════════════════════════
+A) HR-CITED PROPS (dynatyze) — REGRADE
+════════════════════════════════════
+✗ Jokic U9.5 AST — CUT (only 2/7 under; he clears O4.5 AST SAFE)
+✗ Jokic U26.5 PTS — CUT (5/7)
+✗ Murray O22.5 PTS — CUT (4/7)
+✗ NAW U20.5 PTS — CUT
+✗ Siakam O20.5 PTS — CUT
+✗ Randle U4.5 AST — CUT
+→ Use form floors below; confirm on HR app (mirrors lag)
+
+════════════════════════════════════
+B) HR GAME LINES (agentbets)
+════════════════════════════════════
+NBA: DEN−7.5/228.5 · ATL−6.5/226.5 · NY−4.5/223.5 · OKC−11.5/219.5
+     GS−6.5/221.5 · HOU−7.5/221.5 · SA−5.5/227.5 (10:00pm ET LATE)
+NHL: FLA@WSH WSH−120 (early) · full ESPN board 12 games
+NCAAF HR: UTAH−4.5 · BAY−9.5 · FSU side messy parse
+  ★ BYU +4.5 — RISK-KEEP (Utah −4.5 ranked; not teen chalk)
+  ✗ WAKE −47.5 · UNT −16.5 · WIS −19.5 · TTU −16.5 — CUT teen chalk
+
+════════════════════════════════════
+CASH3 (primary · form SAFE)
+════════════════════════════════════
+1) Jokic O6.5 REB          DEN@IND   L7 7/7 · L10 SAFE
+2) Towns O9.5 REB          NY@CLE    L7 7/7 · L10 8/8 SAFE
+3) Trae Young O5.5 AST     WSH@OKC   L7/L10 SAFE (Wiz side; OKC short many)
+
+ALT CASH3 (west / late)
+1) Curry O22.5 PTS         ORL@GS    L7 7/7 SAFE
+2) Sengun O6.5 REB         HOU@PHX   L7 7/7 SAFE
+3) Wemby O6.5 REB          SA@POR    LATE 10pm · L7/L10 SAFE
+
+NHL CASH add (not instead of NBA3):
+  Boldy O1.5 SOG  TB@MIN  10/10 SAFE · climb O2.5 = RISK 9/10 only
+
+════════════════════════════════════
+DO NOT
+════════════════════════════════════
+LeBron AST adds · Jokic U9.5/U26.5 HR traps · Murray O22.5 · SGA O25.5
+CHI/SJ/VAN +1.5 blowdogs · teen CFB chalk · 10+ leg soft stacks
+Castle/Fox O3.5 AST without drop to O2.5 · Luka O29.5 class
+
+════════════════════════════════════
+GAPS
+════════════════════════════════════
+Full HR prop menu / SOG prices = screenshot · NHL props API 404 on dynatyze

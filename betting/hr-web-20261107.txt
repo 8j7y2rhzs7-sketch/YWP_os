@@ -1,0 +1,43 @@
+HARD ROCK board (web mirrors) — 2026-11-07
+NO API KEY. Sources: agentbets (HR game lines) + dynatyze (props citing Hard Rock).
+Verify before bet — mirrors lag. Soft alts / SGP / live = screenshot only.
+
+=== HR GAME LINES (confirmed hardrockbet) ===
+
+-- NBA --
+  Denver Nuggets @ Indiana Pacers | Nov 7, 5:10 PM EST | ML -275/+230 | spr +7.5 (-110) | tot 228.5 (-115 / -105)
+  Brooklyn Nets @ Atlanta Hawks | Nov 7, 7:40 PM EST | ML +210/-260 | spr -6.5 (-115) | tot 226.5 (-110 / -110)
+  New York Knicks @ Cleveland Cavaliers | Nov 7, 8:10 PM EST | ML -200/+165 | spr +4.5 (-105) | tot 223.5 (-115 / -105)
+  Washington Wizards @ Oklahoma City Thunder | Nov 7, 8:10 PM EST | ML +400/-525 | spr -11.5 (-110) | tot 219.5 (-115 / -105)
+  Orlando Magic @ Golden State Warriors | Nov 7, 8:40 PM EST | ML +200/-250 | spr -6.5 (-110) | tot 221.5 (-110 / -110)
+  Houston Rockets @ Phoenix Suns | Nov 7, 9:10 PM EST | ML -300/+240 | spr +7.5 (-105) | tot 221.5 (-110 / -110)
+  San Antonio Spurs @ Portland Trail Blazers | Nov 7, 10:00 PM EST | ML -200/+165 | spr +5.5 (-110) | tot 227.5 (-110 / -110)
+
+-- NCAAB --
+  Morehead St Eagles @ Louisville Cardinals | Nov 7, 12:00 PM EST | ML —/— | spr -36.5 (-115) | tot 151.5 (-115 / -105)
+  North Dakota Fighting Hawks @ Winthrop Eagles | Nov 7, 12:00 PM EST | ML +400/-650 | spr -9.5 (-115) | tot 159.5 (-110 / -110)
+  North Carolina A&T Aggies @ Ohio Bobcats | Nov 7, 1:00 PM EST | ML +475/-750 | spr ★ | tot -12.5 (-105)
+
+-- NCAAF --
+  BYU Cougars @ Utah Utes | Nov 7, 12:00 PM EST | ML +160/-200 | spr -4.5 (-110) | tot 48.5 (-110 / -110)
+  Iowa State Cyclones @ Baylor Bears | Nov 7, 12:00 PM EST | ML +300/-375 | spr -9.5 (-115) | tot 50.5 (-110 / -110)
+  Florida State Seminoles @ Boston College Eagles | Nov 7, 12:00 PM EST | ML -225/★ | spr +180 | tot +5.5 (-110)
+
+-- NFL --
+  Cincinnati Bengals @ Atlanta Falcons | Nov 8, 9:30 AM EST | ML -170/+145 | spr +3 (-105) | tot 53 (-110 / -110)
+  Denver Broncos @ Carolina Panthers | Nov 8, 1:00 PM EST | ML -150/+130 | spr ★ | tot +3 (-115)
+
+-- NHL --
+  Florida Panthers @ Washington Capitals | Nov 7, 12:40 PM EST | ML +100/-120 | spr ★ | tot -1.5 (+180)
+
+=== HR-CITED PLAYER PROPS (dynatyze best-price = Hard Rock) ===
+  Nikola Jokic Assists 9.5 · HR under +100 Hard Rock Bet · DEN @ IND
+  Nikola Jokic Points 26.5 · HR under -115 Hard Rock Bet · DEN @ IND
+  Jamal Murray Points 22.5 · HR over -115 Hard Rock Bet · DEN @ IND
+  Nickeil Alexander-Walker Points 20.5 · HR under -105 Hard Rock Bet · BKN @ ATL
+  Pascal Siakam Points 20.5 · HR over -115 Hard Rock Bet · DEN @ IND
+  Julius Randle Assists 4.5 · HR under -120 Hard Rock Bet · BKN @ ATL
+
+=== PROPS ON OTHER BOOKS ONLY (NOT HR-confirmed — do not bet as HR) ===
+  18 props mirrored without Hard Rock as best price.
+  Use for research; HR number needs app/API/screenshot.

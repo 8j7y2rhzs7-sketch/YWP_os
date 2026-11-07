@@ -1,0 +1,45 @@
+BEST L7/L10 CLIMBS — 2026-11-07
+RS-only · highest SAFE line · RISK juice separate · includes LATE SA@POR
+
+════════════════════════════════════════
+TIER A — BEST SAFE CLIMBS
+════════════════════════════════════════
+ 1 Towns O9.5 REB          NY@CLE    8/8 L10 · 7/7 L7
+ 2 Curry O22.5 PTS         ORL@GS    7/7
+ 3 Jokic O6.5 REB          DEN@IND   7/7
+ 4 Trae O5.5 AST           WSH@OKC   9/9 L10
+ 5 Wemby O6.5 REB          SA@POR    LATE · 9/9
+ 6 Sengun O6.5 REB         HOU@PHX   7/7
+ 7 Gillespie O1.5 STL      HOU@PHX   7/7
+ 8 Jokic O4.5 AST          DEN@IND   7/7
+ 9 Franz O4.5 AST          ORL@GS    8/8
+10 Sengun O4.5 AST         HOU@PHX   7/7
+11 Brunson O18.5 PTS       NY@CLE    7/7
+12 Wemby O1.5 BLK          SA@POR    LATE · 9/9
+13 Wendell O6.5 REB        ORL@GS    8/8
+14 Boldy O1.5 SOG          TB@MIN   10/10
+15 Hughes O1.5 SOG         NJ@NYI   10/10
+16 Rakell O1.5 SOG         PIT@LA   10/10
+17 Leonard O1.5 SOG        FLA@WSH  10/10
+18 Clingan O6.5 REB        SA@POR    LATE (O7.5 L7-clean / L10 RISK → prefer 6.5)
+
+════════════════════════════════════════
+TIER B — RISK CLIMBS (one miss · juice only)
+════════════════════════════════════════
+ 1 Boldy O2.5 SOG          9/10 miss=2
+ 2 SGA O19.5 PTS           8/9 L10 miss=17 (L7 was 7/7)
+ 3 Deni O19.5 PTS          7/8 miss=18
+ 4 Jokic O7.5 AST          6/7 miss=5
+ 5 Towns O10.5 REB         6/7 miss=10
+ 6 Trae O7.5 AST           6/7–7/8 miss=6
+ 7 Robertson O2.5 SOG      9/10 (DAL · OK)
+ 8 Stankoven O2.5 SOG      9/10 (CAR · not CHI dog)
+
+════════════════════════════════════════
+CLIMB3 / LATE3
+════════════════════════════════════════
+CLIMB3: Towns O9.5 REB · Jokic O6.5 REB · Trae O5.5 AST
+WEST3:  Curry O22.5 · Sengun O6.5 · Gillespie O1.5 STL
+LATE3:  Wemby O6.5 REB · Wemby O1.5 BLK · Clingan O6.5 REB
+NHL3:   Boldy O1.5 · Hughes O1.5 · Rakell O1.5
+JUICE1: Boldy O2.5  OR  SGA O19.5 — never both with another RISK

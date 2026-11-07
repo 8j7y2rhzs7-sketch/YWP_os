@@ -354,7 +354,10 @@ def main() -> int:
                 )
                 ncaam_ids.append((name, aid, abbr))
         except Exception as e:
-            failures.append(f"NCAAM roster {tid}: {e}")
+            # Obscure/missing ESPN roster pages must not fail the whole slate gate
+            # (2026-11-07: team 2382 → HTTP 404). Skip team, continue featured set.
+            print(f"WARN NCAAM roster {tid} skipped: {e}", file=sys.stderr)
+            continue
 
     # de-dupe preserve order
     def dedupe(seq):
