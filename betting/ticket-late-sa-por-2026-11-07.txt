@@ -1,32 +1,20 @@
-LATE NIGHT — SA@POR — 10:00pm ET / 7:00pm PT — 2026-11-07
-DO NOT SKIP (user lock)
+LATE DECISION — SA@POR 10:00pm ET — 2026-11-07
+Canonical: DECISION-2026-11-07.txt · NO SKIP
 
-OUT: Shaedon Sharpe · Ja Morant · Vit Krejci · Tobias Harris
-Line: SA −5.5 / 227.5 (HR)
-
-════════════════════════════════════════
-7/7 SAFE
-════════════════════════════════════════
- Wemby O6.5 REB · Wemby O1.5 BLK
- Clingan O7.5 REB (L7) — prefer O6.5 if wanting L10 cushion
- Deni O19.5 PTS (L7) — prefer O16.5 if L10 miss=18 fears
- Keldon O3.5 REB · Castle O2.5 AST · Fox O2.5 AST
- Vassell O0.5 STL · Jrue O1.5 3PT · Clingan O0.5 BLK
+OUT: Sharpe · Morant · Krejci · Tobias Harris
+Line: SA −5.5 / 227.5 HR
 
 ════════════════════════════════════════
-6/7 RISK — lower or cut
+LATE3
 ════════════════════════════════════════
- Wemby O22.5 PTS · Dame O18.5 PTS
- Castle O3.5 AST · Fox O3.5 AST → drop to O2.5
- Clingan O8.5 REB · Deni O4.5 AST/REB
+1  Wemby O6.5 REB
+2  Clingan O7.5 REB     RISK-KEEP (autopsy: climb cuts were false yday)
+3  Vassell O0.5 STL
+
+SGP attach: Wemby O1.5 BLK on leg 1
+LATE4: + Deni O16.5 PTS
 
 ════════════════════════════════════════
-LATE PARLAYS — Luka/Kessler covered → Clingan glass KEEP
+CUT LATE
 ════════════════════════════════════════
-HOPE CUT only: Deni O19.5→O16.5 · Dame O18.5 · Wemby O22.5
-CORRELATION: Wemby REB+BLK = one SGP pack, not two cash legs
-
-LATE3: Wemby O6.5 REB · Clingan O7.5 REB · Vassell O0.5 STL
-LATE4 SGP: Wemby O6.5 REB + O1.5 BLK · Clingan O7.5 · Deni O16.5
-MIX w/ earlier: Towns O9.5 · Jokic O6.5 · Wemby O6.5 (if live)
-✗ Castle+Fox AST stack · ✗ off-menu LeBron adds
+Dame O18.5 · Wemby O22.5 · Deni O19.5 · Castle+Fox AST stack · LeBron add

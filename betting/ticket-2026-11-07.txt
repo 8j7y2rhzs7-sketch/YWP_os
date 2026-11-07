@@ -1,64 +1,30 @@
-YWP 2026-11-07 — HARD ROCK CASH CARD (Sat)
-Gate: PASS 780/780 · NBA7 NHL12 NCAAF51 NFL0 NCAAM61
-Source: HR web mirror + ESPN RS L7/L10 · no skipped late games
-Rule: max 3–4 cash · stats>chalk · no LeBron adds · no print climbs · OUT filtered
+YWP 2026-11-07 — HARD ROCK · DECISION CARD
+Canonical: betting/DECISION-2026-11-07.txt
+Gate PASS 780/780 · autopsy-cuts-2026-11-06 applied
 
 ════════════════════════════════════
-OUT / HOLD (do not spine)
+CASH3
 ════════════════════════════════════
-DEN@IND: Haliburton · McConnell · Strawther · Furphy · Sheppard
-BKN@ATL: Jalen Johnson · Landale · Gueye · Demin · Newell · Gilbert
-NY@CLE: Jarrett Allen · Josh Hart · Merrill · Tyson
-WSH@OKC: AD · Chet · Jalen Williams · Cason Wallace · Topic · +more OKC
-ORL@GS: Paolo · Suggs · Isaac · Jimmy Butler · Moody · Porzingis (ill)
-HOU@PHX: Steven Adams · Capela · Mark Williams
-SA@POR (LATE): Sharpe · Morant · Krejci · Tobias Harris
-NHL blowdogs: CHI@CAR (−440) · SJ@DAL (−290) · VAN@EDM (−355) — no dog PL spines
+1) Towns O9.5 REB          NY@CLE
+2) Jokic O6.5 REB          DEN@IND
+3) Trae O5.5 AST           WSH@OKC
+
+BEST4 = CASH3 + Boldy O1.5 SOG
+WEST3 = Curry O22.5 · Sengun O6.5 · Boldy O1.5
+LATE3 = Wemby O6.5 REB · Clingan O7.5 REB · Vassell O0.5 STL
++500  = Towns O9.5 · Trae O5.5 · Boldy O1.5 · Brunson O18.5
+        juice ONE: Boldy O2.5 | Clingan O7.5 | Curry O22.5
+NHL3  = Boldy O1.5 · Hughes O1.5 · Rakell O1.5
 
 ════════════════════════════════════
-A) HR-CITED PROPS (dynatyze) — REGRADE
+OUT (no props)
 ════════════════════════════════════
-✗ Jokic U9.5 AST — CUT (only 2/7 under; he clears O4.5 AST SAFE)
-✗ Jokic U26.5 PTS — CUT (5/7)
-✗ Murray O22.5 PTS — CUT (4/7)
-✗ NAW U20.5 PTS — CUT
-✗ Siakam O20.5 PTS — CUT
-✗ Randle U4.5 AST — CUT
-→ Use form floors below; confirm on HR app (mirrors lag)
+Hali · JJ · Allen · Hart · AD · Chet · JDub · Paolo · Suggs · Butler
+Porzingis · Adams · Capela · Sharpe · Morant · Krejci · Tobias Harris
 
 ════════════════════════════════════
-B) HR GAME LINES (agentbets)
+DO NOT
 ════════════════════════════════════
-NBA: DEN−7.5/228.5 · ATL−6.5/226.5 · NY−4.5/223.5 · OKC−11.5/219.5
-     GS−6.5/221.5 · HOU−7.5/221.5 · SA−5.5/227.5 (10:00pm ET LATE)
-NHL: FLA@WSH WSH−120 (early) · full ESPN board 12 games
-NCAAF HR: UTAH−4.5 · BAY−9.5 · FSU side messy parse
-  ★ BYU +4.5 — RISK-KEEP (Utah −4.5 ranked; not teen chalk)
-  ✗ WAKE −47.5 · UNT −16.5 · WIS −19.5 · TTU −16.5 — CUT teen chalk
-
-════════════════════════════════════
-CASH3 — Luka/Kessler COVERED → glass restored
-════════════════════════════════════
-See ticket-2026-11-07-accounted.txt (corrected autopsy)
-
-1) Towns O9.5 REB          NY@CLE    SAFE 8/8 — Kessler-class KEEP
-2) Jokic O6.5 REB          DEN@IND   SAFE glass
-3) Trae O5.5 AST           WSH@OKC   chalk+stats KEEP
-
-ALT: Towns O9.5 · Trae O5.5 · Boldy O1.5 (NO Ek)
-WEST: Curry O22.5 · Sengun O6.5 · Boldy O1.5
-LATE: Wemby O6.5 REB · Clingan O7.5 (L7 SAFE) · Vassell O0.5 STL
-      Wemby BLK = SGP attach only
-
-════════════════════════════════════
-DO NOT (true yday saves — see autopsy-cuts-2026-11-06.txt)
-════════════════════════════════════
-LeBron / Franz thin AST · SGA/Ayo AST+REB joints · Fantilli-class print SOG
-STL as Best3 spine (Jrue→0) · CFB deep alt totals · soft NHL dog as CASH3
-Jokic U9.5/U26.5 · Murray O22.5 · SGA O25.5 · CHI/SJ/VAN · teen CFB · 10+ legs
-NOTE: Boldy+Ek = FLAG not auto-cut (both HIT) · glass climbs = RISK label not ban
-
-════════════════════════════════════
-GAPS
-════════════════════════════════════
-Full HR prop menu / SOG prices = screenshot · NHL props API 404 on dynatyze
+LeBron/Franz thin AST · SGA dual · Fantilli print · STL as CASH3 spine
+CFB deep alt totals · soft NHL dog CASH3 · CHI/SJ/VAN · teen chalk · 8+ legs
+Jokic unders · Murray O22.5 · Deni O19.5 spine · SGA O25.5
