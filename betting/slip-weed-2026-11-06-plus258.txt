@@ -1,0 +1,37 @@
+SLIP WEED — 2026-11-06 · SGPMAX 6 at +258 (wanted ~+500)
+Problem: chalk stack + Maxey O19.5 middle · not form failure on most legs
+
+CURRENT
+  LeBron O4.5 AST + Maxey O19.5 PTS  SGP -338
+  Kessler O6.5 REB                    -800
+  Ace O3.5 REB                        -450
+  Raptors ML                          -165
+  Boldy O2.5 SOG                      -400
+  → +258
+
+════════════════════════════════════════
+WHY IT’S STUCK AT +258
+════════════════════════════════════════
+ · Kessler −800 / Ace −450 / Boldy −400 add almost no payout
+ · Ace dropped to O3.5 — safer form but worse price (O4.5 was −220)
+ · Maxey O19.5 = RISK (miss=19) without O25.5 juice — worst middle
+
+════════════════════════════════════════
+FIX → ~+500
+════════════════════════════════════════
+CUT   LeBron O4.5 AST     (SGP juice sink)
+CUT   Kessler O6.5 REB    (−800 does nothing for +500)
+RAISE Ace → O4.5 REB      (still SAFE 8/8; better price)
+RAISE Maxey → O25.5 PTS   (RISK 8/9 — real juice)  OR cut Maxey entirely
+KEEP  Raptors ML
+KEEP  Boldy O2.5 SOG
+
+REBUILD 4-leg (~+500):
+  1 Ace O4.5 REB
+  2 Raptors ML
+  3 Boldy O2.5 SOG
+  4 Maxey O25.5 PTS
+
+SAFE-leaning if you refuse Maxey O25.5:
+  Ace O4.5 · Raptors ML · Boldy O2.5 · Boozer O5.5
+  (may land ~+300–400 — don’t expect +500 without one priced RISK)
