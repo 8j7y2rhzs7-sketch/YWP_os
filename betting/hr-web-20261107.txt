@@ -1,0 +1,24 @@
+HARD ROCK board (web mirrors) — 2026-11-07
+NO API KEY. Sources: agentbets (HR game lines) + dynatyze (props citing Hard Rock).
+Verify before bet — mirrors lag. Soft alts / SGP / live = screenshot only.
+
+=== HR GAME LINES (confirmed hardrockbet) ===
+
+-- NBA --
+  Denver Nuggets @ Indiana Pacers | Nov 7, 5:10 PM EST | ML -325/+260 | spr +8.5 (-115) | tot 229.5 (-110 / -110)
+  Brooklyn Nets @ Atlanta Hawks | Nov 7, 7:40 PM EST | ML +230/-275 | spr -7.5 (-105) | tot 226.5 (-110 / -110)
+  New York Knicks @ Cleveland Cavaliers | Nov 7, 8:10 PM EST | ML -210/+175 | spr +5.5 (-115) | tot 223.5 (-110 / -110)
+  Washington Wizards @ Oklahoma City Thunder | Nov 7, 8:10 PM EST | ML +475/-650 | spr -12.5 (-105) | tot 222.5 (-110 / -110)
+  Orlando Magic @ Golden State Warriors | Nov 7, 8:40 PM EST | ML +220/-275 | spr -6.5 (-115) | tot 220.5 (-105 / -115)
+  Houston Rockets @ Phoenix Suns | Nov 7, 9:10 PM EST | ML -275/+225 | spr +6.5 (-105) | tot 223.5 (-115 / -105)
+  San Antonio Spurs @ Portland Trail Blazers | Nov 7, 10:00 PM EST | ML -220/+180 | spr ★ | tot +5.5 (-110)
+
+-- NHL --
+  New York Rangers @ Seattle Kraken | Nov 7, 5:10 PM EST | ML -130/★ | spr +110 | tot +1.5 (-230)
+
+=== HR-CITED PLAYER PROPS (dynatyze best-price = Hard Rock) ===
+  (none on mirror right now — screenshot props you care about)
+
+=== PROPS ON OTHER BOOKS ONLY (NOT HR-confirmed — do not bet as HR) ===
+  12 props mirrored without Hard Rock as best price.
+  Use for research; HR number needs app/API/screenshot.

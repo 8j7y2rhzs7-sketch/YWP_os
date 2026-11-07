@@ -5,8 +5,9 @@ Chat memory does not enforce process. Use these prompts + the repo skill/rule/ga
 ## Daily run
 ```
 Run /betting-run end-to-end for today.
-Order: require_gate → full sheets → scratch → BANGERS → SAFE → by-game → weed last.
+Order: require_gate → pull_posted_mains → grade_posted_card → full sheets → scratch → BANGERS → SAFE → by-game → weed last.
 Reply only after GATE_TODAY.json = PASS.
+Every KEEP number must be a POSTED main (Betravon / HR odds) — no soft-floor ghosts.
 Show athlete id + full MIN/PTS/REB/AST/STL/BLK for every boarded player.
 No SAFE-only card.
 Done only if completion block is all PASS/yes.

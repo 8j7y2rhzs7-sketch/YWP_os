@@ -6,9 +6,11 @@ alwaysApply: true
 betting-hard-gate:
 
 - Before any place card, exhaustive board, or slip weed: run `python3 betting/require_gate.py`. If it exits non-zero, run `python3 betting/run_gate.py` then require again. Do not publish picks without `GATE_TODAY.json` status=PASS for today's ET date.
+- Before recommending any prop number: run `python3 betting/pull_posted_mains.py` (and `pull_hr_odds.py` when `ODDS_API_KEY` exists). Bet instructions use **posted mains** only. Soft floors are internal research — never “hunt O6.5 / O12.5” unless that exact line is on the posted board or user screenshot.
 - Full counting categories on every boarded NBA player: MIN, PTS, REB, AST, STL, BLK, TO (and 3P when relevant). Silent omit is forbidden — print `NOT FETCHED` if missing.
 - Every cited player must include `athlete_id` + source. No vibe numbers.
 - Delivery shape is mandatory when user asks for a run/exhaustive: SAFE · PRIMARY · **BANGERS** · STL/SOG · by-game · BAN · clean slips. SAFE-only cards are a failed task.
 - Weed labels: KEEP / RISK-KEEP / CUT only. CUT cannot contradict from-scratch KEEP/PRIMARY unless injury/DNP/true climb (print-at-or-below line in form).
 - Do not take credit for user-found legs. Do not mark gates "implemented" unless `betting/run_gate.py` + `GATE_TODAY.json` exist and PASS.
 - If the user says stop/skipped the gate: halt, run the gate, restart from step 1 — do not continue the thin answer.
+- Do not ask for a million screenshots. Posted-mains pull covers consensus book lines; ask for a screenshot only when a specific market is missing from the pull and the user wants that market.

@@ -1,44 +1,42 @@
-HR SLIP WEED + LOCK — 2026-11-07 · Piece 2
-Gate PASS · RS-only
-Correction: no ghost soft floors. Grade posted slip lines + cross-book mains only.
+HR SLIP + POSTED-MAINS LOCK — 2026-11-07
+Fix: stop inventing soft floors. Pull consensus posted mains automatically.
 
 ════════════════════════════════════════════════
-ON-SLIP (screenshot = HR ground truth)
+SYSTEM (no screenshot loop)
 ════════════════════════════════════════════════
-KEEP
-  Harper O12.5 PTS     9/9
-  Jrue O1.5 3PT        7/7
-  Siakam O12.5 PTS     7/7
-  Raymond O1.5 SOG     10/10
-
-RISK-KEEP (≤1 if you want juice)
-  Wemby O18.5 PTS      6/7
-  Sharpe O4.5 REB      6/7
-
-CUT
-  Jokic O8.5 REB       4/7
-  NAW O19.5 PTS        5/7 · 6/10
-  Franz O15.5 PTS      4/7
-  Hart O6.5 REB        6/7 (has a 3 — drop)
+1) python3 betting/pull_posted_mains.py   → posted-mains-YYYYMMDD.json (469 lines tonight)
+2) python3 betting/grade_posted_card.py → KEEP only at those numbers
+3) Optional: ODDS_API_KEY + pull_hr_odds.py → hardrockbet-tagged exacts
+Soft floors (Jokic O6.5 REB, Franz O12.5, Raymond O1.5 when main is 2.5) = INTERNAL ONLY
 
 ════════════════════════════════════════════════
-LOCKED BUILD — no soft-floor hunt
+YOUR SLIP vs POSTED MAINS (Betravon ~3:30pm ET)
 ════════════════════════════════════════════════
-FROM YOUR SLIP (bet these):
-1  Harper O12.5 PTS
-2  Jrue O1.5 3PT
-3  Siakam O12.5 PTS
-4  Raymond O1.5 SOG
-5  Wemby O18.5 PTS     (only juice / optional)
+ON-SLIP KEEP @ posted (or soft that matched HR screenshot & clears)
+  Jrue Holiday O1.5 3PT     POSTED main 1.5 · 7/7 KEEP   ← keep
 
-DELETE: Jokic O8.5 · NAW O19.5 · Franz O15.5 · Hart O6.5 · Sharpe O4.5
+ON-SLIP was soft vs posted main → re-grade / cut
+  Harper O12.5 → posted PTS 17.5 · 4/7 CUT at main (O12.5 was soft alt on your slip — only play if HR still shows 12.5)
+  Siakam O12.5 → posted PTS 19.5 · 5/7 RISK at main
+  Wemby O18.5 → posted PTS 27.5 · 5/7 RISK at main (O18.5 soft)
+  Sharpe O4.5 → posted REB 8.5 · CUT at main
+  Hart O6.5 → posted REB 10.5 · 5/7 RISK at main
+  Jokic O8.5 → posted REB 9.5 · 3/7 CUT
+  NAW O19.5 → posted PTS 19.5 · 5/7 RISK (same as main — not SAFE)
+  Franz O15.5 → posted PTS 23.5 · 2/7 CUT
+  Raymond O1.5 → posted SOG 2.5 · 6/10 CUT at main (O1.5 was soft)
 
-OFF-SLIP ADDS (cross-book mains ≈ HR — LineSmart/Betravon/Dynatyze 3:26pm ET)
-  Trae Young O7.5 AST   HR AST main ~8.5 → prefer O7.5 if posted, else O8.5 is 7/9 RISK
-  Boldy O1.5 SOG        TB@MIN (typical O1.5)
-  Do NOT recommend Jokic O6.5 / Franz O12.5 / Towns O9.5 / Sengun O6.5 as bet instructions
-  — those are internal soft grades. Book mains: Jokic REB ~9.5–11.5, Franz PTS ~23.5,
-    Towns REB ~12.5–13.5, Sengun REB ~9.5 → all CUT/RISK at main.
+════════════════════════════════════════════════
+LOCKED BUILD — posted / on-slip only (no hunting)
+════════════════════════════════════════════════
+1  Jrue Holiday O1.5 3PT          (posted = 1.5 · KEEP)
+2  Pascal Siakam O19.5 PTS        (posted main · RISK) OR keep O12.5 only if still on your slip
+3  Okongwu O6.5 REB               (posted · RISK-KEEP 6/7)
+4  Sengun O6.5 AST                (posted · RISK-KEEP 6/7)
+5  Stankoven O2.5 SOG             (posted · RISK-KEEP 9/10)  OR Boldy only if HR still has O1.5
+6  Harden O2.5 3PT                (posted · RISK-KEEP 6/7)
 
-If you want more legs: open Trae AST / Boldy SOG / Curry PTS on HR and send the number.
-Grade that exact line — don't scroll for invented floors.
+DELETE: Jokic REB · NAW · Franz · Hart · Sharpe · Wemby O18.5/27.5 as spine · Raymond O2.5
+
+If HR still shows the soft numbers from your screenshot (Harper 12.5 / Siakam 12.5 / Raymond 1.5),
+those screenshot lines stay playable — they are confirmed alts. Do not ask agent for lower.
