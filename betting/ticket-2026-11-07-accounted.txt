@@ -1,20 +1,26 @@
-YWP 2026-11-07 — ACCOUNTED (corrected)
-Luka + Kessler COVERED — not ticket busters. Autopsy re-aimed.
+YWP 2026-11-07 — ACCOUNTED (full CUT autopsy)
+Source: autopsy-cuts-2026-11-06.txt · Luka/Kessler COVERED · Fantilli/LeBron/SGA cuts SAVED
 
 ════════════════════════════════════
-WHAT ACTUALLY LOST vs WHAT COVERED
+WHERE WE WENT WRONG (false cuts that cashed)
 ════════════════════════════════════
-COVERED (keep this class):
-  Kessler glass floor · Luka lowered REB — identity glass / SAFE floors cash
-BUSTED / process kills:
-  1. LeBron OFF-MENU add (thin AST · two 5s) — YOU/agent: never off-list
-  2. HOPE CLIMBS above SAFE floor (Luka O29.5 class PTS) — not the lowered REB
-  3. CORRELATION stacks (same-team glass/SOG · same-player AST+REB)
-  4. LENGTH 10–15 legs
-  5. Unlowered only when line > proven SAFE floor — Kessler O6.5 / Luka REB floor = KEEP
+  Ace O4.5 (#1 buster) HIT 6 · Ek O1.5 HIT 2 · Luka O4.5 HIT 5 · Kessler O7.5 HIT 12
+  Naz/Tatum/Trae/Boozer/Gobert climbs HIT · Dame/Deni PTS HIT · Deni AST+REB joint HIT
+  Lakers/Thunder/Sabres MLs HIT
+→ STOP auto-cutting SAFE+SAFE correlation · STOP price-fading Ace-class · climbs = RISK label not ban
 
-DO NOT over-correct: demoting Towns O9.5 / Jokic O6.5 / Clingan O7.5 L7 just because
-"Kessler lesson" — those covered. Glass identity stays.
+════════════════════════════════════
+WHERE WE WERE RIGHT (true cuts that missed)
+════════════════════════════════════
+  Fantilli O1.5 → 0 · LeBron O4.5 AST → 3 · Maxey O19.5 → 17
+  SGA AST+REB both miss · Ayo AST+REB both miss · Flames ML miss
+→ KEEP: thin AST ban · ugly joint AST+REB ban · Fantilli print · Maxey-class PTS climb caution
+
+════════════════════════════════════
+FALSE KEEPS (we left on that died)
+════════════════════════════════════
+  Jrue O0.5 STL → 0 · ILL/NEB O40.5 → 37 · CBJ +1.5 → lost by 3
+→ No STL as Best3 spine · no CFB deep alt total as Best4 · no soft NHL dog as CASH3
 
 ════════════════════════════════════
 FORCE LOWER (hope climbs only)
@@ -33,17 +39,16 @@ FORCE LOWER (hope climbs only)
  Wemby O6.5 REB → KEEP · BLK attach SGP
 
 ════════════════════════════════════
-CORRELATION BAN (still on)
+CORRELATION (FLAG, not auto-ban) — autopsy fix
 ════════════════════════════════════
-✗ Boldy + Ek same slip
-✗ Jokic REB + Jokic AST as 2 cash (SGP ok)
-✗ Wemby REB + BLK as 2 cash (SGP pack ok)
-✗ Sengun REB + AST as 2 cash
-✗ Castle + Fox AST stack
-✗ Off-menu LeBron / any star not on ALLOW
+SAFE+SAFE same-team (Boldy+Ek / Towns+Brunson): FLAG · OK in Best4 if both clear
+UGLY joint same-player AST+REB (SGA/Ayo class): still CUT
+Castle+Fox AST stack: CUT (role compete)
+Off-menu LeBron / Franz thin AST: CUT
+Jokic REB+AST dual cash: FLAG — prefer REB only in Best3; AST ok as SGP attach
 
 ════════════════════════════════════
-CASH3 (restored glass)
+CASH3 (restored glass · no soft dog · no STL spine)
 ════════════════════════════════════
 1) Towns O9.5 REB          NY@CLE     SAFE 8/8 — Kessler-class
 2) Jokic O6.5 REB          DEN@IND    SAFE 7/7 — glass identity
@@ -51,16 +56,19 @@ CASH3 (restored glass)
 
 ALT CASH3: Towns O9.5 · Trae O5.5 · Boldy O1.5 SOG
 BEST4: Towns O9.5 · Jokic O6.5 · Trae O5.5 · Boldy O1.5
+BEST5 FLAG: + Ek O1.5 only if you accept corr (both cleared yday)
 WEST3: Curry O22.5 · Sengun O6.5 · Boldy O1.5
-LATE3: Wemby O6.5 REB · Clingan O7.5 REB (or O6.5 cush) · Vassell O0.5 STL
-  Wemby BLK = SGP attach only
+LATE3: Wemby O6.5 REB · Clingan O7.5 REB (RISK-KEEP climb OK) · Vassell O0.5 STL
+  Wemby BLK = SGP attach · Gillespie STL = add only (Jrue lesson)
 
 ════════════════════════════════════
 +500
 ════════════════════════════════════
 Towns O9.5 · Trae O5.5 · Boldy O1.5 · Brunson O18.5
-juice: swap Brunson → Boldy O2.5 (one RISK) OR Clingan O7.5 RISK-KEEP
-✗ LeBron · ✗ Ek with Boldy · ✗ Franz AST · ✗ Deni O19.5
+juice ONE: Boldy O2.5 OR Clingan O7.5 OR Curry O22.5 (not all)
+✗ LeBron · ✗ Franz AST · ✗ SGA AST+REB · ✗ Fantilli-class print SOG · ✗ Deni O19.5 as spine
+✗ BYU+4.5 / NHL soft dog as cash spine without extra edge (CBJ lesson)
+✗ CFB deep alt totals as Best4 (ILL/NEB O40.5 lesson)
 
 ════════════════════════════════════
 ALLOW LIST

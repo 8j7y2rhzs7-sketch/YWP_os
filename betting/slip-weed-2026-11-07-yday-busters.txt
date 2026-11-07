@@ -1,20 +1,18 @@
-SLIP WEED — Nov 7 (CORRECTED)
-Luka + Kessler COVERED — glass identity KEEP. Real kills below.
+SLIP WEED — Nov 7 (CUT autopsy applied)
+Full grade: autopsy-cuts-2026-11-06.txt
 
 ════════════════════════════════════════
-KEEP (covered class)
+KEEP (false-cut class that cashed → stop over-weeding)
 ════════════════════════════════════════
- Towns O9.5 REB · Jokic O6.5 REB · Clingan O7.5 (L7) · Wemby O6.5 · Trae O5.5
+ Towns O9.5 · Jokic O6.5 · Trae O5.5 · Clingan O7.5 RISK-KEEP · Wemby O6.5
+ Boldy O1.5 · Ek O1.5 = FLAG not auto-cut (both cleared yday)
 
 ════════════════════════════════════════
-CUT / LOWER (actual busters)
+CUT (true saves yday)
 ════════════════════════════════════════
-HOPE PTS: Deni O19.5 → O16.5 · SGA O25.5 CUT · SGA O19.5 RISK only
-LEBRON AST: Franz O4.5 CUT (3×5) · off-menu LeBron CUT
-            Jokic AST = SGP only not 2nd cash with Jokic REB
-STEAL VAR: Gillespie demote from Best3
-CORRELATION: Boldy+Ek · same-player dual cash · Castle+Fox AST
-LENGTH: max Best3/Best4
+ Franz O4.5 AST (LeBron thin) · off-menu LeBron · SGA/Ayo-class AST+REB joints
+ Fantilli-class print SOG · Maxey-class thin PTS climb as spine
+ Gillespie O1.5 STL as Best3 (Jrue → 0) · CFB deep alt totals · soft NHL dog CASH3
 
 ════════════════════════════════════════
 WEED RESULT
@@ -23,4 +21,4 @@ BEST3: Towns O9.5 REB · Jokic O6.5 REB · Trae O5.5 AST
 BEST4: + Boldy O1.5 SOG
 LATE3: Wemby O6.5 REB · Clingan O7.5 REB · Vassell O0.5 STL
 +500: Towns O9.5 · Trae O5.5 · Boldy O1.5 · Brunson O18.5
-      juice: Boldy O2.5 for Brunson
+      juice ONE: Boldy O2.5 OR Clingan O7.5
