@@ -1,0 +1,72 @@
+TICKET 3 — PUBLIC LINES ONLY — 2026-11-07
+L7 + L10 vs Betravon consensus mains (not soft floors)
+G1 require_gate PASS date=20261107 sheets_ok=780/780
+G2 posted-mains-20261107.json (refreshed)
+G3 = public main number itself (no alt hunt)
+
+Truth: almost nothing is perfect KEEP at book mains. This card is
+1 KEEP + RISK-KEEPs that clear L7 (and L10 when sample exists).
+
+════════════════════════════════════════════════
+LIST 1 DIFFICULT @ public mains (do not spine)
+════════════════════════════════════════════════
+Towns O13.5 REB · Brunson O26.5 PTS · Curry O26.5 PTS · Trae O9.5 AST
+Jokic O11.5/9.5 REB · Siakam O20.5 PTS · Franz O23.5 PTS · NAW O19.5 PTS
+Wemby O27.5 PTS / O11.5 REB · Boldy O3.5 SOG (6/10) · Hughes O3.5 SOG
+Harper O17.5 PTS · Clingan O11.5 REB · Randle O20.5 PTS
+Miles Bridges O1.5 3PT vs HOU #3 3PT D (has a 0) — fade
+
+════════════════════════════════════════════════
+LIST 2 BETTER @ public mains
+════════════════════════════════════════════════
+Jrue Holiday O1.5 3PT     L7 7/7 · L10 7/8 KEEP/RK   POR vs SA
+Logan Stankoven O2.5 SOG  L7/L10 9/10 RISK-KEEP      CAR vs CHI
+James Harden O2.5 3PT     L7 6/7 · L10 7/9 RISK-KEEP CLE vs NY
+Alperen Sengun O6.5 AST   L7 6/7 RISK-KEEP           HOU vs PHX
+Onyeka Okongwu O6.5 REB   L7 6/7 (L10 6/10 CUT) RK   ATL vs BKN
+Obi Toppin O11.5 PTS      L7 5/6 RISK-KEEP           IND vs DEN (Hali OUT)
+De'Anthony Melton O4.5 REB L7 6/7 but L10 CUT — skip for this lock
+
+════════════════════════════════════════════════
+PARLAY LOCK — TICKET 3 (public)
+════════════════════════════════════════════════
+1  Jrue Holiday       O1.5  3PT   KEEP      L7 7/7  L10 7/8
+   id 3995 · POR vs SA · L7=[3,5,3,2,2,2,3] · books≈13
+
+2  Logan Stankoven    O2.5  SOG   RISK-KEEP L10 9/10
+   id 4874899 · CAR vs CHI · L=[3,3,3,3,1,5,5,5,3,5] miss=[1] · books≈10
+
+3  James Harden       O2.5  3PT   RISK-KEEP L7 6/7
+   id 3992 · CLE vs NY · L7=[3,3,3,3,3,2,3] miss=[2] · books≈13
+
+4  Alperen Sengun     O6.5  AST   RISK-KEEP L7 6/7
+   id 4871144 · HOU vs PHX · L7=[10,10,9,9,7,7,5] miss=[5] · books≈13
+   OUT HOU: Adams, Capela
+
+5  Onyeka Okongwu     O6.5  REB   RISK-KEEP L7 6/7
+   id 4431680 · ATL vs BKN · L7=[10,16,10,10,12,4,9] miss=[4] · books≈13
+   OUT ATL: Jalen Johnson, Landale, Gueye…
+
+6  Obi Toppin         O11.5 PTS   RISK-KEEP L7 5/6
+   id 4278355 · IND vs DEN · L7=[11,13,14,16,13,20] miss=[11] · books≈14
+   OUT IND: Haliburton, McConnell — usage bump
+
+════════════════════════════════════════════════
+BANGERS (public RISK — not on lock)
+════════════════════════════════════════════════
+Nembhard O17.5 PTS 5/7 · NAW O19.5 5/7 · Hart O10.5 REB 5/7 · Jokic O9.5 AST 5/7
+
+════════════════════════════════════════════════
+VS PRIOR TICKETS
+════════════════════════════════════════════════
+Not Ticket 1 soft-alt stack (Towns 9.5 / Brunson 18.5 / Curry 22.5…)
+Not Ticket 2 (Harper 12.5 / Siakam 12.5 / Raymond 1.5…)
+This one only uses numbers books actually post as mains.
+
+DONE CHECK
+- G1 require_gate: PASS date=20261107 sheets_ok=780/780
+- G2 posted-mains: yes
+- G3 = public main: yes
+- L7+L10 cited: yes
+- athlete_ids: yes
+- soft floors as bet instructions: no
