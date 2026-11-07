@@ -1,42 +1,48 @@
 # How to get exactly what you want
 
-Chat memory does not enforce process. Use these prompts + the repo skill/rule/gate.
+Chat memory does not enforce process. Use these prompts + **THREE GATES** (`betting/THREE_GATES.md`).
+
+## THE WAY — parlay lock
+```
+Lock a parlay through all three gates.
+G1 require_gate → G2 pull_posted_mains + grade_posted_card → G3 HR floors (lowest/on-slip).
+Only legs that clear all three. Soft floors internal only.
+```
 
 ## Daily run
 ```
 Run /betting-run end-to-end for today.
-Order: require_gate → pull_posted_mains → grade_posted_card → full sheets → scratch → BANGERS → SAFE → by-game → weed last.
+Order: G1 require_gate → G2 posted mains → G3 HR floors → scratch → BANGERS → SAFE → by-game → PARLAY LOCK.
 Reply only after GATE_TODAY.json = PASS.
-Every KEEP number must be a POSTED main (Betravon / HR odds) — no soft-floor ghosts.
+Every locked number must be posted/HR — no soft-floor ghosts.
 Show athlete id + full MIN/PTS/REB/AST/STL/BLK for every boarded player.
 No SAFE-only card.
-Done only if completion block is all PASS/yes.
+Done only if completion block shows all three gates PASS/yes.
 ```
 
 ## Exhaustive
 ```
-/betting-run exhaustive for today. Include BANGERS. Same gate rules.
+/betting-run exhaustive for today. Include BANGERS. Same three-gate rules.
 ```
 
 ## Slip weed
 ```
-Weed this slip with /betting-run rules.
-KEEP / RISK-KEEP / CUT only.
-CUT only if from-scratch fails (injury/DNP/true climb).
+Weed this slip with three-gate rules.
+G1 hit rate · G2 posted · G3 on-slip/HR line → KEEP / RISK-KEEP / CUT.
 Rebuild the cleaned slip in the reply.
 ```
-(Paste screenshot or leg list.)
+(Paste screenshot, leg list, or HR lowest available.)
 
-## Drift correction (short)
+## Drift correction
 ```
-Stop. You skipped the gate. Run require_gate.py and restart from step 1.
+Stop. You skipped a gate. Run THREE_GATES 1→2→3 and restart.
 ```
 
 ## Verify yourself
-1. `python3 betting/require_gate.py` → must print PASS
-2. Open `betting/out/GATE_TODAY.json` or `/cursor/stores/self/betting/GATE_TODAY.json`
-3. Reply must include **BANGERS** + completion block
+1. G1: `python3 betting/require_gate.py` → PASS
+2. G2: `betting/posted-mains-YYYYMMDD.json` exists; grades use those lines
+3. G3: every lock leg cites HR low / on-slip / hardrockbet source
 4. Spot-check one athlete id on ESPN gamelog
 
 ## Custom Mode tip
-Attach the `betting-run` skill (or this file) in a Custom Mode so every turn keeps the checklist — don’t rely on “you remember from last month.”
+Attach the `betting-run` skill (or this file) in a Custom Mode so every turn keeps the three gates — don’t rely on chat memory.
