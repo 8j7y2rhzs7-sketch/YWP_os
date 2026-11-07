@@ -40,3 +40,17 @@ DELETE: Jokic REB · NAW · Franz · Hart · Sharpe · Wemby O18.5/27.5 as spine
 
 If HR still shows the soft numbers from your screenshot (Harper 12.5 / Siakam 12.5 / Raymond 1.5),
 those screenshot lines stay playable — they are confirmed alts. Do not ask agent for lower.
+
+════════════════════════════════════════════════
+USER HR LOWS (confirmed) — grade THESE, not ghosts
+════════════════════════════════════════════════
+Wemby lowest REB on HR = O7.5
+  L7 [14,24,11,7,14,10,7] → 5/7 RISK (misses two 7s)
+  O6.5 would be 7/7 KEEP but NOT POSTED — do not recommend
+
+Randle lowest PTS on HR = O12.5
+  L7 [22,21,20,15,24,10,23] → 6/7 RISK-KEEP (miss=10)
+  O9.5 would be 7/7 KEEP but NOT POSTED — do not recommend
+
+Rule: when user names the book’s lowest available, that number is the floor.
+Soft-floor KEEP that isn’t on HR = research only, never a bet instruction.
