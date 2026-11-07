@@ -1,85 +1,71 @@
-YWP 2026-11-07 — ACCOUNTED FOR YDAY BUSTERS
-Autopsy locks applied from Nov 6 (Luka O29.5 / Kessler O7.5 / LeBron add / Boldy+Ek / length)
-
-WHAT LOST TICKETS → RULE TONIGHT
-1. UNLOWERED CLIMB (Luka O29.5 · Kessler O7.5) → every climb must ship at SAFE floor, not L7 max
-2. THIN FACILITATOR AST (LeBron two 5s on O4.5) → ≥2 exact-floor prints = demote / drop a tier
-3. USER OFF-MENU ADD (LeBron) → ONLY bet names on ALLOW list below
-4. SAME-TEAM / SAME-PLAYER CORRELATION (Kessler+Luka · Boldy+Ek · SGA AST+REB) → one glass / one SOG / one player-stat per cash slip
-5. LENGTH (10–15 legs) → Best3 / Best4 max · SGP packs ≤4
+YWP 2026-11-07 — ACCOUNTED (corrected)
+Luka + Kessler COVERED — not ticket busters. Autopsy re-aimed.
 
 ════════════════════════════════════
-FORCE LOWER TABLE (do not raise)
+WHAT ACTUALLY LOST vs WHAT COVERED
 ════════════════════════════════════
- Clingan O7.5 → O6.5     (L10 miss at 7 · Kessler rule)
- Deni O19.5 → O16.5      (L10 miss at 18 · Luka rule)
- Curry O22.5 → O19.5     (exact floor 23 · cash)
- Towns O9.5 → O8.5       (cash cush; O9.5 = climb add only)
- Trae O5.5 → O4.5        (cash; O5.5 climb/juice only)
- Brunson O18.5 → O16.5   (two 19s)
- Franz O4.5 AST → CUT    (three 5s · LeBron-class)
- Sengun O6.5 → O5.5 if posted else KEEP O6.5 as glass identity (two 7s flagged)
- Jokic O6.5 REB → KEEP (identity) but NEVER climb O7.5+
- Jokic O4.5 AST → SGP only · not cash spine (one 5)
- Gillespie O1.5 STL → RISK add only (four 2s · White-class variance)
- SGA O19.5 → RISK only (L10 miss 17) · never O25.5
- Wemby: pick REB OR BLK for cash · both only inside LATE SGP
+COVERED (keep this class):
+  Kessler glass floor · Luka lowered REB — identity glass / SAFE floors cash
+BUSTED / process kills:
+  1. LeBron OFF-MENU add (thin AST · two 5s) — YOU/agent: never off-list
+  2. HOPE CLIMBS above SAFE floor (Luka O29.5 class PTS) — not the lowered REB
+  3. CORRELATION stacks (same-team glass/SOG · same-player AST+REB)
+  4. LENGTH 10–15 legs
+  5. Unlowered only when line > proven SAFE floor — Kessler O6.5 / Luka REB floor = KEEP
+
+DO NOT over-correct: demoting Towns O9.5 / Jokic O6.5 / Clingan O7.5 L7 just because
+"Kessler lesson" — those covered. Glass identity stays.
 
 ════════════════════════════════════
-CORRELATION BAN
+FORCE LOWER (hope climbs only)
 ════════════════════════════════════
-✗ Jokic REB + Jokic AST as two cash legs (SGP ok)
-✗ Sengun REB + Sengun AST as two cash legs
-✗ Wemby REB + Wemby BLK as two cash legs
-✗ Curry PTS + Curry 3PT as two cash legs
-✗ Boldy O1.5 + Ek O1.5 same slip
-✗ Castle AST + Fox AST same SGP (role competition)
-✗ Any second player not on ALLOW list
+ Deni O19.5 → O16.5     (L10 miss 18 · PTS hope)
+ SGA O25.5 → CUT · O19.5 = RISK only
+ Curry O22.5 → KEEP if wanting climb; O19.5 = safer cash cush
+ Brunson O18.5 → KEEP climb; O16.5 optional cush
+ Franz O4.5 AST → CUT (three 5s · LeBron-class AST)
+ Jokic O4.5 AST → SGP ok · not dual with Jokic REB as 2 cash
+ Gillespie O1.5 → add/RISK (steal variance) not Best3 spine
+ Clingan O7.5 → KEEP as climb (L7 7/7) · O6.5 if wanting L10 cush
+ Towns O9.5 → KEEP (Luka/Kessler-class glass COVERED)
+ Trae O5.5 → KEEP (chalk matched stats yesterday rule)
+ Jokic O6.5 REB → KEEP
+ Wemby O6.5 REB → KEEP · BLK attach SGP
 
 ════════════════════════════════════
-CASH3 — HARDENED (Best3)
+CORRELATION BAN (still on)
 ════════════════════════════════════
-1) Towns O8.5 REB          NY@CLE     SAFE cush+1.5
-2) Trae O4.5 AST           WSH@OKC    SAFE cush+1.5
-3) Boldy O1.5 SOG          TB@MIN     SAFE 10/10
-
-ALT CASH3 (no NHL): Towns O8.5 · Trae O4.5 · Jokic O6.5 REB
-ALT WEST: Curry O19.5 PTS · Sengun O6.5 REB · Boldy O1.5
-
-════════════════════════════════════
-BEST4
-════════════════════════════════════
-Towns O8.5 REB · Trae O4.5 AST · Boldy O1.5 SOG · Jokic O6.5 REB
-(If adding 4th glass, do NOT also add Clingan)
+✗ Boldy + Ek same slip
+✗ Jokic REB + Jokic AST as 2 cash (SGP ok)
+✗ Wemby REB + BLK as 2 cash (SGP pack ok)
+✗ Sengun REB + AST as 2 cash
+✗ Castle + Fox AST stack
+✗ Off-menu LeBron / any star not on ALLOW
 
 ════════════════════════════════════
-LATE SA@POR (10pm) — HARDENED
+CASH3 (restored glass)
 ════════════════════════════════════
-LATE3: Wemby O6.5 REB · Clingan O6.5 REB · Vassell O0.5 STL
-  (Wemby BLK = SGP attach to Wemby REB only — not a 4th independent)
-LATE4 SGP: Wemby O6.5 REB + O1.5 BLK · Clingan O6.5 · Deni O16.5 PTS
-✗ Dame O18.5 · Wemby O22.5 · Castle/Fox O3.5 · Clingan O7.5+ · Deni O19.5
+1) Towns O9.5 REB          NY@CLE     SAFE 8/8 — Kessler-class
+2) Jokic O6.5 REB          DEN@IND    SAFE 7/7 — glass identity
+3) Trae O5.5 AST           WSH@OKC    SAFE 9/9 — chalk+stats KEEP
+
+ALT CASH3: Towns O9.5 · Trae O5.5 · Boldy O1.5 SOG
+BEST4: Towns O9.5 · Jokic O6.5 · Trae O5.5 · Boldy O1.5
+WEST3: Curry O22.5 · Sengun O6.5 · Boldy O1.5
+LATE3: Wemby O6.5 REB · Clingan O7.5 REB (or O6.5 cush) · Vassell O0.5 STL
+  Wemby BLK = SGP attach only
 
 ════════════════════════════════════
-+500 HARDENED (one RISK max)
++500
 ════════════════════════════════════
-1 Towns O8.5 REB     SAFE
-2 Trae O4.5 AST      SAFE
-3 Boldy O1.5 SOG     SAFE
-4 Brunson O16.5 PTS  SAFE (lowered)  → if need juice: Boldy O2.5 RISK instead of Brunson
-OR juice build: Towns O8.5 · Trae O4.5 · Curry O19.5 · Boldy O2.5 (RISK)
+Towns O9.5 · Trae O5.5 · Boldy O1.5 · Brunson O18.5
+juice: swap Brunson → Boldy O2.5 (one RISK) OR Clingan O7.5 RISK-KEEP
+✗ LeBron · ✗ Ek with Boldy · ✗ Franz AST · ✗ Deni O19.5
 
 ════════════════════════════════════
-ALLOW LIST (only these — no LeBron-class adds)
+ALLOW LIST
 ════════════════════════════════════
-NBA: Towns · Trae · Jokic (REB only) · Curry · Sengun · Brunson · Clingan · Wemby · Deni(O16.5) · Vassell · Wendell · Mitchell O14.5 · Okongwu O3.5 · Daniels O2.5
-NHL: Boldy · Hughes · Rakell · Leonard · Horvat · Raymond · DeBrincat
-    (Ek only if Boldy OFF the slip)
-CFB: BYU +4.5 only soft dog
-
-════════════════════════════════════
-DO NOT (yday killers again)
-════════════════════════════════════
-LeBron / any off-menu star · raise Clingan/Deni/Curry/Towns/Trae above force-lower
-Boldy+Ek · Jokic dual counting as 2 · 8+ leg SGPMAX · CHI/SJ/VAN dogs · teen CFB chalk
-SGA AST+REB combo · Hope climbs O22.5 Wemby PTS
+Towns · Jokic(REB) · Trae · Curry · Sengun · Brunson · Clingan · Wemby · Deni(O16.5)
+Vassell · Wendell · Mitchell O14.5 · Okongwu · Daniels · Boldy · Hughes · Rakell
+Leonard · Horvat · Raymond · DeBrincat · BYU +4.5
+(Ek only if Boldy OFF)

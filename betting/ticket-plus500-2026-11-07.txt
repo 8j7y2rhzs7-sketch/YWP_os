@@ -2,33 +2,34 @@
 Build on HR · stop near +500–700 · one RISK max · NO LeBron
 
 ════════════════════════════════════════
-PRIMARY (~+500) — yday-hardened
+PRIMARY (~+500) — Luka/Kessler covered → glass back
 ════════════════════════════════════════
-1  Towns O8.5 REB         SAFE (lowered)
-2  Trae O4.5 AST          SAFE (lowered)
+1  Towns O9.5 REB         SAFE
+2  Trae O5.5 AST          SAFE
 3  Boldy O1.5 SOG         SAFE
-4  Brunson O16.5 PTS      SAFE (lowered) 
+4  Brunson O18.5 PTS      SAFE
    OR juice: Boldy O2.5 RISK instead of Brunson (one RISK max)
 
-ALT juice: Towns O8.5 · Trae O4.5 · Curry O19.5 · Boldy O2.5
-✗ Gillespie O1.5 as spine (four 2s · White-class) · ✗ SGA dual · ✗ Ek with Boldy
+ALT: Towns O9.5 · Jokic O6.5 · Trae O5.5 · Boldy O2.5
+✗ Gillespie Best3 spine · ✗ SGA dual · ✗ Ek with Boldy · ✗ LeBron
 
 ════════════════════════════════════════
 ADD-ONLY (ALLOW list only — no LeBron)
 ════════════════════════════════════════
  + Hughes O1.5 SOG
  + BYU +4.5
- + Jokic O6.5 REB (not AST)
- + Curry O19.5 PTS
- + Wemby O6.5 REB LATE (BLK only attached in SGP)
+ + Jokic O6.5 REB (not AST as 2nd cash)
+ + Curry O22.5 PTS
+ + Wemby O6.5 REB LATE (BLK attach SGP)
+ + Clingan O7.5 REB LATE (covered-class glass)
 
-DON'T ADD: LeBron · Franz AST · Ek · Clingan O7.5 · Deni O19.5 · OKC ML · WAKE−47
+DON'T ADD: LeBron · Franz AST · Ek · Deni O19.5 · SGA O25.5 · OKC ML · WAKE−47
 
 ════════════════════════════════════════
 LATE-ONLY +500
 ════════════════════════════════════════
 1 Wemby O6.5 REB
-2 Clingan O6.5 REB
+2 Clingan O7.5 REB
 3 Vassell O0.5 STL
 4 Deni O16.5 PTS  OR  Boldy O2.5 (if NHL still live)
-   (Wemby BLK = attach to #1 SGP, not separate leg count as cash)
+   (Wemby BLK = attach to #1 SGP)

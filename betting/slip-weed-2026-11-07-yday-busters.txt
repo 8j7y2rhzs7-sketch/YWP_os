@@ -1,36 +1,26 @@
-SLIP WEED — apply Nov 6 busters to Nov 7 card
+SLIP WEED — Nov 7 (CORRECTED)
+Luka + Kessler COVERED — glass identity KEEP. Real kills below.
 
 ════════════════════════════════════════
-YDAY BUSTER → TONIGHT CUT/LOWER
+KEEP (covered class)
 ════════════════════════════════════════
-UNLOWERED CLIMB
-  Clingan O7.5 → O6.5     (had a 7 in L10)
-  Deni O19.5 → O16.5      (had an 18)
-  Curry O22.5 → O19.5 cash
-  Towns O9.5 → O8.5 cash
-  Trae O5.5 → O4.5 cash
-  Brunson O18.5 → O16.5
-  SGA O19.5 = RISK only · O25.5 CUT
+ Towns O9.5 REB · Jokic O6.5 REB · Clingan O7.5 (L7) · Wemby O6.5 · Trae O5.5
 
-LEBRON THIN AST (two+ exact floors)
-  CUT Franz O4.5 AST (three 5s)
-  DEMOTE Jokic O4.5 AST → SGP only
-  DEMOTE Gillespie O1.5 STL → add only (four 2s)
-
-CORRELATION
-  CUT Boldy+Ek same slip
-  CUT Jokic REB+AST as 2 cash
-  CUT Wemby REB+BLK as 2 cash (OK as 1 SGP)
-  CUT Sengun REB+AST as 2 cash
-
-OFF-MENU
-  CUT any LeBron / James / unlisted star add
+════════════════════════════════════════
+CUT / LOWER (actual busters)
+════════════════════════════════════════
+HOPE PTS: Deni O19.5 → O16.5 · SGA O25.5 CUT · SGA O19.5 RISK only
+LEBRON AST: Franz O4.5 CUT (3×5) · off-menu LeBron CUT
+            Jokic AST = SGP only not 2nd cash with Jokic REB
+STEAL VAR: Gillespie demote from Best3
+CORRELATION: Boldy+Ek · same-player dual cash · Castle+Fox AST
+LENGTH: max Best3/Best4
 
 ════════════════════════════════════════
 WEED RESULT
 ════════════════════════════════════════
-BEST3: Towns O8.5 REB · Trae O4.5 AST · Boldy O1.5 SOG
-BEST4: + Jokic O6.5 REB
-LATE3: Wemby O6.5 REB · Clingan O6.5 REB · Vassell O0.5 STL
-+500: Towns O8.5 · Trae O4.5 · Boldy O1.5 · Brunson O16.5
-      juice swap: Boldy O2.5 for Brunson
+BEST3: Towns O9.5 REB · Jokic O6.5 REB · Trae O5.5 AST
+BEST4: + Boldy O1.5 SOG
+LATE3: Wemby O6.5 REB · Clingan O7.5 REB · Vassell O0.5 STL
++500: Towns O9.5 · Trae O5.5 · Boldy O1.5 · Brunson O18.5
+      juice: Boldy O2.5 for Brunson

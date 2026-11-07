@@ -36,14 +36,13 @@ TIER B — RISK CLIMBS (one miss · juice only)
  8 Stankoven O2.5 SOG      9/10 (CAR · not CHI dog)
 
 ════════════════════════════════════════
-CLIMB3 / LATE3 — yday-hardened (use lowered cash floors)
+CLIMB3 / LATE3 — Luka/Kessler COVERED → glass restored
 ════════════════════════════════════════
-See ticket-2026-11-07-accounted.txt
+See ticket-2026-11-07-accounted.txt (corrected)
 
-CASH3:  Towns O8.5 REB · Trae O4.5 AST · Boldy O1.5 SOG
-CLIMB adds (not cash spine): Towns O9.5 · Trae O5.5 · Curry O22.5 · Clingan O7.5=CUT
-WEST3:  Curry O19.5 · Sengun O6.5 · Boldy O1.5   (Gillespie demoted — four 2s)
-LATE3:  Wemby O6.5 REB · Clingan O6.5 · Vassell O0.5 STL
+CASH3:  Towns O9.5 REB · Jokic O6.5 REB · Trae O5.5 AST
+WEST3:  Curry O22.5 · Sengun O6.5 · Boldy O1.5
+LATE3:  Wemby O6.5 REB · Clingan O7.5 · Vassell O0.5 STL
 NHL3:   Boldy O1.5 · Hughes O1.5 · Rakell O1.5   (NO Ek with Boldy)
-JUICE1: Boldy O2.5  OR  SGA O19.5 — never both · never + another RISK
-CUT climbs: Franz O4.5 AST (3×5 LeBron-class) · Deni O19.5 · Clingan O7.5 · SGA O25.5
+JUICE1: Boldy O2.5  OR  SGA O19.5 — never both
+CUT: Franz O4.5 AST · Deni O19.5 · SGA O25.5 · LeBron off-menu · hope PTS only
