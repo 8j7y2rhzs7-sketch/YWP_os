@@ -1,0 +1,29 @@
+FIRST PARLAY — THREE GATE WEED — 2026-11-07
+Source: HR screenshot (original 10-leg)
+G1 PASS date=20261107 sheets_ok=780/780
+G2 posted-mains-20261107.json
+G3 on-slip lines = HR floors for this weed
+
+LEG                         G1        G2 posted   G3 on-slip   CALL
+Wemby O18.5 PTS             6/7       main 27.5   18.5 soft    RISK-KEEP
+Harper O12.5 PTS            7/7       main 17.5   12.5 soft    KEEP
+Jrue O1.5 3PT               7/7       main 1.5    1.5          KEEP
+NAW O19.5 PTS               5/7       main 19.5   19.5         RISK (CUT spine)
+Sharpe O4.5 REB             6/7       main 8.5    4.5 soft     RISK-KEEP
+Jokic O8.5 REB              4/7       main 9.5    8.5          CUT
+Siakam O12.5 PTS            7/7       main 19.5   12.5 soft    KEEP
+Franz O15.5 PTS             4/7       main 23.5   15.5 soft    CUT
+Hart O6.5 REB               6/7       main 10.5   6.5 soft     RISK-KEEP
+Raymond O1.5 SOG            10/10     main 2.5    1.5 soft     KEEP
+
+CLEAN LOCK (from this slip only)
+1 Harper O12.5 PTS
+2 Jrue O1.5 3PT
+3 Siakam O12.5 PTS
+4 Raymond O1.5 SOG
++ one juice max: Wemby O18.5 OR Sharpe O4.5 OR Hart O6.5
+
+DELETE: Jokic O8.5 · Franz O15.5 · NAW O19.5
+
+Swap if adding off-slip (G3 confirmed): Randle O12.5 PTS (HR low · 6/7 RISK-KEEP)
+Do NOT swap to Wemby O6.5 REB (not on HR; low is 7.5 = 5/7 RISK)
