@@ -37,26 +37,26 @@ NCAAF HR: UTAH−4.5 · BAY−9.5 · FSU side messy parse
   ✗ WAKE −47.5 · UNT −16.5 · WIS −19.5 · TTU −16.5 — CUT teen chalk
 
 ════════════════════════════════════
-CASH3 (primary · form SAFE)
+CASH3 — HARDENED (yday busters applied)
 ════════════════════════════════════
-1) Jokic O6.5 REB          DEN@IND   L7 7/7 · L10 SAFE
-2) Towns O9.5 REB          NY@CLE    L7 7/7 · L10 8/8 SAFE
-3) Trae Young O5.5 AST     WSH@OKC   L7/L10 SAFE (Wiz side; OKC short many)
+See ticket-2026-11-07-accounted.txt · slip-weed-2026-11-07-yday-busters.txt
 
-ALT CASH3 (west / late)
-1) Curry O22.5 PTS         ORL@GS    L7 7/7 SAFE
-2) Sengun O6.5 REB         HOU@PHX   L7 7/7 SAFE
-3) Wemby O6.5 REB          SA@POR    LATE 10pm · L7/L10 SAFE
+1) Towns O8.5 REB          NY@CLE    lowered (O9.5 = climb only)
+2) Trae O4.5 AST           WSH@OKC   lowered (O5.5 = juice only)
+3) Boldy O1.5 SOG          TB@MIN    SAFE · NO Ek on same slip
 
-NHL CASH add (not instead of NBA3):
-  Boldy O1.5 SOG  TB@MIN  10/10 SAFE · climb O2.5 = RISK 9/10 only
+ALT CASH3: Towns O8.5 · Trae O4.5 · Jokic O6.5 REB
+WEST: Curry O19.5 (not 22.5) · Sengun O6.5 · Boldy O1.5
+LATE: Wemby O6.5 REB · Clingan O6.5 (not 7.5) · Vassell O0.5 STL
+      (Wemby BLK only as SGP attach — not 2nd cash)
 
 ════════════════════════════════════
-DO NOT
+DO NOT (yday killers)
 ════════════════════════════════════
-LeBron AST adds · Jokic U9.5/U26.5 HR traps · Murray O22.5 · SGA O25.5
-CHI/SJ/VAN +1.5 blowdogs · teen CFB chalk · 10+ leg soft stacks
-Castle/Fox O3.5 AST without drop to O2.5 · Luka O29.5 class
+LeBron / off-menu adds · raise Clingan/Deni/Curry/Towns/Trae above force-lower
+Boldy+Ek · Jokic REB+AST as 2 cash · Wemby REB+BLK as 2 cash
+Jokic U9.5/U26.5 · Murray O22.5 · SGA O25.5 · Deni O19.5 · Franz O4.5 AST
+CHI/SJ/VAN dogs · teen CFB · 10+ leg soft stacks
 
 ════════════════════════════════════
 GAPS

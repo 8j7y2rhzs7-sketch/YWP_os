@@ -21,9 +21,12 @@ Line: SA −5.5 / 227.5 (HR)
  Clingan O8.5 REB · Deni O4.5 AST/REB
 
 ════════════════════════════════════════
-LATE PARLAYS
+LATE PARLAYS — yday-hardened (Kessler/Luka/LeBron rules)
 ════════════════════════════════════════
-LATE3: Wemby O6.5 REB · Wemby O1.5 BLK · Clingan O6.5 REB
-LATE4: + Vassell O0.5 STL
-LATE SGPMAX: Wemby REB+BLK · Clingan O6.5 · Vassell STL · Castle O2.5 AST · Keldon O3.5 REB
-MIX w/ earlier: Towns O9.5 · Jokic O6.5 · Wemby O6.5 (if live to late)
+FORCE LOWER: Clingan O7.5→O6.5 · Deni O19.5→O16.5 · no Dame O18.5 · no Wemby O22.5
+CORRELATION: Wemby REB+BLK = one SGP pack, not two cash legs
+
+LATE3: Wemby O6.5 REB · Clingan O6.5 REB · Vassell O0.5 STL
+LATE4 SGP: Wemby O6.5 REB + O1.5 BLK · Clingan O6.5 · Deni O16.5
+MIX w/ earlier: Towns O8.5 · Jokic O6.5 · Wemby O6.5 (if live)
+✗ Castle+Fox AST stack · ✗ off-menu LeBron adds
