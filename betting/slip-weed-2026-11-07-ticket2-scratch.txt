@@ -1,0 +1,102 @@
+TICKET 2 FROM SCRATCH — 2026-11-07
+Not rubber-stamped. Live ESPN RS pulls (incl SA/POR that were MISSING from gate sheets).
+
+G1: require_gate PASS + fresh gamelogs (athlete ids below)
+G2: posted-mains-20261107.json refreshed
+G3: on-slip HR numbers from screenshot 01a1b7ac — graded independently
+
+OUT
+SA@POR: Tobias Harris, Vit Krejci, Ja Morant, Shaedon Sharpe
+BKN@ATL: Demin, Gilbert, Gueye, Jalen Johnson, Landale, Newell
+DEN@IND: Strawther, Hali, Furphy, McConnell, Sheppard
+ORL@GS: Paolo, Isaac, Suggs, Penda, Butler, Moody (+Porzingis illness on board)
+WSH@OKC: AD, Chet, JDub, Wallace, Topic, others
+
+════════════════════════════════════════════════
+FROM-SCRATCH GRADES
+════════════════════════════════════════════════
+Wemby O18.5 PTS (id 5104157) SA vs POR
+  L7 [30,52,12,43,36,29,23] → 6/7 RISK-KEEP miss=[12] cush=-6.5
+  G2 main 27.5 → 5/7 RISK | POR allows 116.6 PTS (#6)
+  FINAL: RISK-KEEP — not cash spine (printed 12 once; soft vs main)
+
+Harper O12.5 PTS (id 5037871) SA vs POR
+  L7 [19,21,17,25,13,13,22] → 7/7 KEEP cush=+0.5
+  G2 main 17.5 → 4/7 CUT | POR 116.6 PTS (#6)
+  FINAL: KEEP @ G3 only (soft vs main — do not climb)
+
+Jrue O1.5 3PT (id 3995) POR vs SA
+  L7 [3,5,3,2,2,2,3] → 7/7 KEEP cush=+0.5
+  G2 main 1.5 → 7/7 KEEP | SA allows 12.9 3s (#6)
+  FINAL: KEEP — only leg that clears G1 at G2 main too
+
+NAW O19.5 PTS (id 4278039) ATL vs BKN
+  L7 [28,26,34,12,25,23,12] → 5/7 RISK miss=[12,12] cush=-7.5
+  G2 main 19.5 → 5/7 RISK | BKN 113.3 PTS (#7)
+  FINAL: CUT spine (two 12s)
+
+Sharpe O4.5 REB (id 4432194) BKN vs ATL
+  L7 [5,6,13,7,6,4,8] → 6/7 RISK-KEEP miss=[4] cush=-0.5
+  G2 main 8.5 → 1/7 CUT | ATL 45.4 REB (#10)
+  FINAL: RISK-KEEP only — thin cush, soft vs main
+
+Jokic O8.5 REB (id 3112335) DEN vs IND
+  L7 [10,9,7,13,7,15,7] → 4/7 CUT miss=[7,7,7] cush=-1.5
+  G2 main 11.5 → 2/7 CUT | IND allows 47.7 REB (#14 = softest glass)
+  FINAL: CUT — good matchup does NOT save three 7s at 8.5
+
+Siakam O12.5 PTS (id 3149673) IND vs DEN
+  L7 [20,17,13,26,20,21,23] → 7/7 KEEP cush=+0.5
+  G2 main 20.5 → 3/7 CUT | DEN 114.7 PTS (#11)
+  FINAL: KEEP @ G3 only
+
+Franz O15.5 PTS (id 4566434) ORL vs GS
+  L7 [15,24,14,26,15,23,18] → 4/7 CUT miss=[15,14,15] cush=-1.5
+  G2 main 23.5 → 2/7 CUT | GS 111.3 PTS (#8)
+  FINAL: CUT — Paolo OUT raises usage but L7 still fails line
+
+Hart O6.5 REB (id 4222252) OKC vs WSH
+  L7 [6,12,14,7,14,13,12] → 6/7 RISK-KEEP miss=[6] cush=-0.5
+  G2 main 10.5 → 5/7 RISK | WSH 47.4 REB (#13 soft)
+  FINAL: RISK-KEEP — Chet OUT helps glass but hook miss lives
+
+Raymond O1.5 SOG (id 4697385) DET vs COL
+  L10 [3,5,2,4,2,2,3,5,4,2] → 10/10 KEEP cush=+0.5
+  G2 main 2.5 → 6/10 CUT
+  FINAL: KEEP @ G3 only (do not climb to 2.5)
+
+════════════════════════════════════════════════
+LIST 1 DIFFICULT
+════════════════════════════════════════════════
+Jokic O8.5 REB — CUT 4/7 (three 7s) despite IND soft glass
+Franz O15.5 PTS — CUT 4/7 (15/14/15)
+NAW O19.5 PTS — RISK 5/7 two 12s — ban from lock
+Wemby O18.5 — RISK-KEEP with a 12 and −6.5 cush — not cash spine
+
+════════════════════════════════════════════════
+LIST 2 BETTER
+════════════════════════════════════════════════
+Jrue O1.5 3PT — KEEP at posted main AND on-slip
+Harper O12.5 PTS — KEEP on-slip
+Siakam O12.5 PTS — KEEP on-slip
+Raymond O1.5 SOG — KEEP on-slip
+(Randle O12.5 PTS HR low 6/7 RISK-KEEP — better NAW swap)
+(Okongwu O6.5 REB posted 6/7 RISK-KEEP — better Sharpe swap)
+
+════════════════════════════════════════════════
+CLEAN LOCK (from scratch)
+════════════════════════════════════════════════
+1 Jrue Holiday O1.5 3PT     KEEP 7/7   (clears G2 main too)
+2 Dylan Harper O12.5 PTS    KEEP 7/7
+3 Pascal Siakam O12.5 PTS   KEEP 7/7
+4 Lucas Raymond O1.5 SOG    KEEP 10/10
+5 Julius Randle O12.5 PTS   RISK-KEEP 6/7  (HR low · replaces NAW)
+OR if staying on-slip only for #5: Sharpe O4.5 / Hart O6.5 — weaker
+
+DELETE: Jokic O8.5 · Franz O15.5 · NAW O19.5 · Wemby O18.5 (spine)
+DONE CHECK
+- G1 require_gate: PASS date=20261107 sheets_ok=780/780
+- G2 posted-mains: yes betting/posted-mains-20261107.json
+- G3 HR on-slip + user lows: yes (live ids; SA/POR fetched fresh)
+- athlete_ids shown: yes
+- from-scratch (not slip rubber-stamp): yes
