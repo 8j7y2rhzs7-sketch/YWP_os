@@ -1,0 +1,79 @@
+YWP 2026-11-07 — ACCOUNTED (full CUT autopsy)
+Source: autopsy-cuts-2026-11-06.txt · Luka/Kessler COVERED · Fantilli/LeBron/SGA cuts SAVED
+
+════════════════════════════════════
+WHERE WE WENT WRONG (false cuts that cashed)
+════════════════════════════════════
+  Ace O4.5 (#1 buster) HIT 6 · Ek O1.5 HIT 2 · Luka O4.5 HIT 5 · Kessler O7.5 HIT 12
+  Naz/Tatum/Trae/Boozer/Gobert climbs HIT · Dame/Deni PTS HIT · Deni AST+REB joint HIT
+  Lakers/Thunder/Sabres MLs HIT
+→ STOP auto-cutting SAFE+SAFE correlation · STOP price-fading Ace-class · climbs = RISK label not ban
+
+════════════════════════════════════
+WHERE WE WERE RIGHT (true cuts that missed)
+════════════════════════════════════
+  Fantilli O1.5 → 0 · LeBron O4.5 AST → 3 · Maxey O19.5 → 17
+  SGA AST+REB both miss · Ayo AST+REB both miss · Flames ML miss
+→ KEEP: thin AST ban · ugly joint AST+REB ban · Fantilli print · Maxey-class PTS climb caution
+
+════════════════════════════════════
+FALSE KEEPS (we left on that died)
+════════════════════════════════════
+  Jrue O0.5 STL → 0 · ILL/NEB O40.5 → 37 · CBJ +1.5 → lost by 3
+→ No STL as Best3 spine · no CFB deep alt total as Best4 · no soft NHL dog as CASH3
+
+════════════════════════════════════
+FORCE LOWER (hope climbs only)
+════════════════════════════════════
+ Deni O19.5 → O16.5     (L10 miss 18 · PTS hope)
+ SGA O25.5 → CUT · O19.5 = RISK only
+ Curry O22.5 → KEEP if wanting climb; O19.5 = safer cash cush
+ Brunson O18.5 → KEEP climb; O16.5 optional cush
+ Franz O4.5 AST → CUT (three 5s · LeBron-class AST)
+ Jokic O4.5 AST → SGP ok · not dual with Jokic REB as 2 cash
+ Gillespie O1.5 → add/RISK (steal variance) not Best3 spine
+ Clingan O7.5 → KEEP as climb (L7 7/7) · O6.5 if wanting L10 cush
+ Towns O9.5 → KEEP (Luka/Kessler-class glass COVERED)
+ Trae O5.5 → KEEP (chalk matched stats yesterday rule)
+ Jokic O6.5 REB → KEEP
+ Wemby O6.5 REB → KEEP · BLK attach SGP
+
+════════════════════════════════════
+CORRELATION (FLAG, not auto-ban) — autopsy fix
+════════════════════════════════════
+SAFE+SAFE same-team (Boldy+Ek / Towns+Brunson): FLAG · OK in Best4 if both clear
+UGLY joint same-player AST+REB (SGA/Ayo class): still CUT
+Castle+Fox AST stack: CUT (role compete)
+Off-menu LeBron / Franz thin AST: CUT
+Jokic REB+AST dual cash: FLAG — prefer REB only in Best3; AST ok as SGP attach
+
+════════════════════════════════════
+CASH3 (restored glass · no soft dog · no STL spine)
+════════════════════════════════════
+1) Towns O9.5 REB          NY@CLE     SAFE 8/8 — Kessler-class
+2) Jokic O6.5 REB          DEN@IND    SAFE 7/7 — glass identity
+3) Trae O5.5 AST           WSH@OKC    SAFE 9/9 — chalk+stats KEEP
+
+ALT CASH3: Towns O9.5 · Trae O5.5 · Boldy O1.5 SOG
+BEST4: Towns O9.5 · Jokic O6.5 · Trae O5.5 · Boldy O1.5
+BEST5 FLAG: + Ek O1.5 only if you accept corr (both cleared yday)
+WEST3: Curry O22.5 · Sengun O6.5 · Boldy O1.5
+LATE3: Wemby O6.5 REB · Clingan O7.5 REB (RISK-KEEP climb OK) · Vassell O0.5 STL
+  Wemby BLK = SGP attach · Gillespie STL = add only (Jrue lesson)
+
+════════════════════════════════════
++500
+════════════════════════════════════
+Towns O9.5 · Trae O5.5 · Boldy O1.5 · Brunson O18.5
+juice ONE: Boldy O2.5 OR Clingan O7.5 OR Curry O22.5 (not all)
+✗ LeBron · ✗ Franz AST · ✗ SGA AST+REB · ✗ Fantilli-class print SOG · ✗ Deni O19.5 as spine
+✗ BYU+4.5 / NHL soft dog as cash spine without extra edge (CBJ lesson)
+✗ CFB deep alt totals as Best4 (ILL/NEB O40.5 lesson)
+
+════════════════════════════════════
+ALLOW LIST
+════════════════════════════════════
+Towns · Jokic(REB) · Trae · Curry · Sengun · Brunson · Clingan · Wemby · Deni(O16.5)
+Vassell · Wendell · Mitchell O14.5 · Okongwu · Daniels · Boldy · Hughes · Rakell
+Leonard · Horvat · Raymond · DeBrincat · BYU +4.5
+(Ek only if Boldy OFF)

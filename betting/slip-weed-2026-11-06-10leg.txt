@@ -1,0 +1,46 @@
+SLIP WEED — 2026-11-06 · 10-leg SAFE pile (2 SGP + 6 singles)
+Source: user screenshot · form = L10 RS · rule = max 3–4 KEEP
+
+LEGS ON SLIP (all form SAFE — problem is length + juice + correlation)
+ 1  Kessler O6.5 REB + Luka O4.5 REB  SGP POR@LAL  -430
+ 2  Boldy O1.5 SOG + Eriksson Ek O1.5 SGP SJ@MIN   -500
+ 3  Naz Reid O4.5 REB                 BOS@CHA      -850
+ 4  Cameron Boozer O5.5 REB           OKC@MEM      -750
+ 5  LeBron O4.5 AST                   PHI@CLE      -600
+ 6  Ace Bailey O4.5 REB               UTAH@DAL     -220
+ 7  Adam Fantilli O1.5 SOG            CBJ@BUF      -425
+ 8  Cutter Gauthier O1.5 SOG          ANA@CGY     -1100
+
+════════════════════════════════════════
+CUT (remove these)
+════════════════════════════════════════
+CUT  Luka O4.5 REB     — same-game glass as Kessler; break SGP, keep Kessler solo
+CUT  Eriksson Ek O1.5  — same-team SOG as Boldy; correlated volume, break SGP
+CUT  Naz Reid O4.5     — form OK but -850 print-number chalk; kills multi EV
+CUT  LeBron O4.5 AST   — SAFE 7/7 but -600 chalk; lower climb tier than Boozer/Kessler
+CUT  Gauthier O1.5     — SAFE 10/10 but -1100 print; dog script OK as single only, not 10-leg
+CUT  Fantilli O1.5     — SAFE; demote from Best3 (keep only if you insist on 4th NHL)
+
+════════════════════════════════════════
+KEEP
+════════════════════════════════════════
+BEST3 (run this)
+  1  Kessler O6.5 REB     POR@LAL   9/9 cush+0.5  ← top SAFE climb
+  2  Boozer O5.5 REB      OKC@MEM   8/8 cush+0.5  ← #5 climb
+  3  Boldy O1.5 SOG       SJ@MIN   10/10 cush+0.5 ← NHL anchor (solo)
+
+BEST4 (if you need one more)
+  + Ace Bailey O4.5 REB   UTAH@DAL  8/8 cush+0.5  · best price on slip (-220)
+
+ALT 4th (NHL dog script)
+  + Fantilli O1.5 SOG     CBJ@BUF  10/10 · instead of Ace if you want mix
+
+════════════════════════════════════════
+WHY THIS WEED
+════════════════════════════════════════
+ · 10 legs = structurally one-away again (Nov 5 pattern)
+ · Both SGPs stack correlated overs for worse combined juice — unbundle
+ · -850 / -1100 / -750 stack is chalk pile; keep climbs not print numbers
+ · Ace survives as Best4 because price (-220) is the only non-juice leg
+
+DO NOT add Maxey O25.5 or Kessler O7.5 into this slip — those are RISK climbs

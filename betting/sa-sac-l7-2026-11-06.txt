@@ -1,0 +1,45 @@
+SA@SAC — L7 RS hit board — 2026-11-06
+Sample: last 7 regular-season games only · OUT: Keegan Murray (ankle)
+
+════════════════════════════════════════
+7/7 (highest clearing line per player-stat)
+════════════════════════════════════════
+FEATURED
+  Wembanyama O6.5 REB     SA   7/7 cush+0.5  L=[24,11,7,14,10,7,13]
+  Wembanyama O1.5 BLK     SA   7/7 cush+0.5  L=[8,3,6,2,5,4,2]
+  Sabonis O6.5 REB        SAC  7/7 cush+0.5  L=[17,7,14,15,14,15,19]
+  Vassell O0.5 STL        SA   7/7 cush+0.5  L=[2,1,2,3,1,2,3]
+  Castle O3.5 REB         SA   7/7 cush+0.5
+  Castle O2.5 AST         SA   7/7 cush+0.5
+  Fox O2.5 AST            SA   7/7 cush+0.5
+  Keldon O3.5 REB         SA   7/7 cush+0.5
+
+PTS floors (7/7 but soft — not spines alone)
+  Acuff Jr. O18.5 PTS     SAC  7/7  L=[22,25,38,34,19,22,33]
+  Dylan Harper O12.5 PTS  SA   7/7
+  Wemby O9.5 / LaVine O9.5 / Fox O9.5  — too soft to climb juice
+
+Acuff also: O3.5 AST 7/7 · O1.5 3PT 7/7
+
+════════════════════════════════════════
+6/7 (highest line — one miss)
+════════════════════════════════════════
+FEATURED
+  Wemby O22.5 PTS         6/7 miss=[12]
+  Acuff O19.5 PTS         6/7 miss=[19]
+  LaVine O19.5 PTS        6/7 miss=[11]
+  Sabonis O10.5 REB       6/7 miss=[7]
+  Castle O4.5 REB         6/7 miss=[4]
+  Castle O3.5 AST         6/7 miss=[3]
+  Fox O3.5 AST            6/7 miss=[3]
+  Keldon O4.5 REB         6/7 miss=[4]
+  Champagnie O1.5 3PT     6/7 miss=[0]
+  LaVine O2.5 3PT         6/7 miss=[0]
+  Wemby O0.5 STL          6/7 miss=[0]
+
+════════════════════════════════════════
+CASH / SGP IDEAS (HR confirm)
+════════════════════════════════════════
+SAFE3:  Wemby O6.5 REB · Wemby O1.5 BLK · Sabonis O6.5 REB
+SAFE+ : Vassell O0.5 STL · Castle O3.5 REB
+JUICE1: Sabonis O10.5 REB  OR  Acuff O19.5 PTS  OR  Wemby O22.5 PTS

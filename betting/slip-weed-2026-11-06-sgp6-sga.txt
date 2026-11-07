@@ -1,0 +1,45 @@
+SLIP WEED — 2026-11-06 · SGPMAX 6-Bet (+2781 · $50 · 50% boost)
+RS-only ESPN · same-player AST+REB SGPs
+
+LEGS
+ 1–2  SGA O5.5 AST + O4.5 REB     OKC@MEM   SGP +176
+ 3–4  Ayo Dosunmu O5.5 AST + O4.5 REB  MIN@NO  SGP +367
+ 5–6  Deni Avdija O5.5 REB + O5.5 AST  POR@LAL SGP +124
+
+════════════════════════════════════════
+VERDICT: DO NOT RUN — all 3 SGPs FAIL RS form
+════════════════════════════════════════
+
+SGA (OKC) — CUT both
+  AST O5.5  2/8  L=[8,8,3,2,3,5,3,4]
+  REB O4.5  3/8  L=[4,3,4,6,3,6,2,6]
+  JOINT both clear: 0/8
+  Note: RS-only (no playoff mix). These overs are not chalk that matches stats.
+
+Ayo Dosunmu (MIN) — CUT both
+  AST O5.5  3/9  L=[6,8,3,2,4,0,3,10,3]
+  REB O4.5  5/9  L=[1,12,9,7,3,1,3,7,5]
+  JOINT both clear: 2/9 (22%)
+  Edwards OUT may help usage — still nowhere near O5.5 AST.
+
+Deni Avdija (POR) — CUT both (least bad, still fail)
+  AST O5.5  4/7  L=[12,5,2,7,9,6,4]
+  REB O5.5  4/7  L=[7,3,5,9,4,7,10]
+  JOINT both clear: 3/7 (43%)
+
+════════════════════════════════════════
+CORRELATION
+════════════════════════════════════════
+Each SGP is the same player twice (AST+REB). If he has a quiet night, BOTH legs die.
+SGA joint 0/8 proves it — not diversification.
+
+════════════════════════════════════════
+SAFE FLOORS (if you still want these guys)
+════════════════════════════════════════
+ SGA   — no SAFE AST/REB floor in L10 (best RISK ~O2.5 either)
+ Ayo   — REB O0.5 SAFE only; AST no SAFE
+ Deni  — no SAFE at 5.5; RISK ~O3.5 either side
+
+KEEP none from this slip. Rebuild from Best3 props:
+  Kessler O6.5 REB · Boozer O5.5 REB · Boldy O1.5 SOG
+  or sides Best3: Celtics ML · ECU +8.5 · Arizona ML

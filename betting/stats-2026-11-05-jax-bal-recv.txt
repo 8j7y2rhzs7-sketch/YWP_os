@@ -1,0 +1,64 @@
+YWP 2026-11-05 — JAX @ BAL RECEIVING YARDS + JAGS QB (ESPN RS)
+Game: Jaguars @ Ravens 8:15 ET · Market JAX -10 / OU 39.5
+Source: ESPN athlete gamelogs (newest → oldest)
+
+════════════════════════════════════
+JAX QB — Trevor Lawrence id=4360310
+════════════════════════════════════
+Pass YDS: 210, 306, 331, 227, 182, 189, 245
+CMP/ATT (recent): 10/14, 24/41, 24/39 ...
+TD recent sample: 3, 4, 2
+L7 pass-yds avg ≈ 241 · mn=182
+NOTE: Backup Quinn Ewers garbage/spot only (8,0,0)
+
+════════════════════════════════════
+BAL PASS CATCHERS — REC YARDS (newest first)
+════════════════════════════════════
+Zay Flowers      id=4429615  REC YDS: 0, 137, 66, 53, 118, 84, 150
+                 REC:        0, 8, 6, 8, 8, 5, 5
+                 (0-catch game in most recent — confirm role/snap)
+
+Rashod Bateman   id=4360939  REC YDS: 22, 33, 0, 62, 46, 37, 88, 0
+                 REC:        1, 2, 0, 5, 2, 2, 7, 0
+
+Mark Andrews     id=3116365  REC YDS: 14, 23, 4, 28, 27, 24, 49, 49
+                 REC:        3, 3, 1, 4, 5, 3, 6, 4
+
+Justice Hill     id=4038441  REC YDS: 20, 26, 9, 5, 22, 0, 12, 10
+Derrick Henry    id=3043078  REC YDS: 7, 4, 2, 18, 6, 0, 19, 19  (rush primary)
+
+Isaiah Likely: not on current ESPN roster pull
+DeAndre Hopkins: not on current ESPN BAL roster pull
+
+BAL QB CONTEXT:
+Lamar Jackson id=3916387  Pass YDS: 0, 222, 186, 235, 324  (most recent 0/1)
+Tyler Huntley id=4035671  Pass YDS: 0, 298, 165, 201, 63, 0
+→ Ravens passing volume may be Huntley-led; check active QB before Flowers/Andrews overs
+
+════════════════════════════════════
+JAX PASS CATCHERS — REC YARDS (newest first)
+════════════════════════════════════
+Parker Washington id=4432620 REC YDS: 16, 64, 124, 7, 40, 98, 83
+                  REC:        1, 4, 6, 1, 3, 7, 5
+
+Jakobi Meyers     id=3916433 REC YDS: 24, 83, 37, 33, 64, 28, 40
+                  REC:        2, 5, 2, 3, 7, 1, 2
+
+Brenton Strange   id=4430539 REC YDS: 55, 44, 68, 95, 32, 17, 23
+                  REC:        2, 5, 7, 7, 3, 2, 2
+
+Brian Thomas Jr.  id=4432773 REC YDS: 12, 0, 0, 17, 8, 40, 40
+                  REC:        1, 0, 0, 2, 1, 3, 3
+
+Bhayshul Tuten    id=4882093 REC YDS: 55, 48, 24, 18, 17, -3, 22
+                  REC:        2, 4, 2, 2, 2, 2, 1
+
+Travis Hunter     id=4685415 REC YDS: 0, 59, 9, 0, 0, 0, 8
+
+════════════════════════════════════
+QUICK HIT vs COMMON UD/BOOK LINES (form only)
+════════════════════════════════════
+Flowers H4.5 REC: strong (6/6 on 5+ when active)
+Strange H34.5 REC YDS: 4/7 only — weak
+Tuten H12.5 REC YDS: 6/7 form but dual-with-rush = cut as 2nd Tuten
+Lawrence pass volume: floor ~182, avg ~241 — script dependent with JAX -10 fav (may run more)

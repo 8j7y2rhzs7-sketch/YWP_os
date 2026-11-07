@@ -1,0 +1,29 @@
+SETTLE 2026-11-05 — lost-by-1 autopsy
+
+=== HR11 Hard Rock ===
+CAR +1.5 WIN (5-3)
+O229.5 MIA/GS LOSS (220)
+O3.5 DET/VGK LOSS ★ BY 1 (final 3) ← classic miss-by-1
+WPG +1.5 WIN (6-2)
+NJ +1.5 WIN (5-4 OT)
+PIT +1.5 LOSS (2-6)
+CBJ +2.5 WIN (2-1 SO)
+Mammoth +1.5 WIN (4-5 OT cover)
+EDM +1.5 WIN (4-5 cover)
+COL +1.5 WIN (2-3 OT cover)
+JAX ML WIN (33-10)
+RESULT: 8/11 — killed by O3.5 (by 1) + O229.5 + PIT
+
+★ BEST4 we said (CAR·NJ·COL·WPG) = 4/4 CASH
+
+=== Soft SGP slip ===
+Curry O17.5 WIN (29) · U240.5 WIN (220)
+Carter O5.5 WIN (13) · Wagner O4.5 WIN (15) · Gillespie O1.5 WIN (3) · O217.5 WIN (221)
+Henry O47.5 rush WIN (57) · Henry O0.5 rec LOSS (0 catch)
+Tuten O38.5 LOSS (29) · Tuten O0.5 LOSS · Flowers O25.5 LOSS (6) · O36 WIN (43)
+
+=== Print-number trap ===
+Bam U9.5 would be LOSS (10 REB) — exact miss-by-0.5 we flagged
+ORL O222.5 would be LOSS (221) — miss by 1.5; soft O217.5 cashed
+
+RULE LOCK: never spine O3.5 hockey / print-number unders / 11-leg juice. Max 4. Soft fav +1.5 cores only.

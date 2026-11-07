@@ -1,0 +1,25 @@
+NHL L10 SOG — 2026-11-06 (RS-only)
+Games: CBJ@BUF BUF-170/6.5 · SJ@MIN MIN-285/6.5 · ANA@CGY CGY-148/6.5
+
+SAFE O1.5 (10/10, mn≥2)
+1 Matt Boldy (MIN)      [4,3,4,2,3,5,7,3,6,8]
+2 Joel Eriksson Ek (MIN)[4,3,3,4,5,2,4,8,2,3]
+3 Adam Fantilli (CBJ)   [5,4,3,4,2,2,6,2,5,2]  dog script OK
+4 Cutter Gauthier (ANA) [3,6,5,10,4,4,2,2,5,4] dog script OK
+
+RISK-KEEP
+5 Kirill Kaprizov O1.5 (MIN) 9/10 miss=1
+6 Matt Boldy O2.5 (MIN) 9/10 ← best climb
+7 Cutter Gauthier O2.5 8/10
+8 Joel Eriksson Ek O2.5 8/10
+9 Rasmus Dahlin O1.5 (BUF) 8/10
+10 Alex Tuch O1.5 (BUF) 8/10
+
+SCRIPT RISK / CUT SPINE
+- Celebrini O1.5 9/10 but SJ@MIN −285 blowdog — RISK/CUT as spine
+- Tage Thompson O1.5 7/10 (has 0) — CUT spine
+- Toffoli / low-volume SJ — CUT
+
+FEATURED SOG3: Boldy O1.5 · Fantilli O1.5 · Gauthier O1.5
+UPSIDE: Boldy O2.5 · Kaprizov O1.5 · Fantilli O1.5
+MIX w/ sides: Boldy O1.5 · CBJ +1.5 · ANA +1.5

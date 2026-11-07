@@ -1,0 +1,61 @@
+SLIP WEED — 2026-11-06 · SGPMAX 15-Bet (+2977)
+Source: 2 screenshots · form = L10 RS · rule = max 3–4 · no stacked RISK climbs
+
+FULL 15
+ 1  LeBron O4.5 AST      SAFE 7/7
+ 2  Maxey O19.5 PTS      RISK 8/9 miss=19   (SAFE floor O18.5)
+ 3  Boldy O1.5 SOG       SAFE 10/10
+ 4  Eriksson Ek O1.5     SAFE 10/10  · same-team as Boldy
+ 5  Boldy O2.5 SOG       RISK 9/10 miss=2   · DUPLICATE climb of #3
+ 6  Kessler O7.5 REB     RISK 8/9 miss=7    (SAFE floor O6.5)
+ 7  Luka O5.5 REB        RISK 7/8 miss=5    (SAFE floor O4.5)
+ 8  Tatum O6.5 AST       RISK 6/7 miss=6    (SAFE floor O5.5)
+ 9  Naz Reid O5.5 REB    RISK 8/9 miss=5    (SAFE floor O4.5)
+10  Ace Bailey O4.5 REB  SAFE 8/8  · -220
+11  Fantilli O1.5 SOG    SAFE 10/10
+12  Gauthier O1.5 SOG    SAFE 10/10 · -1100 print
+13  Trae O7.5 AST        RISK 7/8 miss=6    (SAFE floor O5.5)
+14  Gobert O8.5 REB      RISK 7/8 miss=4    (SAFE floor O3.5)
+15  Boozer O6.5 REB      RISK 7/8 miss=6    (SAFE floor O5.5)
+
+════════════════════════════════════════
+VERDICT: DO NOT RUN THIS 15
+════════════════════════════════════════
+9 of 15 are RISK climbs past SAFE. Boldy O1.5+O2.5 is a dead double.
++2977 on 15 chalk/climb legs = classic one-away ticket.
+
+════════════════════════════════════════
+CUT
+════════════════════════════════════════
+CUT  Boldy O2.5          — drop OR replace O1.5; never both
+CUT  Eriksson Ek O1.5    — same-team SOG as Boldy
+CUT  Kessler O7.5        — climb fail; drop to O6.5 if you want him
+CUT  Luka O5.5           — climb fail; drop to O4.5 or cut
+CUT  Tatum O6.5          — climb fail; drop to O5.5 or cut
+CUT  Naz O5.5            — climb fail; drop to O4.5 or cut
+CUT  Trae O7.5           — climb fail; drop to O5.5 or cut
+CUT  Gobert O8.5         — soft RISK; one 4 kills it
+CUT  Boozer O6.5         — climb fail; drop to O5.5 or cut
+CUT  Maxey O19.5         — one 19; SAFE is O18.5 only
+CUT  Gauthier O1.5       — -1100 print chalk
+
+════════════════════════════════════════
+KEEP (from what's on the slip)
+════════════════════════════════════════
+BEST3
+  1  Boldy O1.5 SOG       (solo — remove O2.5 + Ek)
+  2  Ace Bailey O4.5 REB
+  3  LeBron O4.5 AST
+
+BEST4
+  + Fantilli O1.5 SOG
+
+════════════════════════════════════════
+IF YOU WANT CLIMBS — rebuild off-slip
+════════════════════════════════════════
+Drop lines back to SAFE floors (do not stack RISK):
+  Kessler O6.5 REB · Boozer O5.5 REB · Boldy O1.5 SOG
+  optional 4th: Ace O4.5 REB  OR  Trae O5.5 AST
+
+ONE juice bump max (pick one, not three):
+  Boldy O2.5  OR  Boozer O6.5  OR  Kessler O7.5  OR  Maxey O18.5→O25.5

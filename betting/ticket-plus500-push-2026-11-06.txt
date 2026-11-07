@@ -1,0 +1,36 @@
+PUSH PAST +500 — 2026-11-06
+Your slip is still short because Raptors ML / Boldy −400 chalk don’t pay.
+One RISK juice max was the floor — to go UP, swap the ML for a priced dog PL.
+
+════════════════════════════════════════
+DO THIS (odds go up)
+════════════════════════════════════════
+CUT   Raptors ML (−165) — form OK but kills upside
+ADD   CBJ +1.5  OR  ANA +1.5   ← our CASH3 dog PLs (priced better)
+
+KEEP / SET
+  1  Ace Bailey O4.5 REB     SAFE 8/8
+  2  Boldy O2.5 SOG          RISK 9/10
+  3  Maxey O25.5 PTS         RISK 8/9   ← must be 25.5 not 19.5
+  4  CBJ +1.5  (or ANA +1.5)
+
+Est. ~+700 to +900 on HR if Maxey/Boldy aren’t −400 chalk
+If Boldy O2.5 is still −350 or longer: CUT Boldy, use Boozer O6.5 RISK instead
+
+════════════════════════════════════════
+IF STILL UNDER +500
+════════════════════════════════════════
+Next levers (in order):
+  A  Swap Boldy O2.5 → Boozer O6.5 REB (RISK 7/8) if Boldy is −400
+  B  Swap Ace O4.5 → keep O4.5 (do NOT go O5.5 — CUT 6/8)
+  C  Add nothing past 4 legs — raise price, don’t stack −700 chalk
+  D  3-leg nuke: Maxey O25.5 · Boldy O2.5 · CBJ +1.5  (~+500–600 alone)
+
+════════════════════════════════════════
+DO NOT (looks juicier, form dies)
+════════════════════════════════════════
+ · Maxey O28.5+  CUT (only 3/9)
+ · Ace O5.5      CUT (two 5s)
+ · Boldy O3.5    CUT (6/10)
+ · Kessler −800 / LeBron SGP — payout dust
+ · Two dog MLs + two RISK props if you need discipline — pick CBJ or ANA, not both with Maxey+Boldy

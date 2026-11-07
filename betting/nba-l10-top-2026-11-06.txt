@@ -1,0 +1,37 @@
+NBA L10 TOP — 2026-11-06 (RS-only · ESPN · OUT/Q filtered)
+Sample: current 2026-27 regular season only (no playoffs/preseason)
+Note: numbers below are FORM grades — confirm on Hard Rock before betting
+
+FEATURED TOP 12
+1  Wembanyama O6.5 REB     SA@SAC   8/8  cush+0.5  [24,11,7,14,10,7,13,13]
+2  Kessler O6.5 REB        POR@LAL  9/9  cush+0.5  [8,15,15,13,9,8,7,8,9]
+3  Cameron Boozer O5.5 REB OKC@MEM  8/8  cush+0.5  [6,9,9,12,7,11,13,11]
+4  Trae Young O5.5 AST     WAS@ATL  8/8  cush+0.5  [6,9,9,8,10,9,12,13]
+5  Tatum O5.5 AST          BOS@CHA  7/7  cush+0.5  [9,7,7,8,6,7,11]
+6  LeBron O4.5 AST         PHI@CLE  7/7  cush+0.5  [8,9,8,10,5,5,7]
+7  Naz Reid O4.5 REB       BOS@CHA  9/9  cush+0.5  [9,6,5,11,6,12,9,6,11]
+8  Ace Bailey O4.5 REB     UTAH@DAL 8/8  cush+0.5  [5,6,7,6,10,12,7,5]
+9  Luka O4.5 REB / O4.5 AST POR@LAL 8/8 both
+10 Okongwu O3.5 REB        WAS@ATL  9/9  cush+0.5
+11 Dejounte O3.5 AST       MIN@NO   5/5  cush+0.5
+12 Maxey O3.5 AST          PHI@CLE  9/9  cush+0.5
+
+BONUS THIEVES / BLOCKS (SAFE O0.5/O1.5)
+- LaRavia O0.5 STL (LAL) 8/8 · Risacher O0.5 STL (DAL) 8/8 · Jrue O0.5 STL (POR) 7/7
+- LeBron O0.5 STL 7/7 · Murray O0.5 STL 5/5
+- Wemby O1.5 BLK 8/8 · Turner O0.5 BLK 8/8 · Gafford O0.5 BLK 8/8
+
+RISK-KEEP (not SAFE)
+- Maxey O25.5 PTS 8/9 miss=19  ← best PTS climb form
+- Jaden McDaniels O5.5 REB 8/9
+- Scottie Barnes O4.5 REB 7/8
+- Austin Reaves O3.5 AST 8/9
+
+CUT / IGNORE FROM OTHER APPS
+- SGA PR unders using playoff L10 (Day Forge bug)
+- Diabate / Schroder / AD / Pritchard (Q)
+- Soft U28.5+ PTS “clears” (meaningless)
+
+CASH3 MIX (form → still HR-check)
+Kessler O6.5 REB · Trae O5.5 AST · Naz Reid O4.5 REB
+ALT: Wemby O6.5 REB · Tatum O5.5 AST · LeBron O4.5 AST

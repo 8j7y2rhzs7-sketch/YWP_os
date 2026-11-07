@@ -57,7 +57,7 @@ def _get_sync(path: str, params: dict[str, Any] | None = None) -> dict[str, Any]
 def get_game_odds(
     sport: str = SPORT_KEY,
     markets: str = "h2h,spreads,totals",
-    regions: str = "us",
+    regions: str = "us,us2",
 ) -> list[dict[str, Any]]:
     """Fetch current odds for all upcoming games in the sport."""
     data = _get_sync(
@@ -77,7 +77,7 @@ def get_event_odds(
     event_id: str,
     sport: str = SPORT_KEY,
     markets: str = "h2h,spreads,totals",
-    regions: str = "us",
+    regions: str = "us,us2",
 ) -> dict[str, Any] | None:
     """Fetch odds for a single event by event_id."""
     data = _get_sync(
@@ -102,7 +102,7 @@ def get_player_props(
     event_id: str,
     sport: str = SPORT_KEY,
     markets: str = "batter_hits,batter_total_bases,batter_rbis,batter_home_runs,pitcher_strikeouts",
-    regions: str = "us",
+    regions: str = "us,us2",
 ) -> dict[str, Any] | None:
     """Fetch player prop odds for a single event."""
     try:

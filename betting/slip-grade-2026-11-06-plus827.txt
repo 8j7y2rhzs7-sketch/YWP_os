@@ -1,0 +1,31 @@
+SLIP GRADE — 2026-11-06 · $25 → $231.64
+Implied odds ≈ +827  →  ALREADY PAST +500  ✓
+
+LEGS (7 selections / 6 priced rows)
+  LeBron O4.5 AST      SAFE 7/7
+  Maxey O23.5 PTS      RISK 8/9 miss=19   (same miss as O25.5)
+  Ace O3.5 REB         SAFE 8/8 cush+1.5
+  Raptors ML           RISK-KEEP (MIL 1-7; TOR road)
+  Boldy O2.5 SOG       RISK 9/10 miss=2
+  Kessler O7.5 REB     RISK 8/9 miss=7
+  Boozer O6.5 REB      RISK 7/8 miss=6
+
+CORRELATION
+  LeBron+Maxey same game — OK (AST vs PTS)
+  No Ek / no Luka stack — clean
+
+════════════════════════════════════════
+VERDICT
+════════════════════════════════════════
+Odds goal: DONE (+827 > +500).
+Risk: 4 RISK climbs stacked — high one-away chance.
+
+IF YOU LOCK AS-IS: acceptable juice ticket; know it’s RISK-heavy.
+
+IF YOU WANT TO CASH MORE / STILL ≥+500 — drop ONE climb only:
+  CUT Boozer O6.5  (weakest RISK)  OR  CUT Kessler O7.5
+  Keep Maxey O23.5 + Boldy O2.5 + Ace + Raps + LeBron
+  → should stay near/above +500
+
+DO NOT cut Ace O3.5 for odds — it’s SAFE cushion.
+DO NOT add more RISK climbs — you’re already past target.

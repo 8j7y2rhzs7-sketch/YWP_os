@@ -1,0 +1,42 @@
+UNDERDOG 10-PICK WEED 2026-11-05 (ESPN RS verified)
+Slip (from screenshots):
+1 Carter H8.5 REB
+2 Wiggins L2.5 AST
+3 Carter H0.5 STL
+4 Gillespie H1.5 STL
+5 Curry H4.5 AST
+6 Giannis H24.5 PTS
+7 Giannis H10.5 REB
+8 Podz H14.5 PTS
+9 Podz H3.5 AST
+10 Draymond L5.5 PTS
+(+ scroll partial H1.5 STL — if Wiggins H1.5 STL = CUT 1/8; if Bam H1.5 = RISK 6/8)
+
+KEEP:
+★ Wiggins LOWER 2.5 AST — [1,2,1,2,1,1,2,1] 8/8 (UD has 2.5; DK 1.5 was the bad number)
+★ Gillespie HIGHER 1.5 STL — [2,2,4,2,2,4] 6/6
+★ Draymond LOWER 5.5 PTS — [4,2,3,3,5,2] 6/6
+
+RISK-KEEP:
+• Carter H0.5 STL — 6/7 (one 0)
+
+RISK / not spine:
+• Carter H8.5 REB — 5/7 (two 7s = miss-by-1 twin) CUT from cash core
+• Giannis H24.5 PTS — 6/8 (14 and 24)
+• Giannis H10.5 REB — 6/8 (two 6s)
+• Podz H14.5 PTS — 5/6 (one 8)
+
+CUT:
+✗ Curry H4.5 AST — 3/6
+✗ Podz H3.5 AST — 4/6
+✗ Carter H8.5 as required pick (climb/print risk)
+✗ dual Giannis PTS+REB correlation on 10-pick
+
+REBUILD max4 (Underdog):
+1) Wiggins LOWER 2.5 AST
+2) Gillespie HIGHER 1.5 STL
+3) Draymond LOWER 5.5 PTS
+4) Carter HIGHER 0.5 STL
+
+ALT5 if needing length: + Bam H1.5 STL (6/8) OR Podz H14.5 PTS (5/6 RISK)
+DO NOT: Curry AST · Podz AST · Giannis double · Carter 8.5 REB spine

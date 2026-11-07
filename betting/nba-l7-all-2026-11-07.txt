@@ -1,0 +1,176 @@
+NBA L7 RS BOARDS — 2026-11-07 (ALL 7 GAMES · no skip · late SA@POR included)
+Rule: highest line per player-stat · 7/7 SAFE · 6/7 RISK · OUT filtered
+
+============================================================
+DEN@IND  DEN -7.5 OU=229.5  tip=2026-11-07T22:00Z
+OUT: Julian Strawther(Knee), Johnny Furphy(Knee), T.J. McConnell(Hamstring), Tyrese Haliburton(Hamstring), Ben Sheppard(Knee)
+--- 7/7 FEATURED ---
+  DEN Nikola Jokic           O6.5 REB 7/7 cush=+0.5  L=[10.0, 9.0, 7.0, 13.0, 7.0, 15.0, 7.0]
+  IND Jarace Walker          O5.5 REB 7/7 cush=+0.5  L=[8.0, 7.0, 6.0, 6.0, 8.0, 8.0, 7.0]
+  DEN Nikola Jokic           O4.5 AST 7/7 cush=+0.5  L=[11.0, 8.0, 10.0, 10.0, 11.0, 10.0, 5.0]
+  DEN Jamal Murray           O2.5 AST 7/7 cush=+0.5  L=[7.0, 6.0, 5.0, 6.0, 8.0, 6.0, 3.0]
+  IND Andrew Nembhard        O2.5 AST 7/7 cush=+0.5  L=[4.0, 4.0, 9.0, 14.0, 3.0, 5.0, 9.0]
+  DEN Christian Braun        O0.5 STL 7/7 cush=+0.5  L=[1.0, 2.0, 3.0, 3.0, 3.0, 2.0, 1.0]
+  DEN Nikola Jokic           O0.5 STL 7/7 cush=+0.5  L=[3.0, 4.0, 3.0, 1.0, 1.0, 2.0, 1.0]
+--- 6/7 FEATURED ---
+  DEN Nikola Jokic           O16.5 PTS 6/7 miss=[13.0]  L=[32.0, 26.0, 18.0, 21.0, 19.0, 35.0, 13.0]
+  IND Pascal Siakam          O16.5 PTS 6/7 miss=[13.0]  L=[20.0, 17.0, 13.0, 26.0, 20.0, 21.0, 23.0]
+  DEN Nikola Jokic           O7.5 AST 6/7 miss=[5.0]  L=[11.0, 8.0, 10.0, 10.0, 11.0, 10.0, 5.0]
+  DEN Jamal Murray           O4.5 AST 6/7 miss=[3.0]  L=[7.0, 6.0, 5.0, 6.0, 8.0, 6.0, 3.0]
+  IND Pascal Siakam          O4.5 REB 6/7 miss=[3.0]  L=[5.0, 5.0, 5.0, 11.0, 13.0, 7.0, 3.0]
+  IND Andrew Nembhard        O3.5 AST 6/7 miss=[3.0]  L=[4.0, 4.0, 9.0, 14.0, 3.0, 5.0, 9.0]
+  DEN Aaron Gordon           O3.5 REB 6/7 miss=[1.0]  L=[1.0, 6.0, 4.0, 11.0, 4.0, 5.0, 6.0]
+  IND Pascal Siakam          O2.5 AST 6/7 miss=[2.0]  L=[2.0, 5.0, 4.0, 3.0, 6.0, 6.0, 3.0]
+  DEN Jamal Murray           O1.5 3PT 6/7 miss=[0.0]  L=[2.0, 4.0, 7.0, 5.0, 3.0, 8.0, 0.0]
+  DEN Jamal Murray           O0.5 STL 6/7 miss=[0.0]  L=[1.0, 1.0, 1.0, 0.0, 3.0, 1.0, 1.0]
+  DEN Aaron Gordon           O0.5 STL 6/7 miss=[0.0]  L=[2.0, 1.0, 0.0, 1.0, 1.0, 2.0, 2.0]
+
+============================================================
+BKN@ATL  ATL -6.5 OU=226.5  tip=2026-11-08T00:30Z
+OUT: Egor Demin(Leg), Keshon Gilbert(Knee), Jalen Johnson(Ankle), Mouhamed Gueye(Foot), Jock Landale(Hip), Asa Newell(Toe)
+--- 7/7 FEATURED ---
+  BKN Day'Ron Sharpe         O3.5 REB 7/7 cush=+0.5  L=[5.0, 6.0, 13.0, 7.0, 6.0, 4.0, 8.0]
+  ATL Onyeka Okongwu         O3.5 REB 7/7 cush=+0.5  L=[10.0, 16.0, 10.0, 10.0, 12.0, 4.0, 9.0]
+  ATL Dyson Daniels          O2.5 AST 7/7 cush=+0.5  L=[12.0, 8.0, 4.0, 3.0, 5.0, 7.0, 4.0]
+--- 6/7 FEATURED ---
+  ATL Onyeka Okongwu         O8.5 REB 6/7 miss=[4.0]  L=[10.0, 16.0, 10.0, 10.0, 12.0, 4.0, 9.0]
+  BKN Day'Ron Sharpe         O4.5 REB 6/7 miss=[4.0]  L=[5.0, 6.0, 13.0, 7.0, 6.0, 4.0, 8.0]
+  BKN Julius Randle          O4.5 REB 6/7 miss=[3.0]  L=[3.0, 11.0, 5.0, 8.0, 9.0, 7.0, 6.0]
+  BKN Michael Porter Jr.     O4.5 REB 6/7 miss=[0.0]  L=[10.0, 5.0, 9.0, 7.0, 12.0, 0.0, 9.0]
+  ATL Dyson Daniels          O3.5 AST 6/7 miss=[3.0]  L=[12.0, 8.0, 4.0, 3.0, 5.0, 7.0, 4.0]
+  ATL Kingston Flemings      O3.5 AST 6/7 miss=[2.0]  L=[6.0, 4.0, 6.0, 5.0, 5.0, 4.0, 2.0]
+  ATL Dyson Daniels          O3.5 REB 6/7 miss=[0.0]  L=[9.0, 16.0, 9.0, 4.0, 6.0, 4.0, 0.0]
+  BKN Julius Randle          O2.5 AST 6/7 miss=[2.0]  L=[4.0, 2.0, 6.0, 3.0, 4.0, 7.0, 5.0]
+  ATL Aaron Wiggins          O1.5 3PT 6/7 miss=[1.0]  L=[3.0, 3.0, 1.0, 2.0, 4.0, 2.0, 2.0]
+  BKN Michael Porter Jr.     O1.5 3PT 6/7 miss=[0.0]  L=[4.0, 4.0, 3.0, 2.0, 6.0, 0.0, 4.0]
+  ATL Nickeil Alexander-Walker O1.5 3PT 6/7 miss=[0.0]  L=[4.0, 6.0, 9.0, 0.0, 4.0, 5.0, 2.0]
+  BKN Nolan Traore           O0.5 STL 6/7 miss=[0.0]  L=[3.0, 1.0, 1.0, 1.0, 2.0, 1.0, 0.0]
+  ATL Dyson Daniels          O0.5 STL 6/7 miss=[0.0]  L=[2.0, 0.0, 3.0, 3.0, 1.0, 3.0, 1.0]
+
+============================================================
+NY@CLE  NY -4.5 OU=224.5  tip=2026-11-08T01:00Z
+OUT: Josh Hart(Ankle), Jarrett Allen(Knee), Sam Merrill(Elbow), Jaylon Tyson(Ankle)
+--- 7/7 FEATURED ---
+  NY  Jalen Brunson          O18.5 PTS 7/7 cush=+0.5  L=[33.0, 19.0, 24.0, 38.0, 23.0, 28.0, 19.0]
+  CLE Donovan Mitchell       O14.5 PTS 7/7 cush=+0.5  L=[23.0, 27.0, 17.0, 15.0, 22.0, 19.0, 26.0]
+  NY  Karl-Anthony Towns     O9.5 REB 7/7 cush=+0.5  L=[12.0, 16.0, 12.0, 13.0, 20.0, 14.0, 10.0]
+  NY  Jalen Brunson          O3.5 AST 7/7 cush=+0.5  L=[4.0, 6.0, 6.0, 7.0, 7.0, 4.0, 4.0]
+  CLE Evan Mobley            O3.5 REB 7/7 cush=+0.5  L=[6.0, 10.0, 7.0, 5.0, 4.0, 12.0, 10.0]
+  CLE James Harden           O2.5 AST 7/7 cush=+0.5  L=[3.0, 6.0, 6.0, 7.0, 4.0, 6.0, 9.0]
+  CLE Donovan Mitchell       O2.5 AST 7/7 cush=+0.5  L=[8.0, 6.0, 11.0, 3.0, 3.0, 7.0, 7.0]
+  CLE James Harden           O1.5 3PT 7/7 cush=+0.5  L=[3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 3.0]
+--- 6/7 FEATURED ---
+  CLE Donovan Mitchell       O16.5 PTS 6/7 miss=[15.0]  L=[23.0, 27.0, 17.0, 15.0, 22.0, 19.0, 26.0]
+  NY  Karl-Anthony Towns     O16.5 PTS 6/7 miss=[11.0]  L=[17.0, 11.0, 22.0, 19.0, 27.0, 22.0, 22.0]
+  NY  Karl-Anthony Towns     O10.5 REB 6/7 miss=[10.0]  L=[12.0, 16.0, 12.0, 13.0, 20.0, 14.0, 10.0]
+  CLE Evan Mobley            O4.5 REB 6/7 miss=[4.0]  L=[6.0, 10.0, 7.0, 5.0, 4.0, 12.0, 10.0]
+  NY  OG Anunoby             O3.5 REB 6/7 miss=[3.0]  L=[5.0, 4.0, 4.0, 6.0, 7.0, 3.0, 10.0]
+  CLE James Harden           O3.5 AST 6/7 miss=[3.0]  L=[3.0, 6.0, 6.0, 7.0, 4.0, 6.0, 9.0]
+  CLE James Harden           O3.5 REB 6/7 miss=[2.0]  L=[6.0, 9.0, 4.0, 6.0, 5.0, 2.0, 5.0]
+  CLE James Harden           O2.5 3PT 6/7 miss=[2.0]  L=[3.0, 3.0, 3.0, 3.0, 3.0, 2.0, 3.0]
+  CLE Evan Mobley            O2.5 AST 6/7 miss=[2.0]  L=[4.0, 3.0, 4.0, 3.0, 7.0, 2.0, 3.0]
+  NY  Karl-Anthony Towns     O2.5 AST 6/7 miss=[1.0]  L=[1.0, 5.0, 3.0, 5.0, 3.0, 4.0, 3.0]
+  CLE Peyton Watson          O0.5 BLK 6/7 miss=[0.0]  L=[0.0, 2.0, 2.0, 1.0, 4.0, 1.0, 1.0]
+
+============================================================
+WSH@OKC  OKC -11.5 OU=219.5  tip=2026-11-08T01:00Z
+OUT: Anthony Davis(Ankle), Justin Champagnie(Foot), Reece Beekman(Shoulder), Tristan Vukcevic(Hip), Jamir Watkins(Knee), Chet Holmgren(Knee), Nikola Topic(Back), Cason Wallace(Shoulder), Jaylin Williams(Back), Jalen Williams(Leg)
+--- 7/7 FEATURED ---
+  OKC Shai Gilgeous-Alexander O19.5 PTS 7/7 cush=+1.5  L=[28.0, 42.0, 43.0, 26.0, 21.0, 26.0, 34.0]
+  WSH Trae Young             O5.5 AST 7/7 cush=+0.5  L=[10.0, 6.0, 9.0, 9.0, 8.0, 10.0, 9.0]
+  OKC Isaiah Hartenstein     O5.5 REB 7/7 cush=+0.5  L=[6.0, 12.0, 14.0, 7.0, 14.0, 13.0, 12.0]
+  OKC Aday Mara              O0.5 BLK 7/7 cush=+0.5  L=[1.0, 3.0, 1.0, 4.0, 2.0, 2.0, 1.0]
+--- 6/7 FEATURED ---
+  OKC Shai Gilgeous-Alexander O25.5 PTS 6/7 miss=[21.0]  L=[28.0, 42.0, 43.0, 26.0, 21.0, 26.0, 34.0]
+  OKC Ajay Mitchell          O16.5 PTS 6/7 miss=[6.0]  L=[35.0, 23.0, 20.0, 6.0, 29.0, 30.0, 18.0]
+  WSH Trae Young             O7.5 AST 6/7 miss=[6.0]  L=[10.0, 6.0, 9.0, 9.0, 8.0, 10.0, 9.0]
+  OKC Isaiah Hartenstein     O6.5 REB 6/7 miss=[6.0]  L=[6.0, 12.0, 14.0, 7.0, 14.0, 13.0, 12.0]
+  WSH Deandre Ayton          O3.5 REB 6/7 miss=[3.0]  L=[11.0, 4.0, 6.0, 4.0, 3.0, 4.0, 5.0]
+  WSH Alex Sarr              O3.5 REB 6/7 miss=[2.0]  L=[8.0, 9.0, 8.0, 4.0, 6.0, 2.0, 4.0]
+  WSH Kyshawn George         O2.5 AST 6/7 miss=[2.0]  L=[7.0, 7.0, 5.0, 3.0, 11.0, 2.0, 4.0]
+  OKC Shai Gilgeous-Alexander O2.5 AST 6/7 miss=[2.0]  L=[4.0, 8.0, 8.0, 3.0, 2.0, 3.0, 5.0]
+  OKC Ajay Mitchell          O2.5 AST 6/7 miss=[1.0]  L=[5.0, 4.0, 1.0, 5.0, 3.0, 5.0, 4.0]
+  WSH Kyshawn George         O0.5 BLK 6/7 miss=[0.0]  L=[2.0, 0.0, 1.0, 1.0, 1.0, 1.0, 4.0]
+
+============================================================
+ORL@GS  GS -6.5 OU=221.5  tip=2026-11-08T01:30Z
+OUT: Paolo Banchero(Ankle), Jonathan Isaac(Knee), Noah Penda(Hamstring), Jalen Suggs(Knee), Jimmy Butler III(Knee), Moses Moody(Knee), Kristaps Porzingis(Illness)
+--- 7/7 FEATURED ---
+  GS  Stephen Curry          O22.5 PTS 7/7 cush=+0.5  L=[29.0, 34.0, 31.0, 44.0, 24.0, 24.0, 23.0]
+  ORL Wendell Carter Jr.     O6.5 REB 7/7 cush=+0.5  L=[13.0, 9.0, 10.0, 7.0, 10.0, 10.0, 9.0]
+  ORL Franz Wagner           O4.5 AST 7/7 cush=+0.5  L=[15.0, 6.0, 12.0, 11.0, 5.0, 9.0, 5.0]
+  GS  Draymond Green         O3.5 REB 7/7 cush=+0.5  L=[5.0, 4.0, 4.0, 9.0, 4.0, 5.0, 4.0]
+  GS  De'Anthony Melton      O3.5 REB 7/7 cush=+0.5  L=[6.0, 7.0, 6.0, 5.0, 6.0, 4.0, 5.0]
+  GS  Stephen Curry          O1.5 3PT 7/7 cush=+0.5  L=[6.0, 5.0, 8.0, 6.0, 3.0, 3.0, 2.0]
+--- 6/7 FEATURED ---
+  ORL Wendell Carter Jr.     O8.5 REB 6/7 miss=[7.0]  L=[13.0, 9.0, 10.0, 7.0, 10.0, 10.0, 9.0]
+  GS  Draymond Green         O5.5 AST 6/7 miss=[2.0]  L=[11.0, 2.0, 9.0, 6.0, 7.0, 6.0, 8.0]
+  GS  De'Anthony Melton      O4.5 REB 6/7 miss=[4.0]  L=[6.0, 7.0, 6.0, 5.0, 6.0, 4.0, 5.0]
+  ORL Franz Wagner           O3.5 REB 6/7 miss=[3.0]  L=[8.0, 3.0, 6.0, 5.0, 4.0, 13.0, 6.0]
+  GS  Yaxel Lendeborg        O3.5 REB 6/7 miss=[1.0]  L=[8.0, 5.0, 4.0, 1.0, 9.0, 12.0, 9.0]
+  GS  Stephen Curry          O2.5 3PT 6/7 miss=[2.0]  L=[6.0, 5.0, 8.0, 6.0, 3.0, 3.0, 2.0]
+  GS  Brandin Podziemski     O2.5 AST 6/7 miss=[2.0]  L=[3.0, 2.0, 8.0, 6.0, 6.0, 5.0, 3.0]
+  GS  Stephen Curry          O2.5 AST 6/7 miss=[1.0]  L=[4.0, 7.0, 6.0, 6.0, 3.0, 4.0, 1.0]
+  ORL Desmond Bane           O1.5 3PT 6/7 miss=[1.0]  L=[3.0, 4.0, 5.0, 6.0, 2.0, 4.0, 1.0]
+  ORL Tristan da Silva       O1.5 3PT 6/7 miss=[1.0]  L=[4.0, 2.0, 5.0, 2.0, 4.0, 5.0, 1.0]
+  GS  Brandin Podziemski     O1.5 3PT 6/7 miss=[0.0]  L=[2.0, 3.0, 2.0, 4.0, 0.0, 3.0, 2.0]
+  ORL Wendell Carter Jr.     O0.5 STL 6/7 miss=[0.0]  L=[1.0, 1.0, 2.0, 2.0, 1.0, 1.0, 0.0]
+  GS  Stephen Curry          O0.5 STL 6/7 miss=[0.0]  L=[1.0, 1.0, 1.0, 2.0, 2.0, 0.0, 2.0]
+  GS  De'Anthony Melton      O0.5 STL 6/7 miss=[0.0]  L=[3.0, 2.0, 2.0, 2.0, 1.0, 0.0, 3.0]
+
+============================================================
+HOU@PHX  HOU -7.5 OU=221.5  tip=2026-11-08T02:00Z
+OUT: Steven Adams(Calf), Clint Capela(Ankle), Mark Williams(Shoulder)
+--- 7/7 FEATURED ---
+  HOU Alperen Sengun         O14.5 PTS 7/7 cush=+1.5  L=[17.0, 26.0, 16.0, 29.0, 17.0, 29.0, 23.0]
+  HOU Alperen Sengun         O6.5 REB 7/7 cush=+0.5  L=[12.0, 7.0, 9.0, 9.0, 10.0, 7.0, 10.0]
+  HOU Alperen Sengun         O4.5 AST 7/7 cush=+0.5  L=[10.0, 10.0, 9.0, 9.0, 7.0, 7.0, 5.0]
+  PHX Miles Bridges          O3.5 REB 7/7 cush=+0.5  L=[13.0, 7.0, 6.0, 10.0, 8.0, 7.0, 4.0]
+  HOU Fred VanVleet          O2.5 AST 7/7 cush=+0.5  L=[3.0, 9.0, 6.0, 5.0, 5.0, 5.0, 11.0]
+  HOU Jabari Smith Jr.       O1.5 3PT 7/7 cush=+0.5  L=[2.0, 4.0, 6.0, 3.0, 3.0, 2.0, 2.0]
+  PHX Collin Gillespie       O1.5 STL 7/7 cush=+0.5  L=[3.0, 2.0, 2.0, 4.0, 2.0, 2.0, 4.0]
+--- 6/7 FEATURED ---
+  PHX Devin Booker           O19.5 PTS 6/7 miss=[3.0]  L=[30.0, 33.0, 26.0, 20.0, 3.0, 43.0, 23.0]
+  HOU Alperen Sengun         O16.5 PTS 6/7 miss=[16.0]  L=[17.0, 26.0, 16.0, 29.0, 17.0, 29.0, 23.0]
+  HOU Alperen Sengun         O6.5 AST 6/7 miss=[5.0]  L=[10.0, 10.0, 9.0, 9.0, 7.0, 7.0, 5.0]
+  PHX Miles Bridges          O5.5 REB 6/7 miss=[4.0]  L=[13.0, 7.0, 6.0, 10.0, 8.0, 7.0, 4.0]
+  PHX Khaman Maluach         O5.5 REB 6/7 miss=[2.0]  L=[6.0, 6.0, 2.0, 6.0, 7.0, 9.0, 6.0]
+  HOU Fred VanVleet          O4.5 AST 6/7 miss=[3.0]  L=[3.0, 9.0, 6.0, 5.0, 5.0, 5.0, 11.0]
+  HOU Fred VanVleet          O1.5 3PT 6/7 miss=[0.0]  L=[4.0, 2.0, 3.0, 4.0, 0.0, 3.0, 2.0]
+  PHX Miles Bridges          O1.5 3PT 6/7 miss=[0.0]  L=[3.0, 4.0, 3.0, 2.0, 2.0, 2.0, 0.0]
+  HOU Kevin Durant           O0.5 BLK 6/7 miss=[0.0]  L=[1.0, 1.0, 3.0, 0.0, 3.0, 4.0, 1.0]
+  PHX Miles Bridges          O0.5 STL 6/7 miss=[0.0]  L=[2.0, 2.0, 4.0, 1.0, 1.0, 0.0, 1.0]
+
+============================================================
+SA@POR  SA -5.5 OU=226.5  tip=2026-11-08T03:00Z
+OUT: Tobias Harris(Calf), Vit Krejci(Ankle), Ja Morant(Hamstring), Shaedon Sharpe(Knee)
+--- 7/7 FEATURED ---
+  POR Deni Avdija            O19.5 PTS 7/7 cush=+1.5  L=[22.0, 21.0, 28.0, 24.0, 24.0, 23.0, 26.0]
+  POR Donovan Clingan        O7.5 REB 7/7 cush=+0.5  L=[11.0, 11.0, 18.0, 9.0, 8.0, 10.0, 11.0]
+  SA  Victor Wembanyama      O6.5 REB 7/7 cush=+0.5  L=[14.0, 24.0, 11.0, 7.0, 14.0, 10.0, 7.0]
+  SA  Keldon Johnson         O3.5 REB 7/7 cush=+0.5  L=[6.0, 5.0, 7.0, 6.0, 6.0, 4.0, 6.0]
+  SA  Stephon Castle         O2.5 AST 7/7 cush=+0.5  L=[7.0, 3.0, 4.0, 4.0, 8.0, 5.0, 8.0]
+  SA  De'Aaron Fox           O2.5 AST 7/7 cush=+0.5  L=[4.0, 4.0, 3.0, 7.0, 4.0, 6.0, 9.0]
+  SA  Victor Wembanyama      O1.5 BLK 7/7 cush=+0.5  L=[2.0, 8.0, 3.0, 6.0, 2.0, 5.0, 4.0]
+  POR Jrue Holiday           O1.5 3PT 7/7 cush=+0.5  L=[3.0, 5.0, 3.0, 2.0, 2.0, 2.0, 3.0]
+  SA  Devin Vassell          O0.5 STL 7/7 cush=+0.5  L=[1.0, 2.0, 1.0, 2.0, 3.0, 1.0, 2.0]
+  POR Donovan Clingan        O0.5 BLK 7/7 cush=+0.5  L=[2.0, 3.0, 4.0, 1.0, 5.0, 1.0, 3.0]
+--- 6/7 FEATURED ---
+  SA  Victor Wembanyama      O22.5 PTS 6/7 miss=[12.0]  L=[30.0, 52.0, 12.0, 43.0, 36.0, 29.0, 23.0]
+  POR Damian Lillard         O18.5 PTS 6/7 miss=[9.0]  L=[22.0, 25.0, 20.0, 22.0, 9.0, 21.0, 19.0]
+  POR Donovan Clingan        O8.5 REB 6/7 miss=[8.0]  L=[11.0, 11.0, 18.0, 9.0, 8.0, 10.0, 11.0]
+  SA  Keldon Johnson         O4.5 REB 6/7 miss=[4.0]  L=[6.0, 5.0, 7.0, 6.0, 6.0, 4.0, 6.0]
+  POR Robert Williams III    O4.5 REB 6/7 miss=[3.0]  L=[5.0, 8.0, 6.0, 3.0, 10.0, 6.0, 10.0]
+  SA  Dylan Harper           O4.5 REB 6/7 miss=[2.0]  L=[2.0, 5.0, 7.0, 7.0, 5.0, 6.0, 5.0]
+  POR Deni Avdija            O4.5 AST 6/7 miss=[2.0]  L=[11.0, 12.0, 5.0, 2.0, 7.0, 9.0, 6.0]
+  SA  Stephon Castle         O3.5 REB 6/7 miss=[3.0]  L=[3.0, 10.0, 5.0, 5.0, 6.0, 5.0, 4.0]
+  SA  Stephon Castle         O3.5 AST 6/7 miss=[3.0]  L=[7.0, 3.0, 4.0, 4.0, 8.0, 5.0, 8.0]
+  SA  De'Aaron Fox           O3.5 AST 6/7 miss=[3.0]  L=[4.0, 4.0, 3.0, 7.0, 4.0, 6.0, 9.0]
+  POR Deni Avdija            O3.5 REB 6/7 miss=[3.0]  L=[9.0, 7.0, 3.0, 5.0, 9.0, 4.0, 7.0]
+  SA  Luke Kornet            O3.5 REB 6/7 miss=[1.0]  L=[6.0, 1.0, 5.0, 8.0, 6.0, 4.0, 4.0]
+  POR Toumani Camara         O2.5 3PT 6/7 miss=[1.0]  L=[4.0, 1.0, 3.0, 4.0, 3.0, 4.0, 5.0]
+  POR Jrue Holiday           O2.5 AST 6/7 miss=[0.0]  L=[7.0, 0.0, 10.0, 3.0, 4.0, 3.0, 8.0]
+  SA  Julian Champagnie      O1.5 3PT 6/7 miss=[0.0]  L=[2.0, 0.0, 2.0, 3.0, 2.0, 8.0, 3.0]
+  SA  Victor Wembanyama      O0.5 STL 6/7 miss=[0.0]  L=[0.0, 2.0, 1.0, 1.0, 3.0, 2.0, 1.0]
+  POR Jrue Holiday           O0.5 STL 6/7 miss=[0.0]  L=[0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  POR Robert Williams III    O0.5 BLK 6/7 miss=[0.0]  L=[2.0, 3.0, 0.0, 1.0, 1.0, 1.0, 1.0]

@@ -17,3 +17,7 @@ Also in repo:
   .cursor/skills/betting-run/SKILL.md   (full playbook)
   betting/HOW_TO_PROMPT.md              (user prompt cheatsheet)
   AGENTS.md                             (cloud agent pointer)
+
+## 2026-11-03 — NHL sheet coverage fix
+Default `--max-nhl-players` raised 120→400 and NHL roster fetch is interleaved by team.
+Without this, a 11-game NHL slate only sheeted the first ~5 teams (UTA/TOR/WPG/MTL/DET) and silently omitted McDavid/Hughes/etc.

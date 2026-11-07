@@ -1,0 +1,143 @@
+YWP 2026-11-04 — NHL + SOCCER (UCL) EXHAUSTIVE
+GATE PASS date=20261104 sheets_ok=505/505
+Active tonight: NHL 4 · UCL 9 (2 LIVE) · Rules: SOG≤2/ticket · split SOG vs sides · no O2.5 SAFE · skip soccer chalk ML ≤−250
+
+=== NHL SOG — L5 CLEAN / L10 HONEST (O1.5) ===
+NOTE: No true L10 floor≥2 SAFE tonight. Board = RISK-KEEP spines with L5 5/5. Cap ≤2 SOG/ticket.
+
+RISK-KEEP★ Sam Reinhart (FLA) O1.5 SOG id=3114722 [CHI @ FLA]
+   L5=[3.0, 4.0, 2.0, 2.0, 6.0] 5/5 · L10=[3.0, 4.0, 2.0, 2.0, 6.0, 0.0, 3.0, 5.0, 7.0, 2.0] 9/10 mn=0.0 avg=3.4
+RISK-KEEP★ Will Smith (SJ) O1.5 SOG id=5149155 [SJ @ LA]
+   L5=[2.0, 3.0, 3.0, 2.0, 5.0] 5/5 · L10=[2.0, 3.0, 3.0, 2.0, 5.0, 3.0, 1.0, 4.0, 4.0, 5.0] 9/10 mn=1.0 avg=3.2
+RISK-KEEP★ Rasmus Dahlin (BUF) O1.5 SOG id=4294163 [OTT @ BUF]
+   L5=[2.0, 4.0, 2.0, 3.0, 4.0] 5/5 · L10=[2.0, 4.0, 2.0, 3.0, 4.0, 4.0, 4.0, 1.0, 3.0, 3.0] 9/10 mn=1.0 avg=3.0
+RISK-KEEP★ Jack Quinn (BUF) O1.5 SOG id=4697389 [OTT @ BUF]
+   L5=[2.0, 4.0, 3.0, 3.0, 4.0] 5/5 · L10=[2.0, 4.0, 3.0, 3.0, 4.0, 2.0, 4.0, 3.0, 1.0, 2.0] 9/10 mn=1.0 avg=2.8
+RISK-KEEP★ Connor Bedard (CHI) O1.5 SOG id=5149125 [CHI @ FLA]
+   L5=[4.0, 6.0, 4.0, 3.0, 2.0] 5/5 · L10=[4.0, 6.0, 4.0, 3.0, 2.0, 1.0, 2.0, 3.0, 3.0] 8/9 mn=1.0 avg=3.1
+RISK-KEEP★ Sam Bennett (FLA) O1.5 SOG id=3114732 [CHI @ FLA]
+   L5=[5.0, 2.0, 2.0, 3.0, 4.0] 5/5 · L10=[5.0, 2.0, 2.0, 3.0, 4.0, 2.0, 4.0, 6.0, 1.0, 1.0] 8/10 mn=1.0 avg=3.0
+
+=== NHL PRIMARY O1.5 ===
+• Macklin Celebrini (SJ) O1.5 SOG id=5206628 [SJ @ LA]
+   L5=[2.0, 2.0, 6.0, 4.0, 1.0] 4/5 · L10=[2.0, 2.0, 6.0, 4.0, 1.0, 2.0, 6.0, 5.0, 7.0, 3.0] 9/10 mn=1.0 avg=3.8
+• Alex Laferriere (LA) O1.5 SOG id=4697725 [SJ @ LA]
+   L5=[3.0, 7.0, 5.0, 2.0, 0.0] 4/5 · L10=[3.0, 7.0, 5.0, 2.0, 0.0, 2.0, 3.0, 2.0, 2.0, 2.0] 9/10 mn=0.0 avg=2.8
+• Artemi Panarin (LA) O1.5 SOG id=3891952 [SJ @ LA]
+   L5=[3.0, 7.0, 0.0, 3.0, 3.0] 4/5 · L10=[3.0, 7.0, 0.0, 3.0, 3.0, 4.0, 3.0, 3.0, 1.0, 5.0] 8/10 mn=0.0 avg=3.2
+• Tage Thompson (BUF) O1.5 SOG id=4024988 [OTT @ BUF]
+   L5=[8.0, 4.0, 6.0, 0.0, 3.0] 4/5 · L10=[8.0, 4.0, 6.0, 0.0, 3.0, 5.0, 6.0, 1.0, 1.0, 6.0] 7/10 mn=0.0 avg=4.0
+• Zach Benson (BUF) O1.5 SOG id=5149186 [OTT @ BUF]
+   L5=[4.0, 3.0, 5.0, 2.0, 1.0] 4/5 · L10=[4.0, 3.0, 5.0, 2.0, 1.0, 3.0, 4.0, 0.0, 2.0, 1.0] 7/10 mn=0.0 avg=2.5
+• Kiefer Sherwood (SJ) O1.5 SOG id=4391255 [SJ @ LA]
+   L5=[2.0, 0.0, 3.0, 3.0, 5.0] 4/5 · L10=[2.0, 0.0, 3.0, 3.0, 5.0, 3.0, 2.0, 0.0, 0.0, 5.0] 7/10 mn=0.0 avg=2.3
+• Anton Lundell (FLA) O1.5 SOG id=4697395 [CHI @ FLA]
+   L5=[1.0, 8.0, 4.0, 2.0, 2.0] 4/5 · L10=[1.0, 8.0, 4.0, 2.0, 2.0, 1.0, 1.0, 4.0, 1.0, 3.0] 6/10 mn=1.0 avg=2.7
+• Jordan Eberle (SEA) O1.5 SOG id=5032 [CGY @ SEA]
+   L5=[2.0, 1.0, 2.0, 5.0, 4.0] 4/5 · L10=[2.0, 1.0, 2.0, 5.0, 4.0, 1.0, 1.0, 3.0, 6.0, 1.0] 6/10 mn=1.0 avg=2.6
+• Carter Verhaeghe (FLA) O1.5 SOG id=3042088 [CHI @ FLA]
+   L5=[2.0, 3.0, 3.0, 4.0, 1.0] 4/5 · L10=[2.0, 3.0, 3.0, 4.0, 1.0, 1.0, 5.0, 1.0, 3.0, 0.0] 6/10 mn=0.0 avg=2.3
+
+=== NHL BANGERS ===
+⚡ Connor Bedard O2.5 SOG — L5=[4,6,4,3,2] 4/5 avg=3.8 (ONLY volume-ish O2.5; still not SAFE spine)
+⚡ Tage Thompson O2.5 — L5 has a 0 — BAN as spine; upside only
+⚡ Same-game dual SOG (Bedard+Reinhart / Quinn+Dahlin) = construction note, not auto-ban
+
+=== NHL SIDES / PL (Ticket B — separate from SOG) ===
+  OTT @ BUF: BUF -130 O/U 6.5 | 11/4 - 7:30 PM EST
+  CHI @ FLA: FLA -258 O/U 6.5 | 11/4 - 7:30 PM EST
+  SJ @ LA: LA -166 O/U 6.5 | 11/4 - 10:00 PM EST
+  CGY @ SEA: SEA -135 O/U 6.5 | 11/4 - 10:00 PM EST
+★ OTT +1.5 / soft PL @ BUF (−130) — prefer dog PL over 3rd SOG
+★ SJ +1.5 @ LA (−166) — soft PL
+★ CGY +1.5 @ SEA (−135) — soft PL
+• LA ML RISK-KEEP (mid chalk)
+• FLA −1.5 RISK (FLA −258 juice — not ML spine); FLA ML BAN as juice
+• SEA ML thin (−135)
+BAN: U6.5 stacks as multi-leg identity (postmortem U7.5 death)
+
+=== NHL BY GAME ===
+OTT@BUF: Quinn O1.5 · Dahlin O1.5 · Thompson PRIMARY · OTT +1.5
+CHI@FLA: Bedard O1.5 · Reinhart O1.5 · Bennett O1.5 · FLA −1.5 RISK not −258 ML
+SJ@LA: Will Smith O1.5 · Celebrini PRIMARY · SJ +1.5 · LA ML RISK
+CGY@SEA: Eberle PRIMARY thin · CGY +1.5 · SEA ML thin
+
+=== NHL CLEAN SLIPS ===
+SOG2: Bedard O1.5 · Quinn O1.5
+SOG2-alt: Bedard O1.5 · Will Smith O1.5
+SOG2-FLA: Reinhart O1.5 · Bedard O1.5 (corr note)
+SIDES3: OTT +1.5 · SJ +1.5 · CGY +1.5
+MIX4: Bedard O1.5 · Quinn O1.5 · OTT +1.5 · SJ +1.5
+UPSIDE: Bedard O2.5 alone / or + one soft PL
+DO NOT: 3+ SOG · FLA −258 ML · O2.5 as SAFE · U6.5 multi-stack
+
+=== UCL — MULTI-CATEGORY BOARD (locked: not ML-only) ===
+Categories: SOA/ATG · Shots/SOT · Team totals · Match O/U · BTTS · Corners · (Cards RISK only)
+Form source: ESPN club RS gamelogs (G/A/SHOT/SOT). Confirm XI before SOA spine.
+
+=== SOA / ATG (ranked by form + script) ===
+★ Erling Haaland SOA / ATG [MNC @ RBL] id=253989
+   EPL L9: G=[0,1,2,1,1,1,1,2,…] SOA 7/9 · SH 9/9 O1.5 avgSH=3.8 — best SOA on slate
+★ Bukayo Saka SOA (not ATG-first) [ARS @ SLP] id=280555
+   EPL L7: SOA 3/7 · SH O1.5 6/7 avg=2.4 — mismatch script elevates; ATG secondary
+★ Serhou Guirassy SOA [BET @ DOR] id=186381
+   Bundesliga L8: SOA 4/8 · SH O1.5 7/8 avg=3.1 — Dortmund #9 vs Betis
+• Julian Brandt SOA [BET @ DOR] id=197628 — SOA 5/10; correlated w/ Guirassy (pick ONE)
+• Ricardo Pepi SOA/ATG [BRU @ PSV] id=289120 — SOA 4/8 · SH 6/8 O1.5
+• Nico Paz shots-first [COMO @ RCL] id=337970 — SOA 4/10 thin; SH O1.5 9/10 avg=4.3 → SHOTS prop
+• Phil Foden SOA [MNC @ RBL] — 2/7 thin; Haaland preferred
+CUT/fade: Gyökeres SOA (EPL log cold 0/9 G — confirm role/XI) · Eze · Cutrone · Galeno SOA
+
+=== SHOTS / SOT ===
+★ Haaland O1.5 / O2.5 shots [MNC @ RBL] — L9 SH clears O1.5 9/9 (vals 4,3,5,2,4,2,4,5)
+★ Nico Paz O1.5 / O2.5 shots [COMO @ RCL] — 9/10 O1.5 avg 4.3
+★ Guirassy O1.5 shots [BET @ DOR] — 7/8
+★ Saka O1.5 shots [ARS @ SLP] — 6/7
+• Saibari O1.5 shots [PSV] — 6/8
+• Marmoush O1.5 shots — 5/8 (alt City)
+
+=== TEAM TOTALS (vs juice ML) ===
+★ Arsenal TT O1.5 / O2.5 @ Slavia — SKIP ARS −425 ML; TT/AH path
+★ Man City TT O1.5 / O2.5 @ Leipzig — pairs with Haaland SOA
+★ Dortmund TT O1.5 vs Betis
+• PSV TT O1.5 vs Brugge
+• Viking TT O1.5 vs Sabah (mismatch)
+
+=== MATCH O/U + BTTS ===
+O3.5 boards: DOR / PSV / City / Como — O3.5 as SINGLE add only (not 3-over ladder)
+O2.5 boards: Arsenal @ Slavia · Porto/Napoli — lean ARS team script over match under stack
+BTTS-Yes: RISK-KEEP only on open 3.5 games (Dortmund/Betis, PSV/Brugge, City/Leipzig) — max 1 BTTS on ticket
+BAN: 3+ BTTS acca · correlated multi-under across slate
+
+=== CORNERS (secondary) ===
+• Arsenal team corners O4.5 / O5.5 @ Slavia — territorial mismatch add
+• Man City team corners O5.5 @ Leipzig — add not spine
+• Match corners O8.5/O9.5 on City/Dortmund games — RISK
+Cards: BAN as SAFE (YC variance)
+
+=== 1X2 / AH (still boarded — not the only lane) ===
+PRIMARY ML: Dortmund −145 · PSV −105 · Como −115
+RISK-KEEP: City −180 / −0.5 · Viking −210
+SKIP ML → AH/TT: Arsenal −425 → ARS −1.5/−2.5 + TT O1.5
+COIN PASS: Porto/Napoli
+LIVE no new spine: RMA @ AEK · LIV @ Fenerbahce
+
+=== UCL CLEAN SLIPS (multi-cat) ===
+SOA2: Haaland SOA · Saka SOA
+SOA+SHOT: Haaland SOA · Guirassy O1.5 shots
+TT+AH: Arsenal TT O1.5 · Arsenal −1.5 · Dortmund ML
+SAFE3 mix: Haaland SOA · Dortmund ML · Saka O1.5 shots
+SAFE4: Haaland SOA · Guirassy SOA · Arsenal TT O1.5 · PSV ML
+BANG: City −1.5 · Arsenal −2.5 · Haaland ATG · Paz O2.5 shots
+MIX NHL+UCL: Bedard O1.5 · Quinn O1.5 · Haaland SOA · Dortmund ML
+DO NOT: ARS −425 ML · 2 City SOA (Haaland+Foden) · 3 BTTS · Gyökeres cold-log spine without XI
+
+=== BAN ===
+NHL: ≥3 SOG · O2.5 SAFE · FLA −258 ML · multi U6.5
+UCL: chalk ML ≤−250 · correlated unders · live chase · cards SAFE · SOA teammate doubles
+
+DONE CHECK
+- require_gate: PASS date=20261104 sheets_ok=505/505
+- GATE_TODAY.json date=20261104 status=PASS
+- sheets_path=/cursor/stores/self/betting/GATE_SHEETS_20261104.json
+- BANGERS: yes · athlete_ids: yes · soccer multi-cat: yes · SOA/shots/TT/BTTS/corners: yes

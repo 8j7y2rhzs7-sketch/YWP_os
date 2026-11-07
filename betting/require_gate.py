@@ -43,7 +43,11 @@ def check(date: str | None = None) -> tuple[bool, str]:
 
 
 def main() -> int:
-    ok, msg = check()
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--date", default=None, help="YYYYMMDD ET slate (default: today)")
+    args = ap.parse_args()
+    ok, msg = check(args.date)
     print(msg)
     return 0 if ok else 2
 

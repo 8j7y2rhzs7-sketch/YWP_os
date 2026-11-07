@@ -1,0 +1,44 @@
+ADD-ONLY — push odds up (2026-11-06)
+Don’t swap. Add legs that actually pay (near even / small minus / dog PL).
+Skip −500+ chalk — those barely move the number.
+
+════════════════════════════════════════
+BEST ADDS (worth money + form OK)
+════════════════════════════════════════
+TIER 1 — biggest odds lift
+  + CBJ +1.5              RISK-KEEP · our CASH3 dog PL
+  + ANA +1.5              RISK-KEEP · our CASH3 dog PL
+  + ILL +4.5              RISK-KEEP · CFB soft home dog
+  + Maxey O25.5 PTS       RISK 8/9 miss=19 · best NBA juice add
+
+TIER 2 — still pays, form RISK
+  + Boozer O6.5 REB       RISK 7/8 miss=6
+  + Kessler O7.5 REB      RISK 8/9 miss=7
+  + Trae O7.5 AST         RISK 7/8 miss=6
+  + Tatum O6.5 AST        RISK 6/7 miss=6
+  + Naz O5.5 REB          RISK 8/9 miss=5
+  + Luka O5.5 AST         RISK 7/8 miss=5  (don’t also have Kessler if avoiding LAL stack)
+
+TIER 3 — SAFE but soft price (add if missing)
+  + Ace O4.5 REB          SAFE 8/8 · ~−220 best SAFE price
+  + Boldy O2.5 SOG        RISK 9/10 · only if not already on
+
+════════════════════════════════════════
+DON’T ADD (looks like a leg, pays dust)
+════════════════════════════════════════
+  Gauthier O1.5 / Wemby O6.5 / LeBron O4.5 / Fantilli O1.5 / Kessler O6.5 at −800
+  → lift is tiny; they bust tickets without buying odds
+
+════════════════════════════════════════
+ADD PACK TO CLEAR +500 (keep what you have + add these)
+════════════════════════════════════════
+ADD NOW (pick 2–3):
+  1) Maxey O25.5 PTS
+  2) CBJ +1.5
+  3) ANA +1.5   OR   Boozer O6.5 REB
+
+Example live slip:
+  [your current legs] + Maxey O25.5 + CBJ +1.5 + Boozer O6.5
+  → should jump well past +500
+
+Cap: max one extra RISK beyond Maxey if slip is already long (don’t add CBJ+ANA+Boozer+Trae+Kessler all at once)

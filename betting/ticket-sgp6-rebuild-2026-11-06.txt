@@ -1,0 +1,45 @@
+SGPMAX 6 REBUILD — 2026-11-06 (same shape as SGA/Ayo/Deni slip)
+3 games × 2-leg SGPs · RS-only SAFE · HR-confirm lines
+
+REPLACES: SGA AST+REB / Ayo AST+REB / Deni REB+AST (all CUT)
+
+════════════════════════════════════════
+PRIMARY TICKET (run this)
+════════════════════════════════════════
+SGP1  SA@SAC  — Wemby (same-player OK: joint 8/8)
+  · Victor Wembanyama O6.5 REB   8/8 cush+0.5
+  · Victor Wembanyama O1.5 BLK   8/8 cush+0.5
+  Joint both: 8/8  ← unlike SGA’s 0/8
+
+SGP2  BOS@CHA — two different players (opposing sides)
+  · Jayson Tatum O5.5 AST        7/7 cush+0.5
+  · Naz Reid O4.5 REB            9/9 cush+0.5
+
+SGP3  PHI@CLE — two different players
+  · Tyrese Maxey O18.5 PTS       9/9 cush+0.5
+  · LeBron James O4.5 AST        7/7 cush+0.5
+
+════════════════════════════════════════
+ALT TICKET (more climb / glass)
+════════════════════════════════════════
+SGP1  POR@LAL
+  · Walker Kessler O6.5 REB      9/9
+  · Jrue Holiday O0.5 STL        7/7   (different team than Kessler — true diversify)
+
+SGP2  WAS@ATL
+  · Trae Young O5.5 AST          8/8
+  · Onyeka Okongwu O3.5 REB      9/9
+
+SGP3  SA@SAC
+  · Wemby O6.5 REB + O1.5 BLK    8/8 joint
+
+════════════════════════════════════════
+WHY BETTER
+════════════════════════════════════════
+ · Every leg is L10 SAFE (100% + cush) — not hope climbs
+ · No SGA/Ayo/Deni lines that clear <50%
+ · Same-player SGP only when joint also 100% (Wemby)
+ · Prefer two-player SGPs so one quiet night doesn’t nuke both
+
+DO NOT swap back in: SGA O5.5/O4.5 · Ayo O5.5/O4.5 · Deni O5.5/O5.5
+OPTIONAL juice (one only): Maxey O25.5 instead of O18.5 = RISK 8/9

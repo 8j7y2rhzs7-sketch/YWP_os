@@ -1,0 +1,199 @@
+{
+  "date": "2026-11-04",
+  "sports": [
+    "nhl",
+    "soccer_ucl"
+  ],
+  "gate": "PASS",
+  "nhl_sog_top": [
+    {
+      "name": "Sam Reinhart",
+      "team": "FLA",
+      "id": "3114722",
+      "L5": [
+        3.0,
+        4.0,
+        2.0,
+        2.0,
+        6.0
+      ],
+      "L10": [
+        3.0,
+        4.0,
+        2.0,
+        2.0,
+        6.0,
+        0.0,
+        3.0,
+        5.0,
+        7.0,
+        2.0
+      ]
+    },
+    {
+      "name": "Will Smith",
+      "team": "SJ",
+      "id": "5149155",
+      "L5": [
+        2.0,
+        3.0,
+        3.0,
+        2.0,
+        5.0
+      ],
+      "L10": [
+        2.0,
+        3.0,
+        3.0,
+        2.0,
+        5.0,
+        3.0,
+        1.0,
+        4.0,
+        4.0,
+        5.0
+      ]
+    },
+    {
+      "name": "Rasmus Dahlin",
+      "team": "BUF",
+      "id": "4294163",
+      "L5": [
+        2.0,
+        4.0,
+        2.0,
+        3.0,
+        4.0
+      ],
+      "L10": [
+        2.0,
+        4.0,
+        2.0,
+        3.0,
+        4.0,
+        4.0,
+        4.0,
+        1.0,
+        3.0,
+        3.0
+      ]
+    },
+    {
+      "name": "Jack Quinn",
+      "team": "BUF",
+      "id": "4697389",
+      "L5": [
+        2.0,
+        4.0,
+        3.0,
+        3.0,
+        4.0
+      ],
+      "L10": [
+        2.0,
+        4.0,
+        3.0,
+        3.0,
+        4.0,
+        2.0,
+        4.0,
+        3.0,
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "name": "Connor Bedard",
+      "team": "CHI",
+      "id": "5149125",
+      "L5": [
+        4.0,
+        6.0,
+        4.0,
+        3.0,
+        2.0
+      ],
+      "L10": [
+        4.0,
+        6.0,
+        4.0,
+        3.0,
+        2.0,
+        1.0,
+        2.0,
+        3.0,
+        3.0
+      ]
+    },
+    {
+      "name": "Sam Bennett",
+      "team": "FLA",
+      "id": "3114732",
+      "L5": [
+        5.0,
+        2.0,
+        2.0,
+        3.0,
+        4.0
+      ],
+      "L10": [
+        5.0,
+        2.0,
+        2.0,
+        3.0,
+        4.0,
+        2.0,
+        4.0,
+        6.0,
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "nhl_slips": {
+    "SOG2": [
+      "Bedard O1.5",
+      "Quinn O1.5"
+    ],
+    "SIDES3": [
+      "OTT +1.5",
+      "SJ +1.5",
+      "CGY +1.5"
+    ]
+  },
+  "ucl_slips": {
+    "SOA2": [
+      "Haaland SOA",
+      "Saka SOA"
+    ],
+    "SAFE3": [
+      "Haaland SOA",
+      "Dortmund ML",
+      "Saka O1.5 shots"
+    ],
+    "SAFE4": [
+      "Haaland SOA",
+      "Guirassy SOA",
+      "Arsenal TT O1.5",
+      "PSV ML"
+    ],
+    "TT_AH": [
+      "Arsenal TT O1.5",
+      "Arsenal -1.5",
+      "Dortmund ML"
+    ]
+  },
+  "soccer_categories": [
+    "SOA",
+    "ATG",
+    "shots",
+    "SOT",
+    "team_totals",
+    "match_OU",
+    "BTTS",
+    "corners",
+    "AH",
+    "ML"
+  ],
+  "rule": "soccer multi-category locked 2026-11-04"
+}

@@ -1,0 +1,27 @@
++500 DECISION — 2026-11-07
+Canonical: DECISION-2026-11-07.txt
+
+════════════════════════════════════════
+PRIMARY
+════════════════════════════════════════
+1  Towns O9.5 REB
+2  Trae O5.5 AST
+3  Boldy O1.5 SOG
+4  Brunson O18.5 PTS
+
+JUICE (swap #4 — one only)
+  Boldy O2.5  OR  Clingan O7.5  OR  Curry O22.5
+
+════════════════════════════════════════
+ADDS (ALLOW only)
+════════════════════════════════════════
+ + Jokic O6.5 REB · Hughes O1.5 · Wemby O6.5 LATE · Sengun O6.5
+✗ LeBron · Franz · SGA dual · Fantilli print · Ek unless Boldy off · Deni O19.5
+
+════════════════════════════════════════
+LATE +500
+════════════════════════════════════════
+1 Wemby O6.5 REB
+2 Clingan O7.5 REB
+3 Vassell O0.5 STL
+4 Deni O16.5 PTS  OR  Boldy O2.5 if live
