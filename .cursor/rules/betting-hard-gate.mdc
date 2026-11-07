@@ -1,5 +1,5 @@
 ---
-description: Hard bans for betting runs — gate required, no shortcuts, full stats
+description: Hard bans for betting runs — gate, full chat detail, matchup weed, slip review
 alwaysApply: true
 ---
 
@@ -9,6 +9,11 @@ betting-hard-gate:
 - Full counting categories on every boarded NBA player: MIN, PTS, REB, AST, STL, BLK, TO (and 3P when relevant). Silent omit is forbidden — print `NOT FETCHED` if missing.
 - Every cited player must include `athlete_id` + source. No vibe numbers.
 - Delivery shape is mandatory when user asks for a run/exhaustive: SAFE · PRIMARY · **BANGERS** · STL/SOG · by-game · BAN · clean slips. SAFE-only cards are a failed task.
+- **CHAT DELIVERY (locked 2026-11-07):** Put the full readable lists IN THE CHAT. Never GitHub/file links as the answer. Never summarize List 1/List 2 or SAFE/RISK so the user has to ask for details again. Every pick line = hit rate + player + Over line + stat + team vs opponent + what that D allows.
+- **MATCHUP WEED is mandatory** on every daily run and every user parlay review: opposing team defense for that category (PTS/REB/AST/3PT/STL/SOG allow rates) + OUT/short-handed notes. Split DIFFICULT vs BETTER. Do not wait to be asked.
+- **Parlay screenshot/review:** same depth as matchup weed — every leg with L7/L10 vs line, opponent D, KEEP/RISK-KEEP/CUT, then rebuilt slip in chat.
+- Do only what was asked. No bonus sections, file dumps, or process essays unless requested.
 - Weed labels: KEEP / RISK-KEEP / CUT only. CUT cannot contradict from-scratch KEEP/PRIMARY unless injury/DNP/true climb (print-at-or-below line in form).
 - Do not take credit for user-found legs. Do not mark gates "implemented" unless `betting/run_gate.py` + `GATE_TODAY.json` exist and PASS.
 - If the user says stop/skipped the gate: halt, run the gate, restart from step 1 — do not continue the thin answer.
+- Full locked detail: `betting/HARD_RULES.md` § Locked 2026-11-07. Skill: `.cursor/skills/betting-run/SKILL.md`.

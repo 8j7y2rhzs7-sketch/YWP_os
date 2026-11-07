@@ -276,6 +276,35 @@ The "1 player" is usually the **climb we weeded** or a **soft-cush PRIMARY** tha
 3. Teen covers (−10 to −14) remain RISK even at 85-90% — win first, cover second (same chalk-just-wins lesson).
 4. Never rebuild a Troy-class spine as SAFE3 identity the next day without a higher bar.
 
+## Locked 2026-11-07 — daily delivery + matchup weed (DO NOT MAKE USER ASK AGAIN)
+**User (verbatim intent):** This is how we do it every day. Don't make me ask for details or to redo steps. Log it / memorize it / add it to the workflow. When I send a parlay to review, review it with all stats like we just did and use the opponents. I want nothing else unless asked.
+
+### Mandatory every daily run (unprompted)
+1. Gate → RS-only L7/L10 clears (SAFE perfect + RISK one-miss) for every game including late night.
+2. **Matchup weed on every clear:** opposing team defense for that category (PTS/REB/AST/3PT/STL/SOG allow rates + OUT/short-handed notes).
+3. Split into **LIST 1 DIFFICULT** and **LIST 2 BETTER**.
+4. **Paste FULL detail in chat** — every pick with hit rate, player, Over line, stat, team vs opponent, what that D allows. No summaries that force a follow-up. No GitHub/file links as the answer. No "see the file."
+5. Then standouts / decision tickets (CASH3, BEST, WEST, LATE, +500, NHL SOG) from List 2 + autopsy lessons.
+6. Do **only** what was asked — no bonus essays, no extra products unless requested.
+
+### Mandatory every user parlay / screenshot review (unprompted)
+1. Every leg: L7/L10 vs the posted line (full cats), role/minutes/OUT check.
+2. Opponent defense for that exact category + primary defending context when relevant.
+3. KEEP / RISK-KEEP / CUT with the reason on the line.
+4. Rebuild the cleaned slip in chat.
+5. Same depth as the Nov 7 matchup weed — never a thin KEEP/CUT table without stats + opponent.
+
+### Autopsy lessons still active (Nov 6)
+- False cuts: do not auto-ban glass identity (Luka/Kessler/Towns/Boozer-class REB) or clean 10/10 SOG just for correlation.
+- True saves: thin facilitator AST (LeBron-class), ugly joint AST+REB (SGA/Ayo), soft Fantilli-class SOG prints, hope unlowered PTS (Luka O29.5 / Wemby O22.5 class).
+- Never sole Best3/CASH3 on O0.5 STL; deep CFB alt totals / weak NHL dog +1.5 are not core CASH.
+
+### Delivery fail = failed task
+- Truncating List 2 / SAFE / RISK so user has to say "give me the details"
+- Linking a repo file instead of pasting the board
+- Skipping opponent D until asked
+- Adding unsolicited sections when user asked for one specific product
+
 ## Locked 2026-11-06 — HARD ROCK is the book (no ghost "for sure" picks)
 **User:** "All the picks that you give me that are for sure hardrock make sure they are not there so I have to pick something that causes me to lose." Soft/DK/UD KEEPs get recommended; HR does not list them → user substitutes HR main (Bam U9.5) → miss-by-1 kills the 3-pick.
 ### Rules
