@@ -122,6 +122,39 @@ Every boarded player: athlete_id + full L7 MIN/PTS/REB/AST/STL/BLK/3PT
 ▶ NYI @ SJ · SIDE NYI -135 · O/U 6.5
   RISK 8/10 Simon Holmstrom O1.5 SOG id=4565244 L=[2.0, 2.0, 3.0, 2.0, 3.0, 1.0, 3.0, 3.0, 2.0, 1.0]
 
+──────── NFL MNF ────────
+▶ BUF @ MIN · Mon Nov 9 8:15 PM ET · eid=401873051
+  SIDE: BUF -3 / BUF -180 · MIN +3 / +150 · O/U 44.5 (ESPN DK) · HR≈ BUF -185 / MIN +3 / total 44
+  OUT: Demond Claiborne(MIN), Jauan Jennings(MIN), Kyler Murray(MIN), Tyrell Shavers(BUF), Joshua Palmer(BUF)
+  DTD/Q: Jay Ward(MIN/Questionable), Theo Jackson(MIN/Questionable), Alec Anderson(BUF/Questionable), Dion Dawkins(BUF/Questionable)
+  G1: ESPN NFL L7 gamelogs (pass/rush/rec yards + receptions) · athlete_ids below
+  G2: Betravon posted mains (BUF/MIN filtered) n=36
+  G3: LineSmart Hard Rock Bet where available; else posted
+  BOARD @ G3 (firm):
+    KEEP 5/5 Ty Johnson O1.5 REC id=3915411 team=BUF L=[3.0, 2.0, 4.0, 2.0, 4.0] · G3 HR (posted 2.5→HR 1.5)
+    RISK-KEEP 4/5 Ty Johnson O15.5 REC_YD id=3915411 team=BUF L=[19.0, 24.0, 72.0, 9.0, 50.0] · G3 HR (posted 16.5→HR 15.5)
+  RISK:
+    RISK 5/7 Josh Allen O236.5 PASS_YD miss=[210.0, 204.0] id=3918298
+    RISK 5/7 Dalton Kincaid O36.5 REC_YD miss=[7.0, 7.0] id=4385690
+    RISK 5/7 Aaron Jones Sr. O31.5 RUSH_YD miss=[22.0, 26.0] id=3042519
+  CUT @ G3:
+    CUT 3/5 DJ Moore O47.5 REC_YD miss=[11.0, 0.0] id=3915416
+    CUT 3/5 DJ Moore O3.5 REC miss=[1.0, 0.0] id=3915416
+    CUT 4/7 James Cook III O83.5 RUSH_YD miss=[80.0, 75.0, 57.0] id=4379399
+    CUT 4/7 Khalil Shakir O39.5 REC_YD miss=[34.0, 6.0, 38.0] id=4373678
+    CUT 4/7 Keon Coleman O28.5 REC_YD miss=[4.0, 7.0, 1.0] id=4635008
+    CUT 4/7 Dalton Kincaid O3.5 REC miss=[1.0, 1.0, 2.0] id=4385690
+    CUT 4/7 Khalil Shakir O3.5 REC miss=[3.0, 1.0, 3.0] id=4373678
+    CUT 4/7 James Cook III O1.5 REC miss=[1.0, 0.0, 1.0] id=4379399
+    CUT 3/6 Jordan Addison O40.5 REC_YD miss=[20.0, 21.0, 0.0] id=4429205
+    CUT 3/7 Keon Coleman O2.5 REC miss=[1.0, 1.0, 1.0, 1.0] id=4635008
+    CUT 2/6 Jordan Addison O3.5 REC miss=[3.0, 2.0, 2.0, 0.0] id=4429205
+    CUT 2/7 T.J. Hockenson O41.5 REC_YD (HR) / O4.5 REC — CUT id=4036133
+    CUT 2/7 Josh Allen O32.5 RUSH_YD id=3918298 · CUT 1/6 Jefferson O79.5 REC_YD / O6.5 REC
+  BAN: Kyler Murray / Jauan Jennings / Claiborne props (OUT) · Cook 83.5 rush CUT · Jefferson main CUT
+  BAN: soft REC 0.5 / micro REC_YD · Allen PASS_YD only RISK (not spine) · Dawkins Q (OL)
+  SIDE LEAN: **BUF -3 / BUF ML** (HR≈-185) — primary NFL ticket piece; props thin after G3
+
 ════════ FROM-SCRATCH SLATE LOCK ════════
 SAFE (firm KEEP @ HR only — soft ≤1.5 REB/AST/STL banned from spine):
   1. Cedric Coward O6.5 REB [KEEP 7/7] id=4903027 · MEM @ TOR · G3 HR
@@ -150,6 +183,11 @@ PARLAY LOCK (fixed — Coward restored; no double LAL PTS stack as spine):
   NOT in cash: McCollum 1.5 REB · Watson 1.5 AST · Dybantsa 0.5 3PT · Kyrie 0.5 STL · Maluach volume
   SOG: Holmstrom/Zegras/Kartye RISK only — cap ≤2 — not cash spine
 
+NFL MNF ADD (optional leg / side — not forced into NBA spine):
+  N1. Ty Johnson O1.5 REC [KEEP 5/5] id=3915411 · G3 HR
+  N2. Ty Johnson O15.5 REC_YD [RISK-KEEP 4/5] id=3915411 · G3 HR
+  Preferred NFL ticket piece: BUF -3 or BUF ML (confirm HR -3 / -185)
+
 BAN:
   Soft spine floors (≤1.5 REB/AST/STL) · DTD/OUT players · HR climb CUTs in per-game sections
   Draymond 5.5 REB · Murphy 3.5 AST · Duncan 2.5 AST · FVV 3.5 REB
@@ -161,8 +199,9 @@ DONE CHECK
 - G1 require_gate: PASS date=20261109 sheets_ok=431/431
 - G2 posted-mains: yes n=384 path=betting/posted-mains-20261109.json
 - G3 HR floors: yes — HR pulled for 48 actionable players; climb re-graded
-- All 8 NBA + 3 NHL games: yes (from-scratch sections)
+- All 8 NBA + 3 NHL + 1 NFL (BUF@MIN): yes (from-scratch sections)
 - BANGERS: yes
 - athlete_ids + full L7 cats on every boarded/lock player: yes
 - parlay lock 3-gated: yes · sheet_missing=none
+- NFL G1 sheets+G2 Betravon+G3 HR: yes (BUF@MIN)
 - no lazy: fresh gate + fresh mains + HR-all-candidates + injury refresh + cat dump

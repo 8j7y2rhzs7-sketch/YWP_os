@@ -29,9 +29,11 @@ UA = {"User-Agent": "Mozilla/5.0 (compatible; ywp-posted-mains/1.0)"}
 
 NBA_STATS = ("points", "rebounds", "assists", "threes", "steals", "blocks")
 NHL_STATS = ("shots-on-goal",)
+NFL_STATS = ("passing-yards", "rushing-yards", "receiving-yards", "receptions")
 URLS = {
     "nba": "https://www.betravon.com/nba/player-props/{stat}",
     "nhl": "https://www.betravon.com/nhl/player-props/{stat}",
+    "nfl": "https://www.betravon.com/nfl/player-props/{stat}",
 }
 STAT_LABEL = {
     "points": "PTS",
@@ -41,6 +43,10 @@ STAT_LABEL = {
     "steals": "STL",
     "blocks": "BLK",
     "shots-on-goal": "SOG",
+    "passing-yards": "PASS_YD",
+    "rushing-yards": "RUSH_YD",
+    "receiving-yards": "REC_YD",
+    "receptions": "REC",
 }
 
 
@@ -130,7 +136,7 @@ def render(day: str, rows: list[dict]) -> str:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--sports", default="nba,nhl")
+    ap.add_argument("--sports", default="nba,nhl,nfl")
     args = ap.parse_args()
     sports = [s.strip().lower() for s in args.sports.split(",") if s.strip()]
     day = datetime.now(timezone.utc).date().isoformat()
@@ -140,6 +146,8 @@ def main() -> int:
             rows.extend(pull_sport("nba", NBA_STATS))
         elif sport == "nhl":
             rows.extend(pull_sport("nhl", NHL_STATS))
+        elif sport == "nfl":
+            rows.extend(pull_sport("nfl", NFL_STATS))
         else:
             print(f"skip {sport}", file=sys.stderr)
 

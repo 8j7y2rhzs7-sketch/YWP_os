@@ -1,0 +1,30 @@
+──────── NFL MNF ────────
+▶ BUF @ MIN · Mon Nov 9 8:15 PM ET · eid=401873051
+  SIDE: BUF -3 / BUF -180 · MIN +3 / +150 · O/U 44.5 (ESPN DK) · HR≈ BUF -185 / MIN +3 / total 44
+  OUT: Demond Claiborne(MIN), Jauan Jennings(MIN), Kyler Murray(MIN), Tyrell Shavers(BUF), Joshua Palmer(BUF)
+  DTD/Q: Jay Ward(MIN/Questionable), Theo Jackson(MIN/Questionable), Alec Anderson(BUF/Questionable), Dion Dawkins(BUF/Questionable)
+  G1: ESPN NFL L7 gamelogs (pass/rush/rec yards + receptions) · athlete_ids below
+  G2: Betravon posted mains (BUF/MIN filtered) n=36
+  G3: LineSmart Hard Rock Bet where available; else posted
+  BOARD @ G3 (firm):
+    KEEP 5/5 Ty Johnson O1.5 REC id=3915411 team=BUF L=[3.0, 2.0, 4.0, 2.0, 4.0] · G3 HR (posted 2.5→HR 1.5)
+    RISK-KEEP 4/5 Ty Johnson O15.5 REC_YD id=3915411 team=BUF L=[19.0, 24.0, 72.0, 9.0, 50.0] · G3 HR (posted 16.5→HR 15.5)
+  RISK:
+    RISK 5/7 Josh Allen O236.5 PASS_YD miss=[210.0, 204.0] id=3918298
+    RISK 5/7 Dalton Kincaid O36.5 REC_YD miss=[7.0, 7.0] id=4385690
+    RISK 5/7 Aaron Jones Sr. O31.5 RUSH_YD miss=[22.0, 26.0] id=3042519
+  CUT @ G3:
+    CUT 3/5 DJ Moore O47.5 REC_YD miss=[11.0, 0.0] id=3915416
+    CUT 3/5 DJ Moore O3.5 REC miss=[1.0, 0.0] id=3915416
+    CUT 4/7 James Cook III O83.5 RUSH_YD miss=[80.0, 75.0, 57.0] id=4379399
+    CUT 4/7 Khalil Shakir O39.5 REC_YD miss=[34.0, 6.0, 38.0] id=4373678
+    CUT 4/7 Keon Coleman O28.5 REC_YD miss=[4.0, 7.0, 1.0] id=4635008
+    CUT 4/7 Dalton Kincaid O3.5 REC miss=[1.0, 1.0, 2.0] id=4385690
+    CUT 4/7 Khalil Shakir O3.5 REC miss=[3.0, 1.0, 3.0] id=4373678
+    CUT 4/7 James Cook III O1.5 REC miss=[1.0, 0.0, 1.0] id=4379399
+    CUT 3/6 Jordan Addison O40.5 REC_YD miss=[20.0, 21.0, 0.0] id=4429205
+    CUT 3/7 Keon Coleman O2.5 REC miss=[1.0, 1.0, 1.0, 1.0] id=4635008
+    CUT 2/6 Jordan Addison O3.5 REC miss=[3.0, 2.0, 2.0, 0.0] id=4429205
+    CUT 2/7 T.J. Hockenson O42.5 REC_YD miss=[35.0, 7.0, 11.0, 29.0, 36.0] id=4036133
+  BAN: Kyler Murray / Jauan Jennings props (OUT) · soft REC 0.5 / micro REC_YD · Allen pass as chalky not auto-lock
+  SIDE LEAN: BUF -3 / BUF ML — favorite on road MNF; not a mega-hook
