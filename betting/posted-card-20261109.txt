@@ -1,6 +1,6 @@
 POSTED-MAIN CARD — 2026-11-09
 Source: Betravon consensus mains + GATE RS sheets. Soft floors NOT listed.
-Graded 381 / unmatched 4
+Graded 380 / unmatched 4
 
 === KEEP (perfect clear at POSTED main) ===
   7/7  Cedric Coward O1.5 3PT  MEM vs TOR  id=4903027  L=[2.0, 4.0, 2.0, 2.0, 3.0, 4.0, 3.0]
@@ -33,7 +33,6 @@ Graded 381 / unmatched 4
   6/7  Khaman Maluach O5.5 REB  miss=[2.0]  id=5203685
   6/7  Marcus Smart O1.5 REB  miss=[1.0]  id=2990992
   6/7  Miles Bridges O6.5 REB  miss=[6.0]  id=4066383
-  6/7  Stephon Castle O4.5 REB  miss=[3.0]  id=4845367
   6/7  Collin Gillespie O1.5 STL  miss=[0.0]  id=4278585
   6/7  Kyrie Irving O0.5 STL  miss=[0.0]  id=6442
   6/7  Matisse Thybulle O1.5 STL  miss=[0.0]  id=3907498

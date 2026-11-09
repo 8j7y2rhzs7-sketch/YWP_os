@@ -6,7 +6,7 @@ Optional upgrade: set ODDS_API_KEY → python3 betting/pull_hr_odds.py for hardr
 NBA ATL@LAL · Aaron Wiggins
   3PT O2.5  books=12  betravon_L10=6/10
   PTS O14.5  books=13  betravon_L10=6/10
-  REB O3.5  books=14  betravon_L10=7/10
+  REB O3.5  books=13  betravon_L10=7/10
 
 NBA ATL@LAL · CJ McCollum
   3PT O1.5  books=12  betravon_L10=5/10
@@ -17,14 +17,14 @@ NBA ATL@LAL · CJ McCollum
 NBA ATL@LAL · Dyson Daniels
   AST O4.5  books=13  betravon_L10=6/10
   PTS O10.5  books=13  betravon_L10=3/10
-  REB O6.5  books=14  betravon_L10=6/10
+  REB O6.5  books=13  betravon_L10=6/10
   STL O2.5  books=2  betravon_L10=5/10
 
 NBA ATL@LAL · Jalen Johnson
   3PT O1.5  books=12  betravon_L10=3/8
   AST O7.5  books=13  betravon_L10=3/8
   PTS O20.5  books=13  betravon_L10=3/8
-  REB O8.5  books=14  betravon_L10=4/8
+  REB O8.5  books=13  betravon_L10=4/8
   STL O0.5  books=2  betravon_L10=4/8
 
 NBA ATL@LAL · Kingston Flemings
@@ -47,7 +47,7 @@ NBA ATL@LAL · Onyeka Okongwu
   AST O2.5  books=13  betravon_L10=4/10
   BLK O0.5  books=2  betravon_L10=7/10
   PTS O13.5  books=13  betravon_L10=4/10
-  REB O7.5  books=14  betravon_L10=6/10
+  REB O7.5  books=13  betravon_L10=6/10
 
 NBA CHA@CLE · Coby White
   3PT O2.5  books=6  betravon_L10=0/3
@@ -83,13 +83,13 @@ NBA CHA@CLE · Sion James
   3PT O1.5  books=6  betravon_L10=2/10
   AST O2.5  books=2  betravon_L10=6/10
   PTS O7.5  books=7  betravon_L10=0/0
-  REB O3.5  books=2  betravon_L10=0/0
+  REB O3.5  books=7  betravon_L10=0/0
 
 NBA CLE@CHA · Donovan Mitchell
   3PT O2.5  books=6  betravon_L10=4/10
   AST O4.5  books=7  betravon_L10=5/10
   PTS O22.5  books=7  betravon_L10=5/10
-  REB O4.5  books=2  betravon_L10=6/10
+  REB O4.5  books=7  betravon_L10=6/10
   STL O1.5  books=3  betravon_L10=5/10
 
 NBA CLE@CHA · Evan Mobley
@@ -103,7 +103,7 @@ NBA CLE@CHA · James Harden
   3PT O2.5  books=6  betravon_L10=7/10
   AST O6.5  books=7  betravon_L10=3/10
   PTS O16.5  books=4  betravon_L10=4/10
-  REB O4.5  books=2  betravon_L10=6/10
+  REB O4.5  books=7  betravon_L10=6/10
   STL O1.5  books=3  betravon_L10=1/10
 
 NBA CLE@CHA · Jarrett Allen
@@ -137,7 +137,7 @@ NBA DAL@IND · Kyrie Irving
 NBA DAL@IND · P.J. Washington
   3PT O1.5  books=2  betravon_L10=7/9
   PTS O13.5  books=1  betravon_L10=5/9
-  REB O6.5  books=3  betravon_L10=0/0
+  REB O6.5  books=4  betravon_L10=0/0
 
 NBA DEN@HOU · Jamal Murray
   3PT O2.5  books=1  betravon_L10=0/0
@@ -173,7 +173,7 @@ NBA DET@WSH · Duncan Robinson
   3PT O3.5  books=13  betravon_L10=5/9
   AST O1.5  books=13  betravon_L10=9/9
   PTS O15.5  books=14  betravon_L10=6/9
-  REB O2.5  books=2  betravon_L10=2/9
+  REB O1.5  books=13  betravon_L10=5/9
 
 NBA DET@WSH · John Collins
   PTS O11.5  books=14  betravon_L10=3/9
@@ -256,7 +256,6 @@ NBA IND@DAL · Aaron Nesmith
   3PT O1.5  books=1  betravon_L10=0/0
   AST O1.5  books=4  betravon_L10=0/0
   PTS O11.5  books=5  betravon_L10=4/8
-  REB O3.5  books=5  betravon_L10=0/0
 
 NBA IND@DAL · Andrew Nembhard
   3PT O1.5  books=1  betravon_L10=0/0
@@ -283,7 +282,7 @@ NBA LAL@ATL · Austin Reaves
 
 NBA LAL@ATL · Jake LaRavia
   PTS O5.5  books=13  betravon_L10=6/10
-  REB O3.5  books=14  betravon_L10=4/10
+  REB O3.5  books=13  betravon_L10=4/10
   STL O1.5  books=2  betravon_L10=3/10
 
 NBA LAL@ATL · Matisse Thybulle
@@ -295,19 +294,19 @@ NBA LAL@ATL · Matisse Thybulle
 NBA LAL@ATL · Sandro Mamukelashvili
   3PT O0.5  books=12  betravon_L10=7/10
   PTS O7.5  books=13  betravon_L10=5/10
-  REB O3.5  books=14  betravon_L10=5/10
+  REB O4.5  books=13  betravon_L10=4/10
 
 NBA LAL@ATL · Walker Kessler
   AST O1.5  books=6  betravon_L10=5/10
   BLK O1.5  books=2  betravon_L10=6/10
   PTS O13.5  books=13  betravon_L10=5/10
-  REB O10.5  books=14  betravon_L10=5/10
+  REB O10.5  books=13  betravon_L10=5/10
   STL O1.5  books=2  betravon_L10=4/10
 
 NBA LAL@ATL · Ziaire Williams
   3PT O1.5  books=12  betravon_L10=5/8
   PTS O7.5  books=2  betravon_L10=8/8
-  REB O2.5  books=14  betravon_L10=4/8
+  REB O2.5  books=13  betravon_L10=4/8
   STL O1.5  books=2  betravon_L10=4/8
 
 NBA MEM@TOR · Cameron Boozer
@@ -339,7 +338,7 @@ NBA MEM@TOR · Zach Edey
   AST O1.5  books=5  betravon_L10=2/8
   BLK O1.5  books=2  betravon_L10=5/8
   PTS O8.5  books=4  betravon_L10=0/0
-  REB O7.5  books=3  betravon_L10=4/8
+  REB O7.5  books=3  betravon_L10=0/0
 
 NBA NO@GS · Dejounte Murray
   3PT O1.5  books=4  betravon_L10=0/0
@@ -438,7 +437,7 @@ NBA SA@PHX · Stephon Castle
   3PT O1.5  books=12  betravon_L10=7/10
   AST O5.5  books=13  betravon_L10=3/10
   PTS O15.5  books=14  betravon_L10=5/10
-  REB O4.5  books=13  betravon_L10=8/10
+  REB O5.5  books=13  betravon_L10=5/10
   STL O0.5  books=2  betravon_L10=5/10
 
 NBA SA@PHX · Victor Wembanyama
@@ -476,7 +475,7 @@ NBA TOR@MEM · RJ Barrett
   3PT O1.5  books=2  betravon_L10=0/0
   AST O4.5  books=3  betravon_L10=0/0
   PTS O23.5  books=6  betravon_L10=0/0
-  REB O5.5  books=3  betravon_L10=0/0
+  REB O5.5  books=6  betravon_L10=0/0
 
 NBA TOR@MEM · Scottie Barnes
   3PT O0.5  books=1  betravon_L10=0/0
@@ -489,7 +488,7 @@ NBA WSH@DET · AJ Dybantsa
   3PT O0.5  books=12  betravon_L10=5/6
   AST O2.5  books=13  betravon_L10=3/6
   PTS O17.5  books=14  betravon_L10=3/6
-  REB O6.5  books=14  betravon_L10=2/6
+  REB O5.5  books=14  betravon_L10=4/6
   STL O1.5  books=3  betravon_L10=2/6
 
 NBA WSH@DET · Alex Sarr

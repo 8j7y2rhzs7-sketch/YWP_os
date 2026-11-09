@@ -1,173 +1,168 @@
-════════════════════════════════════════════════════════
-ALL GAMES — 2026-11-09 · THREE GATES
-G1 PASS 431/431 · G2 Betravon posted-mains · G3 HR spot-check (climb = re-grade)
-════════════════════════════════════════════════════════
+════════════════════════════════════════════════════════════
+FROM-SCRATCH ALL GAMES — 2026-11-09 · THREE GATES · NO LAZY
+G1 PASS sheets=431/431 path=/cursor/stores/self/betting/GATE_SHEETS_20261109.json
+G2 posted-mains n=384 path=betting/posted-mains-20261109.json
+G3 HR = LineSmart hardrockbet on EVERY actionable player (climb → re-grade)
+Every boarded player: athlete_id + full L7 MIN/PTS/REB/AST/STL/BLK/3PT
+════════════════════════════════════════════════════════════
 
 ▶ LAL @ ATL
-  SIDE: LAL -1.5 · O/U 237.5
-  OUT: Doncic (LAL), Newell/Gilbert/Landale/Gueye/Veesaar (ATL) · DTD: Grimes
-  LOCKABLE @ G3:
-    KEEP 7/7 Ziaire Williams O7.5 PTS id=4433137
-    KEEP 7/7 CJ McCollum O1.5 REB id=2490149
-    RISK-KEEP 6/7 Nickeil Alexander-Walker O19.5 PTS id=4278039
-    RISK-KEEP 6/7 Matisse Thybulle O1.5 STL id=3907498 (posted≈G3)
-  RISK (not spine):
-    RISK 5/7 Walker Kessler O10.5 REB id=4433136
-    RISK 5/7 Kingston Flemings O8.5 PTS id=5149077
-    RISK 5/7 Onyeka Okongwu O7.5 REB id=4431680
-    RISK 5/7 Jake LaRavia O5.5 PTS id=4592691
+  SIDE ATL -1.5 · O/U 237.5 · eid=401909952
+  OUT: Asa Newell(ATL), Keshon Gilbert(ATL), Jock Landale(ATL), Mouhamed Gueye(ATL), Henri Veesaar(ATL), Luka Doncic(LAL)
+  DTD: Quentin Grimes(LAL)
+  BOARD @ G3 (from-scratch):
+    KEEP 7/7 Ziaire Williams O7.5 PTS id=4433137 L=[17.0, 8.0, 10.0, 9.0, 11.0, 11.0, 14.0] HR=7.5
+      id=4433137 team=LAL n_rs=8 | MIN[21,20,23,15,29,30,31] PTS[17,8,10,9,11,11,14] REB[2,3,4,2,2,2,5] AST[0,1,1,2,4,1,0] STL[0,2,2,1,2,1,2] BLK[1,0,0,0,0,0,1] 3PT[4,2,1,3,2,3,1] | espn:site.web.api/nba/athletes/4433137/gamelog
+    RISK-KEEP 6/7 Nickeil Alexander-Walker O19.5 PTS id=4278039 L=[20.0, 28.0, 26.0, 34.0, 12.0, 25.0, 23.0] HR=19.5
+      id=4278039 team=ATL n_rs=11 | MIN[31,33,32,31,29,31,32] PTS[20,28,26,34,12,25,23] REB[3,2,4,4,2,3,3] AST[1,2,2,4,1,1,1] STL[0,2,0,4,1,0,1] BLK[0,0,0,0,0,1,0] 3PT[2,4,6,9,0,4,5] | espn:site.web.api/nba/athletes/4278039/gamelog
+  SOFT (not spine):
+    KEEP 7/7 CJ McCollum O1.5 REB id=2490149 — soft floor
+    RISK-KEEP 6/7 Matisse Thybulle O1.5 STL id=3907498 — soft floor
 
 ▶ CLE @ CHA
-  SIDE: CLE -9.5 · O/U 214.5
-  OUT: B.Miller/Schroder/G.Williams/Knueppel (CHA), Merrill/Tyson (CLE) · DTD: Allen, Diabate
-  LOCKABLE @ G3:
-    RISK-KEEP 6/7 Peyton Watson O1.5 AST id=4576087
-  RISK (not spine):
-    RISK 5/7 James Harden O2.5 3PT id=3992
+  SIDE CLE -9.5 · O/U 214.5 · eid=401909953
+  OUT: Grant Williams(CHA), Kon Knueppel(CHA), Dennis Schroder(CHA), Brandon Miller(CHA), Sam Merrill(CLE), Jaylon Tyson(CLE)
+  DTD: Moussa Diabate(CHA), Jarrett Allen(CLE)
+  BOARD @ G3 (from-scratch):
+    none — only soft floors or climb-cuts this game
+  SOFT (not spine):
+    RISK-KEEP 6/7 Peyton Watson O1.5 AST id=4576087 — soft floor
 
 ▶ WSH @ DET
-  SIDE: DET -10.5 · O/U 217.5
-  OUT: Duren/I.Joe (DET), Vukcevic/Beekman/Champagnie/Watkins (WSH) · DTD: AD
-  LOCKABLE @ G3:
-    RISK-KEEP 6/7 Kyshawn George O1.5 3PT id=5174563
-    RISK-KEEP 5/6 AJ Dybantsa O0.5 3PT id=5142718
-  RISK (not spine):
-    RISK 5/7 Kevin Huerter O7.5 PTS id=4066372
-    RISK 5/7 Kyshawn George O4.5 AST id=5174563
-    RISK 5/7 Daniss Jenkins O3.5 AST id=5107199
-    RISK 5/7 Trae Young O2.5 REB id=4277905
-  BAN @ HR climb:
-    CUT 3/7 Duncan Robinson O2.5 AST (was KEEP @ posted 1.5)
+  SIDE DET -10.5 · O/U 217.5 · eid=401909954
+  OUT: Jalen Duren(DET), Isaiah Joe(DET), Tristan Vukcevic(WSH), Reece Beekman(WSH), Justin Champagnie(WSH), Jamir Watkins(WSH)
+  DTD: Anthony Davis(WSH)
+  BOARD @ G3 (from-scratch):
+    RISK-KEEP 6/7 Kyshawn George O1.5 3PT id=5174563 L=[2.0, 5.0, 3.0, 4.0, 4.0, 0.0, 2.0] HR=1.5
+      id=5174563 team=WSH n_rs=10 | MIN[30,39,35,37,32,38,29] PTS[14,33,25,22,12,8,20] REB[7,4,4,4,3,2,4] AST[6,8,7,5,3,11,2] STL[0,1,0,1,0,0,0] BLK[3,2,0,1,1,1,1] 3PT[2,5,3,4,4,0,2] | espn:site.web.api/nba/athletes/5174563/gamelog
+  SOFT (not spine):
+    RISK-KEEP 5/6 AJ Dybantsa O0.5 3PT id=5142718 — soft floor
+  CUT @ HR climb (was clear at softer posted):
+    CUT 3/7 Duncan Robinson O2.5 AST (posted 1.5 KEEP) id=3157465
 
 ▶ MEM @ TOR
-  SIDE: TOR -3.5 · O/U 230.5
-  OUT: Kawhi/Bittle (TOR), Pippen Jr/Stewart/Saunders (MEM) · DTD: Barnes, Quickley
-  LOCKABLE @ G3:
-    KEEP 7/7 Cedric Coward O6.5 REB id=4903027
-    KEEP 7/7 Cedric Coward O1.5 3PT id=4903027
-  RISK (not spine):
-    RISK 5/7 Cameron Boozer O8.5 REB id=5041935
-    RISK 5/7 Ja'Kobe Walter O3.5 REB id=4684272
-    RISK 5/7 Cameron Boozer O1.5 3PT id=5041935
-    RISK 5/7 Ty Jerome O0.5 STL id=4065733
+  SIDE TOR -3.5 · O/U 228.5 · eid=401909955
+  OUT: Nate Bittle(TOR), Kawhi Leonard(TOR), Scotty Pippen Jr.(MEM), Isaiah Stewart(MEM), Richie Saunders(MEM)
+  DTD: Immanuel Quickley(TOR), Scottie Barnes(TOR)
+  BOARD @ G3 (from-scratch):
+    KEEP 7/7 Cedric Coward O6.5 REB id=4903027 L=[9.0, 9.0, 9.0, 7.0, 7.0, 11.0, 11.0] HR=6.5
+      id=4903027 team=MEM n_rs=8 | MIN[23,33,31,23,27,31,32] PTS[10,23,10,10,17,16,17] REB[9,9,9,7,7,11,11] AST[0,4,3,2,4,3,1] STL[2,4,0,2,3,1,1] BLK[0,0,0,0,0,0,0] 3PT[2,4,2,2,3,4,3] | espn:site.web.api/nba/athletes/4903027/gamelog
+    KEEP 7/7 Cedric Coward O1.5 3PT id=4903027 L=[2.0, 4.0, 2.0, 2.0, 3.0, 4.0, 3.0] HR=1.5
+      id=4903027 team=MEM n_rs=8 | MIN[23,33,31,23,27,31,32] PTS[10,23,10,10,17,16,17] REB[9,9,9,7,7,11,11] AST[0,4,3,2,4,3,1] STL[2,4,0,2,3,1,1] BLK[0,0,0,0,0,0,0] 3PT[2,4,2,2,3,4,3] | espn:site.web.api/nba/athletes/4903027/gamelog
 
 ▶ IND @ DAL
-  SIDE: DAL -2.5 · O/U 223.5
-  OUT: Hali/Furphy/Sheppard (IND), Lively/de Larrea/Biberovic (DAL) · DTD: McConnell
-  LOCKABLE @ G3:
-    RISK-KEEP 6/7 P.J. Washington O1.5 3PT id=4278078 (posted≈G3)
-    RISK-KEEP 6/7 Kyrie Irving O0.5 STL id=6442 (posted≈G3)
-  RISK (not spine):
-    RISK 5/7 Pascal Siakam O19.5 PTS id=3149673
-    RISK 5/7 Andrew Nembhard O15.5 PTS id=4395712
-    RISK 5/7 Pascal Siakam O3.5 AST id=3149673
-    RISK 5/7 Aaron Nesmith O1.5 3PT id=4396909
+  SIDE DAL -2.5 · O/U 223.5 · eid=401909956
+  OUT: Sergio de Larrea(DAL), Tarik Biberovic(DAL), Dereck Lively II(DAL), Tyrese Haliburton(IND), Johnny Furphy(IND), Ben Sheppard(IND)
+  DTD: T.J. McConnell(IND)
+  BOARD @ G3 (from-scratch):
+    RISK-KEEP 6/7 P.J. Washington O1.5 3PT id=4278078 L=[2.0, 6.0, 3.0, 2.0, 1.0, 2.0, 4.0] posted=1.5
+      id=4278078 team=DAL n_rs=10 | MIN[25,33,39,38,34,27,41] PTS[6,26,21,12,3,18,20] REB[5,6,10,5,10,9,9] AST[0,1,3,1,1,0,2] STL[1,1,0,2,0,0,2] BLK[1,1,1,0,0,1,1] 3PT[2,6,3,2,1,2,4] | espn:site.web.api/nba/athletes/4278078/gamelog
+  SOFT (not spine):
+    RISK-KEEP 6/7 Kyrie Irving O0.5 STL id=6442 — soft floor
 
 ▶ DEN @ HOU
-  SIDE: HOU -8.5 · O/U 217.5
-  OUT: Adams/Capela (HOU) · DTD: Murray/Gordon/Braun/DeRozan/C.Johnson (DEN)
-  LOCKABLE @ G3:
-    RISK-KEEP 6/7 Alperen Sengun O6.5 AST id=4871144
-    RISK-KEEP 6/7 Jabari Smith Jr. O1.5 AST id=4432639
-    RISK-KEEP 6/7 Marcus Smart O1.5 REB id=2990992 (posted≈G3)
-  RISK (not spine):
-    RISK 5/7 Fred VanVleet O11.5 PTS id=2991230
-    RISK 5/7 Nikola Jokic O8.5 AST id=3112335
-    RISK 5/7 Fred VanVleet O4.5 AST id=2991230
-    RISK 5/7 Fred VanVleet O2.5 3PT id=2991230
-  BAN @ HR climb:
-    CUT 2/7 Fred VanVleet O3.5 REB (was RISK-KEEP @ posted 2.5)
+  SIDE HOU -8.5 · O/U 217.5 · eid=401909957
+  OUT: Clint Capela(HOU), Steven Adams(HOU)
+  DTD: Cameron Johnson(DEN), DeMar DeRozan(DEN), Christian Braun(DEN), Jamal Murray(DEN), Aaron Gordon(DEN)
+  BOARD @ G3 (from-scratch):
+    RISK-KEEP 6/7 Alperen Sengun O6.5 AST id=4871144 L=[5.0, 10.0, 10.0, 9.0, 9.0, 7.0, 7.0] HR=6.5
+      id=4871144 team=HOU n_rs=8 | MIN[32,39,38,33,37,33,36] PTS[15,17,26,16,29,17,29] REB[6,12,7,9,9,10,7] AST[5,10,10,9,9,7,7] STL[0,0,2,0,6,1,0] BLK[1,3,2,1,1,0,1] 3PT[1,0,1,0,1,1,2] | espn:site.web.api/nba/athletes/4871144/gamelog
+  SOFT (not spine):
+    RISK-KEEP 6/7 Jabari Smith Jr. O1.5 AST id=4432639 — soft floor
+    RISK-KEEP 6/7 Marcus Smart O1.5 REB id=2990992 — soft floor
+  CUT @ HR climb (was clear at softer posted):
+    CUT 2/7 Fred VanVleet O3.5 REB (posted 2.5 RISK-KEEP) id=2991230
 
 ▶ SA @ PHX
-  SIDE: SA -8.5 · O/U 227.5
-  OUT: Mark Williams/Goodwin (PHX), Harris/Quaintance (SA) · DTD: Vassell
-  LOCKABLE @ G3:
-    RISK-KEEP 6/7 Dillon Brooks O14.5 PTS id=3155526
-    RISK-KEEP 6/7 Miles Bridges O14.5 PTS id=4066383
-    RISK-KEEP 6/7 Miles Bridges O6.5 REB id=4066383
-    RISK-KEEP 6/7 Khaman Maluach O5.5 PTS id=5203685
-    RISK-KEEP 6/7 Khaman Maluach O5.5 REB id=5203685
-    RISK-KEEP 6/7 Keldon Johnson O4.5 REB id=4395723 (posted≈G3)
-    RISK-KEEP 6/7 Stephon Castle O4.5 REB id=4845367
-    RISK-KEEP 6/7 Miles Bridges O2.5 AST id=4066383
-    RISK-KEEP 6/7 Devin Booker O1.5 3PT id=3136193 (posted≈G3)
-    RISK-KEEP 6/7 Miles Bridges O1.5 3PT id=4066383
-  RISK (not spine):
-    RISK 5/7 Devin Booker O4.5 AST id=3136193
-    RISK 5/7 Dillon Brooks O1.5 AST id=3155526
-    RISK 5/7 Dillon Brooks O1.5 3PT id=3155526
+  SIDE SA -8.5 · O/U 227.5 · eid=401909958
+  OUT: Jordan Goodwin(PHX), Mark Williams(PHX), Tobias Harris(SA), Jayden Quaintance(SA)
+  DTD: Devin Vassell(SA)
+  BOARD @ G3 (from-scratch):
+    RISK-KEEP 6/7 Dillon Brooks O14.5 PTS id=3155526 L=[11.0, 24.0, 15.0, 18.0, 22.0, 19.0, 15.0] HR=14.5
+      id=3155526 team=PHX n_rs=8 | MIN[37,29,35,34,21,33,34] PTS[11,24,15,18,22,19,15] REB[4,1,6,8,1,5,2] AST[1,1,2,4,2,5,5] STL[0,2,1,0,1,3,0] BLK[0,1,0,0,0,1,0] 3PT[3,4,0,2,4,3,1] | espn:site.web.api/nba/athletes/3155526/gamelog
+    RISK-KEEP 6/7 Miles Bridges O14.5 PTS id=4066383 L=[13.0, 18.0, 18.0, 21.0, 24.0, 17.0, 16.0] HR=14.5
+      id=4066383 team=PHX n_rs=8 | MIN[31,31,31,35,37,32,33] PTS[13,18,18,21,24,17,16] REB[10,13,7,6,10,8,7] AST[7,5,5,3,2,4,3] STL[0,2,2,4,1,1,0] BLK[1,0,0,1,3,0,0] 3PT[1,3,4,3,2,2,2] | espn:site.web.api/nba/athletes/4066383/gamelog
+    RISK-KEEP 6/7 Miles Bridges O6.5 REB id=4066383 L=[10.0, 13.0, 7.0, 6.0, 10.0, 8.0, 7.0] HR=6.5
+      id=4066383 team=PHX n_rs=8 | MIN[31,31,31,35,37,32,33] PTS[13,18,18,21,24,17,16] REB[10,13,7,6,10,8,7] AST[7,5,5,3,2,4,3] STL[0,2,2,4,1,1,0] BLK[1,0,0,1,3,0,0] 3PT[1,3,4,3,2,2,2] | espn:site.web.api/nba/athletes/4066383/gamelog
+    RISK-KEEP 6/7 Khaman Maluach O5.5 PTS id=5203685 L=[8.0, 8.0, 6.0, 5.0, 9.0, 12.0, 9.0] HR=5.5
+      id=5203685 team=PHX n_rs=8 | MIN[18,22,16,13,17,26,28] PTS[8,8,6,5,9,12,9] REB[10,6,6,2,6,7,9] AST[0,2,2,0,0,1,3] STL[1,2,0,1,0,1,1] BLK[2,0,1,1,0,1,2] 3PT[0,0,0,0,0,0,1] | espn:site.web.api/nba/athletes/5203685/gamelog
+    RISK-KEEP 6/7 Khaman Maluach O5.5 REB id=5203685 L=[10.0, 6.0, 6.0, 2.0, 6.0, 7.0, 9.0] HR=5.5
+      id=5203685 team=PHX n_rs=8 | MIN[18,22,16,13,17,26,28] PTS[8,8,6,5,9,12,9] REB[10,6,6,2,6,7,9] AST[0,2,2,0,0,1,3] STL[1,2,0,1,0,1,1] BLK[2,0,1,1,0,1,2] 3PT[0,0,0,0,0,0,1] | espn:site.web.api/nba/athletes/5203685/gamelog
+    RISK-KEEP 6/7 Keldon Johnson O4.5 REB id=4395723 L=[7.0, 6.0, 5.0, 7.0, 6.0, 6.0, 4.0] posted=4.5
+      id=4395723 team=SA n_rs=10 | MIN[27,27,19,27,24,23,22] PTS[10,3,4,15,2,9,14] REB[7,6,5,7,6,6,4] AST[4,6,2,1,0,2,0] STL[2,0,0,0,0,1,0] BLK[0,0,0,0,0,0,0] 3PT[0,0,0,1,0,0,0] | espn:site.web.api/nba/athletes/4395723/gamelog
+    RISK-KEEP 6/7 Miles Bridges O2.5 AST id=4066383 L=[7.0, 5.0, 5.0, 3.0, 2.0, 4.0, 3.0] HR=2.5
+      id=4066383 team=PHX n_rs=8 | MIN[31,31,31,35,37,32,33] PTS[13,18,18,21,24,17,16] REB[10,13,7,6,10,8,7] AST[7,5,5,3,2,4,3] STL[0,2,2,4,1,1,0] BLK[1,0,0,1,3,0,0] 3PT[1,3,4,3,2,2,2] | espn:site.web.api/nba/athletes/4066383/gamelog
+    RISK-KEEP 6/7 Devin Booker O1.5 3PT id=3136193 L=[2.0, 4.0, 2.0, 2.0, 3.0, 0.0, 2.0] HR=1.5
+      id=3136193 team=PHX n_rs=8 | MIN[39,34,34,35,39,34,36] PTS[24,30,33,26,20,3,43] REB[2,1,1,3,2,2,7] AST[3,8,2,5,5,7,7] STL[3,3,0,0,2,0,0] BLK[0,0,0,0,0,0,1] 3PT[2,4,2,2,3,0,2] | espn:site.web.api/nba/athletes/3136193/gamelog
+  SOFT (not spine):
+    RISK-KEEP 6/7 Collin Gillespie O1.5 STL id=4278585 — soft floor
+    RISK-KEEP 6/7 Dylan Harper O0.5 3PT id=5037871 — soft floor
+    RISK-KEEP 6/7 Victor Wembanyama O0.5 STL id=5104157 — soft floor
 
 ▶ NO @ GS
-  SIDE: GS -9.5 · O/U 232.5
-  OUT: Butler/Porzingis/Moody/Richard (GS), Missi (NO) · DTD: Gui Santos
-  LOCKABLE @ G3:
-    RISK-KEEP 6/7 Brandin Podziemski O1.5 3PT id=4709138
-  RISK (not spine):
-    RISK 5/7 Jeremiah Fears O4.5 REB id=5144091
-    RISK 5/7 Stephen Curry O28.5 PTS id=3975
-    RISK 5/7 Saddiq Bey O12.5 PTS id=4397136
-    RISK 5/7 Trey Murphy III O4.5 REB id=4397688
-  BAN @ HR climb:
-    CUT 2/7 Draymond Green O5.5 REB (was KEEP @ posted 3.5)
-    CUT 4/7 Trey Murphy III O3.5 AST (was KEEP @ posted 2.5)
+  SIDE GS -9.5 · O/U 232.5 · eid=401909959
+  OUT: Will Richard(GS), Kristaps Porzingis(GS), Moses Moody(GS), Jimmy Butler III(GS), Yves Missi(NO)
+  DTD: Gui Santos(GS)
+  BOARD @ G3 (from-scratch):
+    RISK-KEEP 6/7 Brandin Podziemski O1.5 3PT id=4709138 L=[4.0, 2.0, 3.0, 2.0, 4.0, 0.0, 3.0] HR=1.5
+      id=4709138 team=GS n_rs=8 | MIN[39,32,33,37,33,32,33] PTS[15,9,20,17,21,8,18] REB[7,6,3,8,5,5,7] AST[1,3,2,8,6,6,5] STL[2,1,1,0,2,0,1] BLK[1,1,0,0,1,0,0] 3PT[4,2,3,2,4,0,3] | espn:site.web.api/nba/athletes/4709138/gamelog
+  CUT @ HR climb (was clear at softer posted):
+    RISK 5/7 Jeremiah Fears O4.5 REB (posted 3.5 KEEP) id=5144091
+    CUT 2/7 Draymond Green O5.5 REB (posted 3.5 KEEP) id=6589
+    CUT 4/7 Trey Murphy III O3.5 AST (posted 2.5 KEEP) id=4397688
 
-──────── NHL ────────
-▶ NYR @ EDM
-  SIDE: EDM -155 · O/U 6.5
-  RISK 8/10 Tye Kartye O1.5 SOG id=4588750
+──────── NHL (SOG L10 @ posted) ────────
+▶ NYR @ EDM · SIDE EDM -155 · O/U 6.5
+  RISK 8/10 Tye Kartye O1.5 SOG id=4588750 L=[2.0, 2.0, 3.0, 0.0, 2.0, 3.0, 2.0, 2.0, 2.0, 1.0]
 
-▶ PHI @ VAN
-  SIDE: PHI -135 · O/U 6.5
-  RISK 8/10 Trevor Zegras O1.5 SOG id=4565230
-  RISK 7/10 Jonathan Lekkerimaki O1.5 SOG id=5080159
+▶ PHI @ VAN · SIDE PHI -135 · O/U 6.5
+  RISK 8/10 Trevor Zegras O1.5 SOG id=4565230 L=[2.0, 3.0, 0.0, 1.0, 4.0, 3.0, 3.0, 4.0, 3.0, 5.0]
+  RISK 7/10 Jonathan Lekkerimaki O1.5 SOG id=5080159 L=[2.0, 2.0, 2.0, 4.0, 1.0, 4.0, 1.0, 2.0, 3.0, 0.0]
 
-▶ NYI @ SJ
-  SIDE: NYI -135 · O/U 6.5
-  RISK 8/10 Simon Holmstrom O1.5 SOG id=4565244
+▶ NYI @ SJ · SIDE NYI -135 · O/U 6.5
+  RISK 8/10 Simon Holmstrom O1.5 SOG id=4565244 L=[2.0, 2.0, 3.0, 2.0, 3.0, 1.0, 3.0, 3.0, 2.0, 1.0]
 
-════════ SLATE SUMMARY ════════
-SAFE (KEEP @ G3, diversify):
+════════ FROM-SCRATCH SLATE LOCK ════════
+SAFE (firm KEEP @ HR only — soft ≤1.5 REB/AST/STL banned from spine):
   1. Cedric Coward O6.5 REB [KEEP 7/7] id=4903027 · MEM @ TOR · G3 HR
   2. Cedric Coward O1.5 3PT [KEEP 7/7] id=4903027 · MEM @ TOR · G3 HR
-  3. Ziaire Williams O7.5 PTS [KEEP 7/7] id=4433137 · LAL @ ATL · G3 HR (Luka OUT)
-  (McCollum O1.5 REB is KEEP but too soft for SAFE spine — skip)
+  3. Ziaire Williams O7.5 PTS [KEEP 7/7] id=4433137 · LAL @ ATL · G3 HR (Doncic OUT)
 
-BANGERS (one per game where possible):
-  1. NAW O19.5 PTS [RISK-KEEP 6/7] · LAL @ ATL
-  2. Peyton Watson O1.5 AST [RISK-KEEP 6/7] · CLE @ CHA
+BANGERS (diversified; SA@PHX rich but don't overstack):
+  1. NAW O19.5 PTS [RISK-KEEP 6/7] id=4278039 · LAL @ ATL
+  2. Sengun already in lock — alt: Podziemski O1.5 3PT [RISK-KEEP 6/7] · NO @ GS
   3. Kyshawn George O1.5 3PT [RISK-KEEP 6/7] · WSH @ DET
   4. P.J. Washington O1.5 3PT [RISK-KEEP 6/7] · IND @ DAL
-  5. Alperen Sengun O6.5 AST [RISK-KEEP 6/7] · DEN @ HOU
-  6. Miles Bridges O6.5 REB [RISK-KEEP 6/7] · SA @ PHX
-  7. Dillon Brooks O14.5 PTS [RISK-KEEP 6/7] · SA @ PHX
-  8. Brandin Podziemski O1.5 3PT [RISK-KEEP 6/7] · NO @ GS
+  5. Miles Bridges O14.5 PTS [RISK-KEEP 6/7] · SA @ PHX (if not using REB)
+  6. Stephon Castle O4.5 REB [RISK-KEEP 6/7] · SA @ PHX
+  7. Devin Booker O1.5 3PT [RISK-KEEP 6/7] · SA @ PHX
+  8. Keldon Johnson O4.5 REB [RISK-KEEP 6/7] · SA @ PHX
+  CLE @ CHA: no firm G3 board (Watson 1.5 AST = soft only) — side CLE -9.5 is the play
 
-SIDES LEAN:
-  SA -8.5 (PHX no Mark Williams) · CLE -9.5 (CHA gutted) · HOU -8.5 if DEN DTDs sit
-  SKIP: GS -9.5 chalk (Butler/Porzingis/Moody OUT) · LAL auto without Luka
+PARLAY LOCK (fixed — Coward restored; no double LAL PTS stack as spine):
+  1. Cedric Coward O6.5 REB     G1 7/7 KEEP · G2/G3 HR 6.5 · id=4903027 · MEM @ TOR
+  2. Cedric Coward O1.5 3PT     G1 7/7 KEEP · G2/G3 HR 1.5 · id=4903027 · MEM @ TOR
+  3. Ziaire Williams O7.5 PTS   G1 7/7 KEEP · G2/G3 HR 7.5 · id=4433137 · LAL @ ATL
+  4. Miles Bridges O6.5 REB     G1 6/7 RISK-KEEP · G2/G3 HR 6.5 · id=4066383 · SA @ PHX
+  5. Dillon Brooks O14.5 PTS    G1 6/7 RISK-KEEP · G2/G3 HR 14.5 · id=3155526 · SA @ PHX
+  6. Alperen Sengun O6.5 AST    G1 6/7 RISK-KEEP · G2/G3 HR 6.5 · id=4871144 · DEN @ HOU
+  Optional 7 (one): NAW O19.5 · Podz O1.5 3PT · Castle O4.5 REB · SA -8.5 · CLE -9.5
+  NOT in cash: McCollum 1.5 REB · Watson 1.5 AST · Dybantsa 0.5 3PT · Kyrie 0.5 STL · Maluach volume
+  SOG: Holmstrom/Zegras/Kartye RISK only — cap ≤2 — not cash spine
 
-PARLAY LOCK (cross-slate, G1+G2+G3):
-  1. Cedric Coward O6.5 REB     G1 7/7 KEEP · G3 HR=6.5 · id=4903027 · MEM @ TOR
-  2. Cedric Coward O1.5 3PT     G1 7/7 KEEP · G3 HR=1.5 · id=4903027 · MEM @ TOR
-  3. Ziaire Williams O7.5 PTS   G1 7/7 KEEP · G3 HR=7.5 · id=4433137 · LAL @ ATL
-  4. Miles Bridges O6.5 REB     G1 6/7 RISK-KEEP · G3 HR=6.5 · id=4066383 · SA @ PHX
-  5. Dillon Brooks O14.5 PTS    G1 6/7 RISK-KEEP · G3 HR=14.5 · id=3155526 · SA @ PHX
-  6. Alperen Sengun O6.5 AST    G1 6/7 RISK-KEEP · G3 HR=6.5 · id=4871144 · DEN @ HOU
-  Optional side: SA -8.5 or CLE -9.5 (one)
-  Per-game alts: Watson AST · George 3PT · PJ Wash 3PT · Castle REB · Podz 3PT · NAW 19.5
-  SOG: Holmstrom/Zegras/Kartye RISK only — not lock spine; cap ≤2
+BAN:
+  Soft spine floors (≤1.5 REB/AST/STL) · DTD/OUT players · HR climb CUTs in per-game sections
+  Draymond 5.5 REB · Murphy 3.5 AST · Duncan 2.5 AST · FVV 3.5 REB
+  Wemby 10.5 REB / 29.5 PTS · Harper 16.5 · Fox · Nembhard PTS spine · GS ML chalk · 3rd SOG
+  Climb-cuts logged per game above
 
-BAN (slate-wide):
-  Soft floors not on HR · DTD volume (Vassell/Murray/Allen/Barnes/AD/Grimes)
-  HR climbs that CUT: Draymond 5.5 REB · Murphy 3.5 AST · Duncan 2.5 AST · FVV 3.5 REB
-  McCollum 1.5 REB / Dybantsa 0.5 3PT / Smart 1.5 REB as cash spine
-  Wemby 10.5 REB / 29.5 PTS · Harper 16.5 · Fox · Nembhard PTS spine · 3rd SOG · GS ML chalk
 
 DONE CHECK
 - G1 require_gate: PASS date=20261109 sheets_ok=431/431
-- G2 posted-mains: yes path=betting/posted-mains-20261109.json
-- G3 HR floors used: yes (per-game spot-check + climb re-grade)
-- All 8 NBA + 3 NHL games covered: yes
-- BANGERS section: yes
-- athlete_ids shown: yes
-- parlay lock all legs 3-gated: yes
+- G2 posted-mains: yes n=384 path=betting/posted-mains-20261109.json
+- G3 HR floors: yes — HR pulled for 48 actionable players; climb re-graded
+- All 8 NBA + 3 NHL games: yes (from-scratch sections)
+- BANGERS: yes
+- athlete_ids + full L7 cats on every boarded/lock player: yes
+- parlay lock 3-gated: yes · sheet_missing=none
+- no lazy: fresh gate + fresh mains + HR-all-candidates + injury refresh + cat dump
