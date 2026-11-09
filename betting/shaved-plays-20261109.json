@@ -1,0 +1,876 @@
+[
+  {
+    "bucket": "bangers",
+    "player": "Nickeil Alexander-Walker",
+    "id": "4278039",
+    "game": "LAL @ ATL",
+    "stat": "PTS",
+    "main": 19.5,
+    "main_hits": "6/7",
+    "main_call": "RISK-KEEP",
+    "shave": 14.5,
+    "shave_hits": "6/7",
+    "shave_call": "RISK-KEEP",
+    "drop": 5.0,
+    "vals": [
+      20.0,
+      28.0,
+      26.0,
+      34.0,
+      12.0,
+      25.0,
+      23.0
+    ],
+    "path": [
+      {
+        "line": 19.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 18.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 17.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 16.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 15.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 14.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      }
+    ],
+    "priority": 1
+  },
+  {
+    "bucket": "lock",
+    "player": "Cedric Coward",
+    "id": "4903027",
+    "game": "MEM @ TOR",
+    "stat": "REB",
+    "main": 6.5,
+    "main_hits": "7/7",
+    "main_call": "KEEP",
+    "shave": 2.5,
+    "shave_hits": "7/7",
+    "shave_call": "KEEP",
+    "drop": 4.0,
+    "vals": [
+      9.0,
+      9.0,
+      9.0,
+      7.0,
+      7.0,
+      11.0,
+      11.0
+    ],
+    "path": [
+      {
+        "line": 6.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 5.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 4.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 3.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 2.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      }
+    ],
+    "priority": 0
+  },
+  {
+    "bucket": "lock",
+    "player": "Dillon Brooks",
+    "id": "3155526",
+    "game": "SA @ PHX",
+    "stat": "PTS",
+    "main": 14.5,
+    "main_hits": "6/7",
+    "main_call": "RISK-KEEP",
+    "shave": 10.5,
+    "shave_hits": "7/7",
+    "shave_call": "KEEP",
+    "drop": 4.0,
+    "vals": [
+      11.0,
+      24.0,
+      15.0,
+      18.0,
+      22.0,
+      19.0,
+      15.0
+    ],
+    "path": [
+      {
+        "line": 14.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 13.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 12.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 11.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 10.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      }
+    ],
+    "priority": 0
+  },
+  {
+    "bucket": "lock",
+    "player": "Miles Bridges",
+    "id": "4066383",
+    "game": "SA @ PHX",
+    "stat": "REB",
+    "main": 6.5,
+    "main_hits": "6/7",
+    "main_call": "RISK-KEEP",
+    "shave": 2.5,
+    "shave_hits": "7/7",
+    "shave_call": "KEEP",
+    "drop": 4.0,
+    "vals": [
+      10.0,
+      13.0,
+      7.0,
+      6.0,
+      10.0,
+      8.0,
+      7.0
+    ],
+    "path": [
+      {
+        "line": 6.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 5.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 4.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 3.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 2.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      }
+    ],
+    "priority": 0
+  },
+  {
+    "bucket": "bangers",
+    "player": "Miles Bridges",
+    "id": "4066383",
+    "game": "SA @ PHX",
+    "stat": "PTS",
+    "main": 14.5,
+    "main_hits": "6/7",
+    "main_call": "RISK-KEEP",
+    "shave": 10.5,
+    "shave_hits": "7/7",
+    "shave_call": "KEEP",
+    "drop": 4.0,
+    "vals": [
+      13.0,
+      18.0,
+      18.0,
+      21.0,
+      24.0,
+      17.0,
+      16.0
+    ],
+    "path": [
+      {
+        "line": 14.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 13.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 12.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 11.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 10.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      }
+    ],
+    "priority": 0
+  },
+  {
+    "bucket": "nfl",
+    "player": "Ty Johnson",
+    "id": "3915411",
+    "game": "BUF @ MIN",
+    "stat": "REC_YD",
+    "main": 15.5,
+    "main_hits": "4/5",
+    "main_call": "RISK-KEEP",
+    "shave": 11.5,
+    "shave_hits": "4/5",
+    "shave_call": "RISK-KEEP",
+    "drop": 4.0,
+    "vals": [
+      19.0,
+      24.0,
+      72.0,
+      9.0,
+      50.0
+    ],
+    "path": [
+      {
+        "line": 15.5,
+        "call": "RISK-KEEP",
+        "hits": 4,
+        "n": 5,
+        "soft": false
+      },
+      {
+        "line": 14.5,
+        "call": "RISK-KEEP",
+        "hits": 4,
+        "n": 5,
+        "soft": false
+      },
+      {
+        "line": 13.5,
+        "call": "RISK-KEEP",
+        "hits": 4,
+        "n": 5,
+        "soft": false
+      },
+      {
+        "line": 12.5,
+        "call": "RISK-KEEP",
+        "hits": 4,
+        "n": 5,
+        "soft": false
+      },
+      {
+        "line": 11.5,
+        "call": "RISK-KEEP",
+        "hits": 4,
+        "n": 5,
+        "soft": false
+      }
+    ],
+    "priority": 1
+  },
+  {
+    "bucket": "lock",
+    "player": "Alperen Sengun",
+    "id": "4871144",
+    "game": "DEN @ HOU",
+    "stat": "AST",
+    "main": 6.5,
+    "main_hits": "6/7",
+    "main_call": "RISK-KEEP",
+    "shave": 3.5,
+    "shave_hits": "7/7",
+    "shave_call": "KEEP",
+    "drop": 3.0,
+    "vals": [
+      5.0,
+      10.0,
+      10.0,
+      9.0,
+      9.0,
+      7.0,
+      7.0
+    ],
+    "path": [
+      {
+        "line": 6.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 5.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 4.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 3.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      }
+    ],
+    "priority": 0
+  },
+  {
+    "bucket": "bangers",
+    "player": "Keldon Johnson",
+    "id": "4395723",
+    "game": "SA @ PHX",
+    "stat": "REB",
+    "main": 4.5,
+    "main_hits": "6/7",
+    "main_call": "RISK-KEEP",
+    "shave": 2.5,
+    "shave_hits": "7/7",
+    "shave_call": "KEEP",
+    "drop": 2.0,
+    "vals": [
+      7.0,
+      6.0,
+      5.0,
+      7.0,
+      6.0,
+      6.0,
+      4.0
+    ],
+    "path": [
+      {
+        "line": 4.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 3.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 2.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 1.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": true
+      },
+      {
+        "line": 0.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": true
+      }
+    ],
+    "priority": 0
+  },
+  {
+    "bucket": "bangers",
+    "player": "Stephon Castle",
+    "id": "4845367",
+    "game": "SA @ PHX",
+    "stat": "REB",
+    "main": 4.5,
+    "main_hits": "6/7",
+    "main_call": "RISK-KEEP",
+    "shave": 2.5,
+    "shave_hits": "7/7",
+    "shave_call": "KEEP",
+    "drop": 2.0,
+    "vals": [
+      7.0,
+      3.0,
+      10.0,
+      5.0,
+      5.0,
+      6.0,
+      5.0
+    ],
+    "path": [
+      {
+        "line": 4.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 3.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 2.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 1.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": true
+      },
+      {
+        "line": 0.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": true
+      }
+    ],
+    "priority": 0
+  },
+  {
+    "bucket": "lock",
+    "player": "Ziaire Williams",
+    "id": "4433137",
+    "game": "LAL @ ATL",
+    "stat": "PTS",
+    "main": 7.5,
+    "main_hits": "7/7",
+    "main_call": "KEEP",
+    "shave": 5.5,
+    "shave_hits": "7/7",
+    "shave_call": "KEEP",
+    "drop": 2.0,
+    "vals": [
+      17.0,
+      8.0,
+      10.0,
+      9.0,
+      11.0,
+      11.0,
+      14.0
+    ],
+    "path": [
+      {
+        "line": 7.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 6.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 5.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      }
+    ],
+    "priority": 0
+  },
+  {
+    "bucket": "lock",
+    "player": "Cedric Coward",
+    "id": "4903027",
+    "game": "MEM @ TOR",
+    "stat": "3PT",
+    "main": 1.5,
+    "main_hits": "7/7",
+    "main_call": "KEEP",
+    "shave": 1.0,
+    "shave_hits": "7/7",
+    "shave_call": "KEEP",
+    "drop": 0.5,
+    "vals": [
+      2.0,
+      4.0,
+      2.0,
+      2.0,
+      3.0,
+      4.0,
+      3.0
+    ],
+    "path": [
+      {
+        "line": 1.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 1.0,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 0.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": true
+      }
+    ],
+    "priority": 0
+  },
+  {
+    "bucket": "nfl",
+    "player": "Ty Johnson",
+    "id": "3915411",
+    "game": "BUF @ MIN",
+    "stat": "REC",
+    "main": 1.5,
+    "main_hits": "5/5",
+    "main_call": "KEEP",
+    "shave": 1.0,
+    "shave_hits": "5/5",
+    "shave_call": "KEEP",
+    "drop": 0.5,
+    "vals": [
+      3.0,
+      2.0,
+      4.0,
+      2.0,
+      4.0
+    ],
+    "path": [
+      {
+        "line": 1.5,
+        "call": "KEEP",
+        "hits": 5,
+        "n": 5,
+        "soft": false
+      },
+      {
+        "line": 1.0,
+        "call": "KEEP",
+        "hits": 5,
+        "n": 5,
+        "soft": false
+      },
+      {
+        "line": 0.5,
+        "call": "KEEP",
+        "hits": 5,
+        "n": 5,
+        "soft": true
+      }
+    ],
+    "priority": 0
+  },
+  {
+    "bucket": "bangers",
+    "player": "Brandin Podziemski",
+    "id": "4709138",
+    "game": "NO @ GS",
+    "stat": "3PT",
+    "main": 1.5,
+    "main_hits": "6/7",
+    "main_call": "RISK-KEEP",
+    "shave": 1.0,
+    "shave_hits": "6/7",
+    "shave_call": "RISK-KEEP",
+    "drop": 0.5,
+    "vals": [
+      4.0,
+      2.0,
+      3.0,
+      2.0,
+      4.0,
+      0.0,
+      3.0
+    ],
+    "path": [
+      {
+        "line": 1.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 1.0,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 0.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": true
+      }
+    ],
+    "priority": 1
+  },
+  {
+    "bucket": "bangers",
+    "player": "Devin Booker",
+    "id": "3136193",
+    "game": "SA @ PHX",
+    "stat": "3PT",
+    "main": 1.5,
+    "main_hits": "6/7",
+    "main_call": "RISK-KEEP",
+    "shave": 1.0,
+    "shave_hits": "6/7",
+    "shave_call": "RISK-KEEP",
+    "drop": 0.5,
+    "vals": [
+      2.0,
+      4.0,
+      2.0,
+      2.0,
+      3.0,
+      0.0,
+      2.0
+    ],
+    "path": [
+      {
+        "line": 1.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 1.0,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 0.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": true
+      }
+    ],
+    "priority": 1
+  },
+  {
+    "bucket": "bangers",
+    "player": "Kyshawn George",
+    "id": "5174563",
+    "game": "WSH @ DET",
+    "stat": "3PT",
+    "main": 1.5,
+    "main_hits": "6/7",
+    "main_call": "RISK-KEEP",
+    "shave": 1.0,
+    "shave_hits": "6/7",
+    "shave_call": "RISK-KEEP",
+    "drop": 0.5,
+    "vals": [
+      2.0,
+      5.0,
+      3.0,
+      4.0,
+      4.0,
+      0.0,
+      2.0
+    ],
+    "path": [
+      {
+        "line": 1.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 1.0,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 0.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": true
+      }
+    ],
+    "priority": 1
+  },
+  {
+    "bucket": "bangers",
+    "player": "P.J. Washington",
+    "id": "4278078",
+    "game": "IND @ DAL",
+    "stat": "3PT",
+    "main": 1.5,
+    "main_hits": "6/7",
+    "main_call": "RISK-KEEP",
+    "shave": 1.0,
+    "shave_hits": "6/7",
+    "shave_call": "RISK-KEEP",
+    "drop": 0.5,
+    "vals": [
+      2.0,
+      6.0,
+      3.0,
+      2.0,
+      1.0,
+      2.0,
+      4.0
+    ],
+    "path": [
+      {
+        "line": 1.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 1.0,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false
+      },
+      {
+        "line": 0.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": true
+      }
+    ],
+    "priority": 1
+  }
+]
