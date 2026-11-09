@@ -1,0 +1,61 @@
+════════════════════════════════════════════════════════════
+SHAVED UNIVERSE · all firm clears · 2026-11-09
+Do other players populate? Are ours still best?
+════════════════════════════════════════════════════════════
+
+Unique firm player-stats that shave: 20
+  Our 7-leg set: 7
+  Other firm options: 13  (G3/banger-tagged 9, posted-pool 4)
+  Banned soft/climb: 16
+
+── VERDICT ──
+Yes — more players populate once you shave.
+Yes — our 7 are still the best SPINE: G3 HR clear + deep firm shave + not soft + not climb-cut.
+Others = ALTS / swaps / 8th-leg adds, not automatic upgrades.
+
+── OUR 7 (spine) ──
+  Dillon Brooks          PTS   O14.5 →O4.5   −10.0 7/7 KEEP  L=[11.0, 24.0, 15.0, 18.0, 22.0, 19.0, 15.0]
+  Ziaire Williams        PTS   O7.5  →O0.5   −7.0  7/7 KEEP  L=[17.0, 8.0, 10.0, 9.0, 11.0, 11.0, 14.0]
+  Cedric Coward          REB   O6.5  →O2.5   −4.0  7/7 KEEP  L=[9.0, 9.0, 9.0, 7.0, 7.0, 11.0, 11.0]
+  Miles Bridges          REB   O6.5  →O2.5   −4.0  7/7 KEEP  L=[10.0, 13.0, 7.0, 6.0, 10.0, 8.0, 7.0]
+  Alperen Sengun         AST   O6.5  →O3.5   −3.0  7/7 KEEP  L=[5.0, 10.0, 10.0, 9.0, 9.0, 7.0, 7.0]
+  Cedric Coward          3PT   O1.5  →O1.0   −0.5  7/7 KEEP  L=[2.0, 4.0, 2.0, 2.0, 3.0, 4.0, 3.0]
+  Ty Johnson             REC   O1.5  →O1.0   −0.5  5/5 KEEP  L=[3.0, 2.0, 4.0, 2.0, 4.0]
+
+── BEST OTHER OPTIONS (firm shave) — use as swaps/adds ──
+  Nickeil Alexander-Walker PTS   O19.5 →O9.5   −10.0 7/7 KEEP       [banger/G3]
+  Miles Bridges          PTS   O14.5 →O4.5   −10.0 7/7 KEEP       [banger/G3]
+  Khaman Maluach         PTS   O5.5  →O0.5   −5.0  7/7 KEEP       [posted]
+  Stephon Castle         REB   O4.5  →O2.5   −2.0  7/7 KEEP       [banger/G3]
+  Keldon Johnson         REB   O4.5  →O2.5   −2.0  7/7 KEEP       [banger/G3]
+  Ty Johnson             REC_YD O15.5 →O9.5   −6.0  4/5 RISK-KEEP  [G3]
+  Khaman Maluach         REB   O5.5  →O2.5   −3.0  6/7 RISK-KEEP  [posted]
+  Brandin Podziemski     3PT   O1.5  →O1.0   −0.5  6/7 RISK-KEEP  [banger/G3]
+  Kyshawn George         3PT   O1.5  →O1.0   −0.5  6/7 RISK-KEEP  [banger/G3]
+  P.J. Washington        3PT   O1.5  →O1.0   −0.5  6/7 RISK-KEEP  [banger/G3]
+  Devin Booker           3PT   O1.5  →O1.0   −0.5  6/7 RISK-KEEP  [banger/G3]
+  Miles Bridges          3PT   O1.5  →O1.0   −0.5  6/7 RISK-KEEP  [posted]
+  Miles Bridges          AST   O2.5  →O2.5   −0.0  6/7 RISK-KEEP  [posted]
+
+── WHY NOT THOSE OTHER 'CLEARS' ──
+  Draymond Green REB: climb-cut at HR — dead
+  Duncan Robinson AST: climb-cut at HR — dead
+  Fred VanVleet REB: climb-cut at HR — dead
+  Jeremiah Fears REB: climb-cut at HR — dead
+  Trey Murphy III AST: climb-cut at HR — dead
+  AJ Dybantsa 3PT: soft-spine floor — banned even if 7/7 shaved
+  CJ McCollum REB: soft-spine floor — banned even if 7/7 shaved
+  Collin Gillespie STL: soft-spine floor — banned even if 7/7 shaved
+  Devin Vassell STL: soft-spine floor — banned even if 7/7 shaved
+  Dylan Harper 3PT: soft-spine floor — banned even if 7/7 shaved
+  Jabari Smith Jr. AST: soft-spine floor — banned even if 7/7 shaved
+  Kyrie Irving STL: soft-spine floor — banned even if 7/7 shaved
+  Marcus Smart REB: soft-spine floor — banned even if 7/7 shaved
+  Matisse Thybulle STL: soft-spine floor — banned even if 7/7 shaved
+  Peyton Watson AST: soft-spine floor — banned even if 7/7 shaved
+  Victor Wembanyama STL: soft-spine floor — banned even if 7/7 shaved
+
+── BOTTOM LINE ──
+  Spine stays: Coward REB/3PT · Bridges REB · Brooks PTS · Sengun AST · Ziaire PTS · Ty REC
+  Best adds from the populated pool: Bridges PTS · NAW PTS · Castle/Keldon REB · Podz/Booker/Kyshawn/PJ 3PT
+  Shaving does NOT promote soft floors or climb-cuts into the spine.

@@ -1,0 +1,214 @@
+════════════════════════════════════════════════════════════
+EVERY PLAYER CHECKED — BUF @ MIN · incl. KICKERS · 2026-11-09
+Active roster: 121 · IR group: 11 · Posted prop rows: 38 · LS prop pages: 26
+Betravon markets: PASS_YD, PASS_TD, RUSH_YD, REC_YD, REC (only cats they list)
+Kicker pages on LineSmart: 404 · Betravon: no kicking market · → no G2/G3 line
+════════════════════════════════════════════════════════════
+
+── KICKERS ──
+  Tyler Bass (BUF) id=3917232 ACTIVE
+    ESPN L7 kicking points: [12.0, 15.0, 11.0, 8.0, 6.0, 5.0, 12.0]
+    ESPN L7 FGM: [3.0, 4.0, 3.0, 2.0, 1.0, 0.0, 3.0]  XPM: [3.0, 3.0, 2.0, 2.0, 3.0, 5.0, 3.0]
+    Book: NO POSTED LINE (LS 404, Betravon no kick market, agentbets side-only)
+    research-only O6.5 KICK_PTS → 5/7 (NOT actionable — not on HR)
+    research-only O7.5 KICK_PTS → 5/7 (NOT actionable — not on HR)
+    research-only O8.5 KICK_PTS → 4/7 (NOT actionable — not on HR)
+    research-only O9.5 KICK_PTS → 4/7 (NOT actionable — not on HR)
+    VERDICT: checked · cannot lock (fails G2/G3 — no book number)
+  Will Reichard (MIN) id=4567104 ACTIVE
+    ESPN L7 kicking points: [1.0, 10.0, 11.0, 15.0, 11.0, 9.0, 7.0]
+    ESPN L7 FGM: [0.0, 3.0, 3.0, 5.0, 3.0, 3.0, 1.0]  XPM: [1.0, 1.0, 2.0, 0.0, 2.0, 0.0, 4.0]
+    Book: NO POSTED LINE (LS 404, Betravon no kick market, agentbets side-only)
+    research-only O6.5 KICK_PTS → 6/7 (NOT actionable — not on HR)
+    research-only O7.5 KICK_PTS → 5/7 (NOT actionable — not on HR)
+    research-only O8.5 KICK_PTS → 5/7 (NOT actionable — not on HR)
+    research-only O9.5 KICK_PTS → 4/7 (NOT actionable — not on HR)
+    VERDICT: checked · cannot lock (fails G2/G3 — no book number)
+  PUNTER Tommy Doman Jr. (BUF) id=4682758 — sheeted n=7 · no prop market
+  PUNTER Brett Thorson (MIN) id=4799994 — sheeted n=5 · no prop market
+
+── ALL GRADED PROPS ──
+  KEEP       5/5 Ty Johnson           O1.5 REC     id=3915411 L=[3.0, 2.0, 4.0, 2.0, 4.0] · HR
+  RISK-KEEP  4/5 Ty Johnson           O15.5 REC_YD  id=3915411 L=[19.0, 24.0, 72.0, 9.0, 50.0] · HR
+  RISK       5/7 Aaron Jones Sr.      O32.5 RUSH_YD id=3042519 L=[22.0, 26.0, 113.0, 94.0, 58.0, 105.0, 40.0] · HR
+  RISK       5/7 Dalton Kincaid       O36.5 REC_YD  id=4385690 L=[86.0, 38.0, 7.0, 7.0, 38.0, 95.0, 130.0] · HR
+  RISK       5/7 Josh Allen           O236.5 PASS_YD id=3918298 L=[289.0, 255.0, 210.0, 253.0, 204.0, 248.0, 334.0] · HR
+  CUT        3/7 Aaron Jones Sr.      O7.5 REC_YD  id=3042519 L=[18.0, 0.0, 4.0, 34.0, 34.0, 0.0, 0.0] · HR SOFT
+  CUT        3/5 DJ Moore             O3.5 REC     id=3915416 L=[4.0, 1.0, 6.0, 0.0, 5.0] · HR
+  CUT        3/5 DJ Moore             O47.5 REC_YD  id=3915416 L=[82.0, 11.0, 67.0, 0.0, 100.0] · HR
+  CUT        4/7 Dalton Kincaid       O3.5 REC     id=4385690 L=[4.0, 7.0, 1.0, 1.0, 2.0, 7.0, 5.0] · HR
+  CUT        2/7 Dawson Knox          O1.5 REC     id=3930086 L=[1.0, 1.0, 1.0, 2.0, 1.0, 2.0, 1.0] · HR
+  CUT        1/7 Dawson Knox          O7.5 REC_YD  id=3930086 L=[6.0, 0.0, 6.0, 13.0, 5.0, 5.0, 7.0] · HR SOFT
+  CUT        4/7 James Cook III       O1.5 REC     id=4379399 L=[2.0, 3.0, 1.0, 2.0, 0.0, 1.0, 3.0] · HR
+  CUT        3/7 James Cook III       O8.5 REC_YD  id=4379399 L=[21.0, 58.0, 7.0, 8.0, 0.0, 4.0, 12.0] · HR SOFT
+  CUT        4/7 James Cook III       O83.5 RUSH_YD id=4379399 L=[80.0, 95.0, 111.0, 75.0, 154.0, 135.0, 57.0] · HR
+  CUT        2/6 Jordan Addison       O3.5 REC     id=4429205 L=[3.0, 2.0, 4.0, 5.0, 2.0, 0.0] · HR
+  CUT        3/6 Jordan Addison       O40.5 REC_YD  id=4429205 L=[66.0, 20.0, 52.0, 90.0, 21.0, 0.0] · HR
+  CUT        4/7 Josh Allen           O1.5 PASS_TD id=3918298 L=[2.0, 2.0, 1.0, 1.0, 0.0, 3.0, 2.0] · posted
+  CUT        2/7 Josh Allen           O32.5 RUSH_YD id=3918298 L=[30.0, 1.0, 121.0, 4.0, 22.0, 69.0, 23.0] · HR
+  CUT        1/6 Justin Jefferson     O6.5 REC     id=4262921 L=[5.0, 4.0, 6.0, 2.0, 3.0, 8.0] · HR
+  CUT        1/6 Justin Jefferson     O79.5 REC_YD  id=4262921 L=[33.0, 44.0, 79.0, 32.0, 55.0, 92.0] · HR
+  CUT        3/7 Keon Coleman         O2.5 REC     id=4635008 L=[1.0, 4.0, 1.0, 6.0, 1.0, 6.0, 1.0] · HR
+  CUT        4/7 Keon Coleman         O28.5 REC_YD  id=4635008 L=[4.0, 59.0, 7.0, 116.0, 37.0, 63.0, 1.0] · HR
+  CUT        4/7 Khalil Shakir        O3.5 REC     id=4373678 L=[5.0, 4.0, 3.0, 7.0, 1.0, 3.0, 4.0] · HR
+  CUT        4/7 Khalil Shakir        O39.5 REC_YD  id=4373678 L=[64.0, 34.0, 80.0, 82.0, 6.0, 38.0, 50.0] · HR
+  CUT        1/7 Ray Davis            O5.5 RUSH_YD id=4429501 L=[30.0, 4.0, 2.0, 3.0, 0.0, 0.0, 3.0] · HR
+  CUT        1/7 T.J. Hockenson       O4.5 REC     id=4036133 L=[4.0, 4.0, 1.0, 13.0, 2.0, 3.0, 4.0] · posted
+  CUT        2/7 T.J. Hockenson       O42.5 REC_YD  id=4036133 L=[58.0, 35.0, 7.0, 119.0, 11.0, 29.0, 36.0] · posted
+  SKIP       0/3 Ben Yurosek          O0.5 REC     id=4433959 L=[1.0, 0.0, 1.0] · HR SOFT
+  SKIP       0/3 Ben Yurosek          O2.5 REC_YD  id=4433959 L=[24.0, 0.0, 10.0] · HR SOFT
+  SKIP       0/3 Carson Wentz         O1.5 PASS_TD id=2573079 L=[0.0, 0.0, 3.0] · posted
+  SKIP       0/3 Carson Wentz         O210.5 PASS_YD id=2573079 L=[0.0, 143.0, 133.0] · HR
+  SKIP       0/3 Carson Wentz         O7.5 RUSH_YD id=2573079 L=[0.0, 6.0, -1.0] · HR
+  SKIP       0/3 Jordan Mason         O47.5 RUSH_YD id=4360569 L=[20.0, 68.0, 59.0] · HR
+  SKIP       0/2 Skyler Bell          O0.5 REC     id=4683153 L=[0.0, 0.0] · HR SOFT
+  SKIP       0/2 Skyler Bell          O5.5 REC_YD  id=4683153 L=[0.0, 0.0] · HR SOFT
+  OUT        Jauan Jennings REC O0.5
+  OUT        Jauan Jennings REC_YD O8.5
+  OUT        Kyler Murray PASS_YD O213.5
+
+── EVERY ACTIVE PLAYER ──
+  [BUF]
+    C   Austin Corbett               id=3056608  ACTIVE | CHECKED — no posted prop (skill/defense)
+    C   Connor McGovern              id=4033748  ACTIVE | CHECKED — no posted prop (skill/defense)
+    C   Lloyd Cushenberry III        id=4035448  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Christian Benford            id=4379778  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Davison Igbinosun            id=4832035  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Dee Alford                   id=4401823  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Dorian Strong                id=4568703  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Jordan Hancock               id=4596480  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Kani Walker                  id=4682749  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Maxwell Hairston             id=4688931  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Te'Cory Couch                id=4427348  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DE  Landon Jackson               id=4432715  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DE  Michael Hoecht               id=4033234  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DE  Mike Danna                   id=3915487  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  DeWayne Carter               id=4426883  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  Deone Walker                 id=4831989  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  Ed Oliver                    id=4039303  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  Greg Gaines                  id=3127294  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  T.J. Sanders                 id=4684527  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  Zane Durant                  id=4685347  ACTIVE | CHECKED — no posted prop (skill/defense)
+    G   Ar'maj Reed-Adams            id=4606712  ACTIVE | CHECKED — no posted prop (skill/defense)
+    G   O'Cyrus Torrence             id=4428696  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Bradley Chubb                id=3116733  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Dorian Williams              id=4568624  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Greg Rousseau                id=4362506  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Javon Solomon                id=4428548  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Joe Andreessen               id=4366349  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Kaleb Elarms-Orr             id=4594321  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  TJ Parker                    id=4870886  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Terrel Bernard               id=4259166  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LS  Reid Ferguson                id=2976549  ACTIVE | LONG SNAPPER — no prop market
+    OT  Alec Anderson                id=4367203  Q/DTD  | CHECKED — no posted prop (skill/defense)
+    OT  Dion Dawkins                 id=3051324  Q/DTD  | CHECKED — no posted prop (skill/defense)
+    OT  Jude Bowry                   id=4869533  ACTIVE | CHECKED — no posted prop (skill/defense)
+    OT  Spencer Brown                id=4030899  ACTIVE | CHECKED — no posted prop (skill/defense)
+    OT  Tylan Grable                 id=4368828  ACTIVE | CHECKED — no posted prop (skill/defense)
+    P   Tommy Doman Jr.              id=4682758  ACTIVE | PUNTER — sheeted; no prop market
+    PK  Tyler Bass                   id=3917232  ACTIVE | KICKER — sheeted; NO book line → not lockable
+    QB  Josh Allen                   id=3918298  ACTIVE | PROPS: RISK O236.5 PASS_YD, CUT O1.5 PASS_TD, CUT O32.5 RUSH_YD
+    QB  Kyle Allen                   id=3115293  ACTIVE | CHECKED — no posted prop (skill/defense)
+    RB  James Cook III               id=4379399  ACTIVE | PROPS: CUT O83.5 RUSH_YD, CUT O8.5 REC_YD, CUT O1.5 REC
+    RB  Ray Davis                    id=4429501  ACTIVE | PROPS: CUT O5.5 RUSH_YD
+    RB  Ty Johnson                   id=3915411  ACTIVE | PROPS: RISK-KEEP O15.5 REC_YD, KEEP O1.5 REC
+    S   Cole Bishop                  id=4676004  ACTIVE | CHECKED — no posted prop (skill/defense)
+    S   Damar Hamlin                 id=4036060  ACTIVE | CHECKED — no posted prop (skill/defense)
+    S   Jalon Kilgore                id=5076951  ACTIVE | CHECKED — no posted prop (skill/defense)
+    S   Sam Franklin Jr.             id=4044133  ACTIVE | CHECKED — no posted prop (skill/defense)
+    TE  Dalton Kincaid               id=4385690  ACTIVE | PROPS: RISK O36.5 REC_YD, CUT O3.5 REC
+    TE  Dawson Knox                  id=3930086  ACTIVE | PROPS: CUT O7.5 REC_YD, CUT O1.5 REC
+    TE  Jackson Hawes                id=4573699  ACTIVE | CHECKED — no posted prop (skill/defense)
+    TE  Keleki Latu                  id=4688552  ACTIVE | CHECKED — no posted prop (skill/defense)
+    WR  DJ Moore                     id=3915416  ACTIVE | PROPS: CUT O47.5 REC_YD, CUT O3.5 REC
+    WR  Greg Dortch                  id=4037235  ACTIVE | CHECKED — no posted prop (skill/defense)
+    WR  Joshua Palmer                id=4242433  OUT    | CHECKED — no posted prop (skill/defense)
+    WR  Keon Coleman                 id=4635008  ACTIVE | PROPS: CUT O28.5 REC_YD, CUT O2.5 REC
+    WR  Khalil Shakir                id=4373678  ACTIVE | PROPS: CUT O39.5 REC_YD, CUT O3.5 REC
+    WR  Skyler Bell                  id=4683153  ACTIVE | PROPS: SKIP O5.5 REC_YD, SKIP O0.5 REC
+    WR  Tyrell Shavers               id=4241476  OUT    | CHECKED — no posted prop (skill/defense)
+  [MIN]
+    C   Blake Brandel                id=3930270  ACTIVE | CHECKED — no posted prop (skill/defense)
+    C   Michael Jurgens              id=4362010  ACTIVE | CHECKED — no posted prop (skill/defense)
+    C   Nick Samac                   id=4428421  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Byron Murphy Jr.             id=4038999  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Charles Demmings             id=5091793  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Dwight McGlothern Jr.        id=4429128  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Isaiah Rodgers               id=4044540  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  James Pierre                 id=4259252  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Zemaiah Vaughn               id=4695609  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DE  Elijah Williams              id=4696782  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DE  Tyrion Ingram-Dawkins        id=4629149  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  Caleb Banks                  id=4602019  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  Domonique Orange             id=4698728  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  Jalen Redmond                id=4360277  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  Levi Drake Rodriguez         id=5093973  ACTIVE | CHECKED — no posted prop (skill/defense)
+    FB  Max Bredeson                 id=4878695  ACTIVE | CHECKED — no posted prop (skill/defense)
+    G   Donovan Jackson              id=4431553  ACTIVE | CHECKED — no posted prop (skill/defense)
+    G   Joe Huber                    id=4690210  ACTIVE | CHECKED — no posted prop (skill/defense)
+    G   Will Fries                   id=4045176  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Andrew Van Ginkel            id=3133487  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Blake Cashman                id=3728281  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Bo Richter                   id=4875564  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Chaz Chambliss               id=4431520  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Dallas Turner                id=4565190  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Eric Wilson                  id=3056916  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Ivan Pace Jr.                id=4430280  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Jake Golday                  id=4877652  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Jamal Adams                  id=3115373  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Kyle Van Noy                 id=16772    ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Tyler Batty                  id=4608794  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LS  Andrew DePaola               id=15726    ACTIVE | LONG SNAPPER — no prop market
+    OT  Brian O'Neill                id=3123954  ACTIVE | CHECKED — no posted prop (skill/defense)
+    OT  Caleb Tiernan                id=4592836  ACTIVE | CHECKED — no posted prop (skill/defense)
+    OT  Christian Darrisaw           id=4361985  ACTIVE | CHECKED — no posted prop (skill/defense)
+    OT  Ryan Van Demark              id=4239140  ACTIVE | CHECKED — no posted prop (skill/defense)
+    P   Brett Thorson                id=4799994  ACTIVE | PUNTER — sheeted; no prop market
+    PK  Will Reichard                id=4567104  ACTIVE | KICKER — sheeted; NO book line → not lockable
+    QB  Carson Wentz                 id=2573079  ACTIVE | PROPS: SKIP O210.5 PASS_YD, SKIP O1.5 PASS_TD, SKIP O7.5 RUSH_YD
+    QB  Kyler Murray                 id=3917315  OUT    | PROPS: OUT O213.5 PASS_YD
+    QB  Max Brosmer                  id=4573398  ACTIVE | CHECKED — no posted prop (skill/defense)
+    RB  Aaron Jones Sr.              id=3042519  ACTIVE | PROPS: RISK O32.5 RUSH_YD, CUT O7.5 REC_YD
+    RB  DeeJay Dallas                id=4240631  ACTIVE | CHECKED — no posted prop (skill/defense)
+    RB  Demond Claiborne             id=4832846  OUT    | CHECKED — no posted prop (skill/defense)
+    RB  Jordan Mason                 id=4360569  ACTIVE | PROPS: SKIP O47.5 RUSH_YD
+    S   Harrison Smith               id=14945    ACTIVE | CHECKED — no posted prop (skill/defense)
+    S   Jacob Thomas                 id=5082397  ACTIVE | CHECKED — no posted prop (skill/defense)
+    S   Jakobe Thomas                id=4710865  ACTIVE | CHECKED — no posted prop (skill/defense)
+    S   Jay Ward                     id=4568007  Q/DTD  | CHECKED — no posted prop (skill/defense)
+    S   Joshua Metellus              id=4046537  ACTIVE | CHECKED — no posted prop (skill/defense)
+    S   Tavierre Thomas              id=4334405  ACTIVE | CHECKED — no posted prop (skill/defense)
+    S   Theo Jackson                 id=4242436  Q/DTD  | CHECKED — no posted prop (skill/defense)
+    TE  Ben Yurosek                  id=4433959  ACTIVE | PROPS: SKIP O2.5 REC_YD, SKIP O0.5 REC
+    TE  Gavin Bartholomew            id=4708049  ACTIVE | CHECKED — no posted prop (skill/defense)
+    TE  Josh Oliver                  id=3921690  ACTIVE | CHECKED — no posted prop (skill/defense)
+    TE  T.J. Hockenson               id=4036133  ACTIVE | PROPS: CUT O42.5 REC_YD, CUT O4.5 REC
+    WR  Dillon Bell                  id=4712579  ACTIVE | CHECKED — no posted prop (skill/defense)
+    WR  Jauan Jennings               id=3886598  OUT    | PROPS: OUT O8.5 REC_YD, OUT O0.5 REC
+    WR  Jeshaun Jones                id=4360637  ACTIVE | CHECKED — no posted prop (skill/defense)
+    WR  Jordan Addison               id=4429205  ACTIVE | PROPS: CUT O40.5 REC_YD, CUT O3.5 REC
+    WR  Justin Jefferson             id=4262921  ACTIVE | PROPS: CUT O79.5 REC_YD, CUT O6.5 REC
+    WR  Myles Price                  id=4430656  ACTIVE | CHECKED — no posted prop (skill/defense)
+    WR  Odell Beckham Jr.            id=16733    ACTIVE | CHECKED — no posted prop (skill/defense)
+    WR  Tai Felton                   id=4565185  ACTIVE | CHECKED — no posted prop (skill/defense)
+
+── IR / OUT LIST ──
+  BUF DT  Zane Durant id=4685347
+  BUF CB  Jordan Hancock id=4596480
+  BUF WR  Tyrell Shavers id=4241476
+  BUF CB  Dorian Strong id=4568703
+  MIN LB  Jamal Adams id=3115373
+  MIN LB  Tyler Batty id=4608794
+  MIN G   Donovan Jackson id=4431553
+  MIN RB  Jordan Mason id=4360569
+  MIN CB  Dwight McGlothern Jr. id=4429128
+  MIN TE  Josh Oliver id=3921690
+  MIN C   Nick Samac id=4428421
+
+── BEST AFTER CHECKING EVERYONE ──
+  KEEP 5/5 Ty Johnson O1.5 REC id=3915411
+  RISK-KEEP 4/5 Ty Johnson O15.5 REC_YD id=3915411
+  SIDE: BUF -3 / BUF ML ← primary NFL piece
+  Kickers: checked, no line, excluded
+
+DONE: 121 active players statused · kickers sheeted · 38 prop rows graded · HR on 17 pages

@@ -1,0 +1,36 @@
+PRIOR PARLAY (before Wemby/Harper slip) — THREE GATES — 2026-11-07
+Screenshot: C6818447 ~1:55pm ET · balance $14.33
+G1 PASS date=20261107 sheets_ok=780/780
+G2 posted-mains-20261107.json
+G3 on-slip HR lines (soft vs book mains but CONFIRMED on slip)
+
+LEG                         G1      G2 posted   G3 on-slip   CALL
+Towns O9.5 REB              7/7     main 13.5   9.5 soft     KEEP
+Brunson O18.5 PTS           7/7     main 26.5   18.5 soft    KEEP
+Sengun O6.5 REB             7/7     main 9.5    6.5 soft     KEEP
+Durant O2.5 REB             7/7     main 5.5    2.5 soft     KEEP
+Sengun O4.5 AST             7/7     main 6.5    4.5 soft     KEEP
+Curry O22.5 PTS             7/7     main 26.5   22.5 soft    KEEP
+Clingan O7.5 REB            7/7     main 11.5   7.5 soft     KEEP
+Hughes O1.5 SOG             10/10   main 3.5    1.5 soft     KEEP
+Trae O5.5 AST               7/7     main 9.5    5.5 soft     KEEP
+Nembhard O12.5 PTS          7/7     main 17.5   12.5 soft    KEEP
+DeBrincat O1.5 SOG          10/10   main 3.5    1.5 soft     KEEP
+
+CUT from this slip: none at on-slip numbers.
+
+FLAGS (process, not G1 fails)
+- 11 legs = long for cash (HARD_RULES: avoid 8+ as CASH spine)
+- SOG cap: already at 2× O1.5 (Hughes + DeBrincat) — do not add a 3rd
+- HOU SGP3: Sengun REB+AST + KD REB all KEEP — correlated but all clear
+
+CASH LOCK (trim to 3-gated core)
+1 Towns O9.5 REB
+2 Trae O5.5 AST
+3 Sengun O6.5 REB
+4 Curry O22.5 PTS
+5 Hughes O1.5 SOG
+(+ optional 6: Brunson O18.5 OR Clingan O7.5 OR Nembhard O12.5)
+
+LOTTERY LOCK (full slip OK — all KEEP @ G3)
+Keep all 11 as built; no deletes required at these on-slip lines.

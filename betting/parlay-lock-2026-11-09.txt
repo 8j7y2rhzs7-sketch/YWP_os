@@ -1,0 +1,14 @@
+PARLAY LOCK — 2026-11-09 FROM-SCRATCH · NO LAZY · THREE GATES
+1. Cedric Coward O6.5 REB [KEEP 7/7] G3=HR id=4903027 MEM @ TOR
+2. Cedric Coward O1.5 3PT [KEEP 7/7] G3=HR id=4903027 MEM @ TOR
+3. Ziaire Williams O7.5 PTS [KEEP 7/7] G3=HR id=4433137 LAL @ ATL
+4. Miles Bridges O6.5 REB [RISK-KEEP 6/7] G3=HR id=4066383 SA @ PHX
+5. Dillon Brooks O14.5 PTS [RISK-KEEP 6/7] G3=HR id=3155526 SA @ PHX
+6. Alperen Sengun O6.5 AST [RISK-KEEP 6/7] G3=HR id=4871144 DEN @ HOU
+Optional: NAW 19.5 · Podz 1.5 3PT · Castle 4.5 REB · SA -8.5 · CLE -9.5
+BAN soft spine · HR climbs · GS chalk · SOG not cash
+
+NFL MNF BUF@MIN:
+- Ty Johnson O1.5 REC [KEEP 5/5] id=3915411
+- Ty Johnson O15.5 REC_YD [RISK-KEEP 4/5] id=3915411
+- Side: BUF -3 / BUF ML (HR≈-185)

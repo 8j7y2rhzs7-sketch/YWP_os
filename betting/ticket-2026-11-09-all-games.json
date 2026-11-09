@@ -1,0 +1,330 @@
+{
+  "lock": [
+    {
+      "name": "Cedric Coward",
+      "stat": "REB",
+      "g3": 6.5,
+      "call": "KEEP",
+      "hits": 7,
+      "n": 7,
+      "id": "4903027",
+      "game": "MEM @ TOR",
+      "src": "HR",
+      "posted": 6.5
+    },
+    {
+      "name": "Cedric Coward",
+      "stat": "3PT",
+      "g3": 1.5,
+      "call": "KEEP",
+      "hits": 7,
+      "n": 7,
+      "id": "4903027",
+      "game": "MEM @ TOR",
+      "src": "HR",
+      "posted": 1.5
+    },
+    {
+      "name": "Ziaire Williams",
+      "stat": "PTS",
+      "g3": 7.5,
+      "call": "KEEP",
+      "hits": 7,
+      "n": 7,
+      "id": "4433137",
+      "game": "LAL @ ATL",
+      "src": "HR",
+      "posted": 7.5
+    },
+    {
+      "name": "Miles Bridges",
+      "stat": "REB",
+      "g3": 6.5,
+      "call": "RISK-KEEP",
+      "hits": 6,
+      "n": 7,
+      "id": "4066383",
+      "game": "SA @ PHX",
+      "src": "HR",
+      "posted": 6.5
+    },
+    {
+      "name": "Dillon Brooks",
+      "stat": "PTS",
+      "g3": 14.5,
+      "call": "RISK-KEEP",
+      "hits": 6,
+      "n": 7,
+      "id": "3155526",
+      "game": "SA @ PHX",
+      "src": "HR",
+      "posted": 14.5
+    },
+    {
+      "name": "Alperen Sengun",
+      "stat": "AST",
+      "g3": 6.5,
+      "call": "RISK-KEEP",
+      "hits": 6,
+      "n": 7,
+      "id": "4871144",
+      "game": "DEN @ HOU",
+      "src": "HR",
+      "posted": 6.5
+    }
+  ],
+  "safe": [
+    {
+      "name": "Cedric Coward",
+      "stat": "REB",
+      "g3": 6.5,
+      "call": "KEEP",
+      "hits": 7,
+      "n": 7,
+      "id": "4903027",
+      "game": "MEM @ TOR",
+      "src": "HR",
+      "posted": 6.5
+    },
+    {
+      "name": "Cedric Coward",
+      "stat": "3PT",
+      "g3": 1.5,
+      "call": "KEEP",
+      "hits": 7,
+      "n": 7,
+      "id": "4903027",
+      "game": "MEM @ TOR",
+      "src": "HR",
+      "posted": 1.5
+    },
+    {
+      "name": "Ziaire Williams",
+      "stat": "PTS",
+      "g3": 7.5,
+      "call": "KEEP",
+      "hits": 7,
+      "n": 7,
+      "id": "4433137",
+      "game": "LAL @ ATL",
+      "src": "HR",
+      "posted": 7.5
+    }
+  ],
+  "bangers": [
+    {
+      "name": "Nickeil Alexander-Walker",
+      "stat": "PTS",
+      "g3": 19.5,
+      "call": "RISK-KEEP",
+      "hits": 6,
+      "n": 7,
+      "id": "4278039",
+      "game": "LAL @ ATL"
+    },
+    {
+      "name": "Brandin Podziemski",
+      "stat": "3PT",
+      "g3": 1.5,
+      "call": "RISK-KEEP",
+      "hits": 6,
+      "n": 7,
+      "id": "4709138",
+      "game": "NO @ GS"
+    },
+    {
+      "name": "Kyshawn George",
+      "stat": "3PT",
+      "g3": 1.5,
+      "call": "RISK-KEEP",
+      "hits": 6,
+      "n": 7,
+      "id": "5174563",
+      "game": "WSH @ DET"
+    },
+    {
+      "name": "P.J. Washington",
+      "stat": "3PT",
+      "g3": 1.5,
+      "call": "RISK-KEEP",
+      "hits": 6,
+      "n": 7,
+      "id": "4278078",
+      "game": "IND @ DAL"
+    },
+    {
+      "name": "Miles Bridges",
+      "stat": "PTS",
+      "g3": 14.5,
+      "call": "RISK-KEEP",
+      "hits": 6,
+      "n": 7,
+      "id": "4066383",
+      "game": "SA @ PHX"
+    },
+    {
+      "name": "Stephon Castle",
+      "stat": "REB",
+      "g3": 4.5,
+      "call": "RISK-KEEP",
+      "hits": 6,
+      "n": 7,
+      "id": "4845367",
+      "game": "SA @ PHX"
+    },
+    {
+      "name": "Devin Booker",
+      "stat": "3PT",
+      "g3": 1.5,
+      "call": "RISK-KEEP",
+      "hits": 6,
+      "n": 7,
+      "id": "3136193",
+      "game": "SA @ PHX"
+    },
+    {
+      "name": "Keldon Johnson",
+      "stat": "REB",
+      "g3": 4.5,
+      "call": "RISK-KEEP",
+      "hits": 6,
+      "n": 7,
+      "id": "4395723",
+      "game": "SA @ PHX"
+    }
+  ],
+  "climb_cuts": [
+    {
+      "name": "Jeremiah Fears",
+      "stat": "REB",
+      "posted": 3.5,
+      "g3": 4.5,
+      "src": "HR",
+      "call": "RISK",
+      "hits": 5,
+      "n": 7,
+      "vals": [
+        6.0,
+        5.0,
+        6.0,
+        4.0,
+        5.0,
+        8.0,
+        4.0
+      ],
+      "id": "5144091",
+      "team": "NO",
+      "opp": "GS",
+      "game": "NO @ GS",
+      "soft": false,
+      "posted_call": "KEEP",
+      "slug": "jeremiah-fears"
+    },
+    {
+      "name": "Draymond Green",
+      "stat": "REB",
+      "posted": 3.5,
+      "g3": 5.5,
+      "src": "HR",
+      "call": "CUT",
+      "hits": 2,
+      "n": 7,
+      "vals": [
+        6.0,
+        5.0,
+        4.0,
+        4.0,
+        9.0,
+        4.0,
+        5.0
+      ],
+      "id": "6589",
+      "team": "GS",
+      "opp": "NO",
+      "game": "NO @ GS",
+      "soft": false,
+      "posted_call": "KEEP",
+      "slug": "draymond-green"
+    },
+    {
+      "name": "Fred VanVleet",
+      "stat": "REB",
+      "posted": 2.5,
+      "g3": 3.5,
+      "src": "HR",
+      "call": "CUT",
+      "hits": 2,
+      "n": 7,
+      "vals": [
+        3.0,
+        3.0,
+        2.0,
+        5.0,
+        6.0,
+        3.0,
+        3.0
+      ],
+      "id": "2991230",
+      "team": "HOU",
+      "opp": "DEN",
+      "game": "DEN @ HOU",
+      "soft": false,
+      "posted_call": "RISK-KEEP",
+      "slug": "fred-vanvleet"
+    },
+    {
+      "name": "Trey Murphy III",
+      "stat": "AST",
+      "posted": 2.5,
+      "g3": 3.5,
+      "src": "HR",
+      "call": "CUT",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        3.0,
+        5.0,
+        5.0,
+        5.0,
+        3.0,
+        3.0,
+        4.0
+      ],
+      "id": "4397688",
+      "team": "NO",
+      "opp": "GS",
+      "game": "NO @ GS",
+      "soft": false,
+      "posted_call": "KEEP",
+      "slug": "trey-murphy-iii"
+    },
+    {
+      "name": "Duncan Robinson",
+      "stat": "AST",
+      "posted": 1.5,
+      "g3": 2.5,
+      "src": "HR",
+      "call": "CUT",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        3.0,
+        2.0,
+        3.0,
+        2.0,
+        2.0,
+        2.0,
+        3.0
+      ],
+      "id": "3157465",
+      "team": "DET",
+      "opp": "WSH",
+      "game": "WSH @ DET",
+      "soft": false,
+      "posted_call": "KEEP",
+      "slug": "duncan-robinson"
+    }
+  ],
+  "hr_n": 48,
+  "decisions_n": 27
+}

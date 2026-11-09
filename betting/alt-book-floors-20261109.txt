@@ -1,0 +1,54 @@
+════════════════════════════════════════════════════════════
+ALT FLOORS · 2026-11-09 · REB uses book ladder (posted −3 / −4)
+Other stats: still −20% snap (floor main×0.8 to .5)
+Only firm mains that were KEEP/RISK-KEEP (6/7|7/7 or NFL 4/5|5/5)
+SOFT = ≤1.5 REB/AST/STL — not spine even if 7/7
+════════════════════════════════════════════════════════════
+
+── REBOUNDS · LOWEST BOOK ALTS (posted −3 and −4) ──
+  Cedric Coward id=4903027 · MEM @ TOR · main O6.5 7/7 KEEP  L=[9.0, 9.0, 9.0, 7.0, 7.0, 11.0, 11.0]
+    posted−4 → O2.5  7/7 KEEP TAKE
+    posted−3 → O3.5  7/7 KEEP TAKE
+    ladder: O6.5 7/7 KEEP · O5.5 7/7 KEEP · O4.5 7/7 KEEP · O3.5 7/7 KEEP · O2.5 7/7 KEEP
+
+  Miles Bridges id=4066383 · SA @ PHX · main O6.5 6/7 RISK-KEEP  L=[10.0, 13.0, 7.0, 6.0, 10.0, 8.0, 7.0]
+    posted−4 → O2.5  7/7 KEEP TAKE
+    posted−3 → O3.5  7/7 KEEP TAKE
+    ladder: O6.5 6/7 RISK-KEEP · O5.5 7/7 KEEP · O4.5 7/7 KEEP · O3.5 7/7 KEEP · O2.5 7/7 KEEP
+
+  Stephon Castle id=4845367 · SA @ PHX · main O4.5 6/7 RISK-KEEP  L=[7.0, 3.0, 10.0, 5.0, 5.0, 6.0, 5.0]
+    posted−4 → O0.5  7/7 KEEP SOFT-BAN
+    posted−3 → O1.5  7/7 KEEP SOFT-BAN
+    ladder: O4.5 6/7 RISK-KEEP · O3.5 6/7 RISK-KEEP · O2.5 7/7 KEEP · O1.5 7/7 KEEP soft · O0.5 7/7 KEEP soft
+
+  Keldon Johnson id=4395723 · SA @ PHX · main O4.5 6/7 RISK-KEEP  L=[7.0, 6.0, 5.0, 7.0, 6.0, 6.0, 4.0]
+    posted−4 → O0.5  7/7 KEEP SOFT-BAN
+    posted−3 → O1.5  7/7 KEEP SOFT-BAN
+    ladder: O4.5 6/7 RISK-KEEP · O3.5 7/7 KEEP · O2.5 7/7 KEEP · O1.5 7/7 KEEP soft · O0.5 7/7 KEEP soft
+
+── OTHER STATS · −20% ALT ──
+  Cedric Coward            3PT    O1.5 7/7 KEEP → O1.0 7/7 KEEP TAKE  L=[2.0, 4.0, 2.0, 2.0, 3.0, 4.0, 3.0]
+  Ziaire Williams          PTS    O7.5 7/7 KEEP → O6.0 7/7 KEEP TAKE  L=[17.0, 8.0, 10.0, 9.0, 11.0, 11.0, 14.0]
+  Dillon Brooks            PTS    O14.5 6/7 RISK-KEEP → O11.5 6/7 RISK-KEEP TAKE  L=[11.0, 24.0, 15.0, 18.0, 22.0, 19.0, 15.0]
+  Alperen Sengun           AST    O6.5 6/7 RISK-KEEP → O5.0 6/7 RISK-KEEP TAKE  L=[5.0, 10.0, 10.0, 9.0, 9.0, 7.0, 7.0]
+  Nickeil Alexander-Walker PTS    O19.5 6/7 RISK-KEEP → O15.5 6/7 RISK-KEEP TAKE  L=[20.0, 28.0, 26.0, 34.0, 12.0, 25.0, 23.0]
+  Brandin Podziemski       3PT    O1.5 6/7 RISK-KEEP → O1.0 6/7 RISK-KEEP TAKE  L=[4.0, 2.0, 3.0, 2.0, 4.0, 0.0, 3.0]
+  Kyshawn George           3PT    O1.5 6/7 RISK-KEEP → O1.0 6/7 RISK-KEEP TAKE  L=[2.0, 5.0, 3.0, 4.0, 4.0, 0.0, 2.0]
+  P.J. Washington          3PT    O1.5 6/7 RISK-KEEP → O1.0 6/7 RISK-KEEP TAKE  L=[2.0, 6.0, 3.0, 2.0, 1.0, 2.0, 4.0]
+  Miles Bridges            PTS    O14.5 6/7 RISK-KEEP → O11.5 7/7 KEEP TAKE  L=[13.0, 18.0, 18.0, 21.0, 24.0, 17.0, 16.0]
+  Devin Booker             3PT    O1.5 6/7 RISK-KEEP → O1.0 6/7 RISK-KEEP TAKE  L=[2.0, 4.0, 2.0, 2.0, 3.0, 0.0, 2.0]
+  Ty Johnson               REC_YD O15.5 4/5 RISK-KEEP → O12.0 4/5 RISK-KEEP TAKE  L=[19.0, 24.0, 72.0, 9.0, 50.0]
+  Ty Johnson               REC    O1.5 5/5 KEEP → O1.0 5/5 KEEP TAKE  L=[3.0, 2.0, 4.0, 2.0, 4.0]
+
+── DEEPEST REB ALT STILL FIRM (not soft) ──
+  Cedric Coward            main O6.5 → deepest firm O2.5 7/7 KEEP  (drop 4)
+  Miles Bridges            main O6.5 → deepest firm O2.5 7/7 KEEP  (drop 4)
+  Stephon Castle           main O4.5 → deepest firm O2.5 7/7 KEEP  (drop 2)
+  Keldon Johnson           main O4.5 → deepest firm O2.5 7/7 KEEP  (drop 2)
+
+── BRIDGES REB (matches your slip logic) ──
+  O6.5: 6/7 RISK-KEEP
+  O5.5: 7/7 KEEP
+  O4.5: 7/7 KEEP
+  O3.5: 7/7 KEEP
+  O2.5: 7/7 KEEP
