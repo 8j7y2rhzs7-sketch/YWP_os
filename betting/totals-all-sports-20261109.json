@@ -1,0 +1,456 @@
+{
+  "games": [
+    {
+      "sport": "nba",
+      "eid": "401909952",
+      "short": "LAL @ ATL",
+      "status": "Scheduled",
+      "away": "LAL",
+      "home": "ATL",
+      "total": 237.5,
+      "over_odds": -107,
+      "under_odds": -113,
+      "over_open": -110,
+      "under_open": -110,
+      "open_line": 236.5,
+      "spread": "ATL -1.5",
+      "provider": "DraftKings",
+      "out": [
+        "Asa Newell(ATL)",
+        "Keshon Gilbert(ATL)",
+        "Jock Landale(ATL)",
+        "Mouhamed Gueye(ATL)",
+        "Henri Veesaar(ATL)"
+      ],
+      "dtd": [
+        "Luka Doncic(LAL)",
+        "Quentin Grimes(LAL)"
+      ]
+    },
+    {
+      "sport": "nba",
+      "eid": "401909953",
+      "short": "CLE @ CHA",
+      "status": "Scheduled",
+      "away": "CLE",
+      "home": "CHA",
+      "total": 214.5,
+      "over_odds": -112,
+      "under_odds": -108,
+      "over_open": -107,
+      "under_open": -113,
+      "open_line": 217.5,
+      "spread": "CLE -8.5",
+      "provider": "DraftKings",
+      "out": [
+        "Grant Williams(CHA)",
+        "Kon Knueppel(CHA)",
+        "Dennis Schroder(CHA)",
+        "Brandon Miller(CHA)",
+        "Sam Merrill(CLE)",
+        "Jaylon Tyson(CLE)"
+      ],
+      "dtd": [
+        "Moussa Diabate(CHA)",
+        "Jarrett Allen(CLE)"
+      ]
+    },
+    {
+      "sport": "nba",
+      "eid": "401909954",
+      "short": "WSH @ DET",
+      "status": "Scheduled",
+      "away": "WSH",
+      "home": "DET",
+      "total": 217.5,
+      "over_odds": -113,
+      "under_odds": -107,
+      "over_open": -110,
+      "under_open": -110,
+      "open_line": 218.5,
+      "spread": "DET -10.5",
+      "provider": "DraftKings",
+      "out": [
+        "Jalen Duren(DET)",
+        "Isaiah Joe(DET)",
+        "Tristan Vukcevic(WSH)",
+        "Reece Beekman(WSH)",
+        "Justin Champagnie(WSH)",
+        "Jamir Watkins(WSH)"
+      ],
+      "dtd": [
+        "Anthony Davis(WSH)"
+      ]
+    },
+    {
+      "sport": "nba",
+      "eid": "401909955",
+      "short": "MEM @ TOR",
+      "status": "Scheduled",
+      "away": "MEM",
+      "home": "TOR",
+      "total": 229.5,
+      "over_odds": -107,
+      "under_odds": -113,
+      "over_open": -110,
+      "under_open": -110,
+      "open_line": 228.5,
+      "spread": "TOR -3.5",
+      "provider": "DraftKings",
+      "out": [
+        "Nate Bittle(TOR)",
+        "Kawhi Leonard(TOR)",
+        "Scotty Pippen Jr.(MEM)",
+        "Isaiah Stewart(MEM)",
+        "Richie Saunders(MEM)"
+      ],
+      "dtd": [
+        "Immanuel Quickley(TOR)",
+        "Scottie Barnes(TOR)"
+      ]
+    },
+    {
+      "sport": "nba",
+      "eid": "401909956",
+      "short": "IND @ DAL",
+      "status": "Scheduled",
+      "away": "IND",
+      "home": "DAL",
+      "total": 227.5,
+      "over_odds": -105,
+      "under_odds": -115,
+      "over_open": -110,
+      "under_open": -110,
+      "open_line": 222.5,
+      "spread": "DAL -3.5",
+      "provider": "DraftKings",
+      "out": [
+        "Sergio de Larrea(DAL)",
+        "Tarik Biberovic(DAL)",
+        "Dereck Lively II(DAL)",
+        "Tyrese Haliburton(IND)",
+        "Johnny Furphy(IND)",
+        "Ben Sheppard(IND)"
+      ],
+      "dtd": [
+        "T.J. McConnell(IND)"
+      ]
+    },
+    {
+      "sport": "nba",
+      "eid": "401909957",
+      "short": "DEN @ HOU",
+      "status": "Scheduled",
+      "away": "DEN",
+      "home": "HOU",
+      "total": 219.5,
+      "over_odds": -112,
+      "under_odds": -108,
+      "over_open": -110,
+      "under_open": -110,
+      "open_line": 222.5,
+      "spread": "HOU -9.5",
+      "provider": "DraftKings",
+      "out": [
+        "Oscar Tshiebwe(HOU)",
+        "Clint Capela(HOU)",
+        "Steven Adams(HOU)"
+      ],
+      "dtd": [
+        "Cameron Johnson(DEN)",
+        "DeMar DeRozan(DEN)",
+        "Christian Braun(DEN)",
+        "Jamal Murray(DEN)",
+        "Aaron Gordon(DEN)"
+      ]
+    },
+    {
+      "sport": "nba",
+      "eid": "401909958",
+      "short": "SA @ PHX",
+      "status": "Scheduled",
+      "away": "SA",
+      "home": "PHX",
+      "total": 227.5,
+      "over_odds": -110,
+      "under_odds": -110,
+      "over_open": -110,
+      "under_open": -110,
+      "open_line": 225.5,
+      "spread": "SA -8.5",
+      "provider": "DraftKings",
+      "out": [
+        "Jordan Goodwin(PHX)",
+        "Mark Williams(PHX)",
+        "Tobias Harris(SA)",
+        "Jayden Quaintance(SA)"
+      ],
+      "dtd": [
+        "Devin Vassell(SA)"
+      ]
+    },
+    {
+      "sport": "nba",
+      "eid": "401909959",
+      "short": "NO @ GS",
+      "status": "Scheduled",
+      "away": "NO",
+      "home": "GS",
+      "total": 232.5,
+      "over_odds": -105,
+      "under_odds": -115,
+      "over_open": -110,
+      "under_open": -110,
+      "open_line": 231.5,
+      "spread": "GS -9.5",
+      "provider": "DraftKings",
+      "out": [
+        "Will Richard(GS)",
+        "Kristaps Porzingis(GS)",
+        "Moses Moody(GS)",
+        "Jimmy Butler III(GS)",
+        "Yves Missi(NO)"
+      ],
+      "dtd": [
+        "Gui Santos(GS)"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "eid": "401892680",
+      "short": "NYR @ EDM",
+      "status": "Scheduled",
+      "away": "NYR",
+      "home": "EDM",
+      "total": 6.5,
+      "over_odds": -112,
+      "under_odds": -108,
+      "over_open": -112,
+      "under_open": -108,
+      "open_line": 6.5,
+      "spread": "EDM -162",
+      "provider": "DraftKings",
+      "out": [],
+      "dtd": [
+        "Colton Dach(EDM)",
+        "Ryan Nugent-Hopkins(EDM)",
+        "Alberts Smits(NYR)"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "eid": "401892681",
+      "short": "PHI @ VAN",
+      "status": "Scheduled",
+      "away": "PHI",
+      "home": "VAN",
+      "total": 6.5,
+      "over_odds": 110,
+      "under_odds": -130,
+      "over_open": 102,
+      "under_open": -122,
+      "open_line": 6.5,
+      "spread": "PHI -135",
+      "provider": "DraftKings",
+      "out": [],
+      "dtd": [
+        "Tom Willander(VAN)"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "eid": "401892682",
+      "short": "NYI @ SJ",
+      "status": "Scheduled",
+      "away": "NYI",
+      "home": "SJ",
+      "total": 6.5,
+      "over_odds": -102,
+      "under_odds": -118,
+      "over_open": 105,
+      "under_open": -125,
+      "open_line": 6.5,
+      "spread": "NYI -142",
+      "provider": "DraftKings",
+      "out": [
+        "Ryan Pulock(NYI)"
+      ],
+      "dtd": []
+    },
+    {
+      "sport": "nfl",
+      "eid": "401873051",
+      "short": "BUF @ MIN",
+      "status": "Scheduled",
+      "away": "BUF",
+      "home": "MIN",
+      "total": 44.5,
+      "over_odds": -112,
+      "under_odds": -108,
+      "over_open": -110,
+      "under_open": -110,
+      "open_line": 48.5,
+      "spread": "BUF -3",
+      "provider": "DraftKings",
+      "out": [
+        "Demond Claiborne(MIN)",
+        "Jauan Jennings(MIN)",
+        "Kyler Murray(MIN)",
+        "Tyrell Shavers(BUF)",
+        "Joshua Palmer(BUF)"
+      ],
+      "dtd": [
+        "Jay Ward(MIN)",
+        "Theo Jackson(MIN)",
+        "Alec Anderson(BUF)",
+        "Dion Dawkins(BUF)"
+      ]
+    }
+  ],
+  "leans": [
+    {
+      "sport": "nba",
+      "game": "LAL@ATL",
+      "total": 237.5,
+      "side": "UNDER",
+      "tier": "PRIMARY",
+      "why": [
+        "Luka DTD + 237.5 is rich without full LAL offense"
+      ],
+      "over_odds": -107,
+      "under_odds": -113
+    },
+    {
+      "sport": "nba",
+      "game": "CLE@CHA",
+      "total": 214.5,
+      "side": "UNDER",
+      "tier": "SECONDARY",
+      "why": [
+        "CHA gutted (Miller/Schroder OUT) \u00b7 214.5 still OK under"
+      ],
+      "over_odds": -112,
+      "under_odds": -108
+    },
+    {
+      "sport": "nba",
+      "game": "WSH@DET",
+      "total": 217.5,
+      "side": "UNDER",
+      "tier": "SECONDARY",
+      "why": [
+        "AD DTD \u00b7 DET without Duren \u2014 half-court lean"
+      ],
+      "over_odds": -113,
+      "under_odds": -107
+    },
+    {
+      "sport": "nba",
+      "game": "MEM@TOR",
+      "total": 229.5,
+      "side": "UNDER",
+      "tier": "SECONDARY",
+      "why": [
+        "Kawhi OUT \u00b7 Quickley/Barnes DTD \u2014 TOR creation dinged"
+      ],
+      "over_odds": -107,
+      "under_odds": -113
+    },
+    {
+      "sport": "nba",
+      "game": "IND@DAL",
+      "total": 227.5,
+      "side": "UNDER",
+      "tier": "SECONDARY",
+      "why": [
+        "Hali OUT \u00b7 IND offense capped at 226.5"
+      ],
+      "over_odds": -105,
+      "under_odds": -115
+    },
+    {
+      "sport": "nba",
+      "game": "DEN@HOU",
+      "total": 219.5,
+      "side": "UNDER",
+      "tier": "PRIMARY",
+      "why": [
+        "Murray/Gordon/Braun/DeRozan DTD cluster vs 219.5"
+      ],
+      "over_odds": -112,
+      "under_odds": -108
+    },
+    {
+      "sport": "nba",
+      "game": "SA@PHX",
+      "total": 227.5,
+      "side": "OVER",
+      "tier": "SECONDARY",
+      "why": [
+        "SA 8-2 pace/offense vs thin PHX \u2014 227.5 workable over"
+      ],
+      "over_odds": -110,
+      "under_odds": -110
+    },
+    {
+      "sport": "nba",
+      "game": "NO@GS",
+      "total": 232.5,
+      "side": "UNDER",
+      "tier": "PRIMARY",
+      "why": [
+        "Butler + Porzingis OUT \u2014 GS offense thinned at 232.5"
+      ],
+      "over_odds": -105,
+      "under_odds": -115
+    },
+    {
+      "sport": "nhl",
+      "game": "NYR@EDM",
+      "total": 6.5,
+      "side": "UNDER",
+      "tier": "SECONDARY",
+      "why": [
+        "standard 6.5 under lean \u2014 small edge only"
+      ],
+      "over_odds": -112,
+      "under_odds": -108
+    },
+    {
+      "sport": "nhl",
+      "game": "PHI@VAN",
+      "total": 6.5,
+      "side": "UNDER",
+      "tier": "SECONDARY",
+      "why": [
+        "standard 6.5 under lean \u2014 small edge only"
+      ],
+      "over_odds": 110,
+      "under_odds": -130
+    },
+    {
+      "sport": "nhl",
+      "game": "NYI@SJ",
+      "total": 6.5,
+      "side": "UNDER",
+      "tier": "SECONDARY",
+      "why": [
+        "standard 6.5 under lean \u2014 small edge only"
+      ],
+      "over_odds": -102,
+      "under_odds": -118
+    },
+    {
+      "sport": "nfl",
+      "game": "BUF@MIN",
+      "total": 44.5,
+      "side": "UNDER",
+      "tier": "PRIMARY",
+      "why": [
+        "Murray OUT \u00b7 Jennings OUT \u00b7 44.5 rich for MIN offense"
+      ],
+      "over_odds": -112,
+      "under_odds": -108
+    }
+  ]
+}

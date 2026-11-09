@@ -1,0 +1,6 @@
+──────── NFL MNF PROPS (fresh) ────────
+▶ BUF @ MIN · Scheduled · eid=401873051
+BOARD @ G3 (firm):
+  KEEP 5/5 Ty Johnson O1.5 REC id=3915411 shave O1.0 L=[3.0, 2.0, 4.0, 2.0, 4.0]
+  RISK-KEEP 4/5 Ty Johnson O15.5 REC_YD id=3915411 shave O9.5 L=[19.0, 24.0, 72.0, 9.0, 50.0]
+SIDE: BUF -3 / BUF ML

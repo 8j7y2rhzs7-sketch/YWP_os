@@ -1,0 +1,108 @@
+════════════════════════════════════════════════════════════
+NFL PLAYER PROPS · BUF @ MIN · FRESH RUN · 2026-11-09
+Status: Scheduled · eid=401873051
+G1 ESPN sheets: 19/19 players
+G2 Betravon posted rows: 39
+G3 LineSmart HR pages ok: 17
+OUT: demond claiborne, jauan jennings, joshua palmer, kyler murray, tyrell shavers
+Q/DTD: alec anderson, dion dawkins, jay ward, theo jackson
+Shave floors: REC−1 · REC_YD−10 · RUSH_YD−15 · PASS_YD−40 · PASS_TD−1
+════════════════════════════════════════════════════════════
+
+── FIRM (KEEP / RISK-KEEP @ G3, not soft) ──
+  KEEP       5/5 Ty Johnson           O1.5 REC     id=3915411 BUF · HR · shave→O1.0 (−0.5) band O1.0–O1.5
+             L=[3.0, 2.0, 4.0, 2.0, 4.0]
+  RISK-KEEP  4/5 Ty Johnson           O15.5 REC_YD  id=3915411 BUF · HR · shave→O9.5 (−6.0) band O9.5–O15.5
+             L=[19.0, 24.0, 72.0, 9.0, 50.0]
+
+── ALL GRADED PROPS ──
+  KEEP       5/5 Ty Johnson           O1.5 REC     id=3915411 posted=1.5 · HR
+             L=[3.0, 2.0, 4.0, 2.0, 4.0]
+  RISK-KEEP  4/5 Ty Johnson           O15.5 REC_YD  id=3915411 posted=16.5 · HR
+             L=[19.0, 24.0, 72.0, 9.0, 50.0]
+  RISK       5/7 Aaron Jones Sr.      O31.5 RUSH_YD id=3042519 posted=32.5 · HR
+             L=[22.0, 26.0, 113.0, 94.0, 58.0, 105.0, 40.0]
+  RISK       5/7 Josh Allen           O231.5 PASS_YD id=3918298 posted=231.5 · HR
+             L=[289.0, 255.0, 210.0, 253.0, 204.0, 248.0, 334.0]
+  CUT        4/7 Aaron Jones Sr.      O1.5 REC     id=3042519 posted=1.5 · HR
+             L=[2.0, 1.0, 3.0, 4.0, 5.0, 0.0, 0.0]
+  CUT        3/7 Aaron Jones Sr.      O9.5 REC_YD  id=3042519 posted=7.5 · HR
+             L=[18.0, 0.0, 4.0, 34.0, 34.0, 0.0, 0.0]
+  CUT        3/5 DJ Moore             O3.5 REC     id=3915416 posted=3.5 · HR
+             L=[4.0, 1.0, 6.0, 0.0, 5.0]
+  CUT        3/5 DJ Moore             O45.5 REC_YD  id=3915416 posted=46.5 · HR
+             L=[82.0, 11.0, 67.0, 0.0, 100.0]
+  CUT        4/7 Dalton Kincaid       O3.5 REC     id=4385690 posted=3.5 · HR
+             L=[4.0, 7.0, 1.0, 1.0, 2.0, 7.0, 5.0]
+  CUT        3/7 Dalton Kincaid       O38.5 REC_YD  id=4385690 posted=37.5 · HR
+             L=[86.0, 38.0, 7.0, 7.0, 38.0, 95.0, 130.0]
+  CUT        2/7 Dawson Knox          O1.5 REC     id=3930086 posted=1.5 · HR
+             L=[1.0, 1.0, 1.0, 2.0, 1.0, 2.0, 1.0]
+  CUT        4/7 James Cook III       O1.5 REC     id=4379399 posted=1.5 · HR
+             L=[2.0, 3.0, 1.0, 2.0, 0.0, 1.0, 3.0]
+  CUT        4/7 James Cook III       O86.5 RUSH_YD id=4379399 posted=82.5 · HR
+             L=[80.0, 95.0, 111.0, 75.0, 154.0, 135.0, 57.0]
+  CUT        2/6 Jordan Addison       O3.5 REC     id=4429205 posted=3.5 · HR
+             L=[3.0, 2.0, 4.0, 5.0, 2.0, 0.0]
+  CUT        3/6 Jordan Addison       O40.5 REC_YD  id=4429205 posted=39.5 · HR
+             L=[66.0, 20.0, 52.0, 90.0, 21.0, 0.0]
+  CUT        4/7 Josh Allen           O1.5 PASS_TD id=3918298 posted=1.5 · posted
+             L=[2.0, 2.0, 1.0, 1.0, 0.0, 3.0, 2.0]
+  CUT        2/7 Josh Allen           O32.5 RUSH_YD id=3918298 posted=31.5 · HR
+             L=[30.0, 1.0, 121.0, 4.0, 22.0, 69.0, 23.0]
+  CUT        1/6 Justin Jefferson     O6.5 REC     id=4262921 posted=6.5 · HR
+             L=[5.0, 4.0, 6.0, 2.0, 3.0, 8.0]
+  CUT        2/6 Justin Jefferson     O78.5 REC_YD  id=4262921 posted=78.5 · HR
+             L=[33.0, 44.0, 79.0, 32.0, 55.0, 92.0]
+  CUT        3/7 Keon Coleman         O2.5 REC     id=4635008 posted=2.5 · HR
+             L=[1.0, 4.0, 1.0, 6.0, 1.0, 6.0, 1.0]
+  CUT        4/7 Keon Coleman         O25.5 REC_YD  id=4635008 posted=26.5 · HR
+             L=[4.0, 59.0, 7.0, 116.0, 37.0, 63.0, 1.0]
+  CUT        4/7 Khalil Shakir        O3.5 REC     id=4373678 posted=3.5 · HR
+             L=[5.0, 4.0, 3.0, 7.0, 1.0, 3.0, 4.0]
+  CUT        4/7 Khalil Shakir        O40.5 REC_YD  id=4373678 posted=39.5 · HR
+             L=[64.0, 34.0, 80.0, 82.0, 6.0, 38.0, 50.0]
+  CUT        1/7 T.J. Hockenson       O4.5 REC     id=4036133 posted=4.5 · posted
+             L=[4.0, 4.0, 1.0, 13.0, 2.0, 3.0, 4.0]
+  CUT        2/7 T.J. Hockenson       O42.5 REC_YD  id=4036133 posted=42.5 · posted
+             L=[58.0, 35.0, 7.0, 119.0, 11.0, 29.0, 36.0]
+  CUT        1/7 Dawson Knox          O8.5 REC_YD  id=3930086 posted=8.5 · HR SOFT
+             L=[6.0, 0.0, 6.0, 13.0, 5.0, 5.0, 7.0]
+  CUT        3/7 James Cook III       O8.5 REC_YD  id=4379399 posted=9.5 · HR SOFT
+             L=[21.0, 58.0, 7.0, 8.0, 0.0, 4.0, 12.0]
+  CUT        1/7 Ray Davis            O5.5 RUSH_YD id=4429501 posted=24.5 · HR SOFT
+             L=[30.0, 4.0, 2.0, 3.0, 0.0, 0.0, 3.0]
+  SKIP       0/3 Carson Wentz         O1.5 PASS_TD id=2573079 posted=1.5 · posted
+             L=[0.0, 0.0, 3.0]
+  SKIP       0/3 Carson Wentz         O211.5 PASS_YD id=2573079 posted=149.5 · HR
+             L=[0.0, 143.0, 133.0]
+  SKIP       0/3 Jordan Mason         O47.5 RUSH_YD id=4360569 posted=46.5 · HR
+             L=[20.0, 68.0, 59.0]
+  SKIP       0/3 Ben Yurosek          O0.5 REC     id=4433959 posted=0.5 · HR SOFT
+             L=[1.0, 0.0, 1.0]
+  SKIP       0/3 Ben Yurosek          O0.5 REC_YD  id=4433959 posted=3.5 · HR SOFT
+             L=[24.0, 0.0, 10.0]
+  SKIP       0/3 Carson Wentz         O7.5 RUSH_YD id=2573079 posted=8.5 · HR SOFT
+             L=[0.0, 6.0, -1.0]
+  SKIP       0/2 Skyler Bell          O0.5 REC     id=4683153 posted=0.5 · HR SOFT
+             L=[0.0, 0.0]
+  SKIP       0/2 Skyler Bell          O5.5 REC_YD  id=4683153 posted=6.5 · HR SOFT
+             L=[0.0, 0.0]
+  OUT        Jauan Jennings REC O0.5
+  OUT        Jauan Jennings REC_YD O8.5
+  OUT        Kyler Murray PASS_YD O213.5
+
+── PARLAY LOCK (NFL-only · 3-gated) ──
+  1. Ty Johnson O1.5 REC [KEEP 5/5] G1·G2·G3=HR id=3915411 · optional shave O1.0
+  2. Ty Johnson O15.5 REC_YD [RISK-KEEP 4/5] G1·G2·G3=HR id=3915411 · optional shave O9.5
+  SIDE: BUF -3 / BUF ML ← primary if props thin
+
+── BAN ──
+  OUT players · soft REC 0.5 / micro REC_YD ≤8.5 · SKIP thin samples · climb ghosts
+
+DONE CHECK
+- G1 ESPN L7 sheets: yes n=19
+- G2 Betravon posted: yes n=39
+- G3 HR floors: yes pages_ok=17
+- Firm props: 2 · CUT/RISK/SKIP/OUT rest
+- NFL every-player census already on file: nfl-buf-min-full-roster-20261109.txt

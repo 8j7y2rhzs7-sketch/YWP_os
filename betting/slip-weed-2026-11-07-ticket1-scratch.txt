@@ -1,0 +1,43 @@
+TICKET 1 FROM SCRATCH — 2026-11-07
+Screenshot 85484C5D · $14.33
+Live ESPN RS for every player (ids below). Not rubber-stamped.
+
+G1 PASS date=20261107 sheets_ok=780/780 + live pulls
+G2 posted-mains refreshed
+G3 on-slip HR numbers
+
+OUT notes used: Allen/Hart (CLE) · Adams/Capela (HOU) · Paolo/Suggs/Butler (ORL/GS) ·
+Chet/AD (OKC) · Hali/McConnell (IND) · Morant/Sharpe (POR)
+
+LEG                      ID       G1        G2 main→     MATCHUP           FINAL
+Towns O9.5 REB           3136195  7/7 KEEP  13.5 CUT     CLE REB #11       KEEP @G3
+Brunson O18.5 PTS        3934672  7/7 KEEP  26.5 CUT     CLE PTS #10       KEEP @G3
+Sengun O6.5 REB          4871144  7/7 KEEP  9.5 CUT      PHX REB #12       KEEP @G3
+Durant O2.5 REB          3202     7/7 KEEP  5.5 CUT      HOU REB #4 tough  KEEP @G3
+Sengun O4.5 AST          4871144  7/7 KEEP  6.5 6/7 RK   PHX AST #10       KEEP @G3
+Curry O22.5 PTS          3975     7/7 KEEP  26.5 CUT     ORL PTS #13 soft  KEEP @G3
+Hughes O1.5 SOG          4565222  10/10 KEEP 3.5 CUT     —                 KEEP @G3
+Trae O5.5 AST            4277905  7/7 KEEP (L9 9/9) 9.5 CUT  OKC #2/#7 AST KEEP @G3
+Nembhard O12.5 PTS       4395712  7/7 KEEP  17.5 RISK    DEN PTS #11       KEEP @G3
+DeBrincat O1.5 SOG       4063433  10/10 KEEP 3.5 CUT     —                 KEEP @G3
+Clingan O7.5 REB         5105565  7/7 KEEP  11.5 CUT     SA REB #9         KEEP @G3
+
+CUT at on-slip: none
+
+FLAGS
+- 11 legs = long for CASH
+- SOG at cap (Hughes + DeBrincat) — do not add 3rd
+- Sengun REB+AST same SGP = correlated (both clear; OK as SGP, not two independent spines)
+- KD O2.5 vs HOU #4 glass = softest number on slip vs toughest D on slip
+- Almost all soft vs G2 mains — only play these exact on-slip lines
+
+CASH TRIM (recommended)
+1 Towns O9.5 REB
+2 Trae O5.5 AST
+3 Sengun O6.5 REB
+4 Curry O22.5 PTS
+5 Hughes O1.5 SOG
+(+1 optional: Brunson O18.5 or Clingan O7.5 or Nembhard O12.5)
+
+LOTTERY: full 11 OK at these G3 numbers — no mandatory deletes
+DONE CHECK: G1 PASS · G2 yes · G3 on-slip · athlete_ids yes · from-scratch yes

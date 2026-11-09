@@ -1,0 +1,1134 @@
+{
+  "passes": [
+    {
+      "player": "Ty Johnson",
+      "team": "BUF",
+      "stat": "REC",
+      "posted": 1.5,
+      "vals": [
+        3.0,
+        2.0,
+        4.0,
+        2.0,
+        4.0
+      ],
+      "n": 5,
+      "pass": true,
+      "first_67": [
+        1.5,
+        5
+      ],
+      "deepest_67": [
+        1.0,
+        5
+      ],
+      "band": [
+        1.0,
+        1.5
+      ],
+      "drop_from_posted": 0.0,
+      "id": "3915411",
+      "src": "HR"
+    },
+    {
+      "player": "Justin Jefferson",
+      "team": "MIN",
+      "stat": "REC",
+      "posted": 6.5,
+      "vals": [
+        5.0,
+        4.0,
+        6.0,
+        2.0,
+        3.0,
+        8.0
+      ],
+      "n": 6,
+      "pass": true,
+      "first_67": [
+        1.5,
+        6
+      ],
+      "deepest_67": [
+        1.0,
+        6
+      ],
+      "band": [
+        1.0,
+        1.5
+      ],
+      "drop_from_posted": 5.0,
+      "id": "4262921",
+      "src": "HR"
+    },
+    {
+      "player": "Justin Jefferson",
+      "team": "MIN",
+      "stat": "REC_YD",
+      "posted": 78.5,
+      "vals": [
+        33.0,
+        44.0,
+        79.0,
+        32.0,
+        55.0,
+        92.0
+      ],
+      "n": 6,
+      "pass": true,
+      "first_67": [
+        31.5,
+        6
+      ],
+      "deepest_67": [
+        9.0,
+        6
+      ],
+      "band": [
+        9.0,
+        31.5
+      ],
+      "drop_from_posted": 47.0,
+      "id": "4262921",
+      "src": "HR"
+    },
+    {
+      "player": "Khalil Shakir",
+      "team": "BUF",
+      "stat": "REC",
+      "posted": 3.5,
+      "vals": [
+        5.0,
+        4.0,
+        3.0,
+        7.0,
+        1.0,
+        3.0,
+        4.0
+      ],
+      "n": 7,
+      "pass": true,
+      "first_67": [
+        2.5,
+        6
+      ],
+      "deepest_67": [
+        1.0,
+        6
+      ],
+      "band": [
+        1.0,
+        2.5
+      ],
+      "drop_from_posted": 1.0,
+      "id": "4373678",
+      "src": "HR"
+    },
+    {
+      "player": "T.J. Hockenson",
+      "team": "MIN",
+      "stat": "REC",
+      "posted": 4.5,
+      "vals": [
+        4.0,
+        4.0,
+        1.0,
+        13.0,
+        2.0,
+        3.0,
+        4.0
+      ],
+      "n": 7,
+      "pass": true,
+      "first_67": [
+        1.5,
+        6
+      ],
+      "deepest_67": [
+        1.0,
+        6
+      ],
+      "band": [
+        1.0,
+        1.5
+      ],
+      "drop_from_posted": 3.0,
+      "id": "4036133",
+      "src": "posted"
+    },
+    {
+      "player": "Khalil Shakir",
+      "team": "BUF",
+      "stat": "REC_YD",
+      "posted": 39.5,
+      "vals": [
+        64.0,
+        34.0,
+        80.0,
+        82.0,
+        6.0,
+        38.0,
+        50.0
+      ],
+      "n": 7,
+      "pass": true,
+      "first_67": [
+        33.5,
+        6
+      ],
+      "deepest_67": [
+        9.0,
+        6
+      ],
+      "band": [
+        9.0,
+        33.5
+      ],
+      "drop_from_posted": 6.0,
+      "id": "4373678",
+      "src": "HR"
+    },
+    {
+      "player": "Aaron Jones Sr.",
+      "team": "MIN",
+      "stat": "RUSH_YD",
+      "posted": 32.5,
+      "vals": [
+        22.0,
+        26.0,
+        113.0,
+        94.0,
+        58.0,
+        105.0,
+        40.0
+      ],
+      "n": 7,
+      "pass": true,
+      "first_67": [
+        25.5,
+        6
+      ],
+      "deepest_67": [
+        6.0,
+        7
+      ],
+      "band": [
+        6.0,
+        25.5
+      ],
+      "drop_from_posted": 7.0,
+      "id": "3042519",
+      "src": "HR"
+    },
+    {
+      "player": "James Cook III",
+      "team": "BUF",
+      "stat": "RUSH_YD",
+      "posted": 82.5,
+      "vals": [
+        80.0,
+        95.0,
+        111.0,
+        75.0,
+        154.0,
+        135.0,
+        57.0
+      ],
+      "n": 7,
+      "pass": true,
+      "first_67": [
+        74.5,
+        6
+      ],
+      "deepest_67": [
+        6.0,
+        7
+      ],
+      "band": [
+        6.0,
+        74.5
+      ],
+      "drop_from_posted": 8.0,
+      "id": "4379399",
+      "src": "HR"
+    },
+    {
+      "player": "Josh Allen",
+      "team": "BUF",
+      "stat": "PASS_YD",
+      "posted": 231.5,
+      "vals": [
+        289.0,
+        255.0,
+        210.0,
+        253.0,
+        204.0,
+        248.0,
+        334.0
+      ],
+      "n": 7,
+      "pass": true,
+      "first_67": [
+        209.5,
+        6
+      ],
+      "deepest_67": [
+        150.0,
+        7
+      ],
+      "band": [
+        150.0,
+        209.5
+      ],
+      "drop_from_posted": 22.0,
+      "id": "3918298",
+      "src": "HR"
+    },
+    {
+      "player": "T.J. Hockenson",
+      "team": "MIN",
+      "stat": "REC_YD",
+      "posted": 42.5,
+      "vals": [
+        58.0,
+        35.0,
+        7.0,
+        119.0,
+        11.0,
+        29.0,
+        36.0
+      ],
+      "n": 7,
+      "pass": true,
+      "first_67": [
+        10.5,
+        6
+      ],
+      "deepest_67": [
+        9.0,
+        6
+      ],
+      "band": [
+        9.0,
+        10.5
+      ],
+      "drop_from_posted": 32.0,
+      "id": "4036133",
+      "src": "posted"
+    }
+  ],
+  "fails": [
+    {
+      "player": "Josh Allen",
+      "team": "BUF",
+      "stat": "PASS_TD",
+      "posted": 1.5,
+      "vals": [
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        0.0,
+        3.0,
+        2.0
+      ],
+      "n": 7,
+      "pass": false,
+      "first_67": null,
+      "deepest_67": null,
+      "best_above_soft": [
+        1.5,
+        4,
+        false
+      ],
+      "id": "3918298",
+      "src": "posted"
+    },
+    {
+      "player": "Josh Allen",
+      "team": "BUF",
+      "stat": "RUSH_YD",
+      "posted": 31.5,
+      "vals": [
+        30.0,
+        1.0,
+        121.0,
+        4.0,
+        22.0,
+        69.0,
+        23.0
+      ],
+      "n": 7,
+      "pass": false,
+      "first_67": null,
+      "deepest_67": null,
+      "best_above_soft": [
+        21.5,
+        5,
+        false
+      ],
+      "id": "3918298",
+      "src": "HR"
+    },
+    {
+      "player": "Ray Davis",
+      "team": "BUF",
+      "stat": "RUSH_YD",
+      "posted": 24.5,
+      "vals": [
+        30.0,
+        4.0,
+        2.0,
+        3.0,
+        0.0,
+        0.0,
+        3.0
+      ],
+      "n": 7,
+      "pass": false,
+      "first_67": null,
+      "deepest_67": null,
+      "best_above_soft": [
+        24.5,
+        1,
+        false
+      ],
+      "id": "4429501",
+      "src": "HR"
+    },
+    {
+      "player": "DJ Moore",
+      "team": "BUF",
+      "stat": "REC_YD",
+      "posted": 46.5,
+      "vals": [
+        82.0,
+        11.0,
+        67.0,
+        0.0,
+        100.0
+      ],
+      "n": 5,
+      "pass": false,
+      "first_67": null,
+      "deepest_67": null,
+      "best_above_soft": [
+        10.5,
+        4,
+        false
+      ],
+      "id": "3915416",
+      "src": "HR"
+    },
+    {
+      "player": "Jordan Addison",
+      "team": "MIN",
+      "stat": "REC_YD",
+      "posted": 39.5,
+      "vals": [
+        66.0,
+        20.0,
+        52.0,
+        90.0,
+        21.0,
+        0.0
+      ],
+      "n": 6,
+      "pass": false,
+      "first_67": null,
+      "deepest_67": null,
+      "best_above_soft": [
+        19.5,
+        5,
+        false
+      ],
+      "id": "4429205",
+      "src": "HR"
+    },
+    {
+      "player": "Dalton Kincaid",
+      "team": "BUF",
+      "stat": "REC_YD",
+      "posted": 37.5,
+      "vals": [
+        86.0,
+        38.0,
+        7.0,
+        7.0,
+        38.0,
+        95.0,
+        130.0
+      ],
+      "n": 7,
+      "pass": false,
+      "first_67": null,
+      "deepest_67": null,
+      "best_above_soft": [
+        37.5,
+        5,
+        false
+      ],
+      "id": "4385690",
+      "src": "HR"
+    },
+    {
+      "player": "Keon Coleman",
+      "team": "BUF",
+      "stat": "REC_YD",
+      "posted": 26.5,
+      "vals": [
+        4.0,
+        59.0,
+        7.0,
+        116.0,
+        37.0,
+        63.0,
+        1.0
+      ],
+      "n": 7,
+      "pass": false,
+      "first_67": null,
+      "deepest_67": null,
+      "best_above_soft": [
+        26.5,
+        4,
+        false
+      ],
+      "id": "4635008",
+      "src": "HR"
+    },
+    {
+      "player": "Ty Johnson",
+      "team": "BUF",
+      "stat": "REC_YD",
+      "posted": 16.5,
+      "vals": [
+        19.0,
+        24.0,
+        72.0,
+        9.0,
+        50.0
+      ],
+      "n": 5,
+      "pass": false,
+      "first_67": null,
+      "deepest_67": null,
+      "best_above_soft": [
+        16.5,
+        4,
+        false
+      ],
+      "id": "3915411",
+      "src": "HR"
+    },
+    {
+      "player": "James Cook III",
+      "team": "BUF",
+      "stat": "REC_YD",
+      "posted": 9.5,
+      "vals": [
+        21.0,
+        58.0,
+        7.0,
+        8.0,
+        0.0,
+        4.0,
+        12.0
+      ],
+      "n": 7,
+      "pass": false,
+      "first_67": null,
+      "deepest_67": null,
+      "best_above_soft": [
+        9.5,
+        3,
+        false
+      ],
+      "id": "4379399",
+      "src": "HR"
+    },
+    {
+      "player": "Dawson Knox",
+      "team": "BUF",
+      "stat": "REC_YD",
+      "posted": 8.5,
+      "vals": [
+        6.0,
+        0.0,
+        6.0,
+        13.0,
+        5.0,
+        5.0,
+        7.0
+      ],
+      "n": 7,
+      "pass": false,
+      "first_67": null,
+      "deepest_67": null,
+      "best_above_soft": null,
+      "id": "3930086",
+      "src": "HR"
+    },
+    {
+      "player": "Aaron Jones Sr.",
+      "team": "MIN",
+      "stat": "REC_YD",
+      "posted": 7.5,
+      "vals": [
+        18.0,
+        0.0,
+        4.0,
+        34.0,
+        34.0,
+        0.0,
+        0.0
+      ],
+      "n": 7,
+      "pass": false,
+      "first_67": null,
+      "deepest_67": null,
+      "best_above_soft": null,
+      "id": "3042519",
+      "src": "HR"
+    },
+    {
+      "player": "Jordan Addison",
+      "team": "MIN",
+      "stat": "REC",
+      "posted": 3.5,
+      "vals": [
+        3.0,
+        2.0,
+        4.0,
+        5.0,
+        2.0,
+        0.0
+      ],
+      "n": 6,
+      "pass": false,
+      "first_67": null,
+      "deepest_67": null,
+      "best_above_soft": [
+        1.5,
+        5,
+        false
+      ],
+      "id": "4429205",
+      "src": "HR"
+    },
+    {
+      "player": "DJ Moore",
+      "team": "BUF",
+      "stat": "REC",
+      "posted": 3.5,
+      "vals": [
+        4.0,
+        1.0,
+        6.0,
+        0.0,
+        5.0
+      ],
+      "n": 5,
+      "pass": false,
+      "first_67": null,
+      "deepest_67": null,
+      "best_above_soft": [
+        3.5,
+        3,
+        false
+      ],
+      "id": "3915416",
+      "src": "HR"
+    },
+    {
+      "player": "Dalton Kincaid",
+      "team": "BUF",
+      "stat": "REC",
+      "posted": 3.5,
+      "vals": [
+        4.0,
+        7.0,
+        1.0,
+        1.0,
+        2.0,
+        7.0,
+        5.0
+      ],
+      "n": 7,
+      "pass": false,
+      "first_67": null,
+      "deepest_67": null,
+      "best_above_soft": [
+        1.5,
+        5,
+        false
+      ],
+      "id": "4385690",
+      "src": "HR"
+    },
+    {
+      "player": "Keon Coleman",
+      "team": "BUF",
+      "stat": "REC",
+      "posted": 2.5,
+      "vals": [
+        1.0,
+        4.0,
+        1.0,
+        6.0,
+        1.0,
+        6.0,
+        1.0
+      ],
+      "n": 7,
+      "pass": false,
+      "first_67": null,
+      "deepest_67": null,
+      "best_above_soft": [
+        2.5,
+        3,
+        false
+      ],
+      "id": "4635008",
+      "src": "HR"
+    },
+    {
+      "player": "Dawson Knox",
+      "team": "BUF",
+      "stat": "REC",
+      "posted": 1.5,
+      "vals": [
+        1.0,
+        1.0,
+        1.0,
+        2.0,
+        1.0,
+        2.0,
+        1.0
+      ],
+      "n": 7,
+      "pass": false,
+      "first_67": null,
+      "deepest_67": null,
+      "best_above_soft": [
+        1.5,
+        2,
+        false
+      ],
+      "id": "3930086",
+      "src": "HR"
+    },
+    {
+      "player": "James Cook III",
+      "team": "BUF",
+      "stat": "REC",
+      "posted": 1.5,
+      "vals": [
+        2.0,
+        3.0,
+        1.0,
+        2.0,
+        0.0,
+        1.0,
+        3.0
+      ],
+      "n": 7,
+      "pass": false,
+      "first_67": null,
+      "deepest_67": null,
+      "best_above_soft": [
+        1.5,
+        4,
+        false
+      ],
+      "id": "4379399",
+      "src": "HR"
+    },
+    {
+      "player": "Aaron Jones Sr.",
+      "team": "MIN",
+      "stat": "REC",
+      "posted": 1.5,
+      "vals": [
+        2.0,
+        1.0,
+        3.0,
+        4.0,
+        5.0,
+        0.0,
+        0.0
+      ],
+      "n": 7,
+      "pass": false,
+      "first_67": null,
+      "deepest_67": null,
+      "best_above_soft": [
+        1.5,
+        4,
+        false
+      ],
+      "id": "3042519",
+      "src": "HR"
+    }
+  ],
+  "n_pass": 10,
+  "n_fail": 18,
+  "passes_ranked": [
+    {
+      "player": "Ty Johnson",
+      "team": "BUF",
+      "stat": "REC",
+      "posted": 1.5,
+      "vals": [
+        3.0,
+        2.0,
+        4.0,
+        2.0,
+        4.0
+      ],
+      "n": 5,
+      "pass": true,
+      "first_67": [
+        1.5,
+        5
+      ],
+      "deepest_67": [
+        1.0,
+        5
+      ],
+      "band": [
+        1.0,
+        1.5
+      ],
+      "drop_from_posted": 0.0,
+      "id": "3915411",
+      "src": "HR",
+      "kind": "5/5",
+      "first_nn": 1.5,
+      "deep_nn": 1.0,
+      "drop": 0.0
+    },
+    {
+      "player": "Justin Jefferson",
+      "team": "MIN",
+      "stat": "REC",
+      "posted": 6.5,
+      "vals": [
+        5.0,
+        4.0,
+        6.0,
+        2.0,
+        3.0,
+        8.0
+      ],
+      "n": 6,
+      "pass": true,
+      "first_67": [
+        1.5,
+        6
+      ],
+      "deepest_67": [
+        1.0,
+        6
+      ],
+      "band": [
+        1.0,
+        1.5
+      ],
+      "drop_from_posted": 5.0,
+      "id": "4262921",
+      "src": "HR",
+      "kind": "6/6",
+      "first_nn": 1.5,
+      "deep_nn": 1.0,
+      "drop": 5.0
+    },
+    {
+      "player": "Justin Jefferson",
+      "team": "MIN",
+      "stat": "REC_YD",
+      "posted": 78.5,
+      "vals": [
+        33.0,
+        44.0,
+        79.0,
+        32.0,
+        55.0,
+        92.0
+      ],
+      "n": 6,
+      "pass": true,
+      "first_67": [
+        31.5,
+        6
+      ],
+      "deepest_67": [
+        9.0,
+        6
+      ],
+      "band": [
+        9.0,
+        31.5
+      ],
+      "drop_from_posted": 47.0,
+      "id": "4262921",
+      "src": "HR",
+      "kind": "6/6",
+      "first_nn": 31.5,
+      "deep_nn": 9.0,
+      "drop": 47.0
+    },
+    {
+      "player": "Khalil Shakir",
+      "team": "BUF",
+      "stat": "REC",
+      "posted": 3.5,
+      "vals": [
+        5.0,
+        4.0,
+        3.0,
+        7.0,
+        1.0,
+        3.0,
+        4.0
+      ],
+      "n": 7,
+      "pass": true,
+      "first_67": [
+        2.5,
+        6
+      ],
+      "deepest_67": [
+        1.0,
+        6
+      ],
+      "band": [
+        1.0,
+        2.5
+      ],
+      "drop_from_posted": 1.0,
+      "id": "4373678",
+      "src": "HR",
+      "kind": "6/7",
+      "first_nn": null,
+      "deep_nn": null,
+      "drop": 1.0
+    },
+    {
+      "player": "T.J. Hockenson",
+      "team": "MIN",
+      "stat": "REC",
+      "posted": 4.5,
+      "vals": [
+        4.0,
+        4.0,
+        1.0,
+        13.0,
+        2.0,
+        3.0,
+        4.0
+      ],
+      "n": 7,
+      "pass": true,
+      "first_67": [
+        1.5,
+        6
+      ],
+      "deepest_67": [
+        1.0,
+        6
+      ],
+      "band": [
+        1.0,
+        1.5
+      ],
+      "drop_from_posted": 3.0,
+      "id": "4036133",
+      "src": "posted",
+      "kind": "6/7",
+      "first_nn": null,
+      "deep_nn": null,
+      "drop": 3.0
+    },
+    {
+      "player": "Khalil Shakir",
+      "team": "BUF",
+      "stat": "REC_YD",
+      "posted": 39.5,
+      "vals": [
+        64.0,
+        34.0,
+        80.0,
+        82.0,
+        6.0,
+        38.0,
+        50.0
+      ],
+      "n": 7,
+      "pass": true,
+      "first_67": [
+        33.5,
+        6
+      ],
+      "deepest_67": [
+        9.0,
+        6
+      ],
+      "band": [
+        9.0,
+        33.5
+      ],
+      "drop_from_posted": 6.0,
+      "id": "4373678",
+      "src": "HR",
+      "kind": "6/7",
+      "first_nn": null,
+      "deep_nn": null,
+      "drop": 6.0
+    },
+    {
+      "player": "Aaron Jones Sr.",
+      "team": "MIN",
+      "stat": "RUSH_YD",
+      "posted": 32.5,
+      "vals": [
+        22.0,
+        26.0,
+        113.0,
+        94.0,
+        58.0,
+        105.0,
+        40.0
+      ],
+      "n": 7,
+      "pass": true,
+      "first_67": [
+        25.5,
+        6
+      ],
+      "deepest_67": [
+        6.0,
+        7
+      ],
+      "band": [
+        6.0,
+        25.5
+      ],
+      "drop_from_posted": 7.0,
+      "id": "3042519",
+      "src": "HR",
+      "kind": "6/7",
+      "first_nn": 21.5,
+      "deep_nn": 6.0,
+      "drop": 7.0
+    },
+    {
+      "player": "James Cook III",
+      "team": "BUF",
+      "stat": "RUSH_YD",
+      "posted": 82.5,
+      "vals": [
+        80.0,
+        95.0,
+        111.0,
+        75.0,
+        154.0,
+        135.0,
+        57.0
+      ],
+      "n": 7,
+      "pass": true,
+      "first_67": [
+        74.5,
+        6
+      ],
+      "deepest_67": [
+        6.0,
+        7
+      ],
+      "band": [
+        6.0,
+        74.5
+      ],
+      "drop_from_posted": 8.0,
+      "id": "4379399",
+      "src": "HR",
+      "kind": "6/7",
+      "first_nn": 56.5,
+      "deep_nn": 6.0,
+      "drop": 8.0
+    },
+    {
+      "player": "Josh Allen",
+      "team": "BUF",
+      "stat": "PASS_YD",
+      "posted": 231.5,
+      "vals": [
+        289.0,
+        255.0,
+        210.0,
+        253.0,
+        204.0,
+        248.0,
+        334.0
+      ],
+      "n": 7,
+      "pass": true,
+      "first_67": [
+        209.5,
+        6
+      ],
+      "deepest_67": [
+        150.0,
+        7
+      ],
+      "band": [
+        150.0,
+        209.5
+      ],
+      "drop_from_posted": 22.0,
+      "id": "3918298",
+      "src": "HR",
+      "kind": "6/7",
+      "first_nn": 203.5,
+      "deep_nn": 150.0,
+      "drop": 22.0
+    },
+    {
+      "player": "T.J. Hockenson",
+      "team": "MIN",
+      "stat": "REC_YD",
+      "posted": 42.5,
+      "vals": [
+        58.0,
+        35.0,
+        7.0,
+        119.0,
+        11.0,
+        29.0,
+        36.0
+      ],
+      "n": 7,
+      "pass": true,
+      "first_67": [
+        10.5,
+        6
+      ],
+      "deepest_67": [
+        9.0,
+        6
+      ],
+      "band": [
+        9.0,
+        10.5
+      ],
+      "drop_from_posted": 32.0,
+      "id": "4036133",
+      "src": "posted",
+      "kind": "6/7",
+      "first_nn": null,
+      "deep_nn": null,
+      "drop": 32.0
+    }
+  ]
+}
