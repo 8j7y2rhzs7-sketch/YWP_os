@@ -65,23 +65,26 @@ def _val(row: dict, stat: str) -> float | None:
 
 
 def load_sheets() -> dict:
-    for p in (
-        STORE / "GATE_SHEETS_20261107.json",
-        OUT / "out" / "GATE_SHEETS_20261107.json",
-        STORE / "GATE_TODAY.json",
-    ):
-        if p.name == "GATE_TODAY.json" and p.exists():
-            meta = json.loads(p.read_text())
-            sp = Path(meta.get("sheets_path", ""))
-            if sp.exists():
-                return json.loads(sp.read_text())
-        elif p.exists() and "SHEETS" in p.name:
-            return json.loads(p.read_text())
-    # fallback any GATE_SHEETS
+    # Prefer GATE_TODAY → sheets_path (correct slate), then newest GATE_SHEETS_*.
+    for meta_path in (STORE / "GATE_TODAY.json", OUT / "out" / "GATE_TODAY.json"):
+        if not meta_path.exists():
+            continue
+        try:
+            meta = json.loads(meta_path.read_text())
+        except Exception:
+            continue
+        sp = Path(meta.get("sheets_path") or "")
+        if sp.exists():
+            return json.loads(sp.read_text())
+        day = meta.get("date")
+        if day:
+            for alt in (STORE / f"GATE_SHEETS_{day}.json", OUT / "out" / f"GATE_SHEETS_{day}.json"):
+                if alt.exists():
+                    return json.loads(alt.read_text())
     cands = list(STORE.glob("GATE_SHEETS_*.json")) + list((OUT / "out").glob("GATE_SHEETS_*.json"))
     if not cands:
         raise SystemExit("no GATE_SHEETS found — run require_gate / run_gate first")
-    cands.sort()
+    cands.sort(key=lambda p: p.stat().st_mtime)
     return json.loads(cands[-1].read_text())
 
 

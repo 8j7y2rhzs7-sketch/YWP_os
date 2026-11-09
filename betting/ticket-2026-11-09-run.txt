@@ -1,0 +1,115 @@
+MONDAY RUN — 2026-11-09 · THREE GATES (as planned)
+G1: PASS date=20261109 sheets=431/431 (raised NBA cap so SA/PHX/NO/GS included)
+G2: Hard Rock Bet mains via LineSmart player pages (SA@PHX live). Other games props NOT posted yet.
+G3: HR line = LineSmart hardrockbet column (confirmed).
+
+OUT / DTD (ESPN)
+LAL: Doncic OUT · Grimes DTD | ATL: Newell/Gilbert/Landale/Gueye/Veesaar OUT
+CHA: B.Miller/Schroder/G.Williams/Knueppel OUT | CLE: Merrill/Tyson OUT · Allen DTD
+DET: Duren/I.Joe OUT | WSH: AD DTD
+TOR: Kawhi OUT · Barnes/Quickley DTD | MEM: Pippen Jr/Stewart OUT
+IND: Hali OUT · McConnell DTD | DAL: Lively OUT
+HOU: Adams/Capela OUT | DEN: Murray/Gordon/Braun/DeRozan/C.Johnson DTD
+SA: Harris OUT · Vassell DTD | PHX: Mark Williams/Goodwin OUT
+GS: Butler/Porzingis/Moody OUT | NO: Missi OUT
+
+=== KEEP @ HR main ===
+
+=== RISK-KEEP @ HR main ===
+  6/7 Devin Booker O1.5 3PT miss=[0.0] id=3136193
+  6/7 Miles Bridges O1.5 3PT miss=[1.0] id=4066383
+  6/7 Khaman Maluach O4.5 REB miss=[2.0] id=5203685
+  6/7 Miles Bridges O6.5 REB miss=[6.0] id=4066383
+  6/7 Stephon Castle O4.5 REB miss=[3.0] id=4845367
+  6/7 Miles Bridges O2.5 AST miss=[2.0] id=4066383
+  6/7 Dillon Brooks O14.5 PTS miss=[11.0] id=3155526
+  6/7 Khaman Maluach O5.5 PTS miss=[5.0] id=5203685
+  6/7 Miles Bridges O15.5 PTS miss=[13.0] id=4066383
+  6/7 Victor Wembanyama O27.5 PTS miss=[12.0] id=5104157
+
+=== RISK @ HR main ===
+  5/7 Dillon Brooks O1.5 3PT miss=[0.0, 1.0] id=3155526
+  5/7 Devin Booker O4.5 AST miss=[3.0, 2.0] id=3136193
+  5/7 Dillon Brooks O1.5 AST miss=[1.0, 1.0] id=3155526
+  5/7 Devin Booker O23.5 PTS miss=[20.0, 3.0] id=3136193
+
+=== CUT @ HR main (ban) ===
+  4/6 Oso Ighodaro O4.5 REB miss=[2.0, 3.0]
+  4/6 Oso Ighodaro O2.5 AST miss=[1.0, 2.0]
+  4/7 De'Aaron Fox O0.5 3PT miss=[0.0, 0.0, 0.0]
+  4/7 Stephon Castle O1.5 3PT miss=[1.0, 0.0, 1.0]
+  4/7 Victor Wembanyama O1.5 3PT miss=[1.0, 0.0, 0.0]
+  4/7 Dillon Brooks O3.5 REB miss=[1.0, 1.0, 2.0]
+  4/7 Dylan Harper O5.5 REB miss=[2.0, 5.0, 5.0]
+  4/7 Victor Wembanyama O10.5 REB miss=[7.0, 7.0, 10.0]
+  4/7 Dylan Harper O4.5 AST miss=[3.0, 3.0, 0.0]
+  4/7 Jalen Green O2.5 AST miss=[2.0, 2.0, 1.0]
+  4/7 Victor Wembanyama O2.5 AST miss=[2.0, 2.0, 2.0]
+  4/7 Dylan Harper O16.5 PTS miss=[13.0, 13.0, 13.0]
+  4/7 Stephon Castle O14.5 PTS miss=[14.0, 0.0, 14.0]
+  3/6 Oso Ighodaro O5.5 PTS miss=[4.0, 2.0, 2.0]
+  3/7 Julian Champagnie O2.5 3PT miss=[2.0, 0.0, 2.0, 2.0]
+  3/7 Julian Champagnie O4.5 REB miss=[4.0, 4.0, 3.0, 3.0]
+  3/7 Collin Gillespie O3.5 AST miss=[2.0, 2.0, 2.0, 2.0]
+  3/7 De'Aaron Fox O5.5 AST miss=[4.0, 4.0, 3.0, 4.0]
+  3/7 Collin Gillespie O8.5 PTS miss=[7.0, 6.0, 2.0, 3.0]
+  3/7 Jalen Green O14.5 PTS miss=[6.0, 11.0, 2.0, 12.0]
+  3/7 Julian Champagnie O9.5 PTS miss=[8.0, 0.0, 8.0, 6.0]
+  2/7 De'Aaron Fox O3.5 REB miss=[3.0, 2.0, 3.0, 2.0, 3.0]
+  2/7 Jalen Green O3.5 REB miss=[3.0, 0.0, 2.0, 2.0, 2.0]
+  2/7 Stephon Castle O5.5 AST miss=[5.0, 3.0, 4.0, 4.0, 5.0]
+  2/7 De'Aaron Fox O13.5 PTS miss=[8.0, 9.0, 10.0, 12.0, 11.0]
+  1/7 Jalen Green O1.5 3PT miss=[0.0, 0.0, 0.0, 0.0, 1.0, 1.0]
+  1/7 Collin Gillespie O3.5 REB miss=[3.0, 2.0, 3.0, 1.0, 3.0, 1.0]
+  1/7 Devin Booker O3.5 REB miss=[2.0, 1.0, 1.0, 3.0, 2.0, 2.0]
+
+=== SAFE 3–4 ===
+  1. Miles Bridges O6.5 REB  [RISK-KEEP 6/7] id=4066383 · G3 HR 6.5
+  2. Miles Bridges O1.5 3PT  [RISK-KEEP 6/7] id=4066383 · G3 HR 1.5
+  3. Dillon Brooks O14.5 PTS  [RISK-KEEP 6/7] id=3155526 · G3 HR 14.5
+  4. Stephon Castle O4.5 REB  [RISK-KEEP 6/7] id=4845367 · G3 HR 4.5
+
+=== PRIMARY ===
+  1. Devin Booker O1.5 3PT  [RISK-KEEP 6/7] id=3136193
+  2. Khaman Maluach O4.5 REB  [RISK-KEEP 6/7] id=5203685
+  3. Miles Bridges O2.5 AST  [RISK-KEEP 6/7] id=4066383
+  4. Khaman Maluach O5.5 PTS  [RISK-KEEP 6/7] id=5203685
+  5. Miles Bridges O15.5 PTS  [RISK-KEEP 6/7] id=4066383
+
+=== BANGERS ===
+  1. Victor Wembanyama O27.5 PTS  [RISK-KEEP 6/7] miss=[12.0] id=5104157
+  2. Devin Booker O23.5 PTS  [RISK 5/7] miss=[20.0, 3.0] id=3136193
+  3. Devin Booker O4.5 AST  [RISK 5/7] miss=[3.0, 2.0] id=3136193
+  4. Dillon Brooks O1.5 AST  [RISK 5/7] miss=[1.0, 1.0] id=3155526
+  5. Dillon Brooks O1.5 3PT  [RISK 5/7] miss=[0.0, 1.0] id=3155526
+
+=== SIDES ===
+  SA -8.5 / SA ML @ PHX (Mark Williams OUT) — best posted side
+  CLE -8.5 @ CHA (CHA decimated) — strong
+  HOU -8.5 vs DEN (DEN DTD pile) — watch morning outs
+  Skip GS chalk until Butler/Porzingis settle; LAL without Luka = no auto ML
+
+=== NHL SOG ===
+  Monday SOG not on Betravon yet (NYR@EDM, PHI@VAN, NYI@SJ). Cap ≤2 when posted. Refresh AM.
+
+=== BAN ===
+  Soft floors not on HR · Harper O16.5 PTS (CUT) · Fox PTS/REB (CUT) · Wemby O10.5 REB (CUT at HR)
+  Nembhard volume props · 3rd SOG · any game without G2 posted line
+
+=== PARLAY LOCK (G1+G2+G3) ===
+  1. Miles Bridges O6.5 REB  G1 6/7 RISK-KEEP · G2/G3 HR 6.5 · id=4066383 · SA@PHX
+  2. Dillon Brooks O14.5 PTS  G1 6/7 RISK-KEEP · G2/G3 HR 14.5 · id=3155526 · SA@PHX
+  3. Stephon Castle O4.5 REB  G1 6/7 RISK-KEEP · G2/G3 HR 4.5 · id=4845367 · SA@PHX
+  4. Miles Bridges O1.5 3PT  G1 6/7 RISK-KEEP · G2/G3 HR 1.5 · id=4066383 · SA@PHX
+  5. SA ML / SA -8.5 (Mark Williams OUT) — confirm HR price
+  ALT: Booker O1.5 3PT instead of side · Bridges AST only as SGP add (correlated)
+  Do NOT stack Wemby PTS into cash spine (miss includes 12)
+
+DONE CHECK
+- G1 require_gate: PASS date=20261109 sheets_ok=431/431
+- G2 posted-mains: yes path=betting/posted-mains-20261109.json (HR via LineSmart; slate partial)
+- G3 HR floors used: yes (hardrockbet column on SA@PHX stars)
+- BANGERS section: yes
+- athlete_ids shown: yes
+- parlay lock all legs 3-gated: yes
+- AM follow-up: re-pull G2 for remaining 7 NBA games + NHL SOG

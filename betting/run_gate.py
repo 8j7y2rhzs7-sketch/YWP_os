@@ -184,8 +184,8 @@ def roster_names(sport: str, team_id: str) -> list[tuple[str, str]]:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", default=today_yyyymmdd(), help="YYYYMMDD in ET slate terms")
-    ap.add_argument("--max-nba-players", type=int, default=200, help="cap full sheets per run")
-    ap.add_argument("--max-nhl-players", type=int, default=120)
+    ap.add_argument("--max-nba-players", type=int, default=320, help="cap full sheets per run (8-game NBA slate needs ~280+)")
+    ap.add_argument("--max-nhl-players", type=int, default=150)
     args = ap.parse_args()
     date = args.date
     started = datetime.now(timezone.utc).isoformat()

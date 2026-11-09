@@ -1,0 +1,3168 @@
+{
+  "keep": [],
+  "risk_keep": [
+    {
+      "player": "Victor Wembanyama",
+      "slug": "victor-wembanyama",
+      "team": "SA",
+      "stat": "PTS",
+      "line": 27.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Victor Wembanyama",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        29.0,
+        30.0,
+        52.0,
+        12.0,
+        43.0,
+        36.0,
+        29.0
+      ],
+      "misses": [
+        12.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "5104157",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Stephon Castle",
+      "slug": "stephon-castle",
+      "team": "SA",
+      "stat": "REB",
+      "line": 4.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Stephon Castle",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        7.0,
+        3.0,
+        10.0,
+        5.0,
+        5.0,
+        6.0,
+        5.0
+      ],
+      "misses": [
+        3.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4845367",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Devin Booker",
+      "slug": "devin-booker",
+      "team": "PHX",
+      "stat": "3PT",
+      "line": 1.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Devin Booker",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        2.0,
+        4.0,
+        2.0,
+        2.0,
+        3.0,
+        0.0,
+        2.0
+      ],
+      "misses": [
+        0.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "3136193",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Miles Bridges",
+      "slug": "miles-bridges",
+      "team": "PHX",
+      "stat": "PTS",
+      "line": 15.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Miles Bridges",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        13.0,
+        18.0,
+        18.0,
+        21.0,
+        24.0,
+        17.0,
+        16.0
+      ],
+      "misses": [
+        13.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4066383",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Miles Bridges",
+      "slug": "miles-bridges",
+      "team": "PHX",
+      "stat": "REB",
+      "line": 6.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Miles Bridges",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        10.0,
+        13.0,
+        7.0,
+        6.0,
+        10.0,
+        8.0,
+        7.0
+      ],
+      "misses": [
+        6.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4066383",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Miles Bridges",
+      "slug": "miles-bridges",
+      "team": "PHX",
+      "stat": "AST",
+      "line": 2.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Miles Bridges",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        7.0,
+        5.0,
+        5.0,
+        3.0,
+        2.0,
+        4.0,
+        3.0
+      ],
+      "misses": [
+        2.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4066383",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Miles Bridges",
+      "slug": "miles-bridges",
+      "team": "PHX",
+      "stat": "3PT",
+      "line": 1.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Miles Bridges",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        1.0,
+        3.0,
+        4.0,
+        3.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "misses": [
+        1.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4066383",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Dillon Brooks",
+      "slug": "dillon-brooks",
+      "team": "PHX",
+      "stat": "PTS",
+      "line": 14.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Dillon Brooks",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        11.0,
+        24.0,
+        15.0,
+        18.0,
+        22.0,
+        19.0,
+        15.0
+      ],
+      "misses": [
+        11.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "3155526",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Khaman Maluach",
+      "slug": "khaman-maluach",
+      "team": "PHX",
+      "stat": "PTS",
+      "line": 5.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Khaman Maluach",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        8.0,
+        8.0,
+        6.0,
+        5.0,
+        9.0,
+        12.0,
+        9.0
+      ],
+      "misses": [
+        5.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "5203685",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Khaman Maluach",
+      "slug": "khaman-maluach",
+      "team": "PHX",
+      "stat": "REB",
+      "line": 4.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Khaman Maluach",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        10.0,
+        6.0,
+        6.0,
+        2.0,
+        6.0,
+        7.0,
+        9.0
+      ],
+      "misses": [
+        2.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "5203685",
+      "sheet_team": "PHX"
+    }
+  ],
+  "risk": [
+    {
+      "player": "Devin Booker",
+      "slug": "devin-booker",
+      "team": "PHX",
+      "stat": "PTS",
+      "line": 23.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Devin Booker",
+      "hits": 5,
+      "n": 7,
+      "vals": [
+        24.0,
+        30.0,
+        33.0,
+        26.0,
+        20.0,
+        3.0,
+        43.0
+      ],
+      "misses": [
+        20.0,
+        3.0
+      ],
+      "call": "RISK",
+      "athlete_id": "3136193",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Devin Booker",
+      "slug": "devin-booker",
+      "team": "PHX",
+      "stat": "AST",
+      "line": 4.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Devin Booker",
+      "hits": 5,
+      "n": 7,
+      "vals": [
+        3.0,
+        8.0,
+        2.0,
+        5.0,
+        5.0,
+        7.0,
+        7.0
+      ],
+      "misses": [
+        3.0,
+        2.0
+      ],
+      "call": "RISK",
+      "athlete_id": "3136193",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Dillon Brooks",
+      "slug": "dillon-brooks",
+      "team": "PHX",
+      "stat": "AST",
+      "line": 1.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Dillon Brooks",
+      "hits": 5,
+      "n": 7,
+      "vals": [
+        1.0,
+        1.0,
+        2.0,
+        4.0,
+        2.0,
+        5.0,
+        5.0
+      ],
+      "misses": [
+        1.0,
+        1.0
+      ],
+      "call": "RISK",
+      "athlete_id": "3155526",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Dillon Brooks",
+      "slug": "dillon-brooks",
+      "team": "PHX",
+      "stat": "3PT",
+      "line": 1.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Dillon Brooks",
+      "hits": 5,
+      "n": 7,
+      "vals": [
+        3.0,
+        4.0,
+        0.0,
+        2.0,
+        4.0,
+        3.0,
+        1.0
+      ],
+      "misses": [
+        0.0,
+        1.0
+      ],
+      "call": "RISK",
+      "athlete_id": "3155526",
+      "sheet_team": "PHX"
+    }
+  ],
+  "cut": [
+    {
+      "player": "Victor Wembanyama",
+      "slug": "victor-wembanyama",
+      "team": "SA",
+      "stat": "REB",
+      "line": 10.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Victor Wembanyama",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        7.0,
+        14.0,
+        24.0,
+        11.0,
+        7.0,
+        14.0,
+        10.0
+      ],
+      "misses": [
+        7.0,
+        7.0,
+        10.0
+      ],
+      "call": "CUT",
+      "athlete_id": "5104157",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Victor Wembanyama",
+      "slug": "victor-wembanyama",
+      "team": "SA",
+      "stat": "AST",
+      "line": 2.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Victor Wembanyama",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        3.0,
+        2.0,
+        2.0,
+        5.0,
+        4.0,
+        5.0,
+        2.0
+      ],
+      "misses": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "call": "CUT",
+      "athlete_id": "5104157",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Victor Wembanyama",
+      "slug": "victor-wembanyama",
+      "team": "SA",
+      "stat": "3PT",
+      "line": 1.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Victor Wembanyama",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        3.0,
+        4.0,
+        1.0,
+        0.0,
+        3.0,
+        4.0,
+        0.0
+      ],
+      "misses": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "call": "CUT",
+      "athlete_id": "5104157",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "De'Aaron Fox",
+      "slug": "de-aaron-fox",
+      "team": "SA",
+      "stat": "PTS",
+      "line": 13.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "De'Aaron Fox",
+      "hits": 2,
+      "n": 7,
+      "vals": [
+        8.0,
+        9.0,
+        10.0,
+        12.0,
+        22.0,
+        14.0,
+        11.0
+      ],
+      "misses": [
+        8.0,
+        9.0,
+        10.0,
+        12.0,
+        11.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4066259",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "De'Aaron Fox",
+      "slug": "de-aaron-fox",
+      "team": "SA",
+      "stat": "REB",
+      "line": 3.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "De'Aaron Fox",
+      "hits": 2,
+      "n": 7,
+      "vals": [
+        3.0,
+        2.0,
+        3.0,
+        2.0,
+        8.0,
+        3.0,
+        4.0
+      ],
+      "misses": [
+        3.0,
+        2.0,
+        3.0,
+        2.0,
+        3.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4066259",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "De'Aaron Fox",
+      "slug": "de-aaron-fox",
+      "team": "SA",
+      "stat": "AST",
+      "line": 5.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "De'Aaron Fox",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        6.0,
+        4.0,
+        4.0,
+        3.0,
+        7.0,
+        4.0,
+        6.0
+      ],
+      "misses": [
+        4.0,
+        4.0,
+        3.0,
+        4.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4066259",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "De'Aaron Fox",
+      "slug": "de-aaron-fox",
+      "team": "SA",
+      "stat": "3PT",
+      "line": 0.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "De'Aaron Fox",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        2.0
+      ],
+      "misses": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4066259",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Dylan Harper",
+      "slug": "dylan-harper",
+      "team": "SA",
+      "stat": "PTS",
+      "line": 16.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Dylan Harper",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        13.0,
+        19.0,
+        21.0,
+        17.0,
+        25.0,
+        13.0,
+        13.0
+      ],
+      "misses": [
+        13.0,
+        13.0,
+        13.0
+      ],
+      "call": "CUT",
+      "athlete_id": "5037871",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Dylan Harper",
+      "slug": "dylan-harper",
+      "team": "SA",
+      "stat": "REB",
+      "line": 5.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Dylan Harper",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        7.0,
+        2.0,
+        5.0,
+        7.0,
+        7.0,
+        5.0,
+        6.0
+      ],
+      "misses": [
+        2.0,
+        5.0,
+        5.0
+      ],
+      "call": "CUT",
+      "athlete_id": "5037871",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Dylan Harper",
+      "slug": "dylan-harper",
+      "team": "SA",
+      "stat": "AST",
+      "line": 4.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Dylan Harper",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        3.0,
+        3.0,
+        0.0,
+        8.0,
+        6.0,
+        8.0,
+        6.0
+      ],
+      "misses": [
+        3.0,
+        3.0,
+        0.0
+      ],
+      "call": "CUT",
+      "athlete_id": "5037871",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Stephon Castle",
+      "slug": "stephon-castle",
+      "team": "SA",
+      "stat": "PTS",
+      "line": 14.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Stephon Castle",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        14.0,
+        19.0,
+        17.0,
+        16.0,
+        0.0,
+        14.0,
+        15.0
+      ],
+      "misses": [
+        14.0,
+        0.0,
+        14.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4845367",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Stephon Castle",
+      "slug": "stephon-castle",
+      "team": "SA",
+      "stat": "AST",
+      "line": 5.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Stephon Castle",
+      "hits": 2,
+      "n": 7,
+      "vals": [
+        5.0,
+        7.0,
+        3.0,
+        4.0,
+        4.0,
+        8.0,
+        5.0
+      ],
+      "misses": [
+        5.0,
+        3.0,
+        4.0,
+        4.0,
+        5.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4845367",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Stephon Castle",
+      "slug": "stephon-castle",
+      "team": "SA",
+      "stat": "3PT",
+      "line": 1.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Stephon Castle",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        2.0,
+        1.0,
+        2.0,
+        2.0,
+        0.0,
+        1.0,
+        3.0
+      ],
+      "misses": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4845367",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Julian Champagnie",
+      "slug": "julian-champagnie",
+      "team": "SA",
+      "stat": "PTS",
+      "line": 9.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Julian Champagnie",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        14.0,
+        8.0,
+        0.0,
+        8.0,
+        12.0,
+        6.0,
+        26.0
+      ],
+      "misses": [
+        8.0,
+        0.0,
+        8.0,
+        6.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4592479",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Julian Champagnie",
+      "slug": "julian-champagnie",
+      "team": "SA",
+      "stat": "REB",
+      "line": 4.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Julian Champagnie",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        4.0,
+        7.0,
+        4.0,
+        6.0,
+        3.0,
+        6.0,
+        3.0
+      ],
+      "misses": [
+        4.0,
+        4.0,
+        3.0,
+        3.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4592479",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Julian Champagnie",
+      "slug": "julian-champagnie",
+      "team": "SA",
+      "stat": "3PT",
+      "line": 2.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Julian Champagnie",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        4.0,
+        2.0,
+        0.0,
+        2.0,
+        3.0,
+        2.0,
+        8.0
+      ],
+      "misses": [
+        2.0,
+        0.0,
+        2.0,
+        2.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4592479",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Devin Booker",
+      "slug": "devin-booker",
+      "team": "PHX",
+      "stat": "REB",
+      "line": 3.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Devin Booker",
+      "hits": 1,
+      "n": 7,
+      "vals": [
+        2.0,
+        1.0,
+        1.0,
+        3.0,
+        2.0,
+        2.0,
+        7.0
+      ],
+      "misses": [
+        2.0,
+        1.0,
+        1.0,
+        3.0,
+        2.0,
+        2.0
+      ],
+      "call": "CUT",
+      "athlete_id": "3136193",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Jalen Green",
+      "slug": "jalen-green",
+      "team": "PHX",
+      "stat": "PTS",
+      "line": 14.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Jalen Green",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        16.0,
+        6.0,
+        22.0,
+        11.0,
+        2.0,
+        20.0,
+        12.0
+      ],
+      "misses": [
+        6.0,
+        11.0,
+        2.0,
+        12.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4437244",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Jalen Green",
+      "slug": "jalen-green",
+      "team": "PHX",
+      "stat": "REB",
+      "line": 3.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Jalen Green",
+      "hits": 2,
+      "n": 7,
+      "vals": [
+        3.0,
+        0.0,
+        2.0,
+        8.0,
+        2.0,
+        4.0,
+        2.0
+      ],
+      "misses": [
+        3.0,
+        0.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4437244",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Jalen Green",
+      "slug": "jalen-green",
+      "team": "PHX",
+      "stat": "AST",
+      "line": 2.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Jalen Green",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        6.0,
+        3.0,
+        2.0,
+        8.0,
+        2.0,
+        4.0,
+        1.0
+      ],
+      "misses": [
+        2.0,
+        2.0,
+        1.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4437244",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Jalen Green",
+      "slug": "jalen-green",
+      "team": "PHX",
+      "stat": "3PT",
+      "line": 1.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Jalen Green",
+      "hits": 1,
+      "n": 7,
+      "vals": [
+        0.0,
+        0.0,
+        2.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "misses": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4437244",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Dillon Brooks",
+      "slug": "dillon-brooks",
+      "team": "PHX",
+      "stat": "REB",
+      "line": 3.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Dillon Brooks",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        4.0,
+        1.0,
+        6.0,
+        8.0,
+        1.0,
+        5.0,
+        2.0
+      ],
+      "misses": [
+        1.0,
+        1.0,
+        2.0
+      ],
+      "call": "CUT",
+      "athlete_id": "3155526",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Collin Gillespie",
+      "slug": "collin-gillespie",
+      "team": "PHX",
+      "stat": "PTS",
+      "line": 8.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Collin Gillespie",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        7.0,
+        6.0,
+        2.0,
+        3.0,
+        16.0,
+        9.0,
+        11.0
+      ],
+      "misses": [
+        7.0,
+        6.0,
+        2.0,
+        3.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4278585",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Collin Gillespie",
+      "slug": "collin-gillespie",
+      "team": "PHX",
+      "stat": "REB",
+      "line": 3.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Collin Gillespie",
+      "hits": 1,
+      "n": 7,
+      "vals": [
+        3.0,
+        2.0,
+        3.0,
+        1.0,
+        3.0,
+        1.0,
+        4.0
+      ],
+      "misses": [
+        3.0,
+        2.0,
+        3.0,
+        1.0,
+        3.0,
+        1.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4278585",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Collin Gillespie",
+      "slug": "collin-gillespie",
+      "team": "PHX",
+      "stat": "AST",
+      "line": 3.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Collin Gillespie",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        4.0,
+        2.0,
+        2.0,
+        2.0,
+        10.0,
+        2.0,
+        9.0
+      ],
+      "misses": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4278585",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Oso Ighodaro",
+      "slug": "oso-ighodaro",
+      "team": "PHX",
+      "stat": "PTS",
+      "line": 5.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Oso Ighodaro",
+      "hits": 3,
+      "n": 6,
+      "vals": [
+        4.0,
+        2.0,
+        9.0,
+        14.0,
+        2.0,
+        8.0
+      ],
+      "misses": [
+        4.0,
+        2.0,
+        2.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4601023",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Oso Ighodaro",
+      "slug": "oso-ighodaro",
+      "team": "PHX",
+      "stat": "REB",
+      "line": 4.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Oso Ighodaro",
+      "hits": 4,
+      "n": 6,
+      "vals": [
+        6.0,
+        5.0,
+        7.0,
+        2.0,
+        9.0,
+        3.0
+      ],
+      "misses": [
+        2.0,
+        3.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4601023",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Oso Ighodaro",
+      "slug": "oso-ighodaro",
+      "team": "PHX",
+      "stat": "AST",
+      "line": 2.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Oso Ighodaro",
+      "hits": 4,
+      "n": 6,
+      "vals": [
+        3.0,
+        1.0,
+        7.0,
+        2.0,
+        5.0,
+        3.0
+      ],
+      "misses": [
+        1.0,
+        2.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4601023",
+      "sheet_team": "PHX"
+    }
+  ],
+  "lock": [
+    {
+      "player": "Miles Bridges",
+      "slug": "miles-bridges",
+      "team": "PHX",
+      "stat": "REB",
+      "line": 6.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Miles Bridges",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        10.0,
+        13.0,
+        7.0,
+        6.0,
+        10.0,
+        8.0,
+        7.0
+      ],
+      "misses": [
+        6.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4066383",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Dillon Brooks",
+      "slug": "dillon-brooks",
+      "team": "PHX",
+      "stat": "PTS",
+      "line": 14.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Dillon Brooks",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        11.0,
+        24.0,
+        15.0,
+        18.0,
+        22.0,
+        19.0,
+        15.0
+      ],
+      "misses": [
+        11.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "3155526",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Stephon Castle",
+      "slug": "stephon-castle",
+      "team": "SA",
+      "stat": "REB",
+      "line": 4.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Stephon Castle",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        7.0,
+        3.0,
+        10.0,
+        5.0,
+        5.0,
+        6.0,
+        5.0
+      ],
+      "misses": [
+        3.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4845367",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Miles Bridges",
+      "slug": "miles-bridges",
+      "team": "PHX",
+      "stat": "3PT",
+      "line": 1.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Miles Bridges",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        1.0,
+        3.0,
+        4.0,
+        3.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "misses": [
+        1.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4066383",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Miles Bridges",
+      "slug": "miles-bridges",
+      "team": "PHX",
+      "stat": "AST",
+      "line": 2.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Miles Bridges",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        7.0,
+        5.0,
+        5.0,
+        3.0,
+        2.0,
+        4.0,
+        3.0
+      ],
+      "misses": [
+        2.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4066383",
+      "sheet_team": "PHX"
+    }
+  ],
+  "safe": [
+    {
+      "player": "Miles Bridges",
+      "slug": "miles-bridges",
+      "team": "PHX",
+      "stat": "REB",
+      "line": 6.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Miles Bridges",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        10.0,
+        13.0,
+        7.0,
+        6.0,
+        10.0,
+        8.0,
+        7.0
+      ],
+      "misses": [
+        6.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4066383",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Miles Bridges",
+      "slug": "miles-bridges",
+      "team": "PHX",
+      "stat": "3PT",
+      "line": 1.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Miles Bridges",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        1.0,
+        3.0,
+        4.0,
+        3.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "misses": [
+        1.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4066383",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Dillon Brooks",
+      "slug": "dillon-brooks",
+      "team": "PHX",
+      "stat": "PTS",
+      "line": 14.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Dillon Brooks",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        11.0,
+        24.0,
+        15.0,
+        18.0,
+        22.0,
+        19.0,
+        15.0
+      ],
+      "misses": [
+        11.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "3155526",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Stephon Castle",
+      "slug": "stephon-castle",
+      "team": "SA",
+      "stat": "REB",
+      "line": 4.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Stephon Castle",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        7.0,
+        3.0,
+        10.0,
+        5.0,
+        5.0,
+        6.0,
+        5.0
+      ],
+      "misses": [
+        3.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4845367",
+      "sheet_team": "SA"
+    }
+  ],
+  "primary": [
+    {
+      "player": "Devin Booker",
+      "slug": "devin-booker",
+      "team": "PHX",
+      "stat": "3PT",
+      "line": 1.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Devin Booker",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        2.0,
+        4.0,
+        2.0,
+        2.0,
+        3.0,
+        0.0,
+        2.0
+      ],
+      "misses": [
+        0.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "3136193",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Khaman Maluach",
+      "slug": "khaman-maluach",
+      "team": "PHX",
+      "stat": "REB",
+      "line": 4.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Khaman Maluach",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        10.0,
+        6.0,
+        6.0,
+        2.0,
+        6.0,
+        7.0,
+        9.0
+      ],
+      "misses": [
+        2.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "5203685",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Miles Bridges",
+      "slug": "miles-bridges",
+      "team": "PHX",
+      "stat": "AST",
+      "line": 2.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Miles Bridges",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        7.0,
+        5.0,
+        5.0,
+        3.0,
+        2.0,
+        4.0,
+        3.0
+      ],
+      "misses": [
+        2.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4066383",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Khaman Maluach",
+      "slug": "khaman-maluach",
+      "team": "PHX",
+      "stat": "PTS",
+      "line": 5.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Khaman Maluach",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        8.0,
+        8.0,
+        6.0,
+        5.0,
+        9.0,
+        12.0,
+        9.0
+      ],
+      "misses": [
+        5.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "5203685",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Miles Bridges",
+      "slug": "miles-bridges",
+      "team": "PHX",
+      "stat": "PTS",
+      "line": 15.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Miles Bridges",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        13.0,
+        18.0,
+        18.0,
+        21.0,
+        24.0,
+        17.0,
+        16.0
+      ],
+      "misses": [
+        13.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4066383",
+      "sheet_team": "PHX"
+    }
+  ],
+  "bangers": [
+    {
+      "player": "Victor Wembanyama",
+      "slug": "victor-wembanyama",
+      "team": "SA",
+      "stat": "PTS",
+      "line": 27.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Victor Wembanyama",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        29.0,
+        30.0,
+        52.0,
+        12.0,
+        43.0,
+        36.0,
+        29.0
+      ],
+      "misses": [
+        12.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "5104157",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Devin Booker",
+      "slug": "devin-booker",
+      "team": "PHX",
+      "stat": "PTS",
+      "line": 23.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Devin Booker",
+      "hits": 5,
+      "n": 7,
+      "vals": [
+        24.0,
+        30.0,
+        33.0,
+        26.0,
+        20.0,
+        3.0,
+        43.0
+      ],
+      "misses": [
+        20.0,
+        3.0
+      ],
+      "call": "RISK",
+      "athlete_id": "3136193",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Devin Booker",
+      "slug": "devin-booker",
+      "team": "PHX",
+      "stat": "AST",
+      "line": 4.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Devin Booker",
+      "hits": 5,
+      "n": 7,
+      "vals": [
+        3.0,
+        8.0,
+        2.0,
+        5.0,
+        5.0,
+        7.0,
+        7.0
+      ],
+      "misses": [
+        3.0,
+        2.0
+      ],
+      "call": "RISK",
+      "athlete_id": "3136193",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Dillon Brooks",
+      "slug": "dillon-brooks",
+      "team": "PHX",
+      "stat": "AST",
+      "line": 1.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Dillon Brooks",
+      "hits": 5,
+      "n": 7,
+      "vals": [
+        1.0,
+        1.0,
+        2.0,
+        4.0,
+        2.0,
+        5.0,
+        5.0
+      ],
+      "misses": [
+        1.0,
+        1.0
+      ],
+      "call": "RISK",
+      "athlete_id": "3155526",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Dillon Brooks",
+      "slug": "dillon-brooks",
+      "team": "PHX",
+      "stat": "3PT",
+      "line": 1.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Dillon Brooks",
+      "hits": 5,
+      "n": 7,
+      "vals": [
+        3.0,
+        4.0,
+        0.0,
+        2.0,
+        4.0,
+        3.0,
+        1.0
+      ],
+      "misses": [
+        0.0,
+        1.0
+      ],
+      "call": "RISK",
+      "athlete_id": "3155526",
+      "sheet_team": "PHX"
+    }
+  ],
+  "graded": [
+    {
+      "player": "Victor Wembanyama",
+      "slug": "victor-wembanyama",
+      "team": "SA",
+      "stat": "PTS",
+      "line": 27.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Victor Wembanyama",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        29.0,
+        30.0,
+        52.0,
+        12.0,
+        43.0,
+        36.0,
+        29.0
+      ],
+      "misses": [
+        12.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "5104157",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Victor Wembanyama",
+      "slug": "victor-wembanyama",
+      "team": "SA",
+      "stat": "REB",
+      "line": 10.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Victor Wembanyama",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        7.0,
+        14.0,
+        24.0,
+        11.0,
+        7.0,
+        14.0,
+        10.0
+      ],
+      "misses": [
+        7.0,
+        7.0,
+        10.0
+      ],
+      "call": "CUT",
+      "athlete_id": "5104157",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Victor Wembanyama",
+      "slug": "victor-wembanyama",
+      "team": "SA",
+      "stat": "AST",
+      "line": 2.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Victor Wembanyama",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        3.0,
+        2.0,
+        2.0,
+        5.0,
+        4.0,
+        5.0,
+        2.0
+      ],
+      "misses": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "call": "CUT",
+      "athlete_id": "5104157",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Victor Wembanyama",
+      "slug": "victor-wembanyama",
+      "team": "SA",
+      "stat": "3PT",
+      "line": 1.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Victor Wembanyama",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        3.0,
+        4.0,
+        1.0,
+        0.0,
+        3.0,
+        4.0,
+        0.0
+      ],
+      "misses": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "call": "CUT",
+      "athlete_id": "5104157",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "De'Aaron Fox",
+      "slug": "de-aaron-fox",
+      "team": "SA",
+      "stat": "PTS",
+      "line": 13.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "De'Aaron Fox",
+      "hits": 2,
+      "n": 7,
+      "vals": [
+        8.0,
+        9.0,
+        10.0,
+        12.0,
+        22.0,
+        14.0,
+        11.0
+      ],
+      "misses": [
+        8.0,
+        9.0,
+        10.0,
+        12.0,
+        11.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4066259",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "De'Aaron Fox",
+      "slug": "de-aaron-fox",
+      "team": "SA",
+      "stat": "REB",
+      "line": 3.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "De'Aaron Fox",
+      "hits": 2,
+      "n": 7,
+      "vals": [
+        3.0,
+        2.0,
+        3.0,
+        2.0,
+        8.0,
+        3.0,
+        4.0
+      ],
+      "misses": [
+        3.0,
+        2.0,
+        3.0,
+        2.0,
+        3.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4066259",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "De'Aaron Fox",
+      "slug": "de-aaron-fox",
+      "team": "SA",
+      "stat": "AST",
+      "line": 5.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "De'Aaron Fox",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        6.0,
+        4.0,
+        4.0,
+        3.0,
+        7.0,
+        4.0,
+        6.0
+      ],
+      "misses": [
+        4.0,
+        4.0,
+        3.0,
+        4.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4066259",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "De'Aaron Fox",
+      "slug": "de-aaron-fox",
+      "team": "SA",
+      "stat": "3PT",
+      "line": 0.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "De'Aaron Fox",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        2.0
+      ],
+      "misses": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4066259",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Dylan Harper",
+      "slug": "dylan-harper",
+      "team": "SA",
+      "stat": "PTS",
+      "line": 16.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Dylan Harper",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        13.0,
+        19.0,
+        21.0,
+        17.0,
+        25.0,
+        13.0,
+        13.0
+      ],
+      "misses": [
+        13.0,
+        13.0,
+        13.0
+      ],
+      "call": "CUT",
+      "athlete_id": "5037871",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Dylan Harper",
+      "slug": "dylan-harper",
+      "team": "SA",
+      "stat": "REB",
+      "line": 5.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Dylan Harper",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        7.0,
+        2.0,
+        5.0,
+        7.0,
+        7.0,
+        5.0,
+        6.0
+      ],
+      "misses": [
+        2.0,
+        5.0,
+        5.0
+      ],
+      "call": "CUT",
+      "athlete_id": "5037871",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Dylan Harper",
+      "slug": "dylan-harper",
+      "team": "SA",
+      "stat": "AST",
+      "line": 4.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Dylan Harper",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        3.0,
+        3.0,
+        0.0,
+        8.0,
+        6.0,
+        8.0,
+        6.0
+      ],
+      "misses": [
+        3.0,
+        3.0,
+        0.0
+      ],
+      "call": "CUT",
+      "athlete_id": "5037871",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Stephon Castle",
+      "slug": "stephon-castle",
+      "team": "SA",
+      "stat": "PTS",
+      "line": 14.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Stephon Castle",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        14.0,
+        19.0,
+        17.0,
+        16.0,
+        0.0,
+        14.0,
+        15.0
+      ],
+      "misses": [
+        14.0,
+        0.0,
+        14.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4845367",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Stephon Castle",
+      "slug": "stephon-castle",
+      "team": "SA",
+      "stat": "REB",
+      "line": 4.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Stephon Castle",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        7.0,
+        3.0,
+        10.0,
+        5.0,
+        5.0,
+        6.0,
+        5.0
+      ],
+      "misses": [
+        3.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4845367",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Stephon Castle",
+      "slug": "stephon-castle",
+      "team": "SA",
+      "stat": "AST",
+      "line": 5.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Stephon Castle",
+      "hits": 2,
+      "n": 7,
+      "vals": [
+        5.0,
+        7.0,
+        3.0,
+        4.0,
+        4.0,
+        8.0,
+        5.0
+      ],
+      "misses": [
+        5.0,
+        3.0,
+        4.0,
+        4.0,
+        5.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4845367",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Stephon Castle",
+      "slug": "stephon-castle",
+      "team": "SA",
+      "stat": "3PT",
+      "line": 1.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Stephon Castle",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        2.0,
+        1.0,
+        2.0,
+        2.0,
+        0.0,
+        1.0,
+        3.0
+      ],
+      "misses": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4845367",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Julian Champagnie",
+      "slug": "julian-champagnie",
+      "team": "SA",
+      "stat": "PTS",
+      "line": 9.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Julian Champagnie",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        14.0,
+        8.0,
+        0.0,
+        8.0,
+        12.0,
+        6.0,
+        26.0
+      ],
+      "misses": [
+        8.0,
+        0.0,
+        8.0,
+        6.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4592479",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Julian Champagnie",
+      "slug": "julian-champagnie",
+      "team": "SA",
+      "stat": "REB",
+      "line": 4.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Julian Champagnie",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        4.0,
+        7.0,
+        4.0,
+        6.0,
+        3.0,
+        6.0,
+        3.0
+      ],
+      "misses": [
+        4.0,
+        4.0,
+        3.0,
+        3.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4592479",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Julian Champagnie",
+      "slug": "julian-champagnie",
+      "team": "SA",
+      "stat": "3PT",
+      "line": 2.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Julian Champagnie",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        4.0,
+        2.0,
+        0.0,
+        2.0,
+        3.0,
+        2.0,
+        8.0
+      ],
+      "misses": [
+        2.0,
+        0.0,
+        2.0,
+        2.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4592479",
+      "sheet_team": "SA"
+    },
+    {
+      "player": "Devin Booker",
+      "slug": "devin-booker",
+      "team": "PHX",
+      "stat": "PTS",
+      "line": 23.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Devin Booker",
+      "hits": 5,
+      "n": 7,
+      "vals": [
+        24.0,
+        30.0,
+        33.0,
+        26.0,
+        20.0,
+        3.0,
+        43.0
+      ],
+      "misses": [
+        20.0,
+        3.0
+      ],
+      "call": "RISK",
+      "athlete_id": "3136193",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Devin Booker",
+      "slug": "devin-booker",
+      "team": "PHX",
+      "stat": "REB",
+      "line": 3.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Devin Booker",
+      "hits": 1,
+      "n": 7,
+      "vals": [
+        2.0,
+        1.0,
+        1.0,
+        3.0,
+        2.0,
+        2.0,
+        7.0
+      ],
+      "misses": [
+        2.0,
+        1.0,
+        1.0,
+        3.0,
+        2.0,
+        2.0
+      ],
+      "call": "CUT",
+      "athlete_id": "3136193",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Devin Booker",
+      "slug": "devin-booker",
+      "team": "PHX",
+      "stat": "AST",
+      "line": 4.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Devin Booker",
+      "hits": 5,
+      "n": 7,
+      "vals": [
+        3.0,
+        8.0,
+        2.0,
+        5.0,
+        5.0,
+        7.0,
+        7.0
+      ],
+      "misses": [
+        3.0,
+        2.0
+      ],
+      "call": "RISK",
+      "athlete_id": "3136193",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Devin Booker",
+      "slug": "devin-booker",
+      "team": "PHX",
+      "stat": "3PT",
+      "line": 1.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Devin Booker",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        2.0,
+        4.0,
+        2.0,
+        2.0,
+        3.0,
+        0.0,
+        2.0
+      ],
+      "misses": [
+        0.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "3136193",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Miles Bridges",
+      "slug": "miles-bridges",
+      "team": "PHX",
+      "stat": "PTS",
+      "line": 15.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Miles Bridges",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        13.0,
+        18.0,
+        18.0,
+        21.0,
+        24.0,
+        17.0,
+        16.0
+      ],
+      "misses": [
+        13.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4066383",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Miles Bridges",
+      "slug": "miles-bridges",
+      "team": "PHX",
+      "stat": "REB",
+      "line": 6.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Miles Bridges",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        10.0,
+        13.0,
+        7.0,
+        6.0,
+        10.0,
+        8.0,
+        7.0
+      ],
+      "misses": [
+        6.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4066383",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Miles Bridges",
+      "slug": "miles-bridges",
+      "team": "PHX",
+      "stat": "AST",
+      "line": 2.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Miles Bridges",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        7.0,
+        5.0,
+        5.0,
+        3.0,
+        2.0,
+        4.0,
+        3.0
+      ],
+      "misses": [
+        2.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4066383",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Miles Bridges",
+      "slug": "miles-bridges",
+      "team": "PHX",
+      "stat": "3PT",
+      "line": 1.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Miles Bridges",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        1.0,
+        3.0,
+        4.0,
+        3.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "misses": [
+        1.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4066383",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Jalen Green",
+      "slug": "jalen-green",
+      "team": "PHX",
+      "stat": "PTS",
+      "line": 14.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Jalen Green",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        16.0,
+        6.0,
+        22.0,
+        11.0,
+        2.0,
+        20.0,
+        12.0
+      ],
+      "misses": [
+        6.0,
+        11.0,
+        2.0,
+        12.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4437244",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Jalen Green",
+      "slug": "jalen-green",
+      "team": "PHX",
+      "stat": "REB",
+      "line": 3.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Jalen Green",
+      "hits": 2,
+      "n": 7,
+      "vals": [
+        3.0,
+        0.0,
+        2.0,
+        8.0,
+        2.0,
+        4.0,
+        2.0
+      ],
+      "misses": [
+        3.0,
+        0.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4437244",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Jalen Green",
+      "slug": "jalen-green",
+      "team": "PHX",
+      "stat": "AST",
+      "line": 2.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Jalen Green",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        6.0,
+        3.0,
+        2.0,
+        8.0,
+        2.0,
+        4.0,
+        1.0
+      ],
+      "misses": [
+        2.0,
+        2.0,
+        1.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4437244",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Jalen Green",
+      "slug": "jalen-green",
+      "team": "PHX",
+      "stat": "3PT",
+      "line": 1.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Jalen Green",
+      "hits": 1,
+      "n": 7,
+      "vals": [
+        0.0,
+        0.0,
+        2.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "misses": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4437244",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Dillon Brooks",
+      "slug": "dillon-brooks",
+      "team": "PHX",
+      "stat": "PTS",
+      "line": 14.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Dillon Brooks",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        11.0,
+        24.0,
+        15.0,
+        18.0,
+        22.0,
+        19.0,
+        15.0
+      ],
+      "misses": [
+        11.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "3155526",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Dillon Brooks",
+      "slug": "dillon-brooks",
+      "team": "PHX",
+      "stat": "REB",
+      "line": 3.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Dillon Brooks",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        4.0,
+        1.0,
+        6.0,
+        8.0,
+        1.0,
+        5.0,
+        2.0
+      ],
+      "misses": [
+        1.0,
+        1.0,
+        2.0
+      ],
+      "call": "CUT",
+      "athlete_id": "3155526",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Dillon Brooks",
+      "slug": "dillon-brooks",
+      "team": "PHX",
+      "stat": "AST",
+      "line": 1.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Dillon Brooks",
+      "hits": 5,
+      "n": 7,
+      "vals": [
+        1.0,
+        1.0,
+        2.0,
+        4.0,
+        2.0,
+        5.0,
+        5.0
+      ],
+      "misses": [
+        1.0,
+        1.0
+      ],
+      "call": "RISK",
+      "athlete_id": "3155526",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Dillon Brooks",
+      "slug": "dillon-brooks",
+      "team": "PHX",
+      "stat": "3PT",
+      "line": 1.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Dillon Brooks",
+      "hits": 5,
+      "n": 7,
+      "vals": [
+        3.0,
+        4.0,
+        0.0,
+        2.0,
+        4.0,
+        3.0,
+        1.0
+      ],
+      "misses": [
+        0.0,
+        1.0
+      ],
+      "call": "RISK",
+      "athlete_id": "3155526",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Collin Gillespie",
+      "slug": "collin-gillespie",
+      "team": "PHX",
+      "stat": "PTS",
+      "line": 8.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Collin Gillespie",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        7.0,
+        6.0,
+        2.0,
+        3.0,
+        16.0,
+        9.0,
+        11.0
+      ],
+      "misses": [
+        7.0,
+        6.0,
+        2.0,
+        3.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4278585",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Collin Gillespie",
+      "slug": "collin-gillespie",
+      "team": "PHX",
+      "stat": "REB",
+      "line": 3.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Collin Gillespie",
+      "hits": 1,
+      "n": 7,
+      "vals": [
+        3.0,
+        2.0,
+        3.0,
+        1.0,
+        3.0,
+        1.0,
+        4.0
+      ],
+      "misses": [
+        3.0,
+        2.0,
+        3.0,
+        1.0,
+        3.0,
+        1.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4278585",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Collin Gillespie",
+      "slug": "collin-gillespie",
+      "team": "PHX",
+      "stat": "AST",
+      "line": 3.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Collin Gillespie",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        4.0,
+        2.0,
+        2.0,
+        2.0,
+        10.0,
+        2.0,
+        9.0
+      ],
+      "misses": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4278585",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Oso Ighodaro",
+      "slug": "oso-ighodaro",
+      "team": "PHX",
+      "stat": "PTS",
+      "line": 5.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Oso Ighodaro",
+      "hits": 3,
+      "n": 6,
+      "vals": [
+        4.0,
+        2.0,
+        9.0,
+        14.0,
+        2.0,
+        8.0
+      ],
+      "misses": [
+        4.0,
+        2.0,
+        2.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4601023",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Oso Ighodaro",
+      "slug": "oso-ighodaro",
+      "team": "PHX",
+      "stat": "REB",
+      "line": 4.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Oso Ighodaro",
+      "hits": 4,
+      "n": 6,
+      "vals": [
+        6.0,
+        5.0,
+        7.0,
+        2.0,
+        9.0,
+        3.0
+      ],
+      "misses": [
+        2.0,
+        3.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4601023",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Oso Ighodaro",
+      "slug": "oso-ighodaro",
+      "team": "PHX",
+      "stat": "AST",
+      "line": 2.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Oso Ighodaro",
+      "hits": 4,
+      "n": 6,
+      "vals": [
+        3.0,
+        1.0,
+        7.0,
+        2.0,
+        5.0,
+        3.0
+      ],
+      "misses": [
+        1.0,
+        2.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4601023",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Khaman Maluach",
+      "slug": "khaman-maluach",
+      "team": "PHX",
+      "stat": "PTS",
+      "line": 5.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Khaman Maluach",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        8.0,
+        8.0,
+        6.0,
+        5.0,
+        9.0,
+        12.0,
+        9.0
+      ],
+      "misses": [
+        5.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "5203685",
+      "sheet_team": "PHX"
+    },
+    {
+      "player": "Khaman Maluach",
+      "slug": "khaman-maluach",
+      "team": "PHX",
+      "stat": "REB",
+      "line": 4.5,
+      "source": "linesmart-HR",
+      "game": "SA @ PHX",
+      "posted_kind": "MAIN",
+      "hr_confirmed": true,
+      "sheet_name": "Khaman Maluach",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        10.0,
+        6.0,
+        6.0,
+        2.0,
+        6.0,
+        7.0,
+        9.0
+      ],
+      "misses": [
+        2.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "5203685",
+      "sheet_team": "PHX"
+    }
+  ]
+}
