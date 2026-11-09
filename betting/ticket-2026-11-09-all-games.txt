@@ -155,6 +155,13 @@ Every boarded player: athlete_id + full L7 MIN/PTS/REB/AST/STL/BLK/3PT
   BAN: soft REC 0.5 / micro REC_YD · Allen PASS_YD only RISK (not spine) · Dawkins Q (OL)
   SIDE LEAN: **BUF -3 / BUF ML** (HR≈-185) — primary NFL ticket piece; props thin after G3
 
+
+── NFL EVERY-PLAYER PASS (incl. kickers) ──
+  Census: 121 active BUF+MIN checked → betting/nfl-buf-min-full-roster-20261109.txt
+  Tyler Bass L7 KICK_PTS + Will Reichard L7 KICK_PTS sheeted — NO book line on Betravon/LS/HR → cannot lock
+  Firm props unchanged: Ty Johnson O1.5 REC KEEP · O15.5 REC_YD RISK-KEEP · else CUT/RISK
+  Primary NFL: BUF -3 / BUF ML
+
 ════════ FROM-SCRATCH SLATE LOCK ════════
 SAFE (firm KEEP @ HR only — soft ≤1.5 REB/AST/STL banned from spine):
   1. Cedric Coward O6.5 REB [KEEP 7/7] id=4903027 · MEM @ TOR · G3 HR
@@ -204,4 +211,5 @@ DONE CHECK
 - athlete_ids + full L7 cats on every boarded/lock player: yes
 - parlay lock 3-gated: yes · sheet_missing=none
 - NFL G1 sheets+G2 Betravon+G3 HR: yes (BUF@MIN)
+- NFL every active player + kickers census: yes
 - no lazy: fresh gate + fresh mains + HR-all-candidates + injury refresh + cat dump
