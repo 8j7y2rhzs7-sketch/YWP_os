@@ -1,3 +1,6 @@
+NOTE: REB alts updated — books usually offer posted−3 to posted−4, not −20%.
+See betting/alt-book-floors-20261109.txt for REB −3/−4 ladder.
+
 ════════════════════════════════════════════════════════════
 −20% ALT FLOORS · firm 6/7|7/7 (and NFL 4/5|5/5) · 2026-11-09
 Rule: alt = floor(main × 0.8) to nearest 0.5  (e.g. 6.5 → 5.0; 14.5 → 11.5)
