@@ -1,0 +1,115 @@
+════════════════════════════════════════════════════════════
+NBA MONEYLINES · 2026-11-09 · ESPN/DK ML + injuries + gated SIDES
+Pulled 2026-11-09 11:45 AM ET · confirm on Hard Rock before betting
+ML = lean card only (not prop spine). Chalk ≤−300 BAN unless clear injury edge.
+════════════════════════════════════════════════════════════
+
+── BOARD ──
+▶ LAL @ ATL · Scheduled · eid=401909952
+  Spread/OU: ATL -1.5 · O/U 237.5 · (DraftKings)
+  ML close: LAL +101 · ATL -120
+  ML open:  LAL -133 · ATL +112
+  Records: LAL 9-2 · ATL 7-4
+  OUT: Asa Newell(ATL), Keshon Gilbert(ATL), Jock Landale(ATL), Mouhamed Gueye(ATL), Henri Veesaar(ATL)
+  DTD: Luka Doncic(LAL), Quentin Grimes(LAL)
+  Ticket SIDE: ATL -1.5 · O/U 237.5 · eid=401909952
+  LEAN: **ATL ML -120** — gated SIDE → modest ML; aligned ticket SIDE
+
+▶ CLE @ CHA · Scheduled · eid=401909953
+  Spread/OU: CLE -8.5 · O/U 214.5 · (DraftKings)
+  ML close: CLE -337 · CHA +270
+  ML open:  CLE -309 · CHA +250
+  Records: CLE 5-5 · CHA 3-7
+  OUT: Grant Williams(CHA), Kon Knueppel(CHA), Dennis Schroder(CHA), Brandon Miller(CHA), Sam Merrill(CLE), Jaylon Tyson(CLE)
+  DTD: Moussa Diabate(CHA), Jarrett Allen(CLE)
+  Ticket SIDE: CLE -9.5 · O/U 214.5 · eid=401909953
+  LEAN: BAN CLE ML -337 — huge chalk CLE -337
+
+▶ WSH @ DET · Scheduled · eid=401909954
+  Spread/OU: DET -10.5 · O/U 217.5 · (DraftKings)
+  ML close: WSH +376 · DET -490
+  ML open:  WSH +348 · DET -448
+  Records: WSH 4-6 · DET 6-3
+  OUT: Jalen Duren(DET), Isaiah Joe(DET), Tristan Vukcevic(WSH), Reece Beekman(WSH), Justin Champagnie(WSH), Jamir Watkins(WSH)
+  DTD: Anthony Davis(WSH)
+  Ticket SIDE: DET -10.5 · O/U 217.5 · eid=401909954
+  LEAN: BAN DET ML -490 — huge chalk DET -490
+
+▶ MEM @ TOR · Scheduled · eid=401909955
+  Spread/OU: TOR -3.5 · O/U 229.5 · (DraftKings)
+  ML close: MEM +125 · TOR -148
+  ML open:  MEM +117 · TOR -139
+  Records: MEM 6-3 · TOR 5-4
+  OUT: Nate Bittle(TOR), Kawhi Leonard(TOR), Scotty Pippen Jr.(MEM), Isaiah Stewart(MEM), Richie Saunders(MEM)
+  DTD: Immanuel Quickley(TOR), Scottie Barnes(TOR)
+  Ticket SIDE: TOR -3.5 · O/U 228.5 · eid=401909955
+  LEAN: **TOR ML -148** — gated SIDE → modest ML; aligned ticket SIDE
+
+▶ IND @ DAL · Scheduled · eid=401909956
+  Spread/OU: DAL -3.5 · O/U 226.5 · (DraftKings)
+  ML close: IND +136 · DAL -161
+  ML open:  IND +142 · DAL -169
+  Records: IND 3-7 · DAL 6-4
+  OUT: Sergio de Larrea(DAL), Tarik Biberovic(DAL), Dereck Lively II(DAL), Tyrese Haliburton(IND), Johnny Furphy(IND), Ben Sheppard(IND)
+  DTD: T.J. McConnell(IND)
+  Ticket SIDE: DAL -2.5 · O/U 223.5 · eid=401909956
+  LEAN: **DAL ML -161** — gated SIDE → modest ML; aligned ticket SIDE
+
+▶ DEN @ HOU · Scheduled · eid=401909957
+  Spread/OU: HOU -9.5 · O/U 219.5 · (DraftKings)
+  ML close: DEN +276 · HOU -344
+  ML open:  DEN +139 · HOU -166
+  Records: DEN 5-3 · HOU 7-3
+  OUT: Oscar Tshiebwe(HOU), Clint Capela(HOU), Steven Adams(HOU)
+  DTD: Cameron Johnson(DEN), DeMar DeRozan(DEN), Christian Braun(DEN), Jamal Murray(DEN), Aaron Gordon(DEN)
+  Ticket SIDE: HOU -8.5 · O/U 217.5 · eid=401909957
+  LEAN: BAN HOU ML -344 — huge chalk HOU -344
+
+▶ SA @ PHX · Scheduled · eid=401909958
+  Spread/OU: SA -8.5 · O/U 227.5 · (DraftKings)
+  ML close: SA -359 · PHX +286
+  ML open:  SA -243 · PHX +200
+  Records: SA 8-2 · PHX 3-5
+  OUT: Jordan Goodwin(PHX), Mark Williams(PHX), Tobias Harris(SA), Jayden Quaintance(SA)
+  DTD: Devin Vassell(SA)
+  Ticket SIDE: SA -8.5 · O/U 227.5 · eid=401909958
+  LEAN: BAN SA ML -359 — huge chalk SA -359
+
+▶ NO @ GS · Scheduled · eid=401909959
+  Spread/OU: GS -9.5 · O/U 232.5 · (DraftKings)
+  ML close: NO +312 · GS -395
+  ML open:  NO +300 · GS -378
+  Records: NO 4-6 · GS 7-3
+  OUT: Will Richard(GS), Kristaps Porzingis(GS), Moses Moody(GS), Jimmy Butler III(GS), Yves Missi(NO)
+  DTD: Gui Santos(GS)
+  Ticket SIDE: GS -9.5 · O/U 232.5 · eid=401909959
+  LEAN: BAN GS ML -395 — huge chalk GS -395
+
+── ML CARD ──
+  [PRIMARY     ] LAL@ATL: **ATL ML -120** · gated SIDE → modest ML
+  [PRIMARY     ] MEM@TOR: **TOR ML -148** · gated SIDE → modest ML
+  [SECONDARY   ] IND@DAL: **DAL ML -161** · gated SIDE → modest ML
+
+── SPREAD INSTEAD OF ML (chalk) ──
+  CLE@CHA: skip CLE ML -337 → use spread CLE -9.5
+  WSH@DET: skip DET ML -490 → use spread DET -10.5
+  DEN@HOU: skip HOU ML -344 → use spread HOU -8.5
+  SA@PHX: skip SA ML -359 → use spread SA -8.5
+  NO@GS: skip GS ML -395 → use spread GS -9.5
+
+── BEST ML PLAYS TONIGHT ──
+  1-tier: ATL ML -120 (LAL@ATL) — gated SIDE → modest ML
+  1-tier: TOR ML -148 (MEM@TOR) — gated SIDE → modest ML
+  1-tier: DAL ML -161 (IND@DAL) — gated SIDE → modest ML
+
+── NOTES ──
+  LAL@ATL: Luka DTD — ATL ML is the pick if he sits/limited; if Luka plays, lean still ATL -1.5 spread
+  NO@GS: Butler OUT but GS ML usually −400ish chalk → SPREAD GS -9.5 not ML (prior ban on GS ML chalk)
+  DEN@HOU: DEN stars DTD — HOU side/ML strong but price is chalk; prefer HOU -8.5/−9.5 spread
+  CLE@CHA / DET@WSH / SA@PHX: big favorites — spread > ML
+
+DONE CHECK
+- ESPN ML close odds: yes n=8/8
+- Injuries per game: yes
+- Gated ticket SIDE cross-check: yes
+- Confirm prices on Hard Rock: required

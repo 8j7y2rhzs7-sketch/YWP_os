@@ -1,0 +1,150 @@
+════════════════════════════════════════════════════════════
+OVER/UNDER TOTALS · ALL GAMES · NBA + NHL + NFL · 2026-11-09
+Pulled 2026-11-09 11:52 AM ET · ESPN/DK numbers — confirm on Hard Rock
+Lean rules: juice + injuries/stars · chalk O/U (≥−130) fade or PASS · not forced into prop spine
+════════════════════════════════════════════════════════════
+
+──────── NBA (8) ────────
+▶ LAL @ ATL · Scheduled · eid=401909952
+  TOTAL **237.5** · Over -107 / Under -113 · (DraftKings)
+  Open total: 236.5 → now 237.5
+  Side context: ATL -1.5
+  OUT: Asa Newell(ATL), Keshon Gilbert(ATL), Jock Landale(ATL), Mouhamed Gueye(ATL), Henri Veesaar(ATL)
+  DTD: Luka Doncic(LAL), Quentin Grimes(LAL)
+  Ticket O/U: 237.5
+  LEAN: **UNDER 237.5** [PRIMARY] — Luka DTD + 237.5 is rich without full LAL offense
+
+▶ CLE @ CHA · Scheduled · eid=401909953
+  TOTAL **214.5** · Over -112 / Under -108 · (DraftKings)
+  Open total: 217.5 → now 214.5
+  Side context: CLE -8.5
+  OUT: Grant Williams(CHA), Kon Knueppel(CHA), Dennis Schroder(CHA), Brandon Miller(CHA), Sam Merrill(CLE), Jaylon Tyson(CLE)
+  DTD: Moussa Diabate(CHA), Jarrett Allen(CLE)
+  Ticket O/U: 214.5
+  LEAN: **UNDER 214.5** [SECONDARY] — CHA gutted (Miller/Schroder OUT) · 214.5 still OK under
+
+▶ WSH @ DET · Scheduled · eid=401909954
+  TOTAL **217.5** · Over -113 / Under -107 · (DraftKings)
+  Open total: 218.5 → now 217.5
+  Side context: DET -10.5
+  OUT: Jalen Duren(DET), Isaiah Joe(DET), Tristan Vukcevic(WSH), Reece Beekman(WSH), Justin Champagnie(WSH), Jamir Watkins(WSH)
+  DTD: Anthony Davis(WSH)
+  Ticket O/U: 217.5
+  LEAN: **UNDER 217.5** [SECONDARY] — AD DTD · DET without Duren — half-court lean
+
+▶ MEM @ TOR · Scheduled · eid=401909955
+  TOTAL **229.5** · Over -107 / Under -113 · (DraftKings)
+  Open total: 228.5 → now 229.5
+  Side context: TOR -3.5
+  OUT: Nate Bittle(TOR), Kawhi Leonard(TOR), Scotty Pippen Jr.(MEM), Isaiah Stewart(MEM), Richie Saunders(MEM)
+  DTD: Immanuel Quickley(TOR), Scottie Barnes(TOR)
+  Ticket O/U: 228.5
+  LEAN: **UNDER 229.5** [SECONDARY] — Kawhi OUT · Quickley/Barnes DTD — TOR creation dinged
+
+▶ IND @ DAL · Scheduled · eid=401909956
+  TOTAL **227.5** · Over -105 / Under -115 · (DraftKings)
+  Open total: 222.5 → now 227.5
+  Side context: DAL -3.5
+  OUT: Sergio de Larrea(DAL), Tarik Biberovic(DAL), Dereck Lively II(DAL), Tyrese Haliburton(IND), Johnny Furphy(IND), Ben Sheppard(IND)
+  DTD: T.J. McConnell(IND)
+  Ticket O/U: 223.5
+  LEAN: **UNDER 227.5** [SECONDARY] — Hali OUT · IND offense capped at 226.5
+
+▶ DEN @ HOU · Scheduled · eid=401909957
+  TOTAL **219.5** · Over -112 / Under -108 · (DraftKings)
+  Open total: 222.5 → now 219.5
+  Side context: HOU -9.5
+  OUT: Oscar Tshiebwe(HOU), Clint Capela(HOU), Steven Adams(HOU)
+  DTD: Cameron Johnson(DEN), DeMar DeRozan(DEN), Christian Braun(DEN), Jamal Murray(DEN), Aaron Gordon(DEN)
+  Ticket O/U: 217.5
+  LEAN: **UNDER 219.5** [PRIMARY] — Murray/Gordon/Braun/DeRozan DTD cluster vs 219.5
+
+▶ SA @ PHX · Scheduled · eid=401909958
+  TOTAL **227.5** · Over -110 / Under -110 · (DraftKings)
+  Open total: 225.5 → now 227.5
+  Side context: SA -8.5
+  OUT: Jordan Goodwin(PHX), Mark Williams(PHX), Tobias Harris(SA), Jayden Quaintance(SA)
+  DTD: Devin Vassell(SA)
+  Ticket O/U: 227.5
+  LEAN: **OVER 227.5** [SECONDARY] — SA 8-2 pace/offense vs thin PHX — 227.5 workable over
+
+▶ NO @ GS · Scheduled · eid=401909959
+  TOTAL **232.5** · Over -105 / Under -115 · (DraftKings)
+  Open total: 231.5 → now 232.5
+  Side context: GS -9.5
+  OUT: Will Richard(GS), Kristaps Porzingis(GS), Moses Moody(GS), Jimmy Butler III(GS), Yves Missi(NO)
+  DTD: Gui Santos(GS)
+  Ticket O/U: 232.5
+  LEAN: **UNDER 232.5** [PRIMARY] — Butler + Porzingis OUT — GS offense thinned at 232.5
+
+
+──────── NHL (3) ────────
+▶ NYR @ EDM · Scheduled · eid=401892680
+  TOTAL **6.5** · Over -112 / Under -108 · (DraftKings)
+  Side context: EDM -162
+  DTD: Colton Dach(EDM), Ryan Nugent-Hopkins(EDM), Alberts Smits(NYR)
+  LEAN: **UNDER 6.5** [SECONDARY] — standard 6.5 under lean — small edge only
+
+▶ PHI @ VAN · Scheduled · eid=401892681
+  TOTAL **6.5** · Over +110 / Under -130 · (DraftKings)
+  Side context: PHI -135
+  DTD: Tom Willander(VAN)
+  LEAN: PASS — Under -130 juiced; no edge laying juice on soft NHL under
+
+▶ NYI @ SJ · Scheduled · eid=401892682
+  TOTAL **6.5** · Over -102 / Under -118 · (DraftKings)
+  Side context: NYI -142
+  OUT: Ryan Pulock(NYI)
+  LEAN: **UNDER 6.5** [SECONDARY] — standard 6.5 under lean — small edge only
+
+
+──────── NFL (1) ────────
+▶ BUF @ MIN · Scheduled · eid=401873051
+  TOTAL **44.5** · Over -112 / Under -108 · (DraftKings)
+  Open total: 48.5 → now 44.5
+  Side context: BUF -3
+  OUT: Demond Claiborne(MIN), Jauan Jennings(MIN), Kyler Murray(MIN), Tyrell Shavers(BUF), Joshua Palmer(BUF)
+  DTD: Jay Ward(MIN), Theo Jackson(MIN), Alec Anderson(BUF), Dion Dawkins(BUF)
+  Ticket O/U: 44.5
+  LEAN: **UNDER 44.5** [PRIMARY] — Murray OUT · Jennings OUT · 44.5 rich for MIN offense
+
+── TOTALS CARD ──
+
+PRIMARY:
+  NBA LAL@ATL: **UNDER 237.5** (O -107 / U -113) — Luka DTD + 237.5 is rich without full LAL offense
+  NBA DEN@HOU: **UNDER 219.5** (O -112 / U -108) — Murray/Gordon/Braun/DeRozan DTD cluster vs 219.5
+  NBA NO@GS: **UNDER 232.5** (O -105 / U -115) — Butler + Porzingis OUT — GS offense thinned at 232.5
+  NFL BUF@MIN: **UNDER 44.5** (O -112 / U -108) — Murray OUT · Jennings OUT · 44.5 rich for MIN offense
+
+SECONDARY:
+  NBA CLE@CHA: **UNDER 214.5** (O -112 / U -108) — CHA gutted (Miller/Schroder OUT) · 214.5 still OK under
+  NBA WSH@DET: **UNDER 217.5** (O -113 / U -107) — AD DTD · DET without Duren — half-court lean
+  NBA MEM@TOR: **UNDER 229.5** (O -107 / U -113) — Kawhi OUT · Quickley/Barnes DTD — TOR creation dinged
+  NBA IND@DAL: **UNDER 227.5** (O -105 / U -115) — Hali OUT · IND offense capped at 226.5
+  NBA SA@PHX: **OVER 227.5** (O -110 / U -110) — SA 8-2 pace/offense vs thin PHX — 227.5 workable over
+  NHL NYR@EDM: **UNDER 6.5** (O -112 / U -108) — standard 6.5 under lean — small edge only
+  NHL PHI@VAN: **PASS** (Under -130 juiced) — skip; don't lay -130 on a soft NHL under
+  NHL NYI@SJ: **UNDER 6.5** (O -102 / U -118) — standard 6.5 under lean — small edge only
+
+── QUICK BOARD (every game) ──
+Sport Game         Total   Over   Under  Lean    
+NBA   LAL@ATL      237.5   -107   -113   UNDER   
+NBA   CLE@CHA      214.5   -112   -108   UNDER   
+NBA   WSH@DET      217.5   -113   -107   UNDER   
+NBA   MEM@TOR      229.5   -107   -113   UNDER   
+NBA   IND@DAL      227.5   -105   -115   UNDER   
+NBA   DEN@HOU      219.5   -112   -108   UNDER   
+NBA   SA@PHX       227.5   -110   -110   OVER    
+NBA   NO@GS        232.5   -105   -115   UNDER   
+NHL   NYR@EDM      6.5     -112   -108   UNDER   
+NHL   PHI@VAN      6.5     +110   -130   PASS    
+NHL   NYI@SJ       6.5     -102   -118   UNDER   
+NFL   BUF@MIN      44.5    -112   -108   UNDER   
+
+DONE CHECK
+- NBA totals: yes n=8
+- NHL totals: yes n=3
+- NFL totals: yes n=1
+- ESPN/DK O/U + juice: yes
+- Injury context: yes
+- Confirm on Hard Rock before bet: required

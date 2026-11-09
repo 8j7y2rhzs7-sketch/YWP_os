@@ -1,0 +1,686 @@
+[
+  {
+    "bucket": "lock",
+    "player": "Cedric Coward",
+    "id": "4903027",
+    "game": "MEM @ TOR",
+    "stat": "REB",
+    "main": 6.5,
+    "method": "posted\u22123/\u22124",
+    "vals": [
+      9.0,
+      9.0,
+      9.0,
+      7.0,
+      7.0,
+      11.0,
+      11.0
+    ],
+    "main_grade": [
+      "KEEP",
+      7,
+      7
+    ],
+    "alts": [
+      {
+        "line": 2.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false,
+        "take": true
+      },
+      {
+        "line": 3.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false,
+        "take": true
+      }
+    ],
+    "ladder": [
+      {
+        "line": 6.5,
+        "call": "KEEP",
+        "hits": "7/7",
+        "soft": false
+      },
+      {
+        "line": 5.5,
+        "call": "KEEP",
+        "hits": "7/7",
+        "soft": false
+      },
+      {
+        "line": 4.5,
+        "call": "KEEP",
+        "hits": "7/7",
+        "soft": false
+      },
+      {
+        "line": 3.5,
+        "call": "KEEP",
+        "hits": "7/7",
+        "soft": false
+      },
+      {
+        "line": 2.5,
+        "call": "KEEP",
+        "hits": "7/7",
+        "soft": false
+      }
+    ]
+  },
+  {
+    "bucket": "lock",
+    "player": "Cedric Coward",
+    "id": "4903027",
+    "game": "MEM @ TOR",
+    "stat": "3PT",
+    "main": 1.5,
+    "method": "\u221220%",
+    "vals": [
+      2.0,
+      4.0,
+      2.0,
+      2.0,
+      3.0,
+      4.0,
+      3.0
+    ],
+    "main_grade": [
+      "KEEP",
+      7,
+      7
+    ],
+    "alts": [
+      {
+        "line": 1.0,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false,
+        "take": true
+      }
+    ]
+  },
+  {
+    "bucket": "lock",
+    "player": "Ziaire Williams",
+    "id": "4433137",
+    "game": "LAL @ ATL",
+    "stat": "PTS",
+    "main": 7.5,
+    "method": "\u221220%",
+    "vals": [
+      17.0,
+      8.0,
+      10.0,
+      9.0,
+      11.0,
+      11.0,
+      14.0
+    ],
+    "main_grade": [
+      "KEEP",
+      7,
+      7
+    ],
+    "alts": [
+      {
+        "line": 6.0,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false,
+        "take": true
+      }
+    ]
+  },
+  {
+    "bucket": "lock",
+    "player": "Miles Bridges",
+    "id": "4066383",
+    "game": "SA @ PHX",
+    "stat": "REB",
+    "main": 6.5,
+    "method": "posted\u22123/\u22124",
+    "vals": [
+      10.0,
+      13.0,
+      7.0,
+      6.0,
+      10.0,
+      8.0,
+      7.0
+    ],
+    "main_grade": [
+      "RISK-KEEP",
+      6,
+      7
+    ],
+    "alts": [
+      {
+        "line": 2.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false,
+        "take": true
+      },
+      {
+        "line": 3.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false,
+        "take": true
+      }
+    ],
+    "ladder": [
+      {
+        "line": 6.5,
+        "call": "RISK-KEEP",
+        "hits": "6/7",
+        "soft": false
+      },
+      {
+        "line": 5.5,
+        "call": "KEEP",
+        "hits": "7/7",
+        "soft": false
+      },
+      {
+        "line": 4.5,
+        "call": "KEEP",
+        "hits": "7/7",
+        "soft": false
+      },
+      {
+        "line": 3.5,
+        "call": "KEEP",
+        "hits": "7/7",
+        "soft": false
+      },
+      {
+        "line": 2.5,
+        "call": "KEEP",
+        "hits": "7/7",
+        "soft": false
+      }
+    ]
+  },
+  {
+    "bucket": "lock",
+    "player": "Dillon Brooks",
+    "id": "3155526",
+    "game": "SA @ PHX",
+    "stat": "PTS",
+    "main": 14.5,
+    "method": "\u221220%",
+    "vals": [
+      11.0,
+      24.0,
+      15.0,
+      18.0,
+      22.0,
+      19.0,
+      15.0
+    ],
+    "main_grade": [
+      "RISK-KEEP",
+      6,
+      7
+    ],
+    "alts": [
+      {
+        "line": 11.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false,
+        "take": true
+      }
+    ]
+  },
+  {
+    "bucket": "lock",
+    "player": "Alperen Sengun",
+    "id": "4871144",
+    "game": "DEN @ HOU",
+    "stat": "AST",
+    "main": 6.5,
+    "method": "\u221220%",
+    "vals": [
+      5.0,
+      10.0,
+      10.0,
+      9.0,
+      9.0,
+      7.0,
+      7.0
+    ],
+    "main_grade": [
+      "RISK-KEEP",
+      6,
+      7
+    ],
+    "alts": [
+      {
+        "line": 5.0,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false,
+        "take": true
+      }
+    ]
+  },
+  {
+    "bucket": "bangers",
+    "player": "Nickeil Alexander-Walker",
+    "id": "4278039",
+    "game": "LAL @ ATL",
+    "stat": "PTS",
+    "main": 19.5,
+    "method": "\u221220%",
+    "vals": [
+      20.0,
+      28.0,
+      26.0,
+      34.0,
+      12.0,
+      25.0,
+      23.0
+    ],
+    "main_grade": [
+      "RISK-KEEP",
+      6,
+      7
+    ],
+    "alts": [
+      {
+        "line": 15.5,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false,
+        "take": true
+      }
+    ]
+  },
+  {
+    "bucket": "bangers",
+    "player": "Brandin Podziemski",
+    "id": "4709138",
+    "game": "NO @ GS",
+    "stat": "3PT",
+    "main": 1.5,
+    "method": "\u221220%",
+    "vals": [
+      4.0,
+      2.0,
+      3.0,
+      2.0,
+      4.0,
+      0.0,
+      3.0
+    ],
+    "main_grade": [
+      "RISK-KEEP",
+      6,
+      7
+    ],
+    "alts": [
+      {
+        "line": 1.0,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false,
+        "take": true
+      }
+    ]
+  },
+  {
+    "bucket": "bangers",
+    "player": "Kyshawn George",
+    "id": "5174563",
+    "game": "WSH @ DET",
+    "stat": "3PT",
+    "main": 1.5,
+    "method": "\u221220%",
+    "vals": [
+      2.0,
+      5.0,
+      3.0,
+      4.0,
+      4.0,
+      0.0,
+      2.0
+    ],
+    "main_grade": [
+      "RISK-KEEP",
+      6,
+      7
+    ],
+    "alts": [
+      {
+        "line": 1.0,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false,
+        "take": true
+      }
+    ]
+  },
+  {
+    "bucket": "bangers",
+    "player": "P.J. Washington",
+    "id": "4278078",
+    "game": "IND @ DAL",
+    "stat": "3PT",
+    "main": 1.5,
+    "method": "\u221220%",
+    "vals": [
+      2.0,
+      6.0,
+      3.0,
+      2.0,
+      1.0,
+      2.0,
+      4.0
+    ],
+    "main_grade": [
+      "RISK-KEEP",
+      6,
+      7
+    ],
+    "alts": [
+      {
+        "line": 1.0,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false,
+        "take": true
+      }
+    ]
+  },
+  {
+    "bucket": "bangers",
+    "player": "Miles Bridges",
+    "id": "4066383",
+    "game": "SA @ PHX",
+    "stat": "PTS",
+    "main": 14.5,
+    "method": "\u221220%",
+    "vals": [
+      13.0,
+      18.0,
+      18.0,
+      21.0,
+      24.0,
+      17.0,
+      16.0
+    ],
+    "main_grade": [
+      "RISK-KEEP",
+      6,
+      7
+    ],
+    "alts": [
+      {
+        "line": 11.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": false,
+        "take": true
+      }
+    ]
+  },
+  {
+    "bucket": "bangers",
+    "player": "Stephon Castle",
+    "id": "4845367",
+    "game": "SA @ PHX",
+    "stat": "REB",
+    "main": 4.5,
+    "method": "posted\u22123/\u22124",
+    "vals": [
+      7.0,
+      3.0,
+      10.0,
+      5.0,
+      5.0,
+      6.0,
+      5.0
+    ],
+    "main_grade": [
+      "RISK-KEEP",
+      6,
+      7
+    ],
+    "alts": [
+      {
+        "line": 0.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": true,
+        "take": false
+      },
+      {
+        "line": 1.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": true,
+        "take": false
+      }
+    ],
+    "ladder": [
+      {
+        "line": 4.5,
+        "call": "RISK-KEEP",
+        "hits": "6/7",
+        "soft": false
+      },
+      {
+        "line": 3.5,
+        "call": "RISK-KEEP",
+        "hits": "6/7",
+        "soft": false
+      },
+      {
+        "line": 2.5,
+        "call": "KEEP",
+        "hits": "7/7",
+        "soft": false
+      },
+      {
+        "line": 1.5,
+        "call": "KEEP",
+        "hits": "7/7",
+        "soft": true
+      },
+      {
+        "line": 0.5,
+        "call": "KEEP",
+        "hits": "7/7",
+        "soft": true
+      }
+    ]
+  },
+  {
+    "bucket": "bangers",
+    "player": "Devin Booker",
+    "id": "3136193",
+    "game": "SA @ PHX",
+    "stat": "3PT",
+    "main": 1.5,
+    "method": "\u221220%",
+    "vals": [
+      2.0,
+      4.0,
+      2.0,
+      2.0,
+      3.0,
+      0.0,
+      2.0
+    ],
+    "main_grade": [
+      "RISK-KEEP",
+      6,
+      7
+    ],
+    "alts": [
+      {
+        "line": 1.0,
+        "call": "RISK-KEEP",
+        "hits": 6,
+        "n": 7,
+        "soft": false,
+        "take": true
+      }
+    ]
+  },
+  {
+    "bucket": "bangers",
+    "player": "Keldon Johnson",
+    "id": "4395723",
+    "game": "SA @ PHX",
+    "stat": "REB",
+    "main": 4.5,
+    "method": "posted\u22123/\u22124",
+    "vals": [
+      7.0,
+      6.0,
+      5.0,
+      7.0,
+      6.0,
+      6.0,
+      4.0
+    ],
+    "main_grade": [
+      "RISK-KEEP",
+      6,
+      7
+    ],
+    "alts": [
+      {
+        "line": 0.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": true,
+        "take": false
+      },
+      {
+        "line": 1.5,
+        "call": "KEEP",
+        "hits": 7,
+        "n": 7,
+        "soft": true,
+        "take": false
+      }
+    ],
+    "ladder": [
+      {
+        "line": 4.5,
+        "call": "RISK-KEEP",
+        "hits": "6/7",
+        "soft": false
+      },
+      {
+        "line": 3.5,
+        "call": "KEEP",
+        "hits": "7/7",
+        "soft": false
+      },
+      {
+        "line": 2.5,
+        "call": "KEEP",
+        "hits": "7/7",
+        "soft": false
+      },
+      {
+        "line": 1.5,
+        "call": "KEEP",
+        "hits": "7/7",
+        "soft": true
+      },
+      {
+        "line": 0.5,
+        "call": "KEEP",
+        "hits": "7/7",
+        "soft": true
+      }
+    ]
+  },
+  {
+    "bucket": "nfl",
+    "player": "Ty Johnson",
+    "id": "3915411",
+    "game": "BUF @ MIN",
+    "stat": "REC_YD",
+    "main": 15.5,
+    "method": "\u221220%",
+    "vals": [
+      19.0,
+      24.0,
+      72.0,
+      9.0,
+      50.0
+    ],
+    "main_grade": [
+      "RISK-KEEP",
+      4,
+      5
+    ],
+    "alts": [
+      {
+        "line": 12.0,
+        "call": "RISK-KEEP",
+        "hits": 4,
+        "n": 5,
+        "soft": false,
+        "take": true
+      }
+    ]
+  },
+  {
+    "bucket": "nfl",
+    "player": "Ty Johnson",
+    "id": "3915411",
+    "game": "BUF @ MIN",
+    "stat": "REC",
+    "main": 1.5,
+    "method": "\u221220%",
+    "vals": [
+      3.0,
+      2.0,
+      4.0,
+      2.0,
+      4.0
+    ],
+    "main_grade": [
+      "KEEP",
+      5,
+      5
+    ],
+    "alts": [
+      {
+        "line": 1.0,
+        "call": "KEEP",
+        "hits": 5,
+        "n": 5,
+        "soft": false,
+        "take": true
+      }
+    ]
+  }
+]

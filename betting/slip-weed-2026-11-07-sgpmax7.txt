@@ -1,0 +1,27 @@
+SGPMAX 7 (+1223) — THREE GATE WEED — 2026-11-07
+Screenshot 752A44E5 · Balance $10
+
+G1 PASS date=20261107 · live ESPN props
+G2 public mains (Jrue 1.5 · Sengun AST 6.5 · Okongwu REB 6.5)
+G3 on-slip = those numbers / MLs as posted
+
+LEG                         G1/script              G2/G3        CALL
+SA ML (-220) @ POR          POR OUT Morant+Sharpe  HR -220      KEEP
+Jrue O1.5 3PT               L7 7/7 · L10 7/8       public 1.5   KEEP
+HOU ML (-275) @ PHX         PHX allows 121 PPG     HR -275      KEEP
+Sengun O6.5 AST             L7 6/7 miss=[5]        public 6.5   RISK-KEEP
+GS ML (-275) vs ORL         both sides gutted      HR -275      CUT / RISK
+DEN ML (-325) @ IND         IND OUT Hali+McConnell HR -325      RISK-KEEP (script KEEP, juice)
+Okongwu O6.5 REB            L7 6/7 · L10 6/10 CUT  public 6.5   RISK-KEEP (L10 soft)
+
+CLEAN LOCK
+1 SA ML
+2 Jrue O1.5 3PT
+3 HOU ML
+4 Sengun O6.5 AST
+5 DEN ML   (or swap to DEN -7.5/-8.5 if you want better price)
+DROP: GS ML (Butler/Moody/Porzingis issues + ORL chaos — weakest leg)
+OPTIONAL drop: Okongwu if you want tighter (L10 fails)
+
+6-leg alt without GS: SA · Jrue · HOU · Sengun AST · DEN · Okongwu
+5-leg cashier: SA · Jrue · HOU · Sengun AST · DEN

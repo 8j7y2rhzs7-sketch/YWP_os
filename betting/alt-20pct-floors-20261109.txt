@@ -1,0 +1,70 @@
+NOTE: REB alts updated — books usually offer posted−3 to posted−4, not −20%.
+See betting/alt-book-floors-20261109.txt for REB −3/−4 ladder.
+
+════════════════════════════════════════════════════════════
+−20% ALT FLOORS · firm 6/7|7/7 (and NFL 4/5|5/5) · 2026-11-09
+Rule: alt = floor(main × 0.8) to nearest 0.5  (e.g. 6.5 → 5.0; 14.5 → 11.5)
+Note: 6.5×0.8=5.2 → snaps to 5.0 (book may show 4.5/5.5 — both listed when close)
+SOFT flag: alt ≤1.5 REB/AST/STL or ≤0.5 3PT — not spine
+════════════════════════════════════════════════════════════
+
+── TAKE THESE ALTS (still KEEP/RISK-KEEP, not soft) ──
+  Miles Bridges            PTS  main O14.5  6/7  RISK-KEEP  → −20% O11.5  7/7  KEEP       L=[13.0, 18.0, 18.0, 21.0, 24.0, 17.0, 16.0] · SA @ PHX id=4066383
+  Ziaire Williams          PTS  main O7.5   7/7  KEEP       → −20% O6.0   7/7  KEEP       L=[17.0, 8.0, 10.0, 9.0, 11.0, 11.0, 14.0] · LAL @ ATL id=4433137
+  Cedric Coward            REB  main O6.5   7/7  KEEP       → −20% O5.0   7/7  KEEP       L=[9.0, 9.0, 9.0, 7.0, 7.0, 11.0, 11.0] · MEM @ TOR id=4903027
+  Miles Bridges            REB  main O6.5   6/7  RISK-KEEP  → −20% O5.0   7/7  KEEP       L=[10.0, 13.0, 7.0, 6.0, 10.0, 8.0, 7.0] · SA @ PHX id=4066383
+  Keldon Johnson           REB  main O4.5   6/7  RISK-KEEP  → −20% O3.5   7/7  KEEP       L=[7.0, 6.0, 5.0, 7.0, 6.0, 6.0, 4.0] · SA @ PHX id=4395723
+  Cedric Coward            3PT  main O1.5   7/7  KEEP       → −20% O1.0   7/7  KEEP       L=[2.0, 4.0, 2.0, 2.0, 3.0, 4.0, 3.0] · MEM @ TOR id=4903027
+  Ty Johnson               REC  main O1.5   5/5  KEEP       → −20% O1.0   5/5  KEEP       L=[3.0, 2.0, 4.0, 2.0, 4.0] · BUF @ MIN id=3915411
+  Nickeil Alexander-Walker PTS  main O19.5  6/7  RISK-KEEP  → −20% O15.5  6/7  RISK-KEEP  L=[20.0, 28.0, 26.0, 34.0, 12.0, 25.0, 23.0] · LAL @ ATL id=4278039
+  Ty Johnson               REC_YD main O15.5  4/5  RISK-KEEP  → −20% O12.0  4/5  RISK-KEEP  L=[19.0, 24.0, 72.0, 9.0, 50.0] · BUF @ MIN id=3915411
+  Dillon Brooks            PTS  main O14.5  6/7  RISK-KEEP  → −20% O11.5  6/7  RISK-KEEP  L=[11.0, 24.0, 15.0, 18.0, 22.0, 19.0, 15.0] · SA @ PHX id=3155526
+  Alperen Sengun           AST  main O6.5   6/7  RISK-KEEP  → −20% O5.0   6/7  RISK-KEEP  L=[5.0, 10.0, 10.0, 9.0, 9.0, 7.0, 7.0] · DEN @ HOU id=4871144
+  Stephon Castle           REB  main O4.5   6/7  RISK-KEEP  → −20% O3.5   6/7  RISK-KEEP  L=[7.0, 3.0, 10.0, 5.0, 5.0, 6.0, 5.0] · SA @ PHX id=4845367
+  Brandin Podziemski       3PT  main O1.5   6/7  RISK-KEEP  → −20% O1.0   6/7  RISK-KEEP  L=[4.0, 2.0, 3.0, 2.0, 4.0, 0.0, 3.0] · NO @ GS id=4709138
+  Devin Booker             3PT  main O1.5   6/7  RISK-KEEP  → −20% O1.0   6/7  RISK-KEEP  L=[2.0, 4.0, 2.0, 2.0, 3.0, 0.0, 2.0] · SA @ PHX id=3136193
+  Kyshawn George           3PT  main O1.5   6/7  RISK-KEEP  → −20% O1.0   6/7  RISK-KEEP  L=[2.0, 5.0, 3.0, 4.0, 4.0, 0.0, 2.0] · WSH @ DET id=5174563
+  P.J. Washington          3PT  main O1.5   6/7  RISK-KEEP  → −20% O1.0   6/7  RISK-KEEP  L=[2.0, 6.0, 3.0, 2.0, 1.0, 2.0, 4.0] · IND @ DAL id=4278078
+
+── NEAR BOOK HALF-LINES (if app only has .5 steps around the snap) ──
+  For each takeable alt, also grade floor(raw80) and ceil neighbors:
+  Miles Bridges PTS main O14.5: O11.0 7/7 KEEP · O11.5 7/7 KEEP←snap · O12.0 7/7 KEEP
+  Ziaire Williams PTS main O7.5: O5.5 7/7 KEEP · O6.0 7/7 KEEP←snap · O6.5 7/7 KEEP
+  Cedric Coward REB main O6.5: O4.5 7/7 KEEP · O5.0 7/7 KEEP←snap · O5.5 7/7 KEEP
+  Miles Bridges REB main O6.5: O4.5 7/7 KEEP · O5.0 7/7 KEEP←snap · O5.5 7/7 KEEP
+  Keldon Johnson REB main O4.5: O3.0 7/7 KEEP · O3.5 7/7 KEEP←snap · O4.0 6/7 RISK-KEEP
+  Cedric Coward 3PT main O1.5: O0.5 7/7 KEEP · O1.0 7/7 KEEP←snap · O1.5 7/7 KEEP
+  Ty Johnson REC main O1.5: O0.5 5/5 KEEP · O1.0 5/5 KEEP←snap · O1.5 5/5 KEEP
+  Nickeil Alexander-Walker PTS main O19.5: O15.0 6/7 RISK-KEEP · O15.5 6/7 RISK-KEEP←snap · O16.0 6/7 RISK-KEEP
+  Ty Johnson REC_YD main O15.5: O11.5 4/5 RISK-KEEP · O12.0 4/5 RISK-KEEP←snap · O12.5 4/5 RISK-KEEP
+  Dillon Brooks PTS main O14.5: O11.0 6/7 RISK-KEEP · O11.5 6/7 RISK-KEEP←snap · O12.0 6/7 RISK-KEEP
+  Alperen Sengun AST main O6.5: O4.5 7/7 KEEP · O5.0 6/7 RISK-KEEP←snap · O5.5 6/7 RISK-KEEP
+  Stephon Castle REB main O4.5: O3.0 6/7 RISK-KEEP · O3.5 6/7 RISK-KEEP←snap · O4.0 6/7 RISK-KEEP
+  Brandin Podziemski 3PT main O1.5: O0.5 6/7 RISK-KEEP · O1.0 6/7 RISK-KEEP←snap · O1.5 6/7 RISK-KEEP
+  Devin Booker 3PT main O1.5: O0.5 6/7 RISK-KEEP · O1.0 6/7 RISK-KEEP←snap · O1.5 6/7 RISK-KEEP
+  Kyshawn George 3PT main O1.5: O0.5 6/7 RISK-KEEP · O1.0 6/7 RISK-KEEP←snap · O1.5 6/7 RISK-KEEP
+  P.J. Washington 3PT main O1.5: O0.5 7/7 KEEP · O1.0 6/7 RISK-KEEP←snap · O1.5 6/7 RISK-KEEP
+
+── ALL FIRM MAINS → −20% (incl. soft / skip) ──
+  [bangers] Miles Bridges            PTS  O14.5 6/7 → O11.5 (11.6*0.8) 7/7 KEEP
+  [lock   ] Ziaire Williams          PTS  O7.5 7/7 → O6.0 (6.0*0.8) 7/7 KEEP
+  [lock   ] Cedric Coward            REB  O6.5 7/7 → O5.0 (5.2*0.8) 7/7 KEEP
+  [lock   ] Miles Bridges            REB  O6.5 6/7 → O5.0 (5.2*0.8) 7/7 KEEP
+  [bangers] Keldon Johnson           REB  O4.5 6/7 → O3.5 (3.6*0.8) 7/7 KEEP
+  [lock   ] Cedric Coward            3PT  O1.5 7/7 → O1.0 (1.2*0.8) 7/7 KEEP
+  [nfl    ] Ty Johnson               REC  O1.5 5/5 → O1.0 (1.2*0.8) 5/5 KEEP
+  [bangers] Nickeil Alexander-Walker PTS  O19.5 6/7 → O15.5 (15.6*0.8) 6/7 RISK-KEEP
+  [nfl    ] Ty Johnson               REC_YD O15.5 4/5 → O12.0 (12.4*0.8) 4/5 RISK-KEEP
+  [lock   ] Dillon Brooks            PTS  O14.5 6/7 → O11.5 (11.6*0.8) 6/7 RISK-KEEP
+  [lock   ] Alperen Sengun           AST  O6.5 6/7 → O5.0 (5.2*0.8) 6/7 RISK-KEEP
+  [bangers] Stephon Castle           REB  O4.5 6/7 → O3.5 (3.6*0.8) 6/7 RISK-KEEP
+  [bangers] Brandin Podziemski       3PT  O1.5 6/7 → O1.0 (1.2*0.8) 6/7 RISK-KEEP
+  [bangers] Devin Booker             3PT  O1.5 6/7 → O1.0 (1.2*0.8) 6/7 RISK-KEEP
+  [bangers] Kyshawn George           3PT  O1.5 6/7 → O1.0 (1.2*0.8) 6/7 RISK-KEEP
+  [bangers] P.J. Washington          3PT  O1.5 6/7 → O1.0 (1.2*0.8) 6/7 RISK-KEEP
+
+── BRIDGES EXAMPLE (your slip used 5.5) ──
+  Miles Bridges REB O6.5: 6/7 RISK-KEEP L=[10.0, 13.0, 7.0, 6.0, 10.0, 8.0, 7.0]
+  Miles Bridges REB O5.5: 7/7 KEEP L=[10.0, 13.0, 7.0, 6.0, 10.0, 8.0, 7.0]
+  Miles Bridges REB O5.0: 7/7 KEEP L=[10.0, 13.0, 7.0, 6.0, 10.0, 8.0, 7.0]
+  Miles Bridges REB O4.5: 7/7 KEEP L=[10.0, 13.0, 7.0, 6.0, 10.0, 8.0, 7.0]

@@ -1,0 +1,146 @@
+POSTED-MAIN CARD — 2026-11-09
+Source: Betravon consensus mains + GATE RS sheets. Soft floors NOT listed.
+Graded 380 / unmatched 4
+
+=== KEEP (perfect clear at POSTED main) ===
+  7/7  Cedric Coward O1.5 3PT  MEM vs TOR  id=4903027  L=[2.0, 4.0, 2.0, 2.0, 3.0, 4.0, 3.0]
+  7/7  Duncan Robinson O1.5 AST  DET vs WSH  id=3157465  L=[3.0, 2.0, 3.0, 2.0, 2.0, 2.0, 3.0]
+  7/7  Trey Murphy III O2.5 AST  NO vs GS  id=4397688  L=[3.0, 5.0, 5.0, 5.0, 3.0, 3.0, 4.0]
+  7/7  Ziaire Williams O7.5 PTS  LAL vs ATL  id=4433137  L=[17.0, 8.0, 10.0, 9.0, 11.0, 11.0, 14.0]
+  7/7  CJ McCollum O1.5 REB  ATL vs LAL  id=2490149  L=[4.0, 3.0, 5.0, 9.0, 2.0, 3.0, 2.0]
+  7/7  Cedric Coward O6.5 REB  MEM vs TOR  id=4903027  L=[9.0, 9.0, 9.0, 7.0, 7.0, 11.0, 11.0]
+  7/7  Draymond Green O3.5 REB  GS vs NO  id=6589  L=[6.0, 5.0, 4.0, 4.0, 9.0, 4.0, 5.0]
+  7/7  Jeremiah Fears O3.5 REB  NO vs GS  id=5144091  L=[6.0, 5.0, 6.0, 4.0, 5.0, 8.0, 4.0]
+  7/7  Devin Vassell O0.5 STL  SA vs PHX  id=4395630  L=[2.0, 1.0, 2.0, 1.0, 2.0, 3.0, 1.0]
+
+=== RISK-KEEP (one miss at POSTED main) ===
+  6/7  Brandin Podziemski O1.5 3PT  miss=[0.0]  id=4709138
+  6/7  Devin Booker O1.5 3PT  miss=[0.0]  id=3136193
+  6/7  Dylan Harper O0.5 3PT  miss=[0.0]  id=5037871
+  6/7  Kyshawn George O1.5 3PT  miss=[0.0]  id=5174563
+  6/7  Miles Bridges O1.5 3PT  miss=[1.0]  id=4066383
+  6/7  P.J. Washington O1.5 3PT  miss=[1.0]  id=4278078
+  6/7  Alperen Sengun O6.5 AST  miss=[5.0]  id=4871144
+  6/7  Jabari Smith Jr. O1.5 AST  miss=[0.0]  id=4432639
+  6/7  Miles Bridges O2.5 AST  miss=[2.0]  id=4066383
+  6/7  Peyton Watson O1.5 AST  miss=[1.0]  id=4576087
+  6/7  Dillon Brooks O14.5 PTS  miss=[11.0]  id=3155526
+  6/7  Khaman Maluach O5.5 PTS  miss=[5.0]  id=5203685
+  6/7  Miles Bridges O14.5 PTS  miss=[13.0]  id=4066383
+  6/7  Nickeil Alexander-Walker O19.5 PTS  miss=[12.0]  id=4278039
+  6/7  Fred VanVleet O2.5 REB  miss=[2.0]  id=2991230
+  6/7  Keldon Johnson O4.5 REB  miss=[4.0]  id=4395723
+  6/7  Khaman Maluach O5.5 REB  miss=[2.0]  id=5203685
+  6/7  Marcus Smart O1.5 REB  miss=[1.0]  id=2990992
+  6/7  Miles Bridges O6.5 REB  miss=[6.0]  id=4066383
+  6/7  Collin Gillespie O1.5 STL  miss=[0.0]  id=4278585
+  6/7  Kyrie Irving O0.5 STL  miss=[0.0]  id=6442
+  6/7  Matisse Thybulle O1.5 STL  miss=[0.0]  id=3907498
+  6/7  Victor Wembanyama O0.5 STL  miss=[0.0]  id=5104157
+  5/6  AJ Dybantsa O0.5 3PT  miss=[0.0]  id=5142718
+
+=== RISK (≈70%+ at POSTED main) ===
+  8/10  Simon Holmstrom O1.5 SOG  miss=[1.0, 1.0]
+  8/10  Trevor Zegras O1.5 SOG  miss=[0.0, 1.0]
+  8/10  Tye Kartye O1.5 SOG  miss=[0.0, 1.0]
+  5/7  Aaron Nesmith O1.5 3PT  miss=[0.0, 1.0]
+  5/7  Alperen Sengun O0.5 3PT  miss=[0.0, 0.0]
+  5/7  Andrew Nembhard O1.5 3PT  miss=[1.0, 1.0]
+  5/7  Cameron Boozer O1.5 3PT  miss=[0.0, 1.0]
+  5/7  Dillon Brooks O1.5 3PT  miss=[0.0, 1.0]
+  5/7  Fred VanVleet O2.5 3PT  miss=[2.0, 0.0]
+  5/7  Jamal Murray O2.5 3PT  miss=[2.0, 2.0]
+  5/7  James Harden O2.5 3PT  miss=[1.0, 2.0]
+  5/7  Onyeka Okongwu O1.5 3PT  miss=[0.0, 1.0]
+  5/7  Ziaire Williams O1.5 3PT  miss=[1.0, 1.0]
+  5/7  Daniss Jenkins O3.5 AST  miss=[3.0, 2.0]
+  5/7  Devin Booker O4.5 AST  miss=[3.0, 2.0]
+  5/7  Dillon Brooks O1.5 AST  miss=[1.0, 1.0]
+  5/7  Dyson Daniels O4.5 AST  miss=[4.0, 3.0]
+  5/7  Fred VanVleet O4.5 AST  miss=[4.0, 3.0]
+  5/7  Jeremiah Fears O3.5 AST  miss=[2.0, 3.0]
+  5/7  Kyshawn George O4.5 AST  miss=[3.0, 2.0]
+  5/7  Nikola Jokic O8.5 AST  miss=[8.0, 8.0]
+  5/7  Pascal Siakam O3.5 AST  miss=[2.0, 3.0]
+  5/7  Kevin Durant O0.5 BLK  miss=[0.0, 0.0]
+  5/7  Onyeka Okongwu O0.5 BLK  miss=[0.0, 0.0]
+  5/7  Andrew Nembhard O15.5 PTS  miss=[9.0, 14.0]
+  5/7  Devin Vassell O10.5 PTS  miss=[2.0, 9.0]
+  5/7  Fred VanVleet O11.5 PTS  miss=[8.0, 5.0]
+  5/7  Jake LaRavia O5.5 PTS  miss=[5.0, 2.0]
+  5/7  Kevin Huerter O7.5 PTS  miss=[3.0, 7.0]
+  5/7  Kingston Flemings O8.5 PTS  miss=[2.0, 6.0]
+  5/7  Pascal Siakam O19.5 PTS  miss=[17.0, 13.0]
+  5/7  Saddiq Bey O12.5 PTS  miss=[10.0, 9.0]
+  5/7  Stephen Curry O28.5 PTS  miss=[24.0, 24.0]
+  5/7  Aaron Wiggins O3.5 REB  miss=[3.0, 2.0]
+  5/7  Cameron Boozer O8.5 REB  miss=[6.0, 7.0]
+  5/7  Ja'Kobe Walter O3.5 REB  miss=[1.0, 3.0]
+  5/7  Jamal Murray O4.5 REB  miss=[1.0, 3.0]
+  5/7  Jarrett Allen O7.5 REB  miss=[1.0, 6.0]
+  5/7  Onyeka Okongwu O7.5 REB  miss=[2.0, 4.0]
+  5/7  Trae Young O2.5 REB  miss=[2.0, 2.0]
+
+=== CUT at POSTED main (do not bet) ===
+  299 props fail at book main — including soft-floor favorites.
+  6/10  Alexis Lafreniere O1.5 SOG  miss=[1.0, 1.0, 0.0, 1.0]
+  6/10  Bo Horvat O2.5 SOG  miss=[2.0, 2.0, 2.0, 2.0]
+  6/10  Gabe Perreault O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0]
+  6/10  J.T. Miller O1.5 SOG  miss=[1.0, 1.0, 1.0, 0.0]
+  6/10  Kasperi Kapanen O1.5 SOG  miss=[0.0, 1.0, 1.0, 0.0]
+  6/10  Leon Draisaitl O3.5 SOG  miss=[3.0, 2.0, 2.0, 3.0]
+  6/10  Macklin Celebrini O3.5 SOG  miss=[2.0, 2.0, 1.0, 2.0]
+  6/10  Matvei Michkov O1.5 SOG  miss=[0.0, 0.0, 1.0, 1.0]
+  6/10  Porter Martone O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0]
+  4/7  Victor Wembanyama O1.5 3PT  miss=[1.0, 0.0, 0.0]
+  4/7  Victor Wembanyama O2.5 AST  miss=[2.0, 2.0, 2.0]
+  4/7  Victor Wembanyama O29.5 PTS  miss=[29.0, 12.0, 29.0]
+  4/7  Victor Wembanyama O10.5 REB  miss=[7.0, 7.0, 10.0]
+  5/9  Travis Konecny O1.5 SOG  miss=[0.0, 1.0, 1.0, 1.0]
+  5/10  Adam Fox O1.5 SOG  miss=[1.0, 1.0, 0.0, 0.0, 0.0]
+  5/10  Brayden Schenn O1.5 SOG  miss=[1.0, 0.0, 1.0, 1.0, 1.0]
+  5/10  Christian Dvorak O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 0.0]
+  5/10  Evan Bouchard O2.5 SOG  miss=[1.0, 1.0, 2.0, 2.0, 0.0]
+  5/10  Michael Misa O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 1.0]
+  5/10  Oliver Bjorkstrand O1.5 SOG  miss=[0.0, 1.0, 1.0, 0.0, 1.0]
+  5/10  Owen Tippett O2.5 SOG  miss=[2.0, 1.0, 1.0, 1.0, 0.0]
+  5/10  Pavel Dorofeyev O2.5 SOG  miss=[1.0, 1.0, 1.0, 2.0, 2.0]
+  5/10  Tyson Foerster O2.5 SOG  miss=[2.0, 1.0, 1.0, 1.0, 2.0]
+  5/10  Victor Eklund O1.5 SOG  miss=[1.0, 0.0, 0.0, 0.0, 0.0]
+  5/10  Will Smith O2.5 SOG  miss=[2.0, 0.0, 2.0, 2.0, 1.0]
+  4/9  Ryan Nugent-Hopkins O1.5 SOG  miss=[0.0, 1.0, 1.0, 0.0, 1.0]
+  3/7  Victor Wembanyama O3.5 BLK  miss=[1.0, 2.0, 3.0, 2.0]
+  3/7  Nikola Jokic O25.5 PTS  miss=[19.0, 18.0, 21.0, 19.0]
+  3/7  Nikola Jokic O10.5 REB  miss=[10.0, 9.0, 7.0, 7.0]
+  4/10  Brock Boeser O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 0.0, 1.0]
+  4/10  Emil Heineman O1.5 SOG  miss=[1.0, 0.0, 0.0, 0.0, 0.0, 1.0]
+  4/10  Kyle Palmieri O2.5 SOG  miss=[2.0, 2.0, 2.0, 2.0, 1.0, 0.0]
+  4/10  Linus Karlsson O1.5 SOG  miss=[1.0, 1.0, 0.0, 0.0, 1.0, 0.0]
+  4/10  Marco Rossi O1.5 SOG  miss=[1.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+  4/10  Mika Zibanejad O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 1.0, 0.0]
+  4/10  Tyler Toffoli O1.5 SOG  miss=[1.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+  4/10  Vasily Podkolzin O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 1.0, 0.0]
+  4/10  Will Cuylle O1.5 SOG  miss=[0.0, 0.0, 1.0, 1.0, 1.0, 0.0]
+  3/10  Elias Pettersson O1.5 SOG  miss=[0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0]
+  3/10  Filip Hronek O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0]
+  3/10  Jake DeBrusk O2.5 SOG  miss=[2.0, 1.0, 2.0, 0.0, 2.0, 1.0, 0.0]
+  3/10  Matthew Schaefer O3.5 SOG  miss=[3.0, 2.0, 2.0, 2.0, 1.0, 1.0, 3.0]
+  3/10  Mattias Ekholm O1.5 SOG  miss=[1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0]
+  2/7  Nikola Jokic O1.5 3PT  miss=[1.0, 0.0, 0.0, 0.0, 1.0]
+  2/7  Nickeil Alexander-Walker O3.5 REB  miss=[3.0, 2.0, 2.0, 3.0, 3.0]
+  2/7  Zach Hyman O2.5 SOG  miss=[2.0, 2.0, 1.0, 2.0, 1.0]
+  2/7  Nickeil Alexander-Walker O1.5 STL  miss=[0.0, 0.0, 1.0, 0.0, 1.0]
+  2/10  Connor McDavid O3.5 SOG  miss=[3.0, 3.0, 1.0, 3.0, 3.0, 2.0, 3.0, 3.0]
+  1/7  Nickeil Alexander-Walker O2.5 AST  miss=[1.0, 2.0, 2.0, 1.0, 1.0, 1.0]
+
+=== CLEAN SLIP (KEEP @ posted mains only) ===
+  1. Cedric Coward O1.5 3PT  (7/7)  MEM vs TOR
+  2. Duncan Robinson O1.5 AST  (7/7)  DET vs WSH
+  3. Trey Murphy III O2.5 AST  (7/7)  NO vs GS
+  4. Ziaire Williams O7.5 PTS  (7/7)  LAL vs ATL
+  5. CJ McCollum O1.5 REB  (7/7)  ATL vs LAL
+  6. Draymond Green O3.5 REB  (7/7)  GS vs NO
+  7. Jeremiah Fears O3.5 REB  (7/7)  NO vs GS
+  8. Devin Vassell O0.5 STL  (7/7)  SA vs PHX
+
+DONE: No soft floors. If a KEEP number is missing on HR, skip that leg — do not invent a lower alt.
