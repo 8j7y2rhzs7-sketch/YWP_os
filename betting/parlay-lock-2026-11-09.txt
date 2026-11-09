@@ -1,8 +1,10 @@
-PARLAY LOCK — 2026-11-09 AM · THREE GATES · HR mains
+PARLAY LOCK — 2026-11-09 ALL GAMES · THREE GATES
 1. Cedric Coward O6.5 REB [KEEP 7/7] id=4903027 G3=HR MEM@TOR
 2. Cedric Coward O1.5 3PT [KEEP 7/7] id=4903027 G3=HR MEM@TOR
 3. Ziaire Williams O7.5 PTS [KEEP 7/7] id=4433137 G3=HR LAL@ATL
 4. Miles Bridges O6.5 REB [RISK-KEEP 6/7] id=4066383 G3=HR SA@PHX
 5. Dillon Brooks O14.5 PTS [RISK-KEEP 6/7] id=3155526 G3=HR SA@PHX
-Optional 6 (one): Sengun O6.5 AST · Castle O4.5 REB · SA -8.5
-BAN: Draymond 5.5 REB · Murphy 3.5 AST · Duncan 2.5 AST · Fears 4.5 REB cash · Vassell DTD
+6. Alperen Sengun O6.5 AST [RISK-KEEP 6/7] id=4871144 G3=HR DEN@HOU
+Optional side: SA -8.5 or CLE -9.5
+Per-game: Watson AST · George 3PT · PJ Wash 3PT · Castle REB · Podz 3PT · NAW 19.5
+SOG RISK only (cap ≤2): Holmstrom / Zegras / Kartye
