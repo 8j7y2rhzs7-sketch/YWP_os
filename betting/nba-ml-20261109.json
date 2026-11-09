@@ -1,0 +1,248 @@
+{
+  "games": [
+    {
+      "eid": "401909952",
+      "short": "LAL @ ATL",
+      "status": "Scheduled",
+      "home": "ATL",
+      "away": "LAL",
+      "home_rec": "7-4",
+      "away_rec": "9-2",
+      "home_ml": -120,
+      "away_ml": 101,
+      "home_open": 112,
+      "away_open": -133,
+      "spread": "ATL -1.5",
+      "ou": 237.5,
+      "provider": "DraftKings",
+      "out": [
+        "Asa Newell(ATL)",
+        "Keshon Gilbert(ATL)",
+        "Jock Landale(ATL)",
+        "Mouhamed Gueye(ATL)",
+        "Henri Veesaar(ATL)"
+      ],
+      "dtd": [
+        "Luka Doncic(LAL)",
+        "Quentin Grimes(LAL)"
+      ]
+    },
+    {
+      "eid": "401909953",
+      "short": "CLE @ CHA",
+      "status": "Scheduled",
+      "home": "CHA",
+      "away": "CLE",
+      "home_rec": "3-7",
+      "away_rec": "5-5",
+      "home_ml": 270,
+      "away_ml": -337,
+      "home_open": 250,
+      "away_open": -309,
+      "spread": "CLE -8.5",
+      "ou": 214.5,
+      "provider": "DraftKings",
+      "out": [
+        "Grant Williams(CHA)",
+        "Kon Knueppel(CHA)",
+        "Dennis Schroder(CHA)",
+        "Brandon Miller(CHA)",
+        "Sam Merrill(CLE)",
+        "Jaylon Tyson(CLE)"
+      ],
+      "dtd": [
+        "Moussa Diabate(CHA)",
+        "Jarrett Allen(CLE)"
+      ]
+    },
+    {
+      "eid": "401909954",
+      "short": "WSH @ DET",
+      "status": "Scheduled",
+      "home": "DET",
+      "away": "WSH",
+      "home_rec": "6-3",
+      "away_rec": "4-6",
+      "home_ml": -490,
+      "away_ml": 376,
+      "home_open": -448,
+      "away_open": 348,
+      "spread": "DET -10.5",
+      "ou": 217.5,
+      "provider": "DraftKings",
+      "out": [
+        "Jalen Duren(DET)",
+        "Isaiah Joe(DET)",
+        "Tristan Vukcevic(WSH)",
+        "Reece Beekman(WSH)",
+        "Justin Champagnie(WSH)",
+        "Jamir Watkins(WSH)"
+      ],
+      "dtd": [
+        "Anthony Davis(WSH)"
+      ]
+    },
+    {
+      "eid": "401909955",
+      "short": "MEM @ TOR",
+      "status": "Scheduled",
+      "home": "TOR",
+      "away": "MEM",
+      "home_rec": "5-4",
+      "away_rec": "6-3",
+      "home_ml": -148,
+      "away_ml": 125,
+      "home_open": -139,
+      "away_open": 117,
+      "spread": "TOR -3.5",
+      "ou": 229.5,
+      "provider": "DraftKings",
+      "out": [
+        "Nate Bittle(TOR)",
+        "Kawhi Leonard(TOR)",
+        "Scotty Pippen Jr.(MEM)",
+        "Isaiah Stewart(MEM)",
+        "Richie Saunders(MEM)"
+      ],
+      "dtd": [
+        "Immanuel Quickley(TOR)",
+        "Scottie Barnes(TOR)"
+      ]
+    },
+    {
+      "eid": "401909956",
+      "short": "IND @ DAL",
+      "status": "Scheduled",
+      "home": "DAL",
+      "away": "IND",
+      "home_rec": "6-4",
+      "away_rec": "3-7",
+      "home_ml": -161,
+      "away_ml": 136,
+      "home_open": -169,
+      "away_open": 142,
+      "spread": "DAL -3.5",
+      "ou": 226.5,
+      "provider": "DraftKings",
+      "out": [
+        "Sergio de Larrea(DAL)",
+        "Tarik Biberovic(DAL)",
+        "Dereck Lively II(DAL)",
+        "Tyrese Haliburton(IND)",
+        "Johnny Furphy(IND)",
+        "Ben Sheppard(IND)"
+      ],
+      "dtd": [
+        "T.J. McConnell(IND)"
+      ]
+    },
+    {
+      "eid": "401909957",
+      "short": "DEN @ HOU",
+      "status": "Scheduled",
+      "home": "HOU",
+      "away": "DEN",
+      "home_rec": "7-3",
+      "away_rec": "5-3",
+      "home_ml": -344,
+      "away_ml": 276,
+      "home_open": -166,
+      "away_open": 139,
+      "spread": "HOU -9.5",
+      "ou": 219.5,
+      "provider": "DraftKings",
+      "out": [
+        "Oscar Tshiebwe(HOU)",
+        "Clint Capela(HOU)",
+        "Steven Adams(HOU)"
+      ],
+      "dtd": [
+        "Cameron Johnson(DEN)",
+        "DeMar DeRozan(DEN)",
+        "Christian Braun(DEN)",
+        "Jamal Murray(DEN)",
+        "Aaron Gordon(DEN)"
+      ]
+    },
+    {
+      "eid": "401909958",
+      "short": "SA @ PHX",
+      "status": "Scheduled",
+      "home": "PHX",
+      "away": "SA",
+      "home_rec": "3-5",
+      "away_rec": "8-2",
+      "home_ml": 286,
+      "away_ml": -359,
+      "home_open": 200,
+      "away_open": -243,
+      "spread": "SA -8.5",
+      "ou": 227.5,
+      "provider": "DraftKings",
+      "out": [
+        "Jordan Goodwin(PHX)",
+        "Mark Williams(PHX)",
+        "Tobias Harris(SA)",
+        "Jayden Quaintance(SA)"
+      ],
+      "dtd": [
+        "Devin Vassell(SA)"
+      ]
+    },
+    {
+      "eid": "401909959",
+      "short": "NO @ GS",
+      "status": "Scheduled",
+      "home": "GS",
+      "away": "NO",
+      "home_rec": "7-3",
+      "away_rec": "4-6",
+      "home_ml": -395,
+      "away_ml": 312,
+      "home_open": -378,
+      "away_open": 300,
+      "spread": "GS -9.5",
+      "ou": 232.5,
+      "provider": "DraftKings",
+      "out": [
+        "Will Richard(GS)",
+        "Kristaps Porzingis(GS)",
+        "Moses Moody(GS)",
+        "Jimmy Butler III(GS)",
+        "Yves Missi(NO)"
+      ],
+      "dtd": [
+        "Gui Santos(GS)"
+      ]
+    }
+  ],
+  "leans": [
+    {
+      "game": "LAL@ATL",
+      "team": "ATL",
+      "ml": -120,
+      "src": "gated SIDE \u2192 modest ML",
+      "why": [
+        "aligned ticket SIDE"
+      ]
+    },
+    {
+      "game": "MEM@TOR",
+      "team": "TOR",
+      "ml": -148,
+      "src": "gated SIDE \u2192 modest ML",
+      "why": [
+        "aligned ticket SIDE"
+      ]
+    },
+    {
+      "game": "IND@DAL",
+      "team": "DAL",
+      "ml": -161,
+      "src": "gated SIDE \u2192 modest ML",
+      "why": [
+        "aligned ticket SIDE"
+      ]
+    }
+  ]
+}
