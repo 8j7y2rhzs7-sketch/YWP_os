@@ -1,0 +1,626 @@
+========== PARLAY LOCK ==========
+PARLAY LOCK — 2026-11-09 FROM-SCRATCH · NO LAZY · THREE GATES
+1. Cedric Coward O6.5 REB [KEEP 7/7] G3=HR id=4903027 MEM @ TOR
+2. Cedric Coward O1.5 3PT [KEEP 7/7] G3=HR id=4903027 MEM @ TOR
+3. Ziaire Williams O7.5 PTS [KEEP 7/7] G3=HR id=4433137 LAL @ ATL
+4. Miles Bridges O6.5 REB [RISK-KEEP 6/7] G3=HR id=4066383 SA @ PHX
+5. Dillon Brooks O14.5 PTS [RISK-KEEP 6/7] G3=HR id=3155526 SA @ PHX
+6. Alperen Sengun O6.5 AST [RISK-KEEP 6/7] G3=HR id=4871144 DEN @ HOU
+Optional: NAW 19.5 · Podz 1.5 3PT · Castle 4.5 REB · SA -8.5 · CLE -9.5
+BAN soft spine · HR climbs · GS chalk · SOG not cash
+
+NFL MNF BUF@MIN:
+- Ty Johnson O1.5 REC [KEEP 5/5] id=3915411
+- Ty Johnson O15.5 REC_YD [RISK-KEEP 4/5] id=3915411
+- Side: BUF -3 / BUF ML (HR≈-185)
+
+========== ALL-GAMES TICKET ==========
+════════════════════════════════════════════════════════════
+FROM-SCRATCH ALL GAMES — 2026-11-09 · THREE GATES · NO LAZY
+G1 PASS sheets=431/431 path=/cursor/stores/self/betting/GATE_SHEETS_20261109.json
+G2 posted-mains n=384 path=betting/posted-mains-20261109.json
+G3 HR = LineSmart hardrockbet on EVERY actionable player (climb → re-grade)
+Every boarded player: athlete_id + full L7 MIN/PTS/REB/AST/STL/BLK/3PT
+════════════════════════════════════════════════════════════
+
+▶ LAL @ ATL
+  SIDE ATL -1.5 · O/U 237.5 · eid=401909952
+  OUT: Asa Newell(ATL), Keshon Gilbert(ATL), Jock Landale(ATL), Mouhamed Gueye(ATL), Henri Veesaar(ATL), Luka Doncic(LAL)
+  DTD: Quentin Grimes(LAL)
+  BOARD @ G3 (from-scratch):
+    KEEP 7/7 Ziaire Williams O7.5 PTS id=4433137 L=[17.0, 8.0, 10.0, 9.0, 11.0, 11.0, 14.0] HR=7.5
+      id=4433137 team=LAL n_rs=8 | MIN[21,20,23,15,29,30,31] PTS[17,8,10,9,11,11,14] REB[2,3,4,2,2,2,5] AST[0,1,1,2,4,1,0] STL[0,2,2,1,2,1,2] BLK[1,0,0,0,0,0,1] 3PT[4,2,1,3,2,3,1] | espn:site.web.api/nba/athletes/4433137/gamelog
+    RISK-KEEP 6/7 Nickeil Alexander-Walker O19.5 PTS id=4278039 L=[20.0, 28.0, 26.0, 34.0, 12.0, 25.0, 23.0] HR=19.5
+      id=4278039 team=ATL n_rs=11 | MIN[31,33,32,31,29,31,32] PTS[20,28,26,34,12,25,23] REB[3,2,4,4,2,3,3] AST[1,2,2,4,1,1,1] STL[0,2,0,4,1,0,1] BLK[0,0,0,0,0,1,0] 3PT[2,4,6,9,0,4,5] | espn:site.web.api/nba/athletes/4278039/gamelog
+  SOFT (not spine):
+    KEEP 7/7 CJ McCollum O1.5 REB id=2490149 — soft floor
+    RISK-KEEP 6/7 Matisse Thybulle O1.5 STL id=3907498 — soft floor
+
+▶ CLE @ CHA
+  SIDE CLE -9.5 · O/U 214.5 · eid=401909953
+  OUT: Grant Williams(CHA), Kon Knueppel(CHA), Dennis Schroder(CHA), Brandon Miller(CHA), Sam Merrill(CLE), Jaylon Tyson(CLE)
+  DTD: Moussa Diabate(CHA), Jarrett Allen(CLE)
+  BOARD @ G3 (from-scratch):
+    none — only soft floors or climb-cuts this game
+  SOFT (not spine):
+    RISK-KEEP 6/7 Peyton Watson O1.5 AST id=4576087 — soft floor
+
+▶ WSH @ DET
+  SIDE DET -10.5 · O/U 217.5 · eid=401909954
+  OUT: Jalen Duren(DET), Isaiah Joe(DET), Tristan Vukcevic(WSH), Reece Beekman(WSH), Justin Champagnie(WSH), Jamir Watkins(WSH)
+  DTD: Anthony Davis(WSH)
+  BOARD @ G3 (from-scratch):
+    RISK-KEEP 6/7 Kyshawn George O1.5 3PT id=5174563 L=[2.0, 5.0, 3.0, 4.0, 4.0, 0.0, 2.0] HR=1.5
+      id=5174563 team=WSH n_rs=10 | MIN[30,39,35,37,32,38,29] PTS[14,33,25,22,12,8,20] REB[7,4,4,4,3,2,4] AST[6,8,7,5,3,11,2] STL[0,1,0,1,0,0,0] BLK[3,2,0,1,1,1,1] 3PT[2,5,3,4,4,0,2] | espn:site.web.api/nba/athletes/5174563/gamelog
+  SOFT (not spine):
+    RISK-KEEP 5/6 AJ Dybantsa O0.5 3PT id=5142718 — soft floor
+  CUT @ HR climb (was clear at softer posted):
+    CUT 3/7 Duncan Robinson O2.5 AST (posted 1.5 KEEP) id=3157465
+
+▶ MEM @ TOR
+  SIDE TOR -3.5 · O/U 228.5 · eid=401909955
+  OUT: Nate Bittle(TOR), Kawhi Leonard(TOR), Scotty Pippen Jr.(MEM), Isaiah Stewart(MEM), Richie Saunders(MEM)
+  DTD: Immanuel Quickley(TOR), Scottie Barnes(TOR)
+  BOARD @ G3 (from-scratch):
+    KEEP 7/7 Cedric Coward O6.5 REB id=4903027 L=[9.0, 9.0, 9.0, 7.0, 7.0, 11.0, 11.0] HR=6.5
+      id=4903027 team=MEM n_rs=8 | MIN[23,33,31,23,27,31,32] PTS[10,23,10,10,17,16,17] REB[9,9,9,7,7,11,11] AST[0,4,3,2,4,3,1] STL[2,4,0,2,3,1,1] BLK[0,0,0,0,0,0,0] 3PT[2,4,2,2,3,4,3] | espn:site.web.api/nba/athletes/4903027/gamelog
+    KEEP 7/7 Cedric Coward O1.5 3PT id=4903027 L=[2.0, 4.0, 2.0, 2.0, 3.0, 4.0, 3.0] HR=1.5
+      id=4903027 team=MEM n_rs=8 | MIN[23,33,31,23,27,31,32] PTS[10,23,10,10,17,16,17] REB[9,9,9,7,7,11,11] AST[0,4,3,2,4,3,1] STL[2,4,0,2,3,1,1] BLK[0,0,0,0,0,0,0] 3PT[2,4,2,2,3,4,3] | espn:site.web.api/nba/athletes/4903027/gamelog
+
+▶ IND @ DAL
+  SIDE DAL -2.5 · O/U 223.5 · eid=401909956
+  OUT: Sergio de Larrea(DAL), Tarik Biberovic(DAL), Dereck Lively II(DAL), Tyrese Haliburton(IND), Johnny Furphy(IND), Ben Sheppard(IND)
+  DTD: T.J. McConnell(IND)
+  BOARD @ G3 (from-scratch):
+    RISK-KEEP 6/7 P.J. Washington O1.5 3PT id=4278078 L=[2.0, 6.0, 3.0, 2.0, 1.0, 2.0, 4.0] posted=1.5
+      id=4278078 team=DAL n_rs=10 | MIN[25,33,39,38,34,27,41] PTS[6,26,21,12,3,18,20] REB[5,6,10,5,10,9,9] AST[0,1,3,1,1,0,2] STL[1,1,0,2,0,0,2] BLK[1,1,1,0,0,1,1] 3PT[2,6,3,2,1,2,4] | espn:site.web.api/nba/athletes/4278078/gamelog
+  SOFT (not spine):
+    RISK-KEEP 6/7 Kyrie Irving O0.5 STL id=6442 — soft floor
+
+▶ DEN @ HOU
+  SIDE HOU -8.5 · O/U 217.5 · eid=401909957
+  OUT: Clint Capela(HOU), Steven Adams(HOU)
+  DTD: Cameron Johnson(DEN), DeMar DeRozan(DEN), Christian Braun(DEN), Jamal Murray(DEN), Aaron Gordon(DEN)
+  BOARD @ G3 (from-scratch):
+    RISK-KEEP 6/7 Alperen Sengun O6.5 AST id=4871144 L=[5.0, 10.0, 10.0, 9.0, 9.0, 7.0, 7.0] HR=6.5
+      id=4871144 team=HOU n_rs=8 | MIN[32,39,38,33,37,33,36] PTS[15,17,26,16,29,17,29] REB[6,12,7,9,9,10,7] AST[5,10,10,9,9,7,7] STL[0,0,2,0,6,1,0] BLK[1,3,2,1,1,0,1] 3PT[1,0,1,0,1,1,2] | espn:site.web.api/nba/athletes/4871144/gamelog
+  SOFT (not spine):
+    RISK-KEEP 6/7 Jabari Smith Jr. O1.5 AST id=4432639 — soft floor
+    RISK-KEEP 6/7 Marcus Smart O1.5 REB id=2990992 — soft floor
+  CUT @ HR climb (was clear at softer posted):
+    CUT 2/7 Fred VanVleet O3.5 REB (posted 2.5 RISK-KEEP) id=2991230
+
+▶ SA @ PHX
+  SIDE SA -8.5 · O/U 227.5 · eid=401909958
+  OUT: Jordan Goodwin(PHX), Mark Williams(PHX), Tobias Harris(SA), Jayden Quaintance(SA)
+  DTD: Devin Vassell(SA)
+  BOARD @ G3 (from-scratch):
+    RISK-KEEP 6/7 Dillon Brooks O14.5 PTS id=3155526 L=[11.0, 24.0, 15.0, 18.0, 22.0, 19.0, 15.0] HR=14.5
+      id=3155526 team=PHX n_rs=8 | MIN[37,29,35,34,21,33,34] PTS[11,24,15,18,22,19,15] REB[4,1,6,8,1,5,2] AST[1,1,2,4,2,5,5] STL[0,2,1,0,1,3,0] BLK[0,1,0,0,0,1,0] 3PT[3,4,0,2,4,3,1] | espn:site.web.api/nba/athletes/3155526/gamelog
+    RISK-KEEP 6/7 Miles Bridges O14.5 PTS id=4066383 L=[13.0, 18.0, 18.0, 21.0, 24.0, 17.0, 16.0] HR=14.5
+      id=4066383 team=PHX n_rs=8 | MIN[31,31,31,35,37,32,33] PTS[13,18,18,21,24,17,16] REB[10,13,7,6,10,8,7] AST[7,5,5,3,2,4,3] STL[0,2,2,4,1,1,0] BLK[1,0,0,1,3,0,0] 3PT[1,3,4,3,2,2,2] | espn:site.web.api/nba/athletes/4066383/gamelog
+    RISK-KEEP 6/7 Miles Bridges O6.5 REB id=4066383 L=[10.0, 13.0, 7.0, 6.0, 10.0, 8.0, 7.0] HR=6.5
+      id=4066383 team=PHX n_rs=8 | MIN[31,31,31,35,37,32,33] PTS[13,18,18,21,24,17,16] REB[10,13,7,6,10,8,7] AST[7,5,5,3,2,4,3] STL[0,2,2,4,1,1,0] BLK[1,0,0,1,3,0,0] 3PT[1,3,4,3,2,2,2] | espn:site.web.api/nba/athletes/4066383/gamelog
+    RISK-KEEP 6/7 Khaman Maluach O5.5 PTS id=5203685 L=[8.0, 8.0, 6.0, 5.0, 9.0, 12.0, 9.0] HR=5.5
+      id=5203685 team=PHX n_rs=8 | MIN[18,22,16,13,17,26,28] PTS[8,8,6,5,9,12,9] REB[10,6,6,2,6,7,9] AST[0,2,2,0,0,1,3] STL[1,2,0,1,0,1,1] BLK[2,0,1,1,0,1,2] 3PT[0,0,0,0,0,0,1] | espn:site.web.api/nba/athletes/5203685/gamelog
+    RISK-KEEP 6/7 Khaman Maluach O5.5 REB id=5203685 L=[10.0, 6.0, 6.0, 2.0, 6.0, 7.0, 9.0] HR=5.5
+      id=5203685 team=PHX n_rs=8 | MIN[18,22,16,13,17,26,28] PTS[8,8,6,5,9,12,9] REB[10,6,6,2,6,7,9] AST[0,2,2,0,0,1,3] STL[1,2,0,1,0,1,1] BLK[2,0,1,1,0,1,2] 3PT[0,0,0,0,0,0,1] | espn:site.web.api/nba/athletes/5203685/gamelog
+    RISK-KEEP 6/7 Keldon Johnson O4.5 REB id=4395723 L=[7.0, 6.0, 5.0, 7.0, 6.0, 6.0, 4.0] posted=4.5
+      id=4395723 team=SA n_rs=10 | MIN[27,27,19,27,24,23,22] PTS[10,3,4,15,2,9,14] REB[7,6,5,7,6,6,4] AST[4,6,2,1,0,2,0] STL[2,0,0,0,0,1,0] BLK[0,0,0,0,0,0,0] 3PT[0,0,0,1,0,0,0] | espn:site.web.api/nba/athletes/4395723/gamelog
+    RISK-KEEP 6/7 Miles Bridges O2.5 AST id=4066383 L=[7.0, 5.0, 5.0, 3.0, 2.0, 4.0, 3.0] HR=2.5
+      id=4066383 team=PHX n_rs=8 | MIN[31,31,31,35,37,32,33] PTS[13,18,18,21,24,17,16] REB[10,13,7,6,10,8,7] AST[7,5,5,3,2,4,3] STL[0,2,2,4,1,1,0] BLK[1,0,0,1,3,0,0] 3PT[1,3,4,3,2,2,2] | espn:site.web.api/nba/athletes/4066383/gamelog
+    RISK-KEEP 6/7 Devin Booker O1.5 3PT id=3136193 L=[2.0, 4.0, 2.0, 2.0, 3.0, 0.0, 2.0] HR=1.5
+      id=3136193 team=PHX n_rs=8 | MIN[39,34,34,35,39,34,36] PTS[24,30,33,26,20,3,43] REB[2,1,1,3,2,2,7] AST[3,8,2,5,5,7,7] STL[3,3,0,0,2,0,0] BLK[0,0,0,0,0,0,1] 3PT[2,4,2,2,3,0,2] | espn:site.web.api/nba/athletes/3136193/gamelog
+  SOFT (not spine):
+    RISK-KEEP 6/7 Collin Gillespie O1.5 STL id=4278585 — soft floor
+    RISK-KEEP 6/7 Dylan Harper O0.5 3PT id=5037871 — soft floor
+    RISK-KEEP 6/7 Victor Wembanyama O0.5 STL id=5104157 — soft floor
+
+▶ NO @ GS
+  SIDE GS -9.5 · O/U 232.5 · eid=401909959
+  OUT: Will Richard(GS), Kristaps Porzingis(GS), Moses Moody(GS), Jimmy Butler III(GS), Yves Missi(NO)
+  DTD: Gui Santos(GS)
+  BOARD @ G3 (from-scratch):
+    RISK-KEEP 6/7 Brandin Podziemski O1.5 3PT id=4709138 L=[4.0, 2.0, 3.0, 2.0, 4.0, 0.0, 3.0] HR=1.5
+      id=4709138 team=GS n_rs=8 | MIN[39,32,33,37,33,32,33] PTS[15,9,20,17,21,8,18] REB[7,6,3,8,5,5,7] AST[1,3,2,8,6,6,5] STL[2,1,1,0,2,0,1] BLK[1,1,0,0,1,0,0] 3PT[4,2,3,2,4,0,3] | espn:site.web.api/nba/athletes/4709138/gamelog
+  CUT @ HR climb (was clear at softer posted):
+    RISK 5/7 Jeremiah Fears O4.5 REB (posted 3.5 KEEP) id=5144091
+    CUT 2/7 Draymond Green O5.5 REB (posted 3.5 KEEP) id=6589
+    CUT 4/7 Trey Murphy III O3.5 AST (posted 2.5 KEEP) id=4397688
+
+──────── NHL (SOG L10 @ posted) ────────
+▶ NYR @ EDM · SIDE EDM -155 · O/U 6.5
+  RISK 8/10 Tye Kartye O1.5 SOG id=4588750 L=[2.0, 2.0, 3.0, 0.0, 2.0, 3.0, 2.0, 2.0, 2.0, 1.0]
+
+▶ PHI @ VAN · SIDE PHI -135 · O/U 6.5
+  RISK 8/10 Trevor Zegras O1.5 SOG id=4565230 L=[2.0, 3.0, 0.0, 1.0, 4.0, 3.0, 3.0, 4.0, 3.0, 5.0]
+  RISK 7/10 Jonathan Lekkerimaki O1.5 SOG id=5080159 L=[2.0, 2.0, 2.0, 4.0, 1.0, 4.0, 1.0, 2.0, 3.0, 0.0]
+
+▶ NYI @ SJ · SIDE NYI -135 · O/U 6.5
+  RISK 8/10 Simon Holmstrom O1.5 SOG id=4565244 L=[2.0, 2.0, 3.0, 2.0, 3.0, 1.0, 3.0, 3.0, 2.0, 1.0]
+
+──────── NFL MNF ────────
+▶ BUF @ MIN · Mon Nov 9 8:15 PM ET · eid=401873051
+  SIDE: BUF -3 / BUF -180 · MIN +3 / +150 · O/U 44.5 (ESPN DK) · HR≈ BUF -185 / MIN +3 / total 44
+  OUT: Demond Claiborne(MIN), Jauan Jennings(MIN), Kyler Murray(MIN), Tyrell Shavers(BUF), Joshua Palmer(BUF)
+  DTD/Q: Jay Ward(MIN/Questionable), Theo Jackson(MIN/Questionable), Alec Anderson(BUF/Questionable), Dion Dawkins(BUF/Questionable)
+  G1: ESPN NFL L7 gamelogs (pass/rush/rec yards + receptions) · athlete_ids below
+  G2: Betravon posted mains (BUF/MIN filtered) n=36
+  G3: LineSmart Hard Rock Bet where available; else posted
+  BOARD @ G3 (firm):
+    KEEP 5/5 Ty Johnson O1.5 REC id=3915411 team=BUF L=[3.0, 2.0, 4.0, 2.0, 4.0] · G3 HR (posted 2.5→HR 1.5)
+    RISK-KEEP 4/5 Ty Johnson O15.5 REC_YD id=3915411 team=BUF L=[19.0, 24.0, 72.0, 9.0, 50.0] · G3 HR (posted 16.5→HR 15.5)
+  RISK:
+    RISK 5/7 Josh Allen O236.5 PASS_YD miss=[210.0, 204.0] id=3918298
+    RISK 5/7 Dalton Kincaid O36.5 REC_YD miss=[7.0, 7.0] id=4385690
+    RISK 5/7 Aaron Jones Sr. O31.5 RUSH_YD miss=[22.0, 26.0] id=3042519
+  CUT @ G3:
+    CUT 3/5 DJ Moore O47.5 REC_YD miss=[11.0, 0.0] id=3915416
+    CUT 3/5 DJ Moore O3.5 REC miss=[1.0, 0.0] id=3915416
+    CUT 4/7 James Cook III O83.5 RUSH_YD miss=[80.0, 75.0, 57.0] id=4379399
+    CUT 4/7 Khalil Shakir O39.5 REC_YD miss=[34.0, 6.0, 38.0] id=4373678
+    CUT 4/7 Keon Coleman O28.5 REC_YD miss=[4.0, 7.0, 1.0] id=4635008
+    CUT 4/7 Dalton Kincaid O3.5 REC miss=[1.0, 1.0, 2.0] id=4385690
+    CUT 4/7 Khalil Shakir O3.5 REC miss=[3.0, 1.0, 3.0] id=4373678
+    CUT 4/7 James Cook III O1.5 REC miss=[1.0, 0.0, 1.0] id=4379399
+    CUT 3/6 Jordan Addison O40.5 REC_YD miss=[20.0, 21.0, 0.0] id=4429205
+    CUT 3/7 Keon Coleman O2.5 REC miss=[1.0, 1.0, 1.0, 1.0] id=4635008
+    CUT 2/6 Jordan Addison O3.5 REC miss=[3.0, 2.0, 2.0, 0.0] id=4429205
+    CUT 2/7 T.J. Hockenson O41.5 REC_YD (HR) / O4.5 REC — CUT id=4036133
+    CUT 2/7 Josh Allen O32.5 RUSH_YD id=3918298 · CUT 1/6 Jefferson O79.5 REC_YD / O6.5 REC
+  BAN: Kyler Murray / Jauan Jennings / Claiborne props (OUT) · Cook 83.5 rush CUT · Jefferson main CUT
+  BAN: soft REC 0.5 / micro REC_YD · Allen PASS_YD only RISK (not spine) · Dawkins Q (OL)
+  SIDE LEAN: **BUF -3 / BUF ML** (HR≈-185) — primary NFL ticket piece; props thin after G3
+
+
+── NFL EVERY-PLAYER PASS (incl. kickers) ──
+  Census: 121 active BUF+MIN checked → betting/nfl-buf-min-full-roster-20261109.txt
+  Tyler Bass L7 KICK_PTS + Will Reichard L7 KICK_PTS sheeted — NO book line on Betravon/LS/HR → cannot lock
+  Firm props unchanged: Ty Johnson O1.5 REC KEEP · O15.5 REC_YD RISK-KEEP · else CUT/RISK
+  Primary NFL: BUF -3 / BUF ML
+
+════════ FROM-SCRATCH SLATE LOCK ════════
+SAFE (firm KEEP @ HR only — soft ≤1.5 REB/AST/STL banned from spine):
+  1. Cedric Coward O6.5 REB [KEEP 7/7] id=4903027 · MEM @ TOR · G3 HR
+  2. Cedric Coward O1.5 3PT [KEEP 7/7] id=4903027 · MEM @ TOR · G3 HR
+  3. Ziaire Williams O7.5 PTS [KEEP 7/7] id=4433137 · LAL @ ATL · G3 HR (Doncic OUT)
+
+BANGERS (diversified; SA@PHX rich but don't overstack):
+  1. NAW O19.5 PTS [RISK-KEEP 6/7] id=4278039 · LAL @ ATL
+  2. Sengun already in lock — alt: Podziemski O1.5 3PT [RISK-KEEP 6/7] · NO @ GS
+  3. Kyshawn George O1.5 3PT [RISK-KEEP 6/7] · WSH @ DET
+  4. P.J. Washington O1.5 3PT [RISK-KEEP 6/7] · IND @ DAL
+  5. Miles Bridges O14.5 PTS [RISK-KEEP 6/7] · SA @ PHX (if not using REB)
+  6. Stephon Castle O4.5 REB [RISK-KEEP 6/7] · SA @ PHX
+  7. Devin Booker O1.5 3PT [RISK-KEEP 6/7] · SA @ PHX
+  8. Keldon Johnson O4.5 REB [RISK-KEEP 6/7] · SA @ PHX
+  CLE @ CHA: no firm G3 board (Watson 1.5 AST = soft only) — side CLE -9.5 is the play
+
+PARLAY LOCK (fixed — Coward restored; no double LAL PTS stack as spine):
+  1. Cedric Coward O6.5 REB     G1 7/7 KEEP · G2/G3 HR 6.5 · id=4903027 · MEM @ TOR
+  2. Cedric Coward O1.5 3PT     G1 7/7 KEEP · G2/G3 HR 1.5 · id=4903027 · MEM @ TOR
+  3. Ziaire Williams O7.5 PTS   G1 7/7 KEEP · G2/G3 HR 7.5 · id=4433137 · LAL @ ATL
+  4. Miles Bridges O6.5 REB     G1 6/7 RISK-KEEP · G2/G3 HR 6.5 · id=4066383 · SA @ PHX
+  5. Dillon Brooks O14.5 PTS    G1 6/7 RISK-KEEP · G2/G3 HR 14.5 · id=3155526 · SA @ PHX
+  6. Alperen Sengun O6.5 AST    G1 6/7 RISK-KEEP · G2/G3 HR 6.5 · id=4871144 · DEN @ HOU
+  Optional 7 (one): NAW O19.5 · Podz O1.5 3PT · Castle O4.5 REB · SA -8.5 · CLE -9.5
+  NOT in cash: McCollum 1.5 REB · Watson 1.5 AST · Dybantsa 0.5 3PT · Kyrie 0.5 STL · Maluach volume
+  SOG: Holmstrom/Zegras/Kartye RISK only — cap ≤2 — not cash spine
+
+NFL MNF ADD (optional leg / side — not forced into NBA spine):
+  N1. Ty Johnson O1.5 REC [KEEP 5/5] id=3915411 · G3 HR
+  N2. Ty Johnson O15.5 REC_YD [RISK-KEEP 4/5] id=3915411 · G3 HR
+  Preferred NFL ticket piece: BUF -3 or BUF ML (confirm HR -3 / -185)
+
+BAN:
+  Soft spine floors (≤1.5 REB/AST/STL) · DTD/OUT players · HR climb CUTs in per-game sections
+  Draymond 5.5 REB · Murphy 3.5 AST · Duncan 2.5 AST · FVV 3.5 REB
+  Wemby 10.5 REB / 29.5 PTS · Harper 16.5 · Fox · Nembhard PTS spine · GS ML chalk · 3rd SOG
+  Climb-cuts logged per game above
+
+
+DONE CHECK
+- G1 require_gate: PASS date=20261109 sheets_ok=431/431
+- G2 posted-mains: yes n=384 path=betting/posted-mains-20261109.json
+- G3 HR floors: yes — HR pulled for 48 actionable players; climb re-graded
+- All 8 NBA + 3 NHL + 1 NFL (BUF@MIN): yes (from-scratch sections)
+- BANGERS: yes
+- athlete_ids + full L7 cats on every boarded/lock player: yes
+- parlay lock 3-gated: yes · sheet_missing=none
+- NFL G1 sheets+G2 Betravon+G3 HR: yes (BUF@MIN)
+- NFL every active player + kickers census: yes
+- no lazy: fresh gate + fresh mains + HR-all-candidates + injury refresh + cat dump
+========== POSTED CARD (G2) ==========
+POSTED-MAIN CARD — 2026-11-09
+Source: Betravon consensus mains + GATE RS sheets. Soft floors NOT listed.
+Graded 380 / unmatched 4
+
+=== KEEP (perfect clear at POSTED main) ===
+  7/7  Cedric Coward O1.5 3PT  MEM vs TOR  id=4903027  L=[2.0, 4.0, 2.0, 2.0, 3.0, 4.0, 3.0]
+  7/7  Duncan Robinson O1.5 AST  DET vs WSH  id=3157465  L=[3.0, 2.0, 3.0, 2.0, 2.0, 2.0, 3.0]
+  7/7  Trey Murphy III O2.5 AST  NO vs GS  id=4397688  L=[3.0, 5.0, 5.0, 5.0, 3.0, 3.0, 4.0]
+  7/7  Ziaire Williams O7.5 PTS  LAL vs ATL  id=4433137  L=[17.0, 8.0, 10.0, 9.0, 11.0, 11.0, 14.0]
+  7/7  CJ McCollum O1.5 REB  ATL vs LAL  id=2490149  L=[4.0, 3.0, 5.0, 9.0, 2.0, 3.0, 2.0]
+  7/7  Cedric Coward O6.5 REB  MEM vs TOR  id=4903027  L=[9.0, 9.0, 9.0, 7.0, 7.0, 11.0, 11.0]
+  7/7  Draymond Green O3.5 REB  GS vs NO  id=6589  L=[6.0, 5.0, 4.0, 4.0, 9.0, 4.0, 5.0]
+  7/7  Jeremiah Fears O3.5 REB  NO vs GS  id=5144091  L=[6.0, 5.0, 6.0, 4.0, 5.0, 8.0, 4.0]
+  7/7  Devin Vassell O0.5 STL  SA vs PHX  id=4395630  L=[2.0, 1.0, 2.0, 1.0, 2.0, 3.0, 1.0]
+
+=== RISK-KEEP (one miss at POSTED main) ===
+  6/7  Brandin Podziemski O1.5 3PT  miss=[0.0]  id=4709138
+  6/7  Devin Booker O1.5 3PT  miss=[0.0]  id=3136193
+  6/7  Dylan Harper O0.5 3PT  miss=[0.0]  id=5037871
+  6/7  Kyshawn George O1.5 3PT  miss=[0.0]  id=5174563
+  6/7  Miles Bridges O1.5 3PT  miss=[1.0]  id=4066383
+  6/7  P.J. Washington O1.5 3PT  miss=[1.0]  id=4278078
+  6/7  Alperen Sengun O6.5 AST  miss=[5.0]  id=4871144
+  6/7  Jabari Smith Jr. O1.5 AST  miss=[0.0]  id=4432639
+  6/7  Miles Bridges O2.5 AST  miss=[2.0]  id=4066383
+  6/7  Peyton Watson O1.5 AST  miss=[1.0]  id=4576087
+  6/7  Dillon Brooks O14.5 PTS  miss=[11.0]  id=3155526
+  6/7  Khaman Maluach O5.5 PTS  miss=[5.0]  id=5203685
+  6/7  Miles Bridges O14.5 PTS  miss=[13.0]  id=4066383
+  6/7  Nickeil Alexander-Walker O19.5 PTS  miss=[12.0]  id=4278039
+  6/7  Fred VanVleet O2.5 REB  miss=[2.0]  id=2991230
+  6/7  Keldon Johnson O4.5 REB  miss=[4.0]  id=4395723
+  6/7  Khaman Maluach O5.5 REB  miss=[2.0]  id=5203685
+  6/7  Marcus Smart O1.5 REB  miss=[1.0]  id=2990992
+  6/7  Miles Bridges O6.5 REB  miss=[6.0]  id=4066383
+  6/7  Collin Gillespie O1.5 STL  miss=[0.0]  id=4278585
+  6/7  Kyrie Irving O0.5 STL  miss=[0.0]  id=6442
+  6/7  Matisse Thybulle O1.5 STL  miss=[0.0]  id=3907498
+  6/7  Victor Wembanyama O0.5 STL  miss=[0.0]  id=5104157
+  5/6  AJ Dybantsa O0.5 3PT  miss=[0.0]  id=5142718
+
+=== RISK (≈70%+ at POSTED main) ===
+  8/10  Simon Holmstrom O1.5 SOG  miss=[1.0, 1.0]
+  8/10  Trevor Zegras O1.5 SOG  miss=[0.0, 1.0]
+  8/10  Tye Kartye O1.5 SOG  miss=[0.0, 1.0]
+  5/7  Aaron Nesmith O1.5 3PT  miss=[0.0, 1.0]
+  5/7  Alperen Sengun O0.5 3PT  miss=[0.0, 0.0]
+  5/7  Andrew Nembhard O1.5 3PT  miss=[1.0, 1.0]
+  5/7  Cameron Boozer O1.5 3PT  miss=[0.0, 1.0]
+  5/7  Dillon Brooks O1.5 3PT  miss=[0.0, 1.0]
+  5/7  Fred VanVleet O2.5 3PT  miss=[2.0, 0.0]
+  5/7  Jamal Murray O2.5 3PT  miss=[2.0, 2.0]
+  5/7  James Harden O2.5 3PT  miss=[1.0, 2.0]
+  5/7  Onyeka Okongwu O1.5 3PT  miss=[0.0, 1.0]
+  5/7  Ziaire Williams O1.5 3PT  miss=[1.0, 1.0]
+  5/7  Daniss Jenkins O3.5 AST  miss=[3.0, 2.0]
+  5/7  Devin Booker O4.5 AST  miss=[3.0, 2.0]
+  5/7  Dillon Brooks O1.5 AST  miss=[1.0, 1.0]
+  5/7  Dyson Daniels O4.5 AST  miss=[4.0, 3.0]
+  5/7  Fred VanVleet O4.5 AST  miss=[4.0, 3.0]
+  5/7  Jeremiah Fears O3.5 AST  miss=[2.0, 3.0]
+  5/7  Kyshawn George O4.5 AST  miss=[3.0, 2.0]
+  5/7  Nikola Jokic O8.5 AST  miss=[8.0, 8.0]
+  5/7  Pascal Siakam O3.5 AST  miss=[2.0, 3.0]
+  5/7  Kevin Durant O0.5 BLK  miss=[0.0, 0.0]
+  5/7  Onyeka Okongwu O0.5 BLK  miss=[0.0, 0.0]
+  5/7  Andrew Nembhard O15.5 PTS  miss=[9.0, 14.0]
+  5/7  Devin Vassell O10.5 PTS  miss=[2.0, 9.0]
+  5/7  Fred VanVleet O11.5 PTS  miss=[8.0, 5.0]
+  5/7  Jake LaRavia O5.5 PTS  miss=[5.0, 2.0]
+  5/7  Kevin Huerter O7.5 PTS  miss=[3.0, 7.0]
+  5/7  Kingston Flemings O8.5 PTS  miss=[2.0, 6.0]
+  5/7  Pascal Siakam O19.5 PTS  miss=[17.0, 13.0]
+  5/7  Saddiq Bey O12.5 PTS  miss=[10.0, 9.0]
+  5/7  Stephen Curry O28.5 PTS  miss=[24.0, 24.0]
+  5/7  Aaron Wiggins O3.5 REB  miss=[3.0, 2.0]
+  5/7  Cameron Boozer O8.5 REB  miss=[6.0, 7.0]
+  5/7  Ja'Kobe Walter O3.5 REB  miss=[1.0, 3.0]
+  5/7  Jamal Murray O4.5 REB  miss=[1.0, 3.0]
+  5/7  Jarrett Allen O7.5 REB  miss=[1.0, 6.0]
+  5/7  Onyeka Okongwu O7.5 REB  miss=[2.0, 4.0]
+  5/7  Trae Young O2.5 REB  miss=[2.0, 2.0]
+
+=== CUT at POSTED main (do not bet) ===
+  299 props fail at book main — including soft-floor favorites.
+  6/10  Alexis Lafreniere O1.5 SOG  miss=[1.0, 1.0, 0.0, 1.0]
+  6/10  Bo Horvat O2.5 SOG  miss=[2.0, 2.0, 2.0, 2.0]
+  6/10  Gabe Perreault O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0]
+  6/10  J.T. Miller O1.5 SOG  miss=[1.0, 1.0, 1.0, 0.0]
+  6/10  Kasperi Kapanen O1.5 SOG  miss=[0.0, 1.0, 1.0, 0.0]
+  6/10  Leon Draisaitl O3.5 SOG  miss=[3.0, 2.0, 2.0, 3.0]
+  6/10  Macklin Celebrini O3.5 SOG  miss=[2.0, 2.0, 1.0, 2.0]
+  6/10  Matvei Michkov O1.5 SOG  miss=[0.0, 0.0, 1.0, 1.0]
+  6/10  Porter Martone O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0]
+  4/7  Victor Wembanyama O1.5 3PT  miss=[1.0, 0.0, 0.0]
+  4/7  Victor Wembanyama O2.5 AST  miss=[2.0, 2.0, 2.0]
+  4/7  Victor Wembanyama O29.5 PTS  miss=[29.0, 12.0, 29.0]
+  4/7  Victor Wembanyama O10.5 REB  miss=[7.0, 7.0, 10.0]
+  5/9  Travis Konecny O1.5 SOG  miss=[0.0, 1.0, 1.0, 1.0]
+  5/10  Adam Fox O1.5 SOG  miss=[1.0, 1.0, 0.0, 0.0, 0.0]
+  5/10  Brayden Schenn O1.5 SOG  miss=[1.0, 0.0, 1.0, 1.0, 1.0]
+  5/10  Christian Dvorak O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 0.0]
+  5/10  Evan Bouchard O2.5 SOG  miss=[1.0, 1.0, 2.0, 2.0, 0.0]
+  5/10  Michael Misa O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 1.0]
+  5/10  Oliver Bjorkstrand O1.5 SOG  miss=[0.0, 1.0, 1.0, 0.0, 1.0]
+  5/10  Owen Tippett O2.5 SOG  miss=[2.0, 1.0, 1.0, 1.0, 0.0]
+  5/10  Pavel Dorofeyev O2.5 SOG  miss=[1.0, 1.0, 1.0, 2.0, 2.0]
+  5/10  Tyson Foerster O2.5 SOG  miss=[2.0, 1.0, 1.0, 1.0, 2.0]
+  5/10  Victor Eklund O1.5 SOG  miss=[1.0, 0.0, 0.0, 0.0, 0.0]
+  5/10  Will Smith O2.5 SOG  miss=[2.0, 0.0, 2.0, 2.0, 1.0]
+  4/9  Ryan Nugent-Hopkins O1.5 SOG  miss=[0.0, 1.0, 1.0, 0.0, 1.0]
+  3/7  Victor Wembanyama O3.5 BLK  miss=[1.0, 2.0, 3.0, 2.0]
+  3/7  Nikola Jokic O25.5 PTS  miss=[19.0, 18.0, 21.0, 19.0]
+  3/7  Nikola Jokic O10.5 REB  miss=[10.0, 9.0, 7.0, 7.0]
+  4/10  Brock Boeser O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 0.0, 1.0]
+  4/10  Emil Heineman O1.5 SOG  miss=[1.0, 0.0, 0.0, 0.0, 0.0, 1.0]
+  4/10  Kyle Palmieri O2.5 SOG  miss=[2.0, 2.0, 2.0, 2.0, 1.0, 0.0]
+  4/10  Linus Karlsson O1.5 SOG  miss=[1.0, 1.0, 0.0, 0.0, 1.0, 0.0]
+  4/10  Marco Rossi O1.5 SOG  miss=[1.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+  4/10  Mika Zibanejad O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 1.0, 0.0]
+  4/10  Tyler Toffoli O1.5 SOG  miss=[1.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+  4/10  Vasily Podkolzin O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 1.0, 0.0]
+  4/10  Will Cuylle O1.5 SOG  miss=[0.0, 0.0, 1.0, 1.0, 1.0, 0.0]
+  3/10  Elias Pettersson O1.5 SOG  miss=[0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0]
+  3/10  Filip Hronek O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0]
+  3/10  Jake DeBrusk O2.5 SOG  miss=[2.0, 1.0, 2.0, 0.0, 2.0, 1.0, 0.0]
+  3/10  Matthew Schaefer O3.5 SOG  miss=[3.0, 2.0, 2.0, 2.0, 1.0, 1.0, 3.0]
+  3/10  Mattias Ekholm O1.5 SOG  miss=[1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0]
+  2/7  Nikola Jokic O1.5 3PT  miss=[1.0, 0.0, 0.0, 0.0, 1.0]
+  2/7  Nickeil Alexander-Walker O3.5 REB  miss=[3.0, 2.0, 2.0, 3.0, 3.0]
+  2/7  Zach Hyman O2.5 SOG  miss=[2.0, 2.0, 1.0, 2.0, 1.0]
+  2/7  Nickeil Alexander-Walker O1.5 STL  miss=[0.0, 0.0, 1.0, 0.0, 1.0]
+  2/10  Connor McDavid O3.5 SOG  miss=[3.0, 3.0, 1.0, 3.0, 3.0, 2.0, 3.0, 3.0]
+  1/7  Nickeil Alexander-Walker O2.5 AST  miss=[1.0, 2.0, 2.0, 1.0, 1.0, 1.0]
+
+=== CLEAN SLIP (KEEP @ posted mains only) ===
+  1. Cedric Coward O1.5 3PT  (7/7)  MEM vs TOR
+  2. Duncan Robinson O1.5 AST  (7/7)  DET vs WSH
+  3. Trey Murphy III O2.5 AST  (7/7)  NO vs GS
+  4. Ziaire Williams O7.5 PTS  (7/7)  LAL vs ATL
+  5. CJ McCollum O1.5 REB  (7/7)  ATL vs LAL
+  6. Draymond Green O3.5 REB  (7/7)  GS vs NO
+  7. Jeremiah Fears O3.5 REB  (7/7)  NO vs GS
+  8. Devin Vassell O0.5 STL  (7/7)  SA vs PHX
+
+DONE: No soft floors. If a KEEP number is missing on HR, skip that leg — do not invent a lower alt.
+========== NFL BOARD ==========
+──────── NFL MNF ────────
+▶ BUF @ MIN · Mon Nov 9 8:15 PM ET · eid=401873051
+  SIDE: BUF -3 / BUF -180 · MIN +3 / +150 · O/U 44.5 (ESPN DK) · HR≈ BUF -185 / MIN +3 / total 44
+  OUT: Demond Claiborne(MIN), Jauan Jennings(MIN), Kyler Murray(MIN), Tyrell Shavers(BUF), Joshua Palmer(BUF)
+  DTD/Q: Jay Ward(MIN/Questionable), Theo Jackson(MIN/Questionable), Alec Anderson(BUF/Questionable), Dion Dawkins(BUF/Questionable)
+  G1: ESPN NFL L7 gamelogs (pass/rush/rec yards + receptions) · athlete_ids below
+  G2: Betravon posted mains (BUF/MIN filtered) n=36
+  G3: LineSmart Hard Rock Bet where available; else posted
+  BOARD @ G3 (firm):
+    KEEP 5/5 Ty Johnson O1.5 REC id=3915411 team=BUF L=[3.0, 2.0, 4.0, 2.0, 4.0] · G3 HR (posted 2.5→HR 1.5)
+    RISK-KEEP 4/5 Ty Johnson O15.5 REC_YD id=3915411 team=BUF L=[19.0, 24.0, 72.0, 9.0, 50.0] · G3 HR (posted 16.5→HR 15.5)
+  RISK:
+    RISK 5/7 Josh Allen O236.5 PASS_YD miss=[210.0, 204.0] id=3918298
+    RISK 5/7 Dalton Kincaid O36.5 REC_YD miss=[7.0, 7.0] id=4385690
+    RISK 5/7 Aaron Jones Sr. O31.5 RUSH_YD miss=[22.0, 26.0] id=3042519
+  CUT @ G3:
+    CUT 3/5 DJ Moore O47.5 REC_YD miss=[11.0, 0.0] id=3915416
+    CUT 3/5 DJ Moore O3.5 REC miss=[1.0, 0.0] id=3915416
+    CUT 4/7 James Cook III O83.5 RUSH_YD miss=[80.0, 75.0, 57.0] id=4379399
+    CUT 4/7 Khalil Shakir O39.5 REC_YD miss=[34.0, 6.0, 38.0] id=4373678
+    CUT 4/7 Keon Coleman O28.5 REC_YD miss=[4.0, 7.0, 1.0] id=4635008
+    CUT 4/7 Dalton Kincaid O3.5 REC miss=[1.0, 1.0, 2.0] id=4385690
+    CUT 4/7 Khalil Shakir O3.5 REC miss=[3.0, 1.0, 3.0] id=4373678
+    CUT 4/7 James Cook III O1.5 REC miss=[1.0, 0.0, 1.0] id=4379399
+    CUT 3/6 Jordan Addison O40.5 REC_YD miss=[20.0, 21.0, 0.0] id=4429205
+    CUT 3/7 Keon Coleman O2.5 REC miss=[1.0, 1.0, 1.0, 1.0] id=4635008
+    CUT 2/6 Jordan Addison O3.5 REC miss=[3.0, 2.0, 2.0, 0.0] id=4429205
+    CUT 2/7 T.J. Hockenson O42.5 REC_YD miss=[35.0, 7.0, 11.0, 29.0, 36.0] id=4036133
+  BAN: Kyler Murray / Jauan Jennings props (OUT) · soft REC 0.5 / micro REC_YD · Allen pass as chalky not auto-lock
+  SIDE LEAN: BUF -3 / BUF ML — favorite on road MNF; not a mega-hook
+
+========== EVERY PLAYER + KICKERS ==========
+════════════════════════════════════════════════════════════
+EVERY PLAYER CHECKED — BUF @ MIN · incl. KICKERS · 2026-11-09
+Active roster: 121 · IR group: 11 · Posted prop rows: 38 · LS prop pages: 26
+Betravon markets: PASS_YD, PASS_TD, RUSH_YD, REC_YD, REC (only cats they list)
+Kicker pages on LineSmart: 404 · Betravon: no kicking market · → no G2/G3 line
+════════════════════════════════════════════════════════════
+
+── KICKERS ──
+  Tyler Bass (BUF) id=3917232 ACTIVE
+    ESPN L7 kicking points: [12.0, 15.0, 11.0, 8.0, 6.0, 5.0, 12.0]
+    ESPN L7 FGM: [3.0, 4.0, 3.0, 2.0, 1.0, 0.0, 3.0]  XPM: [3.0, 3.0, 2.0, 2.0, 3.0, 5.0, 3.0]
+    Book: NO POSTED LINE (LS 404, Betravon no kick market, agentbets side-only)
+    research-only O6.5 KICK_PTS → 5/7 (NOT actionable — not on HR)
+    research-only O7.5 KICK_PTS → 5/7 (NOT actionable — not on HR)
+    research-only O8.5 KICK_PTS → 4/7 (NOT actionable — not on HR)
+    research-only O9.5 KICK_PTS → 4/7 (NOT actionable — not on HR)
+    VERDICT: checked · cannot lock (fails G2/G3 — no book number)
+  Will Reichard (MIN) id=4567104 ACTIVE
+    ESPN L7 kicking points: [1.0, 10.0, 11.0, 15.0, 11.0, 9.0, 7.0]
+    ESPN L7 FGM: [0.0, 3.0, 3.0, 5.0, 3.0, 3.0, 1.0]  XPM: [1.0, 1.0, 2.0, 0.0, 2.0, 0.0, 4.0]
+    Book: NO POSTED LINE (LS 404, Betravon no kick market, agentbets side-only)
+    research-only O6.5 KICK_PTS → 6/7 (NOT actionable — not on HR)
+    research-only O7.5 KICK_PTS → 5/7 (NOT actionable — not on HR)
+    research-only O8.5 KICK_PTS → 5/7 (NOT actionable — not on HR)
+    research-only O9.5 KICK_PTS → 4/7 (NOT actionable — not on HR)
+    VERDICT: checked · cannot lock (fails G2/G3 — no book number)
+  PUNTER Tommy Doman Jr. (BUF) id=4682758 — sheeted n=7 · no prop market
+  PUNTER Brett Thorson (MIN) id=4799994 — sheeted n=5 · no prop market
+
+── ALL GRADED PROPS ──
+  KEEP       5/5 Ty Johnson           O1.5 REC     id=3915411 L=[3.0, 2.0, 4.0, 2.0, 4.0] · HR
+  RISK-KEEP  4/5 Ty Johnson           O15.5 REC_YD  id=3915411 L=[19.0, 24.0, 72.0, 9.0, 50.0] · HR
+  RISK       5/7 Aaron Jones Sr.      O32.5 RUSH_YD id=3042519 L=[22.0, 26.0, 113.0, 94.0, 58.0, 105.0, 40.0] · HR
+  RISK       5/7 Dalton Kincaid       O36.5 REC_YD  id=4385690 L=[86.0, 38.0, 7.0, 7.0, 38.0, 95.0, 130.0] · HR
+  RISK       5/7 Josh Allen           O236.5 PASS_YD id=3918298 L=[289.0, 255.0, 210.0, 253.0, 204.0, 248.0, 334.0] · HR
+  CUT        3/7 Aaron Jones Sr.      O7.5 REC_YD  id=3042519 L=[18.0, 0.0, 4.0, 34.0, 34.0, 0.0, 0.0] · HR SOFT
+  CUT        3/5 DJ Moore             O3.5 REC     id=3915416 L=[4.0, 1.0, 6.0, 0.0, 5.0] · HR
+  CUT        3/5 DJ Moore             O47.5 REC_YD  id=3915416 L=[82.0, 11.0, 67.0, 0.0, 100.0] · HR
+  CUT        4/7 Dalton Kincaid       O3.5 REC     id=4385690 L=[4.0, 7.0, 1.0, 1.0, 2.0, 7.0, 5.0] · HR
+  CUT        2/7 Dawson Knox          O1.5 REC     id=3930086 L=[1.0, 1.0, 1.0, 2.0, 1.0, 2.0, 1.0] · HR
+  CUT        1/7 Dawson Knox          O7.5 REC_YD  id=3930086 L=[6.0, 0.0, 6.0, 13.0, 5.0, 5.0, 7.0] · HR SOFT
+  CUT        4/7 James Cook III       O1.5 REC     id=4379399 L=[2.0, 3.0, 1.0, 2.0, 0.0, 1.0, 3.0] · HR
+  CUT        3/7 James Cook III       O8.5 REC_YD  id=4379399 L=[21.0, 58.0, 7.0, 8.0, 0.0, 4.0, 12.0] · HR SOFT
+  CUT        4/7 James Cook III       O83.5 RUSH_YD id=4379399 L=[80.0, 95.0, 111.0, 75.0, 154.0, 135.0, 57.0] · HR
+  CUT        2/6 Jordan Addison       O3.5 REC     id=4429205 L=[3.0, 2.0, 4.0, 5.0, 2.0, 0.0] · HR
+  CUT        3/6 Jordan Addison       O40.5 REC_YD  id=4429205 L=[66.0, 20.0, 52.0, 90.0, 21.0, 0.0] · HR
+  CUT        4/7 Josh Allen           O1.5 PASS_TD id=3918298 L=[2.0, 2.0, 1.0, 1.0, 0.0, 3.0, 2.0] · posted
+  CUT        2/7 Josh Allen           O32.5 RUSH_YD id=3918298 L=[30.0, 1.0, 121.0, 4.0, 22.0, 69.0, 23.0] · HR
+  CUT        1/6 Justin Jefferson     O6.5 REC     id=4262921 L=[5.0, 4.0, 6.0, 2.0, 3.0, 8.0] · HR
+  CUT        1/6 Justin Jefferson     O79.5 REC_YD  id=4262921 L=[33.0, 44.0, 79.0, 32.0, 55.0, 92.0] · HR
+  CUT        3/7 Keon Coleman         O2.5 REC     id=4635008 L=[1.0, 4.0, 1.0, 6.0, 1.0, 6.0, 1.0] · HR
+  CUT        4/7 Keon Coleman         O28.5 REC_YD  id=4635008 L=[4.0, 59.0, 7.0, 116.0, 37.0, 63.0, 1.0] · HR
+  CUT        4/7 Khalil Shakir        O3.5 REC     id=4373678 L=[5.0, 4.0, 3.0, 7.0, 1.0, 3.0, 4.0] · HR
+  CUT        4/7 Khalil Shakir        O39.5 REC_YD  id=4373678 L=[64.0, 34.0, 80.0, 82.0, 6.0, 38.0, 50.0] · HR
+  CUT        1/7 Ray Davis            O5.5 RUSH_YD id=4429501 L=[30.0, 4.0, 2.0, 3.0, 0.0, 0.0, 3.0] · HR
+  CUT        1/7 T.J. Hockenson       O4.5 REC     id=4036133 L=[4.0, 4.0, 1.0, 13.0, 2.0, 3.0, 4.0] · posted
+  CUT        2/7 T.J. Hockenson       O42.5 REC_YD  id=4036133 L=[58.0, 35.0, 7.0, 119.0, 11.0, 29.0, 36.0] · posted
+  SKIP       0/3 Ben Yurosek          O0.5 REC     id=4433959 L=[1.0, 0.0, 1.0] · HR SOFT
+  SKIP       0/3 Ben Yurosek          O2.5 REC_YD  id=4433959 L=[24.0, 0.0, 10.0] · HR SOFT
+  SKIP       0/3 Carson Wentz         O1.5 PASS_TD id=2573079 L=[0.0, 0.0, 3.0] · posted
+  SKIP       0/3 Carson Wentz         O210.5 PASS_YD id=2573079 L=[0.0, 143.0, 133.0] · HR
+  SKIP       0/3 Carson Wentz         O7.5 RUSH_YD id=2573079 L=[0.0, 6.0, -1.0] · HR
+  SKIP       0/3 Jordan Mason         O47.5 RUSH_YD id=4360569 L=[20.0, 68.0, 59.0] · HR
+  SKIP       0/2 Skyler Bell          O0.5 REC     id=4683153 L=[0.0, 0.0] · HR SOFT
+  SKIP       0/2 Skyler Bell          O5.5 REC_YD  id=4683153 L=[0.0, 0.0] · HR SOFT
+  OUT        Jauan Jennings REC O0.5
+  OUT        Jauan Jennings REC_YD O8.5
+  OUT        Kyler Murray PASS_YD O213.5
+
+── EVERY ACTIVE PLAYER ──
+  [BUF]
+    C   Austin Corbett               id=3056608  ACTIVE | CHECKED — no posted prop (skill/defense)
+    C   Connor McGovern              id=4033748  ACTIVE | CHECKED — no posted prop (skill/defense)
+    C   Lloyd Cushenberry III        id=4035448  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Christian Benford            id=4379778  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Davison Igbinosun            id=4832035  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Dee Alford                   id=4401823  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Dorian Strong                id=4568703  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Jordan Hancock               id=4596480  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Kani Walker                  id=4682749  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Maxwell Hairston             id=4688931  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Te'Cory Couch                id=4427348  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DE  Landon Jackson               id=4432715  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DE  Michael Hoecht               id=4033234  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DE  Mike Danna                   id=3915487  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  DeWayne Carter               id=4426883  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  Deone Walker                 id=4831989  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  Ed Oliver                    id=4039303  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  Greg Gaines                  id=3127294  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  T.J. Sanders                 id=4684527  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  Zane Durant                  id=4685347  ACTIVE | CHECKED — no posted prop (skill/defense)
+    G   Ar'maj Reed-Adams            id=4606712  ACTIVE | CHECKED — no posted prop (skill/defense)
+    G   O'Cyrus Torrence             id=4428696  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Bradley Chubb                id=3116733  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Dorian Williams              id=4568624  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Greg Rousseau                id=4362506  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Javon Solomon                id=4428548  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Joe Andreessen               id=4366349  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Kaleb Elarms-Orr             id=4594321  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  TJ Parker                    id=4870886  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Terrel Bernard               id=4259166  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LS  Reid Ferguson                id=2976549  ACTIVE | LONG SNAPPER — no prop market
+    OT  Alec Anderson                id=4367203  Q/DTD  | CHECKED — no posted prop (skill/defense)
+    OT  Dion Dawkins                 id=3051324  Q/DTD  | CHECKED — no posted prop (skill/defense)
+    OT  Jude Bowry                   id=4869533  ACTIVE | CHECKED — no posted prop (skill/defense)
+    OT  Spencer Brown                id=4030899  ACTIVE | CHECKED — no posted prop (skill/defense)
+    OT  Tylan Grable                 id=4368828  ACTIVE | CHECKED — no posted prop (skill/defense)
+    P   Tommy Doman Jr.              id=4682758  ACTIVE | PUNTER — sheeted; no prop market
+    PK  Tyler Bass                   id=3917232  ACTIVE | KICKER — sheeted; NO book line → not lockable
+    QB  Josh Allen                   id=3918298  ACTIVE | PROPS: RISK O236.5 PASS_YD, CUT O1.5 PASS_TD, CUT O32.5 RUSH_YD
+    QB  Kyle Allen                   id=3115293  ACTIVE | CHECKED — no posted prop (skill/defense)
+    RB  James Cook III               id=4379399  ACTIVE | PROPS: CUT O83.5 RUSH_YD, CUT O8.5 REC_YD, CUT O1.5 REC
+    RB  Ray Davis                    id=4429501  ACTIVE | PROPS: CUT O5.5 RUSH_YD
+    RB  Ty Johnson                   id=3915411  ACTIVE | PROPS: RISK-KEEP O15.5 REC_YD, KEEP O1.5 REC
+    S   Cole Bishop                  id=4676004  ACTIVE | CHECKED — no posted prop (skill/defense)
+    S   Damar Hamlin                 id=4036060  ACTIVE | CHECKED — no posted prop (skill/defense)
+    S   Jalon Kilgore                id=5076951  ACTIVE | CHECKED — no posted prop (skill/defense)
+    S   Sam Franklin Jr.             id=4044133  ACTIVE | CHECKED — no posted prop (skill/defense)
+    TE  Dalton Kincaid               id=4385690  ACTIVE | PROPS: RISK O36.5 REC_YD, CUT O3.5 REC
+    TE  Dawson Knox                  id=3930086  ACTIVE | PROPS: CUT O7.5 REC_YD, CUT O1.5 REC
+    TE  Jackson Hawes                id=4573699  ACTIVE | CHECKED — no posted prop (skill/defense)
+    TE  Keleki Latu                  id=4688552  ACTIVE | CHECKED — no posted prop (skill/defense)
+    WR  DJ Moore                     id=3915416  ACTIVE | PROPS: CUT O47.5 REC_YD, CUT O3.5 REC
+    WR  Greg Dortch                  id=4037235  ACTIVE | CHECKED — no posted prop (skill/defense)
+    WR  Joshua Palmer                id=4242433  OUT    | CHECKED — no posted prop (skill/defense)
+    WR  Keon Coleman                 id=4635008  ACTIVE | PROPS: CUT O28.5 REC_YD, CUT O2.5 REC
+    WR  Khalil Shakir                id=4373678  ACTIVE | PROPS: CUT O39.5 REC_YD, CUT O3.5 REC
+    WR  Skyler Bell                  id=4683153  ACTIVE | PROPS: SKIP O5.5 REC_YD, SKIP O0.5 REC
+    WR  Tyrell Shavers               id=4241476  OUT    | CHECKED — no posted prop (skill/defense)
+  [MIN]
+    C   Blake Brandel                id=3930270  ACTIVE | CHECKED — no posted prop (skill/defense)
+    C   Michael Jurgens              id=4362010  ACTIVE | CHECKED — no posted prop (skill/defense)
+    C   Nick Samac                   id=4428421  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Byron Murphy Jr.             id=4038999  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Charles Demmings             id=5091793  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Dwight McGlothern Jr.        id=4429128  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Isaiah Rodgers               id=4044540  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  James Pierre                 id=4259252  ACTIVE | CHECKED — no posted prop (skill/defense)
+    CB  Zemaiah Vaughn               id=4695609  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DE  Elijah Williams              id=4696782  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DE  Tyrion Ingram-Dawkins        id=4629149  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  Caleb Banks                  id=4602019  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  Domonique Orange             id=4698728  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  Jalen Redmond                id=4360277  ACTIVE | CHECKED — no posted prop (skill/defense)
+    DT  Levi Drake Rodriguez         id=5093973  ACTIVE | CHECKED — no posted prop (skill/defense)
+    FB  Max Bredeson                 id=4878695  ACTIVE | CHECKED — no posted prop (skill/defense)
+    G   Donovan Jackson              id=4431553  ACTIVE | CHECKED — no posted prop (skill/defense)
+    G   Joe Huber                    id=4690210  ACTIVE | CHECKED — no posted prop (skill/defense)
+    G   Will Fries                   id=4045176  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Andrew Van Ginkel            id=3133487  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Blake Cashman                id=3728281  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Bo Richter                   id=4875564  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Chaz Chambliss               id=4431520  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Dallas Turner                id=4565190  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Eric Wilson                  id=3056916  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Ivan Pace Jr.                id=4430280  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Jake Golday                  id=4877652  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Jamal Adams                  id=3115373  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Kyle Van Noy                 id=16772    ACTIVE | CHECKED — no posted prop (skill/defense)
+    LB  Tyler Batty                  id=4608794  ACTIVE | CHECKED — no posted prop (skill/defense)
+    LS  Andrew DePaola               id=15726    ACTIVE | LONG SNAPPER — no prop market
+    OT  Brian O'Neill                id=3123954  ACTIVE | CHECKED — no posted prop (skill/defense)
+    OT  Caleb Tiernan                id=4592836  ACTIVE | CHECKED — no posted prop (skill/defense)
+    OT  Christian Darrisaw           id=4361985  ACTIVE | CHECKED — no posted prop (skill/defense)
+    OT  Ryan Van Demark              id=4239140  ACTIVE | CHECKED — no posted prop (skill/defense)
+    P   Brett Thorson                id=4799994  ACTIVE | PUNTER — sheeted; no prop market
+    PK  Will Reichard                id=4567104  ACTIVE | KICKER — sheeted; NO book line → not lockable
+    QB  Carson Wentz                 id=2573079  ACTIVE | PROPS: SKIP O210.5 PASS_YD, SKIP O1.5 PASS_TD, SKIP O7.5 RUSH_YD
+    QB  Kyler Murray                 id=3917315  OUT    | PROPS: OUT O213.5 PASS_YD
+    QB  Max Brosmer                  id=4573398  ACTIVE | CHECKED — no posted prop (skill/defense)
+    RB  Aaron Jones Sr.              id=3042519  ACTIVE | PROPS: RISK O32.5 RUSH_YD, CUT O7.5 REC_YD
+    RB  DeeJay Dallas                id=4240631  ACTIVE | CHECKED — no posted prop (skill/defense)
+    RB  Demond Claiborne             id=4832846  OUT    | CHECKED — no posted prop (skill/defense)
+    RB  Jordan Mason                 id=4360569  ACTIVE | PROPS: SKIP O47.5 RUSH_YD
+    S   Harrison Smith               id=14945    ACTIVE | CHECKED — no posted prop (skill/defense)
+    S   Jacob Thomas                 id=5082397  ACTIVE | CHECKED — no posted prop (skill/defense)
+    S   Jakobe Thomas                id=4710865  ACTIVE | CHECKED — no posted prop (skill/defense)
+    S   Jay Ward                     id=4568007  Q/DTD  | CHECKED — no posted prop (skill/defense)
+    S   Joshua Metellus              id=4046537  ACTIVE | CHECKED — no posted prop (skill/defense)
+    S   Tavierre Thomas              id=4334405  ACTIVE | CHECKED — no posted prop (skill/defense)
+    S   Theo Jackson                 id=4242436  Q/DTD  | CHECKED — no posted prop (skill/defense)
+    TE  Ben Yurosek                  id=4433959  ACTIVE | PROPS: SKIP O2.5 REC_YD, SKIP O0.5 REC
+    TE  Gavin Bartholomew            id=4708049  ACTIVE | CHECKED — no posted prop (skill/defense)
+    TE  Josh Oliver                  id=3921690  ACTIVE | CHECKED — no posted prop (skill/defense)
+    TE  T.J. Hockenson               id=4036133  ACTIVE | PROPS: CUT O42.5 REC_YD, CUT O4.5 REC
+    WR  Dillon Bell                  id=4712579  ACTIVE | CHECKED — no posted prop (skill/defense)
+    WR  Jauan Jennings               id=3886598  OUT    | PROPS: OUT O8.5 REC_YD, OUT O0.5 REC
+    WR  Jeshaun Jones                id=4360637  ACTIVE | CHECKED — no posted prop (skill/defense)
+    WR  Jordan Addison               id=4429205  ACTIVE | PROPS: CUT O40.5 REC_YD, CUT O3.5 REC
+    WR  Justin Jefferson             id=4262921  ACTIVE | PROPS: CUT O79.5 REC_YD, CUT O6.5 REC
+    WR  Myles Price                  id=4430656  ACTIVE | CHECKED — no posted prop (skill/defense)
+    WR  Odell Beckham Jr.            id=16733    ACTIVE | CHECKED — no posted prop (skill/defense)
+    WR  Tai Felton                   id=4565185  ACTIVE | CHECKED — no posted prop (skill/defense)
+
+── IR / OUT LIST ──
+  BUF DT  Zane Durant id=4685347
+  BUF CB  Jordan Hancock id=4596480
+  BUF WR  Tyrell Shavers id=4241476
+  BUF CB  Dorian Strong id=4568703
+  MIN LB  Jamal Adams id=3115373
+  MIN LB  Tyler Batty id=4608794
+  MIN G   Donovan Jackson id=4431553
+  MIN RB  Jordan Mason id=4360569
+  MIN CB  Dwight McGlothern Jr. id=4429128
+  MIN TE  Josh Oliver id=3921690
+  MIN C   Nick Samac id=4428421
+
+── BEST AFTER CHECKING EVERYONE ──
+  KEEP 5/5 Ty Johnson O1.5 REC id=3915411
+  RISK-KEEP 4/5 Ty Johnson O15.5 REC_YD id=3915411
+  SIDE: BUF -3 / BUF ML ← primary NFL piece
+  Kickers: checked, no line, excluded
+
+DONE: 121 active players statused · kickers sheeted · 38 prop rows graded · HR on 17 pages
