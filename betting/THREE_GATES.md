@@ -10,6 +10,12 @@ No parlay lock ships unless all three gates pass for every leg.
 Sheets: RS-only L7/L10 (never preseason). Full cats + athlete id.  
 Internal soft floors may be graded here for research — **not bet instructions**.
 
+**Accuracy upgrades (season scan):** see `betting/ACCURACY_RULES.md`  
+- Dual-window KEEP: L7 ≥6/7 **and** season ≥75% at the exact line  
+- Minutes gate: L7 avg MIN ≥24 or demote  
+- Hot drift ≥+3 → shave one extra step  
+- STL/BLK research only
+
 ## GATE 2 — Posted book lines
 `python3 betting/pull_posted_mains.py` (+ `pull_hr_odds.py` if `ODDS_API_KEY`)  
 `python3 betting/grade_posted_card.py`  

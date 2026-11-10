@@ -1,0 +1,226 @@
+════════════════════════════════════════════════════════════════════════
+SEASON TREND / CORRELATION SCAN · NBA + NHL
+Built 2026-11-10 10:13 AM ET · every sheeted RS game · no preseason
+Universe: 423 NBA players · 523 NHL players (deduped max gamelog)
+════════════════════════════════════════════════════════════════════════
+
+══ 1. BIG RULES THAT IMPROVE ACCURACY ══
+A. MINUTES ARE THE MASTER VARIABLE
+   avg corr(MIN, PTS) = 0.532  (n=317 players)
+   avg corr(MIN, REB) = 0.419  (n=317 players)
+   avg corr(MIN, AST) = 0.345  (n=316 players)
+   avg corr(MIN, STL) = 0.202  (n=312 players)
+   avg corr(MIN, BLK) = 0.209  (n=289 players)
+   avg corr(MIN, 3PT) = 0.312  (n=296 players)
+   avg corr(MIN, TO) = 0.204  (n=315 players)
+   → If minutes are GTD/rest/blowout risk, CUT the counting prop even if L7 is pretty.
+   → Prefer players with stable 28+ mpg; cliff games (<22 min) nuke PTS/AST first.
+
+B. L7 PERFECT ≠ SEASON TRUTH (regression traps)
+   Found 18 player-stat lines with L7=7/7 but season hit ≤70% (line>1.5).
+   → Require BOTH L7≥6/7 AND season≥75% for spine — or shave until season also clears.
+   TRAP  Yanic Konan Niederhauser REB  O2.5   L7=100% season=42% LAC
+   TRAP  Kam Jones              AST  O2.5   L7=100% season=46% MIL
+   TRAP  Jamir Watkins          PTS  O6.5   L7=100% season=54% WSH
+   TRAP  Devin Carter           PTS  O5.5   L7=100% season=55% BOS
+   TRAP  Devin Carter           PTS  O4.5   L7=100% season=58% BOS
+   TRAP  Devin Carter           REB  O2.5   L7=100% season=58% BOS
+   TRAP  Devin Carter           AST  O2.5   L7=100% season=58% BOS
+   TRAP  Maxime Raynaud         REB  O6.5   L7=100% season=60% SAC
+   TRAP  Jamir Watkins          PTS  O5.5   L7=100% season=62% WSH
+   TRAP  Tristan Vukcevic       PTS  O5.5   L7=100% season=65% WSH
+   TRAP  Jamir Watkins          PTS  O4.5   L7=100% season=67% WSH
+   TRAP  Tobias Harris          REB  O4.5   L7=100% season=69% SA
+
+C. SOFT FLOORS LOOK FIRM — THEY'RE BAIT
+   Fake-firm soft clears found: 667
+   → Keep ban: REB/AST/STL ≤1.5 · 3PT ≤0.5 · SOG ≤1.5 even at 7/7.
+
+D. STL / BLK ARE NOT PARLAY SPINE STATS
+   avg season hit STL_0.5: 0.464
+   avg season hit STL_1.5: 0.173
+   avg season hit BLK_0.5: 0.294
+   avg season hit BLK_1.5: 0.091
+   → League-average STL O1.5 is weak; treat as lottery, not KEEP.
+
+E. STAT CORRELATIONS (same-game stacking)
+   avg corr PTS-AST: 0.188 (n=316)
+   avg corr PTS-REB: 0.279 (n=317)
+   avg corr AST-REB: 0.221 (n=316)
+   avg corr PTS-3PT: 0.662 (n=296)
+   avg corr REB-STL: 0.062 (n=312)
+   avg corr MIN-PTS: 0.532 (n=317)
+   → PTS-AST stacks are only mildly correlated — not automatic SGP hedges.
+   → PTS-3PT correlation exists but 3PT variance is still binary-ish.
+   → Double-dip same player (PTS+REB) still needs independent floors.
+
+══ 2. HOT / COLD L7 DRIFTS (mean L7 − season) ══
+HOT (L7 running hot — don't overpay posted; shave or wait regression):
+  +6.222 Devin Carter           PTS  L7=15.143 season=8.921  BOS
+  +5.762 Jamir Watkins          PTS  L7=13.429 season=7.667  WSH
+  +5.299 Cormac Ryan            PTS  L7=19.571 season=14.273 MIL
+  +4.541 Maxime Raynaud         PTS  L7=17.0   season=12.459 SAC
+  +4.327 Julian Strawther       PTS  L7=11.429 season=7.102  DEN
+  +4.175 Luka Doncic            PTS  L7=44.286 season=40.111 LAL
+  +4.024 Pete Nance             PTS  L7=9.429  season=5.404  MIL
+  +3.9   Victor Wembanyama      PTS  L7=33.0   season=29.1   SA
+  +3.857 Tristan Vukcevic       PTS  L7=12.857 season=9.0    WSH
+  +3.243 Ajay Mitchell          PTS  L7=22.143 season=18.9   OKC
+  +3.2   Jeremiah Fears         PTS  L7=19.0   season=15.8   NO
+COLD (L7 cold — avoid chasing overs at season mean; wait or go under/pass):
+  -11.321 Shaedon Sharpe         PTS  L7=8.143  season=19.464 POR
+  -5.988 Brandon Ingram         PTS  L7=14.429 season=20.417 LAC
+  -4.161 Ben Simmons            AST  L7=1.0    season=5.161  SAC
+  -3.956 Dominick Barlow        PTS  L7=3.143  season=7.099  PHI
+  -3.257 Zach LaVine            PTS  L7=18.143 season=21.4   SAC
+
+══ 3. TRUE STABLE FLOORS (season≥85% AND L7≥85%, non-soft) ══
+These are the accuracy gold — highest clear line that stays firm both windows:
+  Luka Doncic            PTS  O27.5  season=89% L7=100% mpg=35.889 LAL
+  Stephen Curry          PTS  O23.5  season=88% L7=100% mpg=29.75 GS
+  Shai Gilgeous-Alexander PTS  O20.5  season=90% L7=100% mpg=32.9 OKC
+  Giannis Antetokounmpo  PTS  O19.5  season=90% L7=100% mpg=32.9 MIA
+  RJ Barrett             PTS  O19.5  season=89% L7=86% mpg=33.0 TOR
+  Devin Booker           PTS  O19.5  season=88% L7=86% mpg=35.0 PHX
+  Jalen Brunson          PTS  O18.5  season=100% L7=100% mpg=33.889 NY
+  Tyrese Maxey           PTS  O18.5  season=91% L7=86% mpg=36.545 PHI
+  Austin Reaves          PTS  O18.5  season=91% L7=86% mpg=36.182 LAL
+  Darius Acuff Jr.       PTS  O18.5  season=90% L7=100% mpg=37.0 SAC
+  Jayson Tatum           PTS  O18.5  season=89% L7=100% mpg=33.778 BOS
+  Deni Avdija            PTS  O17.5  season=89% L7=86% mpg=32.111 POR
+  Anthony Davis          PTS  O17.5  season=88% L7=86% mpg=33.125 WSH
+  Nikola Jokic           PTS  O17.5  season=88% L7=100% mpg=35.875 DEN
+  Donovan Mitchell       PTS  O16.5  season=90% L7=86% mpg=33.5 CLE
+  Pascal Siakam          PTS  O16.5  season=89% L7=86% mpg=32.0 IND
+  Karl-Anthony Towns     PTS  O16.5  season=89% L7=86% mpg=31.556 NY
+  Cooper Flagg           PTS  O16.5  season=89% L7=100% mpg=33.667 DAL
+  Scottie Barnes         PTS  O16.5  season=88% L7=86% mpg=33.375 TOR
+  Jaylen Brown           PTS  O15.5  season=100% L7=100% mpg=35.9 PHI
+  Cade Cunningham        PTS  O15.5  season=89% L7=86% mpg=34.0 DET
+  Caleb Wilson           PTS  O15.5  season=89% L7=86% mpg=32.444 CHI
+  Alperen Sengun         PTS  O15.5  season=88% L7=86% mpg=34.75 HOU
+  Jimmy Butler III       PTS  O14.5  season=92% L7=100% mpg=30.583 GS
+  Zion Williamson        PTS  O14.5  season=90% L7=86% mpg=33.1 NO
+
+══ 4. MINUTES CLIFF (MIN≥28 vs MIN<22) ══
+Largest mean drops when minutes crater — blowout / foul-out / DNP-SD risk:
+  Brandon Ingram         PTS  hi=21.79  lo=1.75   drop=20.04  (n 76/4) LAC
+  Shaedon Sharpe         PTS  hi=22.81  lo=7.12   drop=15.69  (n 37/8) POR
+  Julian Strawther       PTS  hi=19.71  lo=4.02   drop=15.69  (n 7/44) DEN
+  Cormac Ryan            PTS  hi=20.17  lo=5.0    drop=15.17  (n 6/4) MIL
+  Quentin Grimes         PTS  hi=16.0   lo=2.33   drop=13.67  (n 3/3) LAL
+  Maxime Raynaud         PTS  hi=17.71  lo=5.06   drop=12.64  (n 34/16) SAC
+  Devin Carter           PTS  hi=16.2   lo=3.86   drop=12.34  (n 10/21) BOS
+  Patrick Williams       PTS  hi=16.0   lo=4.17   drop=11.83  (n 3/6) CHI
+  Mark Williams          PTS  hi=17.47  lo=7.11   drop=10.36  (n 15/19) PHX
+  Tobias Harris          PTS  hi=16.8   lo=6.57   drop=10.23  (n 46/7) SA
+  Jordan Miller          PTS  hi=14.15  lo=3.95   drop=10.2   (n 13/21) LAC
+  Donovan Clingan        PTS  hi=17.25  lo=7.67   drop=9.58   (n 4/3) POR
+  Grayson Allen          PTS  hi=18.4   lo=9.0    drop=9.4    (n 5/3) CHA
+  Spencer Jones          PTS  hi=11.33  lo=2.0    drop=9.33   (n 3/7) DEN
+  Jarace Walker          PTS  hi=13.0   lo=4.67   drop=8.33   (n 3/6) IND
+
+══ 5. HIGH VOLATILITY (CV≥0.55, mean≥3) — don't call KEEP on main ══
+  CV=1.602 Dalton Knecht          PTS  mean=3.1 NY
+  CV=1.442 Braden Smith           PTS  mean=5.0 IND
+  CV=1.407 Drew Timme             PTS  mean=3.5 PHX
+  CV=1.345 Asa Newell             PTS  mean=3.6 ATL
+  CV=1.289 Alijah Martin          PTS  mean=6.2 TOR
+  CV=1.258 Spencer Jones          PTS  mean=4.3 DEN
+  CV=1.243 Thomas Bryant          PTS  mean=4.2 CLE
+  CV=1.234 AJ Johnson             PTS  mean=4.8 NO
+  CV=1.21  Josh Okogie            PTS  mean=3.4 UTAH
+  CV=1.168 Jamal Cain             REB  mean=3.1 ORL
+  CV=1.159 Bryce Hopkins          PTS  mean=6.0 DEN
+  CV=1.155 LJ Cryer               PTS  mean=3.0 GS
+  CV=1.146 Hugo Gonzalez          PTS  mean=3.8 BOS
+  CV=1.1   Clint Capela           PTS  mean=3.2 HOU
+  CV=1.098 Kobe Brown             PTS  mean=5.6 IND
+
+══ 6. NHL SOG STABLE ══
+  Bo Horvat              SOG O1.5  season=100% L7=100% NYI
+  Kyle Connor            SOG O1.5  season=100% L7=100% WPG
+  Jack Hughes            SOG O1.5  season=100% L7=100% NJ
+  Lucas Raymond          SOG O1.5  season=93% L7=100% DET
+  Alex DeBrincat         SOG O1.5  season=93% L7=100% DET
+  Leon Draisaitl         SOG O1.5  season=93% L7=100% EDM
+  Macklin Celebrini      SOG O1.5  season=93% L7=86% SJ
+  Cole Perfetti          SOG O1.5  season=93% L7=100% WPG
+  Sam Reinhart           SOG O1.5  season=93% L7=86% FLA
+  Adam Fantilli          SOG O1.5  season=93% L7=100% CBJ
+  Connor Bedard          SOG O1.5  season=91% L7=100% CHI
+  David Pastrnak         SOG O1.5  season=87% L7=71% BOS
+  Connor McDavid         SOG O1.5  season=87% L7=100% EDM
+  Matthew Schaefer       SOG O1.5  season=87% L7=86% NYI
+  Rickard Rakell         SOG O1.5  season=87% L7=100% PIT
+
+══ 7. ACTIONABLE PROCESS UPGRADES ══
+1. Dual-window gate: KEEP only if L7 hit≥6/7 AND season hit≥75% at that exact line.
+2. Minutes gate: require L7 avg MIN≥24 (NBA) else demote to RISK / skip.
+3. Drift check: if L7 mean − season ≥ +3 on PTS/REB/AST, shave one extra step.
+4. Cliff tag: if player has ≥3 games under 22 min this season, never spine without minutes confirmation.
+5. Correlation: same-player PTS+AST is OK only if BOTH pass dual-window; don't treat as 1 risk.
+6. STL/BLK: research only — never parlay spine.
+7. Soft 7/7: still banned — accuracy ≠ juice efficiency.
+8. Hot L7 / cold season traps list → auto-shave or CUT from spine.
+
+══ 8. WHAT DID NOT POP (negative findings) ══
+· No magic universal PTS-REB lockstep — correlations are moderate, not destiny.
+· Perfect L7 alone is common and misleading — season window catches most bad spines.
+· NHL SOG above 3.5 rarely stays ≥85% season — prefer 2.5 floors.
+· Early-season NCAAM not in this sheet universe — keep separate landmine rules.
+
+══ 9. REB / AST / 3PT DUAL-WINDOW FLOORS (mpg≥24) ══
+(PTS dominated §3 — these are the categories we actually spine)
+
+── REB @ 75% season + 75% L7 (highest clear) ──
+  Domantas Sabonis       O11.5  season=89% L7=86% mpg=35.6 SAC
+  Karl-Anthony Towns     O11.5  season=89% L7=100% mpg=31.6 NY
+  Giannis Antetokounmpo  O11.5  season=80% L7=100% mpg=32.9 MIA
+  Rudy Gobert            O8.5   season=83% L7=83% mpg=30.0 MIN
+  Wendell Carter Jr.     O8.5   season=78% L7=86% mpg=33.4 ORL
+  Walker Kessler         O7.5   season=91% L7=100% mpg=31.0 LAL
+  Jusuf Nurkic           O7.5   season=80% L7=86% mpg=26.4 UTAH
+  Bam Adebayo            O7.5   season=80% L7=100% mpg=32.8 MIA
+  Donovan Clingan        O7.5   season=78% L7=86% mpg=24.8 POR
+  Joel Embiid            O6.5   season=100% L7=100% mpg=31.9 PHI
+  Jalen Johnson          O6.5   season=100% L7=100% mpg=33.1 ATL
+  Cedric Coward          O6.5   season=100% L7=100% mpg=28.5 MEM
+  Victor Wembanyama      O6.5   season=100% L7=100% mpg=30.3 SA
+  Nikola Jokic           O6.5   season=100% L7=100% mpg=35.9 DEN
+  Cameron Boozer         O6.5   season=89% L7=86% mpg=32.0 MEM
+
+── AST @ 75% season + 75% L7 (highest clear) ──
+  Nikola Jokic           O7.5   season=88% L7=100% mpg=35.9 DEN
+  Cade Cunningham        O6.5   season=89% L7=86% mpg=34.0 DET
+  Davion Mitchell        O6.5   season=80% L7=86% mpg=35.5 MIA
+  Alperen Sengun         O6.5   season=75% L7=86% mpg=34.8 HOU
+  Jayson Tatum           O5.5   season=100% L7=100% mpg=33.8 BOS
+  Trae Young             O5.5   season=90% L7=86% mpg=35.2 WSH
+  Draymond Green         O5.5   season=88% L7=86% mpg=27.6 GS
+  LaMelo Ball            O5.5   season=83% L7=83% mpg=26.2 MIN
+  Cooper Flagg           O5.5   season=78% L7=86% mpg=33.7 DAL
+  Jamal Murray           O5.5   season=75% L7=86% mpg=36.5 DEN
+  Franz Wagner           O4.5   season=100% L7=100% mpg=36.4 ORL
+  Luka Doncic            O4.5   season=100% L7=100% mpg=35.9 LAL
+  LeBron James           O4.5   season=89% L7=86% mpg=32.9 PHI
+  Darius Garland         O4.5   season=89% L7=100% mpg=33.6 LAC
+  Josh Giddey            O4.5   season=89% L7=86% mpg=28.0 CHI
+
+── 3PT @ 75% season + 75% L7 (highest clear) ──
+  Luka Doncic            O4.5   season=89% L7=100% mpg=35.9 LAL
+  Stephen Curry          O2.5   season=88% L7=100% mpg=29.8 GS
+  Michael Porter Jr.     O2.5   season=80% L7=86% mpg=33.0 BKN
+  Moses Moody            O2.5   season=75% L7=86% mpg=30.2 GS
+  Duncan Robinson        O1.5   season=100% L7=100% mpg=30.6 DET
+  Nickeil Alexander-Walker O1.5   season=91% L7=86% mpg=30.6 ATL
+  Aaron Wiggins          O1.5   season=91% L7=86% mpg=26.3 ATL
+  Darius Acuff Jr.       O1.5   season=90% L7=100% mpg=37.0 SAC
+  Julian Champagnie      O1.5   season=90% L7=86% mpg=25.5 SA
+  Klay Thompson          O1.5   season=90% L7=86% mpg=24.2 MIA
+  Paul George            O1.5   season=89% L7=86% mpg=30.1 BOS
+  Tristan da Silva       O1.5   season=89% L7=100% mpg=30.4 ORL
+  Cedric Coward          O1.5   season=88% L7=100% mpg=28.5 MEM
+  Fred VanVleet          O1.5   season=88% L7=86% mpg=30.1 HOU
+  Desmond Bane           O1.5   season=88% L7=86% mpg=34.5 ORL
+

@@ -1,0 +1,3497 @@
+{
+  "generated_at": "2026-11-10T10:13:49.218078-05:00",
+  "summary": {
+    "n_nba": 423,
+    "n_nhl": 523,
+    "avg_min_corr": {
+      "PTS": 0.532,
+      "REB": 0.419,
+      "AST": 0.345,
+      "STL": 0.202,
+      "BLK": 0.209,
+      "3PT": 0.312,
+      "TO": 0.204
+    },
+    "avg_pair_corr": {
+      "PTS-AST": 0.188,
+      "PTS-REB": 0.279,
+      "AST-REB": 0.221,
+      "PTS-3PT": 0.662,
+      "REB-STL": 0.062,
+      "MIN-PTS": 0.532
+    },
+    "fake_firm_n": 667,
+    "hot_n": 11,
+    "cold_n": 5,
+    "trap_n": 18,
+    "stl_blk_avg_hit": {
+      "STL_0.5": 0.464,
+      "STL_1.5": 0.173,
+      "BLK_0.5": 0.294,
+      "BLK_1.5": 0.091
+    },
+    "hot": [
+      {
+        "player": "Devin Carter",
+        "stat": "PTS",
+        "drift": 6.222,
+        "season": 8.921,
+        "l7": 15.143,
+        "team": "BOS"
+      },
+      {
+        "player": "Jamir Watkins",
+        "stat": "PTS",
+        "drift": 5.762,
+        "season": 7.667,
+        "l7": 13.429,
+        "team": "WSH"
+      },
+      {
+        "player": "Cormac Ryan",
+        "stat": "PTS",
+        "drift": 5.299,
+        "season": 14.273,
+        "l7": 19.571,
+        "team": "MIL"
+      },
+      {
+        "player": "Maxime Raynaud",
+        "stat": "PTS",
+        "drift": 4.541,
+        "season": 12.459,
+        "l7": 17.0,
+        "team": "SAC"
+      },
+      {
+        "player": "Julian Strawther",
+        "stat": "PTS",
+        "drift": 4.327,
+        "season": 7.102,
+        "l7": 11.429,
+        "team": "DEN"
+      },
+      {
+        "player": "Luka Doncic",
+        "stat": "PTS",
+        "drift": 4.175,
+        "season": 40.111,
+        "l7": 44.286,
+        "team": "LAL"
+      },
+      {
+        "player": "Pete Nance",
+        "stat": "PTS",
+        "drift": 4.024,
+        "season": 5.404,
+        "l7": 9.429,
+        "team": "MIL"
+      },
+      {
+        "player": "Victor Wembanyama",
+        "stat": "PTS",
+        "drift": 3.9,
+        "season": 29.1,
+        "l7": 33.0,
+        "team": "SA"
+      },
+      {
+        "player": "Tristan Vukcevic",
+        "stat": "PTS",
+        "drift": 3.857,
+        "season": 9.0,
+        "l7": 12.857,
+        "team": "WSH"
+      },
+      {
+        "player": "Ajay Mitchell",
+        "stat": "PTS",
+        "drift": 3.243,
+        "season": 18.9,
+        "l7": 22.143,
+        "team": "OKC"
+      },
+      {
+        "player": "Jeremiah Fears",
+        "stat": "PTS",
+        "drift": 3.2,
+        "season": 15.8,
+        "l7": 19.0,
+        "team": "NO"
+      }
+    ],
+    "cold": [
+      {
+        "player": "Shaedon Sharpe",
+        "stat": "PTS",
+        "drift": -11.321,
+        "season": 19.464,
+        "l7": 8.143,
+        "team": "POR"
+      },
+      {
+        "player": "Brandon Ingram",
+        "stat": "PTS",
+        "drift": -5.988,
+        "season": 20.417,
+        "l7": 14.429,
+        "team": "LAC"
+      },
+      {
+        "player": "Ben Simmons",
+        "stat": "AST",
+        "drift": -4.161,
+        "season": 5.161,
+        "l7": 1.0,
+        "team": "SAC"
+      },
+      {
+        "player": "Dominick Barlow",
+        "stat": "PTS",
+        "drift": -3.956,
+        "season": 7.099,
+        "l7": 3.143,
+        "team": "PHI"
+      },
+      {
+        "player": "Zach LaVine",
+        "stat": "PTS",
+        "drift": -3.257,
+        "season": 21.4,
+        "l7": 18.143,
+        "team": "SAC"
+      }
+    ],
+    "traps": [
+      {
+        "player": "Yanic Konan Niederhauser",
+        "stat": "REB",
+        "line": 2.5,
+        "l7": 1.0,
+        "season": 0.425,
+        "team": "LAC"
+      },
+      {
+        "player": "Kam Jones",
+        "stat": "AST",
+        "line": 2.5,
+        "l7": 1.0,
+        "season": 0.459,
+        "team": "MIL"
+      },
+      {
+        "player": "Jamir Watkins",
+        "stat": "PTS",
+        "line": 6.5,
+        "l7": 1.0,
+        "season": 0.542,
+        "team": "WSH"
+      },
+      {
+        "player": "Devin Carter",
+        "stat": "PTS",
+        "line": 5.5,
+        "l7": 1.0,
+        "season": 0.553,
+        "team": "BOS"
+      },
+      {
+        "player": "Devin Carter",
+        "stat": "PTS",
+        "line": 4.5,
+        "l7": 1.0,
+        "season": 0.579,
+        "team": "BOS"
+      },
+      {
+        "player": "Devin Carter",
+        "stat": "REB",
+        "line": 2.5,
+        "l7": 1.0,
+        "season": 0.579,
+        "team": "BOS"
+      },
+      {
+        "player": "Devin Carter",
+        "stat": "AST",
+        "line": 2.5,
+        "l7": 1.0,
+        "season": 0.579,
+        "team": "BOS"
+      },
+      {
+        "player": "Maxime Raynaud",
+        "stat": "REB",
+        "line": 6.5,
+        "l7": 1.0,
+        "season": 0.595,
+        "team": "SAC"
+      },
+      {
+        "player": "Jamir Watkins",
+        "stat": "PTS",
+        "line": 5.5,
+        "l7": 1.0,
+        "season": 0.625,
+        "team": "WSH"
+      },
+      {
+        "player": "Tristan Vukcevic",
+        "stat": "PTS",
+        "line": 5.5,
+        "l7": 1.0,
+        "season": 0.653,
+        "team": "WSH"
+      },
+      {
+        "player": "Jamir Watkins",
+        "stat": "PTS",
+        "line": 4.5,
+        "l7": 1.0,
+        "season": 0.667,
+        "team": "WSH"
+      },
+      {
+        "player": "Tobias Harris",
+        "stat": "REB",
+        "line": 4.5,
+        "l7": 1.0,
+        "season": 0.688,
+        "team": "SA"
+      },
+      {
+        "player": "Maxime Raynaud",
+        "stat": "REB",
+        "line": 5.5,
+        "l7": 1.0,
+        "season": 0.689,
+        "team": "SAC"
+      },
+      {
+        "player": "Jeremiah Fears",
+        "stat": "PTS",
+        "line": 10.5,
+        "l7": 1.0,
+        "season": 0.7,
+        "team": "NO"
+      },
+      {
+        "player": "Bennett Stirtz",
+        "stat": "PTS",
+        "line": 4.5,
+        "l7": 1.0,
+        "season": 0.7,
+        "team": "OKC"
+      },
+      {
+        "player": "Bennett Stirtz",
+        "stat": "PTS",
+        "line": 5.5,
+        "l7": 1.0,
+        "season": 0.7,
+        "team": "OKC"
+      },
+      {
+        "player": "Bennett Stirtz",
+        "stat": "PTS",
+        "line": 6.5,
+        "l7": 1.0,
+        "season": 0.7,
+        "team": "OKC"
+      },
+      {
+        "player": "Kenrich Williams",
+        "stat": "REB",
+        "line": 2.5,
+        "l7": 1.0,
+        "season": 0.7,
+        "team": "OKC"
+      }
+    ],
+    "stables": [
+      {
+        "stat": "PTS",
+        "line": 27.5,
+        "season": 0.8888888888888888,
+        "l7": 1.0,
+        "player": "Luka Doncic",
+        "team": "LAL",
+        "mpg": 35.889
+      },
+      {
+        "stat": "PTS",
+        "line": 23.5,
+        "season": 0.875,
+        "l7": 1.0,
+        "player": "Stephen Curry",
+        "team": "GS",
+        "mpg": 29.75
+      },
+      {
+        "stat": "PTS",
+        "line": 20.5,
+        "season": 0.9,
+        "l7": 1.0,
+        "player": "Shai Gilgeous-Alexander",
+        "team": "OKC",
+        "mpg": 32.9
+      },
+      {
+        "stat": "PTS",
+        "line": 19.5,
+        "season": 0.9,
+        "l7": 1.0,
+        "player": "Giannis Antetokounmpo",
+        "team": "MIA",
+        "mpg": 32.9
+      },
+      {
+        "stat": "PTS",
+        "line": 19.5,
+        "season": 0.8888888888888888,
+        "l7": 0.8571428571428571,
+        "player": "RJ Barrett",
+        "team": "TOR",
+        "mpg": 33.0
+      },
+      {
+        "stat": "PTS",
+        "line": 19.5,
+        "season": 0.875,
+        "l7": 0.8571428571428571,
+        "player": "Devin Booker",
+        "team": "PHX",
+        "mpg": 35.0
+      },
+      {
+        "stat": "PTS",
+        "line": 18.5,
+        "season": 1.0,
+        "l7": 1.0,
+        "player": "Jalen Brunson",
+        "team": "NY",
+        "mpg": 33.889
+      },
+      {
+        "stat": "PTS",
+        "line": 18.5,
+        "season": 0.9090909090909091,
+        "l7": 0.8571428571428571,
+        "player": "Tyrese Maxey",
+        "team": "PHI",
+        "mpg": 36.545
+      },
+      {
+        "stat": "PTS",
+        "line": 18.5,
+        "season": 0.9090909090909091,
+        "l7": 0.8571428571428571,
+        "player": "Austin Reaves",
+        "team": "LAL",
+        "mpg": 36.182
+      },
+      {
+        "stat": "PTS",
+        "line": 18.5,
+        "season": 0.9,
+        "l7": 1.0,
+        "player": "Darius Acuff Jr.",
+        "team": "SAC",
+        "mpg": 37.0
+      },
+      {
+        "stat": "PTS",
+        "line": 18.5,
+        "season": 0.8888888888888888,
+        "l7": 1.0,
+        "player": "Jayson Tatum",
+        "team": "BOS",
+        "mpg": 33.778
+      },
+      {
+        "stat": "PTS",
+        "line": 17.5,
+        "season": 0.8888888888888888,
+        "l7": 0.8571428571428571,
+        "player": "Deni Avdija",
+        "team": "POR",
+        "mpg": 32.111
+      },
+      {
+        "stat": "PTS",
+        "line": 17.5,
+        "season": 0.875,
+        "l7": 0.8571428571428571,
+        "player": "Anthony Davis",
+        "team": "WSH",
+        "mpg": 33.125
+      },
+      {
+        "stat": "PTS",
+        "line": 17.5,
+        "season": 0.875,
+        "l7": 1.0,
+        "player": "Nikola Jokic",
+        "team": "DEN",
+        "mpg": 35.875
+      },
+      {
+        "stat": "PTS",
+        "line": 16.5,
+        "season": 0.9,
+        "l7": 0.8571428571428571,
+        "player": "Donovan Mitchell",
+        "team": "CLE",
+        "mpg": 33.5
+      },
+      {
+        "stat": "PTS",
+        "line": 16.5,
+        "season": 0.8888888888888888,
+        "l7": 0.8571428571428571,
+        "player": "Pascal Siakam",
+        "team": "IND",
+        "mpg": 32.0
+      },
+      {
+        "stat": "PTS",
+        "line": 16.5,
+        "season": 0.8888888888888888,
+        "l7": 0.8571428571428571,
+        "player": "Karl-Anthony Towns",
+        "team": "NY",
+        "mpg": 31.556
+      },
+      {
+        "stat": "PTS",
+        "line": 16.5,
+        "season": 0.8888888888888888,
+        "l7": 1.0,
+        "player": "Cooper Flagg",
+        "team": "DAL",
+        "mpg": 33.667
+      },
+      {
+        "stat": "PTS",
+        "line": 16.5,
+        "season": 0.875,
+        "l7": 0.8571428571428571,
+        "player": "Scottie Barnes",
+        "team": "TOR",
+        "mpg": 33.375
+      },
+      {
+        "stat": "PTS",
+        "line": 15.5,
+        "season": 1.0,
+        "l7": 1.0,
+        "player": "Jaylen Brown",
+        "team": "PHI",
+        "mpg": 35.9
+      },
+      {
+        "stat": "PTS",
+        "line": 15.5,
+        "season": 0.8888888888888888,
+        "l7": 0.8571428571428571,
+        "player": "Cade Cunningham",
+        "team": "DET",
+        "mpg": 34.0
+      },
+      {
+        "stat": "PTS",
+        "line": 15.5,
+        "season": 0.8888888888888888,
+        "l7": 0.8571428571428571,
+        "player": "Caleb Wilson",
+        "team": "CHI",
+        "mpg": 32.444
+      },
+      {
+        "stat": "PTS",
+        "line": 15.5,
+        "season": 0.875,
+        "l7": 0.8571428571428571,
+        "player": "Alperen Sengun",
+        "team": "HOU",
+        "mpg": 34.75
+      },
+      {
+        "stat": "PTS",
+        "line": 14.5,
+        "season": 0.9166666666666666,
+        "l7": 1.0,
+        "player": "Jimmy Butler III",
+        "team": "GS",
+        "mpg": 30.583
+      },
+      {
+        "stat": "PTS",
+        "line": 14.5,
+        "season": 0.9,
+        "l7": 0.8571428571428571,
+        "player": "Zion Williamson",
+        "team": "NO",
+        "mpg": 33.1
+      },
+      {
+        "stat": "PTS",
+        "line": 14.5,
+        "season": 0.8888888888888888,
+        "l7": 0.8571428571428571,
+        "player": "Paul George",
+        "team": "BOS",
+        "mpg": 30.111
+      },
+      {
+        "stat": "PTS",
+        "line": 14.5,
+        "season": 0.8888888888888888,
+        "l7": 0.8571428571428571,
+        "player": "Franz Wagner",
+        "team": "ORL",
+        "mpg": 36.444
+      },
+      {
+        "stat": "PTS",
+        "line": 14.5,
+        "season": 0.8888888888888888,
+        "l7": 0.8571428571428571,
+        "player": "Darius Garland",
+        "team": "LAC",
+        "mpg": 33.556
+      },
+      {
+        "stat": "PTS",
+        "line": 14.5,
+        "season": 0.875,
+        "l7": 0.8571428571428571,
+        "player": "Ty Jerome",
+        "team": "MEM",
+        "mpg": 30.5
+      },
+      {
+        "stat": "PTS",
+        "line": 14.5,
+        "season": 0.875,
+        "l7": 0.8571428571428571,
+        "player": "Norman Powell",
+        "team": "CHI",
+        "mpg": 28.875
+      },
+      {
+        "stat": "PTS",
+        "line": 14.5,
+        "season": 0.875,
+        "l7": 0.8571428571428571,
+        "player": "Kyrie Irving",
+        "team": "DAL",
+        "mpg": 29.625
+      },
+      {
+        "stat": "PTS",
+        "line": 13.5,
+        "season": 1.0,
+        "l7": 1.0,
+        "player": "Jaden McDaniels",
+        "team": "MIN",
+        "mpg": 32.5
+      },
+      {
+        "stat": "PTS",
+        "line": 13.5,
+        "season": 0.9,
+        "l7": 0.8571428571428571,
+        "player": "Zach LaVine",
+        "team": "SAC",
+        "mpg": 32.7
+      },
+      {
+        "stat": "PTS",
+        "line": 13.5,
+        "season": 0.9,
+        "l7": 0.8571428571428571,
+        "player": "Stephon Castle",
+        "team": "SA",
+        "mpg": 28.9
+      },
+      {
+        "stat": "PTS",
+        "line": 13.5,
+        "season": 0.9,
+        "l7": 0.8571428571428571,
+        "player": "Kevin Durant",
+        "team": "HOU",
+        "mpg": 34.2
+      },
+      {
+        "stat": "PTS",
+        "line": 13.5,
+        "season": 0.9,
+        "l7": 0.8571428571428571,
+        "player": "Trae Young",
+        "team": "WSH",
+        "mpg": 35.2
+      },
+      {
+        "stat": "PTS",
+        "line": 13.5,
+        "season": 0.875,
+        "l7": 0.8571428571428571,
+        "player": "Andrew Nembhard",
+        "team": "IND",
+        "mpg": 33.125
+      },
+      {
+        "stat": "PTS",
+        "line": 13.5,
+        "season": 0.875,
+        "l7": 1.0,
+        "player": "Jamal Murray",
+        "team": "DEN",
+        "mpg": 36.5
+      },
+      {
+        "stat": "PTS",
+        "line": 12.5,
+        "season": 1.0,
+        "l7": 1.0,
+        "player": "Tyler Herro",
+        "team": "MIL",
+        "mpg": 30.7
+      },
+      {
+        "stat": "PTS",
+        "line": 12.5,
+        "season": 1.0,
+        "l7": 1.0,
+        "player": "Dylan Harper",
+        "team": "SA",
+        "mpg": 31.9
+      }
+    ],
+    "volatile": [
+      {
+        "stat": "PTS",
+        "cv": 1.602,
+        "mean": 3.0833333333333335,
+        "player": "Dalton Knecht",
+        "team": "NY"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.442,
+        "mean": 5.0,
+        "player": "Braden Smith",
+        "team": "IND"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.407,
+        "mean": 3.5384615384615383,
+        "player": "Drew Timme",
+        "team": "PHX"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.345,
+        "mean": 3.6,
+        "player": "Asa Newell",
+        "team": "ATL"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.289,
+        "mean": 6.25,
+        "player": "Alijah Martin",
+        "team": "TOR"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.258,
+        "mean": 4.333333333333333,
+        "player": "Spencer Jones",
+        "team": "DEN"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.243,
+        "mean": 4.166666666666667,
+        "player": "Thomas Bryant",
+        "team": "CLE"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.234,
+        "mean": 4.75,
+        "player": "AJ Johnson",
+        "team": "NO"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.21,
+        "mean": 3.4444444444444446,
+        "player": "Josh Okogie",
+        "team": "UTAH"
+      },
+      {
+        "stat": "REB",
+        "cv": 1.168,
+        "mean": 3.111111111111111,
+        "player": "Jamal Cain",
+        "team": "ORL"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.159,
+        "mean": 6.0,
+        "player": "Bryce Hopkins",
+        "team": "DEN"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.155,
+        "mean": 3.0,
+        "player": "LJ Cryer",
+        "team": "GS"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.146,
+        "mean": 3.8,
+        "player": "Hugo Gonzalez",
+        "team": "BOS"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.1,
+        "mean": 3.1666666666666665,
+        "player": "Clint Capela",
+        "team": "HOU"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.098,
+        "mean": 5.6,
+        "player": "Kobe Brown",
+        "team": "IND"
+      },
+      {
+        "stat": "AST",
+        "cv": 1.085,
+        "mean": 3.1666666666666665,
+        "player": "Braden Smith",
+        "team": "IND"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.081,
+        "mean": 3.142857142857143,
+        "player": "Ousmane Dieng",
+        "team": "MIL"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.074,
+        "mean": 3.888888888888889,
+        "player": "Riley Minix",
+        "team": "CLE"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.061,
+        "mean": 4.0,
+        "player": "Jordan Walsh",
+        "team": "BOS"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.054,
+        "mean": 3.0,
+        "player": "Trayce Jackson-Davis",
+        "team": "TOR"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.052,
+        "mean": 4.6,
+        "player": "Jaylin Sellers",
+        "team": "CHI"
+      },
+      {
+        "stat": "REB",
+        "cv": 1.034,
+        "mean": 3.3333333333333335,
+        "player": "Yang Hansen",
+        "team": "POR"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.021,
+        "mean": 7.111111111111111,
+        "player": "Jay Huff",
+        "team": "IND"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.02,
+        "mean": 3.85,
+        "player": "Noah Penda",
+        "team": "ORL"
+      },
+      {
+        "stat": "PTS",
+        "cv": 1.02,
+        "mean": 3.5,
+        "player": "Baba Miller",
+        "team": "LAC"
+      }
+    ],
+    "cliffs": [
+      {
+        "hi_mean": 21.79,
+        "lo_mean": 1.75,
+        "drop": 20.04,
+        "n_hi": 76,
+        "n_lo": 4,
+        "player": "Brandon Ingram",
+        "stat": "PTS",
+        "team": "LAC"
+      },
+      {
+        "hi_mean": 22.81,
+        "lo_mean": 7.12,
+        "drop": 15.69,
+        "n_hi": 37,
+        "n_lo": 8,
+        "player": "Shaedon Sharpe",
+        "stat": "PTS",
+        "team": "POR"
+      },
+      {
+        "hi_mean": 19.71,
+        "lo_mean": 4.02,
+        "drop": 15.69,
+        "n_hi": 7,
+        "n_lo": 44,
+        "player": "Julian Strawther",
+        "stat": "PTS",
+        "team": "DEN"
+      },
+      {
+        "hi_mean": 20.17,
+        "lo_mean": 5.0,
+        "drop": 15.17,
+        "n_hi": 6,
+        "n_lo": 4,
+        "player": "Cormac Ryan",
+        "stat": "PTS",
+        "team": "MIL"
+      },
+      {
+        "hi_mean": 16.0,
+        "lo_mean": 2.33,
+        "drop": 13.67,
+        "n_hi": 3,
+        "n_lo": 3,
+        "player": "Quentin Grimes",
+        "stat": "PTS",
+        "team": "LAL"
+      },
+      {
+        "hi_mean": 17.71,
+        "lo_mean": 5.06,
+        "drop": 12.64,
+        "n_hi": 34,
+        "n_lo": 16,
+        "player": "Maxime Raynaud",
+        "stat": "PTS",
+        "team": "SAC"
+      },
+      {
+        "hi_mean": 16.2,
+        "lo_mean": 3.86,
+        "drop": 12.34,
+        "n_hi": 10,
+        "n_lo": 21,
+        "player": "Devin Carter",
+        "stat": "PTS",
+        "team": "BOS"
+      },
+      {
+        "hi_mean": 16.0,
+        "lo_mean": 4.17,
+        "drop": 11.83,
+        "n_hi": 3,
+        "n_lo": 6,
+        "player": "Patrick Williams",
+        "stat": "PTS",
+        "team": "CHI"
+      },
+      {
+        "hi_mean": 17.47,
+        "lo_mean": 7.11,
+        "drop": 10.36,
+        "n_hi": 15,
+        "n_lo": 19,
+        "player": "Mark Williams",
+        "stat": "PTS",
+        "team": "PHX"
+      },
+      {
+        "hi_mean": 16.8,
+        "lo_mean": 6.57,
+        "drop": 10.23,
+        "n_hi": 46,
+        "n_lo": 7,
+        "player": "Tobias Harris",
+        "stat": "PTS",
+        "team": "SA"
+      },
+      {
+        "hi_mean": 14.15,
+        "lo_mean": 3.95,
+        "drop": 10.2,
+        "n_hi": 13,
+        "n_lo": 21,
+        "player": "Jordan Miller",
+        "stat": "PTS",
+        "team": "LAC"
+      },
+      {
+        "hi_mean": 17.25,
+        "lo_mean": 7.67,
+        "drop": 9.58,
+        "n_hi": 4,
+        "n_lo": 3,
+        "player": "Donovan Clingan",
+        "stat": "PTS",
+        "team": "POR"
+      },
+      {
+        "hi_mean": 18.4,
+        "lo_mean": 9.0,
+        "drop": 9.4,
+        "n_hi": 5,
+        "n_lo": 3,
+        "player": "Grayson Allen",
+        "stat": "PTS",
+        "team": "CHA"
+      },
+      {
+        "hi_mean": 11.33,
+        "lo_mean": 2.0,
+        "drop": 9.33,
+        "n_hi": 3,
+        "n_lo": 7,
+        "player": "Spencer Jones",
+        "stat": "PTS",
+        "team": "DEN"
+      },
+      {
+        "hi_mean": 13.0,
+        "lo_mean": 4.67,
+        "drop": 8.33,
+        "n_hi": 3,
+        "n_lo": 6,
+        "player": "Jarace Walker",
+        "stat": "PTS",
+        "team": "IND"
+      },
+      {
+        "hi_mean": 9.86,
+        "lo_mean": 1.88,
+        "drop": 7.97,
+        "n_hi": 7,
+        "n_lo": 26,
+        "player": "Ben Simmons",
+        "stat": "PTS",
+        "team": "SAC"
+      },
+      {
+        "hi_mean": 12.88,
+        "lo_mean": 5.0,
+        "drop": 7.88,
+        "n_hi": 8,
+        "n_lo": 3,
+        "player": "Donte DiVincenzo",
+        "stat": "PTS",
+        "team": "MIN"
+      },
+      {
+        "hi_mean": 11.0,
+        "lo_mean": 3.31,
+        "drop": 7.69,
+        "n_hi": 8,
+        "n_lo": 32,
+        "player": "Pete Nance",
+        "stat": "PTS",
+        "team": "MIL"
+      },
+      {
+        "hi_mean": 12.33,
+        "lo_mean": 4.65,
+        "drop": 7.68,
+        "n_hi": 12,
+        "n_lo": 26,
+        "player": "Jamir Watkins",
+        "stat": "PTS",
+        "team": "WSH"
+      },
+      {
+        "hi_mean": 13.4,
+        "lo_mean": 6.0,
+        "drop": 7.4,
+        "n_hi": 5,
+        "n_lo": 8,
+        "player": "Malachi Smith",
+        "stat": "PTS",
+        "team": "TOR"
+      },
+      {
+        "hi_mean": 15.67,
+        "lo_mean": 8.33,
+        "drop": 7.33,
+        "n_hi": 3,
+        "n_lo": 3,
+        "player": "Jalen Smith",
+        "stat": "PTS",
+        "team": "CHI"
+      },
+      {
+        "hi_mean": 8.86,
+        "lo_mean": 2.04,
+        "drop": 6.81,
+        "n_hi": 7,
+        "n_lo": 23,
+        "player": "Kam Jones",
+        "stat": "PTS",
+        "team": "MIL"
+      },
+      {
+        "hi_mean": 13.63,
+        "lo_mean": 7.1,
+        "drop": 6.53,
+        "n_hi": 19,
+        "n_lo": 10,
+        "player": "Jusuf Nurkic",
+        "stat": "PTS",
+        "team": "UTAH"
+      },
+      {
+        "hi_mean": 10.95,
+        "lo_mean": 4.47,
+        "drop": 6.48,
+        "n_hi": 20,
+        "n_lo": 38,
+        "player": "Dominick Barlow",
+        "stat": "PTS",
+        "team": "PHI"
+      },
+      {
+        "hi_mean": 9.0,
+        "lo_mean": 2.62,
+        "drop": 6.38,
+        "n_hi": 3,
+        "n_lo": 50,
+        "player": "Noah Penda",
+        "stat": "PTS",
+        "team": "ORL"
+      }
+    ],
+    "fake_firm_sample": [
+      {
+        "stat": "REB",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Toumani Camara",
+        "team": "POR"
+      },
+      {
+        "stat": "REB",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Sidy Cissoko",
+        "team": "POR"
+      },
+      {
+        "stat": "REB",
+        "line": 1.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Sidy Cissoko",
+        "team": "POR"
+      },
+      {
+        "stat": "REB",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Robert Williams III",
+        "team": "POR"
+      },
+      {
+        "stat": "REB",
+        "line": 1.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Robert Williams III",
+        "team": "POR"
+      },
+      {
+        "stat": "3PT",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 0.8888888888888888,
+        "player": "Jrue Holiday",
+        "team": "POR"
+      },
+      {
+        "stat": "REB",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Deni Avdija",
+        "team": "POR"
+      },
+      {
+        "stat": "REB",
+        "line": 1.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Deni Avdija",
+        "team": "POR"
+      },
+      {
+        "stat": "AST",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Deni Avdija",
+        "team": "POR"
+      },
+      {
+        "stat": "REB",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Scoot Henderson",
+        "team": "POR"
+      },
+      {
+        "stat": "REB",
+        "line": 1.5,
+        "l7": 1.0,
+        "season": 0.8888888888888888,
+        "player": "Scoot Henderson",
+        "team": "POR"
+      },
+      {
+        "stat": "REB",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Donovan Clingan",
+        "team": "POR"
+      },
+      {
+        "stat": "REB",
+        "line": 1.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Donovan Clingan",
+        "team": "POR"
+      },
+      {
+        "stat": "REB",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Micah Potter",
+        "team": "POR"
+      },
+      {
+        "stat": "AST",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Damian Lillard",
+        "team": "POR"
+      },
+      {
+        "stat": "AST",
+        "line": 1.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Damian Lillard",
+        "team": "POR"
+      },
+      {
+        "stat": "3PT",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Damian Lillard",
+        "team": "POR"
+      },
+      {
+        "stat": "REB",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Mo Bamba",
+        "team": "UTAH"
+      },
+      {
+        "stat": "REB",
+        "line": 1.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Mo Bamba",
+        "team": "UTAH"
+      },
+      {
+        "stat": "REB",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Isaiah Collier",
+        "team": "UTAH"
+      },
+      {
+        "stat": "REB",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Keyonte George",
+        "team": "UTAH"
+      },
+      {
+        "stat": "REB",
+        "line": 1.5,
+        "l7": 1.0,
+        "season": 0.9,
+        "player": "Keyonte George",
+        "team": "UTAH"
+      },
+      {
+        "stat": "REB",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Ace Bailey",
+        "team": "UTAH"
+      },
+      {
+        "stat": "REB",
+        "line": 1.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Ace Bailey",
+        "team": "UTAH"
+      },
+      {
+        "stat": "REB",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Jaxson Hayes",
+        "team": "UTAH"
+      },
+      {
+        "stat": "REB",
+        "line": 1.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Jaxson Hayes",
+        "team": "UTAH"
+      },
+      {
+        "stat": "AST",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 0.75,
+        "player": "Blake Hinson",
+        "team": "UTAH"
+      },
+      {
+        "stat": "3PT",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 0.9166666666666666,
+        "player": "Blake Hinson",
+        "team": "UTAH"
+      },
+      {
+        "stat": "REB",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Josh Okogie",
+        "team": "UTAH"
+      },
+      {
+        "stat": "REB",
+        "line": 0.5,
+        "l7": 1.0,
+        "season": 1.0,
+        "player": "Brice Sensabaugh",
+        "team": "UTAH"
+      }
+    ],
+    "nhl_sog": [
+      {
+        "player": "Bo Horvat",
+        "line": 1.5,
+        "season": 1.0,
+        "l7": 1.0,
+        "team": "NYI"
+      },
+      {
+        "player": "Kyle Connor",
+        "line": 1.5,
+        "season": 1.0,
+        "l7": 1.0,
+        "team": "WPG"
+      },
+      {
+        "player": "Jack Hughes",
+        "line": 1.5,
+        "season": 1.0,
+        "l7": 1.0,
+        "team": "NJ"
+      },
+      {
+        "player": "Lucas Raymond",
+        "line": 1.5,
+        "season": 0.933,
+        "l7": 1.0,
+        "team": "DET"
+      },
+      {
+        "player": "Alex DeBrincat",
+        "line": 1.5,
+        "season": 0.933,
+        "l7": 1.0,
+        "team": "DET"
+      },
+      {
+        "player": "Leon Draisaitl",
+        "line": 1.5,
+        "season": 0.933,
+        "l7": 1.0,
+        "team": "EDM"
+      },
+      {
+        "player": "Macklin Celebrini",
+        "line": 1.5,
+        "season": 0.933,
+        "l7": 0.857,
+        "team": "SJ"
+      },
+      {
+        "player": "Cole Perfetti",
+        "line": 1.5,
+        "season": 0.933,
+        "l7": 1.0,
+        "team": "WPG"
+      },
+      {
+        "player": "Sam Reinhart",
+        "line": 1.5,
+        "season": 0.933,
+        "l7": 0.857,
+        "team": "FLA"
+      },
+      {
+        "player": "Adam Fantilli",
+        "line": 1.5,
+        "season": 0.929,
+        "l7": 1.0,
+        "team": "CBJ"
+      },
+      {
+        "player": "Connor Bedard",
+        "line": 1.5,
+        "season": 0.909,
+        "l7": 1.0,
+        "team": "CHI"
+      },
+      {
+        "player": "David Pastrnak",
+        "line": 1.5,
+        "season": 0.867,
+        "l7": 0.714,
+        "team": "BOS"
+      },
+      {
+        "player": "Connor McDavid",
+        "line": 1.5,
+        "season": 0.867,
+        "l7": 1.0,
+        "team": "EDM"
+      },
+      {
+        "player": "Matthew Schaefer",
+        "line": 1.5,
+        "season": 0.867,
+        "l7": 0.857,
+        "team": "NYI"
+      },
+      {
+        "player": "Rickard Rakell",
+        "line": 1.5,
+        "season": 0.867,
+        "l7": 1.0,
+        "team": "PIT"
+      },
+      {
+        "player": "Jason Robertson",
+        "line": 1.5,
+        "season": 0.867,
+        "l7": 0.857,
+        "team": "DAL"
+      },
+      {
+        "player": "Dylan Guenther",
+        "line": 1.5,
+        "season": 0.867,
+        "l7": 0.857,
+        "team": "UTA"
+      },
+      {
+        "player": "Cutter Gauthier",
+        "line": 1.5,
+        "season": 0.867,
+        "l7": 1.0,
+        "team": "ANA"
+      },
+      {
+        "player": "Artemi Panarin",
+        "line": 1.5,
+        "season": 0.857,
+        "l7": 0.857,
+        "team": "LA"
+      },
+      {
+        "player": "Alex Laferriere",
+        "line": 1.5,
+        "season": 0.857,
+        "l7": 0.857,
+        "team": "LA"
+      }
+    ],
+    "pair_corr_dist": {
+      "PTS-AST": {
+        "mean": 0.188,
+        "n": 316
+      },
+      "PTS-REB": {
+        "mean": 0.279,
+        "n": 317
+      },
+      "AST-REB": {
+        "mean": 0.221,
+        "n": 316
+      },
+      "PTS-3PT": {
+        "mean": 0.662,
+        "n": 296
+      },
+      "REB-STL": {
+        "mean": 0.062,
+        "n": 312
+      },
+      "MIN-PTS": {
+        "mean": 0.532,
+        "n": 317
+      }
+    },
+    "min_corr_dist": {
+      "PTS": {
+        "mean": 0.532,
+        "n": 317
+      },
+      "REB": {
+        "mean": 0.419,
+        "n": 317
+      },
+      "AST": {
+        "mean": 0.345,
+        "n": 316
+      },
+      "STL": {
+        "mean": 0.202,
+        "n": 312
+      },
+      "BLK": {
+        "mean": 0.209,
+        "n": 289
+      },
+      "3PT": {
+        "mean": 0.312,
+        "n": 296
+      },
+      "TO": {
+        "mean": 0.204,
+        "n": 315
+      }
+    }
+  },
+  "players_n": 946,
+  "best_stables": [
+    {
+      "stat": "PTS",
+      "line": 27.5,
+      "season": 0.8888888888888888,
+      "l7": 1.0,
+      "player": "Luka Doncic",
+      "team": "LAL",
+      "mpg": 35.889
+    },
+    {
+      "stat": "PTS",
+      "line": 23.5,
+      "season": 0.875,
+      "l7": 1.0,
+      "player": "Stephen Curry",
+      "team": "GS",
+      "mpg": 29.75
+    },
+    {
+      "stat": "PTS",
+      "line": 20.5,
+      "season": 0.9,
+      "l7": 1.0,
+      "player": "Shai Gilgeous-Alexander",
+      "team": "OKC",
+      "mpg": 32.9
+    },
+    {
+      "stat": "PTS",
+      "line": 19.5,
+      "season": 0.9,
+      "l7": 1.0,
+      "player": "Giannis Antetokounmpo",
+      "team": "MIA",
+      "mpg": 32.9
+    },
+    {
+      "stat": "PTS",
+      "line": 19.5,
+      "season": 0.8888888888888888,
+      "l7": 0.8571428571428571,
+      "player": "RJ Barrett",
+      "team": "TOR",
+      "mpg": 33.0
+    },
+    {
+      "stat": "PTS",
+      "line": 19.5,
+      "season": 0.875,
+      "l7": 0.8571428571428571,
+      "player": "Devin Booker",
+      "team": "PHX",
+      "mpg": 35.0
+    },
+    {
+      "stat": "PTS",
+      "line": 18.5,
+      "season": 1.0,
+      "l7": 1.0,
+      "player": "Jalen Brunson",
+      "team": "NY",
+      "mpg": 33.889
+    },
+    {
+      "stat": "PTS",
+      "line": 18.5,
+      "season": 0.9090909090909091,
+      "l7": 0.8571428571428571,
+      "player": "Tyrese Maxey",
+      "team": "PHI",
+      "mpg": 36.545
+    },
+    {
+      "stat": "PTS",
+      "line": 18.5,
+      "season": 0.9090909090909091,
+      "l7": 0.8571428571428571,
+      "player": "Austin Reaves",
+      "team": "LAL",
+      "mpg": 36.182
+    },
+    {
+      "stat": "PTS",
+      "line": 18.5,
+      "season": 0.9,
+      "l7": 1.0,
+      "player": "Darius Acuff Jr.",
+      "team": "SAC",
+      "mpg": 37.0
+    },
+    {
+      "stat": "PTS",
+      "line": 18.5,
+      "season": 0.8888888888888888,
+      "l7": 1.0,
+      "player": "Jayson Tatum",
+      "team": "BOS",
+      "mpg": 33.778
+    },
+    {
+      "stat": "PTS",
+      "line": 17.5,
+      "season": 0.8888888888888888,
+      "l7": 0.8571428571428571,
+      "player": "Deni Avdija",
+      "team": "POR",
+      "mpg": 32.111
+    },
+    {
+      "stat": "PTS",
+      "line": 17.5,
+      "season": 0.875,
+      "l7": 0.8571428571428571,
+      "player": "Anthony Davis",
+      "team": "WSH",
+      "mpg": 33.125
+    },
+    {
+      "stat": "PTS",
+      "line": 17.5,
+      "season": 0.875,
+      "l7": 1.0,
+      "player": "Nikola Jokic",
+      "team": "DEN",
+      "mpg": 35.875
+    },
+    {
+      "stat": "PTS",
+      "line": 16.5,
+      "season": 0.9,
+      "l7": 0.8571428571428571,
+      "player": "Donovan Mitchell",
+      "team": "CLE",
+      "mpg": 33.5
+    },
+    {
+      "stat": "PTS",
+      "line": 16.5,
+      "season": 0.8888888888888888,
+      "l7": 0.8571428571428571,
+      "player": "Pascal Siakam",
+      "team": "IND",
+      "mpg": 32.0
+    },
+    {
+      "stat": "PTS",
+      "line": 16.5,
+      "season": 0.8888888888888888,
+      "l7": 0.8571428571428571,
+      "player": "Karl-Anthony Towns",
+      "team": "NY",
+      "mpg": 31.556
+    },
+    {
+      "stat": "PTS",
+      "line": 16.5,
+      "season": 0.8888888888888888,
+      "l7": 1.0,
+      "player": "Cooper Flagg",
+      "team": "DAL",
+      "mpg": 33.667
+    },
+    {
+      "stat": "PTS",
+      "line": 16.5,
+      "season": 0.875,
+      "l7": 0.8571428571428571,
+      "player": "Scottie Barnes",
+      "team": "TOR",
+      "mpg": 33.375
+    },
+    {
+      "stat": "PTS",
+      "line": 15.5,
+      "season": 1.0,
+      "l7": 1.0,
+      "player": "Jaylen Brown",
+      "team": "PHI",
+      "mpg": 35.9
+    },
+    {
+      "stat": "PTS",
+      "line": 15.5,
+      "season": 0.8888888888888888,
+      "l7": 0.8571428571428571,
+      "player": "Cade Cunningham",
+      "team": "DET",
+      "mpg": 34.0
+    },
+    {
+      "stat": "PTS",
+      "line": 15.5,
+      "season": 0.8888888888888888,
+      "l7": 0.8571428571428571,
+      "player": "Caleb Wilson",
+      "team": "CHI",
+      "mpg": 32.444
+    },
+    {
+      "stat": "PTS",
+      "line": 15.5,
+      "season": 0.875,
+      "l7": 0.8571428571428571,
+      "player": "Alperen Sengun",
+      "team": "HOU",
+      "mpg": 34.75
+    },
+    {
+      "stat": "PTS",
+      "line": 14.5,
+      "season": 0.9166666666666666,
+      "l7": 1.0,
+      "player": "Jimmy Butler III",
+      "team": "GS",
+      "mpg": 30.583
+    },
+    {
+      "stat": "PTS",
+      "line": 14.5,
+      "season": 0.9,
+      "l7": 0.8571428571428571,
+      "player": "Zion Williamson",
+      "team": "NO",
+      "mpg": 33.1
+    },
+    {
+      "stat": "PTS",
+      "line": 14.5,
+      "season": 0.8888888888888888,
+      "l7": 0.8571428571428571,
+      "player": "Paul George",
+      "team": "BOS",
+      "mpg": 30.111
+    },
+    {
+      "stat": "PTS",
+      "line": 14.5,
+      "season": 0.8888888888888888,
+      "l7": 0.8571428571428571,
+      "player": "Franz Wagner",
+      "team": "ORL",
+      "mpg": 36.444
+    },
+    {
+      "stat": "PTS",
+      "line": 14.5,
+      "season": 0.8888888888888888,
+      "l7": 0.8571428571428571,
+      "player": "Darius Garland",
+      "team": "LAC",
+      "mpg": 33.556
+    },
+    {
+      "stat": "PTS",
+      "line": 14.5,
+      "season": 0.875,
+      "l7": 0.8571428571428571,
+      "player": "Ty Jerome",
+      "team": "MEM",
+      "mpg": 30.5
+    },
+    {
+      "stat": "PTS",
+      "line": 14.5,
+      "season": 0.875,
+      "l7": 0.8571428571428571,
+      "player": "Norman Powell",
+      "team": "CHI",
+      "mpg": 28.875
+    },
+    {
+      "stat": "PTS",
+      "line": 14.5,
+      "season": 0.875,
+      "l7": 0.8571428571428571,
+      "player": "Kyrie Irving",
+      "team": "DAL",
+      "mpg": 29.625
+    },
+    {
+      "stat": "PTS",
+      "line": 13.5,
+      "season": 1.0,
+      "l7": 1.0,
+      "player": "Jaden McDaniels",
+      "team": "MIN",
+      "mpg": 32.5
+    },
+    {
+      "stat": "PTS",
+      "line": 13.5,
+      "season": 0.9,
+      "l7": 0.8571428571428571,
+      "player": "Zach LaVine",
+      "team": "SAC",
+      "mpg": 32.7
+    },
+    {
+      "stat": "PTS",
+      "line": 13.5,
+      "season": 0.9,
+      "l7": 0.8571428571428571,
+      "player": "Stephon Castle",
+      "team": "SA",
+      "mpg": 28.9
+    },
+    {
+      "stat": "PTS",
+      "line": 13.5,
+      "season": 0.9,
+      "l7": 0.8571428571428571,
+      "player": "Kevin Durant",
+      "team": "HOU",
+      "mpg": 34.2
+    },
+    {
+      "stat": "PTS",
+      "line": 13.5,
+      "season": 0.9,
+      "l7": 0.8571428571428571,
+      "player": "Trae Young",
+      "team": "WSH",
+      "mpg": 35.2
+    },
+    {
+      "stat": "PTS",
+      "line": 13.5,
+      "season": 0.875,
+      "l7": 0.8571428571428571,
+      "player": "Andrew Nembhard",
+      "team": "IND",
+      "mpg": 33.125
+    },
+    {
+      "stat": "PTS",
+      "line": 13.5,
+      "season": 0.875,
+      "l7": 1.0,
+      "player": "Jamal Murray",
+      "team": "DEN",
+      "mpg": 36.5
+    },
+    {
+      "stat": "PTS",
+      "line": 12.5,
+      "season": 1.0,
+      "l7": 1.0,
+      "player": "Tyler Herro",
+      "team": "MIL",
+      "mpg": 30.7
+    },
+    {
+      "stat": "PTS",
+      "line": 12.5,
+      "season": 1.0,
+      "l7": 1.0,
+      "player": "Dylan Harper",
+      "team": "SA",
+      "mpg": 31.9
+    }
+  ],
+  "traps": [
+    {
+      "player": "Yanic Konan Niederhauser",
+      "stat": "REB",
+      "line": 2.5,
+      "l7": 1.0,
+      "season": 0.425,
+      "team": "LAC"
+    },
+    {
+      "player": "Kam Jones",
+      "stat": "AST",
+      "line": 2.5,
+      "l7": 1.0,
+      "season": 0.459,
+      "team": "MIL"
+    },
+    {
+      "player": "Jamir Watkins",
+      "stat": "PTS",
+      "line": 6.5,
+      "l7": 1.0,
+      "season": 0.542,
+      "team": "WSH"
+    },
+    {
+      "player": "Devin Carter",
+      "stat": "PTS",
+      "line": 5.5,
+      "l7": 1.0,
+      "season": 0.553,
+      "team": "BOS"
+    },
+    {
+      "player": "Devin Carter",
+      "stat": "PTS",
+      "line": 4.5,
+      "l7": 1.0,
+      "season": 0.579,
+      "team": "BOS"
+    },
+    {
+      "player": "Devin Carter",
+      "stat": "REB",
+      "line": 2.5,
+      "l7": 1.0,
+      "season": 0.579,
+      "team": "BOS"
+    },
+    {
+      "player": "Devin Carter",
+      "stat": "AST",
+      "line": 2.5,
+      "l7": 1.0,
+      "season": 0.579,
+      "team": "BOS"
+    },
+    {
+      "player": "Maxime Raynaud",
+      "stat": "REB",
+      "line": 6.5,
+      "l7": 1.0,
+      "season": 0.595,
+      "team": "SAC"
+    },
+    {
+      "player": "Jamir Watkins",
+      "stat": "PTS",
+      "line": 5.5,
+      "l7": 1.0,
+      "season": 0.625,
+      "team": "WSH"
+    },
+    {
+      "player": "Tristan Vukcevic",
+      "stat": "PTS",
+      "line": 5.5,
+      "l7": 1.0,
+      "season": 0.653,
+      "team": "WSH"
+    },
+    {
+      "player": "Jamir Watkins",
+      "stat": "PTS",
+      "line": 4.5,
+      "l7": 1.0,
+      "season": 0.667,
+      "team": "WSH"
+    },
+    {
+      "player": "Tobias Harris",
+      "stat": "REB",
+      "line": 4.5,
+      "l7": 1.0,
+      "season": 0.688,
+      "team": "SA"
+    },
+    {
+      "player": "Maxime Raynaud",
+      "stat": "REB",
+      "line": 5.5,
+      "l7": 1.0,
+      "season": 0.689,
+      "team": "SAC"
+    },
+    {
+      "player": "Jeremiah Fears",
+      "stat": "PTS",
+      "line": 10.5,
+      "l7": 1.0,
+      "season": 0.7,
+      "team": "NO"
+    },
+    {
+      "player": "Bennett Stirtz",
+      "stat": "PTS",
+      "line": 4.5,
+      "l7": 1.0,
+      "season": 0.7,
+      "team": "OKC"
+    },
+    {
+      "player": "Bennett Stirtz",
+      "stat": "PTS",
+      "line": 5.5,
+      "l7": 1.0,
+      "season": 0.7,
+      "team": "OKC"
+    },
+    {
+      "player": "Bennett Stirtz",
+      "stat": "PTS",
+      "line": 6.5,
+      "l7": 1.0,
+      "season": 0.7,
+      "team": "OKC"
+    },
+    {
+      "player": "Kenrich Williams",
+      "stat": "REB",
+      "line": 2.5,
+      "l7": 1.0,
+      "season": 0.7,
+      "team": "OKC"
+    }
+  ],
+  "hot": [
+    {
+      "player": "Devin Carter",
+      "stat": "PTS",
+      "drift": 6.222,
+      "season": 8.921,
+      "l7": 15.143,
+      "team": "BOS"
+    },
+    {
+      "player": "Jamir Watkins",
+      "stat": "PTS",
+      "drift": 5.762,
+      "season": 7.667,
+      "l7": 13.429,
+      "team": "WSH"
+    },
+    {
+      "player": "Cormac Ryan",
+      "stat": "PTS",
+      "drift": 5.299,
+      "season": 14.273,
+      "l7": 19.571,
+      "team": "MIL"
+    },
+    {
+      "player": "Maxime Raynaud",
+      "stat": "PTS",
+      "drift": 4.541,
+      "season": 12.459,
+      "l7": 17.0,
+      "team": "SAC"
+    },
+    {
+      "player": "Julian Strawther",
+      "stat": "PTS",
+      "drift": 4.327,
+      "season": 7.102,
+      "l7": 11.429,
+      "team": "DEN"
+    },
+    {
+      "player": "Luka Doncic",
+      "stat": "PTS",
+      "drift": 4.175,
+      "season": 40.111,
+      "l7": 44.286,
+      "team": "LAL"
+    },
+    {
+      "player": "Pete Nance",
+      "stat": "PTS",
+      "drift": 4.024,
+      "season": 5.404,
+      "l7": 9.429,
+      "team": "MIL"
+    },
+    {
+      "player": "Victor Wembanyama",
+      "stat": "PTS",
+      "drift": 3.9,
+      "season": 29.1,
+      "l7": 33.0,
+      "team": "SA"
+    },
+    {
+      "player": "Tristan Vukcevic",
+      "stat": "PTS",
+      "drift": 3.857,
+      "season": 9.0,
+      "l7": 12.857,
+      "team": "WSH"
+    },
+    {
+      "player": "Ajay Mitchell",
+      "stat": "PTS",
+      "drift": 3.243,
+      "season": 18.9,
+      "l7": 22.143,
+      "team": "OKC"
+    },
+    {
+      "player": "Jeremiah Fears",
+      "stat": "PTS",
+      "drift": 3.2,
+      "season": 15.8,
+      "l7": 19.0,
+      "team": "NO"
+    }
+  ],
+  "cold": [
+    {
+      "player": "Shaedon Sharpe",
+      "stat": "PTS",
+      "drift": -11.321,
+      "season": 19.464,
+      "l7": 8.143,
+      "team": "POR"
+    },
+    {
+      "player": "Brandon Ingram",
+      "stat": "PTS",
+      "drift": -5.988,
+      "season": 20.417,
+      "l7": 14.429,
+      "team": "LAC"
+    },
+    {
+      "player": "Ben Simmons",
+      "stat": "AST",
+      "drift": -4.161,
+      "season": 5.161,
+      "l7": 1.0,
+      "team": "SAC"
+    },
+    {
+      "player": "Dominick Barlow",
+      "stat": "PTS",
+      "drift": -3.956,
+      "season": 7.099,
+      "l7": 3.143,
+      "team": "PHI"
+    },
+    {
+      "player": "Zach LaVine",
+      "stat": "PTS",
+      "drift": -3.257,
+      "season": 21.4,
+      "l7": 18.143,
+      "team": "SAC"
+    }
+  ],
+  "rules": [
+    "dual_window_L7_and_season",
+    "minutes_master_variable",
+    "drift_extra_shave",
+    "soft_floor_ban",
+    "stl_blk_research_only",
+    "minutes_cliff_tag"
+  ],
+  "supplement_floors": {
+    "reb_ast_3pt_85": {
+      "REB": [
+        {
+          "player": "Domantas Sabonis",
+          "team": "SAC",
+          "stat": "REB",
+          "line": 11.5,
+          "season": 0.889,
+          "l7": 0.857,
+          "mpg": 35.556
+        },
+        {
+          "player": "Karl-Anthony Towns",
+          "team": "NY",
+          "stat": "REB",
+          "line": 11.5,
+          "season": 0.889,
+          "l7": 1.0,
+          "mpg": 31.556
+        },
+        {
+          "player": "Walker Kessler",
+          "team": "LAL",
+          "stat": "REB",
+          "line": 7.5,
+          "season": 0.909,
+          "l7": 1.0,
+          "mpg": 31.0
+        },
+        {
+          "player": "Joel Embiid",
+          "team": "PHI",
+          "stat": "REB",
+          "line": 6.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 31.889
+        },
+        {
+          "player": "Jalen Johnson",
+          "team": "ATL",
+          "stat": "REB",
+          "line": 6.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 33.125
+        },
+        {
+          "player": "Cedric Coward",
+          "team": "MEM",
+          "stat": "REB",
+          "line": 6.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 28.5
+        },
+        {
+          "player": "Victor Wembanyama",
+          "team": "SA",
+          "stat": "REB",
+          "line": 6.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 30.3
+        },
+        {
+          "player": "Wendell Carter Jr.",
+          "team": "ORL",
+          "stat": "REB",
+          "line": 6.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 33.444
+        },
+        {
+          "player": "Nikola Jokic",
+          "team": "DEN",
+          "stat": "REB",
+          "line": 6.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 35.875
+        },
+        {
+          "player": "Bam Adebayo",
+          "team": "MIA",
+          "stat": "REB",
+          "line": 6.5,
+          "season": 0.9,
+          "l7": 1.0,
+          "mpg": 32.8
+        },
+        {
+          "player": "Donovan Clingan",
+          "team": "POR",
+          "stat": "REB",
+          "line": 6.5,
+          "season": 0.889,
+          "l7": 0.857,
+          "mpg": 24.778
+        },
+        {
+          "player": "Cameron Boozer",
+          "team": "MEM",
+          "stat": "REB",
+          "line": 6.5,
+          "season": 0.889,
+          "l7": 0.857,
+          "mpg": 32.0
+        },
+        {
+          "player": "Alperen Sengun",
+          "team": "HOU",
+          "stat": "REB",
+          "line": 6.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 34.75
+        },
+        {
+          "player": "Jaden McDaniels",
+          "team": "MIN",
+          "stat": "REB",
+          "line": 5.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 32.5
+        },
+        {
+          "player": "Giannis Antetokounmpo",
+          "team": "MIA",
+          "stat": "REB",
+          "line": 5.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 32.9
+        },
+        {
+          "player": "Julian Reese",
+          "team": "NO",
+          "stat": "REB",
+          "line": 5.5,
+          "season": 0.917,
+          "l7": 0.857,
+          "mpg": 31.167
+        },
+        {
+          "player": "Jusuf Nurkic",
+          "team": "UTAH",
+          "stat": "REB",
+          "line": 5.5,
+          "season": 0.902,
+          "l7": 0.857,
+          "mpg": 26.439
+        },
+        {
+          "player": "Naz Reid",
+          "team": "CHA",
+          "stat": "REB",
+          "line": 5.5,
+          "season": 0.9,
+          "l7": 0.857,
+          "mpg": 29.3
+        },
+        {
+          "player": "Isaiah Hartenstein",
+          "team": "OKC",
+          "stat": "REB",
+          "line": 5.5,
+          "season": 0.9,
+          "l7": 1.0,
+          "mpg": 24.2
+        },
+        {
+          "player": "Moussa Diabate",
+          "team": "CHA",
+          "stat": "REB",
+          "line": 5.5,
+          "season": 0.889,
+          "l7": 0.857,
+          "mpg": 28.778
+        },
+        {
+          "player": "Lauri Markkanen",
+          "team": "UTAH",
+          "stat": "REB",
+          "line": 5.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 30.875
+        },
+        {
+          "player": "Jarrett Allen",
+          "team": "CLE",
+          "stat": "REB",
+          "line": 5.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 25.125
+        },
+        {
+          "player": "Ausar Thompson",
+          "team": "DET",
+          "stat": "REB",
+          "line": 5.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 27.0
+        },
+        {
+          "player": "Anthony Davis",
+          "team": "WSH",
+          "stat": "REB",
+          "line": 5.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 33.125
+        },
+        {
+          "player": "Miles Bridges",
+          "team": "PHX",
+          "stat": "REB",
+          "line": 5.5,
+          "season": 0.875,
+          "l7": 1.0,
+          "mpg": 32.375
+        }
+      ],
+      "AST": [
+        {
+          "player": "Nikola Jokic",
+          "team": "DEN",
+          "stat": "AST",
+          "line": 7.5,
+          "season": 0.875,
+          "l7": 1.0,
+          "mpg": 35.875
+        },
+        {
+          "player": "Cade Cunningham",
+          "team": "DET",
+          "stat": "AST",
+          "line": 6.5,
+          "season": 0.889,
+          "l7": 0.857,
+          "mpg": 34.0
+        },
+        {
+          "player": "Jayson Tatum",
+          "team": "BOS",
+          "stat": "AST",
+          "line": 5.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 33.778
+        },
+        {
+          "player": "Trae Young",
+          "team": "WSH",
+          "stat": "AST",
+          "line": 5.5,
+          "season": 0.9,
+          "l7": 0.857,
+          "mpg": 35.2
+        },
+        {
+          "player": "Draymond Green",
+          "team": "GS",
+          "stat": "AST",
+          "line": 5.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 27.625
+        },
+        {
+          "player": "LaMelo Ball",
+          "team": "MIN",
+          "stat": "AST",
+          "line": 4.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 26.167
+        },
+        {
+          "player": "Alperen Sengun",
+          "team": "HOU",
+          "stat": "AST",
+          "line": 4.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 34.75
+        },
+        {
+          "player": "Franz Wagner",
+          "team": "ORL",
+          "stat": "AST",
+          "line": 4.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 36.444
+        },
+        {
+          "player": "Luka Doncic",
+          "team": "LAL",
+          "stat": "AST",
+          "line": 4.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 35.889
+        },
+        {
+          "player": "Davion Mitchell",
+          "team": "MIA",
+          "stat": "AST",
+          "line": 4.5,
+          "season": 0.9,
+          "l7": 0.857,
+          "mpg": 35.5
+        },
+        {
+          "player": "LeBron James",
+          "team": "PHI",
+          "stat": "AST",
+          "line": 4.5,
+          "season": 0.889,
+          "l7": 0.857,
+          "mpg": 32.889
+        },
+        {
+          "player": "Darius Garland",
+          "team": "LAC",
+          "stat": "AST",
+          "line": 4.5,
+          "season": 0.889,
+          "l7": 1.0,
+          "mpg": 33.556
+        },
+        {
+          "player": "Josh Giddey",
+          "team": "CHI",
+          "stat": "AST",
+          "line": 4.5,
+          "season": 0.889,
+          "l7": 0.857,
+          "mpg": 28.0
+        },
+        {
+          "player": "Cooper Flagg",
+          "team": "DAL",
+          "stat": "AST",
+          "line": 4.5,
+          "season": 0.889,
+          "l7": 1.0,
+          "mpg": 33.667
+        },
+        {
+          "player": "Jamal Murray",
+          "team": "DEN",
+          "stat": "AST",
+          "line": 4.5,
+          "season": 0.875,
+          "l7": 1.0,
+          "mpg": 36.5
+        },
+        {
+          "player": "Tyrese Maxey",
+          "team": "PHI",
+          "stat": "AST",
+          "line": 3.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 36.545
+        },
+        {
+          "player": "Darius Acuff Jr.",
+          "team": "SAC",
+          "stat": "AST",
+          "line": 3.5,
+          "season": 0.9,
+          "l7": 1.0,
+          "mpg": 37.0
+        },
+        {
+          "player": "James Harden",
+          "team": "CLE",
+          "stat": "AST",
+          "line": 3.5,
+          "season": 0.9,
+          "l7": 0.857,
+          "mpg": 33.3
+        },
+        {
+          "player": "De'Aaron Fox",
+          "team": "SA",
+          "stat": "AST",
+          "line": 3.5,
+          "season": 0.9,
+          "l7": 0.857,
+          "mpg": 29.5
+        },
+        {
+          "player": "Cameron Boozer",
+          "team": "MEM",
+          "stat": "AST",
+          "line": 3.5,
+          "season": 0.889,
+          "l7": 0.857,
+          "mpg": 32.0
+        },
+        {
+          "player": "Jalen Brunson",
+          "team": "NY",
+          "stat": "AST",
+          "line": 3.5,
+          "season": 0.889,
+          "l7": 1.0,
+          "mpg": 33.889
+        },
+        {
+          "player": "Jalen Johnson",
+          "team": "ATL",
+          "stat": "AST",
+          "line": 3.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 33.125
+        },
+        {
+          "player": "Fred VanVleet",
+          "team": "HOU",
+          "stat": "AST",
+          "line": 3.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 30.125
+        },
+        {
+          "player": "Andrew Nembhard",
+          "team": "IND",
+          "stat": "AST",
+          "line": 3.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 33.125
+        },
+        {
+          "player": "Scottie Barnes",
+          "team": "TOR",
+          "stat": "AST",
+          "line": 3.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 33.375
+        }
+      ],
+      "3PT": [
+        {
+          "player": "Luka Doncic",
+          "team": "LAL",
+          "stat": "3PT",
+          "line": 4.5,
+          "season": 0.889,
+          "l7": 1.0,
+          "mpg": 35.889
+        },
+        {
+          "player": "Stephen Curry",
+          "team": "GS",
+          "stat": "3PT",
+          "line": 2.5,
+          "season": 0.875,
+          "l7": 1.0,
+          "mpg": 29.75
+        },
+        {
+          "player": "Duncan Robinson",
+          "team": "DET",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 30.556
+        },
+        {
+          "player": "Moses Moody",
+          "team": "GS",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.917,
+          "l7": 1.0,
+          "mpg": 30.167
+        },
+        {
+          "player": "Nickeil Alexander-Walker",
+          "team": "ATL",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.909,
+          "l7": 0.857,
+          "mpg": 30.636
+        },
+        {
+          "player": "Aaron Wiggins",
+          "team": "ATL",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.909,
+          "l7": 0.857,
+          "mpg": 26.273
+        },
+        {
+          "player": "Darius Acuff Jr.",
+          "team": "SAC",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.9,
+          "l7": 1.0,
+          "mpg": 37.0
+        },
+        {
+          "player": "Julian Champagnie",
+          "team": "SA",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.9,
+          "l7": 0.857,
+          "mpg": 25.5
+        },
+        {
+          "player": "Michael Porter Jr.",
+          "team": "BKN",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.9,
+          "l7": 1.0,
+          "mpg": 33.0
+        },
+        {
+          "player": "Klay Thompson",
+          "team": "MIA",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.9,
+          "l7": 0.857,
+          "mpg": 24.2
+        },
+        {
+          "player": "Paul George",
+          "team": "BOS",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.889,
+          "l7": 0.857,
+          "mpg": 30.111
+        },
+        {
+          "player": "Tristan da Silva",
+          "team": "ORL",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.889,
+          "l7": 1.0,
+          "mpg": 30.444
+        },
+        {
+          "player": "Cedric Coward",
+          "team": "MEM",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.875,
+          "l7": 1.0,
+          "mpg": 28.5
+        },
+        {
+          "player": "Fred VanVleet",
+          "team": "HOU",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 30.125
+        },
+        {
+          "player": "Desmond Bane",
+          "team": "ORL",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 34.5
+        },
+        {
+          "player": "Brandin Podziemski",
+          "team": "GS",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 34.0
+        },
+        {
+          "player": "Jamal Murray",
+          "team": "DEN",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.875,
+          "l7": 1.0,
+          "mpg": 36.5
+        },
+        {
+          "player": "Josh Hart",
+          "team": "NY",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.857,
+          "l7": 0.857,
+          "mpg": 31.714
+        }
+      ]
+    },
+    "reb_ast_3pt_75": {
+      "REB": [
+        {
+          "player": "Domantas Sabonis",
+          "team": "SAC",
+          "stat": "REB",
+          "line": 11.5,
+          "season": 0.889,
+          "l7": 0.857,
+          "mpg": 35.556
+        },
+        {
+          "player": "Karl-Anthony Towns",
+          "team": "NY",
+          "stat": "REB",
+          "line": 11.5,
+          "season": 0.889,
+          "l7": 1.0,
+          "mpg": 31.556
+        },
+        {
+          "player": "Giannis Antetokounmpo",
+          "team": "MIA",
+          "stat": "REB",
+          "line": 11.5,
+          "season": 0.8,
+          "l7": 1.0,
+          "mpg": 32.9
+        },
+        {
+          "player": "Rudy Gobert",
+          "team": "MIN",
+          "stat": "REB",
+          "line": 8.5,
+          "season": 0.833,
+          "l7": 0.833,
+          "mpg": 30.0
+        },
+        {
+          "player": "Wendell Carter Jr.",
+          "team": "ORL",
+          "stat": "REB",
+          "line": 8.5,
+          "season": 0.778,
+          "l7": 0.857,
+          "mpg": 33.444
+        },
+        {
+          "player": "Walker Kessler",
+          "team": "LAL",
+          "stat": "REB",
+          "line": 7.5,
+          "season": 0.909,
+          "l7": 1.0,
+          "mpg": 31.0
+        },
+        {
+          "player": "Jusuf Nurkic",
+          "team": "UTAH",
+          "stat": "REB",
+          "line": 7.5,
+          "season": 0.805,
+          "l7": 0.857,
+          "mpg": 26.439
+        },
+        {
+          "player": "Bam Adebayo",
+          "team": "MIA",
+          "stat": "REB",
+          "line": 7.5,
+          "season": 0.8,
+          "l7": 1.0,
+          "mpg": 32.8
+        },
+        {
+          "player": "Donovan Clingan",
+          "team": "POR",
+          "stat": "REB",
+          "line": 7.5,
+          "season": 0.778,
+          "l7": 0.857,
+          "mpg": 24.778
+        },
+        {
+          "player": "Joel Embiid",
+          "team": "PHI",
+          "stat": "REB",
+          "line": 6.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 31.889
+        },
+        {
+          "player": "Jalen Johnson",
+          "team": "ATL",
+          "stat": "REB",
+          "line": 6.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 33.125
+        },
+        {
+          "player": "Cedric Coward",
+          "team": "MEM",
+          "stat": "REB",
+          "line": 6.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 28.5
+        },
+        {
+          "player": "Victor Wembanyama",
+          "team": "SA",
+          "stat": "REB",
+          "line": 6.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 30.3
+        },
+        {
+          "player": "Nikola Jokic",
+          "team": "DEN",
+          "stat": "REB",
+          "line": 6.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 35.875
+        },
+        {
+          "player": "Cameron Boozer",
+          "team": "MEM",
+          "stat": "REB",
+          "line": 6.5,
+          "season": 0.889,
+          "l7": 0.857,
+          "mpg": 32.0
+        },
+        {
+          "player": "Alperen Sengun",
+          "team": "HOU",
+          "stat": "REB",
+          "line": 6.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 34.75
+        },
+        {
+          "player": "Michael Porter Jr.",
+          "team": "BKN",
+          "stat": "REB",
+          "line": 6.5,
+          "season": 0.8,
+          "l7": 0.857,
+          "mpg": 33.0
+        },
+        {
+          "player": "Miles Bridges",
+          "team": "PHX",
+          "stat": "REB",
+          "line": 6.5,
+          "season": 0.75,
+          "l7": 0.857,
+          "mpg": 32.375
+        },
+        {
+          "player": "Jaden McDaniels",
+          "team": "MIN",
+          "stat": "REB",
+          "line": 5.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 32.5
+        },
+        {
+          "player": "Julian Reese",
+          "team": "NO",
+          "stat": "REB",
+          "line": 5.5,
+          "season": 0.917,
+          "l7": 0.857,
+          "mpg": 31.167
+        },
+        {
+          "player": "Naz Reid",
+          "team": "CHA",
+          "stat": "REB",
+          "line": 5.5,
+          "season": 0.9,
+          "l7": 0.857,
+          "mpg": 29.3
+        },
+        {
+          "player": "Isaiah Hartenstein",
+          "team": "OKC",
+          "stat": "REB",
+          "line": 5.5,
+          "season": 0.9,
+          "l7": 1.0,
+          "mpg": 24.2
+        },
+        {
+          "player": "Moussa Diabate",
+          "team": "CHA",
+          "stat": "REB",
+          "line": 5.5,
+          "season": 0.889,
+          "l7": 0.857,
+          "mpg": 28.778
+        },
+        {
+          "player": "Lauri Markkanen",
+          "team": "UTAH",
+          "stat": "REB",
+          "line": 5.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 30.875
+        },
+        {
+          "player": "Jarrett Allen",
+          "team": "CLE",
+          "stat": "REB",
+          "line": 5.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 25.125
+        }
+      ],
+      "AST": [
+        {
+          "player": "Nikola Jokic",
+          "team": "DEN",
+          "stat": "AST",
+          "line": 7.5,
+          "season": 0.875,
+          "l7": 1.0,
+          "mpg": 35.875
+        },
+        {
+          "player": "Cade Cunningham",
+          "team": "DET",
+          "stat": "AST",
+          "line": 6.5,
+          "season": 0.889,
+          "l7": 0.857,
+          "mpg": 34.0
+        },
+        {
+          "player": "Davion Mitchell",
+          "team": "MIA",
+          "stat": "AST",
+          "line": 6.5,
+          "season": 0.8,
+          "l7": 0.857,
+          "mpg": 35.5
+        },
+        {
+          "player": "Alperen Sengun",
+          "team": "HOU",
+          "stat": "AST",
+          "line": 6.5,
+          "season": 0.75,
+          "l7": 0.857,
+          "mpg": 34.75
+        },
+        {
+          "player": "Jayson Tatum",
+          "team": "BOS",
+          "stat": "AST",
+          "line": 5.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 33.778
+        },
+        {
+          "player": "Trae Young",
+          "team": "WSH",
+          "stat": "AST",
+          "line": 5.5,
+          "season": 0.9,
+          "l7": 0.857,
+          "mpg": 35.2
+        },
+        {
+          "player": "Draymond Green",
+          "team": "GS",
+          "stat": "AST",
+          "line": 5.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 27.625
+        },
+        {
+          "player": "LaMelo Ball",
+          "team": "MIN",
+          "stat": "AST",
+          "line": 5.5,
+          "season": 0.833,
+          "l7": 0.833,
+          "mpg": 26.167
+        },
+        {
+          "player": "Cooper Flagg",
+          "team": "DAL",
+          "stat": "AST",
+          "line": 5.5,
+          "season": 0.778,
+          "l7": 0.857,
+          "mpg": 33.667
+        },
+        {
+          "player": "Jamal Murray",
+          "team": "DEN",
+          "stat": "AST",
+          "line": 5.5,
+          "season": 0.75,
+          "l7": 0.857,
+          "mpg": 36.5
+        },
+        {
+          "player": "Franz Wagner",
+          "team": "ORL",
+          "stat": "AST",
+          "line": 4.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 36.444
+        },
+        {
+          "player": "Luka Doncic",
+          "team": "LAL",
+          "stat": "AST",
+          "line": 4.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 35.889
+        },
+        {
+          "player": "LeBron James",
+          "team": "PHI",
+          "stat": "AST",
+          "line": 4.5,
+          "season": 0.889,
+          "l7": 0.857,
+          "mpg": 32.889
+        },
+        {
+          "player": "Darius Garland",
+          "team": "LAC",
+          "stat": "AST",
+          "line": 4.5,
+          "season": 0.889,
+          "l7": 1.0,
+          "mpg": 33.556
+        },
+        {
+          "player": "Josh Giddey",
+          "team": "CHI",
+          "stat": "AST",
+          "line": 4.5,
+          "season": 0.889,
+          "l7": 0.857,
+          "mpg": 28.0
+        },
+        {
+          "player": "Darius Acuff Jr.",
+          "team": "SAC",
+          "stat": "AST",
+          "line": 4.5,
+          "season": 0.8,
+          "l7": 1.0,
+          "mpg": 37.0
+        },
+        {
+          "player": "Tyrese Maxey",
+          "team": "PHI",
+          "stat": "AST",
+          "line": 3.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 36.545
+        },
+        {
+          "player": "James Harden",
+          "team": "CLE",
+          "stat": "AST",
+          "line": 3.5,
+          "season": 0.9,
+          "l7": 0.857,
+          "mpg": 33.3
+        },
+        {
+          "player": "De'Aaron Fox",
+          "team": "SA",
+          "stat": "AST",
+          "line": 3.5,
+          "season": 0.9,
+          "l7": 0.857,
+          "mpg": 29.5
+        },
+        {
+          "player": "Cameron Boozer",
+          "team": "MEM",
+          "stat": "AST",
+          "line": 3.5,
+          "season": 0.889,
+          "l7": 0.857,
+          "mpg": 32.0
+        },
+        {
+          "player": "Jalen Brunson",
+          "team": "NY",
+          "stat": "AST",
+          "line": 3.5,
+          "season": 0.889,
+          "l7": 1.0,
+          "mpg": 33.889
+        },
+        {
+          "player": "Jalen Johnson",
+          "team": "ATL",
+          "stat": "AST",
+          "line": 3.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 33.125
+        },
+        {
+          "player": "Fred VanVleet",
+          "team": "HOU",
+          "stat": "AST",
+          "line": 3.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 30.125
+        },
+        {
+          "player": "Andrew Nembhard",
+          "team": "IND",
+          "stat": "AST",
+          "line": 3.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 33.125
+        },
+        {
+          "player": "Scottie Barnes",
+          "team": "TOR",
+          "stat": "AST",
+          "line": 3.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 33.375
+        }
+      ],
+      "3PT": [
+        {
+          "player": "Luka Doncic",
+          "team": "LAL",
+          "stat": "3PT",
+          "line": 4.5,
+          "season": 0.889,
+          "l7": 1.0,
+          "mpg": 35.889
+        },
+        {
+          "player": "Stephen Curry",
+          "team": "GS",
+          "stat": "3PT",
+          "line": 2.5,
+          "season": 0.875,
+          "l7": 1.0,
+          "mpg": 29.75
+        },
+        {
+          "player": "Michael Porter Jr.",
+          "team": "BKN",
+          "stat": "3PT",
+          "line": 2.5,
+          "season": 0.8,
+          "l7": 0.857,
+          "mpg": 33.0
+        },
+        {
+          "player": "Moses Moody",
+          "team": "GS",
+          "stat": "3PT",
+          "line": 2.5,
+          "season": 0.75,
+          "l7": 0.857,
+          "mpg": 30.167
+        },
+        {
+          "player": "Duncan Robinson",
+          "team": "DET",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 1.0,
+          "l7": 1.0,
+          "mpg": 30.556
+        },
+        {
+          "player": "Nickeil Alexander-Walker",
+          "team": "ATL",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.909,
+          "l7": 0.857,
+          "mpg": 30.636
+        },
+        {
+          "player": "Aaron Wiggins",
+          "team": "ATL",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.909,
+          "l7": 0.857,
+          "mpg": 26.273
+        },
+        {
+          "player": "Darius Acuff Jr.",
+          "team": "SAC",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.9,
+          "l7": 1.0,
+          "mpg": 37.0
+        },
+        {
+          "player": "Julian Champagnie",
+          "team": "SA",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.9,
+          "l7": 0.857,
+          "mpg": 25.5
+        },
+        {
+          "player": "Klay Thompson",
+          "team": "MIA",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.9,
+          "l7": 0.857,
+          "mpg": 24.2
+        },
+        {
+          "player": "Paul George",
+          "team": "BOS",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.889,
+          "l7": 0.857,
+          "mpg": 30.111
+        },
+        {
+          "player": "Tristan da Silva",
+          "team": "ORL",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.889,
+          "l7": 1.0,
+          "mpg": 30.444
+        },
+        {
+          "player": "Cedric Coward",
+          "team": "MEM",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.875,
+          "l7": 1.0,
+          "mpg": 28.5
+        },
+        {
+          "player": "Fred VanVleet",
+          "team": "HOU",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 30.125
+        },
+        {
+          "player": "Desmond Bane",
+          "team": "ORL",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 34.5
+        },
+        {
+          "player": "Brandin Podziemski",
+          "team": "GS",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.875,
+          "l7": 0.857,
+          "mpg": 34.0
+        },
+        {
+          "player": "Jamal Murray",
+          "team": "DEN",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.875,
+          "l7": 1.0,
+          "mpg": 36.5
+        },
+        {
+          "player": "Josh Hart",
+          "team": "NY",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.857,
+          "l7": 0.857,
+          "mpg": 31.714
+        },
+        {
+          "player": "Javon Small",
+          "team": "MEM",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.833,
+          "l7": 0.857,
+          "mpg": 25.0
+        },
+        {
+          "player": "LaMelo Ball",
+          "team": "MIN",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.833,
+          "l7": 0.833,
+          "mpg": 26.167
+        },
+        {
+          "player": "Tyrese Maxey",
+          "team": "PHI",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.818,
+          "l7": 0.857,
+          "mpg": 36.545
+        },
+        {
+          "player": "James Harden",
+          "team": "CLE",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.8,
+          "l7": 0.857,
+          "mpg": 33.3
+        },
+        {
+          "player": "Jabari Smith Jr.",
+          "team": "HOU",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.8,
+          "l7": 0.857,
+          "mpg": 35.0
+        },
+        {
+          "player": "P.J. Washington",
+          "team": "DAL",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.8,
+          "l7": 0.857,
+          "mpg": 33.7
+        },
+        {
+          "player": "Jrue Holiday",
+          "team": "POR",
+          "stat": "3PT",
+          "line": 1.5,
+          "season": 0.778,
+          "l7": 0.857,
+          "mpg": 25.889
+        }
+      ]
+    }
+  }
+}
