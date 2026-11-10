@@ -1,0 +1,118 @@
+════════════════════════════════════════════════════════════════════
+ALL-SPORTS RUN · TUE 2026-11-10 · America/New_York
+Built 10:08 AM ET · G1 L7 sheets · shave-to-6/7+ · soft banned · OUT/GTD removed
+Confirm every number on Hard Rock (G2/G3) before locking
+════════════════════════════════════════════════════════════════════
+
+══ MASTER PROP PUNCH (NBA/NHL 6/7+) ══
+Pick 4–8 across games · prefer 7/7 · confirm posted
+   1. 7/7  Tyrese Maxey           AST   clear O3.5   band O2.0–O3.5    NBA BOS @ PHI · 35.7mpg
+      L=[7.0, 4.0, 7.0, 11.0, 4.0, 4.0, 4.0]  id=4431678
+   2. 7/7  Bam Adebayo            REB   clear O7.5   band O2.0–O7.5    NBA MIA @ UTAH · 33.6mpg
+      L=[8.0, 10.0, 10.0, 9.0, 9.0, 9.0, 8.0]  id=4066261
+   3. 7/7  Jayson Tatum           AST   clear O5.5   band O2.0–O5.5    NBA BOS @ PHI · 32.7mpg
+      L=[6.0, 9.0, 9.0, 7.0, 7.0, 8.0, 6.0]  id=4065648
+   4. 7/7  Karl-Anthony Towns     REB   clear O11.5  band O2.0–O11.5   NBA MIL @ NY · 31.9mpg
+      L=[13.0, 12.0, 16.0, 12.0, 13.0, 20.0, 14.0]  id=3136195
+   5. 7/7  Jalen Brunson          AST   clear O3.5   band O2.0–O3.5    NBA MIL @ NY · 33.4mpg
+      L=[9.0, 4.0, 6.0, 6.0, 7.0, 7.0, 4.0]  id=3934672
+   6. 7/7  Darius Garland         AST   clear O4.5   band O2.0–O4.5    NBA LAC @ PHX · 33.3mpg
+      L=[10.0, 7.0, 8.0, 7.0, 5.0, 5.0, 11.0]  id=4396907
+   7. 7/7  Jaylen Brown           REB   clear O3.5   band O2.0–O3.5    NBA BOS @ PHI · 35.9mpg
+      L=[7.0, 5.0, 7.0, 11.0, 4.0, 10.0, 4.0]  id=3917376
+   8. 7/7  Tristan da Silva       3PT   clear O1.5   band O1.0–O1.5    NBA ORL @ SAC · 31.0mpg
+      L=[5.0, 4.0, 2.0, 5.0, 2.0, 4.0, 5.0]  id=4702382
+   9. 7/7  Jaxson Hayes           REB   clear O4.5   band O2.0–O4.5    NBA MIA @ UTAH · 25.1mpg
+      L=[6.0, 6.0, 7.0, 5.0, 7.0, 11.0, 5.0]  id=4397077
+  10. 6/7  Devin Booker           3PT   clear O1.5   band O1.0–O1.5    NBA LAC @ PHX · 35.9mpg
+      L=[2.0, 4.0, 2.0, 2.0, 3.0, 0.0, 2.0]  id=3136193
+      L=[3.0, 5.0, 3.0, 3.0, 3.0, 2.0, 4.0]  id=4397114
+  12. 6/7  Miles Bridges          3PT   clear O1.5   band O1.0–O1.5    NBA LAC @ PHX · 32.9mpg
+      L=[1.0, 3.0, 4.0, 3.0, 2.0, 2.0, 2.0]  id=4066383
+  13. 6/7  Wendell Carter Jr.     REB   clear O8.5   band O2.0–O8.5    NBA ORL @ SAC · 34.4mpg
+      L=[11.0, 13.0, 9.0, 10.0, 7.0, 10.0, 10.0]  id=4277847
+      L=[4.0, 5.0, 7.0, 6.0, 4.0, 3.0, 4.0]  id=5041955
+  15. 6/7  Franz Wagner           REB   clear O3.5   band O2.0–O3.5    NBA ORL @ SAC · 38.0mpg
+      L=[6.0, 8.0, 3.0, 6.0, 5.0, 4.0, 13.0]  id=4566434
+  16. 6/7  Deni Avdija            REB   clear O3.5   band O2.0–O3.5    NBA OKC @ POR · 32.6mpg
+      L=[4.0, 9.0, 7.0, 3.0, 5.0, 9.0, 4.0]  id=4683021
+  17. 6/7  Damian Lillard         AST   clear O3.5   band O2.0–O3.5    NBA OKC @ POR · 29.7mpg
+      L=[7.0, 4.0, 5.0, 6.0, 4.0, 2.0, 4.0]  id=6606
+  18. 6/7  Deni Avdija            PTS   clear O20.5  band O5.0–O20.5   NBA OKC @ POR · 32.6mpg
+      L=[15.0, 22.0, 21.0, 28.0, 24.0, 24.0, 23.0]  id=4683021
+
+══ BY GAME (top clears) ══
+
+▶ BOS @ PHI (17 clears)
+  7/7  Tyrese Maxey           AST   O3.5   band O2.0–O3.5
+  7/7  Jayson Tatum           AST   O5.5   band O2.0–O5.5
+  7/7  Jaylen Brown           REB   O3.5   band O2.0–O3.5
+  7/7  Jayson Tatum           REB   O3.5   band O2.0–O3.5
+  7/7  Jaylen Brown           PTS   O15.5  band O5.0–O15.5
+  7/7  Joel Embiid            REB   O6.5   band O2.0–O6.5
+
+▶ LAC @ PHX (13 clears)
+  7/7  Darius Garland         AST   O4.5   band O2.0–O4.5
+  6/7  Devin Booker           3PT   O1.5   band O1.0–O1.5
+  6/7  Miles Bridges          3PT   O1.5   band O1.0–O1.5
+  6/7  Darius Garland         PTS   O14.5  band O5.0–O14.5
+  6/7  Miles Bridges          REB   O6.5   band O2.0–O6.5
+  6/7  Derrick Jones Jr.      REB   O3.5   band O2.0–O3.5
+
+▶ OKC @ POR (11 clears)
+  6/7  Deni Avdija            REB   O3.5   band O2.0–O3.5
+  6/7  Damian Lillard         AST   O3.5   band O2.0–O3.5
+  6/7  Deni Avdija            PTS   O20.5  band O5.0–O20.5
+  6/7  Jrue Holiday           3PT   O1.5   band O1.0–O1.5
+  6/7  Shai Gilgeous-Alexander PTS   O25.5  band O5.0–O25.5
+  6/7  Donovan Clingan        REB   O7.5   band O2.0–O7.5
+
+▶ MIA @ UTAH (10 clears)
+  7/7  Bam Adebayo            REB   O7.5   band O2.0–O7.5
+  7/7  Jaxson Hayes           REB   O4.5   band O2.0–O4.5
+  6/7  Ace Bailey             REB   O4.5   band O2.0–O4.5
+  6/7  Bam Adebayo            PTS   O15.5  band O5.0–O15.5
+
+▶ MIL @ NY (10 clears)
+  7/7  Karl-Anthony Towns     REB   O11.5  band O2.0–O11.5
+  7/7  Jalen Brunson          AST   O3.5   band O2.0–O3.5
+  6/7  OG Anunoby             REB   O3.5   band O2.0–O3.5
+  6/7  Myles Turner           REB   O4.5   band O2.0–O4.5
+  6/7  Jalen Brunson          PTS   O22.5  band O5.0–O22.5
+
+▶ ORL @ SAC (9 clears)
+  7/7  Tristan da Silva       3PT   O1.5   band O1.0–O1.5
+  6/7  Wendell Carter Jr.     REB   O8.5   band O2.0–O8.5
+  6/7  Franz Wagner           REB   O3.5   band O2.0–O3.5
+  6/7  Desmond Bane           3PT   O1.5   band O1.0–O1.5
+  6/7  Franz Wagner           AST   O5.5   band O2.0–O5.5
+  6/7  Desmond Bane           PTS   O12.5  band O5.0–O12.5
+
+══ SIDES / TOTALS (summary) ══
+NBA
+  BOS -1.5 @ PHI · best small-number side
+  OKC -1.5 @ POR · both thinned · pick-em lean OKC
+  PHX -3.5 vs LAC · LAC gutted (Ingram/Beal OUT) · PHX side OK
+  MIA -8.5 @ UTAH · Utah gutted but Giannis GTD — check warmups
+  ORL -6.5 @ SAC · Paolo OUT · softer lean
+  NY -15.5 vs MIL · BAN ML chalk — do not parlay NY ML
+  TOTALS lean UNDER: LAC@PHX 224.5 · ORL@SAC 222.5 · OKC@POR 224.5
+NHL
+  Modest MLs only: COL -155 · NJ -148 · FLA -120 · LA -135 · MIN -125 · OTT -125 · STL -142
+  Prefer ML over -1.5 tonight (juice not crazy)
+NCAAM (safer only)
+  PLAY: DUKE -7.5 vs MSU · KU -4.5 vs UK · ILL -2.5 @ TTU · CREI -2.5 @ KSU · IOWA -4.5 vs VT · FLA -9.5 @ FSU
+  SKIP: anything ≥20.5 (VILL/XAV/ISU/ARIZ/UVA landmines)
+NFL: none
+
+══ SUGGESTED TICKETS ══
+SAFE CHALK-ALT (hit rate):
+  KAT REB O11.5 · Bam REB O7.5 · Tatum AST O5.5 · Maxey AST O3.5 · Brunson AST O3.5
+  + side: BOS -1.5 or PHX -3.5 · + NHL: COL ML or NJ ML
+BANGERS / higher juice:
+  Add 3PT clears O1.5 from board · avoid NY ML · avoid NCAAM bombs
+MULTI-DAY note:
+  Yesterday’s ticket risk is done — build fresh for tonight only
+
+══ BAN ══
+  Soft floors · GTD props · NY ML −15.5 chalk · NCAAM −20+ · soccer/tennis dogs from AM slip

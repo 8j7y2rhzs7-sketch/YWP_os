@@ -1,0 +1,104 @@
+════════════════════════════════════════════════════════════════════
+MULTI-DAY 6/7+ POOL · 11/10–11/10 · America/New_York
+Idea: spread risk across days · pick the BEST from each slate · more punches, same rigor
+Rule: clear_at = highest line that still hits 6/7 or 7/7 (soft floors banned)
+G2/G3: confirm posted/HR before betting — research_posted is L7-median estimate when book missing
+════════════════════════════════════════════════════════════════════
+
+── SLATE ──
+  11/10  NBA 6 · NHL 7 · NFL 0  →  140 clears @ 6/7+
+
+══ BEST OF EACH DAY (top punches) ══
+
+▶ 11/10
+  7/7   Tyrese Maxey           AST     clear O3.5   band O2.0–O3.5      NBA BOS @ PHI · 35.7mpg
+        L=[7.0, 4.0, 7.0, 11.0, 4.0, 4.0, 4.0]  research~O3.5  id=4431678
+  7/7   Bam Adebayo            REB     clear O7.5   band O2.0–O7.5      NBA MIA @ UTAH · 33.6mpg
+        L=[8.0, 10.0, 10.0, 9.0, 9.0, 9.0, 8.0]  research~O8.5  id=4066261
+  7/7   Darius Acuff Jr.       REB     clear O2.5   band O2.0–O2.5      NBA ORL @ SAC · 37.4mpg
+        L=[5.0, 3.0, 3.0, 5.0, 5.0, 6.0, 3.0]  research~O4.5  id=5142620
+  7/7   Jayson Tatum           AST     clear O5.5   band O2.0–O5.5      NBA BOS @ PHI · 32.7mpg
+        L=[6.0, 9.0, 9.0, 7.0, 7.0, 8.0, 6.0]  research~O6.5  id=4065648
+  7/7   Karl-Anthony Towns     REB     clear O11.5  band O2.0–O11.5     NBA MIL @ NY · 31.9mpg
+        L=[13.0, 12.0, 16.0, 12.0, 13.0, 20.0, 14.0]  research~O12.5  id=3136195
+  7/7   Jalen Brunson          AST     clear O3.5   band O2.0–O3.5      NBA MIL @ NY · 33.4mpg
+        L=[9.0, 4.0, 6.0, 6.0, 7.0, 7.0, 4.0]  research~O5.5  id=3934672
+  7/7   Darius Acuff Jr.       AST     clear O4.5   band O2.0–O4.5      NBA ORL @ SAC · 37.4mpg
+        L=[10.0, 8.0, 12.0, 6.0, 5.0, 14.0, 5.0]  research~O7.5  id=5142620
+  7/7   Darius Garland         AST     clear O4.5   band O2.0–O4.5      NBA LAC @ PHX · 33.3mpg
+        L=[10.0, 7.0, 8.0, 7.0, 5.0, 5.0, 11.0]  research~O6.5  id=4396907
+  7/7   Jaylen Brown           REB     clear O3.5   band O2.0–O3.5      NBA BOS @ PHI · 35.9mpg
+        L=[7.0, 5.0, 7.0, 11.0, 4.0, 10.0, 4.0]  research~O6.5  id=3917376
+  7/7   Jayson Tatum           REB     clear O3.5   band O2.0–O3.5      NBA BOS @ PHI · 32.7mpg
+        L=[4.0, 8.0, 6.0, 4.0, 7.0, 5.0, 7.0]  research~O5.5  id=4065648
+  7/7   VJ Edgecombe           REB     clear O2.5   band O2.0–O2.5      NBA BOS @ PHI · 33.9mpg
+        L=[6.0, 3.0, 6.0, 3.0, 8.0, 8.0, 7.0]  research~O5.5  id=5124612
+  7/7   Tristan da Silva       3PT     clear O1.5   band O1.0–O1.5      NBA ORL @ SAC · 31.0mpg
+        L=[5.0, 4.0, 2.0, 5.0, 2.0, 4.0, 5.0]  research~O3.5  id=4702382
+  7/7   Jaylen Brown           PTS     clear O15.5  band O5.0–O15.5     NBA BOS @ PHI · 35.9mpg
+        L=[29.0, 20.0, 30.0, 25.0, 16.0, 20.0, 16.0]  research~O19.5  id=3917376
+  7/7   Devin Carter           AST     clear O2.5   band O2.0–O2.5      NBA BOS @ PHI · 30.0mpg
+        L=[8.0, 4.0, 5.0, 5.0, 3.0, 3.0, 5.0]  research~O4.5  id=4433188
+
+══ CROSS-DAY MASTER PUNCH (diversified) ══
+Grab 2–4 from each day → bigger ticket, risk split across tips
+   1. [11/10] 7/7  Tyrese Maxey         AST     O3.5  NBA BOS @ PHI
+   2. [11/10] 7/7  Bam Adebayo          REB     O7.5  NBA MIA @ UTAH
+   3. [11/10] 7/7  Darius Acuff Jr.     REB     O2.5  NBA ORL @ SAC
+   4. [11/10] 7/7  Jayson Tatum         AST     O5.5  NBA BOS @ PHI
+   5. [11/10] 7/7  Karl-Anthony Towns   REB     O11.5  NBA MIL @ NY
+   6. [11/10] 7/7  Jalen Brunson        AST     O3.5  NBA MIL @ NY
+   7. [11/10] 7/7  Darius Acuff Jr.     AST     O4.5  NBA ORL @ SAC
+   8. [11/10] 7/7  Darius Garland       AST     O4.5  NBA LAC @ PHX
+
+══ FULL CLEAR BOARDS BY DAY ══
+
+── 11/10 (140 clears) ──
+  7/7  Tyrese Maxey           AST   O3.5   O2.0–O3.5      BOS @ PHI    L=[7.0, 4.0, 7.0, 11.0, 4.0, 4.0, 4.0]
+  7/7  Bam Adebayo            REB   O7.5   O2.0–O7.5      MIA @ UTAH   L=[8.0, 10.0, 10.0, 9.0, 9.0, 9.0, 8.0]
+  7/7  Darius Acuff Jr.       REB   O2.5   O2.0–O2.5      ORL @ SAC    L=[5.0, 3.0, 3.0, 5.0, 5.0, 6.0, 3.0]
+  7/7  Jayson Tatum           AST   O5.5   O2.0–O5.5      BOS @ PHI    L=[6.0, 9.0, 9.0, 7.0, 7.0, 8.0, 6.0]
+  7/7  Karl-Anthony Towns     REB   O11.5  O2.0–O11.5     MIL @ NY     L=[13.0, 12.0, 16.0, 12.0, 13.0, 20.0, 14.0]
+  7/7  Jalen Brunson          AST   O3.5   O2.0–O3.5      MIL @ NY     L=[9.0, 4.0, 6.0, 6.0, 7.0, 7.0, 4.0]
+  7/7  Darius Acuff Jr.       AST   O4.5   O2.0–O4.5      ORL @ SAC    L=[10.0, 8.0, 12.0, 6.0, 5.0, 14.0, 5.0]
+  7/7  Darius Garland         AST   O4.5   O2.0–O4.5      LAC @ PHX    L=[10.0, 7.0, 8.0, 7.0, 5.0, 5.0, 11.0]
+  7/7  Jaylen Brown           REB   O3.5   O2.0–O3.5      BOS @ PHI    L=[7.0, 5.0, 7.0, 11.0, 4.0, 10.0, 4.0]
+  7/7  Jayson Tatum           REB   O3.5   O2.0–O3.5      BOS @ PHI    L=[4.0, 8.0, 6.0, 4.0, 7.0, 5.0, 7.0]
+  7/7  VJ Edgecombe           REB   O2.5   O2.0–O2.5      BOS @ PHI    L=[6.0, 3.0, 6.0, 3.0, 8.0, 8.0, 7.0]
+  7/7  Tristan da Silva       3PT   O1.5   O1.0–O1.5      ORL @ SAC    L=[5.0, 4.0, 2.0, 5.0, 2.0, 4.0, 5.0]
+  7/7  Jaylen Brown           PTS   O15.5  O5.0–O15.5     BOS @ PHI    L=[29.0, 20.0, 30.0, 25.0, 16.0, 20.0, 16.0]
+  7/7  Devin Carter           AST   O2.5   O2.0–O2.5      BOS @ PHI    L=[8.0, 4.0, 5.0, 5.0, 3.0, 3.0, 5.0]
+  7/7  Paul George            REB   O2.5   O2.0–O2.5      BOS @ PHI    L=[3.0, 5.0, 3.0, 6.0, 6.0, 7.0, 5.0]
+  7/7  Payton Pritchard       AST   O2.5   O2.0–O2.5      BOS @ PHI    L=[4.0, 5.0, 5.0, 3.0, 3.0, 3.0, 6.0]
+  7/7  Joel Embiid            REB   O6.5   O2.0–O6.5      BOS @ PHI    L=[10.0, 7.0, 15.0, 8.0, 7.0, 11.0, 11.0]
+  7/7  Jaxson Hayes           REB   O4.5   O2.0–O4.5      MIA @ UTAH   L=[6.0, 6.0, 7.0, 5.0, 7.0, 11.0, 5.0]
+  7/7  Kenrich Williams       REB   O2.5   O2.0–O2.5      OKC @ POR    L=[4.0, 6.0, 4.0, 3.0, 7.0, 3.0, 7.0]
+  7/7  Neemias Queta          REB   O2.5   O2.0–O2.5      BOS @ PHI    L=[9.0, 3.0, 12.0, 6.0, 8.0, 6.0, 3.0]
+  6/6  Anthony Black          PTS   O7.5   O5.0–O7.5      ORL @ SAC    L=[18.0, 10.0, 23.0, 17.0, 8.0, 18.0]
+  6/7  Darius Acuff Jr.       3PT   O2.5   O1.0–O2.5      ORL @ SAC    L=[3.0, 3.0, 3.0, 2.0, 9.0, 3.0, 3.0]
+  6/7  Devin Booker           3PT   O1.5   O1.0–O1.5      LAC @ PHX    L=[2.0, 4.0, 2.0, 2.0, 3.0, 0.0, 2.0]
+  6/7  Bam Adebayo            AST   O2.5   O2.0–O2.5      MIA @ UTAH   L=[4.0, 0.0, 4.0, 4.0, 3.0, 3.0, 3.0]
+  6/7  Tyrese Maxey           REB   O2.5   O2.0–O2.5      BOS @ PHI    L=[4.0, 3.0, 1.0, 4.0, 4.0, 4.0, 5.0]
+  6/7  Tyrese Maxey           3PT   O1.5   O1.0–O1.5      BOS @ PHI    L=[3.0, 2.0, 3.0, 1.0, 4.0, 3.0, 3.0]
+  6/7  Cormac Ryan            3PT   O2.5   O1.0–O2.5      MIL @ NY     L=[3.0, 5.0, 3.0, 3.0, 3.0, 2.0, 4.0]
+  6/7  Miles Bridges          3PT   O1.5   O1.0–O1.5      LAC @ PHX    L=[1.0, 3.0, 4.0, 3.0, 2.0, 2.0, 2.0]
+  6/7  Karl-Anthony Towns     AST   O2.5   O2.0–O2.5      MIL @ NY     L=[3.0, 1.0, 5.0, 3.0, 5.0, 3.0, 4.0]
+  6/7  Wendell Carter Jr.     REB   O8.5   O2.0–O8.5      ORL @ SAC    L=[11.0, 13.0, 9.0, 10.0, 7.0, 10.0, 10.0]
+  6/7  Shai Gilgeous-Alexander REB   O2.5   O2.0–O2.5      OKC @ POR    L=[2.0, 3.0, 4.0, 3.0, 4.0, 6.0, 3.0]
+  6/7  Darryn Peterson        AST   O3.5   O2.0–O3.5      MIA @ UTAH   L=[4.0, 5.0, 7.0, 6.0, 4.0, 3.0, 4.0]
+  6/7  Darius Garland         PTS   O14.5  O5.0–O14.5     LAC @ PHX    L=[24.0, 26.0, 16.0, 15.0, 24.0, 14.0, 16.0]
+  6/7  Franz Wagner           REB   O3.5   O2.0–O3.5      ORL @ SAC    L=[6.0, 8.0, 3.0, 6.0, 5.0, 4.0, 13.0]
+  6/7  OG Anunoby             REB   O3.5   O2.0–O3.5      MIL @ NY     L=[6.0, 5.0, 4.0, 4.0, 6.0, 7.0, 3.0]
+  6/7  Devin Booker           AST   O2.5   O2.0–O2.5      LAC @ PHX    L=[3.0, 8.0, 2.0, 5.0, 5.0, 7.0, 7.0]
+  6/7  Ace Bailey             REB   O4.5   O2.0–O4.5      MIA @ UTAH   L=[2.0, 5.0, 5.0, 6.0, 7.0, 6.0, 10.0]
+  6/7  Miles Bridges          REB   O6.5   O2.0–O6.5      LAC @ PHX    L=[10.0, 13.0, 7.0, 6.0, 10.0, 8.0, 7.0]
+  6/7  Miles Bridges          AST   O2.5   O2.0–O2.5      LAC @ PHX    L=[7.0, 5.0, 5.0, 3.0, 2.0, 4.0, 3.0]
+  6/7  Deni Avdija            REB   O3.5   O2.0–O3.5      OKC @ POR    L=[4.0, 9.0, 7.0, 3.0, 5.0, 9.0, 4.0]
+  … +100 more in JSON
+
+══ HOW TO USE ══
+1. Build separate slips per day OR one multi-day parlay (books that allow it).
+2. From each day take the top 2–4 that are actually posted on HR.
+3. Prefer kind 7/7 / 5/5 / 6/6; use 6/7 when the shave is small (drop ≤3).
+4. Re-check injuries morning-of; GTD stars can kill a leg.
+5. Soft floors stay banned even if they go 7/7.
