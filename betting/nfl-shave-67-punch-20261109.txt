@@ -1,0 +1,38 @@
+NFL 6/7+ SHAVE PUNCH · BUF@MIN · 2026-11-09
+Rule: walk down until 6/7 or 7/7; soft floor stops. Pick anywhere in band.
+
+══ PERFECT / NEAR-PERFECT (priority) ══
+  5/5   Ty Johnson         REC      posted O1.5  → clear O1.5 (5/5)  band O1.0–O1.5  drop −0.0
+        L=[3.0, 2.0, 4.0, 2.0, 4.0]
+  6/6   Justin Jefferson   REC      posted O6.5  → clear O1.5 (6/6)  band O1.0–O1.5  drop −5.0
+        L=[5.0, 4.0, 6.0, 2.0, 3.0, 8.0]
+  6/6   Justin Jefferson   REC_YD   posted O78.5  → clear O31.5 (6/6)  band O9.0–O31.5  drop −47.0
+        L=[33.0, 44.0, 79.0, 32.0, 55.0, 92.0]
+
+══ 6/7 CLEARS (shave required) ══
+  6/7   Khalil Shakir      REC      posted O3.5  → O2.5  band O1.0–O2.5  drop −1.0  · no 7/7 above soft
+        L=[5.0, 4.0, 3.0, 7.0, 1.0, 3.0, 4.0]
+  6/7   T.J. Hockenson     REC      posted O4.5  → O1.5  band O1.0–O1.5  drop −3.0  · no 7/7 above soft
+        L=[4.0, 4.0, 1.0, 13.0, 2.0, 3.0, 4.0]
+  6/7   Khalil Shakir      REC_YD   posted O39.5  → O33.5  band O9.0–O33.5  drop −6.0  · no 7/7 above soft
+        L=[64.0, 34.0, 80.0, 82.0, 6.0, 38.0, 50.0]
+  6/7   Aaron Jones Sr.    RUSH_YD  posted O32.5  → O25.5  band O6.0–O25.5  drop −7.0  · 7/7 from O21.5
+        L=[22.0, 26.0, 113.0, 94.0, 58.0, 105.0, 40.0]
+  6/7   James Cook III     RUSH_YD  posted O82.5  → O74.5  band O6.0–O74.5  drop −8.0  · 7/7 from O56.5
+        L=[80.0, 95.0, 111.0, 75.0, 154.0, 135.0, 57.0]
+  6/7   Josh Allen         PASS_YD  posted O231.5  → O209.5  band O150.0–O209.5  drop −22.0  · 7/7 from O203.5
+        L=[289.0, 255.0, 210.0, 253.0, 204.0, 248.0, 334.0]
+  6/7   T.J. Hockenson     REC_YD   posted O42.5  → O10.5  band O9.0–O10.5  drop −32.0  · no 7/7 above soft
+        L=[58.0, 35.0, 7.0, 119.0, 11.0, 29.0, 36.0]
+
+══ BEST REALISTIC PUNCH (smallest shave to clear) ══
+  5/5  O1.5    Ty Johnson REC (posted 1.5, −0.0)
+  6/7  O2.5    Khalil Shakir REC (posted 3.5, −1.0)
+  6/7  O1.5    T.J. Hockenson REC (posted 4.5, −3.0)
+  6/6  O1.5    Justin Jefferson REC (posted 6.5, −5.0)
+  6/7  O33.5   Khalil Shakir REC_YD (posted 39.5, −6.0)
+  6/7  O25.5   Aaron Jones Sr. RUSH_YD (posted 32.5, −7.0)
+  6/7  O74.5   James Cook III RUSH_YD (posted 82.5, −8.0)
+  6/7  O209.5  Josh Allen PASS_YD (posted 231.5, −22.0)
+  6/7  O10.5   T.J. Hockenson REC_YD (posted 42.5, −32.0)
+  6/6  O31.5   Justin Jefferson REC_YD (posted 78.5, −47.0)

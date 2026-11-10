@@ -1,0 +1,79 @@
+THREE TICKETS · TUE 2026-11-10 · America/New_York
+Split from full-slate keeps · confirm HR · drop any GTD at warmup
+SGA = O20.5 only (not O25.5) · no 3PT O1.5 · no NY ML · no Sabonis
+
+════════════════════════════════════════════════════════════════
+TICKET 1 — SAFE CHALK (hit rate)
+8 legs · 7/7 props + 2 small sides · no same-player stacks · no unders
+════════════════════════════════════════════════════════════════
+  1. Karl-Anthony Towns      REB  O11.5   MIL @ NY
+  2. Jalen Brunson           AST  O3.5    MIL @ NY
+  3. Jayson Tatum            AST  O5.5    BOS @ PHI
+  4. Tyrese Maxey            AST  O3.5    BOS @ PHI
+  5. Joel Embiid             REB  O6.5    BOS @ PHI
+  6. Bam Adebayo             REB  O7.5    MIA @ UTAH
+  7. BOS -1.5                          vs PHI
+  8. PHX -3.5                          vs LAC
+
+  WHY: pure punch 7/7 + dual-window REB/AST gold · no PTS stacks · no 6/7 · no NCAAM
+  SKIPPED HERE: Brown/Hayes soft-ish REB · Garland · SGA · unders · NHL · NCAAM
+
+════════════════════════════════════════════════════════════════
+TICKET 2 — MAIN CARD (balanced)
+12 legs · gold PTS floors + support props + OKC side + NHL
+════════════════════════════════════════════════════════════════
+  1. Karl-Anthony Towns      REB  O11.5   MIL @ NY
+  2. Jalen Brunson           PTS  O18.5   MIL @ NY     (gold floor)
+  3. Jayson Tatum            AST  O5.5    BOS @ PHI
+  4. Tyrese Maxey            PTS  O18.5   BOS @ PHI    (gold floor)
+  5. Bam Adebayo             REB  O7.5    MIA @ UTAH
+  6. Darius Garland          AST  O4.5    LAC @ PHX
+  7. Shai Gilgeous-Alexander PTS  O20.5   OKC @ POR    (gold floor)
+  8. Wendell Carter Jr.      REB  O8.5    ORL @ SAC
+  9. OKC -1.5                          @ POR
+ 10. COL ML                            @ TOR
+ 11. NJ ML                             @ WPG
+ 12. DUKE -7.5                         vs MSU
+
+  WHY: spreads risk across more games · uses tonight gold PTS · adds NHL + 1 NCAAM feature
+  NOTE: Brunson/Maxey taken as PTS (not AST) so Ticket 1 + 2 don’t mirror
+
+════════════════════════════════════════════════════════════════
+TICKET 3 — BANGERS / COVER (juice + unders + NCAAM ladder)
+12 legs · leftover keeps · injury unders · feature NCAAM · no soft 3PT
+════════════════════════════════════════════════════════════════
+  1. Jaylen Brown            REB  O3.5    BOS @ PHI
+  2. Jaxson Hayes            REB  O4.5    MIA @ UTAH
+  3. Damian Lillard          AST  O3.5    OKC @ POR
+  4. Joel Embiid             REB  O6.5    BOS @ PHI
+  5. Darius Garland          AST  O4.5    LAC @ PHX
+  6. LAC @ PHX               UNDER 224.5
+  7. ORL @ SAC               UNDER 222.5
+  8. OKC @ POR               UNDER 224.5
+  9. KU -4.5                           vs UK
+ 10. ILL -2.5                          @ TTU
+ 11. CREI -2.5                         @ KSU
+ 12. IOWA -4.5                         vs VT
+     (optional 13th if you want max NCAAM: FLA -9.5 @ FSU)
+
+  WHY: burns the rest of the analyzed board · unders + NCAAM feature · higher variance
+  STILL OFF THIS TICKET: Booker/Bridges/da Silva 3PT · NY ML · Sabonis · off-night gold
+
+════════════════════════════════════════════════════════════════
+COVERAGE MAP (no wasted dual on same role)
+════════════════════════════════════════════════════════════════
+  KAT REB     → T1 + T2
+  Brunson     → T1 AST / T2 PTS
+  Maxey       → T1 AST / T2 PTS
+  Tatum AST   → T1 + T2
+  Bam REB     → T1 + T2
+  Embiid      → T1 + T3
+  Garland     → T2 + T3
+  SGA PTS     → T2 only
+  BOS/PHX     → T1 · OKC → T2 · Unders/NCAAM → T3
+
+════════════════════════════════════════════════════════════════
+BAN REMINDER
+════════════════════════════════════════════════════════════════
+  Sabonis GTD · LeBron/Luka/Kessler/Jokic/Cade/Sengun off night
+  NY ML · NCAAM −20+ · 3PT O1.5 worst · Acuff soft · soccer/tennis dogs

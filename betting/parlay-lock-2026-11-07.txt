@@ -1,0 +1,55 @@
+PARLAY LOCK — 2026-11-07 · THREE GATES (THE WAY)
+G1 require_gate: PASS date=20261107 sheets_ok=780/780
+G2 posted-mains: betting/posted-mains-20261107.json (469 lines)
+G3 HR floors: user slip + user lows (Wemby REB 7.5 · Randle PTS 12.5) + screenshot alts
+
+════════════════════════════════════════════════
+LOCKED SLIP (only legs that clear G1+G2+G3)
+════════════════════════════════════════════════
+1  Jrue Holiday O1.5 3PT
+   G1 7/7 · G2 posted 1.5 · G3 on-slip/HR 1.5 · KEEP
+   id POR · L=[3,5,3,2,2,2,3]
+
+2  Pascal Siakam O12.5 PTS
+   G1 7/7 · G2 main 19.5 (soft) · G3 on-slip HR 12.5 · KEEP
+   id 3149673 · L=[20,17,13,26,20,21,23]
+   (If 12.5 gone → O16.5 RISK-KEEP 6/7 or skip — do not invent lower)
+
+3  Dylan Harper O12.5 PTS
+   G1 9/9 @12.5 · G2 main 17.5 · G3 on-slip HR 12.5 · KEEP
+   (If 12.5 gone → O17.5 is 4/7 CUT — drop Harper)
+
+4  Julius Randle O12.5 PTS
+   G1 6/7 · G2 main 20.5 · G3 HR lowest 12.5 · RISK-KEEP
+   id 3064514 · miss=[10] · L=[22,21,20,15,24,10,23]
+   (O9.5 would be KEEP — NOT ON HR — banned)
+
+5  Lucas Raymond O1.5 SOG
+   G1 10/10 @1.5 · G2 main 2.5 · G3 on-slip HR 1.5 · KEEP
+   (If only 2.5 posted → 6/10 CUT — drop Raymond)
+
+OPTIONAL 6th (juice, one only)
+6a Wemby O7.5 REB
+   G1 5/7 · G2 main 11.5 · G3 HR lowest 7.5 · RISK
+   miss=[7,7] · O6.5 KEEP banned (not on HR)
+6b Okongwu O6.5 REB
+   G1 6/7 · G2 posted 6.5 · G3 ≈posted · RISK-KEEP
+6c Sengun O6.5 AST
+   G1 6/7 · G2 posted 6.5 · G3 ≈posted · RISK-KEEP
+
+════════════════════════════════════════════════
+CUT (failed a gate)
+════════════════════════════════════════════════
+Jokic O8.5/O9.5 REB     G1 fail at HR/posted
+NAW O19.5 PTS           G1 5/7 RISK — not lock spine
+Franz O15.5 PTS         G1 4/7 CUT
+Hart O6.5 / main 10.5   weak glass climb
+Sharpe O4.5 / main 8.5  G1 fail at posted
+Wemby O18.5 / O6.5 REB  O18.5 soft climb; O6.5 not on HR
+Randle O9.5             soft ghost — HR low is 12.5
+
+════════════════════════════════════════════════
+BUILD ORDER
+════════════════════════════════════════════════
+Bet 1–5 first. Add at most one optional (6b preferred over 6a).
+Do not hunt softer than G3.

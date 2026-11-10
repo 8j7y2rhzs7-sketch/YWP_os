@@ -1,0 +1,119 @@
+════════════════════════════════════════════════════════════════
+ALL-SPORTS SIDES & TOTALS · 20261110 · America/New_York
+Pulled 2026-11-10 10:08 AM ET
+Chalk ML ≤−300 → BAN / route to spread · soft totals note injuries
+════════════════════════════════════════════════════════════════
+
+──────── NBA ────────
+
+▶ MIL @ NY · 11/10 - 7:30 PM EST
+  Spread/OU: NY -15.5 · O/U 220.5
+  GTD: Josh Hart(NY), Tyler Herro(MIL)
+  SIDE: NY ML BAN / take NY + spread alt if needed
+  TOTAL: TOTAL 220.5 · market
+
+▶ BOS @ PHI · 11/10 - 8:00 PM EST
+  Spread/OU: BOS -1.5 · O/U 217.5
+  OUT: Adem Bona(PHI), Dominick Barlow(PHI), Ariel Hukporti(PHI)
+  SIDE: pick-em / small number · BOS -1.5
+  TOTAL: TOTAL 217.5 · market
+
+▶ LAC @ PHX · 11/10 - 9:00 PM EST
+  Spread/OU: PHX -3.5 · O/U 224.5
+  OUT: Jordan Goodwin(PHX), Mark Williams(PHX), Yanic Konan Niederhauser(LAC), Brandon Ingram(LAC), Bradley Beal(LAC), Jordan Miller(LAC)
+  GTD: Cam Christie(LAC)
+  SIDE: pick-em / small number · PHX -3.5
+  TOTAL: UNDER 224.5 lean (injury cluster)
+
+▶ MIA @ UTAH · 11/10 - 9:00 PM EST
+  Spread/OU: MIA -8.5 · O/U 227.5
+  OUT: Keyonte George(UTAH), Jusuf Nurkic(UTAH), Jaren Jackson Jr.(UTAH)
+  GTD: Lauri Markkanen(UTAH), Giannis Antetokounmpo(MIA)
+  SIDE: MIA -8.5 side lean (not ML chalk)
+  TOTAL: TOTAL 227.5 · market
+
+▶ ORL @ SAC · 11/10 - 10:00 PM EST
+  Spread/OU: ORL -6.5 · O/U 222.5
+  OUT: Maxime Raynaud(SAC), Ben Simmons(SAC), Jalen Suggs(ORL), Jonathan Isaac(ORL), Paolo Banchero(ORL), Noah Penda(ORL), Izaiyah Nelson(ORL)
+  GTD: Keegan Murray(SAC), Domantas Sabonis(SAC)
+  SIDE: ORL -6.5 side lean (not ML chalk)
+  TOTAL: UNDER 222.5 lean (injury cluster)
+
+▶ OKC @ POR · 11/10 - 11:00 PM EST
+  Spread/OU: OKC -1.5 · O/U 224.5
+  OUT: Ja Morant(POR), Vit Krejci(POR), Shaedon Sharpe(POR), Jaylin Williams(OKC), Thomas Sorber(OKC), Cason Wallace(OKC), Chet Holmgren(OKC), Jalen Williams(OKC)
+  SIDE: pick-em / small number · OKC -1.5
+  TOTAL: UNDER 224.5 lean (injury cluster)
+
+──────── NHL ────────
+
+▶ COL @ TOR · 11/10 - 7:00 PM EST
+  ML/OU: COL -155 · O/U 6.5
+  SIDE: LEAN COL -155
+  TOTAL: O/U 6.5 · default market (no steam data)
+
+▶ MIN @ MTL · 11/10 - 7:00 PM EST
+  ML/OU: MIN -125 · O/U 6.5
+  SIDE: LEAN MIN -125
+  TOTAL: O/U 6.5 · default market (no steam data)
+
+▶ WSH @ OTT · 11/10 - 7:00 PM EST
+  ML/OU: OTT -125 · O/U 6.5
+  SIDE: LEAN OTT -125
+  TOTAL: O/U 6.5 · default market (no steam data)
+
+▶ NJ @ WPG · 11/10 - 7:00 PM EST
+  ML/OU: NJ -148 · O/U 6.5
+  SIDE: LEAN NJ -148
+  TOTAL: O/U 6.5 · default market (no steam data)
+
+▶ FLA @ CBJ · 11/10 - 7:30 PM EST
+  ML/OU: FLA -120 · O/U 5.5
+  SIDE: LEAN FLA -120
+  TOTAL: O/U 5.5 · default market (no steam data)
+
+▶ DET @ STL · 11/10 - 8:00 PM EST
+  ML/OU: STL -142 · O/U 5.5
+  SIDE: LEAN STL -142
+  TOTAL: O/U 5.5 · default market (no steam data)
+
+▶ NSH @ LA · 11/10 - 10:00 PM EST
+  ML/OU: LA -135 · O/U 6.5
+  SIDE: LEAN LA -135
+  TOTAL: O/U 6.5 · default market (no steam data)
+
+──────── NCAAM (feature / safer only) ────────
+Rule: skip spreads ≥20.5 for parlays · early-season cover trap
+  FLA @ FSU      FLA -9.5     O/U 166.5 · PLAYABLE side FLA -9.5
+  MSU VS DUKE    DUKE -7.5    O/U 145.5 · PLAYABLE side DUKE -7.5
+  WRST @ TOL     WRST -1.5    O/U 159.5 · PLAYABLE side WRST -1.5
+  WSU @ DUQ      DUQ -3.5     O/U 144.5 · PLAYABLE side DUQ -3.5
+  BRAD @ DAV     DAV -10.5    O/U 136.5 · PLAYABLE side DAV -10.5
+  WIN @ KENN     KENN -10.5   O/U 169.5 · PLAYABLE side KENN -10.5
+  LAS @ VILL     VILL -23.5   O/U 159.5 · CUT/landmine VILL -23.5
+  MER @ GASO     GASO -1.5    O/U 165.5 · PLAYABLE side GASO -1.5
+  VT VS IOWA     IOWA -4.5    O/U 141.5 · PLAYABLE side IOWA -4.5
+  HARV @ NE      HARV -1.5    O/U 144.5 · PLAYABLE side HARV -1.5
+  EKU @ GT       GT -16.5     O/U 164.5 · RISK big number GT -16.5
+  LMU @ TROY     LMU -1.5     O/U 144.5 · PLAYABLE side LMU -1.5
+  WYO @ UNC      UNC -13.5    O/U 155.5 · RISK big number UNC -13.5
+  ARMY @ NHVN    ARMY -1.5    O/U 132.5 · PLAYABLE side ARMY -1.5
+  IONA @ FOR     FOR -11.5    O/U 139.5 · PLAYABLE side FOR -11.5
+  YSU @ CMU      CMU -3.5     O/U 152.5 · PLAYABLE side CMU -3.5
+  MEM @ VAN      VAN -14.5    O/U 160.5 · RISK big number VAN -14.5
+  EVAN @ MTSU    MTSU -9.5    O/U 144.5 · PLAYABLE side MTSU -9.5
+  TXST @ RGV     TXST -4.5    O/U 140.5 · PLAYABLE side TXST -4.5
+  NICH @ TULN    TULN -9.5    O/U 152.5 · PLAYABLE side TULN -9.5
+  ILL @ TTU      ILL -2.5     O/U 167.5 · PLAYABLE side ILL -2.5
+  GB @ UNI       UNI -3.5     O/U 150.5 · PLAYABLE side UNI -3.5
+  UTM @ ARST     ARST -4.5    O/U 153.5 · PLAYABLE side ARST -4.5
+  HCU @ SDAK     SDAK -2.5    O/U 156.5 · PLAYABLE side SDAK -2.5
+  BEL @ LIP      BEL -4.5     O/U 157.5 · PLAYABLE side BEL -4.5
+  NKU @ SLU      SLU -23.5    O/U 168.5 · CUT/landmine SLU -23.5
+  YALE @ BAY     BAY -19.5    O/U 156.5 · RISK big number BAY -19.5
+  GAST @ FRES    FRES -5.5    O/U 146.5 · PLAYABLE side FRES -5.5
+  CREI @ KSU     CREI -2.5    O/U 158.5 · PLAYABLE side CREI -2.5
+  KU VS UK       KU -4.5      O/U 157.5 · PLAYABLE side KU -4.5
+
+──────── NFL ────────
+  (no games Tuesday)

@@ -1,0 +1,56 @@
+HR SLIP + POSTED-MAINS LOCK — 2026-11-07
+Fix: stop inventing soft floors. Pull consensus posted mains automatically.
+
+════════════════════════════════════════════════
+SYSTEM (no screenshot loop)
+════════════════════════════════════════════════
+1) python3 betting/pull_posted_mains.py   → posted-mains-YYYYMMDD.json (469 lines tonight)
+2) python3 betting/grade_posted_card.py → KEEP only at those numbers
+3) Optional: ODDS_API_KEY + pull_hr_odds.py → hardrockbet-tagged exacts
+Soft floors (Jokic O6.5 REB, Franz O12.5, Raymond O1.5 when main is 2.5) = INTERNAL ONLY
+
+════════════════════════════════════════════════
+YOUR SLIP vs POSTED MAINS (Betravon ~3:30pm ET)
+════════════════════════════════════════════════
+ON-SLIP KEEP @ posted (or soft that matched HR screenshot & clears)
+  Jrue Holiday O1.5 3PT     POSTED main 1.5 · 7/7 KEEP   ← keep
+
+ON-SLIP was soft vs posted main → re-grade / cut
+  Harper O12.5 → posted PTS 17.5 · 4/7 CUT at main (O12.5 was soft alt on your slip — only play if HR still shows 12.5)
+  Siakam O12.5 → posted PTS 19.5 · 5/7 RISK at main
+  Wemby O18.5 → posted PTS 27.5 · 5/7 RISK at main (O18.5 soft)
+  Sharpe O4.5 → posted REB 8.5 · CUT at main
+  Hart O6.5 → posted REB 10.5 · 5/7 RISK at main
+  Jokic O8.5 → posted REB 9.5 · 3/7 CUT
+  NAW O19.5 → posted PTS 19.5 · 5/7 RISK (same as main — not SAFE)
+  Franz O15.5 → posted PTS 23.5 · 2/7 CUT
+  Raymond O1.5 → posted SOG 2.5 · 6/10 CUT at main (O1.5 was soft)
+
+════════════════════════════════════════════════
+LOCKED BUILD — posted / on-slip only (no hunting)
+════════════════════════════════════════════════
+1  Jrue Holiday O1.5 3PT          (posted = 1.5 · KEEP)
+2  Pascal Siakam O19.5 PTS        (posted main · RISK) OR keep O12.5 only if still on your slip
+3  Okongwu O6.5 REB               (posted · RISK-KEEP 6/7)
+4  Sengun O6.5 AST                (posted · RISK-KEEP 6/7)
+5  Stankoven O2.5 SOG             (posted · RISK-KEEP 9/10)  OR Boldy only if HR still has O1.5
+6  Harden O2.5 3PT                (posted · RISK-KEEP 6/7)
+
+DELETE: Jokic REB · NAW · Franz · Hart · Sharpe · Wemby O18.5/27.5 as spine · Raymond O2.5
+
+If HR still shows the soft numbers from your screenshot (Harper 12.5 / Siakam 12.5 / Raymond 1.5),
+those screenshot lines stay playable — they are confirmed alts. Do not ask agent for lower.
+
+════════════════════════════════════════════════
+USER HR LOWS (confirmed) — grade THESE, not ghosts
+════════════════════════════════════════════════
+Wemby lowest REB on HR = O7.5
+  L7 [14,24,11,7,14,10,7] → 5/7 RISK (misses two 7s)
+  O6.5 would be 7/7 KEEP but NOT POSTED — do not recommend
+
+Randle lowest PTS on HR = O12.5
+  L7 [22,21,20,15,24,10,23] → 6/7 RISK-KEEP (miss=10)
+  O9.5 would be 7/7 KEEP but NOT POSTED — do not recommend
+
+Rule: when user names the book’s lowest available, that number is the floor.
+Soft-floor KEEP that isn’t on HR = research only, never a bet instruction.

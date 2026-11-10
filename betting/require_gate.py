@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
-"""Refuse work unless GATE_TODAY.json status=PASS for today's ET date."""
+"""Refuse work unless GATE_TODAY.json status=PASS for today's ET date.
+
+Usage:
+  python3 betting/require_gate.py
+  python3 betting/require_gate.py --date 20261109   # tomorrow / labeled slate
+"""
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from datetime import datetime
@@ -35,7 +41,7 @@ def check(date: str | None = None) -> tuple[bool, str]:
     except Exception as e:
         return False, f"GATE_TODAY.json unreadable ({gate_path}): {e}"
     if g.get("date") != date:
-        return False, f"GATE date {g.get('date')} != today {date} — re-run betting/run_gate.py"
+        return False, f"GATE date {g.get('date')} != target {date} — re-run betting/run_gate.py --date {date}"
     if g.get("status") != "PASS":
         fails = g.get("failures") or []
         return False, f"GATE FAIL ({len(fails)}): " + "; ".join(fails[:5])
@@ -43,7 +49,10 @@ def check(date: str | None = None) -> tuple[bool, str]:
 
 
 def main() -> int:
-    ok, msg = check()
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--date", default=None, help="YYYYMMDD slate date (default: today ET)")
+    args = ap.parse_args()
+    ok, msg = check(args.date)
     print(msg)
     return 0 if ok else 2
 

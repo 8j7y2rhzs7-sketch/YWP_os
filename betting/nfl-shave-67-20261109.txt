@@ -1,0 +1,48 @@
+════════════════════════════════════════════════════════════════
+NFL SHAVE → 6/7 & 7/7 PASS LIST · BUF @ MIN · 2026-11-09
+Walk posted down by 0.5 until 6/7 or 7/7 (5/5 if n=5). Soft floor stops walk.
+Soft: REC≤0.5 · REC_YD≤8.5 · RUSH_YD≤5.5 · PASS_YD≤149.5 · PASS_TD≤0.5
+════════════════════════════════════════════════════════════════
+
+── PASSES (10) — pick anywhere in band ──
+#   Player             Stat      Posted  →6/7 line    Hit  Deep floor Band
+1   Ty Johnson         REC      O1.5    O1.5          5/5 O1.0        O1.0–O1.5
+    L=[3.0, 2.0, 4.0, 2.0, 4.0]  (drop −0.0 from posted to first 6/7)
+2   Justin Jefferson   REC      O6.5    O1.5          6/6 O1.0        O1.0–O1.5
+    L=[5.0, 4.0, 6.0, 2.0, 3.0, 8.0]  (drop −5.0 from posted to first 6/7)
+3   Justin Jefferson   REC_YD   O78.5   O31.5         6/6 O9.0        O9.0–O31.5
+    L=[33.0, 44.0, 79.0, 32.0, 55.0, 92.0]  (drop −47.0 from posted to first 6/7)
+4   Khalil Shakir      REC      O3.5    O2.5          6/7 O1.0        O1.0–O2.5
+    L=[5.0, 4.0, 3.0, 7.0, 1.0, 3.0, 4.0]  (drop −1.0 from posted to first 6/7)
+5   T.J. Hockenson     REC      O4.5    O1.5          6/7 O1.0        O1.0–O1.5
+    L=[4.0, 4.0, 1.0, 13.0, 2.0, 3.0, 4.0]  (drop −3.0 from posted to first 6/7)
+6   Khalil Shakir      REC_YD   O39.5   O33.5         6/7 O9.0        O9.0–O33.5
+    L=[64.0, 34.0, 80.0, 82.0, 6.0, 38.0, 50.0]  (drop −6.0 from posted to first 6/7)
+7   Aaron Jones Sr.    RUSH_YD  O32.5   O25.5         6/7 O6.0        O6.0–O25.5
+    L=[22.0, 26.0, 113.0, 94.0, 58.0, 105.0, 40.0]  (drop −7.0 from posted to first 6/7)
+8   James Cook III     RUSH_YD  O82.5   O74.5         6/7 O6.0        O6.0–O74.5
+    L=[80.0, 95.0, 111.0, 75.0, 154.0, 135.0, 57.0]  (drop −8.0 from posted to first 6/7)
+9   Josh Allen         PASS_YD  O231.5  O209.5        6/7 O150.0      O150.0–O209.5
+    L=[289.0, 255.0, 210.0, 253.0, 204.0, 248.0, 334.0]  (drop −22.0 from posted to first 6/7)
+10  T.J. Hockenson     REC_YD   O42.5   O10.5         6/7 O9.0        O9.0–O10.5
+    L=[58.0, 35.0, 7.0, 119.0, 11.0, 29.0, 36.0]  (drop −32.0 from posted to first 6/7)
+
+── STILL CANNOT HIT 6/7 ABOVE SOFT ──
+  FAIL  Josh Allen         PASS_TD  posted O1.5  best above soft O1.5 = 4/7  L=[2.0, 2.0, 1.0, 1.0, 0.0, 3.0, 2.0]
+  FAIL  Josh Allen         RUSH_YD  posted O31.5  best above soft O21.5 = 5/7  L=[30.0, 1.0, 121.0, 4.0, 22.0, 69.0, 23.0]
+  FAIL  Ray Davis          RUSH_YD  posted O24.5  best above soft O24.5 = 1/7  L=[30.0, 4.0, 2.0, 3.0, 0.0, 0.0, 3.0]
+  FAIL  DJ Moore           REC_YD   posted O46.5  best above soft O10.5 = 4/5  L=[82.0, 11.0, 67.0, 0.0, 100.0]
+  FAIL  Jordan Addison     REC_YD   posted O39.5  best above soft O19.5 = 5/6  L=[66.0, 20.0, 52.0, 90.0, 21.0, 0.0]
+  FAIL  Dalton Kincaid     REC_YD   posted O37.5  best above soft O37.5 = 5/7  L=[86.0, 38.0, 7.0, 7.0, 38.0, 95.0, 130.0]
+  FAIL  Keon Coleman       REC_YD   posted O26.5  best above soft O26.5 = 4/7  L=[4.0, 59.0, 7.0, 116.0, 37.0, 63.0, 1.0]
+  FAIL  Ty Johnson         REC_YD   posted O16.5  best above soft O16.5 = 4/5  L=[19.0, 24.0, 72.0, 9.0, 50.0]
+  FAIL  James Cook III     REC_YD   posted O9.5  best above soft O9.5 = 3/7  L=[21.0, 58.0, 7.0, 8.0, 0.0, 4.0, 12.0]
+  FAIL  Dawson Knox        REC_YD   posted O8.5  no non-soft ladder  L=[6.0, 0.0, 6.0, 13.0, 5.0, 5.0, 7.0]
+  FAIL  Aaron Jones Sr.    REC_YD   posted O7.5  no non-soft ladder  L=[18.0, 0.0, 4.0, 34.0, 34.0, 0.0, 0.0]
+  FAIL  Jordan Addison     REC      posted O3.5  best above soft O1.5 = 5/6  L=[3.0, 2.0, 4.0, 5.0, 2.0, 0.0]
+  FAIL  DJ Moore           REC      posted O3.5  best above soft O3.5 = 3/5  L=[4.0, 1.0, 6.0, 0.0, 5.0]
+  FAIL  Dalton Kincaid     REC      posted O3.5  best above soft O1.5 = 5/7  L=[4.0, 7.0, 1.0, 1.0, 2.0, 7.0, 5.0]
+  FAIL  Keon Coleman       REC      posted O2.5  best above soft O2.5 = 3/7  L=[1.0, 4.0, 1.0, 6.0, 1.0, 6.0, 1.0]
+  FAIL  Dawson Knox        REC      posted O1.5  best above soft O1.5 = 2/7  L=[1.0, 1.0, 1.0, 2.0, 1.0, 2.0, 1.0]
+  FAIL  James Cook III     REC      posted O1.5  best above soft O1.5 = 4/7  L=[2.0, 3.0, 1.0, 2.0, 0.0, 1.0, 3.0]
+  FAIL  Aaron Jones Sr.    REC      posted O1.5  best above soft O1.5 = 4/7  L=[2.0, 1.0, 3.0, 4.0, 5.0, 0.0, 0.0]

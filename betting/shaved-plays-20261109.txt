@@ -1,0 +1,84 @@
+NOTE: Full universe (other players) → betting/shaved-universe-20261109.txt
+
+════════════════════════════════════════════════════════════
+SHAVED PLAYS · PUNCH MENU · 2026-11-09
+Book floors: PTS = posted−10 · REB = posted−4 · AST = posted−3 · 3PT/REC = −1
+Pick ANY line from main down to deepest FIRM (shown). Soft ≤1.5 REB/AST/STL banned.
+════════════════════════════════════════════════════════════
+
+── YOUR 7 · RANGE TO PUNCH (main → deepest firm) ──
+  1. Cedric Coward REB: punch O2.5–O6.5  [deepest 7/7 KEEP]  book-floor O2.5  band: O6.5, O5.5, O4.5, O3.5, O2.5  id=4903027
+  2. Cedric Coward 3PT: punch O1.0–O1.5  [deepest 7/7 KEEP]  book-floor O0.5  band: O1.5, O1.0  id=4903027
+  3. Dillon Brooks PTS: punch O4.5–O14.5  [deepest 7/7 KEEP]  book-floor O4.5  band: O14.5, O13.5, O12.5 … O6.5, O5.5, O4.5  id=3155526
+  4. Miles Bridges REB: punch O2.5–O6.5  [deepest 7/7 KEEP]  book-floor O2.5  band: O6.5, O5.5, O4.5, O3.5, O2.5  id=4066383
+  5. Alperen Sengun AST: punch O3.5–O6.5  [deepest 7/7 KEEP]  book-floor O3.5  band: O6.5, O5.5, O4.5, O3.5  id=4871144
+  6. Ziaire Williams PTS: punch O0.5–O7.5  [deepest 7/7 KEEP]  book-floor O0.5  band: O7.5, O6.5, O5.5, O4.5, O3.5, O2.5, O1.5, O0.5  id=4433137
+  7. Ty Johnson REC: punch O1.0–O1.5  [deepest 5/5 KEEP]  book-floor O0.5  band: O1.5, O1.0  id=3915411
+
+── FULL MENU ──
+  Player                 Stat  Main   Deep   Floor  Drop  Deep hits  Pick anywhere in
+  Dillon Brooks          PTS   O14.5  O4.5   O4.5   −10.0 7/7    KEEP       4.5…14.5 (11 steps)
+  Miles Bridges          PTS   O14.5  O4.5   O4.5   −10.0 7/7    KEEP       4.5…14.5 (11 steps)
+  Nickeil Alexander-Walker PTS   O19.5  O9.5   O9.5   −10.0 7/7    KEEP       9.5…19.5 (11 steps)
+  Ziaire Williams        PTS   O7.5   O0.5   O0.5   −7.0  7/7    KEEP       0.5…7.5 (8 steps)
+  Ty Johnson             REC_YD O15.5  O9.5   O5.5   −6.0  4/5    RISK-KEEP  9.5…15.5 (7 steps)
+  Cedric Coward          REB   O6.5   O2.5   O2.5   −4.0  7/7    KEEP       6.5-5.5-4.5-3.5-2.5
+  Miles Bridges          REB   O6.5   O2.5   O2.5   −4.0  7/7    KEEP       6.5-5.5-4.5-3.5-2.5
+  Alperen Sengun         AST   O6.5   O3.5   O3.5   −3.0  7/7    KEEP       6.5-5.5-4.5-3.5
+  Keldon Johnson         REB   O4.5   O2.5   O0.5   −2.0  7/7    KEEP       4.5-3.5-2.5
+  Stephon Castle         REB   O4.5   O2.5   O0.5   −2.0  7/7    KEEP       4.5-3.5-2.5
+  Cedric Coward          3PT   O1.5   O1.0   O0.5   −0.5  7/7    KEEP       1.5-1.0
+  Ty Johnson             REC   O1.5   O1.0   O0.5   −0.5  5/5    KEEP       1.5-1.0
+  Brandin Podziemski     3PT   O1.5   O1.0   O0.5   −0.5  6/7    RISK-KEEP  1.5-1.0
+  Devin Booker           3PT   O1.5   O1.0   O0.5   −0.5  6/7    RISK-KEEP  1.5-1.0
+  Kyshawn George         3PT   O1.5   O1.0   O0.5   −0.5  6/7    RISK-KEEP  1.5-1.0
+  P.J. Washington        3PT   O1.5   O1.0   O0.5   −0.5  6/7    RISK-KEEP  1.5-1.0
+
+── PER-PLAY LADDER (firm only, soft stripped) ──
+  Dillon Brooks PTS L7=[11.0, 24.0, 15.0, 18.0, 22.0, 19.0, 15.0]
+    FIRM: O14.5 6/7 RISK-KEEP · O13.5 6/7 RISK-KEEP · O12.5 6/7 RISK-KEEP · O11.5 6/7 RISK-KEEP · O10.5 7/7 KEEP · O9.5 7/7 KEEP · O8.5 7/7 KEEP · O7.5 7/7 KEEP · O6.5 7/7 KEEP · O5.5 7/7 KEEP · O4.5 7/7 KEEP
+  Miles Bridges PTS L7=[13.0, 18.0, 18.0, 21.0, 24.0, 17.0, 16.0]
+    FIRM: O14.5 6/7 RISK-KEEP · O13.5 6/7 RISK-KEEP · O12.5 7/7 KEEP · O11.5 7/7 KEEP · O10.5 7/7 KEEP · O9.5 7/7 KEEP · O8.5 7/7 KEEP · O7.5 7/7 KEEP · O6.5 7/7 KEEP · O5.5 7/7 KEEP · O4.5 7/7 KEEP
+  Nickeil Alexander-Walker PTS L7=[20.0, 28.0, 26.0, 34.0, 12.0, 25.0, 23.0]
+    FIRM: O19.5 6/7 RISK-KEEP · O18.5 6/7 RISK-KEEP · O17.5 6/7 RISK-KEEP · O16.5 6/7 RISK-KEEP · O15.5 6/7 RISK-KEEP · O14.5 6/7 RISK-KEEP · O13.5 6/7 RISK-KEEP · O12.5 6/7 RISK-KEEP · O11.5 7/7 KEEP · O10.5 7/7 KEEP · O9.5 7/7 KEEP
+  Ziaire Williams PTS L7=[17.0, 8.0, 10.0, 9.0, 11.0, 11.0, 14.0]
+    FIRM: O7.5 7/7 KEEP · O6.5 7/7 KEEP · O5.5 7/7 KEEP · O4.5 7/7 KEEP · O3.5 7/7 KEEP · O2.5 7/7 KEEP · O1.5 7/7 KEEP · O0.5 7/7 KEEP
+  Ty Johnson REC_YD L7=[19.0, 24.0, 72.0, 9.0, 50.0]
+    FIRM: O15.5 4/5 RISK-KEEP · O14.5 4/5 RISK-KEEP · O13.5 4/5 RISK-KEEP · O12.5 4/5 RISK-KEEP · O11.5 4/5 RISK-KEEP · O10.5 4/5 RISK-KEEP · O9.5 4/5 RISK-KEEP
+    SOFT-BAN (skip): O8.5 · O7.5 · O6.5 · O5.5
+  Cedric Coward REB L7=[9.0, 9.0, 9.0, 7.0, 7.0, 11.0, 11.0]
+    FIRM: O6.5 7/7 KEEP · O5.5 7/7 KEEP · O4.5 7/7 KEEP · O3.5 7/7 KEEP · O2.5 7/7 KEEP
+  Miles Bridges REB L7=[10.0, 13.0, 7.0, 6.0, 10.0, 8.0, 7.0]
+    FIRM: O6.5 6/7 RISK-KEEP · O5.5 7/7 KEEP · O4.5 7/7 KEEP · O3.5 7/7 KEEP · O2.5 7/7 KEEP
+  Alperen Sengun AST L7=[5.0, 10.0, 10.0, 9.0, 9.0, 7.0, 7.0]
+    FIRM: O6.5 6/7 RISK-KEEP · O5.5 6/7 RISK-KEEP · O4.5 7/7 KEEP · O3.5 7/7 KEEP
+  Keldon Johnson REB L7=[7.0, 6.0, 5.0, 7.0, 6.0, 6.0, 4.0]
+    FIRM: O4.5 6/7 RISK-KEEP · O3.5 7/7 KEEP · O2.5 7/7 KEEP
+    SOFT-BAN (skip): O1.5 · O0.5
+  Stephon Castle REB L7=[7.0, 3.0, 10.0, 5.0, 5.0, 6.0, 5.0]
+    FIRM: O4.5 6/7 RISK-KEEP · O3.5 6/7 RISK-KEEP · O2.5 7/7 KEEP
+    SOFT-BAN (skip): O1.5 · O0.5
+  Cedric Coward 3PT L7=[2.0, 4.0, 2.0, 2.0, 3.0, 4.0, 3.0]
+    FIRM: O1.5 7/7 KEEP · O1.0 7/7 KEEP
+    SOFT-BAN (skip): O0.5
+  Ty Johnson REC L7=[3.0, 2.0, 4.0, 2.0, 4.0]
+    FIRM: O1.5 5/5 KEEP · O1.0 5/5 KEEP
+    SOFT-BAN (skip): O0.5
+  Brandin Podziemski 3PT L7=[4.0, 2.0, 3.0, 2.0, 4.0, 0.0, 3.0]
+    FIRM: O1.5 6/7 RISK-KEEP · O1.0 6/7 RISK-KEEP
+    SOFT-BAN (skip): O0.5
+  Devin Booker 3PT L7=[2.0, 4.0, 2.0, 2.0, 3.0, 0.0, 2.0]
+    FIRM: O1.5 6/7 RISK-KEEP · O1.0 6/7 RISK-KEEP
+    SOFT-BAN (skip): O0.5
+  Kyshawn George 3PT L7=[2.0, 5.0, 3.0, 4.0, 4.0, 0.0, 2.0]
+    FIRM: O1.5 6/7 RISK-KEEP · O1.0 6/7 RISK-KEEP
+    SOFT-BAN (skip): O0.5
+  P.J. Washington 3PT L7=[2.0, 6.0, 3.0, 2.0, 1.0, 2.0, 4.0]
+    FIRM: O1.5 6/7 RISK-KEEP · O1.0 6/7 RISK-KEEP
+    SOFT-BAN (skip): O0.5
+
+── PTS CHECK (posted−10 book floor) ──
+  Dillon Brooks: main O14.5 → book−10 O4.5 = 7/7 KEEP (above soft) · deepest firm used O4.5
+  Miles Bridges: main O14.5 → book−10 O4.5 = 7/7 KEEP (above soft) · deepest firm used O4.5
+  Nickeil Alexander-Walker: main O19.5 → book−10 O9.5 = 7/7 KEEP (above soft) · deepest firm used O9.5
+  Ziaire Williams: main O7.5 → book−10 O-2.5 = 7/7 KEEP (above soft) · deepest firm used O0.5
