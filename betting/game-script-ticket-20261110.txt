@@ -1,0 +1,99 @@
+GAME-SCRIPT TICKET · TUE 2026-11-10 · America/New_York
+Filter: missing players → whose job expands → is the POSTED line still the old job?
+Not L7-only. Confirm HR. Drop any GTD at warmup.
+
+════════════════════════════════════════════════════════════════
+SCRIPT READ (by game)
+════════════════════════════════════════════════════════════════
+
+MIL @ NY (NY -15.5)
+  Script: blowout risk. Star PTS needs a real game, not a cruise.
+  Hart GTD · Herro GTD → skip both props.
+  KAT PTS O14.5 still looks like the OLD soft scoring floor (books always higher on REB).
+  Brunson PTS O24.5 = hope he plays 36 in a -15.5 → PASS.
+  KAT REB O12.5 = priced glass + minutes risk late → PASS at posted.
+
+BOS @ PHI (BOS -1.5) — true game
+  PHI bigs thin (Bona/Barlow OUT) → Embiid owns the glass more.
+  Embiid REB O9.5 is partly priced, but job is real → LEAN / secondary.
+  Tatum AST O6.5 · Maxey AST O6.5 = “stars do star things” hope → PASS at posted.
+
+LAC @ PHX (PHX -3.5)
+  LAC gutted (Ingram/Beal OUT) → Garland runs everything — but AST O7.5 / PTS O21.5
+    already PRICE the new job → no edge, just hope → PASS.
+  PHX Mark Williams OUT → glass shifts to Bridges / Ighodaro.
+  Bridges REB O7.5 still smells like a wing line on a night he may be the big → TAKE.
+  PHX -3.5 = injury-backed side → TAKE.
+
+MIA @ UTAH (MIA -8.5)
+  Utah shell (George/Nurkic OUT, Markkanen GTD, JJ listed OUT).
+  Giannis GTD = master switch for this game.
+    If Giannis OUT → Bam usage/boards expand; Bam REB O9.5 becomes the new job.
+    If Giannis IN  → Bam REB O9.5 is hope → PASS.
+  Giannis props → HOLD until ACTIVE.
+  Hayes REB only if Markkanen OUT confirmed.
+
+ORL @ SAC (ORL -6.5)
+  Paolo + Suggs OUT → Franz is the offense — AST O9.5 / PTS O23.5 FULLY PRICED → PASS.
+  Isaac OUT → WCJ primary big; REB O9.5 still near old big line → LEAN TAKE.
+  Sabonis GTD → HOLD all Sabonis; if OUT, Achiuwa REB inherits (don’t force Sabonis).
+
+OKC @ POR (OKC -1.5)
+  Chet + Jalen Williams + Wallace OUT.
+  SGA PTS O32.5 = new job already priced to the moon → PASS.
+  Hartenstein = the 5 now; REB O10.5 is the expand play → TAKE.
+  Ajay Mitchell absorbs JDub creation/scoring; PTS O18.5 → LEAN TAKE.
+  POR thin (Sharpe/Morant OUT) → Avdija/Lillard load priced at O23.5/O18.5 → soft LEAN only.
+  OKC -1.5 small-number side → TAKE.
+
+════════════════════════════════════════════════════════════════
+TICKET A — GAME-SCRIPT CORE (play this)
+8 legs · posted mains · no shave · no GTD props
+════════════════════════════════════════════════════════════════
+  1. Karl-Anthony Towns      PTS  O14.5   MIL @ NY
+     why: soft posted scoring floor; hits even if blowout trims late minutes
+  2. Miles Bridges           REB  O7.5    LAC @ PHX
+     why: Mark Williams OUT → forward glass expands; line still wing-ish
+  3. Isaiah Hartenstein      REB  O10.5   OKC @ POR
+     why: Chet OUT → he is the five; boards are the new job
+  4. Wendell Carter Jr.      REB  O9.5    ORL @ SAC
+     why: Isaac OUT → primary ORL big on the glass
+  5. Ajay Mitchell           PTS  O18.5   OKC @ POR
+     why: Jalen Williams OUT → minutes/usage absorb (not SGA’s priced 32.5)
+  6. PHX -3.5                          vs LAC
+     why: LAC gutted; side still small number
+  7. OKC -1.5                          @ POR
+     why: both thinned; OKC talent edge without needing -10 chalk
+  8. BOS -1.5                          @ PHI
+     why: true game, small number; better than Maxey/Tatum AST hope
+
+════════════════════════════════════════════════════════════════
+TICKET B — CONDITIONAL (only after warmups)
+════════════════════════════════════════════════════════════════
+  IF Giannis OUT:
+    + Bam Adebayo REB O9.5   (usage/glass expand; line was built with Giannis)
+    + MIA -8.5               (Utah shell, no Giannis drama on the other side)
+  IF Giannis ACTIVE:
+    skip both — Bam O9.5 becomes hope again
+  IF Sabonis OUT:
+    + Precious Achiuwa REB O6.5  (inherit SAC glass) · never force Sabonis GTD
+  IF Markkanen OUT:
+    + Jaxson Hayes REB O6.5     (UTAH big minutes collapse)
+
+════════════════════════════════════════════════════════════════
+TICKET C — DO NOT PLAY (priced hope / wrong script)
+════════════════════════════════════════════════════════════════
+  SGA PTS O32.5          priced for missing Chet/JDub
+  Franz AST O9.5         priced for missing Paolo
+  Garland AST O7.5 / PTS O21.5   priced for missing Ingram/Beal
+  Tatum AST O6.5 · Maxey AST O6.5   star-hope in a pick-em
+  Brunson PTS O24.5      blowout minutes risk (NY -15.5)
+  Bam REB O9.5           unless Giannis OUT
+  Sabonis / Hart / Giannis / Markkanen / Herro props while GTD
+  Booker · Bridges · Holiday 3PT O1.5   volatility, not script
+
+════════════════════════════════════════════════════════════════
+ONE-LINE RULE
+════════════════════════════════════════════════════════════════
+Missing player → expanded job → take ONLY if the posted number still looks like
+the old role. If the number already is the new role, you’re hoping, not reading.
