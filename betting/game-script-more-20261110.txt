@@ -1,0 +1,59 @@
+MORE SCRIPT BETS · TUE 2026-11-10
+Same filter as Drummond: game forces the job · posted still looks like old role
+
+ALREADY ON YOUR SLIP (keep):
+  Bridges REB O6.5 · Hartenstein REB O10.5 · Ajay Mitchell PTS O18.5
+  KAT PTS O14.5 · KAT REB O10.5 · Drummond REB O4.5 · WCJ REB O9.5
+  PHX -3.5 · OKC ML · BOS ML
+
+════════════════════════════════════════════════════════════════
+NEW SCRIPT ADDS (same flavor)
+════════════════════════════════════════════════════════════════
+
+1. Robert Williams III  REB O4.5   OKC @ POR     L7 6/7 · ~16 mpg
+   WHY: Drummond twin — backup rim rate monster. POR thin (Sharpe/Morant OUT)
+   and Clingan draws fouls/help; Rob Will mops glass in short bursts.
+   DIES IF: buried at 8 minutes in a track meet.
+
+2. Brook Lopez          PTS O11.5  LAC @ PHX     L7 5/7 · lean
+   WHY: Ingram/Beal OUT → more LAC possessions through Lopez (post + threes).
+   Line still looks like old role-player PTS, not a forced 20.
+   DIES IF: PHX sits on him / LAC goes small and benches the big.
+
+3. Tristan da Silva     PTS O14.5  ORL @ SAC     L7 5/7 · lean
+   WHY: Paolo OUT → forward scoring load expands; O14.5 isn’t Franz’s priced 23.5.
+   DIES IF: Bane/Black eat all the leftover shots.
+
+════════════════════════════════════════════════════════════════
+CONDITIONAL SCRIPT (warmup switches — same Drummond logic)
+════════════════════════════════════════════════════════════════
+
+4. IF Giannis OUT:
+     Bam REB O9.5          — glass/usage expand; line built with Giannis
+     Davion Mitchell AST   — only if you can get O6.5 or lower (O7.5 is priced hope)
+
+5. IF Sabonis OUT:
+     Precious Achiuwa REB O6.5 — inherits SAC glass (posted alone is only 3/7 with Sabonis)
+
+6. IF Markkanen OUT:
+     Jaxson Hayes REB O6.5 — Utah’s remaining big; still thin at posted without the OUT confirm
+
+════════════════════════════════════════════════════════════════
+SCRIPT SIDES / TOTALS (not props, same idea)
+════════════════════════════════════════════════════════════════
+
+7. LAC @ PHX UNDER 224.5   — LAC gutted, halfcourt uglier
+8. OKC @ POR UNDER 224.5   — both missing creators/finishers
+9. MIA -8.5                — ONLY if Giannis ACTIVE (otherwise skip the side chaos)
+
+════════════════════════════════════════════════════════════════
+SKIP (looks like script but number already IS the new job)
+════════════════════════════════════════════════════════════════
+  Clingan REB O11.5 · Franz AST O9.5 · SGA PTS O32.5 · Garland AST O7.5
+  Oso / Maluach REB O6.5 (Mark Williams OUT already baked poorly vs L7)
+  Caruso / Kenrich raw PTS at posted — expand minutes, not expand production enough
+
+BEST NEXT ADDS TO YOUR CARD:
+  1) Rob Williams REB O4.5
+  2) Lopez PTS O11.5
+  3) da Silva PTS O14.5 (if you want one more ORL script chip)
