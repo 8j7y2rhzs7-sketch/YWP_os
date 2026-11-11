@@ -614,3 +614,264 @@ NBA WSH@IND · Trae Young
 NBA WSH@IND · Tre Johnson
   3PT O1.5  books=3  betravon_L10=3/10
   PTS O6.5  books=3  betravon_L10=5/10
+
+NHL ANA@NSH · Alex Killorn
+  SOG O1.5  books=3  betravon_L10=2/10
+
+NHL ANA@NSH · Beckett Sennecke
+  SOG O2.5  books=3  betravon_L10=4/10
+
+NHL ANA@NSH · Cutter Gauthier
+  SOG O4.5  books=3  betravon_L10=4/10
+
+NHL ANA@NSH · Jackson LaCombe
+  SOG O1.5  books=3  betravon_L10=2/10
+
+NHL ANA@NSH · Judd Caulfield
+  SOG O1.5  books=2  betravon_L10=4/10
+
+NHL ANA@NSH · Leo Carlsson
+  SOG O2.5  books=3  betravon_L10=3/10
+
+NHL ANA@NSH · Mikael Granlund
+  SOG O1.5  books=3  betravon_L10=4/10
+
+NHL ANA@NSH · Tristan Luneau
+  SOG O1.5  books=2  betravon_L10=7/10
+
+NHL ANA@NSH · Troy Terry
+  SOG O1.5  books=3  betravon_L10=7/10
+
+NHL BUF@TB · Jack Quinn
+  SOG O2.5  books=4  betravon_L10=6/10
+
+NHL BUF@TB · Josh Doan
+  SOG O1.5  books=4  betravon_L10=6/10
+
+NHL BUF@TB · Noah Ostlund
+  SOG O1.5  books=4  betravon_L10=6/10
+
+NHL BUF@TB · Olen Zellweger
+  SOG O1.5  books=3  betravon_L10=6/10
+
+NHL BUF@TB · Rasmus Dahlin
+  SOG O2.5  books=4  betravon_L10=6/10
+
+NHL BUF@TB · Tage Thompson
+  SOG O3.5  books=4  betravon_L10=5/10
+
+NHL BUF@TB · Zach Benson
+  SOG O2.5  books=4  betravon_L10=8/10
+
+NHL CGY@NYR · Aydar Suniev
+  SOG O1.5  books=2  betravon_L10=4/10
+
+NHL CGY@NYR · Joel Farabee
+  SOG O2.5  books=3  betravon_L10=6/10
+
+NHL CGY@NYR · Matt Coronato
+  SOG O2.5  books=3  betravon_L10=3/10
+
+NHL CGY@NYR · Matvei Gridin
+  SOG O1.5  books=3  betravon_L10=7/10
+
+NHL CGY@NYR · Mikael Backlund
+  SOG O2.5  books=3  betravon_L10=2/10
+
+NHL CGY@NYR · Ryan Strome
+  SOG O1.5  books=3  betravon_L10=5/10
+
+NHL CGY@NYR · Simon Nemec
+  SOG O1.5  books=3  betravon_L10=5/10
+
+NHL CGY@NYR · Yegor Sharangovich
+  SOG O1.5  books=2  betravon_L10=2/10
+
+NHL CGY@NYR · Zayne Parekh
+  SOG O1.5  books=3  betravon_L10=5/10
+
+NHL EDM@PHI · Connor McDavid
+  SOG O3.5  books=3  betravon_L10=2/10
+
+NHL EDM@PHI · Evan Bouchard
+  SOG O2.5  books=3  betravon_L10=4/10
+
+NHL EDM@PHI · Kasperi Kapanen
+  SOG O1.5  books=3  betravon_L10=6/10
+
+NHL EDM@PHI · Leon Draisaitl
+  SOG O3.5  books=3  betravon_L10=6/10
+
+NHL EDM@PHI · Mattias Ekholm
+  SOG O1.5  books=3  betravon_L10=3/10
+
+NHL EDM@PHI · Ryan Nugent-Hopkins
+  SOG O2.5  books=3  betravon_L10=3/10
+
+NHL EDM@PHI · Vasily Podkolzin
+  SOG O1.5  books=2  betravon_L10=4/10
+
+NHL EDM@PHI · Zach Hyman
+  SOG O2.5  books=3  betravon_L10=2/8
+
+NHL NSH@ANA · Filip Forsberg
+  SOG O2.5  books=3  betravon_L10=6/10
+
+NHL NSH@ANA · Mavrik Bourque
+  SOG O1.5  books=3  betravon_L10=7/10
+
+NHL NSH@ANA · Roman Josi
+  SOG O2.5  books=3  betravon_L10=5/10
+
+NHL NSH@ANA · Ryan O'Reilly
+  SOG O1.5  books=3  betravon_L10=3/10
+
+NHL NSH@ANA · Steven Stamkos
+  SOG O2.5  books=3  betravon_L10=7/10
+
+NHL NYR@CGY · Adam Fox
+  SOG O1.5  books=3  betravon_L10=5/10
+
+NHL NYR@CGY · Alexis Lafreniere
+  SOG O1.5  books=3  betravon_L10=6/10
+
+NHL NYR@CGY · Gabe Perreault
+  SOG O1.5  books=2  betravon_L10=6/10
+
+NHL NYR@CGY · Mika Zibanejad
+  SOG O1.5  books=3  betravon_L10=4/10
+
+NHL NYR@CGY · Pavel Dorofeyev
+  SOG O2.5  books=3  betravon_L10=5/10
+
+NHL NYR@CGY · Tye Kartye
+  SOG O1.5  books=3  betravon_L10=9/10
+
+NHL NYR@CGY · Will Cuylle
+  SOG O1.5  books=3  betravon_L10=4/10
+
+NHL PHI@EDM · Jamie Drysdale
+  SOG O1.5  books=3  betravon_L10=4/10
+
+NHL PHI@EDM · Matvei Michkov
+  SOG O1.5  books=3  betravon_L10=6/10
+
+NHL PHI@EDM · Owen Tippett
+  SOG O2.5  books=3  betravon_L10=5/10
+
+NHL PHI@EDM · Porter Martone
+  SOG O1.5  books=3  betravon_L10=6/10
+
+NHL PHI@EDM · Travis Konecny
+  SOG O1.5  books=3  betravon_L10=5/10
+
+NHL PHI@EDM · Trevor Zegras
+  SOG O1.5  books=3  betravon_L10=7/10
+
+NHL PHI@EDM · Tyson Foerster
+  SOG O1.5  books=3  betravon_L10=6/10
+
+NHL PIT@SJ · Ben Kindel
+  SOG O1.5  books=2  betravon_L10=6/10
+
+NHL PIT@SJ · Egor Chinakhov
+  SOG O1.5  books=2  betravon_L10=4/10
+
+NHL PIT@SJ · Erik Karlsson
+  SOG O1.5  books=3  betravon_L10=5/10
+
+NHL PIT@SJ · Evgeni Malkin
+  SOG O1.5  books=3  betravon_L10=5/10
+
+NHL PIT@SJ · Rickard Rakell
+  SOG O2.5  books=3  betravon_L10=5/10
+
+NHL PIT@SJ · Sidney Crosby
+  SOG O2.5  books=3  betravon_L10=2/10
+
+NHL PIT@SJ · Tommy Novak
+  SOG O1.5  books=2  betravon_L10=5/10
+
+NHL SJ@PIT · Ivar Stenberg
+  SOG O1.5  books=3  betravon_L10=5/10
+
+NHL SJ@PIT · Jacob Trouba
+  SOG O1.5  books=3  betravon_L10=3/10
+
+NHL SJ@PIT · Kiefer Sherwood
+  SOG O1.5  books=3  betravon_L10=7/10
+
+NHL SJ@PIT · Macklin Celebrini
+  SOG O3.5  books=3  betravon_L10=6/10
+
+NHL SJ@PIT · Mason Marchment
+  SOG O1.5  books=3  betravon_L10=4/10
+
+NHL SJ@PIT · Michael Misa
+  SOG O1.5  books=3  betravon_L10=5/10
+
+NHL SJ@PIT · Tyler Toffoli
+  SOG O1.5  books=3  betravon_L10=5/10
+
+NHL SJ@PIT · Will Smith
+  SOG O2.5  books=3  betravon_L10=6/10
+
+NHL TB@BUF · Anthony Cirelli
+  SOG O1.5  books=4  betravon_L10=5/10
+
+NHL TB@BUF · Brandon Hagel
+  SOG O3.5  books=1  betravon_L10=3/10
+
+NHL TB@BUF · Charle-Edouard D'Astous
+  SOG O1.5  books=3  betravon_L10=5/10
+
+NHL TB@BUF · Jake Guentzel
+  SOG O2.5  books=4  betravon_L10=4/10
+
+NHL TB@BUF · John Carlson
+  SOG O1.5  books=2  betravon_L10=5/10
+
+NHL TB@BUF · Nikita Kucherov
+  SOG O3.5  books=4  betravon_L10=2/10
+
+NHL TB@BUF · Yanni Gourde
+  SOG O1.5  books=3  betravon_L10=0/0
+
+NHL UTA@VGK · Clayton Keller
+  SOG O2.5  books=3  betravon_L10=5/10
+
+NHL UTA@VGK · Logan Cooley
+  SOG O1.5  books=3  betravon_L10=8/10
+
+NHL UTA@VGK · MacKenzie Weegar
+  SOG O1.5  books=3  betravon_L10=5/10
+
+NHL UTA@VGK · Mikhail Sergachev
+  SOG O1.5  books=3  betravon_L10=7/10
+
+NHL UTA@VGK · Nick Schmaltz
+  SOG O1.5  books=3  betravon_L10=7/10
+
+NHL VGK@UTA · Ivan Barbashev
+  SOG O1.5  books=3  betravon_L10=3/10
+
+NHL VGK@UTA · Jack Eichel
+  SOG O2.5  books=3  betravon_L10=4/10
+
+NHL VGK@UTA · Mark Stone
+  SOG O1.5  books=3  betravon_L10=6/10
+
+NHL VGK@UTA · Mitch Marner
+  SOG O2.5  books=3  betravon_L10=4/10
+
+NHL VGK@UTA · Shea Theodore
+  SOG O1.5  books=3  betravon_L10=5/10
+
+NHL VGK@UTA · Tomas Hertl
+  SOG O2.5  books=3  betravon_L10=4/10
+
+NHL VGK@UTA · Trevor Connelly
+  SOG O1.5  books=3  betravon_L10=5/10
+
+NHL VGK@UTA · Victor Olofsson
+  SOG O1.5  books=3  betravon_L10=5/6

@@ -1,17 +1,16 @@
-GAME-SCRIPT CORE · WED 2026-11-11
-Missing player → expanded job → take only if posted still looks like OLD role
+GAME-SCRIPT CORE · WED 2026-11-11 · 11:59 AM ET
+Missing player → expanded job → take only if number still looks like OLD role
 
-1. KAT REB O11.5 — firm posted; NY home glass
-2. Drummond REB O4.5 — mop-up rate; better if NY controls CLE
-3. Jokic AST O7.5 — DEN @ MEM; clear 7/7; don't pay ~9.5 if that's the "new" price
-4. Tatum AST O5.5 — Barnes/Kawhi OUT expands BOS control; 5.5 still old creator floor
-5. Hartenstein REB O8.5 — Chet OUT; 9.5 already prices too much of the new job
-6. Kessler REB O9.5 — LAL big ahead of blowout; 10.5 is the hope number
-7. WCJ REB O8.5 — Isaac OUT; primary ORL glass vs Utah shell
-8. BOS -5.5 — TOR gutted (not BOS ML juice)
-9. OKC -1.5 — talent edge without needing chalk
-10. HOU -6.5 — GS missing Porzingis/Moody
+ 1. KAT REB O11.5 — firm posted
+ 2. Drummond REB O4.5 — mop-up rate · NY control script
+ 3. Jokic AST O7.5 — don't pay ~9.5
+ 4. Tatum AST O5.5 — Barnes/Kawhi OUT; 5.5 still old floor
+ 5. Franz AST O5.5 — Paolo OUT; posted 6.5 is the priced hope
+ 6. WCJ REB O8.5 — Isaac OUT primary glass
+ 7. Hartenstein REB O8.5 — Chet OUT; skip 9.5
+ 8. Kessler REB O9.5 — LAL big in blowout lean
+ 9. BOS -5.5 — TOR gutted
+10. OKC -1.5 — small number talent edge
+11. HOU -6.5 — GS missing Porzingis/Moody
 
-PASS (priced hope / wrong number)
-  SGA PTS O33.5 · Franz PTS O24.5 / AST O6.5 · Murray 3PT O3.5 · Wemby REB O11.5
-  LAL -14.5 · SA -15.5 · Sengun REB O9.5 · Hartenstein REB O9.5
+PASS: SGA 33.5 · Franz PTS 24.5 · Murray 3PT 3.5 · Wemby REB 11.5 · LAL/SA raw chalk · Sengun 9.5 · Hartenstein 9.5

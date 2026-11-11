@@ -1,48 +1,50 @@
-THREE TICKETS · WED 2026-11-11 · America/New_York
-Confirm HR · drop GTD at warmup · Jokic/Luka numbers must match book
+THREE TICKETS · WED 2026-11-11 · refreshed 11:59 AM ET
+Confirm HR · drop GTD at warmup · Jokic/Luka must match book
 
 ════════════════════════════════════════════════════════════════
-TICKET 1 — SAFE CHALK / FIRM (8)
+TICKET 1 — SAFE / FIRM (8)
 ════════════════════════════════════════════════════════════════
   1. Karl-Anthony Towns      REB  O11.5   CLE @ NY
   2. Andre Drummond          REB  O4.5    CLE @ NY
-  3. Nikola Jokic            AST  O7.5    DEN @ MEM   (or lowest HR ≤8.5)
-  4. Jayson Tatum            AST  O5.5    BOS @ TOR   (shave if book 6.5)
-  5. Wendell Carter Jr.      REB  O8.5    ORL @ UTAH
-  6. BOS -5.5                          @ TOR
-  7. DEN -3.5                          @ MEM
-  8. OKC -1.5                          @ POR
+  3. Nikola Jokic            AST  O7.5    DEN @ MEM   (HR ≤8.5 ok)
+  4. Jayson Tatum            AST  O5.5    BOS @ TOR
+  5. Franz Wagner            AST  O5.5    ORL @ UTAH  (Paolo OUT)
+  6. Wendell Carter Jr.      REB  O8.5    ORL @ UTAH
+  7. BOS -5.5                          @ TOR
+  8. DEN -3.5                          @ MEM
 
 ════════════════════════════════════════════════════════════════
-TICKET 2 — MAIN / GAME-SCRIPT (10)
+TICKET 2 — GAME-SCRIPT (10)
 ════════════════════════════════════════════════════════════════
   1. Karl-Anthony Towns      REB  O11.5   CLE @ NY
   2. Nikola Jokic            AST  O7.5    DEN @ MEM
-  3. Luka Doncic             PTS  O35.5   LAL @ MIL   (feast script · confirm)
+  3. Luka Doncic             PTS  O35.5   LAL @ MIL   (confirm HR)
   4. Walker Kessler          REB  O9.5    LAL @ MIL
-  5. Isaiah Hartenstein      REB  O8.5    OKC @ POR   (Chet OUT)
+  5. Isaiah Hartenstein      REB  O8.5    OKC @ POR
   6. Deni Avdija             PTS  O17.5   OKC @ POR
-  7. Jayson Tatum            AST  O5.5    BOS @ TOR   (TOR gutted)
+  7. Franz Wagner            AST  O5.5    ORL @ UTAH
   8. BOS -5.5                          @ TOR
-  9. HOU -6.5                          vs GS
- 10. ORL -3.5                          @ UTAH
+  9. OKC -1.5                          @ POR
+ 10. HOU -6.5                          vs GS
 
 ════════════════════════════════════════════════════════════════
 TICKET 3 — BANGERS / COVER (10)
 ════════════════════════════════════════════════════════════════
-  1. Jamal Murray            3PT  O1.5    DEN @ MEM   (must shave from 3.5)
-  2. Victor Wembanyama       REB  O6.5    SA @ CHI    (must shave from 11.5)
+  1. Jamal Murray            3PT  O1.5    DEN @ MEM
+  2. Victor Wembanyama       REB  O6.5    SA @ CHI
   3. Jalen Brunson           PTS  O22.5   CLE @ NY
-  4. Ajay Mitchell           PTS  O14.5   OKC @ POR   (lean · JDub OUT)
-  5. Robert Williams III     REB  O4.5    OKC @ POR   (lean)
-  6. Nikola Jokic            REB  O6.5    DEN @ MEM
+  4. Nikola Jokic            REB  O6.5    DEN @ MEM
+  5. Wendell Carter Jr.      REB  O8.5    ORL @ UTAH
+  6. Robert Williams III     REB  O4.5    OKC @ POR   (lean)
   7. ORL @ UTAH              UNDER 214.5
   8. GS @ HOU                UNDER 220.5
   9. NY -4.5                           vs CLE
- 10. IND -2.5                          vs WSH
+ 10. ORL -3.5                          @ UTAH
 
 ════════════════════════════════════════════════════════════════
-LEFT OFF
+DELTA vs earlier AM run
 ════════════════════════════════════════════════════════════════
-  SA -15.5 / LAL -14.5 raw · Hart/Herro/Markkanen GTD · soft AST/REB ≤3.5
-  Cedric Coward / Caleb Wilson (research-only) · EDM -205 · NCAAF bombs
+  + Franz Wagner AST O5.5 added (6/7 · Paolo OUT script)
+  O/U ticks: IND 227.5 · TOR 215.5 · MIL 228.5
+  NEW OUT: Bennedict Mathurin (NO)
+  Same BANs: SA/LAL raw chalk · GTD · soft floors
