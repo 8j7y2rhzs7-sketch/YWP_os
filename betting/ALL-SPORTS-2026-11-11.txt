@@ -1,0 +1,83 @@
+════════════════════════════════════════════════════════════════════
+ALL-SPORTS RUN · WED 2026-11-11 · America/New_York
+Gate 1 PASS · 320/320 sheets · NBA 10 · NHL 6 · NCAAF 3
+Built ~11:40 AM ET · soft banned · OUT/GTD removed · confirm HR (G2/G3)
+════════════════════════════════════════════════════════════════════
+
+══ SLATE ══
+NBA
+  WSH @ IND   IND -2.5 · 228.5     Haliburton OUT
+  CLE @ NY    NY -4.5 · 222.5      Hart GTD
+  BOS @ TOR   BOS -5.5 · 216.5     Barnes OUT · Kawhi OUT · Quickley GTD
+  SA @ CHI    SA -15.5 · 238.5     BAN ML chalk
+  DEN @ MEM   DEN -3.5 · 230.5
+  LAL @ MIL   LAL -14.5 · 229.5    BAN ML chalk · Herro GTD
+  BKN @ NO    NO -3.5 · 229.5
+  ORL @ UTAH  ORL -3.5 · 214.5     Paolo/Suggs/Isaac OUT · Markkanen GTD
+  GS @ HOU    HOU -6.5 · 220.5     Porzingis OUT · Capela/Adams OUT
+  OKC @ POR   OKC -1.5 · 225.5     Chet/JDub/Wallace OUT · Sharpe/Morant OUT
+NHL
+  TB -130 · NYR -148 · EDM -205 · VGK -125 · ANA -142 · PIT -142
+NCAAF (midweek)
+  BUFF @ BALL BUF -1.5 · CMU -17.5 · TOL -14  (skip big CMU/TOL chalk in parlays)
+
+══ MASTER PROP PUNCH (known names · not soft) ══
+NO-SHAVE FIRM (posted clears L7 ≥6/7)
+  1. 7/7  Karl-Anthony Towns   REB  O11.5   CLE @ NY
+  2. 7/7  Andre Drummond       REB  O4.5    CLE @ NY   (mop-up specialist · NY script)
+  3. 6/7  Deni Avdija          PTS  O17.5   OKC @ POR  (if posted ≤17.5; book may show 23.5 — SHAVE)
+  4. 6/7  Wendell Carter Jr.   REB  O8.5    ORL @ UTAH (shave from 9.5)
+
+CONFIRM-ON-HR / SHAVE TARGETS (clear exists, book often higher)
+  5. 7/7  Nikola Jokic         AST  O7.5    DEN @ MEM  ★ gold floor · books often ~9.5 → shave to 7.5/8.5
+  6. 7/7  Nikola Jokic         REB  O6.5    DEN @ MEM  (research ~9.5 → shave)
+  7. 6/7  Nikola Jokic         PTS  O18.5   DEN @ MEM
+  8. 6/7  Luka Doncic          PTS  O35.5   LAL @ MIL  (6/7 at 35.5 · feast vs MIL)
+  9. 7/7  Luka Doncic          AST  O4.5    LAL @ MIL  (soft-ish number but 7/7 · take if HR ≤5.5/6.5 only after re-grade)
+ 10. 6/7  Walker Kessler       REB  O9.5    LAL @ MIL  (posted 10.5 = 5/7 → prefer 9.5)
+ 11. 6/7  Jayson Tatum         AST  O5.5    BOS @ TOR  (posted 6.5 = 5/7 → shave; TOR gutted)
+ 12. 6/7  Jalen Brunson        PTS  O22.5   CLE @ NY   (posted 24.5 = 3/7 → shave)
+ 13. 7/7  Jamal Murray         3PT  O1.5    DEN @ MEM  (posted 3.5 fails → must shave)
+ 14. 7/7  Victor Wembanyama    REB  O6.5    SA @ CHI   (posted 11.5 fails → must shave)
+ 15. 6/7  Isaiah Hartenstein   REB  O8.5    OKC @ POR  (Chet OUT · posted 9.5 only 4/7)
+
+NHL
+  6/7 Zach Benson SOG O2.5 (TB @ BUF) — only NHL clear above soft; treat as lean not core
+
+══ SIDES ══
+PLAY (small / injury-backed)
+  BOS -5.5 @ TOR     Barnes + Kawhi OUT
+  DEN -3.5 @ MEM
+  OKC -1.5 @ POR     both thinned · small number
+  HOU -6.5 vs GS     GS missing Porzingis/Moody; HOU bigs Capela/Adams OUT → still HOU side OK
+  ORL -3.5 @ UTAH    Utah shell · Markkanen GTD (check warmup)
+  NY -4.5 vs CLE     small number (not ML chalk)
+  IND -2.5 vs WSH    Haliburton OUT but still home pick-em
+
+BAN
+  SA ML / SA -15.5 raw   chalk landmine — alt -7.5/-9.5 only if you must
+  LAL ML / LAL -14.5 raw chalk landmine — alt shave only
+  EDM -205               juice trap · skip or take puck line carefully
+  NCAAF CMU -17.5 / TOL -14  midweek big numbers
+
+TOTALS lean
+  ORL @ UTAH U214.5 (injury shell)
+  GS @ HOU U220.5 (both missing pieces)
+  OKC @ POR U225.5 (creators out)
+
+══ GAME-SCRIPT NOTES ══
+  TOR gutted → Tatum usage expands; don't need Tatum AST at posted 6.5 — take 5.5
+  Chet/JDub OUT → Hartenstein glass (number must be ≤8.5)
+  Paolo OUT → Franz creation priced at AST 6.5 / PTS 24.5 — mostly baked; WCJ glass better
+  Capela/Adams OUT → Sengun glass expands but posted still fails 6/7 at 8.5/9.5 — lean only
+  LAL -14.5 → Luka feast + Drummond-style mop-ups on MIL side less useful; Kessler boards in LAL win script
+  Haliburton OUT → IND on-ball to Nembhard/Siakam (Siakam PTS needs shave from 23.5)
+
+══ BAN LIST ══
+  Soft floors (REB/AST ≤3.5, PTS ≤9.5) even if 7/7
+  GTD props (Hart, Herro, Markkanen, Quickley, da Silva, Jaylin Williams, …)
+  Obscure alt-universe names as core (Caleb Wilson / Cedric Coward research-only)
+  STL/BLK O0.5 soft · 3PT O1.5 as ticket anchors only if 6/7+ AND script
+  Raw −14.5/−15.5 NBA chalk
+
+Confirm every number on Hard Rock before lock.

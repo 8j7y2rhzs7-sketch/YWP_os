@@ -1,0 +1,104 @@
+════════════════════════════════════════════════════════════════════
+MULTI-DAY 6/7+ POOL · 11/11–11/11 · America/New_York
+Idea: spread risk across days · pick the BEST from each slate · more punches, same rigor
+Rule: clear_at = highest line that still hits 6/7 or 7/7 (soft floors banned)
+G2/G3: confirm posted/HR before betting — research_posted is L7-median estimate when book missing
+════════════════════════════════════════════════════════════════════
+
+── SLATE ──
+  11/11  NBA 10 · NHL 6 · NFL 0  →  137 clears @ 6/7+
+
+══ BEST OF EACH DAY (top punches) ══
+
+▶ 11/11
+  7/7   Caleb Wilson           REB     clear O4.5   band O2.0–O4.5      NBA SA @ CHI · 32.4mpg
+        L=[5.0, 5.0, 7.0, 5.0, 6.0, 5.0, 14.0]  research~O4.5  id=5095151
+  6/7   Zach Benson            SOG     clear O2.5   band O2.0–O2.5      NHL TB @ BUF
+        L=[3.0, 3.0, 3.0, 4.0, 3.0, 5.0, 2.0]  research~O2.5  id=5149186
+  7/7   Luka Doncic            REB     clear O4.5   band O2.0–O4.5      NBA LAL @ MIL · 36.7mpg
+        L=[8.0, 5.0, 9.0, 7.0, 15.0, 7.0, 5.0]  research~O6.5  id=3945274
+  7/7   Luka Doncic            AST     clear O4.5   band O2.0–O4.5      NBA LAL @ MIL · 36.7mpg
+        L=[10.0, 5.0, 7.0, 13.0, 6.0, 5.0, 9.0]  research~O6.5  id=3945274
+  7/7   Jamal Murray           3PT     clear O1.5   band O1.0–O1.5      NBA DEN @ MEM · 35.9mpg
+        L=[5.0, 2.0, 2.0, 4.0, 7.0, 5.0, 3.0]  research~O3.5  id=3936299
+  7/7   Nikola Jokic           AST     clear O7.5   band O2.0–O7.5      NBA DEN @ MEM · 35.3mpg
+        L=[9.0, 8.0, 11.0, 8.0, 10.0, 10.0, 11.0]  research~O9.5  id=3112335
+  7/7   Donovan Mitchell       AST     clear O2.5   band O2.0–O2.5      NBA CLE @ NY · 31.3mpg
+        L=[4.0, 4.0, 8.0, 6.0, 11.0, 3.0, 3.0]  research~O3.5  id=3908809
+  7/7   Karl-Anthony Towns     REB     clear O11.5  band O2.0–O11.5     NBA CLE @ NY · 31.0mpg
+        L=[16.0, 13.0, 12.0, 16.0, 12.0, 13.0, 20.0]  research~O12.5  id=3136195
+  7/7   Jayson Tatum           REB     clear O3.5   band O2.0–O3.5      NBA BOS @ TOR · 33.3mpg
+        L=[6.0, 4.0, 8.0, 6.0, 4.0, 7.0, 5.0]  research~O5.5  id=4065648
+  7/7   Evan Mobley            AST     clear O2.5   band O2.0–O2.5      NBA CLE @ NY · 30.4mpg
+        L=[3.0, 5.0, 4.0, 3.0, 4.0, 3.0, 7.0]  research~O3.5  id=4432158
+  7/7   Nikola Jokic           REB     clear O6.5   band O2.0–O6.5      NBA DEN @ MEM · 35.3mpg
+        L=[16.0, 13.0, 10.0, 9.0, 7.0, 13.0, 7.0]  research~O9.5  id=3112335
+  7/7   RJ Barrett             REB     clear O2.5   band O2.0–O2.5      NBA BOS @ TOR · 34.4mpg
+        L=[3.0, 7.0, 5.0, 6.0, 10.0, 3.0, 9.0]  research~O5.5  id=4395625
+  7/7   Paul George            REB     clear O2.5   band O2.0–O2.5      NBA BOS @ TOR · 30.1mpg
+        L=[5.0, 3.0, 5.0, 3.0, 6.0, 6.0, 7.0]  research~O4.5  id=4251
+  7/7   Devin Carter           AST     clear O2.5   band O2.0–O2.5      NBA BOS @ TOR · 30.0mpg
+        L=[8.0, 4.0, 5.0, 5.0, 3.0, 3.0, 5.0]  research~O4.5  id=4433188
+
+══ CROSS-DAY MASTER PUNCH (diversified) ══
+Grab 2–4 from each day → bigger ticket, risk split across tips
+   1. [11/11] 7/7  Caleb Wilson         REB     O4.5  NBA SA @ CHI
+   2. [11/11] 7/7  Luka Doncic          REB     O4.5  NBA LAL @ MIL
+   3. [11/11] 7/7  Luka Doncic          AST     O4.5  NBA LAL @ MIL
+   4. [11/11] 7/7  Jamal Murray         3PT     O1.5  NBA DEN @ MEM
+   5. [11/11] 7/7  Nikola Jokic         AST     O7.5  NBA DEN @ MEM
+   6. [11/11] 7/7  Donovan Mitchell     AST     O2.5  NBA CLE @ NY
+   7. [11/11] 7/7  Karl-Anthony Towns   REB     O11.5  NBA CLE @ NY
+   8. [11/11] 7/7  Jayson Tatum         REB     O3.5  NBA BOS @ TOR
+
+══ FULL CLEAR BOARDS BY DAY ══
+
+── 11/11 (137 clears) ──
+  7/7  Caleb Wilson           REB   O4.5   O2.0–O4.5      SA @ CHI     L=[5.0, 5.0, 7.0, 5.0, 6.0, 5.0, 14.0]
+  7/7  Luka Doncic            REB   O4.5   O2.0–O4.5      LAL @ MIL    L=[8.0, 5.0, 9.0, 7.0, 15.0, 7.0, 5.0]
+  7/7  Luka Doncic            AST   O4.5   O2.0–O4.5      LAL @ MIL    L=[10.0, 5.0, 7.0, 13.0, 6.0, 5.0, 9.0]
+  7/7  Jamal Murray           3PT   O1.5   O1.0–O1.5      DEN @ MEM    L=[5.0, 2.0, 2.0, 4.0, 7.0, 5.0, 3.0]
+  7/7  Nikola Jokic           AST   O7.5   O2.0–O7.5      DEN @ MEM    L=[9.0, 8.0, 11.0, 8.0, 10.0, 10.0, 11.0]
+  7/7  Donovan Mitchell       AST   O2.5   O2.0–O2.5      CLE @ NY     L=[4.0, 4.0, 8.0, 6.0, 11.0, 3.0, 3.0]
+  7/7  Karl-Anthony Towns     REB   O11.5  O2.0–O11.5     CLE @ NY     L=[16.0, 13.0, 12.0, 16.0, 12.0, 13.0, 20.0]
+  7/7  Jayson Tatum           REB   O3.5   O2.0–O3.5      BOS @ TOR    L=[6.0, 4.0, 8.0, 6.0, 4.0, 7.0, 5.0]
+  7/7  Evan Mobley            AST   O2.5   O2.0–O2.5      CLE @ NY     L=[3.0, 5.0, 4.0, 3.0, 4.0, 3.0, 7.0]
+  7/7  Nikola Jokic           REB   O6.5   O2.0–O6.5      DEN @ MEM    L=[16.0, 13.0, 10.0, 9.0, 7.0, 13.0, 7.0]
+  7/7  RJ Barrett             REB   O2.5   O2.0–O2.5      BOS @ TOR    L=[3.0, 7.0, 5.0, 6.0, 10.0, 3.0, 9.0]
+  7/7  Paul George            REB   O2.5   O2.0–O2.5      BOS @ TOR    L=[5.0, 3.0, 5.0, 3.0, 6.0, 6.0, 7.0]
+  7/7  Payton Pritchard       AST   O2.5   O2.0–O2.5      BOS @ TOR    L=[5.0, 4.0, 5.0, 5.0, 3.0, 3.0, 3.0]
+  7/7  Devin Carter           AST   O2.5   O2.0–O2.5      BOS @ TOR    L=[8.0, 4.0, 5.0, 5.0, 3.0, 3.0, 5.0]
+  7/7  Jamal Shead            AST   O5.5   O2.0–O5.5      BOS @ TOR    L=[11.0, 16.0, 6.0, 6.0, 6.0, 8.0, 7.0]
+  7/7  Keldon Johnson         REB   O4.5   O2.0–O4.5      SA @ CHI     L=[5.0, 7.0, 6.0, 5.0, 7.0, 6.0, 6.0]
+  7/7  Julian Champagnie      REB   O2.5   O2.0–O2.5      SA @ CHI     L=[3.0, 4.0, 7.0, 4.0, 6.0, 3.0, 6.0]
+  7/7  Dylan Harper           PTS   O12.5  O5.0–O12.5     SA @ CHI     L=[17.0, 13.0, 19.0, 21.0, 17.0, 25.0, 13.0]
+  7/7  Victor Wembanyama      REB   O6.5   O2.0–O6.5      SA @ CHI     L=[11.0, 7.0, 14.0, 24.0, 11.0, 7.0, 14.0]
+  7/7  Cam Spencer            PTS   O6.5   O5.0–O6.5      DEN @ MEM    L=[7.0, 7.0, 7.0, 13.0, 10.0, 8.0, 8.0]
+  7/7  Brayden Burries        REB   O2.5   O2.0–O2.5      LAL @ MIL    L=[3.0, 8.0, 11.0, 5.0, 9.0, 3.0, 6.0]
+  7/7  Meleek Thomas          PTS   O8.5   O5.0–O8.5      CLE @ NY     L=[18.0, 9.0, 12.0, 9.0, 17.0, 13.0, 10.0]
+  7/7  Obi Toppin             PTS   O9.5   O5.0–O9.5      WSH @ IND    L=[10.0, 10.0, 11.0, 13.0, 14.0, 16.0, 13.0]
+  6/7  Austin Reaves          REB   O2.5   O2.0–O2.5      LAL @ MIL    L=[5.0, 3.0, 3.0, 2.0, 3.0, 4.0, 6.0]
+  6/7  Christian Braun        REB   O2.5   O2.0–O2.5      DEN @ MEM    L=[5.0, 4.0, 3.0, 3.0, 3.0, 0.0, 4.0]
+  6/7  Pascal Siakam          REB   O4.5   O2.0–O4.5      WSH @ IND    L=[9.0, 2.0, 5.0, 5.0, 5.0, 11.0, 13.0]
+  6/7  Luka Doncic            3PT   O4.5   O1.0–O4.5      LAL @ MIL    L=[3.0, 5.0, 6.0, 6.0, 8.0, 6.0, 6.0]
+  6/7  Jamal Murray           AST   O4.5   O2.0–O4.5      DEN @ MEM    L=[2.0, 8.0, 7.0, 6.0, 5.0, 6.0, 8.0]
+  6/7  Kyshawn George         REB   O2.5   O2.0–O2.5      WSH @ IND    L=[3.0, 7.0, 4.0, 4.0, 4.0, 3.0, 2.0]
+  6/7  Kyshawn George         3PT   O1.5   O1.0–O1.5      WSH @ IND    L=[2.0, 2.0, 5.0, 3.0, 4.0, 4.0, 0.0]
+  6/7  RJ Barrett             AST   O2.5   O2.0–O2.5      BOS @ TOR    L=[2.0, 4.0, 3.0, 3.0, 5.0, 5.0, 6.0]
+  6/7  Dylan Harper           REB   O4.5   O2.0–O4.5      SA @ CHI     L=[5.0, 7.0, 2.0, 5.0, 7.0, 7.0, 5.0]
+  6/7  Cameron Boozer         AST   O3.5   O2.0–O3.5      DEN @ MEM    L=[8.0, 4.0, 4.0, 5.0, 3.0, 12.0, 4.0]
+  6/7  Karl-Anthony Towns     AST   O2.5   O2.0–O2.5      CLE @ NY     L=[3.0, 3.0, 1.0, 5.0, 3.0, 5.0, 3.0]
+  6/7  Jayson Tatum           AST   O5.5   O2.0–O5.5      BOS @ TOR    L=[4.0, 6.0, 9.0, 9.0, 7.0, 7.0, 8.0]
+  6/7  Austin Reaves          PTS   O18.5  O5.0–O18.5     LAL @ MIL    L=[43.0, 25.0, 21.0, 27.0, 19.0, 21.0, 16.0]
+  6/7  Jalen Brunson          PTS   O22.5  O5.0–O22.5     CLE @ NY     L=[23.0, 31.0, 33.0, 19.0, 24.0, 38.0, 23.0]
+  6/7  Nikola Jokic           PTS   O18.5  O5.0–O18.5     DEN @ MEM    L=[25.0, 19.0, 32.0, 26.0, 18.0, 21.0, 19.0]
+  6/7  Kyshawn George         PTS   O11.5  O5.0–O11.5     WSH @ IND    L=[12.0, 14.0, 33.0, 25.0, 22.0, 12.0, 8.0]
+  6/7  AJ Dybantsa            REB   O4.5   O2.0–O4.5      WSH @ IND    L=[8.0, 6.0, 9.0, 6.0, 5.0, 7.0, 2.0]
+  … +97 more in JSON
+
+══ HOW TO USE ══
+1. Build separate slips per day OR one multi-day parlay (books that allow it).
+2. From each day take the top 2–4 that are actually posted on HR.
+3. Prefer kind 7/7 / 5/5 / 6/6; use 6/7 when the shave is small (drop ≤3).
+4. Re-check injuries morning-of; GTD stars can kill a leg.
+5. Soft floors stay banned even if they go 7/7.
