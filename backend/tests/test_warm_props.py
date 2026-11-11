@@ -127,6 +127,29 @@ def test_process_for_path_includes_warm_props() -> None:
     assert process_for_path("/api/v1/sports/warm-props") == "prop_research"
 
 
+def test_huge_board_does_not_grade_unmodeled_props() -> None:
+    from app.api.sports import _grade_slice
+    from app.schemas import CandidateInput
+
+    rows = []
+    for i in range(900):
+        raw = _prop(i)
+        if i < 10:
+            raw["market_type"] = "moneyline"
+            raw["selection"] = "Home ML"
+            raw["probability_source"] = "model"
+        elif i < 30:
+            raw["probability_source"] = "model"
+        rows.append(CandidateInput.model_validate(raw))
+    grade, deferred = _grade_slice(rows)
+    assert deferred == 870
+    assert len(grade) == 30
+    assert all(
+        (not str(row.market_type).startswith("player_")) or row.probability_source == "model"
+        for row in grade
+    )
+
+
 def test_warm_slice_caps_a_huge_board_and_keeps_plus_4000(client, auth_headers) -> None:
     rows = []
     for i in range(180):

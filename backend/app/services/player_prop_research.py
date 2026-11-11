@@ -62,6 +62,7 @@ def select_warm_slice(
     held = [row for row in pending if row.candidate_id not in chosen]
     return take_standard + take_long, other + held
 
+
 # Process-local enriched-prop cache (survives across slate refresh → LAUNCH).
 _PROP_CACHE_TTL_SECONDS = 20 * 60
 _prop_cache: dict[tuple[Any, ...], tuple[float, dict[str, Any] | None]] = {}
