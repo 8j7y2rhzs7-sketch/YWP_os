@@ -28,6 +28,40 @@ logger = logging.getLogger(__name__)
 
 PROP_MODEL_SPORTS = frozenset({"wnba", "nba", "nfl", "ncaaf", "basketball"})
 
+# One warm request must stay small. A 4,000-row body spends the whole
+# Render window on JSON and never finishes a calculation, so the phone
+# sits on WARM. Plus-money +4000 and longer is reserved in every slice
+# so those prices are not stuck behind the -110 board.
+WARM_PASS_LIMIT = 96
+LONGSHOT_ODDS = 4000
+LONGSHOT_RESERVE = 32
+
+
+def _is_pending_prop(candidate: CandidateInput) -> bool:
+    return str(candidate.market_type or "").startswith("player_") and (
+        candidate.probability_source == "market_implied"
+    )
+
+
+def select_warm_slice(
+    candidates: list[CandidateInput],
+) -> tuple[list[CandidateInput], list[CandidateInput]]:
+    """Return (this pass, everything else).
+
+    The pass mixes standard prices with +4000-and-up longshots. The rest
+    stays on the phone and comes back on the next warm call.
+    """
+    pending = [row for row in candidates if _is_pending_prop(row)]
+    other = [row for row in candidates if not _is_pending_prop(row)]
+    longshots = [row for row in pending if int(row.american_odds or 0) >= LONGSHOT_ODDS]
+    standard = [row for row in pending if int(row.american_odds or 0) < LONGSHOT_ODDS]
+    take_long = longshots[:LONGSHOT_RESERVE]
+    room = max(0, WARM_PASS_LIMIT - len(take_long))
+    take_standard = standard[:room]
+    chosen = {row.candidate_id for row in take_long + take_standard}
+    held = [row for row in pending if row.candidate_id not in chosen]
+    return take_standard + take_long, other + held
+
 # Process-local enriched-prop cache (survives across slate refresh → LAUNCH).
 _PROP_CACHE_TTL_SECONDS = 20 * 60
 _prop_cache: dict[tuple[Any, ...], tuple[float, dict[str, Any] | None]] = {}

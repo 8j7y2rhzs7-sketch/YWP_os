@@ -125,3 +125,34 @@ def test_warm_props_ready_when_no_pending(client, auth_headers) -> None:
 
 def test_process_for_path_includes_warm_props() -> None:
     assert process_for_path("/api/v1/sports/warm-props") == "prop_research"
+
+
+def test_warm_slice_caps_a_huge_board_and_keeps_plus_4000(client, auth_headers) -> None:
+    rows = []
+    for i in range(180):
+        rows.append(_prop(i))
+    for i in range(180, 220):
+        row = _prop(i)
+        row["american_odds"] = 4500
+        rows.append(row)
+
+    with patch(
+        "app.services.player_prop_research.enrich_player_prop_candidates",
+        side_effect=lambda batch, slate_date=None, budget_seconds=14.0: batch,
+    ):
+        response = client.post(
+            "/api/v1/sports/warm-props",
+            json={
+                "sport": "wnba",
+                "date": "2026-09-22",
+                "candidates": rows,
+                "budget_seconds": 18,
+            },
+            headers=auth_headers,
+        )
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["prop_total"] == 220
+    assert len(body["candidates"]) <= 96
+    assert any(row["american_odds"] >= 4000 for row in body["candidates"])
+    assert body["ready"] is False

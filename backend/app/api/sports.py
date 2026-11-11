@@ -168,14 +168,25 @@ def warm_props(payload: PropWarmRequest, _: SubscribedUser) -> PropWarmResponse:
             ),
         )
 
-    from app.services.player_prop_research import enrich_player_prop_candidates
-
-    enriched = enrich_player_prop_candidates(
-        list(payload.candidates),
-        slate_date=payload.date,
-        budget_seconds=float(payload.budget_seconds),
+    from app.services.player_prop_research import (
+        enrich_player_prop_candidates,
+        select_warm_slice,
     )
-    total, modeled, pending, coverage = _prop_research_stats(enriched)
+
+    this_pass, held = select_warm_slice(list(payload.candidates))
+    enriched_pass = (
+        enrich_player_prop_candidates(
+            this_pass,
+            slate_date=payload.date,
+            budget_seconds=float(payload.budget_seconds),
+        )
+        if this_pass
+        else []
+    )
+    # Stats cover the whole board. The body is only this slice so a
+    # 4,000-pick warm does not die on the proxy and stay spinning.
+    full = enriched_pass + held
+    total, modeled, pending, coverage = _prop_research_stats(full)
     gained = max(0, modeled - before_modeled)
     # Only "ready" when coverage is high or nothing left. Never stop after a
     # single zero-gain pass — ESPN lookups often spend a slice with no upgrades
@@ -191,7 +202,7 @@ def warm_props(payload: PropWarmRequest, _: SubscribedUser) -> PropWarmResponse:
     return PropWarmResponse(
         sport=payload.sport,
         date=payload.date,
-        candidates=enriched,
+        candidates=enriched_pass,
         prop_total=total,
         prop_modeled=modeled,
         prop_pending=pending,
