@@ -39,6 +39,12 @@ const CANDIDATE_PAGE = 20;
 const PROP_SPORTS = new Set(["wnba", "nba", "ncaab", "nfl", "ncaaf"]);
 /** Chunked warm passes — each stays under Render's ~30s proxy. */
 const MAX_WARM_ROUNDS = 14;
+/** A full NFL/NBA prop menu can be several thousand rows. */
+const MAX_WARM_ROUNDS_HUGE = 64;
+/** Send this many pending props per pass, with room for +4000 longshots. */
+const WARM_CHUNK = 96;
+const WARM_LONGSHOT_ODDS = 4000;
+const WARM_LONGSHOT_CHUNK = 32;
 /** Stop only after this many consecutive zero-gain passes. */
 const STALL_ROUNDS_TO_ARM = 3;
 /** Normal warm-request retries before arming with partial research. */
@@ -226,20 +232,39 @@ export default function SlateScreen() {
     let latest = base;
     let stallRounds = 0;
     let errors = 0;
+    const pendingStart = pendingPropCount(candidates);
+    const roundCap =
+      pendingStart > 400
+        ? Math.min(
+            MAX_WARM_ROUNDS_HUGE,
+            Math.max(MAX_WARM_ROUNDS, Math.ceil(pendingStart / WARM_CHUNK) + 2),
+          )
+        : MAX_WARM_ROUNDS;
     try {
-      for (let round = 0; round < MAX_WARM_ROUNDS; round += 1) {
+      for (let round = 0; round < roundCap; round += 1) {
         if (epoch !== warmEpoch.current) return null;
         const pendingBefore = pendingPropCount(candidates);
         if (pendingBefore <= 0) break;
         setResearchNote(
-          `Researching props… pass ${round + 1}/${MAX_WARM_ROUNDS}`,
+          `Researching props… pass ${round + 1}/${roundCap}`,
         );
-        // Only ship pending market_implied props — much smaller body, less 502 risk.
-        const pendingOnly = candidates.filter(
+        // Only ship a slice. A 4,000-row body never returns and the
+        // button stays on WARM. Keep +4000-and-up in every slice.
+        const pendingOnlyAll = candidates.filter(
           (row) =>
             String(row.market_type || "").startsWith("player_") &&
             row.probability_source === "market_implied",
         );
+        const longshots = pendingOnlyAll.filter(
+          (row) => Number(row.american_odds) >= WARM_LONGSHOT_ODDS,
+        );
+        const standard = pendingOnlyAll.filter(
+          (row) => Number(row.american_odds) < WARM_LONGSHOT_ODDS,
+        );
+        const pendingOnly = [
+          ...standard.slice(0, WARM_CHUNK - Math.min(longshots.length, WARM_LONGSHOT_CHUNK)),
+          ...longshots.slice(0, WARM_LONGSHOT_CHUNK),
+        ];
         let warm: PropWarmResponse;
         try {
           warm = await request<PropWarmResponse>("/sports/warm-props", {
@@ -305,7 +330,7 @@ export default function SlateScreen() {
           stallRounds = 0;
         }
         // Brief pause between passes so edge WAF does not treat warm as a bot burst.
-        await new Promise((resolve) => setTimeout(resolve, 900));
+        await new Promise((resolve) => setTimeout(resolve, pendingStart > 400 ? 250 : 900));
       }
       if (epoch === warmEpoch.current) {
         const stillPending = pendingPropCount(candidates);
