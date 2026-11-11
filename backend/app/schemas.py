@@ -1025,6 +1025,61 @@ class ErrorReportCreate(YWPModel):
     context: dict[str, Any] = Field(default_factory=dict)
 
 
+class ReadyGameOut(YWPModel):
+    sport: str
+    event_id: str
+    event_name: str
+    home_team: str
+    away_team: str
+    commence_time: datetime
+
+
+class ReadyBoardResponse(YWPModel):
+    """Approved plays waiting before the user taps Run, plus card buttons."""
+
+    slate_date: date
+    status: str
+    notice: str
+    schedule_pulled_at: datetime | None = None
+    priced_pulled_at: datetime | None = None
+    pull2_at: datetime | None = None
+    earliest_start: datetime | None = None
+    lead_minutes: int | None = None
+    binding_sport: str | None = None
+    completeness: Decimal | None = None
+    analysis_id: str | None = None
+    games: list[ReadyGameOut] = Field(default_factory=list)
+    plays: list[RecommendationOut] = Field(default_factory=list)
+    cards: dict[str, TicketCardOut] = Field(default_factory=dict)
+    cross_parlays: dict[str, TicketCardOut] = Field(default_factory=dict)
+
+
+class FrontDeskAction(YWPModel):
+    label: str = Field(max_length=40)
+    route: str = Field(max_length=80)
+
+
+class FrontDeskBeat(YWPModel):
+    phase: Literal["done", "now", "later"]
+    text: str = Field(max_length=80)
+
+
+class FrontDeskResponse(YWPModel):
+    """The one next step on Home. Reads state that already exists."""
+
+    bot: Literal["front_desk"] = "front_desk"
+    headline: str = Field(max_length=160)
+    detail: str = Field(max_length=400)
+    primary: FrontDeskAction
+    secondary: FrontDeskAction | None = None
+    beats: list[FrontDeskBeat] = Field(min_length=3, max_length=3)
+    ready_status: str = Field(max_length=32)
+    approved_plays: int = Field(ge=0)
+    open_tickets: int = Field(ge=0)
+    notice: str = Field(max_length=200)
+    handoff: str | None = Field(default=None, max_length=160)
+
+
 class ErrorReportOut(YWPModel):
     id: str
     user_id: str | None

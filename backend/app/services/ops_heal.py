@@ -441,6 +441,8 @@ def classify_error_for_heal(message: str, screen: str | None = None) -> list[str
         remediations.append("probe_day_forge")
     if "pending sync" in text or "settle" in text:
         remediations.extend(["run_settle_day", "sync_hive_outcomes"])
+    if "front desk" in text:
+        remediations.append("noop_observe")
     return [r for r in dict.fromkeys(remediations) if r in ALLOWED_REMEDIATIONS]
 
 
@@ -899,23 +901,45 @@ def _proposals_from_error_clusters(*, db: Session, trigger: str) -> list[dict[st
 
     out: list[dict[str, Any]] = []
     for key, group in clusters.items():
-        if len(group) < 2:
+        front_kind = key.removeprefix("front_desk_") if key.startswith("front_desk_") else ""
+        if len(group) < (1 if front_kind else 2):
             continue
         sample = group[0]
+        if front_kind:
+            from app.services.front_desk_log import BRIEFS
+
+            brief = BRIEFS.get(front_kind, {})
+            fingerprint = f"front_desk:{front_kind}"
+            area = "front_desk"
+            priority = str(brief.get("priority") or "medium")
+            title = str(brief.get("title") or f"Front desk: {front_kind.replace('_', ' ')}")
+            change = str(
+                brief.get("change")
+                or (
+                    "Reproduce the Front desk report, fix the path, "
+                    "and add a regression so the same log does not keep arriving."
+                )
+            )
+        else:
+            fingerprint = f"error_cluster:{key}"
+            area = "client_errors"
+            priority = "high" if "internal_server_error" in key else "medium"
+            title = f"Recurring client error: {key.replace('_', ' ')}"
+            change = (
+                "Reproduce from the listed screens, fix the failing endpoint/UI path, "
+                "and add a guard or regression test so the cluster stops growing."
+            )
         out.append(
             {
-                "fingerprint": f"error_cluster:{key}",
-                "area": "client_errors",
-                "priority": "high" if "internal_server_error" in key else "medium",
-                "title": f"Recurring client error: {key.replace('_', ' ')}",
+                "fingerprint": fingerprint,
+                "area": area,
+                "priority": priority,
+                "title": title,
                 "summary": (
                     f"{len(group)} report(s) in 72h matching `{key}`. "
                     f"Latest: {(sample.message or '')[:140]}"
                 ),
-                "recommended_change": (
-                    "Reproduce from the listed screens, fix the failing endpoint/UI path, "
-                    "and add a guard or regression test so the cluster stops growing."
-                ),
+                "recommended_change": change,
                 "source_contracts": ["decision_board_errors"]
                 if "server_error" in key or "build_ticket" in key
                 else [],
@@ -998,6 +1022,12 @@ def _error_cluster_key(message: str, screen: str | None) -> str | None:
         return "network_request_failed"
     if "pending sync" in text:
         return "pending_sync_stall"
+    if "front desk" in text:
+        if "priced window closed" in text:
+            return "front_desk_missed"
+        if "prices never landed" in text:
+            return "front_desk_waiting_for_prices"
+        return "front_desk_load_failed"
     return None
 
 
