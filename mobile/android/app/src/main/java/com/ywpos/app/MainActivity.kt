@@ -45,7 +45,7 @@ class MainActivity : ReactActivity() {
     val night =
       resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK ==
         Configuration.UI_MODE_NIGHT_YES
-    val bar = Color.parseColor(if (night) "#0A0D12" else "#F3EFE4")
+    val bar = Color.parseColor(if (night) "#0A0D12" else "#F4FBFF")
     @Suppress("DEPRECATION")
     window.navigationBarColor = bar
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
