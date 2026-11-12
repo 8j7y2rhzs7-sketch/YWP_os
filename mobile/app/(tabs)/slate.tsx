@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { AppState, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { BrandHeader } from "@/components/BrandHeader";
 import { EngineStage } from "@/components/EngineStage";
@@ -15,6 +15,7 @@ import { SectionTitle } from "@/components/SectionTitle";
 import { SportBallIcon } from "@/components/SportBallIcon";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
+import { useRunKeepAwake } from "@/components/StayAwake";
 import { useAppData } from "@/context/AppDataContext";
 import { useAuth } from "@/context/AuthContext";
 import {
@@ -22,6 +23,7 @@ import {
   EDGE_CHALLENGE_MESSAGE,
   looksLikeEdgeChallenge,
 } from "@/lib/api";
+import { rememberSession, loadSession, type RunPhase } from "@/lib/session";
 import { sportLook } from "@/sportVisuals";
 import { colors, fonts, radius, spacing, type , registerStyles } from "@/theme";
 import type {
@@ -145,6 +147,22 @@ const sports = [
   { key: "kbo", label: "KBO", icon: "⚾" },
 ] as const;
 
+type SportKey = (typeof sports)[number]["key"];
+
+function isSportKey(value: string | null | undefined): value is SportKey {
+  return sports.some((item) => item.key === value);
+}
+
+type LiveRun = {
+  sport: SportKey;
+  date: string;
+  slate: SlateResponse | null;
+  phase: RunPhase;
+};
+
+/** Same JS runtime: switching apps remounts the screen without dropping the board. */
+let liveRun: LiveRun | null = null;
+
 function localDate(): string {
   const now = new Date();
   const offset = now.getTimezoneOffset() * 60_000;
@@ -153,15 +171,17 @@ function localDate(): string {
 
 export default function SlateScreen() {
   const { user, request } = useAuth();
-  const { saveAnalysis, saveSlate } = useAppData();
-  const [sport, setSport] = useState<(typeof sports)[number]["key"]>("mlb");
-  const [date, setDate] = useState(localDate());
-  const [slate, setSlate] = useState<SlateResponse | null>(null);
+  const { saveAnalysis, saveSlate, lastSlate, ready: dataReady } = useAppData();
+  const resumed = liveRun && liveRun.date === localDate() ? liveRun : null;
+  const [gate, setGate] = useState(resumed != null);
+  const [sport, setSport] = useState<SportKey>(resumed?.sport ?? "mlb");
+  const [date, setDate] = useState(resumed?.date ?? localDate());
+  const [slate, setSlate] = useState<SlateResponse | null>(resumed?.slate ?? null);
   const [loadingSlate, setLoadingSlate] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [researchNote, setResearchNote] = useState<string | null>(null);
-  const [launchArmed, setLaunchArmed] = useState(false);
-  const [warming, setWarming] = useState(false);
+  const [launchArmed, setLaunchArmed] = useState(resumed?.phase === "armed");
+  const [warming, setWarming] = useState(resumed?.phase === "warming");
   const [error, setError] = useState<string | null>(null);
   const [catalogByKey, setCatalogByKey] = useState<Record<string, SportCatalogItem>>({});
   const [catalogReady, setCatalogReady] = useState(false);
@@ -169,6 +189,7 @@ export default function SlateScreen() {
   const [prefetching, setPrefetching] = useState(false);
   const [visibleCount, setVisibleCount] = useState(CANDIDATE_PAGE);
   const warmEpoch = useRef(0);
+  const heldSession = useRef<Awaited<ReturnType<typeof loadSession>>>(null);
 
   async function loadCatalog() {
     try {
@@ -277,6 +298,7 @@ export default function SlateScreen() {
         candidates = candidates.map((row) => upgradedById.get(row.candidate_id) ?? row);
         latest = { ...base, candidates };
         setSlate(latest);
+        saveSlate(latest);
         saveSlate(latest);
         const pendingAfter = pendingPropCount(candidates);
         const modeled = candidates.filter(
@@ -426,18 +448,113 @@ export default function SlateScreen() {
     }
   }
 
+  const phase: RunPhase = analyzing
+    ? "analyzing"
+    : warming
+      ? "warming"
+      : loadingSlate
+        ? "loading"
+        : launchArmed
+          ? "armed"
+          : "idle";
+  useRunKeepAwake(phase !== "idle" || Boolean(slate));
+
   useEffect(() => {
     void loadCatalog();
+    if (resumed) return;
+    void loadSession().then((session) => {
+      heldSession.current = session;
+      if (
+        session &&
+        session.date === localDate() &&
+        isSportKey(session.sport)
+      ) {
+        setSport(session.sport);
+        setDate(session.date);
+      }
+      setGate(true);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (!catalogReady) return;
-    setVisibleCount(CANDIDATE_PAGE);
-    void loadSlate();
-    // Wait for catalog so OOS sports skip paid Odds; do not re-fetch when catalog object identity changes.
+    if (!gate) return;
+    liveRun = { sport, date, slate, phase };
+    rememberSession({ sport, date, phase });
+  }, [gate, sport, date, slate, phase]);
+
+  useEffect(() => {
+    const sub = AppState.addEventListener("change", (state) => {
+      if (state !== "background" || !slate) return;
+      saveSlate(slate);
+      rememberSession({ sport, date, phase });
+    });
+    return () => sub.remove();
+  }, [date, phase, saveSlate, slate, sport]);
+
+  const lastSlateRef = useRef(lastSlate);
+  lastSlateRef.current = lastSlate;
+
+  useEffect(() => {
+    if (!catalogReady || !dataReady || !gate) return;
+    let cancelled = false;
+    void (async () => {
+      const session = heldSession.current ?? (resumed ? await loadSession() : null);
+      if (cancelled) return;
+      const stored = lastSlateRef.current;
+      const memoryBoard =
+        liveRun &&
+        liveRun.sport === sport &&
+        liveRun.date === date &&
+        liveRun.slate &&
+        liveRun.slate.sport.toLowerCase() === sport &&
+        liveRun.slate.date === date
+          ? liveRun.slate
+          : null;
+      const storedBoard =
+        stored && stored.sport.toLowerCase() === sport && stored.date === date
+          ? stored
+          : null;
+      const board = memoryBoard ?? storedBoard;
+      const sessionPhase =
+        session && session.sport === sport && session.date === date ? session.phase : null;
+      const recent =
+        Boolean(memoryBoard) ||
+        Boolean(session && Date.now() - session.savedAt < 8 * 60 * 60 * 1000);
+      if (
+        board &&
+        recent &&
+        (sessionPhase === "warming" ||
+          sessionPhase === "armed" ||
+          sessionPhase === "analyzing")
+      ) {
+        setSlate(board);
+        setLoadingSlate(false);
+        setVisibleCount(CANDIDATE_PAGE);
+        if (sessionPhase === "warming" || liveRun?.phase === "warming") {
+          warmEpoch.current += 1;
+          setResearchNote("Picking the run back up…");
+          void warmResearch(board, warmEpoch.current);
+          return;
+        }
+        setLaunchArmed(true);
+        setWarming(false);
+        setResearchNote(
+          sessionPhase === "analyzing"
+            ? "Run was grading when you left. Tap LAUNCH to grade again."
+            : "Back on this run.",
+        );
+        return;
+      }
+      setVisibleCount(CANDIDATE_PAGE);
+      void loadSlate();
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // Resume a saved run instead of wiping the board. loadSlate/warmResearch close over the latest sport.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sport, date, catalogReady]);
+  }, [sport, date, catalogReady, dataReady, gate]);
 
   const tone = orbitToneFor(loadingSlate || analyzing || warming, slate);
   const look = sportLook(sport);

@@ -168,9 +168,13 @@ export default function SettingsScreen() {
       <BrandHeader title="SYSTEM CONTROLS" subtitle="BANKROLL • PROTOCOL • ACCOUNT" compact />
       <SectionTitle title="Display" subtitle="Screen and the phone's light or dark mode." />
       <MetalPanel>
-        <Text style={styles.title}>Screen stays on</Text>
+        <Text style={styles.title}>Screen stays on during a run</Text>
         <Text style={type.body}>
-          While YWP OS is open, the phone will not sleep the display. You stay on the board instead of coming back to a closed session. Press the power button when you want the screen off.
+          While YWP OS is open, the phone will not sleep the display. A run stays on screen instead of timing out. Press the power button when you want the screen off.
+        </Text>
+        <Text style={[styles.title, { marginTop: spacing.md }]}>Switch apps and come back</Text>
+        <Text style={type.body}>
+          Leave for another app and the phone can sleep. When you come back, you land on the same board and a research run picks up where it left off.
         </Text>
         <Text style={[styles.title, { marginTop: spacing.md }]}>Matches your phone</Text>
         <Text style={type.body}>

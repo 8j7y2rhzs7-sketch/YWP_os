@@ -30,6 +30,12 @@ class MainActivity : ReactActivity() {
     applySystemBars()
   }
 
+  override fun onResume() {
+    super.onResume()
+    // Coming back from another app should repaint, not sit on a blank surface.
+    window.decorView.post { window.decorView.requestLayout() }
+  }
+
   override fun onConfigurationChanged(newConfig: Configuration) {
     super.onConfigurationChanged(newConfig)
     applySystemBars()

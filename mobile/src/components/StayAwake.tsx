@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { AppState, type AppStateStatus } from "react-native";
 
 const TAG = "ywp-os-foreground";
+const RUN_TAG = "ywp-os-run";
 
 /**
  * Keep the display on while YWP OS is the app on screen.
@@ -27,4 +28,15 @@ export function StayAwake() {
     };
   }, []);
   return null;
+}
+
+/** Hold the display on for the whole time a run is on screen. */
+export function useRunKeepAwake(active: boolean) {
+  useEffect(() => {
+    if (!active) return;
+    activateKeepAwakeAsync(RUN_TAG).catch(() => undefined);
+    return () => {
+      deactivateKeepAwake(RUN_TAG).catch(() => undefined);
+    };
+  }, [active]);
 }
