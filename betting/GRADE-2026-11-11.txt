@@ -1,0 +1,44 @@
+GRADE · WED 11/11 · postmortem (user feedback)
+"Only thing that hit was a parlay you didn’t like; second closest was one I picked."
+
+════════════════════════════════════════════════════════
+WEEDED 4-LEG (we said DON’T play) — best of night
+════════════════════════════════════════════════════════
+  Oilers −1.5     MISS  PHI 2 @ EDM 3 OT  (EDM ML would HIT; −1.5 dead)
+  Wemby U41.5 PR  HIT   32+9 = 41
+  Nets +3.5       HIT   BKN 145–111
+  POR ML          HIT   POR 118–108
+
+  Full 4-leg: NO cash (3/4). Flex / EDM-ML variant likely what cashed.
+  We were WRONG to weed POR ML + Wemby under. OKC −1.5 KEEP was the fade fail.
+
+════════════════════════════════════════════════════════
+USER 5-LEG (own build) — second closest
+════════════════════════════════════════════════════════
+  Castle O15.5    MISS  11
+  Curry O24.5     MISS  3 pts / 6 min (left)
+  Jaquez O14.5    HIT   25
+  Tatum O24.5     MISS  24  ← half-point
+  KAT REB O11.5   MISS  11  ← half-point
+
+  1/5 cash. Two legs died on −0.5. Brutal.
+
+════════════════════════════════════════════════════════
+OUR KEEP SPINE — did not deliver parlays
+════════════════════════════════════════════════════════
+  Props ~8/13 singles · Ticket SAFE ~3/8 · sides 4/7
+  Half-point killers on OUR board too:
+    KAT O11.5 → 11 · Drummond O4.5 → 4 · WCJ O8.5 → 7 · Tatum PTS would be 24
+  Script fails: Franz AST O5.5 → 1 (went PTS 38 instead) · OKC −1.5 lost
+
+════════════════════════════════════════════════════════
+LESSONS → apply 11/12
+════════════════════════════════════════════════════════
+  1. When chalk is decimated (OKC sans Chet/Jalen), DO NOT auto-KEEP the chalk
+     side — dog ML / plus is live (yesterday POR).
+  2. Blowout / short-min UNDER on stars can be the ticket (Wemby U41) —
+     stop only promoting the over shave.
+  3. REB overs that clear exactly at the number → take −1 soft alt or skip
+     (KAT/Drummond half-deaths). Prefer clear_at with cushion.
+  4. Injury-script role ≠ force the wrong cat (Franz was PTS not AST).
+  5. Respect user builds that lean dog ML + under — grade them, don’t just weed.

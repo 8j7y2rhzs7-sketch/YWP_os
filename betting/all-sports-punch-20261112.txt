@@ -1,22 +1,25 @@
-ALL-SPORTS PUNCH · THU 11/12 · ~5:55 AM ET
+ALL-SPORTS PUNCH · THU 11/12 · recalibrated after 11/11 grade
 GATE PASS · confirm HR before ticket
+
+POSTMORTEM: weeded Oilers/WembyU/Nets/POR was best (3/4). User 5-leg
+lost on Tatum 24 / KAT 11 half-points. Our SAFE parlays missed.
+→ cushion REB · don’t auto-chalk when stars OUT · dog + under ticket live
 
 PROPS
   7/7 Shead AST O5.5 (TOR @ PHI)                 NO SHAVE · Barnes OUT
   7/7 Duncan Robinson PTS O11.5 (DET @ WSH)      SHAVE from ~15.5
   7/7 PJ Washington REB O4.5 (DAL @ MIN)         SHAVE if ~8.5
   6/7 Cade AST O6.5 (DET @ WSH)                  NO SHAVE
-  6/7 Gobert REB O9.5 (DAL @ MIN)                SHAVE if ~10.5 · Ant OUT
-  6/7 Sarr REB O7.5 (DET @ WSH)                  NO SHAVE
+  6/7 Gobert REB O8.5 (DAL @ MIN)                CUSHION from O9.5 · Ant OUT
+  6/7 Sarr REB O6.5 (DET @ WSH)                  CUSHION from O7.5
   6/7 Flagg AST O5.5 (DAL @ MIN)                 NO SHAVE
-  6/7 Ausar REB O5.5 (DET @ WSH)                 SHAVE from ~7.5 · Duren OUT
+  6/7 Ausar REB O4.5 (DET @ WSH)                 CUSHION · Duren OUT
   6/7 Pastrnak SOG O2.5 (MTL @ BOS)              SHAVE if ~3.5
+  lean Booker PTS U24.5 (CHA @ PHX)              under lesson from Wemby U
 
 SIDES
-  DET −5.5 · DAL +5.5 · PHX −3.5 · WAS +2.5
+  DAL +5.5 · WSH +5.5 · WAS +2.5 · PHX −3.5 · DET −3.5 (softer)
   PHI −5.5 ONLY if Embiid or LeBron ACTIVE
 
-UNDERS / TT
-  lean CHA@PHX U214.5 · DET@WSH U220.5 if starters sit early
-
 BAN: DET −10.5 · PHI −9.5 raw · CAR −305 · GTD props · soft floors
+     stacked naked REB overs at exact clear_at (yesterday half-deaths)

@@ -1,29 +1,41 @@
 THREE TICKETS · THU 11/12
+Recalibrated after 11/11 grade: weeded 4-leg was best (3/4); user 5-leg half-point deaths; our SAFE parlays missed.
 
-══ TICKET A — SAFE SPINE (6) ══
-  1. Shead AST O5.5          TOR @ PHI
-  2. Duncan Robinson PTS O11.5  DET @ WSH
-  3. Cade AST O6.5           DET @ WSH
-  4. Gobert REB O9.5         DAL @ MIN
-  5. DET −5.5                @ WSH
-  6. WAS +2.5                @ NYG TNF
+══ TICKET A — SAFE SPINE (6) · cushioned ══
+  1. Shead AST O5.5            TOR @ PHI
+  2. Duncan Robinson PTS O11.5 DET @ WSH
+  3. Cade AST O6.5             DET @ WSH
+  4. Gobert REB O8.5           (was O9.5 — half-point cushion)
+  5. DAL +5.5                  Ant OUT · dog live (POR lesson)
+  6. WAS +2.5                  TNF · McCarthy Q
 
 ══ TICKET B — SCRIPT / ROLE (6) ══
-  1. Ausar REB O5.5          Duren OUT
-  2. Paul Reed REB O3.5      Duren OUT mop-up
-  3. Flagg AST O5.5          DAL @ MIN
-  4. PJ Washington REB O4.5  DAL
-  5. DAL +5.5                Ant OUT
-  6. Sarr REB O7.5           WSH
+  1. Ausar REB O4.5            cushion from O5.5 · Duren OUT
+  2. Paul Reed REB O3.5        mop-up
+  3. Flagg AST O5.5
+  4. PJ Washington REB O4.5
+  5. Sarr REB O6.5             cushion from O7.5
+  6. DET −3.5                  softer than −5.5 (ban −10.5)
 
 ══ TICKET C — BANGERS / MULTI (8) ══
   1. Shead AST O5.5
   2. Duncan Robinson PTS O11.5
   3. Cade AST O6.5
-  4. Ausar REB O5.5
-  5. Gobert REB O9.5
-  6. Flagg AST O5.5
-  7. DET −5.5
-  8. WAS +2.5
+  4. Flagg AST O5.5
+  5. Gobert REB O8.5
+  6. DAL +5.5
+  7. WAS +2.5
+  8. PHX −3.5
 
-Add-ons: PHX −3.5 · Pastrnak SOG O2.5 · Diggs REC O3.5
+══ TICKET D — 11/11 LESSON (dog / under / thinned chalk) ══
+  What actually worked yesterday: POR ML + Nets dog + Wemby under
+  1. DAL +5.5                  Ant OUT = OKC-without-stars script
+  2. WSH +5.5 / +6.5           soft dog vs DET −10.5 chalk (POR-style)
+  3. WAS +2.5                  TNF dog
+  4. Booker PTS U24.5          main under lean (Wemby-under lesson) if CHA pace dies
+     OR Booker PTS O19.5 alt if you still want over
+  5. Shead AST O5.5            only firm 7/7 keep from spine
+  6. Skip stacked REB overs without −1 cushion
+
+Add-ons: Pastrnak SOG O2.5 · Diggs REC O3.5
+BAN still: DET −10.5 · PHI −9.5 raw · CAR −305 · GTD props
