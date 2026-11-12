@@ -1,0 +1,91 @@
+ALL-SPORTS · THU 11/12/2026 · America/New_York
+GATE PASS · sheets 257/257 · built ~5:55 AM ET
+Slate: NBA 4 · NHL 11 · NFL 1 (TNF) · NCAAF Fri/Sat leftover
+
+════════════════════════════════════════════════════════
+BANGERS (firm 6/7–7/7 · not soft floors)
+════════════════════════════════════════════════════════
+  1. Jamal Shead        AST O5.5   TOR @ PHI 7pm · 7/7 · Barnes OUT
+     id=4432241  L=[6,11,16,6,6,6,8]
+  2. Duncan Robinson    PTS O11.5  DET @ WSH 7pm · 7/7 · SHAVE from ~15.5
+     id=3157465  L=[22,12,27,24,17,13,12]
+  3. P.J. Washington    REB O4.5   DAL @ MIN 8pm · 7/7 · SHAVE toward ~8.5 if posted high
+     id=4278078  L=[9,5,6,9,5,10,9]
+  4. Cade Cunningham    AST O6.5   DET @ WSH · 6/7
+     id= (DET)   L=[7,8,11,7,4,7,8]
+  5. Rudy Gobert        REB O9.5   DAL @ MIN · 6/7 · Ant OUT (MIN still boards)
+     L=[15,11,11,10,13,4,20]
+  6. Alex Sarr          REB O7.5   DET @ WSH · 6/7 · WSH
+     L=[8,8,14,8,9,8,4]
+  7. Cooper Flagg       AST O5.5   DAL @ MIN · 6/7
+     L=[6,12,7,5,6,6,8]
+  8. Ausar Thompson     REB O5.5   DET @ WSH · 6/7 · Duren OUT script · SHAVE from ~7.5
+     L=[5,11,17,6,8,9,6]
+
+════════════════════════════════════════════════════════
+PRIMARY / SAFE SIDES (soft alts · no −1000 · no raw −10+)
+════════════════════════════════════════════════════════
+  PHI −5.5          TOR @ PHI · main −9.5 · TOR: Barnes+Kawhi OUT
+                    RISK: Embiid DTD · LeBron DTD — confirm ACTIVE before PHI chalk
+  DET −5.5          @ WSH · soft from −10.5 (BAN raw −10.5)
+  DAL +5.5          @ MIN · Ant OUT · soft dog number
+  PHX −3.5          vs CHA · soft from −6.5 · CHA gutted (Miller/Schroder/Knueppel OUT)
+  WAS +2.5 / +3.5   @ NYG TNF 8:15 · main NYG −2.5 · McCarthy Q for NYG
+
+════════════════════════════════════════════════════════
+SCRIPT / ROLE UPS
+════════════════════════════════════════════════════════
+  DET @ WSH: Jalen Duren OUT → Reed / Ausar rebound mop-up
+  TOR @ PHI: Barnes+Kawhi OUT → Shead AST · Quickley/Barrett volume
+  DAL @ MIN: Anthony Edwards OUT → LaMelo / Ayo / McDaniels usage · DAL +5.5 live
+  CHA @ PHX: CHA thinned → Booker floor · PHX soft alt −3.5
+
+════════════════════════════════════════════════════════
+SECONDARY (confirm HR · shave if mains high)
+════════════════════════════════════════════════════════
+  Kyshawn George   PTS O11.5  (posted ~14.5)  WSH
+  Devin Booker     PTS O19.5  (posted ~24.5)  PHX · or 3PT O1.5 only as add
+  Tyrese Maxey     AST O3.5   7/7 · firm floor · PHI
+  Paul Reed        REB O3.5–O4.5  DET · Duren OUT
+  David Pastrnak   SOG O2.5   MTL @ BOS · 6/7 · only NHL SOG clear at firm floor
+  Isaiah Likely    REC O4.5   NYG TNF · L10 6/8 · if McCarthy plays
+  Stefon Diggs     REC O3.5   WAS TNF · L10 5/7
+
+════════════════════════════════════════════════════════
+NFL TNF — WAS @ NYG · 8:15 PM ET
+════════════════════════════════════════════════════════
+  KEEP: WAS +2.5 / +3.5 (alt OK)
+  RISK: NYG ML until McCarthy confirmed
+  WEED: heavy NYG −6.5+ chalk · J.J. McCarthy PASS if still Q
+
+════════════════════════════════════════════════════════
+NHL NOTES
+════════════════════════════════════════════════════════
+  BAN: CAR −305 @ SEA (noon) · any −200+ ML juice
+  ONLY firm SOG clear tonight: Pastrnak O2.5
+  Prefer puck-line dogs / small numbers over chalk ML
+
+════════════════════════════════════════════════════════
+BAN
+════════════════════════════════════════════════════════
+  DET −10.5 raw · PHI −9.5 raw without Embiid/LeBron ACTIVE
+  Soft floors: REB O2.5 · AST O2.5 · STL/BLK O0.5 · 3PT O0.5 as spine
+  GTD props (Embiid / LeBron / anyone Day-To-Day) until confirmed
+  CAR −305 · UGA-style −1000 juice · NCAAM −20+
+
+════════════════════════════════════════════════════════
+PLAY THIS (10) — mixed day ticket
+════════════════════════════════════════════════════════
+  1. Shead AST O5.5
+  2. Duncan Robinson PTS O11.5
+  3. Cade AST O6.5
+  4. Ausar REB O5.5
+  5. PJ Washington REB O4.5
+  6. Gobert REB O9.5
+  7. Flagg AST O5.5
+  8. DET −5.5
+  9. DAL +5.5
+ 10. WAS +2.5
+
+Want 12: + Sarr REB O7.5 · PHX −3.5
+Want 14: + Pastrnak SOG O2.5 · Diggs REC O3.5

@@ -1,0 +1,104 @@
+════════════════════════════════════════════════════════════════════
+MULTI-DAY 6/7+ POOL · 11/12–11/12 · America/New_York
+Idea: spread risk across days · pick the BEST from each slate · more punches, same rigor
+Rule: clear_at = highest line that still hits 6/7 or 7/7 (soft floors banned)
+G2/G3: confirm posted/HR before betting — research_posted is L7-median estimate when book missing
+════════════════════════════════════════════════════════════════════
+
+── SLATE ──
+  11/12  NBA 4 · NHL 11 · NFL 1  →  79 clears @ 6/7+
+
+══ BEST OF EACH DAY (top punches) ══
+
+▶ 11/12
+  7/7   Tyrese Maxey           AST     clear O3.5   band O2.0–O3.5      NBA TOR @ PHI · 35.4mpg
+        L=[4.0, 7.0, 4.0, 7.0, 11.0, 4.0, 4.0]  research~O3.5  id=4431678
+  6/7   David Pastrnak         SOG     clear O2.5   band O2.0–O2.5      NHL MTL @ BOS
+        L=[3.0, 4.0, 7.0, 4.0, 3.0, 1.0, 5.0]  research~O3.5  id=3114778
+  7/7   Devin Booker           3PT     clear O1.5   band O1.0–O1.5      NBA CHA @ PHX · 34.1mpg
+        L=[2.0, 3.0, 2.0, 4.0, 2.0, 2.0, 3.0]  research~O1.5  id=3136193
+  7/7   Kyshawn George         REB     clear O2.5   band O2.0–O2.5      NBA DET @ WSH · 35.3mpg
+        L=[9.0, 3.0, 7.0, 4.0, 4.0, 4.0, 3.0]  research~O3.5  id=5174563
+  7/7   Jaden McDaniels        AST     clear O2.5   band O2.0–O2.5      NBA DAL @ MIN · 35.1mpg
+        L=[3.0, 5.0, 4.0, 3.0, 3.0, 7.0, 4.0]  research~O3.5  id=4431671
+  7/7   Kyshawn George         3PT     clear O1.5   band O1.0–O1.5      NBA DET @ WSH · 35.3mpg
+        L=[5.0, 2.0, 2.0, 5.0, 3.0, 4.0, 4.0]  research~O3.5  id=5174563
+  7/7   Duncan Robinson        3PT     clear O1.5   band O1.0–O1.5      NBA DET @ WSH · 31.6mpg
+        L=[4.0, 3.0, 7.0, 6.0, 2.0, 3.0, 2.0]  research~O2.5  id=3157465
+  7/7   RJ Barrett             REB     clear O2.5   band O2.0–O2.5      NBA TOR @ PHI · 34.3mpg
+        L=[8.0, 3.0, 7.0, 5.0, 6.0, 10.0, 3.0]  research~O5.5  id=4395625
+  7/7   VJ Edgecombe           REB     clear O2.5   band O2.0–O2.5      NBA TOR @ PHI · 34.3mpg
+        L=[4.0, 6.0, 3.0, 6.0, 3.0, 8.0, 8.0]  research~O5.5  id=5124612
+  7/7   Jamal Shead            AST     clear O5.5   band O2.0–O5.5      NBA TOR @ PHI · 25.7mpg
+        L=[6.0, 11.0, 16.0, 6.0, 6.0, 6.0, 8.0]  research~O5.5  id=4432241
+  7/7   P.J. Washington        REB     clear O4.5   band O2.0–O4.5      NBA DAL @ MIN · 33.0mpg
+        L=[9.0, 5.0, 6.0, 9.0, 5.0, 10.0, 9.0]  research~O8.5  id=4278078
+  7/7   Paul Reed              REB     clear O3.5   band O2.0–O3.5      NBA DET @ WSH · 27.7mpg
+        L=[10.0, 10.0, 7.0, 5.0, 4.0, 4.0, 9.0]  research~O6.5  id=4278562
+  7/7   Duncan Robinson        PTS     clear O11.5  band O5.0–O11.5     NBA DET @ WSH · 31.6mpg
+        L=[22.0, 12.0, 27.0, 24.0, 17.0, 13.0, 12.0]  research~O16.5  id=3157465
+  7/7   Ausar Thompson         PTS     clear O6.5   band O5.0–O6.5      NBA DET @ WSH · 27.4mpg
+        L=[8.0, 7.0, 11.0, 14.0, 11.0, 7.0, 11.0]  research~O10.5  id=4684742
+
+══ CROSS-DAY MASTER PUNCH (diversified) ══
+Grab 2–4 from each day → bigger ticket, risk split across tips
+   1. [11/12] 7/7  Tyrese Maxey         AST     O3.5  NBA TOR @ PHI
+   2. [11/12] 7/7  Devin Booker         3PT     O1.5  NBA CHA @ PHX
+   3. [11/12] 7/7  Kyshawn George       REB     O2.5  NBA DET @ WSH
+   4. [11/12] 7/7  Jaden McDaniels      AST     O2.5  NBA DAL @ MIN
+   5. [11/12] 7/7  Kyshawn George       3PT     O1.5  NBA DET @ WSH
+   6. [11/12] 7/7  Duncan Robinson      3PT     O1.5  NBA DET @ WSH
+   7. [11/12] 7/7  RJ Barrett           REB     O2.5  NBA TOR @ PHI
+   8. [11/12] 7/7  VJ Edgecombe         REB     O2.5  NBA TOR @ PHI
+
+══ FULL CLEAR BOARDS BY DAY ══
+
+── 11/12 (79 clears) ──
+  7/7  Tyrese Maxey           AST   O3.5   O2.0–O3.5      TOR @ PHI    L=[4.0, 7.0, 4.0, 7.0, 11.0, 4.0, 4.0]
+  7/7  Devin Booker           3PT   O1.5   O1.0–O1.5      CHA @ PHX    L=[2.0, 3.0, 2.0, 4.0, 2.0, 2.0, 3.0]
+  7/7  Kyshawn George         REB   O2.5   O2.0–O2.5      DET @ WSH    L=[9.0, 3.0, 7.0, 4.0, 4.0, 4.0, 3.0]
+  7/7  Jaden McDaniels        AST   O2.5   O2.0–O2.5      DAL @ MIN    L=[3.0, 5.0, 4.0, 3.0, 3.0, 7.0, 4.0]
+  7/7  Kyshawn George         3PT   O1.5   O1.0–O1.5      DET @ WSH    L=[5.0, 2.0, 2.0, 5.0, 3.0, 4.0, 4.0]
+  7/7  Duncan Robinson        3PT   O1.5   O1.0–O1.5      DET @ WSH    L=[4.0, 3.0, 7.0, 6.0, 2.0, 3.0, 2.0]
+  7/7  RJ Barrett             REB   O2.5   O2.0–O2.5      TOR @ PHI    L=[8.0, 3.0, 7.0, 5.0, 6.0, 10.0, 3.0]
+  7/7  VJ Edgecombe           REB   O2.5   O2.0–O2.5      TOR @ PHI    L=[4.0, 6.0, 3.0, 6.0, 3.0, 8.0, 8.0]
+  7/7  Jamal Shead            AST   O5.5   O2.0–O5.5      TOR @ PHI    L=[6.0, 11.0, 16.0, 6.0, 6.0, 6.0, 8.0]
+  7/7  P.J. Washington        REB   O4.5   O2.0–O4.5      DAL @ MIN    L=[9.0, 5.0, 6.0, 9.0, 5.0, 10.0, 9.0]
+  7/7  Royce O'Neale          REB   O2.5   O2.0–O2.5      CHA @ PHX    L=[3.0, 4.0, 3.0, 4.0, 6.0, 3.0, 4.0]
+  7/7  Paul Reed              REB   O3.5   O2.0–O3.5      DET @ WSH    L=[10.0, 10.0, 7.0, 5.0, 4.0, 4.0, 9.0]
+  7/7  Terrence Shannon Jr.   REB   O2.5   O2.0–O2.5      DAL @ MIN    L=[3.0, 3.0, 3.0, 6.0, 4.0, 4.0, 4.0]
+  7/7  Duncan Robinson        PTS   O11.5  O5.0–O11.5     DET @ WSH    L=[22.0, 12.0, 27.0, 24.0, 17.0, 13.0, 12.0]
+  7/7  Ausar Thompson         PTS   O6.5   O5.0–O6.5      DET @ WSH    L=[8.0, 7.0, 11.0, 14.0, 11.0, 7.0, 11.0]
+  7/7  Kyshawn George         PTS   O11.5  O5.0–O11.5     DET @ WSH    L=[25.0, 12.0, 14.0, 33.0, 25.0, 22.0, 12.0]
+  6/7  Cooper Flagg           AST   O5.5   O2.0–O5.5      DAL @ MIN    L=[6.0, 12.0, 7.0, 5.0, 6.0, 6.0, 8.0]
+  6/7  Jaden McDaniels        REB   O5.5   O2.0–O5.5      DAL @ MIN    L=[6.0, 6.0, 8.0, 6.0, 3.0, 6.0, 6.0]
+  6/7  Cade Cunningham        AST   O6.5   O2.0–O6.5      DET @ WSH    L=[7.0, 8.0, 11.0, 7.0, 4.0, 7.0, 8.0]
+  6/7  P.J. Washington        3PT   O1.5   O1.0–O1.5      DAL @ MIN    L=[2.0, 2.0, 6.0, 3.0, 2.0, 1.0, 2.0]
+  6/7  Tyrese Maxey           3PT   O1.5   O1.0–O1.5      TOR @ PHI    L=[3.0, 3.0, 2.0, 3.0, 1.0, 4.0, 3.0]
+  6/7  Kyrie Irving           AST   O3.5   O2.0–O3.5      DAL @ MIN    L=[4.0, 4.0, 2.0, 5.0, 9.0, 4.0, 6.0]
+  6/7  RJ Barrett             AST   O2.5   O2.0–O2.5      TOR @ PHI    L=[7.0, 2.0, 4.0, 3.0, 3.0, 5.0, 5.0]
+  6/7  Anthony Davis          REB   O8.5   O2.0–O8.5      DET @ WSH    L=[13.0, 13.0, 10.0, 9.0, 13.0, 5.0, 10.0]
+  6/7  Cade Cunningham        REB   O3.5   O2.0–O3.5      DET @ WSH    L=[3.0, 4.0, 7.0, 5.0, 5.0, 5.0, 9.0]
+  6/7  AJ Dybantsa            REB   O4.5   O2.0–O4.5      DET @ WSH    L=[4.0, 8.0, 6.0, 9.0, 6.0, 5.0, 7.0]
+  6/7  Kyshawn George         AST   O2.5   O2.0–O2.5      DET @ WSH    L=[3.0, 2.0, 6.0, 8.0, 7.0, 5.0, 3.0]
+  6/7  Kyrie Irving           3PT   O1.5   O1.0–O1.5      DAL @ MIN    L=[7.0, 2.0, 0.0, 5.0, 5.0, 3.0, 2.0]
+  6/7  Immanuel Quickley      REB   O2.5   O2.0–O2.5      TOR @ PHI    L=[4.0, 1.0, 4.0, 6.0, 6.0, 3.0, 3.0]
+  6/7  Ja'Kobe Walter         REB   O2.5   O2.0–O2.5      TOR @ PHI    L=[3.0, 6.0, 6.0, 1.0, 6.0, 4.0, 3.0]
+  6/7  Devin Booker           AST   O2.5   O2.0–O2.5      CHA @ PHX    L=[5.0, 4.0, 3.0, 8.0, 2.0, 5.0, 5.0]
+  6/7  Naz Reid               REB   O5.5   O2.0–O5.5      CHA @ PHX    L=[13.0, 6.0, 9.0, 6.0, 5.0, 11.0, 6.0]
+  6/7  Jaylen Brown           REB   O4.5   O2.0–O4.5      TOR @ PHI    L=[5.0, 7.0, 5.0, 7.0, 11.0, 4.0, 10.0]
+  6/7  Ja'Kobe Walter         PTS   O7.5   O5.0–O7.5      TOR @ PHI    L=[17.0, 12.0, 7.0, 8.0, 10.0, 11.0, 9.0]
+  6/7  Rudy Gobert            REB   O9.5   O2.0–O9.5      DAL @ MIN    L=[15.0, 11.0, 11.0, 10.0, 13.0, 4.0, 20.0]
+  6/7  Trae Young             PTS   O14.5  O5.0–O14.5     DET @ WSH    L=[15.0, 20.0, 4.0, 23.0, 18.0, 15.0, 21.0]
+  6/7  Trae Young             AST   O3.5   O2.0–O3.5      DET @ WSH    L=[4.0, 7.0, 3.0, 10.0, 6.0, 9.0, 9.0]
+  6/7  Alex Sarr              REB   O7.5   O2.0–O7.5      DET @ WSH    L=[8.0, 8.0, 14.0, 8.0, 9.0, 8.0, 4.0]
+  6/7  VJ Edgecombe           PTS   O9.5   O5.0–O9.5      TOR @ PHI    L=[8.0, 13.0, 19.0, 11.0, 21.0, 10.0, 13.0]
+  6/7  Cade Cunningham        PTS   O16.5  O5.0–O16.5     DET @ WSH    L=[17.0, 14.0, 26.0, 33.0, 20.0, 30.0, 19.0]
+  … +39 more in JSON
+
+══ HOW TO USE ══
+1. Build separate slips per day OR one multi-day parlay (books that allow it).
+2. From each day take the top 2–4 that are actually posted on HR.
+3. Prefer kind 7/7 / 5/5 / 6/6; use 6/7 when the shave is small (drop ≤3).
+4. Re-check injuries morning-of; GTD stars can kill a leg.
+5. Soft floors stay banned even if they go 7/7.
