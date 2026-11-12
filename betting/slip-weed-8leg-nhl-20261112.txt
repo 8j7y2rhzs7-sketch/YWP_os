@@ -1,0 +1,33 @@
+SLIP WEED · 8-Bet Parlay (+3203 · $50 → $1651) · ~6:56 PM ET
+
+1. BUF @ CHI O6.5 (−110)
+   RISK — main total 6.5. Standard over variance.
+
+2. MIN ML (−170) @ TOR
+   RISK-KEEP — chalk matches board (~−180).
+
+3. OTT +1.5 (−300) vs COL
+   RISK-KEEP safety — board has OTT −118 favorite; +1.5 is juice padding.
+
+4. FLA ML (−185) vs DET
+   RISK — board ~−205. Heavier chalk than earlier −170. OK but juice.
+
+5. STL ML (−125) vs UTA
+   KEEP lean — fair number (~−130).
+
+6. NYI @ LA O5.5 (−145)
+   RISK — main total 5.5. Needs goals; −145 juice on a coin-ish over.
+
+7. CBJ +1.5 (−325) vs TB
+   RISK-KEEP safety — board CBJ −118; +1.5 is another juice pad.
+
+8. DET @ WSH U232.5 (−300)
+   KEEP soft — main O/U **223.5**; U232.5 is 9 pts of padding.
+
+══ VERDICT ══
+  Playable but padded: OTT +1.5, CBJ +1.5, U232.5 are juice sinks
+  Real risk: MIN ML · FLA ML · STL ML · both overs
+  Better than DET −500 / PHI −300 stack
+
+  Tighten: drop one pad (CBJ +1.5 or U232.5) · keep STL / MIN / FLA / one over
+  Or swap FLA ML → FLA −1.5 only if you want puckline (not softer)
