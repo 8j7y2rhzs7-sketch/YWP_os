@@ -1,0 +1,374 @@
+EXHAUSTIVE ALL-SPORTS · THU 11/12 · Thu 11/12 11:24 AM ET
+GATE PASS · sheets 257/257 · path /cursor/stores/self/betting/GATE_SHEETS_20261112.json
+Gates: G1 dual-window+mins · G2 Betravon posted · G3 confirm HR before lock
+Updates: 11/11 postmortem (Wemby under hit / REB half-deaths / POR dog) → REB−1 cushion · dog ticket · no STL spine
+
+============================================================
+BANGERS
+============================================================
+1. Duncan Robinson  PTS O11.5  [KEEP]  7/7→@line 7/7
+   game DET @ WSH · team DET · id=3157465 · src=espn:GATE_SHEETS_20261112
+   season 10/10 (100%) · posted=15.5 · shave=4.0 · mpg=31.6
+   L7 vals [22.0, 12.0, 27.0, 24.0, 17.0, 13.0, 12.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 34 PTS 22 REB 3 AST 2 STL 0 BLK 0 TO 0 3PM 4.0
+     2. MIN 27 PTS 12 REB 0 AST 3 STL 0 BLK 0 TO 1 3PM 3.0
+     3. MIN 37 PTS 27 REB 1 AST 2 STL 1 BLK 0 TO 0 3PM 7.0
+     4. MIN 32 PTS 24 REB 2 AST 3 STL 3 BLK 0 TO 1 3PM 6.0
+     5. MIN 26 PTS 17 REB 4 AST 2 STL 3 BLK 0 TO 0 3PM 2.0
+     6. MIN 32 PTS 13 REB 2 AST 2 STL 4 BLK 1 TO 2 3PM 3.0
+     7. MIN 33 PTS 12 REB 0 AST 2 STL 1 BLK 1 TO 1 3PM 2.0
+
+2. Kyshawn George  PTS O11.5  [KEEP]  7/7→@line 7/7
+   game DET @ WSH · team WSH · id=5174563 · src=espn:GATE_SHEETS_20261112
+   season 10/12 (83%) · posted=14.5 · shave=3.0 · mpg=35.3
+   L7 vals [25.0, 12.0, 14.0, 33.0, 25.0, 22.0, 12.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 39 PTS 25 REB 9 AST 3 STL 0 BLK 0 TO 6 3PM 5.0
+     2. MIN 35 PTS 12 REB 3 AST 2 STL 1 BLK 1 TO 5 3PM 2.0
+     3. MIN 30 PTS 14 REB 7 AST 6 STL 0 BLK 3 TO 1 3PM 2.0
+     4. MIN 39 PTS 33 REB 4 AST 8 STL 1 BLK 2 TO 2 3PM 5.0
+     5. MIN 35 PTS 25 REB 4 AST 7 STL 0 BLK 0 TO 4 3PM 3.0
+     6. MIN 37 PTS 22 REB 4 AST 5 STL 1 BLK 1 TO 1 3PM 4.0
+     7. MIN 32 PTS 12 REB 3 AST 3 STL 0 BLK 1 TO 2 3PM 4.0
+
+3. P.J. Washington  REB O4.5  [KEEP]  7/7→@line 7/7
+   game DAL @ MIN · team DAL · id=4278078 · src=espn:GATE_SHEETS_20261112
+   season 9/11 (82%) · posted=6.5 · shave=2.0 · mpg=33.0
+   L7 vals [9.0, 5.0, 6.0, 9.0, 5.0, 10.0, 9.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 35 PTS 13 REB 9 AST 1 STL 2 BLK 2 TO 2 3PM 2.0
+     2. MIN 25 PTS 6 REB 5 AST 0 STL 1 BLK 1 TO 2 3PM 2.0
+     3. MIN 33 PTS 26 REB 6 AST 1 STL 1 BLK 1 TO 0 3PM 6.0
+     4. MIN 39 PTS 21 REB 9 AST 3 STL 0 BLK 1 TO 1 3PM 3.0
+     5. MIN 38 PTS 12 REB 5 AST 1 STL 2 BLK 0 TO 2 3PM 2.0
+     6. MIN 34 PTS 3 REB 10 AST 1 STL 0 BLK 0 TO 1 3PM 1.0
+     7. MIN 27 PTS 18 REB 9 AST 0 STL 0 BLK 1 TO 1 3PM 2.0
+
+4. Naz Reid  REB O4.5  [KEEP]  6/7→@line 7/7
+   game CHA @ PHX · team CHA · id=4396971 · src=espn:GATE_SHEETS_20261112
+   season 11/11 (100%) · posted=8.5 · shave=4.0 · mpg=28.7
+   L7 vals [13.0, 6.0, 9.0, 6.0, 5.0, 11.0, 6.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 32 PTS 25 REB 13 AST 4 STL 2 BLK 0 TO 3 3PM 4.0
+     2. MIN 26 PTS 14 REB 6 AST 2 STL 1 BLK 0 TO 2 3PM 2.0
+     3. MIN 36 PTS 28 REB 9 AST 2 STL 0 BLK 1 TO 2 3PM 2.0
+     4. MIN 27 PTS 13 REB 6 AST 2 STL 0 BLK 0 TO 1 3PM 2.0
+     5. MIN 36 PTS 14 REB 5 AST 2 STL 0 BLK 1 TO 4 3PM 0.0
+     6. MIN 31 PTS 12 REB 11 AST 1 STL 3 BLK 0 TO 3 3PM 2.0
+     7. MIN 13 PTS 7 REB 6 AST 0 STL 0 BLK 1 TO 1 3PM 1.0
+
+5. Ausar Thompson  REB O4.5  [KEEP]  6/7→@line 7/7
+   game DET @ WSH · team DET · id=4684742 · src=espn:GATE_SHEETS_20261112
+   season 8/9 (89%) · posted=7.5 · shave=3.0 · mpg=27.4
+   L7 vals [5.0, 11.0, 17.0, 6.0, 8.0, 9.0, 6.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 28 PTS 8 REB 5 AST 4 STL 2 BLK 1 TO 5 3PM 0.0
+     2. MIN 24 PTS 7 REB 11 AST 3 STL 1 BLK 0 TO 2 3PM 0.0
+     3. MIN 34 PTS 11 REB 17 AST 3 STL 1 BLK 0 TO 1 3PM 0.0
+     4. MIN 26 PTS 14 REB 6 AST 4 STL 0 BLK 1 TO 2 3PM 0.0
+     5. MIN 26 PTS 11 REB 8 AST 6 STL 2 BLK 0 TO 0 3PM 0.0
+     6. MIN 29 PTS 7 REB 9 AST 8 STL 0 BLK 1 TO 3 3PM 0.0
+     7. MIN 25 PTS 11 REB 6 AST 2 STL 2 BLK 1 TO 4 3PM 0.0
+
+6. Tyrese Maxey  AST O3.5  [KEEP]  7/7→@line 7/7
+   game TOR @ PHI · team PHI · id=4431678 · src=espn:GATE_SHEETS_20261112
+   season 12/12 (100%) · posted=5.5 · shave=2.0 · mpg=35.4
+   L7 vals [4.0, 7.0, 4.0, 7.0, 11.0, 4.0, 4.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 34 PTS 24 REB 1 AST 4 STL 0 BLK 0 TO 2 3PM 3.0
+     2. MIN 36 PTS 27 REB 4 AST 7 STL 0 BLK 0 TO 1 3PM 3.0
+     3. MIN 32 PTS 17 REB 3 AST 4 STL 1 BLK 0 TO 0 3PM 2.0
+     4. MIN 34 PTS 19 REB 1 AST 7 STL 0 BLK 0 TO 1 3PM 3.0
+     5. MIN 36 PTS 26 REB 4 AST 11 STL 2 BLK 2 TO 4 3PM 1.0
+     6. MIN 38 PTS 38 REB 4 AST 4 STL 2 BLK 0 TO 2 3PM 4.0
+     7. MIN 38 PTS 27 REB 4 AST 4 STL 1 BLK 1 TO 2 3PM 3.0
+
+7. Devin Booker  3PT O1.5  [KEEP]  7/7→@line 7/7
+   game CHA @ PHX · team PHX · id=3136193 · src=espn:GATE_SHEETS_20261112
+   season 8/10 (80%) · posted=1.5 · shave=0 · mpg=34.1
+   L7 vals [2.0, 3.0, 2.0, 4.0, 2.0, 2.0, 3.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 29 PTS 17 REB 3 AST 5 STL 0 BLK 0 TO 4 3PM 2.0
+     2. MIN 29 PTS 32 REB 2 AST 4 STL 1 BLK 1 TO 0 3PM 3.0
+     3. MIN 39 PTS 24 REB 2 AST 3 STL 3 BLK 0 TO 4 3PM 2.0
+     4. MIN 34 PTS 30 REB 1 AST 8 STL 3 BLK 0 TO 3 3PM 4.0
+     5. MIN 34 PTS 33 REB 1 AST 2 STL 0 BLK 0 TO 2 3PM 2.0
+     6. MIN 35 PTS 26 REB 3 AST 5 STL 0 BLK 0 TO 2 3PM 2.0
+     7. MIN 39 PTS 20 REB 2 AST 5 STL 2 BLK 0 TO 4 3PM 3.0
+
+8. Duncan Robinson  3PT O1.5  [KEEP]  7/7→@line 7/7
+   game DET @ WSH · team DET · id=3157465 · src=espn:GATE_SHEETS_20261112
+   season 10/10 (100%) · posted=3.5 · shave=2.0 · mpg=31.6
+   L7 vals [4.0, 3.0, 7.0, 6.0, 2.0, 3.0, 2.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 34 PTS 22 REB 3 AST 2 STL 0 BLK 0 TO 0 3PM 4.0
+     2. MIN 27 PTS 12 REB 0 AST 3 STL 0 BLK 0 TO 1 3PM 3.0
+     3. MIN 37 PTS 27 REB 1 AST 2 STL 1 BLK 0 TO 0 3PM 7.0
+     4. MIN 32 PTS 24 REB 2 AST 3 STL 3 BLK 0 TO 1 3PM 6.0
+     5. MIN 26 PTS 17 REB 4 AST 2 STL 3 BLK 0 TO 0 3PM 2.0
+     6. MIN 32 PTS 13 REB 2 AST 2 STL 4 BLK 1 TO 2 3PM 3.0
+     7. MIN 33 PTS 12 REB 0 AST 2 STL 1 BLK 1 TO 1 3PM 2.0
+
+9. Devin Booker  PTS O19.5  [KEEP]  6/7→@line 6/7
+   game CHA @ PHX · team PHX · id=3136193 · src=espn:GATE_SHEETS_20261112
+   season 8/10 (80%) · posted=24.5 · shave=5.0 · mpg=34.1
+   L7 vals [17.0, 32.0, 24.0, 30.0, 33.0, 26.0, 20.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 29 PTS 17 REB 3 AST 5 STL 0 BLK 0 TO 4 3PM 2.0
+     2. MIN 29 PTS 32 REB 2 AST 4 STL 1 BLK 1 TO 0 3PM 3.0
+     3. MIN 39 PTS 24 REB 2 AST 3 STL 3 BLK 0 TO 4 3PM 2.0
+     4. MIN 34 PTS 30 REB 1 AST 8 STL 3 BLK 0 TO 3 3PM 4.0
+     5. MIN 34 PTS 33 REB 1 AST 2 STL 0 BLK 0 TO 2 3PM 2.0
+     6. MIN 35 PTS 26 REB 3 AST 5 STL 0 BLK 0 TO 2 3PM 2.0
+     7. MIN 39 PTS 20 REB 2 AST 5 STL 2 BLK 0 TO 4 3PM 3.0
+
+10. Cooper Flagg  PTS O18.5  [KEEP]  6/7→@line 6/7
+   game DAL @ MIN · team DAL · id=5041939 · src=espn:GATE_SHEETS_20261112
+   season 8/10 (80%) · posted=24.5 · shave=6.0 · mpg=36.0
+   L7 vals [43.0, 25.0, 21.0, 19.0, 17.0, 33.0, 26.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 39 PTS 43 REB 10 AST 6 STL 3 BLK 1 TO 5 3PM 3.0
+     2. MIN 28 PTS 25 REB 5 AST 12 STL 1 BLK 0 TO 3 3PM 3.0
+     3. MIN 33 PTS 21 REB 10 AST 7 STL 3 BLK 1 TO 3 3PM 1.0
+     4. MIN 40 PTS 19 REB 10 AST 5 STL 0 BLK 0 TO 1 3PM 0.0
+     5. MIN 40 PTS 17 REB 4 AST 6 STL 2 BLK 0 TO 6 3PM 0.0
+     6. MIN 39 PTS 33 REB 9 AST 6 STL 2 BLK 1 TO 3 3PM 0.0
+     7. MIN 33 PTS 26 REB 5 AST 8 STL 0 BLK 0 TO 0 3PM 2.0
+
+============================================================
+SAFE (dual-window KEEP only)
+============================================================
+  KEEP Duncan Robinson        PTS O11.5  DET @ WSH      posted=15.5 season=100% id=3157465
+  KEEP Kyshawn George         PTS O11.5  DET @ WSH      posted=14.5 season=83% id=5174563
+  KEEP P.J. Washington        REB O4.5   DAL @ MIN      posted=6.5 season=82% id=4278078
+  KEEP Naz Reid               REB O4.5   CHA @ PHX      posted=8.5 season=100% id=4396971
+  KEEP Ausar Thompson         REB O4.5   DET @ WSH      posted=7.5 season=89% id=4684742
+  KEEP Tyrese Maxey           AST O3.5   TOR @ PHI      posted=5.5 season=100% id=4431678
+  KEEP Devin Booker           3PT O1.5   CHA @ PHX      posted=1.5 season=80% id=3136193
+  KEEP Duncan Robinson        3PT O1.5   DET @ WSH      posted=3.5 season=100% id=3157465
+  KEEP Devin Booker           PTS O19.5  CHA @ PHX      posted=24.5 season=80% id=3136193
+  KEEP Cooper Flagg           PTS O18.5  DAL @ MIN      posted=24.5 season=80% id=5041939
+  KEEP Tyrese Maxey           PTS O18.5  TOR @ PHI      posted=24.5 season=92% id=4431678
+  KEEP Cade Cunningham        PTS O16.5  DET @ WSH      posted=24.5 season=80% id=4432166
+  KEEP Jaylen Brown           PTS O15.5  TOR @ PHI      posted=22.5 season=91% id=3917376
+  KEEP Trae Young             PTS O14.5  DET @ WSH      posted=16.5 season=83% id=4277905
+  KEEP Kyrie Irving           PTS O14.5  DAL @ MIN      posted=22.5 season=89% id=6442
+  KEEP Jaden McDaniels        PTS O13.5  DAL @ MIN      posted=16.5 season=91% id=4431671
+  KEEP Naz Reid               PTS O11.5  CHA @ PHX      posted=20.5 season=91% id=4396971
+  KEEP Immanuel Quickley      PTS O11.5  TOR @ PHI      posted=15.5 season=89% id=4395724
+  KEEP RJ Barrett             PTS O11.5  TOR @ PHI      posted=21.5 season=91% id=4395625
+  KEEP AJ Dybantsa            PTS O10.5  DET @ WSH      posted=16.5 season=88% id=5142718
+  KEEP Rudy Gobert            REB O9.5   DAL @ MIN      posted=10.5 season=80% id=3032976
+  KEEP Anthony Davis          REB O8.5   DET @ WSH      posted=10.5 season=80% id=6583
+  KEEP Cade Cunningham        AST O6.5   DET @ WSH      posted=8.5 season=90% id=4432166
+  KEEP Cooper Flagg           AST O5.5   DAL @ MIN      posted=6.5 season=80% id=5041939
+  KEEP Jaden McDaniels        REB O5.5   DAL @ MIN      posted=5.5 season=91% id=4431671
+  KEEP AJ Dybantsa            REB O4.5   DET @ WSH      posted=5.5 season=75% id=5142718
+  KEEP Cooper Flagg           REB O4.5   DAL @ MIN      posted=6.5 season=90% id=5041939
+  KEEP Miles Bridges          REB O4.5   CHA @ PHX      posted=6.5 season=80% id=4066383
+  KEEP Trae Young             AST O3.5   DET @ WSH      posted=7.5 season=92% id=4277905
+  KEEP LaMelo Ball            AST O3.5   DAL @ MIN      posted=6.5 season=91% id=4432816
+  KEEP P.J. Washington        3PT O1.5   DAL @ MIN      posted=1.5 season=82% id=4278078
+  KEEP Tyrese Maxey           3PT O1.5   TOR @ PHI      posted=2.5 season=83% id=4431678
+  KEEP Kyrie Irving           3PT O1.5   DAL @ MIN      posted=2.5 season=78% id=6442
+  KEEP LaMelo Ball            3PT O1.5   DAL @ MIN      posted=3.5 season=82% id=4432816
+
+============================================================
+PRIMARY (RISK-KEEP · firm · confirm HR)
+============================================================
+  RISK-KEEP  Jamal Shead            AST O5.5   TOR @ PHI      L7 7/7 sea 73% posted=None shave=None id=4432241
+  RISK-KEEP  Anthony Davis          PTS O20.5  DET @ WSH      L7 6/7 sea 70% posted=22.5 shave=2.0 id=6583
+  RISK-KEEP  Jaylen Brown           REB O4.5   TOR @ PHI      L7 6/7 sea 73% posted=6.5 shave=2.0 id=3917376
+
+============================================================
+STL / BLK (research only — never spine)
+============================================================
+
+============================================================
+SOG
+============================================================
+  6/7 David Pastrnak         SOG O2.5   MTL @ BOS posted=3.5 id=3114778 vals=[3.0, 4.0, 7.0, 4.0, 3.0, 1.0, 5.0]
+
+============================================================
+SIDES / TOTALS (soft alts · 11/11 dog lesson)
+============================================================
+  KEEP       PHI -5.5           · TOR @ PHI · soft from PHI -8.5
+  RISK-KEEP  DET -5.5           · DET @ WSH · soft from DET -10.5
+  RISK-KEEP  WSH +5.5           · DET @ WSH · POR-lesson dog vs DET -10.5
+  KEEP       MIN -2.5           · DAL @ MIN · soft from MIN -5.5
+  KEEP       PHX -3.5           · CHA @ PHX · soft from PHX -6.5
+  KEEP       WAS +2.5 / +3.5    · WSH @ NYG · main NYG -2.5 · McCarthy Q check
+  RISK-KEEP  Booker PTS U24.5   · CHA @ PHX · under lesson (Wemby U hit)
+  lean       CHA@PHX U214.5 / game totals confirm HR
+
+============================================================
+BY GAME
+============================================================
+
+── NBA TOR @ PHI · 11/12 - 7:00 PM EST · odds PHI -8.5 ou 223.5 ──
+  OUT: PHI Adem Bona, PHI Dominick Barlow, PHI Ariel Hukporti, TOR Kawhi Leonard, TOR Scottie Barnes, TOR Nate Bittle
+  GTD: PHI Joel Embiid (Day-To-Day), PHI LeBron James (Day-To-Day), TOR Trayce Jackson-Davis (Day-To-Day)
+  KEEP       Tyrese Maxey         PTS O18.5  L7 6/7 sea 92% post=24.5 id=4431678
+             L7 MIN[34,36,32,34,36,38,38] PTS['24', '27', '17', '19', '26', '38', '27'] REB['1', '4', '3', '1', '4', '4', '4'] AST['4', '7', '4', '7', '11', '4', '4']
+  KEEP       Jaylen Brown         PTS O15.5  L7 6/7 sea 91% post=22.5 id=3917376
+             L7 MIN[26,35,34,37,33,38,34] PTS['13', '29', '20', '30', '25', '16', '20'] REB['5', '7', '5', '7', '11', '4', '10'] AST['2', '4', '5', '1', '5', '4', '2']
+  KEEP       Immanuel Quickley    PTS O11.5  L7 6/7 sea 89% post=15.5 id=4395724
+             L7 MIN[28,32,38,33,37,29,28] PTS['11', '13', '27', '12', '17', '16', '19'] REB['4', '1', '4', '6', '6', '3', '3'] AST['4', '7', '2', '7', '8', '7', '2']
+  KEEP       RJ Barrett           PTS O11.5  L7 6/7 sea 91% post=21.5 id=4395625
+             L7 MIN[31,36,37,33,37,32,34] PTS['12', '19', '27', '22', '26', '22', '9'] REB['8', '3', '7', '5', '6', '10', '3'] AST['7', '2', '4', '3', '3', '5', '5']
+  KEEP       Tyrese Maxey         AST O3.5   L7 7/7 sea 100% post=5.5 id=4431678
+             L7 MIN[34,36,32,34,36,38,38] PTS['24', '27', '17', '19', '26', '38', '27'] REB['1', '4', '3', '1', '4', '4', '4'] AST['4', '7', '4', '7', '11', '4', '4']
+  KEEP       Tyrese Maxey         3PT O1.5   L7 6/7 sea 83% post=2.5 id=4431678
+  RISK-KEEP  Jamal Shead          AST O5.5   L7 7/7 sea 73% post=None id=4432241
+             L7 MIN[22,36,34,20,20,25,23] PTS['3', '20', '10', '3', '6', '9', '2'] REB['3', '3', '3', '3', '1', '2', '1'] AST['6', '11', '16', '6', '6', '6', '8']
+  RISK-KEEP  Jaylen Brown         REB O4.5   L7 6/7 sea 73% post=6.5 id=3917376
+             L7 MIN[26,35,34,37,33,38,34] PTS['13', '29', '20', '30', '25', '16', '20'] REB['5', '7', '5', '7', '11', '4', '10'] AST['2', '4', '5', '1', '5', '4', '2']
+
+── NBA DET @ WSH · 11/12 - 7:00 PM EST · odds DET -10.5 ou 220.5 ──
+  OUT: WSH Tristan Vukcevic, WSH Reece Beekman, WSH Justin Champagnie, WSH Jamir Watkins, DET Isaiah Joe, DET Jalen Duren
+  GTD: DET Ugonna Onyenso (Day-To-Day)
+  KEEP       Cade Cunningham      PTS O16.5  L7 6/7 sea 80% post=24.5 id=4432166
+             L7 MIN[27,38,40,27,28,39,36] PTS['17', '14', '26', '33', '20', '30', '19'] REB['3', '4', '7', '5', '5', '5', '9'] AST['7', '8', '11', '7', '4', '7', '8']
+  KEEP       Trae Young           PTS O14.5  L7 6/7 sea 83% post=16.5 id=4277905
+             L7 MIN[34,38,28,37,34,34,38] PTS['15', '20', '4', '23', '18', '15', '21'] REB['3', '1', '5', '2', '2', '3', '6'] AST['4', '7', '3', '10', '6', '9', '9']
+  KEEP       Duncan Robinson      PTS O11.5  L7 7/7 sea 100% post=15.5 id=3157465
+             L7 MIN[34,27,37,32,26,32,33] PTS['22', '12', '27', '24', '17', '13', '12'] REB['3', '0', '1', '2', '4', '2', '0'] AST['2', '3', '2', '3', '2', '2', '2']
+  KEEP       Kyshawn George       PTS O11.5  L7 7/7 sea 83% post=14.5 id=5174563
+             L7 MIN[39,35,30,39,35,37,32] PTS['25', '12', '14', '33', '25', '22', '12'] REB['9', '3', '7', '4', '4', '4', '3'] AST['3', '2', '6', '8', '7', '5', '3']
+  KEEP       AJ Dybantsa          PTS O10.5  L7 6/7 sea 88% post=16.5 id=5142718
+             L7 MIN[34,37,31,36,32,33,30] PTS['13', '21', '19', '11', '9', '21', '17'] REB['4', '8', '6', '9', '6', '5', '7'] AST['2', '1', '3', '3', '3', '2', '1']
+  KEEP       Anthony Davis        REB O8.5   L7 6/7 sea 80% post=10.5 id=6583
+             L7 MIN[34,34,30,34,34,34,36] PTS['21', '44', '26', '27', '25', '18', '29'] REB['13', '13', '10', '9', '13', '5', '10'] AST['0', '1', '3', '1', '1', '3', '0']
+  KEEP       Cade Cunningham      AST O6.5   L7 6/7 sea 90% post=8.5 id=4432166
+             L7 MIN[27,38,40,27,28,39,36] PTS['17', '14', '26', '33', '20', '30', '19'] REB['3', '4', '7', '5', '5', '5', '9'] AST['7', '8', '11', '7', '4', '7', '8']
+  KEEP       Ausar Thompson       REB O4.5   L7 7/7 sea 89% post=7.5 id=4684742
+             L7 MIN[28,24,34,26,26,29,25] PTS['8', '7', '11', '14', '11', '7', '11'] REB['5', '11', '17', '6', '8', '9', '6'] AST['4', '3', '3', '4', '6', '8', '2']
+  KEEP       AJ Dybantsa          REB O4.5   L7 6/7 sea 75% post=5.5 id=5142718
+             L7 MIN[34,37,31,36,32,33,30] PTS['13', '21', '19', '11', '9', '21', '17'] REB['4', '8', '6', '9', '6', '5', '7'] AST['2', '1', '3', '3', '3', '2', '1']
+  KEEP       Trae Young           AST O3.5   L7 6/7 sea 92% post=7.5 id=4277905
+             L7 MIN[34,38,28,37,34,34,38] PTS['15', '20', '4', '23', '18', '15', '21'] REB['3', '1', '5', '2', '2', '3', '6'] AST['4', '7', '3', '10', '6', '9', '9']
+  KEEP       Duncan Robinson      3PT O1.5   L7 7/7 sea 100% post=3.5 id=3157465
+  RISK-KEEP  Anthony Davis        PTS O20.5  L7 6/7 sea 70% post=22.5 id=6583
+             L7 MIN[34,34,30,34,34,34,36] PTS['21', '44', '26', '27', '25', '18', '29'] REB['13', '13', '10', '9', '13', '5', '10'] AST['0', '1', '3', '1', '1', '3', '0']
+  TRAP-SHAVE Alex Sarr            REB O7.5   L7 6/7 sea 64% post=6.5 id=5160992
+  TRAP-SHAVE Kyshawn George       3PT O1.5   L7 7/7 sea 67% post=2.5 id=5174563
+
+── NBA DAL @ MIN · 11/12 - 8:00 PM EST · odds MIN -5.5 ou 226.5 ──
+  OUT: MIN Anthony Edwards, MIN Donte DiVincenzo, DAL Dereck Lively II, DAL Tarik Biberovic, DAL Sergio de Larrea
+  GTD: DAL Morez Johnson Jr. (Day-To-Day)
+  KEEP       Cooper Flagg         PTS O18.5  L7 6/7 sea 80% post=24.5 id=5041939
+             L7 MIN[39,28,33,40,40,39,33] PTS['43', '25', '21', '19', '17', '33', '26'] REB['10', '5', '10', '10', '4', '9', '5'] AST['6', '12', '7', '5', '6', '6', '8']
+  KEEP       Kyrie Irving         PTS O14.5  L7 6/7 sea 89% post=22.5 id=6442
+             L7 MIN[38,29,28,36,35,27,33] PTS['35', '21', '14', '29', '35', '15', '18'] REB['0', '3', '2', '7', '4', '2', '6'] AST['4', '4', '2', '5', '9', '4', '6']
+  KEEP       Jaden McDaniels      PTS O13.5  L7 6/7 sea 91% post=16.5 id=4431671
+             L7 MIN[33,40,37,29,39,33,35] PTS['16', '23', '14', '13', '19', '23', '19'] REB['6', '6', '8', '6', '3', '6', '6'] AST['3', '5', '4', '3', '3', '7', '4']
+  KEEP       Rudy Gobert          REB O9.5   L7 6/7 sea 80% post=10.5 id=3032976
+             L7 MIN[31,25,33,31,30,20,36] PTS['10', '8', '8', '10', '9', '1', '5'] REB['15', '11', '11', '10', '13', '4', '20'] AST['2', '0', '2', '1', '4', '1', '2']
+  KEEP       Cooper Flagg         AST O5.5   L7 6/7 sea 80% post=6.5 id=5041939
+             L7 MIN[39,28,33,40,40,39,33] PTS['43', '25', '21', '19', '17', '33', '26'] REB['10', '5', '10', '10', '4', '9', '5'] AST['6', '12', '7', '5', '6', '6', '8']
+  KEEP       Jaden McDaniels      REB O5.5   L7 6/7 sea 91% post=5.5 id=4431671
+             L7 MIN[33,40,37,29,39,33,35] PTS['16', '23', '14', '13', '19', '23', '19'] REB['6', '6', '8', '6', '3', '6', '6'] AST['3', '5', '4', '3', '3', '7', '4']
+  KEEP       P.J. Washington      REB O4.5   L7 7/7 sea 82% post=6.5 id=4278078
+             L7 MIN[35,25,33,39,38,34,27] PTS['13', '6', '26', '21', '12', '3', '18'] REB['9', '5', '6', '9', '5', '10', '9'] AST['1', '0', '1', '3', '1', '1', '0']
+  KEEP       Cooper Flagg         REB O4.5   L7 6/7 sea 90% post=6.5 id=5041939
+             L7 MIN[39,28,33,40,40,39,33] PTS['43', '25', '21', '19', '17', '33', '26'] REB['10', '5', '10', '10', '4', '9', '5'] AST['6', '12', '7', '5', '6', '6', '8']
+  KEEP       LaMelo Ball          AST O3.5   L7 6/7 sea 91% post=6.5 id=4432816
+             L7 MIN[30,35,31,33,20,29,28] PTS['24', '22', '20', '34', '10', '24', '8'] REB['3', '2', '2', '6', '8', '4', '3'] AST['5', '8', '6', '3', '4', '7', '8']
+  KEEP       P.J. Washington      3PT O1.5   L7 6/7 sea 82% post=1.5 id=4278078
+  KEEP       Kyrie Irving         3PT O1.5   L7 6/7 sea 78% post=2.5 id=6442
+  KEEP       LaMelo Ball          3PT O1.5   L7 6/7 sea 82% post=3.5 id=4432816
+  TRAP-SHAVE Ayo Dosunmu          PTS O16.5  L7 6/7 sea 55% post=17.5 id=4397002
+  TRAP-SHAVE Kyrie Irving         AST O3.5   L7 6/7 sea 67% post=4.5 id=6442
+
+── NBA CHA @ PHX · 11/12 - 9:00 PM EST · odds PHX -6.5 ou 214.5 ──
+  OUT: PHX Mark Williams, CHA Grant Williams, CHA Brandon Miller, CHA Kon Knueppel, CHA Dennis Schroder
+  GTD: CHA Moussa Diabate (Day-To-Day)
+  KEEP       Devin Booker         PTS O19.5  L7 6/7 sea 80% post=24.5 id=3136193
+             L7 MIN[29,29,39,34,34,35,39] PTS['17', '32', '24', '30', '33', '26', '20'] REB['3', '2', '2', '1', '1', '3', '2'] AST['5', '4', '3', '8', '2', '5', '5']
+  KEEP       Naz Reid             PTS O11.5  L7 6/7 sea 91% post=20.5 id=4396971
+             L7 MIN[32,26,36,27,36,31,13] PTS['25', '14', '28', '13', '14', '12', '7'] REB['13', '6', '9', '6', '5', '11', '6'] AST['4', '2', '2', '2', '2', '1', '0']
+  KEEP       Naz Reid             REB O4.5   L7 7/7 sea 100% post=8.5 id=4396971
+             L7 MIN[32,26,36,27,36,31,13] PTS['25', '14', '28', '13', '14', '12', '7'] REB['13', '6', '9', '6', '5', '11', '6'] AST['4', '2', '2', '2', '2', '1', '0']
+  KEEP       Miles Bridges        REB O4.5   L7 6/7 sea 80% post=6.5 id=4066383
+             L7 MIN[18,26,31,31,31,35,37] PTS['8', '7', '13', '18', '18', '21', '24'] REB['4', '5', '10', '13', '7', '6', '10'] AST['2', '0', '7', '5', '5', '3', '2']
+  KEEP       Devin Booker         3PT O1.5   L7 7/7 sea 80% post=1.5 id=3136193
+
+── NFL WSH @ NYG · 11/12 - 8:15 PM EST · odds NYG -2.5 ou 40.5 ──
+  OUT: NYG Colton Hood, NYG Cam Skattebo, NYG Tyrone Tracy Jr., WSH Lucas Patrick, WSH Treylon Burks, WSH Colson Yankoff, WSH Dyami Brown, WSH Daron Payne
+  GTD: NYG J.J. McCarthy (Questionable), NYG Malik Harrison (Questionable)
+
+── NHL NYI @ LA · 11/12 - 10:00 PM EST · odds LA -125 ou 5.5 ──
+
+── NHL CAR @ SEA · 11/12 - 12:00 PM EST · odds CAR -305 ou 6.5 ──
+
+── NHL MTL @ BOS · 11/12 - 7:00 PM EST · odds BOS -125 ou 6.5 ──
+
+── NHL MIN @ TOR · 11/12 - 7:00 PM EST · odds MIN -170 ou 6.5 ──
+
+── NHL COL @ OTT · 11/12 - 7:00 PM EST · odds COL -120 ou 6.5 ──
+
+── NHL WSH @ NJ · 11/12 - 7:00 PM EST · odds NJ -155 ou 6.5 ──
+
+── NHL TB @ CBJ · 11/12 - 7:00 PM EST · odds TB -115 ou 6.5 ──
+
+── NHL DET @ FLA · 11/12 - 7:30 PM EST · odds FLA -170 ou 5.5 ──
+
+── NHL BUF @ CHI · 11/12 - 8:00 PM EST · odds BUF -155 ou 6.5 ──
+
+── NHL WPG @ DAL · 11/12 - 8:00 PM EST · odds DAL -175 ou 5.5 ──
+
+── NHL STL @ UTA · 11/12 - 9:00 PM EST · odds UTAH -115 ou 5.5 ──
+
+============================================================
+BAN
+============================================================
+  DET −10.5 / PHI −9.5 raw · CAR −305 (noon) · any −200+ ML juice
+  Soft floors REB/AST O2.5 · 3PT O0.5 · STL/BLK O0.5 as spine
+  GTD props (Embiid/LeBron DTD) until ACTIVE
+  Naked REB overs at exact clear without −1 cushion (KAT/Drummond lesson)
+  Auto-chalk when opponent stars OUT (OKC −1.5 miss → prefer dog)
+  TRAP-SHAVE hot streaks without season ≥75%
+
+============================================================
+CLEAN SLIPS
+============================================================
+Tags from G1 dual-window (season≥75% + L7≥6/7 + MIN≥24). Shead = RISK-KEEP (season 73%<75%).
+
+SLIP A — SAFE SPINE (6) · KEEP-heavy + 1 RISK
+  1. Duncan Robinson PTS O11.5   KEEP · SHAVE from 15.5 · id=3157465
+  2. Cade Cunningham AST O6.5    KEEP · id from sheet
+  3. Cooper Flagg AST O5.5       KEEP
+  4. Ausar Thompson REB O4.5     KEEP · cushion · Duren OUT
+  5. Rudy Gobert REB O8.5        KEEP cushion from O9.5 dual-window
+  6. WAS +2.5                    TNF dog
+
+SLIP B — 11/11 LESSON (Wemby-under / POR-dog) (6)
+  1. DAL +5.5                    Ant OUT
+  2. WSH +5.5 / +6.5             vs DET −10.5 chalk
+  3. WAS +2.5
+  4. Booker PTS U24.5            under lesson (alt: O19.5 KEEP shave)
+  5. Jamal Shead AST O5.5        RISK-KEEP · Barnes OUT · id=4432241
+  6. P.J. Washington REB O4.5    KEEP · SHAVE from 6.5
+
+SLIP C — BANGERS MULTI (8)
+  1. Duncan Robinson PTS O11.5
+  2. Shead AST O5.5
+  3. Cade AST O6.5
+  4. Flagg AST O5.5
+  5. Ausar REB O4.5
+  6. Gobert REB O8.5
+  7. DAL +5.5
+  8. WAS +2.5 / PHX −3.5
+
+SLIP D — NHL/NFL ADD
+  Pastrnak SOG O2.5 only if HR≤2.5 (CUT at posted 3.5 — G2 fail at 3.5)
+  Diggs REC O3.5 · Likely REC O4.5 if McCarthy ACTIVE
+
+COMPLETION
+  require_gate: PASS date=20261112
+  sheets_ok: 257/257
+  G2 posted mains: 582 rows
+  board KEEP=34 RISK-KEEP=3 TRAP=4
+  BANGERS: yes · SAFE: yes · PRIMARY: yes · STL/SOG: yes · by-game: yes · BAN: yes · clean slips: yes
+  G3: confirm HR on every lock — not auto-passed

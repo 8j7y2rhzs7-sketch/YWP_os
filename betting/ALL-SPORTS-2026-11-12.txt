@@ -1,94 +1,51 @@
-ALL-SPORTS · THU 11/12/2026 · America/New_York
-GATE PASS · sheets 257/257 · built ~5:55 AM ET
-Slate: NBA 4 · NHL 11 · NFL 1 (TNF) · NCAAF Fri/Sat leftover
+ALL-SPORTS · THU 11/12/2026 · EXHAUSTIVE · refreshed 11:24 AM ET
+GATE PASS 257/257 · G1 dual-window · G2 Betravon · G3 confirm HR
+Full board: betting/EXHAUSTIVE-20261112.txt (+ .json)
+Posted card: betting/posted-card-20261112.txt
+Grade 11/11: betting/GRADE-2026-11-11.txt (Wemby under hit on weeded slip)
 
 ════════════════════════════════════════════════════════
-BANGERS (firm 6/7–7/7 · not soft floors)
+BANGERS (dual-window KEEP · full sheets in EXHAUSTIVE)
 ════════════════════════════════════════════════════════
-  1. Jamal Shead        AST O5.5   TOR @ PHI 7pm · 7/7 · Barnes OUT
-     id=4432241  L=[6,11,16,6,6,6,8]
-  2. Duncan Robinson    PTS O11.5  DET @ WSH 7pm · 7/7 · SHAVE from ~15.5
-     id=3157465  L=[22,12,27,24,17,13,12]
-  3. P.J. Washington    REB O4.5   DAL @ MIN 8pm · 7/7 · SHAVE toward ~8.5 if posted high
-     id=4278078  L=[9,5,6,9,5,10,9]
-  4. Cade Cunningham    AST O6.5   DET @ WSH · 6/7
-     id= (DET)   L=[7,8,11,7,4,7,8]
-  5. Rudy Gobert        REB O9.5   DAL @ MIN · 6/7 · Ant OUT (MIN still boards)
-     L=[15,11,11,10,13,4,20]
-  6. Alex Sarr          REB O7.5   DET @ WSH · 6/7 · WSH
-     L=[8,8,14,8,9,8,4]
-  7. Cooper Flagg       AST O5.5   DAL @ MIN · 6/7
-     L=[6,12,7,5,6,6,8]
-  8. Ausar Thompson     REB O5.5   DET @ WSH · 6/7 · Duren OUT script · SHAVE from ~7.5
-     L=[5,11,17,6,8,9,6]
+  Duncan Robinson  PTS O11.5  id=3157465  SHAVE 15.5→11.5  sea 10/10
+  Kyshawn George   PTS O11.5  id=5174563  SHAVE 14.5→11.5  sea 10/12
+  P.J. Washington  REB O4.5   id=4278078  SHAVE 6.5→4.5   sea 9/11
+  Naz Reid         REB O4.5   id=4396971  SHAVE 8.5→4.5   sea 11/11
+  Ausar Thompson   REB O4.5   id=4684742  cushion/Duren OUT sea 8/9
+  Devin Booker     PTS O19.5  id=3136193  SHAVE 24.5→19.5 · or U24.5 lesson
+  Cooper Flagg     PTS O18.5 / AST O5.5  id=5041939
+  Cade Cunningham  AST O6.5   id=4432166
+  Rudy Gobert      REB O8.5   id=3032976  cushion from O9.5 KEEP
+  RISK Jamal Shead AST O5.5   id=4432241  sea 8/11=73% · Barnes OUT
 
 ════════════════════════════════════════════════════════
-PRIMARY / SAFE SIDES (soft alts · no −1000 · no raw −10+)
+SAFE
 ════════════════════════════════════════════════════════
-  PHI −5.5          TOR @ PHI · main −9.5 · TOR: Barnes+Kawhi OUT
-                    RISK: Embiid DTD · LeBron DTD — confirm ACTIVE before PHI chalk
-  DET −5.5          @ WSH · soft from −10.5 (BAN raw −10.5)
-  DAL +5.5          @ MIN · Ant OUT · soft dog number
-  PHX −3.5          vs CHA · soft from −6.5 · CHA gutted (Miller/Schroder/Knueppel OUT)
-  WAS +2.5 / +3.5   @ NYG TNF 8:15 · main NYG −2.5 · McCarthy Q for NYG
+  Duncan O11.5 · Cade AST O6.5 · Flagg AST O5.5 · Ausar REB O4.5
+  Gobert REB O8.5 · WAS +2.5
 
 ════════════════════════════════════════════════════════
-SCRIPT / ROLE UPS
+PRIMARY / LESSON SIDES
 ════════════════════════════════════════════════════════
-  DET @ WSH: Jalen Duren OUT → Reed / Ausar rebound mop-up
-  TOR @ PHI: Barnes+Kawhi OUT → Shead AST · Quickley/Barrett volume
-  DAL @ MIN: Anthony Edwards OUT → LaMelo / Ayo / McDaniels usage · DAL +5.5 live
-  CHA @ PHX: CHA thinned → Booker floor · PHX soft alt −3.5
+  DAL +5.5 (Ant OUT) · WSH +5.5 (vs DET −10.5) · PHX −3.5
+  DET −3.5 soft · PHI −5.5 ONLY if Embiid/LeBron ACTIVE (both DTD)
+  Booker U24.5 under lean (yesterday’s winner style)
 
 ════════════════════════════════════════════════════════
-SECONDARY (confirm HR · shave if mains high)
+STL/SOG
 ════════════════════════════════════════════════════════
-  Kyshawn George   PTS O11.5  (posted ~14.5)  WSH
-  Devin Booker     PTS O19.5  (posted ~24.5)  PHX · or 3PT O1.5 only as add
-  Tyrese Maxey     AST O3.5   7/7 · firm floor · PHI
-  Paul Reed        REB O3.5–O4.5  DET · Duren OUT
-  David Pastrnak   SOG O2.5   MTL @ BOS · 6/7 · only NHL SOG clear at firm floor
-  Isaiah Likely    REC O4.5   NYG TNF · L10 6/8 · if McCarthy plays
-  Stefon Diggs     REC O3.5   WAS TNF · L10 5/7
-
-════════════════════════════════════════════════════════
-NFL TNF — WAS @ NYG · 8:15 PM ET
-════════════════════════════════════════════════════════
-  KEEP: WAS +2.5 / +3.5 (alt OK)
-  RISK: NYG ML until McCarthy confirmed
-  WEED: heavy NYG −6.5+ chalk · J.J. McCarthy PASS if still Q
-
-════════════════════════════════════════════════════════
-NHL NOTES
-════════════════════════════════════════════════════════
-  BAN: CAR −305 @ SEA (noon) · any −200+ ML juice
-  ONLY firm SOG clear tonight: Pastrnak O2.5
-  Prefer puck-line dogs / small numbers over chalk ML
+  STL/BLK = research only (never spine)
+  Pastrnak SOG O2.5 only if HR≤2.5 — CUT at posted 3.5
 
 ════════════════════════════════════════════════════════
 BAN
 ════════════════════════════════════════════════════════
-  DET −10.5 raw · PHI −9.5 raw without Embiid/LeBron ACTIVE
-  Soft floors: REB O2.5 · AST O2.5 · STL/BLK O0.5 · 3PT O0.5 as spine
-  GTD props (Embiid / LeBron / anyone Day-To-Day) until confirmed
-  CAR −305 · UGA-style −1000 juice · NCAAM −20+
+  DET −10.5 · PHI −9.5 raw · CAR −305 · soft floors · GTD props
+  Naked exact-clear REB without −1 cushion · auto-chalk vs decimated teams
 
 ════════════════════════════════════════════════════════
-PLAY THIS (10) — recalibrated after 11/11 miss
+CLEAN SLIPS → see EXHAUSTIVE (A SAFE / B LESSON / C BANGERS / D NHL-NFL)
 ════════════════════════════════════════════════════════
-  Yesterday: weeded 4-leg was best (3/4); user 5-leg died on −0.5s; our parlays missed.
-  Changes: REB −1 cushion · prefer dogs when chalk thinned · don’t stack naked REB overs
 
-  1. Shead AST O5.5
-  2. Duncan Robinson PTS O11.5
-  3. Cade AST O6.5
-  4. Flagg AST O5.5
-  5. Gobert REB O8.5          (cushion)
-  6. Ausar REB O4.5           (cushion · Duren OUT)
-  7. DAL +5.5                 Ant OUT
-  8. WSH +5.5                 POR-style dog vs −10.5 chalk
-  9. WAS +2.5                 TNF
- 10. PHX −3.5
-
-Alt ticket D (lesson): DAL +5.5 · WSH +5.5 · WAS +2.5 · Booker U24.5 · Shead O5.5
-Want 12: + PJ REB O4.5 · Diggs REC O3.5
+COMPLETION: require_gate PASS · BANGERS yes · SAFE yes · PRIMARY yes
+  STL/SOG yes · by-game yes · BAN yes · clean slips yes · G3=confirm HR

@@ -2,7 +2,7 @@
   "dates": [
     "20261112"
   ],
-  "generated_at": "2026-11-12T05:49:09.521420-05:00",
+  "generated_at": "2026-11-12T11:22:34.140443-05:00",
   "by_day": {
     "20261112": [
       {
@@ -2627,8 +2627,8 @@
           "home": "PHI",
           "away_id": "28",
           "home_id": "20",
-          "odds": "PHI -9.5",
-          "ou": 221.5
+          "odds": "PHI -8.5",
+          "ou": 223.5
         },
         {
           "sport": "nba",
@@ -2654,7 +2654,7 @@
           "away_id": "6",
           "home_id": "16",
           "odds": "MIN -5.5",
-          "ou": 227.5
+          "ou": 226.5
         },
         {
           "sport": "nba",
@@ -2733,7 +2733,7 @@
           "home": "NJ",
           "away_id": "23",
           "home_id": "11",
-          "odds": "NJ -148",
+          "odds": "NJ -155",
           "ou": 6.5
         },
         {
@@ -2746,7 +2746,7 @@
           "home": "CBJ",
           "away_id": "20",
           "home_id": "29",
-          "odds": "TB -118",
+          "odds": "TB -115",
           "ou": 6.5
         },
         {
@@ -2785,7 +2785,7 @@
           "home": "DAL",
           "away_id": "28",
           "home_id": "9",
-          "odds": "DAL -185",
+          "odds": "DAL -175",
           "ou": 5.5
         },
         {
@@ -2798,8 +2798,8 @@
           "home": "UTA",
           "away_id": "19",
           "home_id": "129764",
-          "odds": "UTAH -125",
-          "ou": 6.5
+          "odds": "UTAH -115",
+          "ou": 5.5
         },
         {
           "sport": "nhl",

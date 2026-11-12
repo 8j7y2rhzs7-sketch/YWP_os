@@ -1,0 +1,77 @@
+POSTED-MAIN CARD — 2026-11-12
+Source: Betravon consensus mains + GATE RS sheets. Soft floors NOT listed.
+Graded 241 / unmatched 341
+
+=== KEEP (perfect clear at POSTED main) ===
+  7/7  Devin Booker O1.5 3PT  PHX vs CHA  id=3136193  L=[2.0, 3.0, 2.0, 4.0, 2.0, 2.0, 3.0]
+  7/7  Jaden McDaniels O2.5 AST  MIN vs DAL  id=4431671  L=[3.0, 5.0, 4.0, 3.0, 3.0, 7.0, 4.0]
+  7/7  Jaylen Brown O0.5 STL  PHI vs TOR  id=3917376  L=[2.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0]
+  7/7  Trae Young O0.5 STL  WSH vs DET  id=4277905  L=[1.0, 2.0, 1.0, 1.0, 2.0, 1.0, 3.0]
+
+=== RISK-KEEP (one miss at POSTED main) ===
+  6/7  P.J. Washington O1.5 3PT  miss=[1.0]  id=4278078
+  6/7  Alex Sarr O6.5 REB  miss=[4.0]  id=5160992
+  6/7  Jaden McDaniels O5.5 REB  miss=[3.0]  id=4431671
+  6/7  Immanuel Quickley O0.5 STL  miss=[0.0]  id=4395724
+
+=== RISK (≈70%+ at POSTED main) ===
+  8/10  Logan Stankoven O2.5 SOG  miss=[0.0, 1.0]
+  5/7  Alex Sarr O0.5 3PT  miss=[0.0, 0.0]
+  5/7  Ayo Dosunmu O1.5 3PT  miss=[0.0, 1.0]
+  5/7  Kyshawn George O2.5 3PT  miss=[2.0, 2.0]
+  5/7  Miles Bridges O1.5 3PT  miss=[0.0, 1.0]
+  5/7  Trae Young O1.5 3PT  miss=[0.0, 1.0]
+  5/7  Tyrese Maxey O2.5 3PT  miss=[2.0, 1.0]
+  5/7  Jonathan Kuminga O2.5 AST  miss=[0.0, 0.0]
+  5/7  Moussa Diabate O1.5 AST  miss=[1.0, 1.0]
+  5/7  Naji Marshall O2.5 AST  miss=[2.0, 2.0]
+  5/7  Daniel Gafford O1.5 BLK  miss=[0.0, 1.0]
+  5/7  P.J. Washington O0.5 BLK  miss=[0.0, 0.0]
+  5/7  Anthony Davis O22.5 PTS  miss=[21.0, 18.0]
+  5/7  Ayo Dosunmu O17.5 PTS  miss=[15.0, 17.0]
+  5/7  Khaman Maluach O6.5 PTS  miss=[6.0, 5.0]
+  5/7  Royce O'Neale O6.5 PTS  miss=[0.0, 2.0]
+  5/7  Terrence Shannon Jr. O9.5 PTS  miss=[5.0, 2.0]
+  5/7  AJ Dybantsa O5.5 REB  miss=[4.0, 5.0]
+  5/7  Dillon Brooks O3.5 REB  miss=[1.0, 1.0]
+  5/7  Khaman Maluach O5.5 REB  miss=[5.0, 2.0]
+  5/7  LeBron James O6.5 REB  miss=[5.0, 5.0]
+  5/7  Rudy Gobert O10.5 REB  miss=[10.0, 4.0]
+  5/7  Ayo Dosunmu O0.5 STL  miss=[0.0, 0.0]
+  5/7  Collin Gillespie O0.5 STL  miss=[0.0, 0.0]
+  5/7  Duncan Robinson O0.5 STL  miss=[0.0, 0.0]
+  5/7  Jaden McDaniels O0.5 STL  miss=[0.0, 0.0]
+  7/10  Brandon Montour O1.5 SOG  miss=[1.0, 1.0, 1.0]
+  7/10  Elias Lindholm O1.5 SOG  miss=[0.0, 1.0, 1.0]
+  7/10  Taylor Hall O1.5 SOG  miss=[0.0, 1.0, 1.0]
+
+=== CUT at POSTED main (do not bet) ===
+  204 props fail at book main — including soft-floor favorites.
+  6/10  Joel Eriksson Ek O2.5 SOG  miss=[2.0, 2.0, 2.0, 2.0]
+  6/10  Jordan Eberle O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0]
+  6/10  Mackie Samoskevich O1.5 SOG  miss=[0.0, 0.0, 1.0, 0.0]
+  6/10  Nick Suzuki O2.5 SOG  miss=[1.0, 2.0, 1.0, 2.0]
+  6/10  Nikolaj Ehlers O2.5 SOG  miss=[1.0, 0.0, 2.0, 1.0]
+  6/10  Sebastian Aho O2.5 SOG  miss=[1.0, 1.0, 1.0, 1.0]
+  6/10  Vince Dunn O1.5 SOG  miss=[0.0, 1.0, 1.0, 1.0]
+  5/10  Matt Boldy O3.5 SOG  miss=[2.0, 2.0, 3.0, 2.0, 3.0]
+  4/8  Seth Jarvis O2.5 SOG  miss=[2.0, 0.0, 1.0, 0.0]
+  5/10  Shayne Gostisbehere O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 0.0]
+  4/10  Andrei Svechnikov O2.5 SOG  miss=[0.0, 1.0, 2.0, 1.0, 1.0, 1.0]
+  4/10  Charlie McAvoy O1.5 SOG  miss=[1.0, 1.0, 0.0, 1.0, 1.0, 0.0]
+  4/10  David Pastrnak O3.5 SOG  miss=[3.0, 3.0, 1.0, 3.0, 0.0, 3.0]
+  4/10  Kirill Kaprizov O3.5 SOG  miss=[1.0, 2.0, 1.0, 2.0, 3.0, 2.0]
+  4/10  Lane Hutson O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 1.0, 0.0]
+  4/10  Matty Beniers O1.5 SOG  miss=[1.0, 1.0, 0.0, 0.0, 1.0, 0.0]
+  4/10  Pavel Zacha O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  3/10  Bobby McMann O2.5 SOG  miss=[2.0, 2.0, 1.0, 2.0, 0.0, 1.0, 2.0]
+  3/10  Cole Caufield O3.5 SOG  miss=[2.0, 3.0, 2.0, 3.0, 3.0, 0.0, 3.0]
+  3/10  Jackson Blake O2.5 SOG  miss=[2.0, 2.0, 1.0, 1.0, 1.0, 1.0, 2.0]
+  3/10  Juraj Slafkovsky O2.5 SOG  miss=[1.0, 2.0, 1.0, 2.0, 0.0, 2.0, 1.0]
+  3/10  Morgan Geekie O2.5 SOG  miss=[2.0, 2.0, 2.0, 0.0, 2.0, 1.0, 1.0]
+
+=== CLEAN SLIP (KEEP @ posted mains only) ===
+  1. Devin Booker O1.5 3PT  (7/7)  PHX vs CHA
+  2. Jaden McDaniels O2.5 AST  (7/7)  MIN vs DAL
+
+DONE: No soft floors. If a KEEP number is missing on HR, skip that leg — do not invent a lower alt.
