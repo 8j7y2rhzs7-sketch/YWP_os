@@ -17,7 +17,7 @@ import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
-import { brand, colors, fonts, spacing, type } from "@/theme";
+import { brand, colors, fonts, spacing, type , registerStyles } from "@/theme";
 import type {
   Bankroll,
   DayForgeResponse,
@@ -304,7 +304,7 @@ export default function CommandCenter() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   heroViewport: {
     minHeight: 620,
     alignItems: "center",
@@ -387,4 +387,4 @@ const styles = StyleSheet.create({
     letterSpacing: 1.2,
   },
   footerMuted: { ...type.caption, textAlign: "center", letterSpacing: 0.6 },
-});
+}));

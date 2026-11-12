@@ -12,7 +12,7 @@ import { VideoView, useVideoPlayer } from "expo-video";
 
 import { brandAssets } from "@/brandAssets";
 import { useReduceMotion } from "@/hooks/useReduceMotion";
-import { colors } from "@/theme";
+import { colors , registerStyles } from "@/theme";
 
 interface EngineHeroLoopProps {
   size?: number;
@@ -110,7 +110,7 @@ export function EngineHeroLoop({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   wrap: {
     overflow: "hidden",
     backgroundColor: colors.background,
@@ -130,4 +130,4 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(26,168,240,0.28)",
   },
-});
+}));

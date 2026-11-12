@@ -24,7 +24,7 @@ import { TicketCardView } from "@/components/TicketCardView";
 import { YwpButton } from "@/components/YwpButton";
 import { useAppData } from "@/context/AppDataContext";
 import { useAuth } from "@/context/AuthContext";
-import { colors, radius, spacing, type } from "@/theme";
+import { colors, radius, spacing, type , registerStyles } from "@/theme";
 import type { BuildTicketResponse, Ticket, TicketCard } from "@/types";
 
 const cardOrder = [
@@ -512,7 +512,7 @@ export default function AnalysisScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   summaryTop: { flexDirection: "row", alignItems: "center", gap: spacing.md },
   flex: { flex: 1, gap: spacing.xs },
   title: { color: colors.white, fontSize: 20, fontWeight: "900" },
@@ -538,4 +538,4 @@ const styles = StyleSheet.create({
   modalTitle: { color: colors.white, fontSize: 24, fontWeight: "900" },
   switchRow: { flexDirection: "row", alignItems: "center", gap: spacing.md },
   switchTitle: { color: colors.white, fontSize: 14, fontWeight: "800" },
-});
+}));

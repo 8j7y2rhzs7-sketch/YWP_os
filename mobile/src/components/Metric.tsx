@@ -3,7 +3,7 @@ import { Animated, StyleSheet, Text, View } from "react-native";
 
 import { CountUp } from "@/components/CountUp";
 import { useReduceMotion } from "@/hooks/useReduceMotion";
-import { colors, fonts, radius, spacing } from "@/theme";
+import { colors, fonts, radius, spacing , registerStyles } from "@/theme";
 
 export function Metric({
   label,
@@ -67,7 +67,7 @@ export function Metric({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   metric: {
     minWidth: 96,
     flex: 1,
@@ -93,4 +93,4 @@ const styles = StyleSheet.create({
     letterSpacing: 0.7,
     textTransform: "uppercase",
   },
-});
+}));

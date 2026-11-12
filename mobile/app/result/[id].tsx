@@ -13,7 +13,7 @@ import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
-import { colors, radius, spacing, type } from "@/theme";
+import { colors, radius, spacing, type , registerStyles } from "@/theme";
 import type { Recommendation, ResultRecord } from "@/types";
 
 const outcomes = ["WIN", "LOSS", "PUSH", "VOID"];
@@ -330,7 +330,7 @@ export default function ResultGradeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   title: { color: colors.white, fontSize: 21, fontWeight: "900" },
   metrics: { flexDirection: "row", flexWrap: "wrap", gap: spacing.md },
   choices: { flexDirection: "row", flexWrap: "wrap", gap: spacing.xs },
@@ -351,4 +351,4 @@ const styles = StyleSheet.create({
   switchRow: { flexDirection: "row", alignItems: "center", gap: spacing.md },
   switchText: { flex: 1, color: colors.white, fontSize: 13, fontWeight: "800" },
   footer: { ...type.caption, textAlign: "center", padding: spacing.md },
-});
+}));

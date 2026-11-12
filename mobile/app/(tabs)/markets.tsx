@@ -11,7 +11,7 @@ import { Metric } from "@/components/Metric";
 import { Screen } from "@/components/Screen";
 import { SectionTitle } from "@/components/SectionTitle";
 import { useAuth } from "@/context/AuthContext";
-import { colors, radius, spacing, type } from "@/theme";
+import { colors, radius, spacing, type , registerStyles } from "@/theme";
 import type { MarketCallList, MarketsHealth, MarketsTrackRecord } from "@/types";
 
 type Venue = "crypto" | "sports_exchange";
@@ -129,7 +129,7 @@ export default function MarketsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   toggle: {
     flexDirection: "row",
     gap: spacing.sm,
@@ -150,4 +150,4 @@ const styles = StyleSheet.create({
   note: { color: colors.muted, fontSize: 13, lineHeight: 18 },
   metrics: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
   empty: { color: colors.text, fontSize: 15, lineHeight: 22 },
-});
+}));

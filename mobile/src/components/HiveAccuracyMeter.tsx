@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 
-import { colors, spacing, type } from "@/theme";
+import { colors, spacing, type , registerStyles } from "@/theme";
 import type { HiveLearningSummary } from "@/types";
 
 type Props = {
@@ -69,7 +69,7 @@ export function HiveAccuracyMeter({ hive, optimumAccuracyPct }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   wrap: {
     gap: spacing.xs,
     marginTop: spacing.sm,
@@ -125,4 +125,4 @@ const styles = StyleSheet.create({
     fontSize: 11,
     lineHeight: 15,
   },
-});
+}));

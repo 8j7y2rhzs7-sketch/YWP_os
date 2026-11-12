@@ -13,7 +13,7 @@ import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
-import { colors, spacing, type } from "@/theme";
+import { colors, spacing, type , registerStyles } from "@/theme";
 import type {
   HiveProgressReport,
   LearningPulse,
@@ -667,7 +667,7 @@ export default function LearningScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   row: { flexDirection: "row", alignItems: "center", gap: spacing.md },
   flex: { flex: 1, gap: spacing.xs },
   title: { color: colors.white, fontSize: 22, fontWeight: "900" },
@@ -692,4 +692,4 @@ const styles = StyleSheet.create({
   metacogLine: { color: colors.white, fontSize: 13, lineHeight: 18, fontWeight: "600" },
   count: { color: colors.gold, fontSize: 20, fontWeight: "900" },
   guardrail: { color: colors.success, fontSize: 13, lineHeight: 20 },
-});
+}));

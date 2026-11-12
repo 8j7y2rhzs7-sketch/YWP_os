@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { brandAssets } from "@/brandAssets";
-import { brand, colors } from "@/theme";
+import { brand, colors, gradients, registerStyles } from "@/theme";
 import type { Readiness, TicketCard } from "@/types";
 
 export type ShareTruthState =
@@ -90,7 +90,7 @@ export const ShareCard = forwardRef<
   return (
     <View ref={ref} style={styles.canvas} collapsable={false}>
       <LinearGradient
-        colors={["#070A0F", "#0C121A", "#050608"]}
+        colors={gradients.pageDeep}
         style={StyleSheet.absoluteFill}
       />
       <View style={styles.cornerOne} />
@@ -209,7 +209,7 @@ export const ShareCard = forwardRef<
   );
 });
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   canvas: {
     width: "100%",
     aspectRatio: 4 / 5,
@@ -320,4 +320,4 @@ const styles = StyleSheet.create({
   footerBottom: { flexDirection: "row", justifyContent: "space-between", paddingTop: 8 },
   footerBrand: { color: colors.gold, fontSize: 8, fontWeight: "900" },
   footerSlogan: { color: colors.silver, fontSize: 7, fontWeight: "800" },
-});
+}));

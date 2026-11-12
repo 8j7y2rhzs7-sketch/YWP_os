@@ -18,7 +18,7 @@ import { ShareCard } from "@/components/ShareCard";
 import { YwpButton } from "@/components/YwpButton";
 import { useAppData } from "@/context/AppDataContext";
 import { useAuth } from "@/context/AuthContext";
-import { colors, spacing, type } from "@/theme";
+import { colors, spacing, type , registerStyles } from "@/theme";
 
 export default function ShareCardScreen() {
   const params = useLocalSearchParams<{ analysisId: string; cardKey: string }>();
@@ -129,7 +129,7 @@ export default function ShareCardScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   title: { color: colors.gold, fontSize: 24, fontWeight: "900", paddingTop: spacing.md },
   preview: {
     width: "100%",
@@ -141,4 +141,4 @@ const styles = StyleSheet.create({
     shadowRadius: 25,
     elevation: 12,
   },
-});
+}));

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
-import { colors, gradients, radius, spacing, touch, type } from "@/theme";
+import { colors, gradients, radius, spacing, touch, type , registerStyles } from "@/theme";
 
 interface YwpButtonProps {
   label: string;
@@ -85,7 +85,7 @@ export function YwpButton({
             />
           </Animated.View>
           {loading ? (
-            <ActivityIndicator color={colors.background} />
+            <ActivityIndicator color={colors.ink} />
           ) : (
             <Text style={styles.goldText}>{label}</Text>
           )}
@@ -97,7 +97,7 @@ export function YwpButton({
               ? gradients.danger
               : variant === "success"
                 ? gradients.success
-                : (["#151B23", "#0A0D12"] as const)
+                : gradients.outline
           }
           style={[
             styles.inner,
@@ -117,7 +117,7 @@ export function YwpButton({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   pressable: { borderRadius: radius.md, overflow: "hidden" },
   inner: {
     minHeight: touch.comfortable,
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   success: { borderColor: colors.success },
   goldText: {
     ...type.button,
-    color: colors.background,
+    color: colors.ink,
   },
   outlineText: {
     ...type.button,
@@ -146,4 +146,4 @@ const styles = StyleSheet.create({
   },
   pressed: { transform: [{ scale: 0.985 }], opacity: 0.92 },
   disabled: { opacity: 0.45 },
-});
+}));

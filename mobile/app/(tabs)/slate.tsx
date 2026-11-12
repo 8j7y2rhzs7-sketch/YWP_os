@@ -23,7 +23,7 @@ import {
   looksLikeEdgeChallenge,
 } from "@/lib/api";
 import { sportLook } from "@/sportVisuals";
-import { colors, fonts, radius, spacing, type } from "@/theme";
+import { colors, fonts, radius, spacing, type , registerStyles } from "@/theme";
 import type {
   AnalyzeResponse,
   CandidateInput,
@@ -726,7 +726,7 @@ export default function SlateScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   page: { flex: 1 },
   screenWithDock: {
     // Clear tab bar + floating stylus RUN dock so the last plays stay readable.
@@ -921,4 +921,4 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginTop: spacing.sm,
   },
-});
+}));

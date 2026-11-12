@@ -12,7 +12,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 
 import { brandAssets } from "@/brandAssets";
-import { brand, colors, fonts, gradients, spacing } from "@/theme";
+import { brand, colors, fonts, gradients, spacing , registerStyles } from "@/theme";
 
 interface BootSequenceProps {
   ready: boolean;
@@ -167,7 +167,7 @@ export function BootSequence({ ready, fontError, onDone }: BootSequenceProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: colors.background,
@@ -243,4 +243,4 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     letterSpacing: 1.8,
   },
-});
+}));

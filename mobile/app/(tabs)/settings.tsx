@@ -16,7 +16,7 @@ import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
 import { getApiUrl, PRODUCTION_API_URL } from "@/lib/api";
 import { submitErrorReport } from "@/lib/errorReporting";
-import { colors, radius, spacing, type } from "@/theme";
+import { colors, radius, spacing, type , registerStyles } from "@/theme";
 import type {
   Bankroll,
   ProtocolDefinition,
@@ -166,6 +166,17 @@ export default function SettingsScreen() {
   return (
     <Screen>
       <BrandHeader title="SYSTEM CONTROLS" subtitle="BANKROLL • PROTOCOL • ACCOUNT" compact />
+      <SectionTitle title="Display" subtitle="Screen and the phone's light or dark mode." />
+      <MetalPanel>
+        <Text style={styles.title}>Screen stays on</Text>
+        <Text style={type.body}>
+          While YWP OS is open, the phone will not sleep the display. You stay on the board instead of coming back to a closed session. Press the power button when you want the screen off.
+        </Text>
+        <Text style={[styles.title, { marginTop: spacing.md }]}>Matches your phone</Text>
+        <Text style={type.body}>
+          Light and dark follow the system setting. Change it in the phone's display settings and this app changes with it.
+        </Text>
+      </MetalPanel>
       <MotionReveal fromY={16}>
         <EngineStage size={150} tone="idle" intensity="standard" label="Controls" />
       </MotionReveal>
@@ -335,7 +346,7 @@ export default function SettingsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   title: { color: colors.white, fontSize: 20, fontWeight: "900" },
   saved: { color: colors.success, fontWeight: "800" },
   profileRow: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
@@ -373,4 +384,4 @@ const styles = StyleSheet.create({
   },
   txnBtn: { minWidth: 90 },
   txnMsg: { color: colors.goldBright, fontSize: 13, marginTop: spacing.sm },
-});
+}));

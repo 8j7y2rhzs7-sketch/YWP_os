@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Animated, StyleSheet, Text, View } from "react-native";
 
-import { colors, fonts, radius, spacing } from "@/theme";
+import { colors, fonts, radius, spacing , registerStyles } from "@/theme";
 
 const success = new Set(["PLAY", "LOCKED", "DOUBLE_CLEARED", "WIN", "POSITIVE", "SETTLED"]);
 const warning = new Set(["LEAN", "WATCH", "WAIT", "WARNING", "PENDING", "PUSH", "VOID"]);
@@ -52,7 +52,7 @@ export function StatusPill({ value }: { value: string }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   pill: {
     alignSelf: "flex-start",
     flexDirection: "row",
@@ -83,4 +83,4 @@ const styles = StyleSheet.create({
   warningText: { color: colors.warning },
   dangerText: { color: colors.danger },
   neutralText: { color: colors.silver },
-});
+}));

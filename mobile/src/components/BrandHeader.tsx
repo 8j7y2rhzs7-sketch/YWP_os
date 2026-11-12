@@ -4,7 +4,7 @@ import { Animated, Image, StyleSheet, Text, View } from "react-native";
 import { brandAssets } from "@/brandAssets";
 import { MetalShimmer } from "@/components/MetalShimmer";
 import { sportLook } from "@/sportVisuals";
-import { brand, colors, fonts, spacing, type } from "@/theme";
+import { brand, colors, fonts, spacing, type , registerStyles } from "@/theme";
 
 interface BrandHeaderProps {
   title?: string;
@@ -79,7 +79,7 @@ export function BrandHeader({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   wrap: {
     flexDirection: "row",
     alignItems: "center",
@@ -129,4 +129,4 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     marginTop: 2,
   },
-});
+}));

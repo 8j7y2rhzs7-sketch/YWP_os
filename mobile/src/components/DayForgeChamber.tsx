@@ -13,7 +13,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { brandAssets } from "@/brandAssets";
 import { MetalShimmer } from "@/components/MetalShimmer";
 import { useReduceMotion } from "@/hooks/useReduceMotion";
-import { colors, fonts, radius, spacing, type } from "@/theme";
+import { colors, fonts, gradients, radius, spacing, type, registerStyles } from "@/theme";
 import type { DayForgeResponse } from "@/types";
 
 function heatLabel(progress: number, status: DayForgeResponse["status"]): string {
@@ -125,11 +125,7 @@ export function DayForgeChamber({
     <Pressable onPress={onPress} disabled={!onPress && !ready}>
       <LinearGradient
         colors={
-          ready
-            ? ["#3C2C0A", "#0A1824", "#05080C"]
-            : pass
-              ? ["#2A1218", "#0A1018", "#05080C"]
-              : ["#0A1C28", "#081018", "#120E06"]
+          ready ? gradients.panelGold : pass ? gradients.danger : gradients.pageDeep
         }
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
@@ -196,7 +192,7 @@ export function DayForgeChamber({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   chamber: {
     borderRadius: radius.xl,
     borderWidth: StyleSheet.hairlineWidth,
@@ -278,4 +274,4 @@ const styles = StyleSheet.create({
     fontSize: 11,
     textAlign: "center",
   },
-});
+}));

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AccessibilityInfo, Animated, StyleSheet, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
-import { colors, gradients } from "@/theme";
+import { colors, gradients , registerStyles } from "@/theme";
 
 /** Stadium night: circuit-blue left + gold right — matches the Decision Engine logo split. */
 export function AmbientField({
@@ -137,14 +137,14 @@ export function AmbientField({
         ]}
       >
         <LinearGradient
-          colors={["rgba(240,193,74,0)", "rgba(240,193,74,0.28)", "rgba(26,168,240,0)", "transparent"]}
+          colors={gradients.scan}
           start={{ x: 0, y: 0.5 }}
           end={{ x: 1, y: 0.5 }}
           style={styles.scan}
         />
       </Animated.View>
       <LinearGradient
-        colors={["transparent", "rgba(2,5,10,0.42)", "rgba(2,5,10,0.94)"]}
+        colors={gradients.vignette}
         style={styles.vignette}
       />
       <View style={styles.grain} />
@@ -152,7 +152,7 @@ export function AmbientField({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   orbBlue: {
     position: "absolute",
     top: -90,
@@ -205,6 +205,6 @@ const styles = StyleSheet.create({
   },
   grain: {
     ...StyleSheet.absoluteFill,
-    backgroundColor: "rgba(255,255,255,0.014)",
+    backgroundColor: colors.grain,
   },
-});
+}));

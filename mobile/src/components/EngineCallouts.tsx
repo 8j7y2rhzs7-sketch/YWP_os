@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { Animated, Easing, StyleSheet, Text, View } from "react-native";
 
 import { useReduceMotion } from "@/hooks/useReduceMotion";
-import { colors, fonts, spacing } from "@/theme";
+import { colors, fonts, spacing , registerStyles } from "@/theme";
 
 interface Callout {
   id: string;
@@ -149,7 +149,7 @@ export function EngineCallouts({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   wrap: {
     ...StyleSheet.absoluteFill,
   },
@@ -188,4 +188,4 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     maxWidth: 100,
   },
-});
+}));

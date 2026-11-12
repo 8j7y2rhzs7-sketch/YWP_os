@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Animated, Easing, StyleSheet, Text } from "react-native";
 
 import { useReduceMotion } from "@/hooks/useReduceMotion";
+import { registerStyles } from "@/theme";
 
 /**
  * Sport emoji/ball for the Select Sport grid.
@@ -116,7 +117,7 @@ export function SportBallIcon({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   wrap: {
     alignItems: "center",
     justifyContent: "center",
@@ -124,4 +125,4 @@ const styles = StyleSheet.create({
   icon: {
     textAlign: "center",
   },
-});
+}));

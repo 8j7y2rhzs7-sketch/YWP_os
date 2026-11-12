@@ -11,7 +11,7 @@ import { LinearGradient } from "expo-linear-gradient";
 
 import { MetalShimmer } from "@/components/MetalShimmer";
 import { useReduceMotion } from "@/hooks/useReduceMotion";
-import { colors, gradients, radius, shadow, spacing } from "@/theme";
+import { colors, gradients, radius, shadow, spacing , registerStyles } from "@/theme";
 
 interface MetalPanelProps {
   children: ReactNode;
@@ -116,11 +116,11 @@ export function MetalPanel({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   panel: {
     borderRadius: radius.lg,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: "rgba(255,255,255,0.12)",
+    borderColor: colors.panelLine,
     padding: spacing.xl,
     gap: spacing.lg,
     overflow: "hidden",
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     left: 20,
     right: 20,
     height: StyleSheet.hairlineWidth,
-    backgroundColor: "rgba(255,255,255,0.22)",
+    backgroundColor: colors.beam,
   },
   glassSheen: {
     position: "absolute",
@@ -165,4 +165,4 @@ const styles = StyleSheet.create({
   success: { borderColor: "rgba(46,229,154,0.4)" },
   danger: { borderColor: "rgba(255,77,106,0.4)" },
   gold: { borderColor: "rgba(196,152,42,0.5)" },
-});
+}));

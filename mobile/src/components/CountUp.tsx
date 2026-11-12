@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Animated, Easing, StyleSheet, Text, type TextStyle } from "react-native";
 
 import { useReduceMotion } from "@/hooks/useReduceMotion";
-import { fonts } from "@/theme";
+import { fonts , registerStyles } from "@/theme";
 
 interface CountUpProps {
   value: number;
@@ -55,9 +55,9 @@ export function CountUp({
   return <Text style={[styles.text, style]}>{label}</Text>;
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   text: {
     fontFamily: fonts.displaySemi,
     fontWeight: "700",
   },
-});
+}));

@@ -12,7 +12,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useReduceMotion } from "@/hooks/useReduceMotion";
-import { colors, fonts, gradients, radius, spacing, type } from "@/theme";
+import { colors, fonts, gradients, radius, spacing, type , registerStyles } from "@/theme";
 
 interface ProtocolRunDockProps {
   sport: string;
@@ -250,7 +250,7 @@ export function ProtocolRunDock({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   wrap: {
     position: "absolute",
     left: 0,
@@ -374,4 +374,4 @@ const styles = StyleSheet.create({
   },
   pressed: { transform: [{ scale: 0.96 }], opacity: 0.92 },
   disabled: { opacity: 0.45 },
-});
+}));

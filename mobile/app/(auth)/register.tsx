@@ -9,7 +9,7 @@ import { MetalPanel } from "@/components/MetalPanel";
 import { Screen } from "@/components/Screen";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
-import { colors, spacing, type } from "@/theme";
+import { colors, spacing, type , registerStyles } from "@/theme";
 
 export default function RegisterScreen() {
   const { user, register } = useAuth();
@@ -79,7 +79,7 @@ export default function RegisterScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   content: { justifyContent: "center", paddingTop: spacing.xl },
   title: { color: colors.gold, fontSize: 20, fontWeight: "900" },
   link: {
@@ -88,4 +88,4 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     padding: spacing.sm,
   },
-});
+}));

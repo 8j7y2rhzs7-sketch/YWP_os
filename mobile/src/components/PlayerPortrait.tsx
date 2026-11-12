@@ -1,7 +1,7 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 
 import { sportLook } from "@/sportVisuals";
-import { colors, radius } from "@/theme";
+import { colors, radius , registerStyles } from "@/theme";
 
 export function PlayerPortrait({
   imageUrl,
@@ -32,7 +32,7 @@ export function PlayerPortrait({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   wrap: {
     overflow: "hidden",
     alignItems: "center",
@@ -42,4 +42,4 @@ const styles = StyleSheet.create({
   },
   image: { width: "100%", height: "100%" },
   emoji: { color: colors.gold },
-});
+}));

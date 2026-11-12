@@ -12,7 +12,7 @@ import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import { AmbientField } from "@/components/AmbientField";
 import { SignalField } from "@/components/SignalField";
 import { sportLook } from "@/sportVisuals";
-import { colors, spacing } from "@/theme";
+import { colors, spacing , registerStyles } from "@/theme";
 
 interface ScreenProps {
   children: ReactNode;
@@ -145,7 +145,7 @@ export function Screen({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   page: { flex: 1, backgroundColor: colors.background },
   safe: { flex: 1 },
   scrollContent: { flexGrow: 1 },
@@ -156,4 +156,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     gap: spacing.lg,
   },
-});
+}));
