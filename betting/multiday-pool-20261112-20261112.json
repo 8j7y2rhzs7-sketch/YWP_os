@@ -2,7 +2,7 @@
   "dates": [
     "20261112"
   ],
-  "generated_at": "2026-11-12T11:22:34.140443-05:00",
+  "generated_at": "2026-11-12T17:41:01.524742-05:00",
   "by_day": {
     "20261112": [
       {
@@ -1493,6 +1493,39 @@
       {
         "date": "20261112",
         "sport": "NBA",
+        "game": "CHA @ PHX",
+        "when": "11/12 - 9:00 PM EST",
+        "player": "Moussa Diabate",
+        "id": "4433249",
+        "team": "CHA",
+        "stat": "PTS",
+        "avg_min": 29.1,
+        "score": 89.29,
+        "gtd": false,
+        "inj_status": null,
+        "research_posted": 8.5,
+        "clear_at": 6.5,
+        "clear_hits": 6,
+        "deep_67": 5.0,
+        "nn_at": null,
+        "nn_deep": null,
+        "kind": "6/7",
+        "n": 7,
+        "vals": [
+          7.0,
+          7.0,
+          10.0,
+          10.0,
+          9.0,
+          11.0,
+          4.0
+        ],
+        "band": "O5.0\u2013O6.5",
+        "drop": 2.0
+      },
+      {
+        "date": "20261112",
+        "sport": "NBA",
         "game": "DET @ WSH",
         "when": "11/12 - 7:00 PM EST",
         "player": "Daniss Jenkins",
@@ -1753,6 +1786,39 @@
         ],
         "band": "O5.0\u2013O6.5",
         "drop": 1.0
+      },
+      {
+        "date": "20261112",
+        "sport": "NBA",
+        "game": "CHA @ PHX",
+        "when": "11/12 - 9:00 PM EST",
+        "player": "Moussa Diabate",
+        "id": "4433249",
+        "team": "CHA",
+        "stat": "REB",
+        "avg_min": 29.1,
+        "score": 88.89,
+        "gtd": false,
+        "inj_status": null,
+        "research_posted": 8.5,
+        "clear_at": 5.5,
+        "clear_hits": 6,
+        "deep_67": 2.0,
+        "nn_at": 4.5,
+        "nn_deep": 2.0,
+        "kind": "6/7",
+        "n": 7,
+        "vals": [
+          6.0,
+          9.0,
+          8.0,
+          12.0,
+          9.0,
+          17.0,
+          5.0
+        ],
+        "band": "O2.0\u2013O5.5",
+        "drop": 3.0
       },
       {
         "date": "20261112",
@@ -2221,39 +2287,6 @@
         "sport": "NBA",
         "game": "TOR @ PHI",
         "when": "11/12 - 7:00 PM EST",
-        "player": "LeBron James",
-        "id": "1966",
-        "team": "PHI",
-        "stat": "REB",
-        "avg_min": 32.1,
-        "score": 87.02,
-        "gtd": true,
-        "inj_status": "Day-To-Day",
-        "research_posted": 6.5,
-        "clear_at": 4.5,
-        "clear_hits": 7,
-        "deep_67": 2.0,
-        "nn_at": 4.5,
-        "nn_deep": 2.0,
-        "kind": "7/7",
-        "n": 7,
-        "vals": [
-          8.0,
-          5.0,
-          7.0,
-          10.0,
-          7.0,
-          9.0,
-          5.0
-        ],
-        "band": "O2.0\u2013O4.5",
-        "drop": 2.0
-      },
-      {
-        "date": "20261112",
-        "sport": "NBA",
-        "game": "TOR @ PHI",
-        "when": "11/12 - 7:00 PM EST",
         "player": "RJ Barrett",
         "id": "4395625",
         "team": "TOR",
@@ -2452,138 +2485,6 @@
         "sport": "NBA",
         "game": "TOR @ PHI",
         "when": "11/12 - 7:00 PM EST",
-        "player": "LeBron James",
-        "id": "1966",
-        "team": "PHI",
-        "stat": "PTS",
-        "avg_min": 32.1,
-        "score": 64.74,
-        "gtd": true,
-        "inj_status": "Day-To-Day",
-        "research_posted": 12.5,
-        "clear_at": 10.5,
-        "clear_hits": 6,
-        "deep_67": 5.0,
-        "nn_at": 7.5,
-        "nn_deep": 5.0,
-        "kind": "6/7",
-        "n": 7,
-        "vals": [
-          11.0,
-          22.0,
-          8.0,
-          13.0,
-          15.0,
-          20.0,
-          13.0
-        ],
-        "band": "O5.0\u2013O10.5",
-        "drop": 2.0
-      },
-      {
-        "date": "20261112",
-        "sport": "NBA",
-        "game": "TOR @ PHI",
-        "when": "11/12 - 7:00 PM EST",
-        "player": "LeBron James",
-        "id": "1966",
-        "team": "PHI",
-        "stat": "AST",
-        "avg_min": 32.1,
-        "score": 64.34,
-        "gtd": true,
-        "inj_status": "Day-To-Day",
-        "research_posted": 7.5,
-        "clear_at": 4.5,
-        "clear_hits": 6,
-        "deep_67": 2.0,
-        "nn_at": 2.5,
-        "nn_deep": 2.0,
-        "kind": "6/7",
-        "n": 7,
-        "vals": [
-          5.0,
-          5.0,
-          3.0,
-          8.0,
-          9.0,
-          8.0,
-          10.0
-        ],
-        "band": "O2.0\u2013O4.5",
-        "drop": 3.0
-      },
-      {
-        "date": "20261112",
-        "sport": "NBA",
-        "game": "CHA @ PHX",
-        "when": "11/12 - 9:00 PM EST",
-        "player": "Moussa Diabate",
-        "id": "4433249",
-        "team": "CHA",
-        "stat": "PTS",
-        "avg_min": 29.1,
-        "score": 64.29,
-        "gtd": true,
-        "inj_status": "Day-To-Day",
-        "research_posted": 8.5,
-        "clear_at": 6.5,
-        "clear_hits": 6,
-        "deep_67": 5.0,
-        "nn_at": null,
-        "nn_deep": null,
-        "kind": "6/7",
-        "n": 7,
-        "vals": [
-          7.0,
-          7.0,
-          10.0,
-          10.0,
-          9.0,
-          11.0,
-          4.0
-        ],
-        "band": "O5.0\u2013O6.5",
-        "drop": 2.0
-      },
-      {
-        "date": "20261112",
-        "sport": "NBA",
-        "game": "CHA @ PHX",
-        "when": "11/12 - 9:00 PM EST",
-        "player": "Moussa Diabate",
-        "id": "4433249",
-        "team": "CHA",
-        "stat": "REB",
-        "avg_min": 29.1,
-        "score": 63.89,
-        "gtd": true,
-        "inj_status": "Day-To-Day",
-        "research_posted": 8.5,
-        "clear_at": 5.5,
-        "clear_hits": 6,
-        "deep_67": 2.0,
-        "nn_at": 4.5,
-        "nn_deep": 2.0,
-        "kind": "6/7",
-        "n": 7,
-        "vals": [
-          6.0,
-          9.0,
-          8.0,
-          12.0,
-          9.0,
-          17.0,
-          5.0
-        ],
-        "band": "O2.0\u2013O5.5",
-        "drop": 3.0
-      },
-      {
-        "date": "20261112",
-        "sport": "NBA",
-        "game": "TOR @ PHI",
-        "when": "11/12 - 7:00 PM EST",
         "player": "Joel Embiid",
         "id": "3059318",
         "team": "PHI",
@@ -2627,7 +2528,7 @@
           "home": "PHI",
           "away_id": "28",
           "home_id": "20",
-          "odds": "PHI -8.5",
+          "odds": "PHI -7.5",
           "ou": 223.5
         },
         {
@@ -2641,7 +2542,7 @@
           "away_id": "8",
           "home_id": "27",
           "odds": "DET -10.5",
-          "ou": 220.5
+          "ou": 222.5
         },
         {
           "sport": "nba",
@@ -2654,7 +2555,7 @@
           "away_id": "6",
           "home_id": "16",
           "odds": "MIN -5.5",
-          "ou": 226.5
+          "ou": 225.5
         },
         {
           "sport": "nba",
@@ -2675,14 +2576,14 @@
           "sport": "nhl",
           "id": "401891808",
           "name": "CAR @ SEA",
-          "status": "Scheduled",
-          "when": "11/12 - 12:00 PM EST",
+          "status": "Final",
+          "when": "Final",
           "away": "CAR",
           "home": "SEA",
           "away_id": "7",
           "home_id": "124292",
-          "odds": "CAR -305",
-          "ou": 6.5
+          "odds": null,
+          "ou": null
         },
         {
           "sport": "nhl",
@@ -2720,7 +2621,7 @@
           "home": "OTT",
           "away_id": "17",
           "home_id": "14",
-          "odds": "COL -120",
+          "odds": "OTT -112",
           "ou": 6.5
         },
         {
@@ -2733,7 +2634,7 @@
           "home": "NJ",
           "away_id": "23",
           "home_id": "11",
-          "odds": "NJ -155",
+          "odds": "NJ -162",
           "ou": 6.5
         },
         {
@@ -2785,7 +2686,7 @@
           "home": "DAL",
           "away_id": "28",
           "home_id": "9",
-          "odds": "DAL -175",
+          "odds": "DAL -162",
           "ou": 5.5
         },
         {
@@ -2798,8 +2699,8 @@
           "home": "UTA",
           "away_id": "19",
           "home_id": "129764",
-          "odds": "UTAH -115",
-          "ou": 5.5
+          "odds": "STL -130",
+          "ou": 6.5
         },
         {
           "sport": "nhl",
@@ -2826,13 +2727,13 @@
           "home": "NYG",
           "away_id": "28",
           "home_id": "19",
-          "odds": "NYG -2.5",
+          "odds": "NYG -1.5",
           "ou": 40.5
         }
       ]
     }
   },
   "counts": {
-    "20261112": 79
+    "20261112": 76
   }
 }

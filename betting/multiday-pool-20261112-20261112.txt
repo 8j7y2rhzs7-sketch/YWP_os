@@ -6,7 +6,7 @@ G2/G3: confirm posted/HR before betting — research_posted is L7-median estimat
 ════════════════════════════════════════════════════════════════════
 
 ── SLATE ──
-  11/12  NBA 4 · NHL 11 · NFL 1  →  79 clears @ 6/7+
+  11/12  NBA 4 · NHL 11 · NFL 1  →  76 clears @ 6/7+
 
 ══ BEST OF EACH DAY (top punches) ══
 
@@ -53,7 +53,7 @@ Grab 2–4 from each day → bigger ticket, risk split across tips
 
 ══ FULL CLEAR BOARDS BY DAY ══
 
-── 11/12 (79 clears) ──
+── 11/12 (76 clears) ──
   7/7  Tyrese Maxey           AST   O3.5   O2.0–O3.5      TOR @ PHI    L=[4.0, 7.0, 4.0, 7.0, 11.0, 4.0, 4.0]
   7/7  Devin Booker           3PT   O1.5   O1.0–O1.5      CHA @ PHX    L=[2.0, 3.0, 2.0, 4.0, 2.0, 2.0, 3.0]
   7/7  Kyshawn George         REB   O2.5   O2.0–O2.5      DET @ WSH    L=[9.0, 3.0, 7.0, 4.0, 4.0, 4.0, 3.0]
@@ -94,7 +94,7 @@ Grab 2–4 from each day → bigger ticket, risk split across tips
   6/7  Alex Sarr              REB   O7.5   O2.0–O7.5      DET @ WSH    L=[8.0, 8.0, 14.0, 8.0, 9.0, 8.0, 4.0]
   6/7  VJ Edgecombe           PTS   O9.5   O5.0–O9.5      TOR @ PHI    L=[8.0, 13.0, 19.0, 11.0, 21.0, 10.0, 13.0]
   6/7  Cade Cunningham        PTS   O16.5  O5.0–O16.5     DET @ WSH    L=[17.0, 14.0, 26.0, 33.0, 20.0, 30.0, 19.0]
-  … +39 more in JSON
+  … +36 more in JSON
 
 ══ HOW TO USE ══
 1. Build separate slips per day OR one multi-day parlay (books that allow it).
