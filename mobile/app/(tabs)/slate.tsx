@@ -41,12 +41,20 @@ const CANDIDATE_PAGE = 20;
 const PROP_SPORTS = new Set(["wnba", "nba", "nfl", "ncaaf"]);
 /** Chunked warm passes — each stays under Render's ~30s proxy. */
 const MAX_WARM_ROUNDS = 14;
+/** Giant boards need more slices than a normal slate. */
+const MAX_WARM_ROUNDS_HUGE = 64;
+/** Props shipped per warm request. Full boards time out without this. */
+const WARM_CHUNK = 96;
+const WARM_LONGSHOT_ODDS = 4000;
+const WARM_LONGSHOT_CHUNK = 32;
 /** Stop only after this many consecutive zero-gain passes. */
 const STALL_ROUNDS_TO_ARM = 3;
 /** Normal warm-request retries before arming with partial research. */
 const WARM_RETRY_LIMIT = 3;
 /** Extra retries when Cloudflare / edge rate-limits the burst. */
 const WARM_EDGE_RETRY_LIMIT = 5;
+/** Auto-continue a paused warm instead of making the user tap WARM again. */
+const AUTO_RESUME_LIMIT = 4;
 
 function isEdgeThrottleError(reason: unknown): boolean {
   if (!(reason instanceof Error)) return false;
@@ -190,6 +198,8 @@ export default function SlateScreen() {
   const [visibleCount, setVisibleCount] = useState(CANDIDATE_PAGE);
   const warmEpoch = useRef(0);
   const heldSession = useRef<Awaited<ReturnType<typeof loadSession>>>(null);
+  const launchWhenReady = useRef(false);
+  const autoResumeCount = useRef(0);
 
   async function loadCatalog() {
     try {
@@ -246,20 +256,42 @@ export default function SlateScreen() {
     let latest = base;
     let stallRounds = 0;
     let errors = 0;
+    const pendingStart = pendingPropCount(candidates);
+    const roundCap =
+      pendingStart > 400
+        ? Math.min(
+            MAX_WARM_ROUNDS_HUGE,
+            Math.max(MAX_WARM_ROUNDS, Math.ceil(pendingStart / WARM_CHUNK) + 2),
+          )
+        : MAX_WARM_ROUNDS;
     try {
-      for (let round = 0; round < MAX_WARM_ROUNDS; round += 1) {
+      for (let round = 0; round < roundCap; round += 1) {
         if (epoch !== warmEpoch.current) return null;
         const pendingBefore = pendingPropCount(candidates);
         if (pendingBefore <= 0) break;
         setResearchNote(
-          `Researching props… pass ${round + 1}/${MAX_WARM_ROUNDS}`,
+          `Researching props… pass ${round + 1}/${roundCap}`,
         );
-        // Only ship pending market_implied props — much smaller body, less 502 risk.
-        const pendingOnly = candidates.filter(
+        // Only ship a slice. A 4,000-row body never returns and the
+        // button stays on WARM. Keep +4000-and-up in every slice.
+        const pendingOnlyAll = candidates.filter(
           (row) =>
             String(row.market_type || "").startsWith("player_") &&
             row.probability_source === "market_implied",
         );
+        const longshots = pendingOnlyAll.filter(
+          (row) => Number(row.american_odds) >= WARM_LONGSHOT_ODDS,
+        );
+        const standard = pendingOnlyAll.filter(
+          (row) => Number(row.american_odds) < WARM_LONGSHOT_ODDS,
+        );
+        const pendingOnly = [
+          ...standard.slice(
+            0,
+            WARM_CHUNK - Math.min(longshots.length, WARM_LONGSHOT_CHUNK),
+          ),
+          ...longshots.slice(0, WARM_LONGSHOT_CHUNK),
+        ];
         let warm: PropWarmResponse;
         try {
           warm = await request<PropWarmResponse>("/sports/warm-props", {
@@ -299,7 +331,6 @@ export default function SlateScreen() {
         latest = { ...base, candidates };
         setSlate(latest);
         saveSlate(latest);
-        saveSlate(latest);
         const pendingAfter = pendingPropCount(candidates);
         const modeled = candidates.filter(
           (row) =>
@@ -325,29 +356,45 @@ export default function SlateScreen() {
         } else {
           stallRounds = 0;
         }
-        // Brief pause between passes so edge WAF does not treat warm as a bot burst.
-        await new Promise((resolve) => setTimeout(resolve, 900));
+        await new Promise((resolve) =>
+          setTimeout(resolve, pendingStart > 400 ? 250 : 900),
+        );
       }
       if (epoch === warmEpoch.current) {
         const stillPending = pendingPropCount(candidates);
         setLaunchArmed(true);
         setWarming(false);
+        autoResumeCount.current = 0;
         setResearchNote(
           stillPending > 0
-            ? `Research armed — ${stillPending} props still sportsbook-only (will SKIP). Gold = grade.`
-            : "Research ready — LAUNCH is gold. Tap to grade.",
+            ? launchWhenReady.current
+              ? `Research armed — launching with ${stillPending} sportsbook-only props skipped.`
+              : `Research armed — ${stillPending} props still sportsbook-only (will SKIP). Gold = grade.`
+            : launchWhenReady.current
+              ? "Research ready — launching."
+              : "Research ready — LAUNCH is gold. Tap to grade.",
         );
       }
       return latest;
     } catch (reason) {
       if (epoch === warmEpoch.current) {
         setWarming(false);
-        // Stay blue — user can tap WAIT/WARM to resume instead of Refresh.
         setLaunchArmed(false);
-        setResearchNote(
+        const detail =
           reason instanceof Error && reason.message.trim()
-            ? `Research paused — tap blue WARM to continue. ${reason.message.trim()}`
-            : "Research paused — tap blue WARM to continue.",
+            ? reason.message.trim()
+            : "request failed";
+        if (autoResumeCount.current < AUTO_RESUME_LIMIT) {
+          autoResumeCount.current += 1;
+          setResearchNote(
+            `Research paused — auto-continuing ${autoResumeCount.current}/${AUTO_RESUME_LIMIT}. ${detail}`,
+          );
+          await new Promise((resolve) => setTimeout(resolve, 2_000));
+          if (epoch !== warmEpoch.current) return latest;
+          return warmResearch(latest, epoch);
+        }
+        setResearchNote(
+          `Research paused — tap RUN once to continue. ${detail}`,
         );
       }
       return latest;
@@ -360,6 +407,8 @@ export default function SlateScreen() {
     const catalog = catalogByKey[requestSport];
     warmEpoch.current += 1;
     const epoch = warmEpoch.current;
+    launchWhenReady.current = false;
+    autoResumeCount.current = 0;
     setLaunchArmed(false);
     setWarming(false);
     setResearchNote(null);
@@ -400,38 +449,20 @@ export default function SlateScreen() {
     }
   }
 
-  async function analyze() {
-    if (!slate) return;
-    if (slate.sport.toLowerCase() !== sport || slate.date !== date) {
-      setError("Slate is out of date — reload before analyzing.");
-      return;
-    }
-    // Blue button = keep researching (no need to hit Refresh).
-    if (warming) {
-      setResearchNote(
-        researchNote ?? "Still warming research — wait for gold.",
-      );
-      return;
-    }
-    if (!launchArmed) {
-      const epoch = warmEpoch.current;
-      setError(null);
-      setResearchNote("Continuing research…");
-      await warmResearch(slate, epoch);
-      return;
-    }
+  async function gradeSlate(board: SlateResponse) {
     setAnalyzing(true);
     setError(null);
     setResearchNote("Grading with full research…");
+    launchWhenReady.current = false;
     try {
       const response = await request<AnalyzeResponse>("/sports/analyze", {
         method: "POST",
         body: JSON.stringify({
-          sport: slate.sport,
-          date: slate.date,
+          sport: board.sport,
+          date: board.date,
           mode: "pregame",
           user_risk_profile: user?.risk_profile ?? "balanced",
-          candidates: slate.candidates,
+          candidates: board.candidates,
         }),
       });
       saveAnalysis(response);
@@ -448,6 +479,29 @@ export default function SlateScreen() {
     }
   }
 
+  async function analyze() {
+    if (!slate) return;
+    if (slate.sport.toLowerCase() !== sport || slate.date !== date) {
+      setError("Slate is out of date — reload before analyzing.");
+      return;
+    }
+    // One press during warm queues Launch — no need to keep tapping.
+    if (warming) {
+      launchWhenReady.current = true;
+      setResearchNote("Queued — will launch when research turns gold.");
+      return;
+    }
+    if (!launchArmed) {
+      const epoch = warmEpoch.current;
+      setError(null);
+      launchWhenReady.current = true;
+      setResearchNote("Continuing research — will launch when ready…");
+      await warmResearch(slate, epoch);
+      return;
+    }
+    await gradeSlate(slate);
+  }
+
   const phase: RunPhase = analyzing
     ? "analyzing"
     : warming
@@ -458,6 +512,13 @@ export default function SlateScreen() {
           ? "armed"
           : "idle";
   useRunKeepAwake(phase !== "idle" || Boolean(slate));
+
+  useEffect(() => {
+    if (!slate || !launchArmed || warming || analyzing || loadingSlate) return;
+    if (!launchWhenReady.current) return;
+    launchWhenReady.current = false;
+    void gradeSlate(slate);
+  }, [analyzing, launchArmed, loadingSlate, slate, warming]);
 
   useEffect(() => {
     void loadCatalog();
@@ -699,6 +760,9 @@ export default function SlateScreen() {
           onPress={() => void loadSlate()}
           loading={loadingSlate}
         />
+        <Text style={styles.prefetchNote}>
+          Prop research on RUN uses free ESPN logs. You do not need to buy Odds credits for a normal Launch. This button only prefetches paid sportsbook odds across sports.
+        </Text>
         <YwpButton
           label="WARM ALL IN-SEASON (USES CREDITS)"
           variant="outline"
