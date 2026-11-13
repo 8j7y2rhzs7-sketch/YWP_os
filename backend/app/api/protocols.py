@@ -4,6 +4,7 @@ from sqlalchemy import select
 from app.deps import DB, SubscribedUser
 from app.models import ProtocolRun
 from app.schemas import ProtocolRunOut
+from app.services.decision_protocol import baseline_manifest
 from app.services.protocols import CURRENT_PROTOCOL
 from app.services.trusted_sources import trusted_sources_manifest
 
@@ -13,6 +14,12 @@ router = APIRouter(prefix="/protocol", tags=["protocol"])
 @router.get("/current")
 def current_protocol(_: SubscribedUser) -> dict:
     return CURRENT_PROTOCOL
+
+
+@router.get("/baseline")
+def protocol_baseline(_: SubscribedUser) -> dict:
+    """October 2026 baseline. The live sports protocol is still the prior version."""
+    return baseline_manifest()
 
 
 @router.get("/trusted-sources")
