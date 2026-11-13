@@ -1,0 +1,64 @@
+YWP 2026-11-06 — HARD ROCK CASH CARD
+Gate: PASS 548/548 · NBA9 NHL3 NCAAF5 NFL0
+Source: HR web mirror (agentbets) + dynatyze HR-cited props · ESPN RS logs
+Rule: HR-posted only · max 3 cash · no print climbs · no Q spines
+
+════════════════════════════════════
+OUT / Q FILTER
+════════════════════════════════════
+Q/hold: Anthony Davis (ankle) · Payton Pritchard (eye) · Jalen Johnson (ankle)
+        Jarrett Allen (knee) · Dennis Schroder · Moussa Diabate
+OUT: Knueppel · Grant Williams · Chet Holmgren · Anthony Edwards · Hukporti
+BAN props on Q names until ACTIVE
+
+════════════════════════════════════
+A) HR-CONFIRMED PROPS (dynatyze cites Hard Rock)
+════════════════════════════════════
+• Coby White (CHA) U12.5 PTS — HR under -110
+  RS n=2 only [4,7] → 2/2 under but THIN → RISK not SAFE · not cash spine
+• Payton Pritchard U13.5 PTS — HR under — CUT (Questionable eye + L8 only 5/8)
+• Anthony Davis O22.5 PTS — was HR-side earlier — CUT (Questionable ankle)
+• Embiid U8.5 REB — not on current HR-best list; L7 REB under 8.5 only 3/7 → CUT
+
+════════════════════════════════════
+B) HR GAME LINES (web mirror · Nov 6 tips)
+════════════════════════════════════
+NHL (ESPN/HR align): CBJ@BUF BUF -170 / 6.5 · SJ@MIN MIN -258 / 6.5 · ANA@CGY CGY -148 / 6.5
+  Soft dog +1.5 = opposite of home -1.5
+  ★ CBJ +1.5 — RISK-KEEP (BUF modest -170; not blowdog script)
+  ★ ANA +1.5 — RISK-KEEP (CGY -148; ANA covering L5 as dog-style)
+  ✗ SJ +1.5 — CUT (MIN -258 blowdog · SJ L5 has -4/-5 blowouts)
+
+NCAAF HR:
+  SMU -5.5 / VT +180 · ECU -2.5 · ILL +3.5 (NEB -190) · NEV +9.5 (UNM -425) · ARIZ -7.5
+  ★ ILL +3.5 — RISK-KEEP soft home dog vs NEB chalk
+  • ECU -2.5 — small fav RISK (not SAFE)
+  ✗ UNM -9.5 / -425 — CUT teen cover + chalk trap
+  ✗ SMU -5.5 — not SAFE spine
+
+NBA mains (~HR/ESPN): ATL -7.5/228.5 · BOS -8.5/207.5 · PHI -2.5/229.5 · …
+  ✗ BOS@CHA U207.5 — BOS games U207.5 only 2/8 → CUT
+  No HR soft alt PTS/REB floors confirmed → no NBA prop SAFE tonight without screenshot
+
+════════════════════════════════════
+CASH3 (HR playable · max 3)
+════════════════════════════════════
+1) HR · CBJ +1.5 · PL · RISK-KEEP · agentbets/ESPN
+2) HR · ANA +1.5 · PL · RISK-KEEP · agentbets/ESPN
+3) HR · Illinois +3.5 · spread · RISK-KEEP · agentbets
+
+ALT3 if fading NHL dogs: ILL +3.5 · ECU -2.5 · CBJ +1.5
+
+SINGLES preferred over 3-leg juice if price is -150 or worse each.
+
+════════════════════════════════════
+DO NOT
+════════════════════════════════════
+SJ +1.5 · UNM -9.5 · Pritchard / AD until ACTIVE · Coby U12.5 as spine (n=2)
+O3.5 hockey · Bam-class print unders · 8–11 leg soft stacks
+Any DK/UD soft floor not on HR web dump / screenshot
+
+════════════════════════════════════
+GAPS (screenshot only if you want these)
+════════════════════════════════════
+NBA alt ladders (O/U soft rungs) · NHL SOG props · full HR prop menu

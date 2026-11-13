@@ -1,0 +1,46 @@
+POR@LAL — L7 RS hit board — 2026-11-06
+Sample: last 7 regular-season games only
+OUT: Shaedon Sharpe (knee) · Vit Krejci (ankle) · Ja Morant (hamstring)
+
+════════════════════════════════════════
+7/7 (highest clearing line per player-stat)
+════════════════════════════════════════
+FEATURED
+  Luka O22.5 PTS          LAL  7/7 cush+0.5  L=[40,42,45,37,41,52,23]
+  Deni O16.5 PTS          POR  7/7 cush+1.5  L=[21,28,24,24,23,26,18]
+  Reaves O14.5 PTS        LAL  7/7 cush+1.5  L=[21,27,19,21,16,26,29]
+  Kessler O6.5 REB        LAL  7/7 cush+0.5  L=[8,15,15,13,9,8,7]
+  Clingan O6.5 REB        POR  7/7 cush+0.5  L=[11,18,9,8,10,11,7]
+  Luka O4.5 REB / O4.5 AST LAL 7/7 both
+  Luka O1.5 3PT           LAL  7/7 cush+0.5
+  Jrue O0.5 STL           POR  7/7 cush+0.5  L=[1,1,1,1,1,1,2]
+  LaRavia O0.5 STL        LAL  7/7 cush+0.5
+
+SOFT 7/7 (not spines alone)
+  Camara / Dame / Reaves / Thybulle  O0.5 3PT
+
+════════════════════════════════════════
+6/7 (highest line — one miss)
+════════════════════════════════════════
+FEATURED
+  Luka O29.5 PTS          6/7 miss=[23]   ← CUT as spine (posted SGP bait)
+  Deni O19.5 PTS          6/7 miss=[18]
+  Reaves O18.5 PTS        6/7 miss=[16]
+  Dame O18.5 PTS          6/7 miss=[9]
+  Kessler O7.5 REB        6/7 miss=[7]
+  Clingan O7.5 REB        6/7 miss=[7]
+  Luka O5.5 REB / AST     6/7 miss=[5]
+  Jrue O1.5 3PT           6/7 miss=[0]
+  Deni O3.5 REB / AST     6/7
+  Camara O9.5 PTS / O2.5 3PT  6/7
+  Clingan O0.5 BLK · Kessler O0.5 BLK · LaRavia O0.5 BLK  6/7
+
+════════════════════════════════════════
+CASH / SGP IDEAS (HR confirm)
+════════════════════════════════════════
+SAFE3:  Kessler O6.5 REB · Clingan O6.5 REB · Jrue O0.5 STL
+SAFE4:  + Luka O22.5 PTS   OR  Luka O4.5 AST/REB
+ALT:    Deni O16.5 PTS · Reaves O14.5 PTS · LaRavia O0.5 STL
+
+JUICE1 only: Kessler O7.5  OR  Deni O19.5  OR  Jrue O1.5 3s
+DO NOT stack Luka O29.5 + Kessler O7.5 + Dame O16.5 (earlier SGP7 fail pattern)

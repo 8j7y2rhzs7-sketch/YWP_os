@@ -1,0 +1,65 @@
+NCAAM EXHAUSTIVE · 2026-11-03 · GATE PASS
+Method: model-vs-market · BAN ≥20 covers · TROY LESSON applied
+
+=== YDAY — TROY (process miss) ===
+Boarded: TROY -2.5/-3.5 · model ~68% KEEP fav (do NOT take UMass +)
+Final: UMass 71, Troy 60 — fav LOST OUTRIGHT (not a cover fail)
+Lesson locked:
+1. Early-season mid-major ~65-70% model fav ≠ SAFE spread spine
+2. "Model likes fav" ≠ they cover OR win — UMass just won
+3. Bar for spread KEEP raised: model agree + ≥78% AND still prefer ML when n=0/1 RS
+4. Teen covers (−10 to −14) = RISK even at 85-90% — win first, cover second
+
+=== BAN COVER (≥20 — chalk just wins; ML only if grind) ===
+TENN -25.5 · UK -33.5 · UVA -31.5 · ALA -27.5 · ARK -41.5
+VT -31.5 · TA&M -32.5 · MIZ -26.5 · LSU -27.5 · IOWA -23.5
+SC -20.5 · URI -20.5 · BC -20.5 · UNLV -20.5
+Dogs on those = trap numbers (yesterday pattern)
+
+=== ML GRIND ONLY (no cover) ===
+TENN · UK · UVA · ALA · ARK · VT · TA&M · MIZ · LSU · IOWA · BC · UNLV · URI
+SC ML thin (model 90% but −20.5 banned)
+
+=== PLAY (Troy-adjusted) ===
+★ KSU -11.5 / KSU ML — model 84.6% vs SDST · BEST spread on slate · still RISK vs Troy-class upset · prefer KSU ML if only one
+★ DUQ -9.5 / DUQ ML — model 79.1% vs PFW · softest number · RISK-KEEP spread (Troy was 68% — this clears bar but early-season = not SAFE3 spine alone)
+★ GT ML (not −13.5 spine) — model 86.3% vs HAMP · ML > cover
+★ SDSU ML (not −13.5 spine) — model 91.8% vs CSUF · crush win, cover RISK
+• CBU ML / RISK -10.5 — model 77.9% vs UNF · Troy-adjacent % · ML only
+
+=== NO FLIPS TONIGHT ===
+Every posted board agrees with model. No Cornell/M-OH-type MODEL≠BOARD spot.
+
+=== SKIP ===
+No-odds exhibitions (MILG@UNCG etc)
+Any +20/+25/+30/+40 dog
+SC/URI/BC −20.5 covers
+Counting props — RS logs empty/thin opener week
+
+=== BANGERS ===
+⚡ KSU -11.5
+⚡ DUQ -9.5
+⚡ SDSU ML · GT ML · KSU ML 3-leg chalk ML
+⚡ Live: fade if ranked chalk fails to go +15 by half (cover hunt only — not pre-board)
+
+=== CLEAN SLIPS ===
+SAFE2 (ML):     KSU ML · DUQ ML
+SAFE3 (ML):     KSU ML · DUQ ML · SDSU ML
+PRIMARY3:       KSU -11.5 · DUQ -9.5 · GT ML
+MIX4:           KSU ML · DUQ ML · SDSU ML · GT ML
+UPSIDE:         KSU -11.5 · DUQ -9.5 · SDSU -13.5 (accept cover variance)
+AVOID:          anything resembling TROY -2.5 off ~68% mid-major juice
+
+=== BAN (true) ===
+Monster covers ≥20
+Troy-class 65-72% early mid-major spreads as SAFE
+Dog + big number on ranked home openers
+
+DONE CHECK
+- require_gate: PASS date=20261103 sheets_ok=620/620
+- GATE_TODAY.json date=20261103 status=PASS
+- sheets_path=/cursor/stores/self/betting/GATE_SHEETS_20261103.json
+- BANGERS section: yes
+- athlete_ids shown: n/a (sides/ML card; props skipped thin RS)
+- Troy yday graded: yes (MASS 71-60)
+- task shape matched user ask: yes

@@ -1,0 +1,97 @@
+CUT AUTOPSY — 2026-11-06 (every weed CUT checked vs final box)
+Purpose: find where WE went wrong — not just what the user added.
+
+Legend: HIT = would have cashed · MISS = correctly dead · PROCESS = why we cut
+
+════════════════════════════════════════════════
+A) CUTS THAT CASHED → WE WERE WRONG (false cuts)
+════════════════════════════════════════════════
+GLASS / CLIMBS we demoted that CLEAR
+  Luka O4.5 REB     HIT 5     cut for corr vs Kessler — BOTH hit (Kessler 12)
+  Luka O5.5 REB     MISS 5    climb cut OK
+  Luka O29.5 PTS    HIT 53    hope-climb CUT wrong on night (nuclear)
+  Kessler O7.5 REB  HIT 12    climb cut wrong on night (SAFE was 6.5 but 7.5 cleared)
+  Clingan O7.5 REB  HIT 11    climb cut wrong on night
+  Naz O5.5 REB      HIT 6     climb cut wrong
+  Tatum O6.5 AST    HIT 9     climb cut wrong
+  Trae O7.5 AST     HIT 10    climb cut wrong
+  Boozer O6.5 REB   HIT 12    climb cut wrong
+  Gobert O8.5 REB   HIT 11    soft-RISK cut wrong
+  Wemby O7.5 REB    HIT 14    climb cut wrong
+  Ace O4.5 REB      HIT 6     #1 "ticket buster" cut WRONG
+  Boldy O2.5 SOG    HIT 7     RISK climb cut wrong (as add)
+  Ek O1.5 SOG       HIT 2     corr cut vs Boldy — BOTH hit (corr ≠ auto miss)
+  Gauthier O1.5     HIT 4     chalk cut WRONG (later chalk-vs-stats fixed)
+  Dame O16.5 PTS    HIT 22    RISK cut wrong on night
+  Deni O19.5 PTS    HIT 22    RISK cut wrong on night
+  Deni O5.5 AST     HIT 11    SGP form cut — joint would clear
+  Deni O5.5 REB     HIT 9     SGP form cut — joint would clear
+  Lakers ML         HIT LAL   form-mismatch CUT wrong (LAL 124-118)
+  Thunder ML        HIT OKC   coin-flip CUT wrong (OKC 128-97)
+  Sabres ML         HIT BUF   fade CUT wrong (BUF 5-2) — note CBJ+1.5 also lost
+
+FALSE-CUT THEMES
+  1. Correlation ≠ "will miss." Kessler+Luka and Boldy+Ek BOTH cleared.
+  2. Climb past SAFE often still hits on hot nights — cutting climb ≠ EV; it is variance control.
+  3. Ace O4.5 as #1 buster was price-bias, not form — he went 6.
+  4. Chalk juice alone (Gauthier) was already fixed mid-day — keep that fix.
+  5. Deni AST+REB joint was form-ugly in L10 but cashed — don't treat joint% as certainty.
+
+════════════════════════════════════════════════
+B) CUTS THAT MISSED → WE WERE RIGHT (true saves)
+════════════════════════════════════════════════
+  Fantilli O1.5 SOG     MISS 0     print/miss-by-1 caution — SAVED ticket
+  LeBron O4.5 AST       MISS 3     thin AST / off-menu — TRUE BUSTER
+  Maxey O19.5 PTS       MISS 17    climb cut — SAVED (even O18.5 dies)
+  SGA O5.5 AST          MISS 4     form CUT — SAVED
+  SGA O4.5 REB          MISS 3     form CUT — SAVED
+  Ayo O5.5 AST          MISS 4     form CUT — SAVED
+  Ayo O4.5 REB          MISS 2     form CUT — SAVED
+  Flames ML             MISS ANA5-CGY3   fade CUT — SAVED
+
+TRUE-CUT THEMES
+  1. Thin facilitator AST (LeBron 3) — KEEP this ban for off-menu / two-floor AST.
+  2. Same-player AST+REB with ugly joint L10 (SGA 0/8, Ayo) — KEEP cutting.
+  3. Fantilli exact-2 SOG print — KEEP print-aware NHL SOG caution.
+  4. Maxey one-away PTS climb — KEEP; floor can die too (17 < 18.5).
+
+════════════════════════════════════════════════
+C) KEEPS THAT MISSED → WE WERE WRONG (false keeps)
+════════════════════════════════════════════════
+  Jrue O0.5 STL         MISS 0     SAFE 7/7 spine died — steal variance
+  ILL/NEB O40.5         MISS 37    deep alt over died (total 24+13)
+  CBJ +1.5              MISS −3    CASH3 dog lost (BUF won 5-2)
+
+════════════════════════════════════════════════
+D) PROCESS GRADE
+════════════════════════════════════════════════
+OVER-CUT (hurt): correlation auto-cuts · climb auto-cuts on glass/AST that were hot · Ace price-fade
+UNDER-CUT (hurt): Jrue STL as SAFE spine · CFB deep alt totals as Best4 · NHL soft dogs as CASH3
+CORRECT: LeBron thin AST · Fantilli print · SGA/Ayo dual form · Maxey climb · Flames fade
+
+════════════════════════════════════════════════
+E) LOCKS FOR 2026-11-07 (from this autopsy)
+════════════════════════════════════════════════
+KEEP DOING
+  · Cut ugly same-player AST+REB joints (SGA-class)
+  · Cut thin off-menu AST (LeBron-class)
+  · Cut Fantilli-class SOG print (many exact 2s / soft price)
+  · Chalk OK when stats SAFE (Gauthier/Trae rule)
+  · Max 3–4 legs (length still structural)
+
+STOP DOING
+  · Auto-CUT correlated legs that are both independently SAFE (Kessler+Luka / Boldy+Ek)
+    → FLAG correlation, don't force-cut if both are Best-tier SAFE; unbundle only if slip >4
+  · Auto-CUT every climb above SAFE on glass stars — label RISK, allow ONE juice climb
+  · Rank Ace-class as #1 buster off juice alone when L10 SAFE
+  · Spine O0.5 STL as Best3 SAFE (Jrue 0) — thief needs matchup + not sole spine
+  · CFB deep alt totals (O40.5 vs 51.5 main) as Best4 without game-script edge
+  · NHL soft dog PL as CASH3 spine without stronger mismatch (CBJ +1.5 died)
+
+TONIGHT IMPLICATION
+  CASH3 stays Towns O9.5 · Jokic O6.5 · Trae O5.5 (glass covered class)
+  Boldy+Ek: FLAG not auto-ban if building 4; prefer Boldy alone in Best3
+  Clingan O7.5 / Wemby O6.5: allow as RISK-KEEP climb not auto-cut
+  Gillespie O1.5 STL: add only — not Best3 (Jrue lesson)
+  Franz O4.5 AST: still CUT (LeBron thin class — confirmed miss pattern)
+  No CFB deep alt over as Best4 · No soft NHL dog as CASH3 without extra edge

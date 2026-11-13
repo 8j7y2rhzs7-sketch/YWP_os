@@ -1,0 +1,87 @@
+YWP 2026-11-03 — RUN TODAY (ET 10:06 AM)
+GATE PASS date=20261103 sheets=620/620 NHL teams=22/22
+Active: NBA 0 · NFL 0 · NHL 11 · NCAAF 2 · NCAAM (ranked chalk only)
+NOTE: NBA dark — card is NHL SOG + NCAAF sides + NCAAM ML-only
+
+=== SAFE (NHL O1.5 SOG) ===
+★ Cutter Gauthier (ANA) O1.5 SOG [ANA @ VAN] id=5080145
+   L5=[5.0, 10.0, 4.0, 4.0, 2.0] 5/5 min=2.0 avg=5.0 | espn:site.web.api/nhl/athletes/5080145/gamelog
+★ Connor McDavid (EDM) O1.5 SOG [EDM @ NJ] id=3895074
+   L5=[6.0, 3.0, 3.0, 2.0, 3.0] 5/5 min=2.0 avg=3.4 | espn:site.web.api/nhl/athletes/3895074/gamelog
+★ Leon Draisaitl (EDM) O1.5 SOG [EDM @ NJ] id=3114727
+   L5=[3.0, 2.0, 2.0, 3.0, 7.0] 5/5 min=2.0 avg=3.4 | espn:site.web.api/nhl/athletes/3114727/gamelog
+★ Jack Hughes (NJ) O1.5 SOG [EDM @ NJ] id=4565222
+   L5=[7.0, 2.0, 6.0, 2.0, 2.0] 5/5 min=2.0 avg=3.8 | espn:site.web.api/nhl/athletes/4565222/gamelog
+★ Brandon Hagel (TB) O1.5 SOG [DET @ TB] id=4065019
+   L5=[3.0, 5.0, 7.0, 2.0, 3.0] 5/5 min=2.0 avg=4.0 | espn:site.web.api/nhl/athletes/4065019/gamelog
+★ Kirill Kaprizov (MIN) O1.5 SOG [MIN @ PHI] id=3942335
+   L5=[2.0, 3.0, 4.0, 2.0, 4.0] 5/5 min=2.0 avg=3.0 | espn:site.web.api/nhl/athletes/3942335/gamelog
+★ Kyle Connor (WPG) O1.5 SOG [WPG @ MTL] id=3899952
+   L5=[2.0, 2.0, 4.0, 3.0, 5.0] 5/5 min=2.0 avg=3.2 | espn:site.web.api/nhl/athletes/3899952/gamelog
+★ Nathan MacKinnon (COL) O1.5 SOG [COL @ CBJ] id=3041969
+   L5=[2.0, 6.0, 2.0, 2.0, 4.0] 5/5 min=2.0 avg=3.2 | espn:site.web.api/nhl/athletes/3041969/gamelog
+
+=== PRIMARY (NHL O1.5) ===
+• Nick Suzuki (MTL) O1.5 SOG [WPG @ MTL] id=4233594 L5=[4.0, 2.0, 3.0, 5.0, 3.0] 5/5
+• Matt Boldy (MIN) O1.5 SOG [MIN @ PHI] id=4565233 L5=[3.0, 4.0, 2.0, 3.0, 5.0] 5/5
+• Joel Eriksson Ek (MIN) O1.5 SOG [MIN @ PHI] id=3904091 L5=[3.0, 3.0, 4.0, 5.0, 2.0] 5/5
+• Alex DeBrincat (DET) O1.5 SOG [DET @ TB] id=4063433 L5=[4.0, 3.0, 4.0, 2.0, 3.0] 5/5
+• Cole Perfetti (WPG) O1.5 SOG [WPG @ MTL] id=4697392 L5=[3.0, 2.0, 3.0, 3.0, 4.0] 5/5
+• Adam Fantilli (CBJ) O1.5 SOG [COL @ CBJ] id=5136617 L5=[3.0, 4.0, 2.0, 2.0, 6.0] 5/5
+• Vincent Trocheck (UTA) O1.5 SOG [UTA @ TOR] id=2563036 L5=[2.0, 4.0, 5.0, 2.0, 4.0] 5/5
+• Roman Josi (NSH) O1.5 SOG [CAR @ NSH] id=5436 L5=[5.0, 6.0, 2.0, 4.0, 2.0] 5/5
+• Auston Matthews (TOR) O1.5 SOG [UTA @ TOR] id=4024123 L5=[2.0, 4.0, 1.0, 2.0, 4.0] 4/5
+• William Nylander (TOR) O1.5 SOG [UTA @ TOR] id=3114736 L5=[2.0, 3.0, 4.0, 3.0, 1.0] 4/5
+• Jason Robertson (DAL) O1.5 SOG [DAL @ WSH] id=4233875 L5=[1.0, 4.0, 3.0, 3.0, 4.0] 4/5
+• Brayden Point (TB) O1.5 SOG [DET @ TB] id=3151187 L5=[3.0, 3.0, 2.0, 3.0, 1.0] 4/5
+• Clayton Keller (UTA) O1.5 SOG [UTA @ TOR] id=4024857 L5=[4.0, 3.0, 3.0, 1.0, 2.0] 4/5
+• Filip Forsberg (NSH) O1.5 SOG [CAR @ NSH] id=2968772 L5=[2.0, 3.0, 4.0, 3.0, 1.0] 4/5
+• Nico Hischier (NJ) O1.5 SOG [EDM @ NJ] id=4233555 L5=[1.0, 3.0, 3.0, 4.0, 2.0] 4/5
+• Seth Jarvis (CAR) O1.5 SOG [CAR @ NSH] id=4697396 L5=[3.0, 3.0, 0.0, 3.0, 3.0] 4/5
+
+=== BANGERS (O2.5 SOG — not SAFE spines) ===
+⚡ Cutter Gauthier (ANA) O2.5 SOG [ANA @ VAN] L5=[5.0, 10.0, 4.0, 4.0, 2.0] 4/5 avg=5.0
+⚡ Brandon Hagel (TB) O2.5 SOG [DET @ TB] L5=[3.0, 5.0, 7.0, 2.0, 3.0] 4/5 avg=4.0
+⚡ Connor McDavid (EDM) O2.5 SOG [EDM @ NJ] L5=[6.0, 3.0, 3.0, 2.0, 3.0] 4/5 avg=3.4
+⚡ Nick Suzuki (MTL) O2.5 SOG [WPG @ MTL] L5=[4.0, 2.0, 3.0, 5.0, 3.0] 4/5 avg=3.4
+⚡ Matt Boldy (MIN) O2.5 SOG [MIN @ PHI] L5=[3.0, 4.0, 2.0, 3.0, 5.0] 4/5 avg=3.4
+⚡ Joel Eriksson Ek (MIN) O2.5 SOG [MIN @ PHI] L5=[3.0, 3.0, 4.0, 5.0, 2.0] 4/5 avg=3.4
+⚡ Alex DeBrincat (DET) O2.5 SOG [DET @ TB] L5=[4.0, 3.0, 4.0, 2.0, 3.0] 4/5 avg=3.2
+⚡ Cole Perfetti (WPG) O2.5 SOG [WPG @ MTL] L5=[3.0, 2.0, 3.0, 3.0, 4.0] 4/5 avg=3.0
+
+=== NCAAF ===
+★ OHIO ML @ AKR · model 83.9% · KEEP ML / RISK cover -14.5
+   model crush; -14.5 is cover variance not SAFE
+★ M-OH -6 / ML vs BUFF · model 66.7% · KEEP
+   model aligns with market fav
+CUT: BUFF +6 as identity · AKR +14.5 dog trap
+
+=== NCAAM ===
+BAN COVER (≥20 / chalk-just-wins): TENN -25.5 · UK -33.5 · UVA -31.5 · ALA -26.5 · ARK -41.5 · VT -31.5 · URI -21.5 · IOWA -21.5 …
+ML grind only: TENN ML · UK ML · UVA ML · ALA ML · ARK ML
+RISK plays:
+  • DUQ ML (not -10.5 spine) model=79.1 — PFW@DUQ
+  • GT ML (not -14.5 spine) model=86.3 — HAMP@GT
+  • KSU ML / RISK -11.5 model=84.6 — SDST@KSU
+  • CBU ML / RISK -11.5 model=77.9 — UNF@CBU
+  • SDSU ML model=91.8 — CSUF@SDSU — cover -16.5 RISK
+Props: early-season NCAAM RS logs thin; no counting SAFE tonight
+
+=== SLIPS ===
+SAFE3: Gauthier O1.5 · McDavid O1.5 · Hughes O1.5
+SAFE4: Gauthier O1.5 · McDavid O1.5 · Draisaitl O1.5 · Hughes O1.5
+SAFE5: Gauthier O1.5 · McDavid O1.5 · Draisaitl O1.5 · Hughes O1.5 · Hagel O1.5
+MIX6: Gauthier O1.5 · McDavid O1.5 · Hughes O1.5 · Kaprizov O1.5 · Connor O1.5 · MacKinnon O1.5
+EDM_SGP: McDavid O1.5 · Draisaitl O1.5 · Bouchard O1.5
+MIN_SGP: Kaprizov O1.5 · Boldy O1.5 · Eriksson Ek O1.5
+NCAAF2: OHIO ML · M-OH -6
+BANGER3: Gauthier O2.5 · Hagel O2.5 · McDavid O2.5
+
+=== CUTS ===
+Rantanen O1.5 (2/5) · Eichel O1.5 (2/5) · Crosby O1.5 (2/5) · Aho O1.5 (2/5) · Any O2.5 SOG as SAFE spine · NCAAM monster covers ≥20 · AKR/BUFF as dog identity
+
+DONE CHECK
+- require_gate: PASS date=20261103
+- roster id verify: Trocheck=UTAH confirmed · stars match slate teams
+- BANGERS: yes · athlete_ids: yes · O2.5 not on SAFE
+- gate fix: NHL max 440 + team interleave (was truncating after DET)

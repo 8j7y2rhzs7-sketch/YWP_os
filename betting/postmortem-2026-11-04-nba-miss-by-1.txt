@@ -1,0 +1,22 @@
+YWP postmortem 2026-11-04 — NBA miss-by-1 / climb deaths
+User: "Basketball too you did the same fucking thing"
+
+SAFE soft floors (would cash):
+- Diabate O4.5 REB → 6 HIT
+- Kessler O4.5 REB → 8 HIT (O6.5/O7.5 also HIT)
+- Trae O3.5 AST → 6 HIT
+- Maxey O14.5/O16.5 PTS → 19 HIT
+
+KILLS / near-number deaths (agent pushed or blessed climbs):
+- Jalen Johnson O4.5 SAFE — OUT (ATL injury). Boarded without live OUT check.
+- Diabate O6.5 → 6  (MISS by 1 on climb; soft O4.5 was the spine)
+- Ace Bailey O5.5 → 5  MISS by 1
+- Brandon Miller O4.5 → 4  MISS by 1
+- KAT O12.5 → 12  MISS by 1 (O4.5 was 12 — soft hits)
+- Trae O7.5 AST → 6  MISS (PRIMARY climb; O3.5 hit)
+- Maxey O23.5 → 19  MISS (O16.5 hit)
+- Hunter O3.5 REB → 2 · Siakam O3.5 AST → 2 · Maxey/Trae REB CUTs confirmed dead
+- Caleb Wilson O18.5 → 5 blowup
+
+Pattern = soccer −1.5: soft script cashes, vanity/cover/climb dies on the number.
+Correct ticket: Diabate O4.5 · Kessler O4.5 · Trae O3.5 · Maxey O16.5 — NO climbs, NO Out players.

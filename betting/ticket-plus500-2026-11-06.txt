@@ -1,0 +1,47 @@
++500 PARLAY — 2026-11-06
+Target ≈ +450 to +550 on Hard Rock · confirm prices in slip before bet
+Rule: stats first · one RISK max for juice · no correlated stacks
+
+════════════════════════════════════════
+PRIMARY (~+500) — 4-leg
+════════════════════════════════════════
+1  Ace Bailey O4.5 REB     UTAH@DAL   SAFE 8/8 cush+0.5   (~-220 on HR)
+2  Raptors ML              TOR@MIL    RISK-KEEP (MIL 1-7; TOR road −3.5)  (~-195)
+3  Matt Boldy O2.5 SOG     SJ@MIN     RISK 9/10 miss=[2]  ← price driver
+4  Walker Kessler O6.5 REB POR@LAL    SAFE 9/9 cush+0.5
+
+Est. combined: ~+450 to +530 depending on Boldy O2.5 price
+If Boldy O2.5 prices worse than -150, drop Ace to O3.5 (worse juice) or swap #2 → Fantilli O1.5 and leave Boldy O2.5
+
+════════════════════════════════════════
+ALT A — safer path still near +500 (3-leg)
+════════════════════════════════════════
+1  Ace Bailey O4.5 REB     SAFE 8/8   (~-220)
+2  Raptors ML              RISK-KEEP  (~-195)
+3  Tyrese Maxey O25.5 PTS  RISK 8/9 miss=[19]
+
+Est. ~+350 to +500 if Maxey O25.5 is plus or short minus
+If Maxey O25.5 is -150 or longer, this undershoots — use PRIMARY instead
+
+════════════════════════════════════════
+ALT B — all SAFE (will land SHORT of +500)
+════════════════════════════════════════
+Kessler O6.5 · Boozer O5.5 · Boldy O1.5 · Ace O4.5 · Tatum O5.5
+→ form strongest, price likely +250 to +400 only
+Do not force +500 by adding -700 chalk; that doesn’t raise payout much
+
+════════════════════════════════════════
+DO NOT ADD (kills ticket or correlation)
+════════════════════════════════════════
+ · Ek with Boldy (same-team SOG)
+ · Luka with Kessler (same LAL glass)
+ · SGA / Ayo / Deni AST+REB SGPs
+ · Flames ML / Lakers ML / Thunder ML (chalk ≠ form)
+ · Second RISK climb (no Maxey O25.5 + Boldy O2.5 together)
+
+════════════════════════════════════════
+STAKE NOTE
+════════════════════════════════════════
+$20 → ~$100–110 return at +500
+$50 → ~$250–275
+HR-build the slip and stop when the parlay odds read ≈ +500

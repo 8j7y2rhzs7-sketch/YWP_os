@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-03",
+  "troy_yday": {
+    "board": "TROY -2.5/-3.5",
+    "model_pct": 68.0,
+    "final": "MASS 71 TROY 60",
+    "result": "OUTRIGHT_LOSS"
+  },
+  "plays": [
+    {
+      "market": "KSU -11.5 / ML",
+      "model": 84.6,
+      "verdict": "BEST_SPREAD_RISK"
+    },
+    {
+      "market": "DUQ -9.5 / ML",
+      "model": 79.1,
+      "verdict": "RISK_KEEP"
+    },
+    {
+      "market": "GT ML",
+      "model": 86.3,
+      "verdict": "ML_NOT_SPREAD"
+    },
+    {
+      "market": "SDSU ML",
+      "model": 91.8,
+      "verdict": "ML_NOT_SPREAD"
+    },
+    {
+      "market": "CBU ML",
+      "model": 77.9,
+      "verdict": "ML_ONLY_TROY_ADJACENT"
+    }
+  ],
+  "generated_et": "2026-11-03T17:00:14.479580-05:00"
+}

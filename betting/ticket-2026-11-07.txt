@@ -1,0 +1,30 @@
+YWP 2026-11-07 — HARD ROCK · DECISION CARD
+Canonical: betting/DECISION-2026-11-07.txt
+Gate PASS 780/780 · autopsy-cuts-2026-11-06 applied
+
+════════════════════════════════════
+CASH3
+════════════════════════════════════
+1) Towns O9.5 REB          NY@CLE
+2) Jokic O6.5 REB          DEN@IND
+3) Trae O5.5 AST           WSH@OKC
+
+BEST4 = CASH3 + Boldy O1.5 SOG
+WEST3 = Curry O22.5 · Sengun O6.5 · Boldy O1.5
+LATE3 = Wemby O6.5 REB · Clingan O7.5 REB · Vassell O0.5 STL
++500  = Towns O9.5 · Trae O5.5 · Boldy O1.5 · Brunson O18.5
+        juice ONE: Boldy O2.5 | Clingan O7.5 | Curry O22.5
+NHL3  = Boldy O1.5 · Hughes O1.5 · Rakell O1.5
+
+════════════════════════════════════
+OUT (no props)
+════════════════════════════════════
+Hali · JJ · Allen · Hart · AD · Chet · JDub · Paolo · Suggs · Butler
+Porzingis · Adams · Capela · Sharpe · Morant · Krejci · Tobias Harris
+
+════════════════════════════════════
+DO NOT
+════════════════════════════════════
+LeBron/Franz thin AST · SGA dual · Fantilli print · STL as CASH3 spine
+CFB deep alt totals · soft NHL dog CASH3 · CHI/SJ/VAN · teen chalk · 8+ legs
+Jokic unders · Murray O22.5 · Deni O19.5 spine · SGA O25.5

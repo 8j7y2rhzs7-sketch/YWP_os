@@ -1,0 +1,37 @@
+SLIP WEED — 2026-11-06 · POR@LAL SGP7 (+516 · 50% boost)
+RS-only ESPN · same-game = full correlation
+
+LEGS
+ 1 Luka O29.5 PTS        CUT  6/8 miss=[23,28]   SAFE floor O22.5 · RISK≤O27.5
+ 2 Deni O19.5 PTS        RISK 6/7 miss=[18]      SAFE floor O17.5
+ 3 Dame O16.5 PTS        RISK 6/7 miss=[9]       one 9 nukes it
+ 4 Kessler O7.5 REB      RISK 8/9 miss=[7]       SAFE floor O6.5
+ 5 Clingan O7.5 REB      RISK 6/7 miss=[7]       SAFE floor O6.5
+ 6 Jrue O0.5 STL         SAFE 7/7 cush+0.5
+ 7 Jrue O1.5 3PM         RISK 6/7 miss=[0]       joint w/ STL 6/7
+
+════════════════════════════════════════
+VERDICT: DO NOT RUN THIS 7
+════════════════════════════════════════
+ · Only 1 SAFE leg (Jrue STL). Luka O29.5 is a hard CUT.
+ · 3 PTS overs + 2 REB overs in one game = script death
+ · Jrue STL+3s is same-player double (OK-ish joint 6/7 but still)
+
+════════════════════════════════════════
+KEEP / REBUILD (still can clear +500 for boost)
+════════════════════════════════════════
+BEST3 SAFE-leaning (drop lines):
+  1 Kessler O6.5 REB     SAFE 9/9
+  2 Clingan O6.5 REB     SAFE 7/7? (floor 7 → O6.5 clears 7/7)
+  3 Jrue O0.5 STL        SAFE 7/7
+
+BEST4 for juice (one RISK):
+  + Deni O17.5 PTS       SAFE  OR  Deni O19.5 RISK
+  OR Luka O27.5 PTS RISK (not 29.5)
+  OR Jrue O1.5 3PM RISK
+
+CUT: Luka O29.5 · Dame O16.5 · Kessler O7.5 (or drop to 6.5) · Clingan O7.5 (or drop to 6.5)
+
+CORRELATION NOTE
+  All 7 share one tip — not diversified. Prefer ≤4 legs from this game.
+  Kessler (LAL) + Clingan (POR) both O7.5 = both need a live glass game; OK opposing but total-dependent.

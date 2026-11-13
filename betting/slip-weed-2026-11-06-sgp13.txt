@@ -1,0 +1,44 @@
+SLIP WEED — 2026-11-06 · SGPMAX 13-Bet (+1358)
+POR@LAL + SA@SAC · graded on L7 RS boards
+
+FULL 13
+ POR@LAL
+  Luka O29.5 PTS       RISK 6/7 miss=23  ← treat as CUT spine
+  Deni O19.5 PTS       RISK 6/7 miss=18
+  Kessler O7.5 REB     RISK 6/7 miss=7   (SAFE floor O6.5)
+  Clingan O7.5 REB     RISK 6/7 miss=7   (SAFE floor O6.5)
+  Jrue O1.5 3PT        RISK 6/7 miss=0   (SAFE = O0.5 STL not 3s)
+  Reaves O14.5 PTS     SAFE 7/7 cush+1.5
+  Dame O14.5 PTS       RISK 6/7 miss=9
+ SA@SAC
+  Vassell O0.5 STL     SAFE 7/7
+  Castle O3.5 REB      SAFE 7/7
+  Castle O3.5 AST      RISK 6/7 miss=3   (SAFE floor O2.5)
+  Fox O3.5 AST         RISK 6/7 miss=3   (SAFE floor O2.5)
+  Keldon O2.5 REB      SAFE 7/7 cush+1.5
+  Acuff O15.5 PTS      SAFE 7/7 cush+3.5
+
+════════════════════════════════════════
+VERDICT: DO NOT RUN 13 — 8 RISK climbs + Luka 29.5 bait
+════════════════════════════════════════
+
+CUT
+  Luka O29.5 · Dame O14.5 · Jrue O1.5 3s · Castle O3.5 AST · Fox O3.5 AST
+  Kessler O7.5 · Clingan O7.5 · Deni O19.5   (or drop lines — see below)
+
+KEEP (on-slip SAFE)
+  Reaves O14.5 PTS · Vassell O0.5 STL · Castle O3.5 REB · Keldon O2.5 REB · Acuff O15.5 PTS
+
+DROP-LINE KEEPS (better than CUT)
+  Kessler → O6.5 REB · Clingan → O6.5 REB · Fox → O2.5 AST · Castle AST → O2.5
+  Jrue → O0.5 STL (swap off 3s) · Deni → O16.5 PTS · Luka → O22.5 PTS max
+
+════════════════════════════════════════
+BEST3 / BEST4 / BEST6
+════════════════════════════════════════
+BEST3:  Kessler O6.5 REB · Vassell O0.5 STL · Castle O3.5 REB
+BEST4:  + Reaves O14.5 PTS  OR  Clingan O6.5 REB
+BEST6 SAFE mix:
+  Kessler O6.5 · Clingan O6.5 · Jrue O0.5 STL · Vassell O0.5 STL · Castle O3.5 REB · Reaves O14.5
+
+ONE juice only if you need +odds: Acuff O15.5 (SAFE) or Sabonis O6.5 (not on slip) — not Luka 29.5

@@ -1,0 +1,30 @@
+UNDERDOG 8-PICK WEED 2026-11-05
+1 UTSA to win
+2 Draymond LOWER 9.5 PTS
+3 Bedard H1.5 SOG
+4 Henry H49.5 rush
+5 Flowers H4.5 rec
+6 Tuten H62.5 rush
+7 Tuten H12.5 rec yds
+8 Gillespie H1.5 STL
+
+KEEP:
+★ UTSA ML / to win
+★ Draymond LOWER 9.5 PTS — [4,2,3,3,5,2] 6/6 max=5 (softer than 5.5 — best under on slip)
+★ Flowers H4.5 REC — 6/6
+★ Gillespie H1.5 STL — 6/6
+★ Henry H49.5 rush — 7/8
+
+RISK-KEEP:
+• Tuten H62.5 rush — 6/7 (JAX fav script)
+• Bedard H1.5 SOG — 9/10 but CHI@TB blowdog
+
+CUT:
+✗ Tuten H12.5 rec — dual same player; cut this one
+✗ (optional) Bedard if wanting clean 4–5
+
+REBUILD:
+BEST4: UTSA · Draymond L9.5 · Flowers H4.5 · Gillespie H1.5 STL
+BEST5: + Henry H49.5
+BEST6: + Tuten H62.5 rush (still no Tuten rec, no Bedard)
+RISK6: BEST5 + Bedard

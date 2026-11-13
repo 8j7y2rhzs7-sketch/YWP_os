@@ -19,8 +19,15 @@ User wants a daily card, exhaustive board, slip weed, sport MLs, steals, SOG, or
 4. **BANGERS board** — required. Dual-cat bigs, third SOG, PTS+thief stacks, MLs worth juice — not buried.
 5. **SAFE / PRIMARY** — cush rules; no Mobley-class stretch-big SAFE; AST SAFE cush≥2; no hook spines.
 6. **STL / SOG / by-game / BAN**
-7. **Weed last** (if slip) — KEEP / RISK-KEEP / CUT; rebuild cleaned slip in the reply.
-8. **Completion block** (required in the reply)
+7. **Matchup weed (mandatory)** — every SAFE + RISK clear vs tonight's opponent D (PTS/REB/AST/3PT/STL/SOG allow + OUT/short notes). Output **LIST 1 DIFFICULT** and **LIST 2 BETTER** with full detail in chat.
+8. **Weed last** (if slip) — KEEP / RISK-KEEP / CUT; rebuild cleaned slip in the reply. Same full-stat + opponent depth.
+9. **Completion block** (required in the reply)
+
+## Delivery (locked 2026-11-07 — never make user ask twice)
+- Paste **full lists in chat**. No GitHub links, no "see file", no truncated "etc".
+- Every pick line: `HitRate  Player Over Line STAT — TEAM vs OPP — OPP allows X STAT/g (rank note)`
+- Standouts / decision tickets only after the full lists (or when user asks).
+- Do not add unsolicited extras. Match the ask.
 
 ## Card shape (exhaustive / run-today)
 ```
@@ -32,12 +39,14 @@ BANGERS (4–8, required)
 STL / NHL SOG / other
 BY GAME
 BAN (true bans only)
+LIST 1 DIFFICULT (full detail in chat)
+LIST 2 BETTER (full detail in chat)
 CLEAN SLIPS: SAFE · MIX · UPSIDE
 ```
 
-## Weed shape
-| Leg | Call | Why |
-KEEP / RISK-KEEP / CUT only. Then **Clean rebuild** list. CUT = banned from blessed slip.
+## Weed shape (user parlay / screenshot)
+For **every leg**: hit rate vs posted line · full cats · opponent D for that category · OUT/role note · KEEP / RISK-KEEP / CUT.
+Then **Clean rebuild** list in chat. CUT = banned from blessed slip.
 
 ## Stats display
 When citing a player, show a compact full row + id:

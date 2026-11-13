@@ -1,0 +1,54 @@
+YWP 2026-11-05 — UNDER TICKET (STATS VERIFIED, NO GUESSES)
+GATE PASS date=20261105 sheets_ok=649/649
+Pulled: ESPN RS gamelogs only · athlete IDs confirmed via search · NHL S column = shotsTotal (label index 5)
+
+════════════════════════════════════
+VERIFIED LEGS (source = ESPN eventIds)
+════════════════════════════════════
+
+1) Bam Adebayo UNDER 9.5 REB — RISK-KEEP ★ SPINE
+   id=4066261 · RS n=8
+   REB = [10, 9, 9, 9, 8, 8, 6, 7]
+   U9.5 = 7/8 · miss = 10 (event 401909935, 41 MIN)
+   User book line = 9.5 ✓
+
+2) Draymond Green UNDER 5.5 PTS — KEEP ★ SPINE
+   id=6589 · RS n=6
+   PTS = [4, 2, 3, 3, 5, 2]
+   U5.5 = 6/6 · max=5
+   Posted main ~5.5 ✓
+
+3) Connor McDavid UNDER 3.5 SOG — RISK-KEEP ★ SPINE
+   id=3895074 · RS · S column confirmed (labels: G A PTS +/- PIM S …)
+   L10 SOG = [1, 6, 3, 3, 2, 3, 3, 4, 2, 2]
+   U3.5 = 8/10 · misses = 6 and 4
+   Posted main ~3.5 ✓
+
+════════════════════════════════════
+OPTIONAL 4TH (verified)
+════════════════════════════════════
+✗ Desmond Bane UNDER 3.5 AST — CUT (USER BOOK)
+  id=4066320 · RS n=7
+  AST = [3, 1, 6, 4, 2, 0, 2]
+  U3.5 = 5/7 · misses = 6 and 4. U4.5 was 6/7 — not on your book. Skip Bane AST.
+
+• Nikita Kucherov UNDER 3.5 SOG — RISK-KEEP
+  id=2563060
+  L10 SOG = [3, 1, 3, 3, 2, 2, 7, 8, 2, 1]
+  U3.5 = 8/10 · misses = 7 and 8 (volatile)
+
+════════════════════════════════════
+CUT — verified bad at USER lines
+════════════════════════════════════
+✗ Bam AST U3.5 — id=4066261 AST=[4,4,3,3,3,4,3,4] → U3.5 = 4/8
+✗ Podziemski AST U4.5 — id=4709138 AST=[2,8,6,6,5,3] → U4.5 = 2/6
+✗ Wiggins AST U1.5 — id=3059319 AST=[1,2,1,2,1,1,2,1] → U1.5 = 5/8
+  (Wiggins U2.5 would be 8/8 — not on your book)
+
+════════════════════════════════════
+PLAY (max 4)
+════════════════════════════════════
+SAFE3: Bam U9.5 REB · Draymond U5.5 PTS · McDavid U3.5 SOG
+SAFE4: + Kucherov U3.5 SOG only (Bane is 3.5 on user book = CUT)
+
+No other legs until their posted number + ESPN log both clear.

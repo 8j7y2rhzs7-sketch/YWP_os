@@ -1,0 +1,22 @@
+YWP postmortem 2026-11-04 — miss-by-1 card (soccer + NHL)
+Ticket $25 SGPMAX +313 LOST
+
+HIT:
+- Haaland SOA (MCI 3-2 RBL)
+- Man City TT O1.5
+- Arsenal TT O1.5 (ARS 2-1 SLP)
+- Connor Bedard O1.5 SOG (4 SOG)
+
+MISS:
+1) Arsenal -1.5 — won 2-1, cover fail by 1 goal (user called setup; agent KEEP'd TT+-1.5)
+2) Will Smith O1.5 SOG — 0 SOG (21:00 TOI, 2 missed shots) in SJ 2-7 LA blowout
+
+Counterfactual:
+- Drop -1.5 only → still dies on Will Smith 0
+- Drop -1.5 AND Smith → 4-leg cashes (City SGP + ARS TT + Bedard)
+- Correct SOG2 was never Smith form-only; Bedard + soft PL (or Bedard alone)
+
+Lessons locked:
+1. Never KEEP mismatch -1.5 stacked with same-team TT O1.5
+2. SOG2 partner needs volume floor — L5 clean with L10 1s ≠ Bedard-class; blowout dog blank is real
+3. Prefer 3-4 legs: City/Haaland · ARS TT only · Bedard — no cover tax, no soft SOG2

@@ -2,29 +2,32 @@
 
 Chat memory does not enforce process. Use these prompts + the repo skill/rule/gate.
 
-## Daily run
+## Daily run (default — agent should not need this prompt)
 ```
 Run /betting-run end-to-end for today.
-Order: require_gate → full sheets → scratch → BANGERS → SAFE → by-game → weed last.
+Order: require_gate → full sheets → scratch → BANGERS → SAFE → by-game → MATCHUP WEED (List1 difficult / List2 better, FULL DETAIL IN CHAT) → weed last.
 Reply only after GATE_TODAY.json = PASS.
 Show athlete id + full MIN/PTS/REB/AST/STL/BLK for every boarded player.
-No SAFE-only card.
+Every pick line includes opponent + what that D allows.
+Paste full lists in chat — no file links, no truncated boards.
+No SAFE-only card. Nothing extra unless asked.
 Done only if completion block is all PASS/yes.
 ```
 
 ## Exhaustive
 ```
-/betting-run exhaustive for today. Include BANGERS. Same gate rules.
+/betting-run exhaustive for today. Include BANGERS + full matchup List1/List2 in chat. Same gate rules.
 ```
 
-## Slip weed
+## Slip weed / parlay review
 ```
 Weed this slip with /betting-run rules.
+Every leg: L7/L10 vs line + opponent D for that category + OUT/role.
 KEEP / RISK-KEEP / CUT only.
 CUT only if from-scratch fails (injury/DNP/true climb).
-Rebuild the cleaned slip in the reply.
+Rebuild the cleaned slip in the reply (full detail in chat).
 ```
-(Paste screenshot or leg list.)
+(Paste screenshot or leg list. Agent must not wait to be told to add opponents/stats.)
 
 ## Drift correction (short)
 ```
