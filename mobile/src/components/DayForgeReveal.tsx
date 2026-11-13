@@ -243,14 +243,14 @@ export function DayForgeReveal({
         <View style={styles.actions}>
           {play ? (
             <YwpButton
-              label="RUN FULL PROTOCOL"
+              label="Run full protocol"
               onPress={() => {
                 onClose();
                 onRunProtocol?.();
               }}
             />
           ) : null}
-          <YwpButton label="HOLD" variant="outline" onPress={onClose} />
+          <YwpButton label="Hold" variant="outline" onPress={onClose} />
         </View>
       </View>
     </Modal>

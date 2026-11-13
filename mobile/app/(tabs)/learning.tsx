@@ -193,7 +193,7 @@ export default function LearningScreen() {
   if (loading) {
     return (
       <Screen>
-        <BrandHeader title="ADAPTIVE LEARNING" compact />
+        <BrandHeader title="Adaptive learning" compact />
         <LoadingState label="Separating process from outcome…" />
       </Screen>
     );
@@ -201,7 +201,7 @@ export default function LearningScreen() {
 
   return (
     <Screen refreshing={refreshing} onRefresh={() => void load(true)}>
-      <BrandHeader title="ADAPTIVE LEARNING" subtitle="EVERY GRADE TRAINS THE ENGINE" compact />
+      <BrandHeader title="Adaptive learning" subtitle="Every grade trains the engine" compact />
       <MotionReveal fromY={20}>
         <EngineStage
           size={168}
@@ -459,11 +459,11 @@ export default function LearningScreen() {
               ) : null}
               <View style={[styles.row, { marginTop: spacing.sm, gap: spacing.sm }]}>
                 <YwpButton
-                  label="MARK IMPLEMENTED"
+                  label="Mark implemented"
                   onPress={() => void reviewProposal(proposal.id, "implemented")}
                 />
                 <YwpButton
-                  label="DISMISS"
+                  label="Dismiss"
                   variant="outline"
                   onPress={() => void reviewProposal(proposal.id, "dismissed")}
                 />

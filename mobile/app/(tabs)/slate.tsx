@@ -485,7 +485,7 @@ export default function SlateScreen() {
       sport={sport}
       contentStyle={showRunDock ? styles.screenWithDock : undefined}
     >
-      <BrandHeader title="FULL PROTOCOL RUN" subtitle="AIN • STRICT MODE • ALL ANGLES" compact sport={sport} />
+      <BrandHeader title="Full protocol run" subtitle="AIN · strict mode · all angles" compact sport={sport} />
 
       {/* Focal engine — shockwaves + radar track load / readiness */}
       <View style={styles.engineStage}>
@@ -602,13 +602,13 @@ export default function SlateScreen() {
           keyboardType="numbers-and-punctuation"
         />
         <YwpButton
-          label="REFRESH RAW SLATE"
+          label="Refresh slate"
           variant="outline"
           onPress={() => void loadSlate()}
           loading={loadingSlate}
         />
         <YwpButton
-          label="WARM ALL IN-SEASON (USES CREDITS)"
+          label="Warm in-season sports"
           variant="outline"
           onPress={() => void warmInSeasonOdds()}
           loading={prefetching}
@@ -698,7 +698,7 @@ export default function SlateScreen() {
             {hiddenCount > 0 ? (
               <View style={styles.listActions}>
                 <YwpButton
-                  label={`SHOW ${Math.min(CANDIDATE_PAGE, hiddenCount)} MORE`}
+                  label={`Show ${Math.min(CANDIDATE_PAGE, hiddenCount)} more`}
                   variant="outline"
                   onPress={() =>
                     setVisibleCount((n) =>
@@ -708,7 +708,7 @@ export default function SlateScreen() {
                 />
                 {slate.candidates.length > CANDIDATE_PAGE * 2 ? (
                   <YwpButton
-                    label={`SHOW ALL ${slate.candidates.length}`}
+                    label={`Show all ${slate.candidates.length}`}
                     variant="outline"
                     onPress={() => setVisibleCount(slate.candidates.length)}
                   />
@@ -716,7 +716,7 @@ export default function SlateScreen() {
               </View>
             ) : slate.candidates.length > CANDIDATE_PAGE ? (
               <YwpButton
-                label="COLLAPSE LIST"
+                label="Collapse list"
                 variant="outline"
                 onPress={() => setVisibleCount(CANDIDATE_PAGE)}
               />

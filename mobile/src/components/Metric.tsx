@@ -62,7 +62,9 @@ export function Metric({
       ) : (
         <CountUp value={numeric} style={{ ...styles.value, color: accent }} />
       )}
-      <Text style={styles.label}>{label}</Text>
+      <Text style={styles.label} numberOfLines={2}>
+        {label}
+      </Text>
     </Animated.View>
   );
 }
