@@ -1,0 +1,37 @@
+SLIP WEED · multi-prop parlay · Fri 11/13 ~4:57 PM ET
+
+1. Siakam PTS O18.5
+   RISK — L7 5/7 · posted ~21.5 · misses 17 & 13. Prefer O16.5.
+
+2. KAT REB O10.5
+   KEEP — L7 7/7 · our spine · Hali OUT
+
+3. Siakam REB O4.5
+   KEEP lean — L7 6/7 · better Siakam leg than PTS
+
+4–7. MIL @ ORL SGP (+550)
+   Jaquez PTS O13.5     RISK — L7 5/7 at main · CONFIRM game (should be CLE@MIA, not MIL@ORL)
+   Black REB O4.5       KEEP lean — L7 6/7 · Paolo OUT
+   Black AST O4.5       RISK — L7 5/7 · weakest Black
+   Black PTS O12.5      RISK — L7 5/7 · shave from 15.5 helps but still 5/7
+   Triple-Black stack = correlated · cut AST at minimum
+
+8–9. MEM @ NO SGP (−237)
+   Boozer REB O6.5      RISK-KEEP — L7 6/7 (we preferred O5.5 7/7)
+   Ty Jerome PTS O18.5  RISK — L7 5/7 · posted ~23.5 · misses 10 & 15 · shave to O14.5
+
+10. Meleek Thomas PTS O8.5 (−300)
+    KEEP soft — L7 7/7 · shave from ~11.5 · Duncan-style pad
+
+11. Darryn Peterson AST O3.5 (−160)
+    KEEP — L7 7/7 · firm floor
+
+══ VERDICT ══
+  Too fat / too many 5/7s — don’t play all 11
+  KEEP core: KAT REB O10.5 · Siakam REB O4.5 · Black REB O4.5 · Meleek O8.5 · Peterson AST O3.5
+  Boozer: drop to O5.5 if available (7/7) else O6.5 RISK-KEEP
+  CUT/TRIM: Siakam PTS · Black AST · Black PTS · Jerome O18.5 · confirm Jaquez game
+
+  Clean 6 rebuild:
+    KAT REB O10.5 · Siakam REB O4.5 · Black REB O4.5
+    · Boozer REB O5.5 · Meleek PTS O8.5 · Peterson AST O3.5
