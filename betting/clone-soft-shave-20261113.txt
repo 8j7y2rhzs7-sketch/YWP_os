@@ -1,0 +1,59 @@
+CLONE TICKET · modeled on your Thu HIT slip · Fri 11/13
+
+════════════════════════════════════════════════════════
+WHAT HIT (pattern)
+════════════════════════════════════════════════════════
+  AD PTS O17.5 → 30     soft shave ~4–5 under main · star floor
+  Duncan PTS O12.5 → 13 soft shave ~3 · role scorer · cleared by 0.5
+  Maxey PTS O21.5 → 27  soft shave ~2–4 · primary creator
+  LeBron REB O4.5       VOID (OUT) — don’t repeat GTD/OUT
+  Gillespie REB O1.5→2  soft REB pad (−350 juice)
+
+  Formula = soft PTS shaves (2–5 under posted) + one soft REB pad
+            + same-game pair when script allows + never lean on OUT players
+
+════════════════════════════════════════════════════════
+PLAY THIS (6) — same accuracy shape
+════════════════════════════════════════════════════════
+  1. Alperen Sengun   PTS O14.5   UTA @ HOU · SHAVE from ~20.5 · 7/7
+     id=4871144  L=[19,20,15,17,26,16,29]  ← your AD role (big soft star floor)
+     Script: Adams/Capela OUT · Utah gutted
+
+  2. Andrew Nembhard  PTS O10.5   NY @ IND · SHAVE from ~15.5 · 6/7
+     id=4395712  L=[17,12,9,22,23,22,18]  ← your Duncan role
+     Script: Haliburton OUT
+
+  3. Jalen Brunson    PTS O20.5   NY @ IND · SHAVE from ~25.5 · 6/7
+     id=3934672  L=[27,23,31,33,19,24,38]  ← your Maxey role
+     SGP with Nembhard (like AD+Duncan same game)
+
+  4. Saddiq Bey       PTS O12.5   MEM @ NO · SHAVE from ~14.5 · 6/7
+     id=4397136  L=[15,9,13,17,22,18,25]  ← second Duncan-style
+
+  5. Desmond Bane     REB O1.5    MIL @ ORL · soft pad · 7/7
+     id=4066320  L=[3,6,6,3,2,2,5]  ← your Gillespie pad
+
+  6. Franz Wagner     REB O2.5    MIL @ ORL · soft pad / script · 7/7
+     id=4566434  L=[8,7,6,8,3,6,5]  ← Gillespie+ upgrade · Paolo OUT
+     (If you only want ONE pad like yesterday, drop Franz and keep Bane)
+
+════════════════════════════════════════════════════════
+TIGHT 5 (closest clone)
+════════════════════════════════════════════════════════
+  Sengun PTS O14.5 · Nembhard PTS O10.5 · Brunson PTS O20.5
+  · Bey PTS O12.5 · Bane REB O1.5
+
+════════════════════════════════════════════════════════
+DO NOT COPY FROM YESTERDAY
+════════════════════════════════════════════════════════
+  No GTD/OUT soft REBs (LeBron void lesson)
+  Giannis / Norman Powell / Fox — DTD, skip
+  Don’t need −950 REB locks for this style — that was a different ticket
+
+════════════════════════════════════════════════════════
+VS YOUR CURRENT REB SPINE
+════════════════════════════════════════════════════════
+  Reb spine = firmer dual-window (KAT/Bam/WCJ…)
+  This clone = softer PTS shaves that actually cashed for you Thu
+  Best of both: Sengun PTS O14.5 + KAT REB O10.5 + Bam REB O7.5
+                + Nembhard PTS O10.5 + Bane REB O1.5
