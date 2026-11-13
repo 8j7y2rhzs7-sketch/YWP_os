@@ -68,7 +68,7 @@ def test_health_stays_up_when_the_database_host_is_gone(
     assert body["status"] == "degraded"
     assert body["database"] == "unavailable"
     assert body["message"] == DATABASE_UNAVAILABLE_MESSAGE
-    assert body["version"] == "3.3.70"
+    assert body["version"] == "3.3.78"
     assert "dpg-" not in response.text
     assert "super-secret" not in response.text
 
