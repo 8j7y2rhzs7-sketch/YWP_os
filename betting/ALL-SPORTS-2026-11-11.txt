@@ -1,0 +1,59 @@
+════════════════════════════════════════════════════════════════════
+ALL-SPORTS RUN · WED 2026-11-11 · America/New_York
+Gate 1 PASS · 320/320 sheets · NBA 10 · NHL 6 · NCAAF 3
+Refreshed 11:59 AM ET · soft banned · OUT/GTD removed · confirm HR (G2/G3)
+════════════════════════════════════════════════════════════════════
+
+══ SLATE (live markets) ══
+NBA
+  WSH @ IND   IND -2.5 · 227.5     Haliburton OUT
+  CLE @ NY    NY -4.5 · 222.5      Hart GTD
+  BOS @ TOR   BOS -5.5 · 215.5     Barnes OUT · Kawhi OUT · Quickley GTD
+  SA @ CHI    SA -15.5 · 238.5     BAN ML chalk
+  DEN @ MEM   DEN -3.5 · 230.5
+  LAL @ MIL   LAL -14.5 · 228.5    BAN ML chalk · Herro GTD
+  BKN @ NO    NO -3.5 · 229.5      Mathurin OUT · Missi OUT · Murphy GTD
+  ORL @ UTAH  ORL -3.5 · 214.5     Paolo/Suggs/Isaac OUT · Markkanen GTD
+  GS @ HOU    HOU -6.5 · 220.5     Porzingis OUT · Capela/Adams OUT
+  OKC @ POR   OKC -1.5 · 225.5     Chet/JDub/Wallace OUT · Sharpe/Morant OUT
+NHL
+  TB -130 · NYR -148 · EDM -205 · VGK -125 · ANA -142 · PIT -142
+NCAAF
+  BUF -1.5 · CMU -17.5 · TOL -14   (skip CMU/TOL big chalk)
+
+══ MASTER PROP PUNCH ══
+NO-SHAVE FIRM
+  1. 7/7  Karl-Anthony Towns   REB  O11.5   CLE @ NY
+  2. 7/7  Andre Drummond       REB  O4.5    CLE @ NY   mop-up specialist
+  3. 6/7  Wendell Carter Jr.   REB  O8.5    ORL @ UTAH (from posted 9.5)
+  4. 6/7  Deni Avdija          PTS  O17.5   OKC @ POR  (shave if book 23.5)
+  5. 6/7  Franz Wagner         AST  O5.5    ORL @ UTAH (Paolo OUT · shave from 6.5)
+
+CONFIRM HR / SHAVE
+  6. 7/7  Nikola Jokic         AST  O7.5    DEN @ MEM  ★ (books often ~9.5)
+  7. 7/7  Nikola Jokic         REB  O6.5    DEN @ MEM
+  8. 6/7  Nikola Jokic         PTS  O18.5   DEN @ MEM
+  9. 6/7  Luka Doncic          PTS  O35.5   LAL @ MIL  (not in Betravon — confirm HR)
+ 10. 6/7  Jayson Tatum         AST  O5.5    BOS @ TOR  (posted 6.5 = 5/7)
+ 11. 6/7  Walker Kessler       REB  O9.5    LAL @ MIL  (posted 10.5 = 5/7)
+ 12. 6/7  Isaiah Hartenstein   REB  O8.5    OKC @ POR  (posted 9.5 = 4/7 · Chet OUT)
+ 13. 6/7  Jalen Brunson        PTS  O22.5   CLE @ NY   (posted 24.5 = 3/7)
+ 14. 7/7  Jamal Murray         3PT  O1.5    DEN @ MEM  (posted 3.5 fails)
+ 15. 7/7  Victor Wembanyama    REB  O6.5    SA @ CHI   (posted 11.5 fails)
+
+══ SIDES ══
+PLAY: BOS -5.5 · DEN -3.5 · OKC -1.5 · HOU -6.5 · NY -4.5 · ORL -3.5 · IND -2.5
+BAN:  SA -15.5 / LAL -14.5 raw · EDM -205 · NCAAF −14+
+
+TOTALS lean: ORL@UTAH U214.5 · GS@HOU U220.5 · OKC@POR U225.5
+
+══ GAME-SCRIPT ══
+  TOR gutted → Tatum AST O5.5 (not posted 6.5)
+  Paolo OUT → Franz AST O5.5 / WCJ REB O8.5 (not Franz PTS 24.5 priced hope)
+  Chet/JDub OUT → Hartenstein REB ≤8.5 · Avdija PTS ≤17.5
+  Capela/Adams OUT → Sengun glass expands but O8.5 still only 5/7 — lean only
+  LAL -14.5 → Luka PTS feast if HR posts ~35.5; Kessler REB O9.5
+  Haliburton OUT → Siakam needs shave (PTS 23.5 / REB 6.5 too high)
+
+══ BAN ══
+  Soft floors · GTD props · obscure research-only names as core · raw mega-chalk
