@@ -1,0 +1,16 @@
+ALL-SPORTS PUNCH · FRI 11/13 · ~1:00 PM ET
+GATE PASS 315/315 · confirm HR
+
+PROPS
+  KAT REB O10.5 (NY @ IND)              SHAVE 12.5 · Hali OUT
+  Bam REB O7.5 (CLE @ MIA)              SHAVE 9.5 · Mobley OUT
+  WCJ REB O6.5 (MIL @ ORL)              SHAVE 8.5 · Paolo OUT
+  Jalen Johnson REB O6.5 (ATL @ CHI)    SHAVE 9.5
+  Giddey AST O4.5 (ATL @ CHI)           SHAVE 8.5
+  Sengun REB O5.5 (UTA @ HOU)           SHAVE 9.5 · Adams/Capela OUT
+  Franz REB O4.5 / PTS O14.5            Paolo OUT script
+
+SIDES
+  PITT −3.5 · UCLA −5.5 · HOU −3.5 (NCAAF) · HOU −4.5 NFL · JAX −5.5 · BUF −3 · CAR +2.5
+
+BAN: UCLA −10 · JAX −10.5 · GTD props · soft mega-pads · blind dogs vs healthy chalk

@@ -1,0 +1,104 @@
+════════════════════════════════════════════════════════════════════
+MULTI-DAY 6/7+ POOL · 11/13–11/13 · America/New_York
+Idea: spread risk across days · pick the BEST from each slate · more punches, same rigor
+Rule: clear_at = highest line that still hits 6/7 or 7/7 (soft floors banned)
+G2/G3: confirm posted/HR before betting — research_posted is L7-median estimate when book missing
+════════════════════════════════════════════════════════════════════
+
+── SLATE ──
+  11/13  NBA 9 · NHL 2 · NFL 0  →  137 clears @ 6/7+
+
+══ BEST OF EACH DAY (top punches) ══
+
+▶ 11/13
+  7/7   Jalen Johnson          REB     clear O6.5   band O2.0–O6.5      NBA ATL @ CHI · 35.1mpg
+        L=[7.0, 7.0, 7.0, 8.0, 9.0, 9.0, 9.0]  research~O7.5  id=4701230
+  7/7   Bam Adebayo            REB     clear O7.5   band O2.0–O7.5      NBA CLE @ MIA · 34.6mpg
+        L=[8.0, 8.0, 10.0, 10.0, 9.0, 9.0, 9.0]  research~O8.5  id=4066261
+  7/7   Darryn Peterson        AST     clear O3.5   band O2.0–O3.5      NBA UTAH @ HOU · 32.6mpg
+        L=[5.0, 4.0, 4.0, 5.0, 7.0, 5.0, 4.0]  research~O4.5  id=5041955
+  7/7   Kevin Durant           REB     clear O2.5   band O2.0–O2.5      NBA UTAH @ HOU · 34.3mpg
+        L=[4.0, 12.0, 10.0, 5.0, 3.0, 3.0, 5.0]  research~O4.5  id=3202
+  7/7   Zion Williamson        REB     clear O3.5   band O2.0–O3.5      NBA MEM @ NO · 33.0mpg
+        L=[4.0, 4.0, 8.0, 4.0, 11.0, 6.0, 6.0]  research~O5.5  id=4395628
+  7/7   Wendell Carter Jr.     REB     clear O6.5   band O2.0–O6.5      NBA MIL @ ORL · 34.7mpg
+        L=[7.0, 11.0, 11.0, 13.0, 9.0, 10.0, 7.0]  research~O9.5  id=4277847
+  7/7   Josh Hart              REB     clear O3.5   band O2.0–O3.5      NBA NY @ IND · 31.1mpg
+        L=[4.0, 6.0, 6.0, 8.0, 4.0, 8.0, 12.0]  research~O5.5  id=3062679
+  7/7   Meleek Thomas          3PT     clear O1.5   band O1.0–O1.5      NBA CLE @ MIA · 23.9mpg
+        L=[2.0, 4.0, 3.0, 2.0, 3.0, 3.0, 3.0]  research~O2.5  id=5041951
+  7/7   Andrew Nembhard        AST     clear O3.5   band O2.0–O3.5      NBA NY @ IND · 33.9mpg
+        L=[10.0, 12.0, 8.0, 4.0, 4.0, 9.0, 14.0]  research~O8.5  id=4395712
+  7/7   Cam Spencer            PTS     clear O6.5   band O5.0–O6.5      NBA MEM @ NO · 21.0mpg
+        L=[15.0, 7.0, 7.0, 7.0, 13.0, 10.0, 8.0]  research~O7.5  id=4433083
+  7/7   Meleek Thomas          PTS     clear O8.5   band O5.0–O8.5      NBA CLE @ MIA · 23.9mpg
+        L=[14.0, 18.0, 9.0, 12.0, 9.0, 17.0, 13.0]  research~O12.5  id=5041951
+  6/7   Franz Wagner           REB     clear O4.5   band O2.0–O4.5      NBA MIL @ ORL · 38.9mpg · 7/7@O2.5
+        L=[8.0, 7.0, 6.0, 8.0, 3.0, 6.0, 5.0]  research~O5.5  id=4566434
+  6/7   Alperen Sengun         AST     clear O7.5   band O2.0–O7.5      NBA UTAH @ HOU · 35.9mpg · 7/7@O4.5
+        L=[9.0, 8.0, 5.0, 10.0, 10.0, 9.0, 9.0]  research~O8.5  id=4871144
+  6/7   Desmond Bane           3PT     clear O2.5   band O1.0–O2.5      NBA MIL @ ORL · 35.9mpg · 7/7@O1.5
+        L=[7.0, 4.0, 3.0, 4.0, 5.0, 6.0, 2.0]  research~O3.5  id=4066320
+
+══ CROSS-DAY MASTER PUNCH (diversified) ══
+Grab 2–4 from each day → bigger ticket, risk split across tips
+   1. [11/13] 7/7  Jalen Johnson        REB     O6.5  NBA ATL @ CHI
+   2. [11/13] 7/7  Bam Adebayo          REB     O7.5  NBA CLE @ MIA
+   3. [11/13] 7/7  Darryn Peterson      AST     O3.5  NBA UTAH @ HOU
+   4. [11/13] 7/7  Kevin Durant         REB     O2.5  NBA UTAH @ HOU
+   5. [11/13] 7/7  Zion Williamson      REB     O3.5  NBA MEM @ NO
+   6. [11/13] 7/7  Wendell Carter Jr.   REB     O6.5  NBA MIL @ ORL
+   7. [11/13] 7/7  Josh Hart            REB     O3.5  NBA NY @ IND
+   8. [11/13] 7/7  Meleek Thomas        3PT     O1.5  NBA CLE @ MIA
+
+══ FULL CLEAR BOARDS BY DAY ══
+
+── 11/13 (137 clears) ──
+  7/7  Jalen Johnson          REB   O6.5   O2.0–O6.5      ATL @ CHI    L=[7.0, 7.0, 7.0, 8.0, 9.0, 9.0, 9.0]
+  7/7  Bam Adebayo            REB   O7.5   O2.0–O7.5      CLE @ MIA    L=[8.0, 8.0, 10.0, 10.0, 9.0, 9.0, 9.0]
+  7/7  Darryn Peterson        AST   O3.5   O2.0–O3.5      UTAH @ HOU   L=[5.0, 4.0, 4.0, 5.0, 7.0, 5.0, 4.0]
+  7/7  Kevin Durant           REB   O2.5   O2.0–O2.5      UTAH @ HOU   L=[4.0, 12.0, 10.0, 5.0, 3.0, 3.0, 5.0]
+  7/7  Zion Williamson        REB   O3.5   O2.0–O3.5      MEM @ NO     L=[4.0, 4.0, 8.0, 4.0, 11.0, 6.0, 6.0]
+  7/7  Wendell Carter Jr.     REB   O6.5   O2.0–O6.5      MIL @ ORL    L=[7.0, 11.0, 11.0, 13.0, 9.0, 10.0, 7.0]
+  7/7  Josh Hart              REB   O3.5   O2.0–O3.5      NY @ IND     L=[4.0, 6.0, 6.0, 8.0, 4.0, 8.0, 12.0]
+  7/7  Meleek Thomas          3PT   O1.5   O1.0–O1.5      CLE @ MIA    L=[2.0, 4.0, 3.0, 2.0, 3.0, 3.0, 3.0]
+  7/7  Brayden Burries        REB   O2.5   O2.0–O2.5      MIL @ ORL    L=[5.0, 3.0, 8.0, 11.0, 5.0, 9.0, 3.0]
+  7/7  Andrew Nembhard        AST   O3.5   O2.0–O3.5      NY @ IND     L=[10.0, 12.0, 8.0, 4.0, 4.0, 9.0, 14.0]
+  7/7  Cam Spencer            PTS   O6.5   O5.0–O6.5      MEM @ NO     L=[15.0, 7.0, 7.0, 7.0, 13.0, 10.0, 8.0]
+  7/7  Karlo Matkovic         REB   O2.5   O2.0–O2.5      MEM @ NO     L=[4.0, 6.0, 3.0, 3.0, 4.0, 6.0, 10.0]
+  7/7  Tari Eason             REB   O2.5   O2.0–O2.5      UTAH @ HOU   L=[3.0, 5.0, 7.0, 6.0, 4.0, 3.0, 13.0]
+  7/7  Meleek Thomas          PTS   O8.5   O5.0–O8.5      CLE @ MIA    L=[14.0, 18.0, 9.0, 12.0, 9.0, 17.0, 13.0]
+  6/7  Franz Wagner           REB   O4.5   O2.0–O4.5      MIL @ ORL    L=[8.0, 7.0, 6.0, 8.0, 3.0, 6.0, 5.0]
+  6/7  Alperen Sengun         AST   O7.5   O2.0–O7.5      UTAH @ HOU   L=[9.0, 8.0, 5.0, 10.0, 10.0, 9.0, 9.0]
+  6/7  Desmond Bane           3PT   O2.5   O1.0–O2.5      MIL @ ORL    L=[7.0, 4.0, 3.0, 4.0, 5.0, 6.0, 2.0]
+  6/7  Cormac Ryan            3PT   O2.5   O1.0–O2.5      MIL @ ORL    L=[3.0, 5.0, 3.0, 3.0, 3.0, 2.0, 4.0]
+  6/7  Jalen Brunson          3PT   O2.5   O1.0–O2.5      NY @ IND     L=[3.0, 1.0, 3.0, 5.0, 4.0, 3.0, 6.0]
+  6/7  Pascal Siakam          REB   O4.5   O2.0–O4.5      NY @ IND     L=[8.0, 9.0, 2.0, 5.0, 5.0, 5.0, 11.0]
+  6/7  Jeremiah Fears         AST   O4.5   O2.0–O4.5      MEM @ NO     L=[5.0, 8.0, 5.0, 5.0, 2.0, 7.0, 7.0]
+  6/7  Bam Adebayo            AST   O2.5   O2.0–O2.5      CLE @ MIA    L=[4.0, 4.0, 0.0, 4.0, 4.0, 3.0, 3.0]
+  6/7  Josh Hart              AST   O2.5   O2.0–O2.5      NY @ IND     L=[3.0, 7.0, 3.0, 3.0, 4.0, 2.0, 5.0]
+  6/7  Karl-Anthony Towns     AST   O2.5   O2.0–O2.5      NY @ IND     L=[8.0, 3.0, 3.0, 1.0, 5.0, 3.0, 5.0]
+  6/7  Karl-Anthony Towns     3PT   O1.5   O1.0–O1.5      NY @ IND     L=[2.0, 2.0, 2.0, 2.0, 1.0, 3.0, 3.0]
+  6/7  Onyeka Okongwu         3PT   O1.5   O1.0–O1.5      ATL @ CHI    L=[2.0, 2.0, 2.0, 2.0, 2.0, 0.0, 4.0]
+  6/7  Davion Mitchell        AST   O7.5   O2.0–O7.5      CLE @ MIA    L=[8.0, 11.0, 8.0, 10.0, 7.0, 11.0, 10.0]
+  6/7  Alperen Sengun         REB   O6.5   O2.0–O6.5      UTAH @ HOU   L=[13.0, 11.0, 6.0, 12.0, 7.0, 9.0, 9.0]
+  6/7  Darryn Peterson        3PT   O1.5   O1.0–O1.5      UTAH @ HOU   L=[2.0, 4.0, 4.0, 3.0, 0.0, 2.0, 3.0]
+  6/7  Jalen Johnson          AST   O3.5   O2.0–O3.5      ATL @ CHI    L=[4.0, 6.0, 4.0, 7.0, 11.0, 3.0, 16.0]
+  6/7  Anthony Black          REB   O5.5   O2.0–O5.5      MIL @ ORL    L=[7.0, 7.0, 8.0, 7.0, 8.0, 6.0, 2.0]
+  6/7  Jeremiah Fears         REB   O3.5   O2.0–O3.5      MEM @ NO     L=[4.0, 3.0, 6.0, 5.0, 6.0, 4.0, 5.0]
+  6/7  Wendell Carter Jr.     PTS   O6.5   O5.0–O6.5      MIL @ ORL    L=[9.0, 8.0, 19.0, 27.0, 6.0, 7.0, 20.0]
+  6/7  OG Anunoby             REB   O3.5   O2.0–O3.5      NY @ IND     L=[6.0, 3.0, 6.0, 5.0, 4.0, 4.0, 6.0]
+  6/7  Bam Adebayo            PTS   O15.5  O5.0–O15.5     CLE @ MIA    L=[11.0, 18.0, 18.0, 35.0, 16.0, 27.0, 24.0]
+  6/7  Ace Bailey             REB   O4.5   O2.0–O4.5      UTAH @ HOU   L=[7.0, 7.0, 2.0, 5.0, 5.0, 6.0, 7.0]
+  6/7  Cameron Boozer         AST   O3.5   O2.0–O3.5      MEM @ NO     L=[5.0, 8.0, 4.0, 4.0, 5.0, 3.0, 12.0]
+  6/7  Donovan Mitchell       REB   O2.5   O2.0–O2.5      CLE @ MIA    L=[7.0, 2.0, 4.0, 7.0, 3.0, 5.0, 4.0]
+  6/7  Dejounte Murray        AST   O2.5   O2.0–O2.5      MEM @ NO     L=[4.0, 1.0, 3.0, 4.0, 4.0, 5.0, 6.0]
+  6/7  Josh Hart              PTS   O5.5   O5.0–O5.5      NY @ IND     L=[6.0, 8.0, 7.0, 2.0, 6.0, 13.0, 10.0]
+  … +97 more in JSON
+
+══ HOW TO USE ══
+1. Build separate slips per day OR one multi-day parlay (books that allow it).
+2. From each day take the top 2–4 that are actually posted on HR.
+3. Prefer kind 7/7 / 5/5 / 6/6; use 6/7 when the shave is small (drop ≤3).
+4. Re-check injuries morning-of; GTD stars can kill a leg.
+5. Soft floors stay banned even if they go 7/7.
