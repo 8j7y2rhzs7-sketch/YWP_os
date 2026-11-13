@@ -29,10 +29,12 @@ const sports = [
   { key: "mlb", label: "MLB" },
   { key: "wnba", label: "WNBA" },
   { key: "nba", label: "NBA" },
+  { key: "ncaab", label: "NCAAM" },
   { key: "nfl", label: "NFL" },
   { key: "ncaaf", label: "NCAAF" },
   { key: "nhl", label: "NHL" },
   { key: "soccer", label: "SOCCER" },
+  { key: "tennis", label: "TENNIS" },
   { key: "kbo", label: "KBO" },
 ] as const;
 

@@ -38,7 +38,7 @@ import type {
 } from "@/types";
 
 const CANDIDATE_PAGE = 20;
-const PROP_SPORTS = new Set(["wnba", "nba", "nfl", "ncaaf"]);
+const PROP_SPORTS = new Set(["wnba", "nba", "ncaab", "nfl", "ncaaf"]);
 /** Chunked warm passes — each stays under Render's ~30s proxy. */
 const MAX_WARM_ROUNDS = 14;
 /** Giant boards need more slices than a normal slate. */
@@ -148,10 +148,12 @@ const sports = [
   { key: "mlb", label: "MLB", icon: "⚾" },
   { key: "wnba", label: "WNBA", icon: "🏀" },
   { key: "nba", label: "NBA", icon: "🏀" },
+  { key: "ncaab", label: "NCAAM", icon: "🏀" },
   { key: "nfl", label: "NFL", icon: "🏈" },
   { key: "ncaaf", label: "NCAAF", icon: "🏈" },
   { key: "nhl", label: "NHL", icon: "🏒" },
   { key: "soccer", label: "SOCCER", icon: "⚽" },
+  { key: "tennis", label: "TENNIS", icon: "🎾" },
   { key: "kbo", label: "KBO", icon: "⚾" },
 ] as const;
 

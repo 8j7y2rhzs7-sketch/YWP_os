@@ -84,17 +84,22 @@ def fetch_recommendation_lock_update(
 
 
 def _odds_sport_key(sport: str) -> str:
+    key = (sport or "").strip().lower()
+    if key == "ncaam":
+        key = "ncaab"
     mapping = {
         "mlb": "baseball_mlb",
         "nfl": "americanfootball_nfl",
         "ncaaf": "americanfootball_ncaaf",
         "nba": "basketball_nba",
+        "ncaab": "basketball_ncaab",
         "wnba": "basketball_wnba",
         "nhl": "icehockey_nhl",
         "soccer": "soccer_epl",
+        "tennis": "tennis_atp_us_open",
         "kbo": "baseball_kbo",
     }
-    return mapping.get(sport, f"baseball_{sport}" if sport else "baseball_mlb")
+    return mapping.get(key, f"baseball_{key}" if key else "baseball_mlb")
 
 
 def _coerce_game_pk(raw: object) -> int | None:

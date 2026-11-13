@@ -1,7 +1,7 @@
 """
 Generic live slate builder for Odds API sports with multi-source fact cascade.
 
-Covers NFL, NBA, NHL, NCAAF, NCAAB, soccer/MLS/EPL, KBO.
+Covers NFL, NBA, NHL, NCAAF, NCAAM, soccer/MLS/EPL, tennis, KBO.
 Odds prices are required to show a play. Fact sources (NHL Web API, ESPN, …)
 enrich research; if they fail, priced plays still return as PARTIAL.
 """
@@ -19,11 +19,13 @@ from app.services.facts_cascade import league_injuries
 from app.services.market_board import _PROP_MARKETS_BY_SPORT, _flatten_prop_markets
 from app.services.odds_provider import (
     active_odds_keys_for_app_sport,
+    canonical_app_sport,
     extract_best_odds,
     get_game_odds,
     get_player_props,
     soccer_league_label,
     soccer_odds_regions,
+    tennis_league_label,
 )
 from app.services.player_prop_research import (
     enrich_player_prop_candidates,
@@ -44,6 +46,8 @@ SPORT_KEYS: dict[str, str] = {
     "soccer": "soccer_epl",
     "epl": "soccer_epl",
     "mls": "soccer_usa_mls",
+    # tennis primary key retained for membership; tournaments via catalog.
+    "tennis": "tennis_atp_us_open",
     "kbo": "baseball_kbo",
 }
 
@@ -52,18 +56,20 @@ SPORT_DISPLAY: dict[str, tuple[str, str]] = {
     "nba": ("nba", "NBA"),
     "nhl": ("nhl", "NHL"),
     "ncaaf": ("ncaaf", "NCAAF"),
-    "ncaab": ("ncaab", "NCAAB"),
+    "ncaab": ("ncaab", "NCAAM"),
     "soccer": ("soccer", "Soccer"),
     "epl": ("soccer", "EPL"),
     "mls": ("soccer", "MLS"),
+    "tennis": ("tennis", "Tennis"),
     "kbo": ("kbo", "KBO"),
 }
 
 SOCCER_KEYS = {"soccer", "epl", "mls"}
+TENNIS_KEYS = {"tennis"}
 
 
 def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
-    sport_lower = sport.lower()
+    sport_lower = canonical_app_sport(sport)
     if sport_lower not in SPORT_KEYS:
         logger.warning("No Odds API sport key for %s", sport)
         return []
@@ -77,23 +83,26 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
     odds_events: list[dict] = []
     leagues_fetched: list[str] = []
     regions = soccer_odds_regions(sport_lower)
+    markets = "h2h" if sport_lower in TENNIS_KEYS else "h2h,spreads,totals"
     for odds_key in odds_keys:
         try:
-            batch = get_game_odds(sport=odds_key, markets="h2h,spreads,totals", regions=regions)
+            batch = get_game_odds(sport=odds_key, markets=markets, regions=regions)
         except Exception:
             logger.exception("Failed to fetch %s odds (%s)", sport, odds_key)
             continue
         if not batch:
             continue
-        leagues_fetched.append(
-            soccer_league_label(odds_key) if sport_lower in SOCCER_KEYS else default_league
-        )
+        if sport_lower in SOCCER_KEYS:
+            league_label = soccer_league_label(odds_key)
+        elif sport_lower in TENNIS_KEYS:
+            league_label = tennis_league_label(odds_key)
+        else:
+            league_label = default_league
+        leagues_fetched.append(league_label)
         for event in batch:
             enriched = dict(event)
             enriched["_ywp_odds_key"] = odds_key
-            enriched["_ywp_league"] = (
-                soccer_league_label(odds_key) if sport_lower in SOCCER_KEYS else default_league
-            )
+            enriched["_ywp_league"] = league_label
             odds_events.append(enriched)
 
     if not odds_events:
@@ -461,7 +470,7 @@ def _odds_only_research(bookmakers: list, *, home_team: str, sport: str | None =
         "kbo",
     }
     na = "n/a" if team_market else "unknown"
-    indoor = sport_l in {"nba", "ncaab", "wnba", "nhl"}
+    indoor = sport_l in {"nba", "ncaab", "wnba", "nhl", "tennis"}
     return {
         "espn_game": None,
         "home_form": {"verified": False},
