@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { AppState, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { BrandHeader } from "@/components/BrandHeader";
 import { EngineStage } from "@/components/EngineStage";
@@ -15,6 +15,7 @@ import { SectionTitle } from "@/components/SectionTitle";
 import { SportBallIcon } from "@/components/SportBallIcon";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
+import { useRunKeepAwake } from "@/components/StayAwake";
 import { useAppData } from "@/context/AppDataContext";
 import { useAuth } from "@/context/AuthContext";
 import {
@@ -22,8 +23,9 @@ import {
   EDGE_CHALLENGE_MESSAGE,
   looksLikeEdgeChallenge,
 } from "@/lib/api";
+import { rememberSession, loadSession, type RunPhase } from "@/lib/session";
 import { sportLook } from "@/sportVisuals";
-import { colors, fonts, radius, spacing, type } from "@/theme";
+import { colors, fonts, radius, spacing, type , registerStyles } from "@/theme";
 import type {
   AnalyzeResponse,
   CandidateInput,
@@ -36,15 +38,23 @@ import type {
 } from "@/types";
 
 const CANDIDATE_PAGE = 20;
-const PROP_SPORTS = new Set(["wnba", "nba", "nfl", "ncaaf"]);
+const PROP_SPORTS = new Set(["wnba", "nba", "ncaab", "nfl", "ncaaf"]);
 /** Chunked warm passes — each stays under Render's ~30s proxy. */
 const MAX_WARM_ROUNDS = 14;
+/** Giant boards need more slices than a normal slate. */
+const MAX_WARM_ROUNDS_HUGE = 64;
+/** Props shipped per warm request. Full boards time out without this. */
+const WARM_CHUNK = 96;
+const WARM_LONGSHOT_ODDS = 4000;
+const WARM_LONGSHOT_CHUNK = 32;
 /** Stop only after this many consecutive zero-gain passes. */
 const STALL_ROUNDS_TO_ARM = 3;
 /** Normal warm-request retries before arming with partial research. */
 const WARM_RETRY_LIMIT = 3;
 /** Extra retries when Cloudflare / edge rate-limits the burst. */
 const WARM_EDGE_RETRY_LIMIT = 5;
+/** Auto-continue a paused warm instead of making the user tap WARM again. */
+const AUTO_RESUME_LIMIT = 4;
 
 function isEdgeThrottleError(reason: unknown): boolean {
   if (!(reason instanceof Error)) return false;
@@ -138,12 +148,30 @@ const sports = [
   { key: "mlb", label: "MLB", icon: "⚾" },
   { key: "wnba", label: "WNBA", icon: "🏀" },
   { key: "nba", label: "NBA", icon: "🏀" },
+  { key: "ncaab", label: "NCAAM", icon: "🏀" },
   { key: "nfl", label: "NFL", icon: "🏈" },
   { key: "ncaaf", label: "NCAAF", icon: "🏈" },
   { key: "nhl", label: "NHL", icon: "🏒" },
   { key: "soccer", label: "SOCCER", icon: "⚽" },
+  { key: "tennis", label: "TENNIS", icon: "🎾" },
   { key: "kbo", label: "KBO", icon: "⚾" },
 ] as const;
+
+type SportKey = (typeof sports)[number]["key"];
+
+function isSportKey(value: string | null | undefined): value is SportKey {
+  return sports.some((item) => item.key === value);
+}
+
+type LiveRun = {
+  sport: SportKey;
+  date: string;
+  slate: SlateResponse | null;
+  phase: RunPhase;
+};
+
+/** Same JS runtime: switching apps remounts the screen without dropping the board. */
+let liveRun: LiveRun | null = null;
 
 function localDate(): string {
   const now = new Date();
@@ -153,15 +181,17 @@ function localDate(): string {
 
 export default function SlateScreen() {
   const { user, request } = useAuth();
-  const { saveAnalysis, saveSlate } = useAppData();
-  const [sport, setSport] = useState<(typeof sports)[number]["key"]>("mlb");
-  const [date, setDate] = useState(localDate());
-  const [slate, setSlate] = useState<SlateResponse | null>(null);
+  const { saveAnalysis, saveSlate, lastSlate, ready: dataReady } = useAppData();
+  const resumed = liveRun && liveRun.date === localDate() ? liveRun : null;
+  const [gate, setGate] = useState(resumed != null);
+  const [sport, setSport] = useState<SportKey>(resumed?.sport ?? "mlb");
+  const [date, setDate] = useState(resumed?.date ?? localDate());
+  const [slate, setSlate] = useState<SlateResponse | null>(resumed?.slate ?? null);
   const [loadingSlate, setLoadingSlate] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [researchNote, setResearchNote] = useState<string | null>(null);
-  const [launchArmed, setLaunchArmed] = useState(false);
-  const [warming, setWarming] = useState(false);
+  const [launchArmed, setLaunchArmed] = useState(resumed?.phase === "armed");
+  const [warming, setWarming] = useState(resumed?.phase === "warming");
   const [error, setError] = useState<string | null>(null);
   const [catalogByKey, setCatalogByKey] = useState<Record<string, SportCatalogItem>>({});
   const [catalogReady, setCatalogReady] = useState(false);
@@ -169,6 +199,9 @@ export default function SlateScreen() {
   const [prefetching, setPrefetching] = useState(false);
   const [visibleCount, setVisibleCount] = useState(CANDIDATE_PAGE);
   const warmEpoch = useRef(0);
+  const heldSession = useRef<Awaited<ReturnType<typeof loadSession>>>(null);
+  const launchWhenReady = useRef(false);
+  const autoResumeCount = useRef(0);
 
   async function loadCatalog() {
     try {
@@ -225,20 +258,42 @@ export default function SlateScreen() {
     let latest = base;
     let stallRounds = 0;
     let errors = 0;
+    const pendingStart = pendingPropCount(candidates);
+    const roundCap =
+      pendingStart > 400
+        ? Math.min(
+            MAX_WARM_ROUNDS_HUGE,
+            Math.max(MAX_WARM_ROUNDS, Math.ceil(pendingStart / WARM_CHUNK) + 2),
+          )
+        : MAX_WARM_ROUNDS;
     try {
-      for (let round = 0; round < MAX_WARM_ROUNDS; round += 1) {
+      for (let round = 0; round < roundCap; round += 1) {
         if (epoch !== warmEpoch.current) return null;
         const pendingBefore = pendingPropCount(candidates);
         if (pendingBefore <= 0) break;
         setResearchNote(
-          `Researching props… pass ${round + 1}/${MAX_WARM_ROUNDS}`,
+          `Researching props… pass ${round + 1}/${roundCap}`,
         );
-        // Only ship pending market_implied props — much smaller body, less 502 risk.
-        const pendingOnly = candidates.filter(
+        // Only ship a slice. A 4,000-row body never returns and the
+        // button stays on WARM. Keep +4000-and-up in every slice.
+        const pendingOnlyAll = candidates.filter(
           (row) =>
             String(row.market_type || "").startsWith("player_") &&
             row.probability_source === "market_implied",
         );
+        const longshots = pendingOnlyAll.filter(
+          (row) => Number(row.american_odds) >= WARM_LONGSHOT_ODDS,
+        );
+        const standard = pendingOnlyAll.filter(
+          (row) => Number(row.american_odds) < WARM_LONGSHOT_ODDS,
+        );
+        const pendingOnly = [
+          ...standard.slice(
+            0,
+            WARM_CHUNK - Math.min(longshots.length, WARM_LONGSHOT_CHUNK),
+          ),
+          ...longshots.slice(0, WARM_LONGSHOT_CHUNK),
+        ];
         let warm: PropWarmResponse;
         try {
           warm = await request<PropWarmResponse>("/sports/warm-props", {
@@ -303,29 +358,45 @@ export default function SlateScreen() {
         } else {
           stallRounds = 0;
         }
-        // Brief pause between passes so edge WAF does not treat warm as a bot burst.
-        await new Promise((resolve) => setTimeout(resolve, 900));
+        await new Promise((resolve) =>
+          setTimeout(resolve, pendingStart > 400 ? 250 : 900),
+        );
       }
       if (epoch === warmEpoch.current) {
         const stillPending = pendingPropCount(candidates);
         setLaunchArmed(true);
         setWarming(false);
+        autoResumeCount.current = 0;
         setResearchNote(
           stillPending > 0
-            ? `Research armed — ${stillPending} props still sportsbook-only (will SKIP). Gold = grade.`
-            : "Research ready — LAUNCH is gold. Tap to grade.",
+            ? launchWhenReady.current
+              ? `Research armed — launching with ${stillPending} sportsbook-only props skipped.`
+              : `Research armed — ${stillPending} props still sportsbook-only (will SKIP). Gold = grade.`
+            : launchWhenReady.current
+              ? "Research ready — launching."
+              : "Research ready — LAUNCH is gold. Tap to grade.",
         );
       }
       return latest;
     } catch (reason) {
       if (epoch === warmEpoch.current) {
         setWarming(false);
-        // Stay blue — user can tap WAIT/WARM to resume instead of Refresh.
         setLaunchArmed(false);
-        setResearchNote(
+        const detail =
           reason instanceof Error && reason.message.trim()
-            ? `Research paused — tap blue WARM to continue. ${reason.message.trim()}`
-            : "Research paused — tap blue WARM to continue.",
+            ? reason.message.trim()
+            : "request failed";
+        if (autoResumeCount.current < AUTO_RESUME_LIMIT) {
+          autoResumeCount.current += 1;
+          setResearchNote(
+            `Research paused — auto-continuing ${autoResumeCount.current}/${AUTO_RESUME_LIMIT}. ${detail}`,
+          );
+          await new Promise((resolve) => setTimeout(resolve, 2_000));
+          if (epoch !== warmEpoch.current) return latest;
+          return warmResearch(latest, epoch);
+        }
+        setResearchNote(
+          `Research paused — tap RUN once to continue. ${detail}`,
         );
       }
       return latest;
@@ -338,6 +409,8 @@ export default function SlateScreen() {
     const catalog = catalogByKey[requestSport];
     warmEpoch.current += 1;
     const epoch = warmEpoch.current;
+    launchWhenReady.current = false;
+    autoResumeCount.current = 0;
     setLaunchArmed(false);
     setWarming(false);
     setResearchNote(null);
@@ -378,38 +451,20 @@ export default function SlateScreen() {
     }
   }
 
-  async function analyze() {
-    if (!slate) return;
-    if (slate.sport.toLowerCase() !== sport || slate.date !== date) {
-      setError("Slate is out of date — reload before analyzing.");
-      return;
-    }
-    // Blue button = keep researching (no need to hit Refresh).
-    if (warming) {
-      setResearchNote(
-        researchNote ?? "Still warming research — wait for gold.",
-      );
-      return;
-    }
-    if (!launchArmed) {
-      const epoch = warmEpoch.current;
-      setError(null);
-      setResearchNote("Continuing research…");
-      await warmResearch(slate, epoch);
-      return;
-    }
+  async function gradeSlate(board: SlateResponse) {
     setAnalyzing(true);
     setError(null);
     setResearchNote("Grading with full research…");
+    launchWhenReady.current = false;
     try {
       const response = await request<AnalyzeResponse>("/sports/analyze", {
         method: "POST",
         body: JSON.stringify({
-          sport: slate.sport,
-          date: slate.date,
+          sport: board.sport,
+          date: board.date,
           mode: "pregame",
           user_risk_profile: user?.risk_profile ?? "balanced",
-          candidates: slate.candidates,
+          candidates: board.candidates,
         }),
       });
       saveAnalysis(response);
@@ -426,18 +481,143 @@ export default function SlateScreen() {
     }
   }
 
+  async function analyze() {
+    if (!slate) return;
+    if (slate.sport.toLowerCase() !== sport || slate.date !== date) {
+      setError("Slate is out of date — reload before analyzing.");
+      return;
+    }
+    // One press during warm queues Launch — no need to keep tapping.
+    if (warming) {
+      launchWhenReady.current = true;
+      setResearchNote("Queued — will launch when research turns gold.");
+      return;
+    }
+    if (!launchArmed) {
+      const epoch = warmEpoch.current;
+      setError(null);
+      launchWhenReady.current = true;
+      setResearchNote("Continuing research — will launch when ready…");
+      await warmResearch(slate, epoch);
+      return;
+    }
+    await gradeSlate(slate);
+  }
+
+  const phase: RunPhase = analyzing
+    ? "analyzing"
+    : warming
+      ? "warming"
+      : loadingSlate
+        ? "loading"
+        : launchArmed
+          ? "armed"
+          : "idle";
+  useRunKeepAwake(phase !== "idle" || Boolean(slate));
+
+  useEffect(() => {
+    if (!slate || !launchArmed || warming || analyzing || loadingSlate) return;
+    if (!launchWhenReady.current) return;
+    launchWhenReady.current = false;
+    void gradeSlate(slate);
+  }, [analyzing, launchArmed, loadingSlate, slate, warming]);
+
   useEffect(() => {
     void loadCatalog();
+    if (resumed) return;
+    void loadSession().then((session) => {
+      heldSession.current = session;
+      if (
+        session &&
+        session.date === localDate() &&
+        isSportKey(session.sport)
+      ) {
+        setSport(session.sport);
+        setDate(session.date);
+      }
+      setGate(true);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (!catalogReady) return;
-    setVisibleCount(CANDIDATE_PAGE);
-    void loadSlate();
-    // Wait for catalog so OOS sports skip paid Odds; do not re-fetch when catalog object identity changes.
+    if (!gate) return;
+    liveRun = { sport, date, slate, phase };
+    rememberSession({ sport, date, phase });
+  }, [gate, sport, date, slate, phase]);
+
+  useEffect(() => {
+    const sub = AppState.addEventListener("change", (state) => {
+      if (state !== "background" || !slate) return;
+      saveSlate(slate);
+      rememberSession({ sport, date, phase });
+    });
+    return () => sub.remove();
+  }, [date, phase, saveSlate, slate, sport]);
+
+  const lastSlateRef = useRef(lastSlate);
+  lastSlateRef.current = lastSlate;
+
+  useEffect(() => {
+    if (!catalogReady || !dataReady || !gate) return;
+    let cancelled = false;
+    void (async () => {
+      const session = heldSession.current ?? (resumed ? await loadSession() : null);
+      if (cancelled) return;
+      const stored = lastSlateRef.current;
+      const memoryBoard =
+        liveRun &&
+        liveRun.sport === sport &&
+        liveRun.date === date &&
+        liveRun.slate &&
+        liveRun.slate.sport.toLowerCase() === sport &&
+        liveRun.slate.date === date
+          ? liveRun.slate
+          : null;
+      const storedBoard =
+        stored && stored.sport.toLowerCase() === sport && stored.date === date
+          ? stored
+          : null;
+      const board = memoryBoard ?? storedBoard;
+      const sessionPhase =
+        session && session.sport === sport && session.date === date ? session.phase : null;
+      const recent =
+        Boolean(memoryBoard) ||
+        Boolean(session && Date.now() - session.savedAt < 8 * 60 * 60 * 1000);
+      if (
+        board &&
+        recent &&
+        (sessionPhase === "warming" ||
+          sessionPhase === "armed" ||
+          sessionPhase === "analyzing")
+      ) {
+        setSlate(board);
+        setLoadingSlate(false);
+        setVisibleCount(CANDIDATE_PAGE);
+        if (sessionPhase === "warming" || liveRun?.phase === "warming") {
+          warmEpoch.current += 1;
+          setResearchNote("Picking the run back up…");
+          void warmResearch(board, warmEpoch.current);
+          return;
+        }
+        setLaunchArmed(true);
+        setWarming(false);
+        setResearchNote(
+          sessionPhase === "analyzing"
+            ? "Run was grading when you left. Tap LAUNCH to grade again."
+            : "Back on this run.",
+        );
+        return;
+      }
+      setVisibleCount(CANDIDATE_PAGE);
+      void loadSlate();
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // Resume a saved run instead of wiping the board. loadSlate/warmResearch close over the latest sport.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sport, date, catalogReady]);
+  }, [sport, date, catalogReady, dataReady, gate]);
 
   const tone = orbitToneFor(loadingSlate || analyzing || warming, slate);
   const look = sportLook(sport);
@@ -582,6 +762,9 @@ export default function SlateScreen() {
           onPress={() => void loadSlate()}
           loading={loadingSlate}
         />
+        <Text style={styles.prefetchNote}>
+          Prop research on RUN uses free ESPN logs. You do not need to buy Odds credits for a normal Launch. This button only prefetches paid sportsbook odds across sports.
+        </Text>
         <YwpButton
           label="WARM ALL IN-SEASON (USES CREDITS)"
           variant="outline"
@@ -726,7 +909,7 @@ export default function SlateScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   page: { flex: 1 },
   screenWithDock: {
     // Clear tab bar + floating stylus RUN dock so the last plays stay readable.
@@ -921,4 +1104,4 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginTop: spacing.sm,
   },
-});
+}));

@@ -13,7 +13,7 @@ import { Screen } from "@/components/Screen";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
-import { colors, spacing, type } from "@/theme";
+import { colors, spacing, type , registerStyles } from "@/theme";
 import type { SettleDayResponse, Ticket } from "@/types";
 
 const PAGE_SIZE = 25;
@@ -300,7 +300,7 @@ export default function TicketsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   row: { flexDirection: "row", alignItems: "center", gap: spacing.md },
   flex: { flex: 1, gap: 2 },
   title: { color: colors.white, fontSize: 20, fontWeight: "900" },
@@ -316,4 +316,4 @@ const styles = StyleSheet.create({
   legNumber: { color: colors.gold, fontWeight: "900" },
   selection: { flex: 1, color: colors.white, fontWeight: "800" },
   odds: { color: colors.gold, fontWeight: "900" },
-});
+}));

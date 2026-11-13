@@ -19,7 +19,7 @@ import { Screen } from "@/components/Screen";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
 import { ensureApiUrl } from "@/lib/api";
-import { brand, colors, fonts, spacing, type } from "@/theme";
+import { brand, colors, fonts, spacing, type , registerStyles } from "@/theme";
 
 export default function LoginScreen() {
   const { user, login } = useAuth();
@@ -133,7 +133,7 @@ export default function LoginScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   flex: { flex: 1 },
   // Top-aligned so the login panel can scroll above the keyboard in landscape.
   content: { justifyContent: "flex-start", paddingTop: spacing.md, gap: spacing.lg },
@@ -197,4 +197,4 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: colors.dim,
   },
-});
+}));

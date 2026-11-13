@@ -12,7 +12,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useReduceMotion } from "@/hooks/useReduceMotion";
-import { colors, fonts, gradients, radius, spacing, type } from "@/theme";
+import { colors, fonts, gradients, radius, spacing, type , registerStyles } from "@/theme";
 
 interface ProtocolRunDockProps {
   sport: string;
@@ -48,7 +48,8 @@ export function ProtocolRunDock({
   const glide = useRef(new Animated.Value(0)).current;
   const enter = useRef(new Animated.Value(0)).current;
   const inactive = disabled || playCount <= 0;
-  const canPress = !inactive && !loading;
+  // Warming still accepts a press so one tap can queue Launch.
+  const canPress = !inactive && !(loading && armed);
   const live = armed && !loading && !inactive;
 
   useEffect(() => {
@@ -203,7 +204,9 @@ export function ProtocolRunDock({
             accessibilityLabel={
               armed
                 ? "Launch AIN Strict Mode"
-                : "Research still warming — wait for gold"
+                : loading
+                  ? "Queue launch when research finishes"
+                  : "Continue research then launch"
             }
             style={({ pressed }) => [
               styles.ignitionHit,
@@ -224,7 +227,7 @@ export function ProtocolRunDock({
             <LinearGradient colors={[...ignitionColors]} style={styles.ignition}>
               {loading ? (
                 <>
-                  <ActivityIndicator color={colors.background} />
+                  <ActivityIndicator color={colors.ink} />
                   {statusText ? (
                     <Text style={styles.runEyebrow} numberOfLines={1}>
                       {statusText}
@@ -250,7 +253,7 @@ export function ProtocolRunDock({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   wrap: {
     position: "absolute",
     left: 0,
@@ -374,4 +377,4 @@ const styles = StyleSheet.create({
   },
   pressed: { transform: [{ scale: 0.96 }], opacity: 0.92 },
   disabled: { opacity: 0.45 },
-});
+}));

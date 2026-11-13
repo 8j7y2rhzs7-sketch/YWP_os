@@ -11,7 +11,7 @@ import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
 import { ApiError, APP_DOWNLOAD_URL, WHOP_CHECKOUT_URL } from "@/lib/api";
 import type { SubscriptionStatus } from "@/types";
-import { brand, colors, fonts, spacing, type } from "@/theme";
+import { brand, colors, fonts, spacing, type , registerStyles } from "@/theme";
 
 export default function PaywallScreen() {
   const { user, loading, logout, reloadUser, request } = useAuth();
@@ -149,7 +149,7 @@ export default function PaywallScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   panel: { gap: spacing.lg, marginTop: spacing.xl },
   steps: { gap: spacing.sm },
   step: { ...type.body, color: colors.silver },
@@ -162,4 +162,4 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     paddingVertical: spacing.sm,
   },
-});
+}));

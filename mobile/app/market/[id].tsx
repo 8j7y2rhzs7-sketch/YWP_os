@@ -9,7 +9,7 @@ import { MetalPanel } from "@/components/MetalPanel";
 import { Screen } from "@/components/Screen";
 import { StatusPill } from "@/components/StatusPill";
 import { useAuth } from "@/context/AuthContext";
-import { colors, spacing, type } from "@/theme";
+import { colors, spacing, type , registerStyles } from "@/theme";
 import type { MarketCall } from "@/types";
 
 function percent(value: number | null | undefined): string {
@@ -84,7 +84,7 @@ export default function MarketDetailScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -93,4 +93,4 @@ const styles = StyleSheet.create({
   },
   line: { color: colors.text, fontSize: 14 },
   reason: { color: colors.muted, fontSize: 14, lineHeight: 20 },
-});
+}));

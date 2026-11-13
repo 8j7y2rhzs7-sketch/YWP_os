@@ -80,7 +80,7 @@ def market_family(market_type: str | None) -> str:
 def is_modeled_prop_market(sport: str | None, market_type: str | None) -> bool:
     sport_l = str(sport or "").lower()
     market_l = str(market_type or "").lower()
-    if sport_l not in {"wnba", "nba", "basketball", "nfl", "ncaaf", "mlb"}:
+    if sport_l not in {"wnba", "nba", "ncaab", "ncaam", "basketball", "nfl", "ncaaf", "mlb"}:
         return False
     return (
         market_l.startswith("player_")

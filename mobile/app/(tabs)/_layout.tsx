@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { brandAssets } from "@/brandAssets";
 import { useAuth } from "@/context/AuthContext";
-import { colors, fonts, radius } from "@/theme";
+import { colors, fonts, radius , registerStyles } from "@/theme";
 
 function BrandTabIcon({
   source,
@@ -50,10 +50,10 @@ export default function TabLayout() {
         tabBarInactiveTintColor: colors.dim,
         tabBarHideOnKeyboard: true,
         tabBarStyle: {
-          backgroundColor: "rgba(7,14,22,0.94)",
+          backgroundColor: colors.dock,
           borderTopWidth: 0,
           borderWidth: StyleSheet.hairlineWidth,
-          borderColor: "rgba(240,193,74,0.28)",
+          borderColor: colors.goldMute,
           borderRadius: radius.xl,
           height: tabBarHeight,
           paddingTop: 8,
@@ -121,7 +121,7 @@ export default function TabLayout() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   tabEmblem: {
     width: 28,
     height: 28,
@@ -130,4 +130,4 @@ const styles = StyleSheet.create({
   tabEmblemActive: {
     opacity: 1,
   },
-});
+}));

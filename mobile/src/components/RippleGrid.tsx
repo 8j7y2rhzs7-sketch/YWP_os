@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { Animated, Easing, StyleSheet, View } from "react-native";
 
 import { useReduceMotion } from "@/hooks/useReduceMotion";
-import { colors } from "@/theme";
+import { colors , registerStyles } from "@/theme";
 
 interface RippleGridProps {
   rows?: number;
@@ -112,7 +112,7 @@ export function RippleGrid({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   wrap: {
     flex: 1,
     borderWidth: StyleSheet.hairlineWidth,
@@ -125,4 +125,4 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: StyleSheet.hairlineWidth,
   },
-});
+}));

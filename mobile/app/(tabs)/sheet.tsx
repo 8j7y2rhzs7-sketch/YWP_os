@@ -15,7 +15,7 @@ import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAppData } from "@/context/AppDataContext";
 import { useAuth } from "@/context/AuthContext";
-import { colors, radius, spacing, type } from "@/theme";
+import { colors, radius, spacing, type , registerStyles } from "@/theme";
 import type {
   AnalyzeResponse,
   CandidateInput,
@@ -29,10 +29,12 @@ const sports = [
   { key: "mlb", label: "MLB" },
   { key: "wnba", label: "WNBA" },
   { key: "nba", label: "NBA" },
+  { key: "ncaab", label: "NCAAM" },
   { key: "nfl", label: "NFL" },
   { key: "ncaaf", label: "NCAAF" },
   { key: "nhl", label: "NHL" },
   { key: "soccer", label: "SOCCER" },
+  { key: "tennis", label: "TENNIS" },
   { key: "kbo", label: "KBO" },
 ] as const;
 
@@ -437,7 +439,7 @@ export default function PickSheetScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   title: { color: colors.white, fontSize: 18, fontWeight: "900" },
   sportRow: { flexDirection: "row", flexWrap: "wrap", gap: spacing.xs, marginTop: spacing.sm },
   sportChip: {
@@ -482,4 +484,4 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: spacing.sm,
   },
-});
+}));

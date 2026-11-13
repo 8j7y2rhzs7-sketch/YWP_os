@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TextInput, type TextInputProps } from "react-native";
 
-import { colors, fonts, radius, spacing, touch, type } from "@/theme";
+import { colors, fonts, radius, spacing, touch, type , registerStyles } from "@/theme";
 
 export function FormField({
   label,
@@ -19,7 +19,7 @@ export function FormField({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   label: {
     ...type.label,
     marginBottom: 2,
@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
     minHeight: touch.comfortable,
     borderRadius: radius.md,
     borderWidth: 1,
-    borderColor: "rgba(26,168,240,0.28)",
-    backgroundColor: "rgba(8,14,22,0.92)",
+    borderColor: colors.inputBorder,
+    backgroundColor: colors.input,
     color: colors.white,
     fontFamily: fonts.body,
     fontSize: 16,
@@ -38,4 +38,4 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
   },
   multiline: { minHeight: 112, textAlignVertical: "top", paddingTop: spacing.lg },
-});
+}));

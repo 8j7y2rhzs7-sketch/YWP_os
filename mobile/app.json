@@ -2,15 +2,15 @@
   "expo": {
     "name": "YWP OS",
     "slug": "ywp-os",
-    "version": "3.3.69",
+    "version": "3.3.78",
     "orientation": "portrait",
     "scheme": "ywpos",
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "automatic",
     "icon": "./assets/brand/vision/decision-engine-emblem-square.png",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ywpos.app",
-      "buildNumber": "52",
+      "buildNumber": "58",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "NSPhotoLibraryAddUsageDescription": "YWP OS saves share graphics to your photo library when you export a decision card.",
@@ -46,7 +46,7 @@
     },
     "android": {
       "package": "com.ywpos.app",
-      "versionCode": 52,
+      "versionCode": 58,
       "adaptiveIcon": {
         "foregroundImage": "./assets/brand/vision/decision-engine-emblem-square.png",
         "backgroundColor": "#02050A"
@@ -66,7 +66,7 @@
           "image": "./assets/brand/vision/decision-engine-emblem-square.png",
           "imageWidth": 280,
           "resizeMode": "contain",
-          "backgroundColor": "#02050A",
+          "backgroundColor": "#F4FBFF",
           "dark": {
             "image": "./assets/brand/vision/decision-engine-emblem-square.png",
             "backgroundColor": "#02050A"

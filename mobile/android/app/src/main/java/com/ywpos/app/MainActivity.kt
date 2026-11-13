@@ -1,8 +1,12 @@
 package com.ywpos.app
 import expo.modules.splashscreen.SplashScreenManager
 
+import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.view.WindowInsetsController
+import android.view.WindowManager
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
@@ -21,6 +25,41 @@ class MainActivity : ReactActivity() {
     SplashScreenManager.registerOnActivity(this)
     // @generated end expo-splashscreen
     super.onCreate(null)
+    // Timeout is what dumps a live board. The power button can still lock the phone.
+    window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    applySystemBars()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    // Coming back from another app should repaint, not sit on a blank surface.
+    window.decorView.post { window.decorView.requestLayout() }
+  }
+
+  override fun onConfigurationChanged(newConfig: Configuration) {
+    super.onConfigurationChanged(newConfig)
+    applySystemBars()
+  }
+
+  private fun applySystemBars() {
+    val night =
+      resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK ==
+        Configuration.UI_MODE_NIGHT_YES
+    val bar = Color.parseColor(if (night) "#0A0D12" else "#F4FBFF")
+    @Suppress("DEPRECATION")
+    window.navigationBarColor = bar
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+      val appearance =
+        if (night) 0
+        else
+          WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS or
+            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+      window.insetsController?.setSystemBarsAppearance(
+        appearance,
+        WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS or
+          WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+      )
+    }
   }
 
   /**

@@ -19,7 +19,7 @@ import { PlayerPortrait } from "@/components/PlayerPortrait";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useReduceMotion } from "@/hooks/useReduceMotion";
-import { colors, fonts, radius, spacing, type } from "@/theme";
+import { colors, fonts, gradients, radius, spacing, type, registerStyles } from "@/theme";
 import type { DayForgeResponse, Recommendation } from "@/types";
 
 function oddsLabel(value: number): string {
@@ -29,7 +29,7 @@ function oddsLabel(value: number): string {
 function PlayRevealCard({ play }: { play: Recommendation }) {
   return (
     <LinearGradient
-      colors={["#3C2C0A", "#122030", "#071018"]}
+      colors={gradients.panelGold}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.card}
@@ -230,7 +230,7 @@ export function DayForgeReveal({
         >
           {play ? <PlayRevealCard play={play} /> : null}
           {isPass ? (
-            <LinearGradient colors={["#2A1218", "#0A1018"]} style={styles.passPanel}>
+            <LinearGradient colors={gradients.danger} style={styles.passPanel}>
               <Text style={styles.passTitle}>NO PLAY FORCED</Text>
               <Text style={styles.passBody}>
                 The vault stayed closed. Nothing in the cash band cleared AIN + edge
@@ -257,7 +257,7 @@ export function DayForgeReveal({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   backdrop: {
     flex: 1,
     justifyContent: "center",
@@ -392,4 +392,4 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
     marginTop: spacing.sm,
   },
-});
+}));

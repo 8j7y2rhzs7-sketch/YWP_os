@@ -3,6 +3,7 @@ import { Animated, Easing, StyleSheet, View, type StyleProp, type ViewStyle } fr
 import { LinearGradient } from "expo-linear-gradient";
 
 import { useReduceMotion } from "@/hooks/useReduceMotion";
+import { registerStyles } from "@/theme";
 
 interface MetalShimmerProps {
   children?: ReactNode;
@@ -81,7 +82,7 @@ export function MetalShimmer({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   wrap: {
     overflow: "hidden",
     position: "relative",
@@ -92,4 +93,4 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: 72,
   },
-});
+}));

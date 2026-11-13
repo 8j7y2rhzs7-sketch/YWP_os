@@ -10,7 +10,7 @@ DEV_JWT_SECRET = "local-development-secret-change-before-production-12345"
 
 class Settings(BaseSettings):
     app_name: str = "YWP OS API"
-    app_version: str = "3.3.70"
+    app_version: str = "3.3.78"
     api_prefix: str = "/api/v1"
     env: Literal["development", "test", "staging", "production"] = Field(
         default="development", validation_alias="YWP_ENV"

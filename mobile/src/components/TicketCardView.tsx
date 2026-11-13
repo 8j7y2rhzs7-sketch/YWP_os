@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { colors, spacing, type } from "@/theme";
+import { colors, spacing, type , registerStyles } from "@/theme";
 import type { TicketCard } from "@/types";
 
 import { PlayerPortrait } from "./PlayerPortrait";
@@ -134,7 +134,7 @@ export function TicketCardView({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   pressed: { opacity: 0.85, transform: [{ scale: 0.99 }] },
   header: { flexDirection: "row", alignItems: "center", gap: spacing.md },
   headerCopy: { flex: 1, gap: 2 },
@@ -174,4 +174,4 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     letterSpacing: 0.6,
   },
-});
+}));

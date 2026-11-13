@@ -9,7 +9,7 @@ import { MetalPanel } from "@/components/MetalPanel";
 import { Screen } from "@/components/Screen";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
-import { colors, radius, spacing, type } from "@/theme";
+import { colors, radius, spacing, type , registerStyles } from "@/theme";
 
 const outcomes = ["WIN", "LOSS", "PUSH", "VOID"] as const;
 const markets = [
@@ -156,7 +156,7 @@ export default function LogExternalResultScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   hint: { ...type.body, color: colors.muted, marginBottom: spacing.sm },
   label: {
     color: colors.gold,
@@ -187,4 +187,4 @@ const styles = StyleSheet.create({
   toggleOn: { borderColor: colors.danger, backgroundColor: "rgba(180,40,40,0.15)" },
   toggleText: { color: colors.white, fontWeight: "700" },
   footer: { textAlign: "center", marginTop: spacing.sm },
-});
+}));

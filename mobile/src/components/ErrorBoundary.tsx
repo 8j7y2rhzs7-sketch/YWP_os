@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { submitErrorReport } from "../lib/errorReporting";
-import { colors, spacing, type } from "../theme";
+import { colors, spacing, type , registerStyles } from "../theme";
 import { YwpButton } from "./YwpButton";
 
 interface Props {
@@ -63,7 +63,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
@@ -97,4 +97,4 @@ const styles = StyleSheet.create({
   btn: {
     minWidth: 160,
   },
-});
+}));

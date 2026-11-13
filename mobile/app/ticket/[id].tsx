@@ -14,7 +14,7 @@ import { SlipBuilder } from "@/components/SlipBuilder";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
-import { colors, spacing, type } from "@/theme";
+import { colors, spacing, type , registerStyles } from "@/theme";
 import type { LockCheck, Recommendation, SettleDayResponse, Ticket } from "@/types";
 
 export default function TicketDetailScreen() {
@@ -511,7 +511,7 @@ export default function TicketDetailScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   header: { flexDirection: "row", alignItems: "center", gap: spacing.md },
   flex: { flex: 1, gap: 3 },
   title: { color: colors.white, fontSize: 21, fontWeight: "900" },
@@ -579,4 +579,4 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
-});
+}));

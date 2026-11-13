@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Animated, StyleSheet, Text, View } from "react-native";
 
-import { colors, fonts, spacing } from "@/theme";
+import { colors, fonts, spacing , registerStyles } from "@/theme";
 
 export function LoadingState({ label = "Running YWP protocol…" }: { label?: string }) {
   const spin = useRef(new Animated.Value(0)).current;
@@ -55,7 +55,7 @@ export function LoadingState({ label = "Running YWP protocol…" }: { label?: st
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   wrap: { padding: spacing.huge, alignItems: "center", gap: spacing.md },
   ring: {
     width: 54,
@@ -82,4 +82,4 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     letterSpacing: 0.3,
   },
-});
+}));

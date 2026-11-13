@@ -7,7 +7,7 @@ import { EngineOrbit, type OrbitTone } from "@/components/EngineOrbit";
 import { RippleGrid } from "@/components/RippleGrid";
 import { SignalField } from "@/components/SignalField";
 import { useReduceMotion } from "@/hooks/useReduceMotion";
-import { colors } from "@/theme";
+import { colors , registerStyles } from "@/theme";
 
 interface EngineStageProps {
   tone?: OrbitTone;
@@ -178,7 +178,7 @@ export function EngineStage({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   stage: {
     alignItems: "center",
     justifyContent: "center",
@@ -221,4 +221,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     minHeight: 220,
   },
-});
+}));

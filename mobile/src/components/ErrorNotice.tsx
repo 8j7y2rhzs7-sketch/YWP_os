@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 
 import { EDGE_CHALLENGE_MESSAGE, looksLikeEdgeChallenge } from "@/lib/api";
-import { colors, radius, spacing } from "@/theme";
+import { colors, radius, spacing , registerStyles } from "@/theme";
 
 function visibleMessage(message: string | null | undefined): string {
   const trimmed = typeof message === "string" ? message.trim() : "";
@@ -25,7 +25,7 @@ export function ErrorNotice({ message }: { message: string }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   wrap: {
     borderWidth: 1,
     borderColor: colors.danger,
@@ -47,4 +47,4 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     fontWeight: "600",
   },
-});
+}));

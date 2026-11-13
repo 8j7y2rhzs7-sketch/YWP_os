@@ -14,7 +14,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { brandAssets } from "@/brandAssets";
 import { EngineHeroLoop } from "@/components/EngineHeroLoop";
 import { useReduceMotion } from "@/hooks/useReduceMotion";
-import { colors, fonts, spacing } from "@/theme";
+import { colors, fonts, spacing , registerStyles } from "@/theme";
 
 export type OrbitTone = "idle" | "loading" | "verified" | "partial" | "danger";
 
@@ -494,7 +494,7 @@ export function EngineOrbit({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   wrap: {
     alignSelf: "center",
     alignItems: "center",
@@ -587,4 +587,4 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: "rgba(240,193,74,0.35)",
   },
-});
+}));

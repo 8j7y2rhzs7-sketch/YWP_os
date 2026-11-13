@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 
 import { MotionReveal } from "@/components/MotionReveal";
-import { colors, spacing, type } from "@/theme";
+import { colors, spacing, type , registerStyles } from "@/theme";
 
 export function SectionTitle({
   title,
@@ -28,7 +28,7 @@ export function SectionTitle({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   wrap: { flexDirection: "row", alignItems: "stretch", gap: spacing.md },
   mark: { width: 10, alignItems: "center", justifyContent: "center", gap: 5 },
   line: {
@@ -51,4 +51,4 @@ const styles = StyleSheet.create({
   },
   copy: { flex: 1, gap: 4, paddingVertical: 2 },
   subtitle: { ...type.caption, color: colors.muted },
-});
+}));

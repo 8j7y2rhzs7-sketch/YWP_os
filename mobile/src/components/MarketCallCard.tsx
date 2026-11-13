@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { MetalPanel } from "@/components/MetalPanel";
 import { StatusPill } from "@/components/StatusPill";
-import { colors, spacing, type } from "@/theme";
+import { colors, spacing, type , registerStyles } from "@/theme";
 import type { MarketCall } from "@/types";
 
 function percent(value: number | null | undefined): string {
@@ -56,7 +56,7 @@ export function MarketCallCard({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   panel: { gap: spacing.sm },
   top: { flexDirection: "row", justifyContent: "space-between", gap: spacing.md },
   titleWrap: { flex: 1, gap: 2 },
@@ -83,4 +83,4 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     letterSpacing: 0.8,
   },
-});
+}));

@@ -2,7 +2,7 @@ import * as Clipboard from "expo-clipboard";
 import { useState } from "react";
 import { Platform, StyleSheet, Text, View } from "react-native";
 
-import { colors, radius, spacing, type as typ } from "../theme";
+import { colors, radius, spacing, type as typ , registerStyles } from "../theme";
 import { MetalPanel } from "./MetalPanel";
 import { SectionTitle } from "./SectionTitle";
 import { YwpButton } from "./YwpButton";
@@ -88,7 +88,7 @@ function CheckItem({ label, pass: ok, manual }: { label: string; pass: boolean; 
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   slipText: {
     fontFamily: Platform.select({ ios: "Menlo", android: "monospace", web: "monospace" }),
     fontSize: 12,
@@ -124,4 +124,4 @@ const styles = StyleSheet.create({
   pass: { color: colors.success },
   fail: { color: colors.danger },
   manual: { color: colors.muted },
-});
+}));

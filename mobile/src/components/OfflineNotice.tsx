@@ -2,7 +2,7 @@ import NetInfo from "@react-native-community/netinfo";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-import { colors, spacing } from "../theme";
+import { colors, spacing , registerStyles } from "../theme";
 
 export function OfflineNotice() {
   const [offline, setOffline] = useState(false);
@@ -23,7 +23,7 @@ export function OfflineNotice() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   bar: {
     backgroundColor: colors.warningDeep,
     paddingVertical: spacing.sm,
@@ -36,4 +36,4 @@ const styles = StyleSheet.create({
     fontSize: 12,
     letterSpacing: 0.5,
   },
-});
+}));

@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { Animated, Linking, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { sportLook } from "@/sportVisuals";
-import { colors, fonts, radius, spacing, type } from "@/theme";
+import { colors, fonts, radius, spacing, type , registerStyles } from "@/theme";
 import type { Recommendation } from "@/types";
 
 import { PlayerPortrait } from "./PlayerPortrait";
@@ -164,7 +164,7 @@ export function RecommendationCard({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = registerStyles(() => StyleSheet.create({
   panel: { padding: spacing.lg },
   top: { flexDirection: "row", alignItems: "center", gap: spacing.md },
   rank: {
@@ -293,4 +293,4 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     letterSpacing: 0.4,
   },
-});
+}));
