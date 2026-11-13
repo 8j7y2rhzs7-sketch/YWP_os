@@ -306,6 +306,8 @@ class DecisionEngine:
         is_modeled_prop_sport = sport_l in {
             "wnba",
             "nba",
+            "ncaab",
+            "ncaam",
             "basketball",
             "nfl",
             "ncaaf",

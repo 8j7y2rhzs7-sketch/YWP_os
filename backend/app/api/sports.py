@@ -77,9 +77,11 @@ from app.services.market_board import build_market_board
 from app.services.odds_provider import (
     app_sport_in_season,
     build_app_sports_catalog,
+    canonical_app_sport,
     get_last_fetch_status,
     odds_api_configured,
     prefetch_in_season_app_odds,
+    sport_public_label,
 )
 from app.services.protocols import run_protocol_health_check
 from app.services.providers import demo_slate
@@ -141,11 +143,12 @@ def warm_props(payload: PropWarmRequest, _: SubscribedUser) -> PropWarmResponse:
     passes — the mobile LAUNCH flow loops this until ready, then calls /analyze
     so the engine is not rushed into grading sportsbook-only lines.
     """
-    sport_l = (payload.sport or "").lower()
+    sport_l = canonical_app_sport(payload.sport or "")
     before_total, before_modeled, before_pending, _ = _prop_research_stats(payload.candidates)
     if before_pending <= 0 or sport_l not in {
         "wnba",
         "nba",
+        "ncaab",
         "basketball",
         "nfl",
         "ncaaf",
@@ -304,7 +307,7 @@ def slate(
     sport_name: str = Query(alias="sport", min_length=2, max_length=24),
     slate_date: date = Query(alias="date"),
 ) -> SlateResponse:
-    sport_lower = sport_name.lower()
+    sport_lower = canonical_app_sport(sport_name)
 
     # Odds-only sports: skip paid refresh when free catalog says out of season.
     # MLB still loads schedule/model facts even without book prices.
@@ -314,9 +317,10 @@ def slate(
             slate_date=slate_date,
             mode="live",
             notice=(
-                f"{sport_lower.upper()} is out of season on The Odds API free sports catalog. "
-                "Paid odds refresh was skipped to save credits. Pick an in-season sport "
-                "(see /sports/catalog) or wait until books list games again."
+                f"{sport_public_label(sport_lower)} is out of season on The Odds API "
+                "free sports catalog. Paid odds refresh was skipped to save credits. "
+                "Pick an in-season sport (see /sports/catalog) or wait until books "
+                "list games again."
             ),
             candidates=[],
         )
@@ -509,7 +513,7 @@ def market_board(
     ),
 ) -> SlateResponse:
     """Full sportsbook-style menu for Pick Sheet (not the model-filtered Run slate)."""
-    sport_lower = sport_name.lower()
+    sport_lower = canonical_app_sport(sport_name)
     # Force book-only board for reliability. Model overlay re-runs live research and
     # was 503/timing-out Sheet on Render while Run still worked. Clients may still
     # send overlay_model=true from older APKs — ignore it here.
@@ -520,7 +524,8 @@ def market_board(
             slate_date=slate_date,
             mode="live",
             notice=(
-                f"{sport_lower.upper()} is out of season — sportsbook menu skipped to save credits."
+                f"{sport_public_label(sport_lower)} is out of season — "
+                "sportsbook menu skipped to save credits."
             ),
             candidates=[],
         )
@@ -1005,8 +1010,8 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
     # Player props arrive as market_implied from Odds; attach ESPN form so Strict
     # Mode can PLAY instead of hard-SKIP for missing independent model.
     # Budget enrichment so 400+ prop boards do not 502 on Render.
-    sport_l = (payload.sport or "").lower()
-    if sport_l in {"wnba", "nba", "basketball", "nfl", "ncaaf"} and any(
+    sport_l = canonical_app_sport(payload.sport or "")
+    if sport_l in {"wnba", "nba", "ncaab", "basketball", "nfl", "ncaaf"} and any(
         str(c.market_type or "").startswith("player_") and c.probability_source == "market_implied"
         for c in candidates
     ):

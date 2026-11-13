@@ -264,6 +264,7 @@ _DAY_FORGE_SPORT_PRIORITY = (
     "ncaab",
     "nhl",
     "soccer",
+    "tennis",
     "kbo",
 )
 

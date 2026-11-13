@@ -26,7 +26,7 @@ from app.services import espn_provider
 
 logger = logging.getLogger(__name__)
 
-PROP_MODEL_SPORTS = frozenset({"wnba", "nba", "nfl", "ncaaf", "basketball"})
+PROP_MODEL_SPORTS = frozenset({"wnba", "nba", "ncaab", "ncaam", "nfl", "ncaaf", "basketball"})
 
 # One warm request must stay small. A 4,000-row body spends the whole
 # Render window on JSON and never finishes a calculation, so the phone

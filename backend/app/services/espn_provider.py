@@ -41,17 +41,22 @@ ESPN_SPORT_PATHS: dict[str, str] = {
     "nfl": "football/nfl",
     "ncaaf": "football/college-football",
     "ncaab": "basketball/mens-college-basketball",
+    "ncaam": "basketball/mens-college-basketball",
     "nhl": "hockey/nhl",
     "soccer": "soccer/usa.1",
     "mls": "soccer/usa.1",
     "epl": "soccer/eng.1",
+    "tennis": "tennis/atp",
 }
 
 WEATHER_SPORTS = {"nfl", "ncaaf", "soccer", "mls", "epl", "kbo"}
 
 
 def espn_path_for(sport: str) -> str | None:
-    return ESPN_SPORT_PATHS.get(sport.lower())
+    key = (sport or "").strip().lower()
+    if key == "ncaam":
+        key = "ncaab"
+    return ESPN_SPORT_PATHS.get(key)
 
 
 def get_scoreboard(
@@ -80,6 +85,10 @@ def get_scoreboard(
         ):
             if path not in paths:
                 paths.append(path)
+    if sport_l == "tennis":
+        for path in ("tennis/atp", "tennis/wta"):
+            if path not in paths:
+                paths.append(path)
     games: list[dict[str, Any]] = []
     stamp = slate_date.strftime("%Y%m%d")
     seen_ids: set[str] = set()
@@ -100,8 +109,8 @@ def get_scoreboard(
                 seen_ids.add(eid)
             parsed["espn_path"] = path
             games.append(parsed)
-        # First matching path with games is enough for non-soccer.
-        if games and sport_l not in {"soccer", "mls", "epl"}:
+        # First matching path with games is enough for single-league boards.
+        if games and sport_l not in {"soccer", "mls", "epl", "tennis"}:
             break
     return games
 
@@ -282,6 +291,11 @@ def resolve_espn_path(sport: str, *, league_hint: str | None = None) -> str | No
             return "soccer/usa.1"
         if sport_l == "epl":
             return "soccer/eng.1"
+    if sport_l == "tennis":
+        hint_l = hint.lower()
+        if "wta" in hint_l:
+            return "tennis/wta"
+        return "tennis/atp"
     return espn_path_for(sport_l)
 
 
