@@ -1,0 +1,480 @@
+ALL-SPORTS EXHAUSTIVE · FRI 11/13 · Fri 11/13 12:57 PM ET
+GATE PASS · sheets 315/315
+G1 dual-window+mins · G2 Betravon · G3 confirm HR
+Yesterday baked in: PHX -3.5> -6.5 · WAS +2.5 HIT · soft U232.5 can die · DAL+ dog crushed · REB cushion · no -500 juice auto-fade if close
+
+============================================================
+YESTERDAY 11/12 QUICK GRADE
+============================================================
+  HIT  WAS +2.5 · PHX -3.5/ML · DET ML · PHI ML · Duncan PTS O11.5 · Cade AST O6.5 · Ausar REB O4.5 · Booker PTS O19.5
+  MISS Shead AST O5.5 (5) · Flagg AST O5.5 (3) · Gobert REB (6) · PJ REB O4.5 (3) · PHX -6.5 · DAL +5.5 crushed · U232.5 pad (284)
+  USER 3-over: 2/3 (CHA/PHX O died 197) · close-dog thesis right on DET/WSH
+
+============================================================
+BANGERS (NBA props)
+============================================================
+1. Karl-Anthony Towns  PTS O16.5  [KEEP]  L7 6/7
+   NY @ IND · NY · id=3136195
+   season 10/11 (91%) · posted=20.5 · shave=4.0 · mpg=31.1
+   L7 vals [21.0, 21.0, 29.0, 17.0, 11.0, 22.0, 19.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 34 PTS 21 REB 11 AST 8 STL 0 BLK 1 TO 2 3PM 2.0
+     2. MIN 27 PTS 21 REB 16 AST 3 STL 2 BLK 1 TO 3 3PM 2.0
+     3. MIN 34 PTS 29 REB 13 AST 3 STL 2 BLK 0 TO 0 3PM 2.0
+     4. MIN 25 PTS 17 REB 12 AST 1 STL 1 BLK 0 TO 1 3PM 2.0
+     5. MIN 35 PTS 11 REB 16 AST 5 STL 0 BLK 0 TO 4 3PM 1.0
+     6. MIN 35 PTS 22 REB 12 AST 3 STL 0 BLK 1 TO 3 3PM 3.0
+     7. MIN 28 PTS 19 REB 13 AST 5 STL 1 BLK 0 TO 4 3PM 3.0
+
+2. Pascal Siakam  PTS O16.5  [KEEP]  L7 6/7
+   NY @ IND · IND · id=3149673
+   season 10/11 (91%) · posted=21.5 · shave=5.0 · mpg=32.6
+   L7 vals [28.0, 29.0, 23.0, 20.0, 17.0, 13.0, 26.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 32 PTS 28 REB 8 AST 5 STL 1 BLK 0 TO 2 3PM 2.0
+     2. MIN 35 PTS 29 REB 9 AST 8 STL 2 BLK 0 TO 0 3PM 5.0
+     3. MIN 32 PTS 23 REB 2 AST 5 STL 0 BLK 0 TO 0 3PM 2.0
+     4. MIN 30 PTS 20 REB 5 AST 2 STL 2 BLK 1 TO 0 3PM 2.0
+     5. MIN 36 PTS 17 REB 5 AST 5 STL 1 BLK 0 TO 3 3PM 0.0
+     6. MIN 29 PTS 13 REB 5 AST 4 STL 2 BLK 0 TO 3 3PM 0.0
+     7. MIN 34 PTS 26 REB 11 AST 3 STL 1 BLK 0 TO 3 3PM 0.0
+
+3. Alperen Sengun  PTS O15.5  [KEEP]  L7 6/7
+   UTAH @ HOU · HOU · id=4871144
+   season 9/10 (90%) · posted=20.5 · shave=5.0 · mpg=35.9
+   L7 vals [19.0, 20.0, 15.0, 17.0, 26.0, 16.0, 29.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 37 PTS 19 REB 13 AST 9 STL 1 BLK 1 TO 2 3PM 1.0
+     2. MIN 35 PTS 20 REB 11 AST 8 STL 1 BLK 1 TO 2 3PM 1.0
+     3. MIN 32 PTS 15 REB 6 AST 5 STL 0 BLK 1 TO 2 3PM 1.0
+     4. MIN 39 PTS 17 REB 12 AST 10 STL 0 BLK 3 TO 5 3PM 0.0
+     5. MIN 38 PTS 26 REB 7 AST 10 STL 2 BLK 2 TO 1 3PM 1.0
+     6. MIN 33 PTS 16 REB 9 AST 9 STL 0 BLK 1 TO 2 3PM 0.0
+     7. MIN 37 PTS 29 REB 9 AST 9 STL 6 BLK 1 TO 6 3PM 1.0
+
+4. Desmond Bane  PTS O14.5  [KEEP]  L7 6/7
+   MIL @ ORL · ORL · id=4066320
+   season 8/10 (80%) · posted=20.5 · shave=6.0 · mpg=35.9
+   L7 vals [25.0, 15.0, 15.0, 20.0, 19.0, 28.0, 13.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 34 PTS 25 REB 3 AST 2 STL 1 BLK 0 TO 1 3PM 7.0
+     2. MIN 36 PTS 15 REB 6 AST 4 STL 0 BLK 0 TO 2 3PM 4.0
+     3. MIN 32 PTS 15 REB 6 AST 0 STL 0 BLK 0 TO 2 3PM 3.0
+     4. MIN 36 PTS 20 REB 3 AST 3 STL 1 BLK 0 TO 4 3PM 4.0
+     5. MIN 40 PTS 19 REB 2 AST 1 STL 2 BLK 1 TO 3 3PM 5.0
+     6. MIN 39 PTS 28 REB 2 AST 6 STL 0 BLK 1 TO 4 3PM 6.0
+     7. MIN 34 PTS 13 REB 5 AST 4 STL 1 BLK 2 TO 0 3PM 2.0
+
+5. Ty Jerome  PTS O14.5  [KEEP]  L7 6/7
+   MEM @ NO · MEM · id=4065733
+   season 9/10 (90%) · posted=23.5 · shave=9.0 · mpg=30.3
+   L7 vals [22.0, 27.0, 21.0, 23.0, 40.0, 10.0, 15.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 32 PTS 22 REB 2 AST 5 STL 0 BLK 0 TO 1 3PM 1.0
+     2. MIN 32 PTS 27 REB 6 AST 2 STL 0 BLK 0 TO 3 3PM 5.0
+     3. MIN 28 PTS 21 REB 2 AST 5 STL 0 BLK 0 TO 3 3PM 2.0
+     4. MIN 29 PTS 23 REB 4 AST 3 STL 0 BLK 1 TO 3 3PM 2.0
+     5. MIN 37 PTS 40 REB 5 AST 5 STL 2 BLK 0 TO 4 3PM 5.0
+     6. MIN 24 PTS 10 REB 2 AST 3 STL 2 BLK 0 TO 3 3PM 1.0
+     7. MIN 30 PTS 15 REB 1 AST 8 STL 1 BLK 0 TO 1 3PM 1.0
+
+6. Zion Williamson  PTS O14.5  [KEEP]  L7 6/7
+   MEM @ NO · NO · id=4395628
+   season 10/11 (91%) · posted=21.5 · shave=7.0 · mpg=33.0
+   L7 vals [29.0, 25.0, 13.0, 23.0, 25.0, 15.0, 22.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 30 PTS 29 REB 4 AST 2 STL 0 BLK 1 TO 2 3PM 1.0
+     2. MIN 31 PTS 25 REB 4 AST 2 STL 0 BLK 0 TO 2 3PM 0.0
+     3. MIN 36 PTS 13 REB 8 AST 4 STL 2 BLK 0 TO 0 3PM 0.0
+     4. MIN 38 PTS 23 REB 4 AST 2 STL 1 BLK 2 TO 2 3PM 0.0
+     5. MIN 35 PTS 25 REB 11 AST 4 STL 0 BLK 0 TO 0 3PM 0.0
+     6. MIN 30 PTS 15 REB 6 AST 4 STL 3 BLK 0 TO 3 3PM 0.0
+     7. MIN 31 PTS 22 REB 6 AST 2 STL 5 BLK 1 TO 3 3PM 0.0
+
+7. Donovan Mitchell  PTS O14.5  [KEEP]  L7 6/7
+   CLE @ MIA · CLE · id=3908809
+   season 11/12 (92%) · posted=25.5 · shave=11.0 · mpg=31.7
+   L7 vals [23.0, 11.0, 37.0, 23.0, 27.0, 17.0, 15.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 36 PTS 23 REB 7 AST 6 STL 2 BLK 1 TO 4 3PM 2.0
+     2. MIN 23 PTS 11 REB 2 AST 4 STL 1 BLK 0 TO 0 3PM 1.0
+     3. MIN 37 PTS 37 REB 4 AST 4 STL 2 BLK 1 TO 5 3PM 5.0
+     4. MIN 33 PTS 23 REB 7 AST 8 STL 2 BLK 1 TO 4 3PM 1.0
+     5. MIN 33 PTS 27 REB 3 AST 6 STL 1 BLK 0 TO 2 3PM 5.0
+     6. MIN 36 PTS 17 REB 5 AST 11 STL 0 BLK 0 TO 3 3PM 4.0
+     7. MIN 24 PTS 15 REB 4 AST 3 STL 0 BLK 0 TO 2 3PM 2.0
+
+8. Tyler Herro  PTS O14.5  [KEEP]  L7 6/7
+   MIL @ ORL · MIL · id=4395725
+   season 9/11 (82%) · posted=21.5 · shave=7.0 · mpg=30.7
+   L7 vals [27.0, 13.0, 23.0, 25.0, 21.0, 15.0, 23.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 35 PTS 27 REB 2 AST 7 STL 0 BLK 1 TO 3 3PM 2.0
+     2. MIN 27 PTS 13 REB 1 AST 2 STL 0 BLK 0 TO 1 3PM 1.0
+     3. MIN 35 PTS 23 REB 5 AST 10 STL 1 BLK 0 TO 3 3PM 1.0
+     4. MIN 33 PTS 25 REB 5 AST 3 STL 0 BLK 0 TO 1 3PM 4.0
+     5. MIN 31 PTS 21 REB 6 AST 3 STL 3 BLK 0 TO 2 3PM 4.0
+     6. MIN 27 PTS 15 REB 3 AST 2 STL 1 BLK 0 TO 2 3PM 4.0
+     7. MIN 27 PTS 23 REB 3 AST 0 STL 1 BLK 0 TO 2 3PM 4.0
+
+9. Franz Wagner  PTS O14.5  [KEEP]  L7 6/7
+   MIL @ ORL · ORL · id=4566434
+   season 10/11 (91%) · posted=24.5 · shave=10.0 · mpg=38.9
+   L7 vals [38.0, 33.0, 30.0, 15.0, 24.0, 14.0, 26.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 39 PTS 38 REB 8 AST 1 STL 1 BLK 0 TO 4 3PM 3.0
+     2. MIN 38 PTS 33 REB 7 AST 7 STL 2 BLK 0 TO 3 3PM 1.0
+     3. MIN 40 PTS 30 REB 6 AST 11 STL 2 BLK 0 TO 6 3PM 3.0
+     4. MIN 38 PTS 15 REB 8 AST 15 STL 4 BLK 0 TO 6 3PM 0.0
+     5. MIN 38 PTS 24 REB 3 AST 6 STL 1 BLK 0 TO 3 3PM 1.0
+     6. MIN 40 PTS 14 REB 6 AST 12 STL 0 BLK 0 TO 3 3PM 1.0
+     7. MIN 39 PTS 26 REB 5 AST 11 STL 1 BLK 0 TO 4 3PM 2.0
+
+10. Kevin Durant  PTS O13.5  [KEEP]  L7 6/7
+   UTAH @ HOU · HOU · id=3202
+   season 11/12 (92%) · posted=21.5 · shave=8.0 · mpg=34.3
+   L7 vals [20.0, 23.0, 21.0, 21.0, 12.0, 14.0, 28.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 34 PTS 20 REB 4 AST 5 STL 0 BLK 0 TO 2 3PM 1.0
+     2. MIN 36 PTS 23 REB 12 AST 8 STL 0 BLK 1 TO 6 3PM 1.0
+     3. MIN 38 PTS 21 REB 10 AST 3 STL 1 BLK 0 TO 2 3PM 1.0
+     4. MIN 35 PTS 21 REB 5 AST 2 STL 1 BLK 1 TO 5 3PM 2.0
+     5. MIN 33 PTS 12 REB 3 AST 3 STL 2 BLK 1 TO 4 3PM 0.0
+     6. MIN 27 PTS 14 REB 3 AST 4 STL 1 BLK 3 TO 1 3PM 0.0
+     7. MIN 37 PTS 28 REB 5 AST 1 STL 0 BLK 0 TO 3 3PM 1.0
+
+11. Darryn Peterson  PTS O13.5  [KEEP]  L7 6/7
+   UTAH @ HOU · UTAH · id=5041955
+   season 9/12 (75%) · posted=17.5 · shave=4.0 · mpg=32.6
+   L7 vals [22.0, 25.0, 26.0, 21.0, 7.0, 14.0, 16.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 33 PTS 22 REB 4 AST 5 STL 1 BLK 1 TO 1 3PM 2.0
+     2. MIN 31 PTS 25 REB 4 AST 4 STL 1 BLK 0 TO 5 3PM 4.0
+     3. MIN 35 PTS 26 REB 6 AST 4 STL 1 BLK 0 TO 3 3PM 4.0
+     4. MIN 30 PTS 21 REB 2 AST 5 STL 2 BLK 3 TO 2 3PM 3.0
+     5. MIN 30 PTS 7 REB 2 AST 7 STL 0 BLK 0 TO 2 3PM 0.0
+     6. MIN 33 PTS 14 REB 4 AST 5 STL 3 BLK 3 TO 1 3PM 2.0
+     7. MIN 36 PTS 16 REB 4 AST 4 STL 1 BLK 1 TO 3 3PM 3.0
+
+12. Jalen Johnson  PTS O12.5  [KEEP]  L7 6/7
+   ATL @ CHI · ATL · id=4701230
+   season 8/9 (89%) · posted=22.5 · shave=10.0 · mpg=35.1
+   L7 vals [15.0, 30.0, 13.0, 17.0, 12.0, 21.0, 26.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 38 PTS 15 REB 7 AST 4 STL 2 BLK 0 TO 4 3PM 0.0
+     2. MIN 36 PTS 30 REB 7 AST 6 STL 1 BLK 0 TO 3 3PM 0.0
+     3. MIN 28 PTS 13 REB 7 AST 4 STL 0 BLK 1 TO 4 3PM 1.0
+     4. MIN 34 PTS 17 REB 8 AST 7 STL 0 BLK 0 TO 4 3PM 2.0
+     5. MIN 36 PTS 12 REB 9 AST 11 STL 0 BLK 1 TO 3 3PM 2.0
+     6. MIN 36 PTS 21 REB 9 AST 3 STL 1 BLK 2 TO 4 3PM 1.0
+     7. MIN 38 PTS 26 REB 9 AST 16 STL 2 BLK 0 TO 2 3PM 2.0
+
+13. Saddiq Bey  PTS O12.5  [KEEP]  L7 6/7
+   MEM @ NO · NO · id=4397136
+   season 9/12 (75%) · posted=14.5 · shave=2.0 · mpg=28.7
+   L7 vals [15.0, 9.0, 13.0, 17.0, 22.0, 18.0, 25.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 29 PTS 15 REB 1 AST 2 STL 0 BLK 0 TO 0 3PM 3.0
+     2. MIN 24 PTS 9 REB 0 AST 4 STL 0 BLK 0 TO 0 3PM 1.0
+     3. MIN 26 PTS 13 REB 4 AST 3 STL 1 BLK 0 TO 1 3PM 1.0
+     4. MIN 31 PTS 17 REB 5 AST 4 STL 0 BLK 1 TO 1 3PM 3.0
+     5. MIN 29 PTS 22 REB 4 AST 3 STL 1 BLK 0 TO 1 3PM 2.0
+     6. MIN 36 PTS 18 REB 5 AST 1 STL 1 BLK 0 TO 0 3PM 2.0
+     7. MIN 26 PTS 25 REB 6 AST 1 STL 4 BLK 0 TO 3 3PM 1.0
+
+14. Andrew Nembhard  PTS O11.5  [KEEP]  L7 6/7
+   NY @ IND · IND · id=4395712
+   season 9/10 (90%) · posted=15.5 · shave=4.0 · mpg=33.9
+   L7 vals [17.0, 12.0, 9.0, 22.0, 23.0, 22.0, 18.0]
+   L7 FULL MIN/PTS/REB/AST/STL/BLK/TO/3PM:
+     1. MIN 34 PTS 17 REB 2 AST 10 STL 0 BLK 0 TO 1 3PM 3.0
+     2. MIN 34 PTS 12 REB 3 AST 12 STL 0 BLK 1 TO 3 3PM 1.0
+     3. MIN 31 PTS 9 REB 1 AST 8 STL 0 BLK 0 TO 1 3PM 3.0
+     4. MIN 38 PTS 22 REB 2 AST 4 STL 1 BLK 1 TO 2 3PM 2.0
+     5. MIN 35 PTS 23 REB 3 AST 4 STL 1 BLK 0 TO 3 3PM 4.0
+     6. MIN 30 PTS 22 REB 2 AST 9 STL 0 BLK 0 TO 2 3PM 5.0
+     7. MIN 35 PTS 18 REB 3 AST 14 STL 0 BLK 0 TO 4 3PM 1.0
+
+============================================================
+SAFE
+============================================================
+  KEEP Karl-Anthony Towns       PTS O16.5  NY @ IND       post=20.5 sea=91% id=3136195
+  KEEP Pascal Siakam            PTS O16.5  NY @ IND       post=21.5 sea=91% id=3149673
+  KEEP Alperen Sengun           PTS O15.5  UTAH @ HOU     post=20.5 sea=90% id=4871144
+  KEEP Desmond Bane             PTS O14.5  MIL @ ORL      post=20.5 sea=80% id=4066320
+  KEEP Ty Jerome                PTS O14.5  MEM @ NO       post=23.5 sea=90% id=4065733
+  KEEP Zion Williamson          PTS O14.5  MEM @ NO       post=21.5 sea=91% id=4395628
+  KEEP Donovan Mitchell         PTS O14.5  CLE @ MIA      post=25.5 sea=92% id=3908809
+  KEEP Tyler Herro              PTS O14.5  MIL @ ORL      post=21.5 sea=82% id=4395725
+  KEEP Franz Wagner             PTS O14.5  MIL @ ORL      post=24.5 sea=91% id=4566434
+  KEEP Kevin Durant             PTS O13.5  UTAH @ HOU     post=21.5 sea=92% id=3202
+  KEEP Darryn Peterson          PTS O13.5  UTAH @ HOU     post=17.5 sea=75% id=5041955
+  KEEP Jalen Johnson            PTS O12.5  ATL @ CHI      post=22.5 sea=89% id=4701230
+  KEEP Saddiq Bey               PTS O12.5  MEM @ NO       post=14.5 sea=75% id=4397136
+  KEEP Andrew Nembhard          PTS O11.5  NY @ IND       post=15.5 sea=90% id=4395712
+  KEEP Davion Mitchell          PTS O10.5  CLE @ MIA      post=14.5 sea=91% id=4278053
+  KEEP James Harden             PTS O10.5  CLE @ MIA      post=17.5 sea=92% id=3992
+  KEEP Matas Buzelis            PTS O10.5  ATL @ CHI      post=17.5 sea=80% id=4711294
+  KEEP Karl-Anthony Towns       REB O10.5  NY @ IND       post=12.5 sea=91% id=3136195
+  KEEP Bam Adebayo              REB O7.5   CLE @ MIA      post=9.5 sea=82% id=4066261
+  KEEP Jalen Johnson            REB O6.5   ATL @ CHI      post=9.5 sea=100% id=4701230
+
+============================================================
+PRIMARY / RISK-KEEP
+============================================================
+  RISK Giannis Antetokounmpo    PTS O23.5  CLE @ MIA      post=29.5 sea=82% id=3032977
+  RISK Jalen Brunson            PTS O22.5  NY @ IND       post=25.5 sea=73% id=3934672
+  RISK Norman Powell            PTS O15.5  ATL @ CHI      post=20.5 sea=75% id=2595516
+  RISK OG Anunoby               PTS O13.5  NY @ IND       post=17.5 sea=73% id=3934719
+  RISK Giannis Antetokounmpo    REB O10.5  CLE @ MIA      post=12.5 sea=82% id=3032977
+  RISK Davion Mitchell          AST O7.5   CLE @ MIA      post=8.5 sea=73% id=4278053
+  RISK Kingston Flemings        AST O3.5   ATL @ CHI      post=4.5 sea=73% id=5149077
+  RISK Karl-Anthony Towns       3PT O1.5   NY @ IND       post=1.5 sea=73% id=3136195
+  RISK Tristan da Silva         3PT O1.5   MIL @ ORL      post=None sea=89% id=4702382
+  RISK Klay Thompson            3PT O1.5   CLE @ MIA      post=3.5 sea=91% id=6475
+
+============================================================
+STL/BLK research only
+============================================================
+
+============================================================
+NHL (2 games)
+============================================================
+  NYR @ VAN · 11/13 - 9:00 PM EST · NYR -225 ou 6.5
+  NSH @ VGK · 11/13 - 10:00 PM EST · VGK -162 ou 6.5
+
+============================================================
+NCAAF tonight
+============================================================
+  FSU @ PITT · 11/13 - 7:00 PM EST · PITT -3.5 ou 52.5
+    SIDE: PITT -3.5 small number OK
+  ILL @ UCLA · 11/13 - 9:00 PM EST · UCLA -10 ou 47.5
+    SIDE: UCLA -5.5 soft (BAN raw -10.0) · dog +5.5 lesson alt
+  HOU @ COLO · 11/13 - 10:15 PM EST · HOU -7.5 ou 51.5
+    SIDE: HOU -3.5 soft from -7.5
+
+============================================================
+NFL weekend soft alts
+============================================================
+  WSH @ NYG · Final · NYG -1.5 ou 40.5
+    OUT: WSH Athan Kaliakmanis (QB)
+    RISK small NYG -1.5
+  NE @ DET · 11/15 - 9:30 AM EST · DET -3 ou 49.5
+    OUT: NE TreVeyon Henderson (RB)
+    KEEP DET -3 / soft -2.5
+  KC @ ATL · 11/15 - 1:00 PM EST · KC -3 ou 47.5
+    KEEP KC -3 / soft -2.5
+  HOU @ CLE · 11/15 - 1:00 PM EST · HOU -4.5 ou 40.5
+    KEEP HOU -4.5 / soft -2.5
+  MIN @ GB · 11/15 - 1:00 PM EST · GB -3 ou 42.5
+    QB Q: MIN Carson Wentz QB Questionable
+    KEEP GB -3 / soft -2.5
+  JAX @ TEN · 11/15 - 1:00 PM EST · JAX -10.5 ou 46.5
+    OUT: TEN Carnell Tate (WR)
+    KEEP soft JAX -5.5 · dog TEN +5.5 · BAN raw -10.5
+  MIA @ IND · 11/15 - 1:00 PM EST · IND -3.5 ou 38.5
+    OUT: IND Alec Pierce (WR)
+    KEEP IND -3.5 / soft -2.5
+  CAR @ NO · 11/15 - 1:00 PM EST · NO -2.5 ou 48.5
+    OUT: CAR Xavier Legette (WR), CAR Jonathon Brooks (RB)
+    RISK small NO -2.5
+  BUF @ NYJ · 11/15 - 1:00 PM EST · BUF -8.5 ou 50.5
+    KEEP soft BUF -3.5 · dog NYJ +3.5
+  SEA @ LV · 11/15 - 4:05 PM EST · SEA -6.5 ou 40.5
+    QB Q: SEA Drew Lock QB Questionable
+    KEEP SEA -6.5 / soft -2.5
+  LAR @ ARI · 11/15 - 4:05 PM EST · LAR -9.5 ou 39.5
+    OUT: LAR Puka Nacua (WR)
+    KEEP soft LAR -5.5 · dog ARI +5.5 · BAN raw -9.5
+  SF @ DAL · 11/15 - 4:25 PM EST · SF -3.5 ou 55.5
+    KEEP SF -3.5 / soft -2.5
+  PIT @ CIN · 11/15 - 8:20 PM EST · CIN -3.5 ou 49.5
+    OUT: CIN Andrei Iosivas (WR), PIT Michael Pittman Jr. (WR), PIT Roman Wilson (WR)
+    KEEP CIN -3.5 / soft -2.5
+  LAC @ BAL · 11/16 - 8:15 PM EST · BAL -4.5 ou 38.5
+    OUT: BAL Lamar Jackson (QB), LAC David Njoku (TE)
+    KEEP BAL -4.5 / soft -2.5
+
+============================================================
+BY GAME NBA
+============================================================
+
+── NY @ IND · 11/13 - 7:00 PM EST · NY -8.5 ou 219.5 ──
+  OUT: IND Tyrese Haliburton, IND Johnny Furphy, IND Ben Sheppard
+  GTD: IND T.J. McConnell (Day-To-Day), IND Aaron Nesmith (Day-To-Day)
+  KEEP       Karl-Anthony Towns     PTS O16.5  L7 6/7 sea 91% post=20.5 id=3136195
+             L7 MIN['34', '27', '34', '25', '35', '35', '28'] PTS['21', '21', '29', '17', '11', '22', '19'] REB['11', '16', '13', '12', '16', '12', '13'] AST['8', '3', '3', '1', '5', '3', '5']
+  KEEP       Pascal Siakam          PTS O16.5  L7 6/7 sea 91% post=21.5 id=3149673
+             L7 MIN['32', '35', '32', '30', '36', '29', '34'] PTS['28', '29', '23', '20', '17', '13', '26'] REB['8', '9', '2', '5', '5', '5', '11'] AST['5', '8', '5', '2', '5', '4', '3']
+  KEEP       Andrew Nembhard        PTS O11.5  L7 6/7 sea 90% post=15.5 id=4395712
+             L7 MIN['34', '34', '31', '38', '35', '30', '35'] PTS['17', '12', '9', '22', '23', '22', '18'] REB['2', '3', '1', '2', '3', '2', '3'] AST['10', '12', '8', '4', '4', '9', '14']
+  KEEP       Karl-Anthony Towns     REB O10.5  L7 7/7 sea 91% post=12.5 id=3136195
+             L7 MIN['34', '27', '34', '25', '35', '35', '28'] PTS['21', '21', '29', '17', '11', '22', '19'] REB['11', '16', '13', '12', '16', '12', '13'] AST['8', '3', '3', '1', '5', '3', '5']
+  KEEP       Pascal Siakam          REB O4.5   L7 6/7 sea 82% post=6.5 id=3149673
+             L7 MIN['32', '35', '32', '30', '36', '29', '34'] PTS['28', '29', '23', '20', '17', '13', '26'] REB['8', '9', '2', '5', '5', '5', '11'] AST['5', '8', '5', '2', '5', '4', '3']
+  KEEP       Andrew Nembhard        AST O3.5   L7 7/7 sea 90% post=7.5 id=4395712
+             L7 MIN['34', '34', '31', '38', '35', '30', '35'] PTS['17', '12', '9', '22', '23', '22', '18'] REB['2', '3', '1', '2', '3', '2', '3'] AST['10', '12', '8', '4', '4', '9', '14']
+  KEEP       Jalen Brunson          AST O3.5   L7 6/7 sea 82% post=6.5 id=3934672
+             L7 MIN['35', '28', '34', '28', '34', '35', '35'] PTS['27', '23', '31', '33', '19', '24', '38'] REB['3', '4', '6', '2', '2', '5', '1'] AST['5', '2', '9', '4', '6', '6', '7']
+  RISK-KEEP  Jalen Brunson          PTS O22.5  L7 6/7 sea 73% post=25.5 id=3934672
+             L7 MIN['35', '28', '34', '28', '34', '35', '35'] PTS['27', '23', '31', '33', '19', '24', '38'] REB['3', '4', '6', '2', '2', '5', '1'] AST['5', '2', '9', '4', '6', '6', '7']
+  RISK-KEEP  OG Anunoby             PTS O13.5  L7 6/7 sea 73% post=17.5 id=3934719
+             L7 MIN['34', '29', '34', '24', '38', '34', '31'] PTS['14', '19', '15', '18', '18', '9', '23'] REB['6', '3', '6', '5', '4', '4', '6'] AST['2', '2', '2', '2', '2', '3', '1']
+  RISK-KEEP  Karl-Anthony Towns     3PT O1.5   L7 6/7 sea 73% post=1.5 id=3136195
+             L7 MIN['34', '27', '34', '25', '35', '35', '28'] PTS['21', '21', '29', '17', '11', '22', '19'] REB['11', '16', '13', '12', '16', '12', '13'] AST['8', '3', '3', '1', '5', '3', '5']
+  TRAP-SHAVE Jalen Brunson          3PT O2.5   L7 6/7 sea 55% post=2.5 id=3934672
+             L7 MIN['35', '28', '34', '28', '34', '35', '35'] PTS['27', '23', '31', '33', '19', '24', '38'] REB['3', '4', '6', '2', '2', '5', '1'] AST['5', '2', '9', '4', '6', '6', '7']
+
+── MIL @ ORL · 11/13 - 7:00 PM EST · ORL -9.5 ou 223.5 ──
+  OUT: ORL Jalen Suggs, ORL Jonathan Isaac, ORL Paolo Banchero
+  GTD: ORL Jamal Cain (Day-To-Day), ORL Tristan da Silva (Day-To-Day)
+  KEEP       Desmond Bane           PTS O14.5  L7 6/7 sea 80% post=20.5 id=4066320
+             L7 MIN['34', '36', '32', '36', '40', '39', '34'] PTS['25', '15', '15', '20', '19', '28', '13'] REB['3', '6', '6', '3', '2', '2', '5'] AST['2', '4', '0', '3', '1', '6', '4']
+  KEEP       Tyler Herro            PTS O14.5  L7 6/7 sea 82% post=21.5 id=4395725
+             L7 MIN['35', '27', '35', '33', '31', '27', '27'] PTS['27', '13', '23', '25', '21', '15', '23'] REB['2', '1', '5', '5', '6', '3', '3'] AST['7', '2', '10', '3', '3', '2', '0']
+  KEEP       Franz Wagner           PTS O14.5  L7 6/7 sea 91% post=24.5 id=4566434
+             L7 MIN['39', '38', '40', '38', '38', '40', '39'] PTS['38', '33', '30', '15', '24', '14', '26'] REB['8', '7', '6', '8', '3', '6', '5'] AST['1', '7', '11', '15', '6', '12', '11']
+  KEEP       Wendell Carter Jr.     REB O6.5   L7 7/7 sea 100% post=8.5 id=4277847
+             L7 MIN['28', '33', '40', '34', '34', '35', '39'] PTS['9', '8', '19', '27', '6', '7', '20'] REB['7', '11', '11', '13', '9', '10', '7'] AST['3', '1', '0', '2', '0', '0', '1']
+  KEEP       Anthony Black          REB O5.5   L7 6/7 sea 75% post=4.5 id=4712849
+             L7 MIN['39', '33', '38', '31', '33', '31', '22'] PTS['22', '26', '18', '10', '23', '17', '8'] REB['7', '7', '8', '7', '8', '6', '2'] AST['8', '5', '6', '6', '3', '10', '1']
+  KEEP       Franz Wagner           REB O4.5   L7 6/7 sea 82% post=6.5 id=4566434
+             L7 MIN['39', '38', '40', '38', '38', '40', '39'] PTS['38', '33', '30', '15', '24', '14', '26'] REB['8', '7', '6', '8', '3', '6', '5'] AST['1', '7', '11', '15', '6', '12', '11']
+  KEEP       Desmond Bane           3PT O2.5   L7 6/7 sea 80% post=3.5 id=4066320
+             L7 MIN['34', '36', '32', '36', '40', '39', '34'] PTS['25', '15', '15', '20', '19', '28', '13'] REB['3', '6', '6', '3', '2', '2', '5'] AST['2', '4', '0', '3', '1', '6', '4']
+  RISK-KEEP  Tristan da Silva       3PT O1.5   L7 7/7 sea 89% post=None id=4702382
+             L7 MIN['39', '30', '32', '35', '23', '31', '27'] PTS['19', '18', '10', '23', '8', '20', '19'] REB['7', '2', '4', '10', '0', '3', '2'] AST['2', '1', '3', '2', '0', '1', '2']
+  TRAP-SHAVE Cormac Ryan            PTS O13.5  L7 6/7 sea 55% post=None id=4397114
+             L7 MIN['38', '34', '25', '34', '29', '33', '38'] PTS['22', '28', '16', '14', '21', '11', '25'] REB['10', '5', '0', '5', '4', '1', '2'] AST['4', '3', '0', '2', '3', '2', '4']
+  TRAP-SHAVE Franz Wagner           AST O5.5   L7 6/7 sea 64% post=6.5 id=4566434
+             L7 MIN['39', '38', '40', '38', '38', '40', '39'] PTS['38', '33', '30', '15', '24', '14', '26'] REB['8', '7', '6', '8', '3', '6', '5'] AST['1', '7', '11', '15', '6', '12', '11']
+  TRAP-SHAVE Cormac Ryan            3PT O2.5   L7 6/7 sea 64% post=None id=4397114
+             L7 MIN['38', '34', '25', '34', '29', '33', '38'] PTS['22', '28', '16', '14', '21', '11', '25'] REB['10', '5', '0', '5', '4', '1', '2'] AST['4', '3', '0', '2', '3', '2', '4']
+
+── CLE @ MIA · 11/13 - 8:00 PM EST · MIA -2.5 ou 235.5 ──
+  OUT: CLE Evan Mobley, CLE Sam Merrill
+  GTD: MIA Klay Thompson (Day-To-Day), MIA Giannis Antetokounmpo (Day-To-Day), MIA Pelle Larsson (Day-To-Day)
+  KEEP       Donovan Mitchell       PTS O14.5  L7 6/7 sea 92% post=25.5 id=3908809
+             L7 MIN['36', '23', '37', '33', '33', '36', '24'] PTS['23', '11', '37', '23', '27', '17', '15'] REB['7', '2', '4', '7', '3', '5', '4'] AST['6', '4', '4', '8', '6', '11', '3']
+  KEEP       Davion Mitchell        PTS O10.5  L7 6/7 sea 91% post=14.5 id=4278053
+             L7 MIN['38', '40', '38', '43', '29', '35', '34'] PTS['19', '17', '22', '11', '15', '15', '10'] REB['5', '3', '2', '2', '0', '6', '1'] AST['8', '11', '8', '10', '7', '11', '10']
+  KEEP       James Harden           PTS O10.5  L7 6/7 sea 92% post=17.5 id=3992
+             L7 MIN['33', '25', '34', '30', '35', '33', '26'] PTS['32', '11', '7', '17', '19', '14', '13'] REB['2', '3', '2', '6', '9', '4', '6'] AST['4', '5', '5', '3', '6', '6', '7']
+  KEEP       Bam Adebayo            REB O7.5   L7 7/7 sea 82% post=9.5 id=4066261
+             L7 MIN['37', '34', '33', '41', '31', '33', '33'] PTS['11', '18', '18', '35', '16', '27', '24'] REB['8', '8', '10', '10', '9', '9', '9'] AST['4', '4', '0', '4', '4', '3', '3']
+  KEEP       Jarrett Allen          REB O5.5   L7 6/7 sea 90% post=9.5 id=4066328
+             L7 MIN['32', '19', '7', '28', '24', '30', '30'] PTS['11', '12', '0', '14', '25', '14', '8'] REB['14', '7', '1', '6', '11', '8', '12'] AST['3', '1', '0', '1', '4', '1', '2']
+  KEEP       James Harden           AST O3.5   L7 6/7 sea 92% post=6.5 id=3992
+             L7 MIN['33', '25', '34', '30', '35', '33', '26'] PTS['32', '11', '7', '17', '19', '14', '13'] REB['2', '3', '2', '6', '9', '4', '6'] AST['4', '5', '5', '3', '6', '6', '7']
+  KEEP       Donovan Mitchell       AST O3.5   L7 6/7 sea 75% post=5.5 id=3908809
+             L7 MIN['36', '23', '37', '33', '33', '36', '24'] PTS['23', '11', '37', '23', '27', '17', '15'] REB['7', '2', '4', '7', '3', '5', '4'] AST['6', '4', '4', '8', '6', '11', '3']
+  KEEP       James Harden           3PT O1.5   L7 6/7 sea 83% post=2.5 id=3992
+             L7 MIN['33', '25', '34', '30', '35', '33', '26'] PTS['32', '11', '7', '17', '19', '14', '13'] REB['2', '3', '2', '6', '9', '4', '6'] AST['4', '5', '5', '3', '6', '6', '7']
+  RISK-KEEP  Giannis Antetokounmpo  PTS O23.5  L7 6/7 sea 82% post=29.5 id=3032977
+             L7 MIN['31', '34', '31', '41', '34', '31', '31'] PTS['30', '29', '20', '27', '30', '31', '24'] REB['11', '14', '14', '14', '12', '18', '18'] AST['4', '3', '4', '6', '7', '10', '3']
+  RISK-KEEP  Giannis Antetokounmpo  REB O10.5  L7 7/7 sea 82% post=12.5 id=3032977
+             L7 MIN['31', '34', '31', '41', '34', '31', '31'] PTS['30', '29', '20', '27', '30', '31', '24'] REB['11', '14', '14', '14', '12', '18', '18'] AST['4', '3', '4', '6', '7', '10', '3']
+  RISK-KEEP  Davion Mitchell        AST O7.5   L7 6/7 sea 73% post=8.5 id=4278053
+             L7 MIN['38', '40', '38', '43', '29', '35', '34'] PTS['19', '17', '22', '11', '15', '15', '10'] REB['5', '3', '2', '2', '0', '6', '1'] AST['8', '11', '8', '10', '7', '11', '10']
+  RISK-KEEP  Klay Thompson          3PT O1.5   L7 6/7 sea 91% post=3.5 id=6475
+             L7 MIN['30', '32', '23', '35', '27', '26', '17'] PTS['11', '23', '11', '30', '19', '25', '3'] REB['1', '2', '0', '5', '1', '0', '1'] AST['2', '4', '3', '3', '1', '3', '2']
+
+── ATL @ CHI · 11/13 - 8:00 PM EST · ATL -7.5 ou 245.5 ──
+  OUT: CHI Tobe Awaka, CHI Caleb Wilson, ATL Mouhamed Gueye, ATL Keshon Gilbert, ATL Asa Newell, ATL Henri Veesaar
+  GTD: CHI Dailyn Swain (Day-To-Day), CHI Norman Powell (Day-To-Day), ATL Kingston Flemings (Day-To-Day)
+  KEEP       Jalen Johnson          PTS O12.5  L7 6/7 sea 89% post=22.5 id=4701230
+             L7 MIN['38', '36', '28', '34', '36', '36', '38'] PTS['15', '30', '13', '17', '12', '21', '26'] REB['7', '7', '7', '8', '9', '9', '9'] AST['4', '6', '4', '7', '11', '3', '16']
+  KEEP       Matas Buzelis          PTS O10.5  L7 6/7 sea 80% post=17.5 id=4711294
+             L7 MIN['31', '31', '26', '23', '20', '33', '22'] PTS['13', '19', '12', '4', '14', '17', '11'] REB['3', '5', '5', '3', '5', '5', '1'] AST['2', '2', '3', '2', '1', '3', '2']
+  KEEP       Jalen Johnson          REB O6.5   L7 7/7 sea 100% post=9.5 id=4701230
+             L7 MIN['38', '36', '28', '34', '36', '36', '38'] PTS['15', '30', '13', '17', '12', '21', '26'] REB['7', '7', '7', '8', '9', '9', '9'] AST['4', '6', '4', '7', '11', '3', '16']
+  KEEP       Josh Giddey            AST O4.5   L7 6/7 sea 90% post=8.5 id=4871145
+             L7 MIN['25', '34', '27', '32', '25', '31', '24'] PTS['9', '19', '10', '13', '13', '10', '11'] REB['2', '7', '1', '4', '4', '8', '1'] AST['7', '15', '6', '10', '5', '11', '4']
+  KEEP       Jalen Johnson          AST O3.5   L7 6/7 sea 89% post=7.5 id=4701230
+             L7 MIN['38', '36', '28', '34', '36', '36', '38'] PTS['15', '30', '13', '17', '12', '21', '26'] REB['7', '7', '7', '8', '9', '9', '9'] AST['4', '6', '4', '7', '11', '3', '16']
+  KEEP       Dyson Daniels          AST O3.5   L7 6/7 sea 75% post=5.5 id=4869342
+             L7 MIN['31', '31', '35', '34', '31', '27', '32'] PTS['10', '9', '13', '8', '6', '8', '4'] REB['6', '10', '9', '16', '9', '4', '6'] AST['8', '7', '12', '8', '4', '3', '5']
+  KEEP       Nickeil Alexander-Walker 3PT O1.5   L7 6/7 sea 92% post=3.5 id=4278039
+             L7 MIN['34', '31', '33', '32', '31', '29', '31'] PTS['20', '20', '28', '26', '34', '12', '25'] REB['4', '3', '2', '4', '4', '2', '3'] AST['4', '1', '2', '2', '4', '1', '1']
+  KEEP       Aaron Wiggins          3PT O1.5   L7 6/7 sea 92% post=None id=4397183
+             L7 MIN['23', '26', '29', '29', '24', '23', '24'] PTS['15', '20', '19', '15', '7', '10', '20'] REB['3', '4', '4', '4', '3', '2', '7'] AST['3', '6', '3', '2', '2', '1', '3']
+  RISK-KEEP  Norman Powell          PTS O15.5  L7 6/7 sea 75% post=20.5 id=2595516
+             L7 MIN['22', '29', '31', '37', '24', '33', '33'] PTS['12', '18', '16', '30', '20', '18', '25'] REB['1', '3', '2', '2', '1', '2', '4'] AST['1', '0', '3', '2', '2', '3', '1']
+  RISK-KEEP  Kingston Flemings      AST O3.5   L7 6/7 sea 73% post=4.5 id=5149077
+             L7 MIN['24', '27', '25', '23', '25', '16', '28'] PTS['8', '10', '11', '14', '12', '2', '23'] REB['3', '2', '1', '3', '2', '1', '5'] AST['4', '1', '6', '4', '6', '5', '5']
+  TRAP-SHAVE Nickeil Alexander-Walker PTS O19.5  L7 6/7 sea 67% post=23.5 id=4278039
+             L7 MIN['34', '31', '33', '32', '31', '29', '31'] PTS['20', '20', '28', '26', '34', '12', '25'] REB['4', '3', '2', '4', '4', '2', '3'] AST['4', '1', '2', '2', '4', '1', '1']
+  TRAP-SHAVE Onyeka Okongwu         PTS O12.5  L7 6/7 sea 50% post=14.5 id=4431680
+             L7 MIN['30', '30', '33', '31', '33', '28', '33'] PTS['16', '16', '22', '14', '13', '6', '29'] REB['9', '2', '10', '16', '10', '10', '12'] AST['3', '5', '1', '4', '3', '1', '2']
+
+── MEM @ NO · 11/13 - 8:00 PM EST · MEM -2.5 ou 237.5 ──
+  OUT: NO Trendon Watford, NO Yves Missi, MEM Quinten Post, MEM Zach Edey, MEM Scotty Pippen Jr., MEM Richie Saunders
+  GTD: NO Bryce McGowens (Day-To-Day), NO Bennedict Mathurin (Day-To-Day), NO Trey Murphy III (Day-To-Day)
+  KEEP       Ty Jerome              PTS O14.5  L7 6/7 sea 90% post=23.5 id=4065733
+             L7 MIN['32', '32', '28', '29', '37', '24', '30'] PTS['22', '27', '21', '23', '40', '10', '15'] REB['2', '6', '2', '4', '5', '2', '1'] AST['5', '2', '5', '3', '5', '3', '8']
+  KEEP       Zion Williamson        PTS O14.5  L7 6/7 sea 91% post=21.5 id=4395628
+             L7 MIN['30', '31', '36', '38', '35', '30', '31'] PTS['29', '25', '13', '23', '25', '15', '22'] REB['4', '4', '8', '4', '11', '6', '6'] AST['2', '2', '4', '2', '4', '4', '2']
+  KEEP       Saddiq Bey             PTS O12.5  L7 6/7 sea 75% post=14.5 id=4397136
+             L7 MIN['29', '24', '26', '31', '29', '36', '26'] PTS['15', '9', '13', '17', '22', '18', '25'] REB['1', '0', '4', '5', '4', '5', '6'] AST['2', '4', '3', '4', '3', '1', '1']
+  KEEP       Cameron Boozer         REB O5.5   L7 7/7 sea 100% post=9.5 id=5041935
+             L7 MIN['33', '33', '31', '33', '38', '26', '28'] PTS['13', '22', '8', '10', '18', '27', '18'] REB['11', '7', '12', '6', '9', '9', '12'] AST['5', '8', '4', '4', '5', '3', '12']
+  KEEP       Cedric Coward          REB O5.5   L7 7/7 sea 100% post=6.5 id=4903027
+             L7 MIN['27', '28', '23', '33', '31', '23', '27'] PTS['15', '3', '10', '23', '10', '10', '17'] REB['11', '6', '9', '9', '9', '7', '7'] AST['4', '4', '0', '4', '3', '2', '4']
+  KEEP       Cameron Boozer         AST O3.5   L7 6/7 sea 91% post=5.5 id=5041935
+             L7 MIN['33', '33', '31', '33', '38', '26', '28'] PTS['13', '22', '8', '10', '18', '27', '18'] REB['11', '7', '12', '6', '9', '9', '12'] AST['5', '8', '4', '4', '5', '3', '12']
+  TRAP-SHAVE Jeremiah Fears         PTS O11.5  L7 6/7 sea 58% post=17.5 id=5144091
+             L7 MIN['28', '29', '29', '36', '34', '38', '31'] PTS['14', '11', '25', '24', '19', '12', '20'] REB['4', '3', '6', '5', '6', '4', '5'] AST['5', '8', '5', '5', '2', '7', '7']
+  TRAP-SHAVE Jeremiah Fears         AST O4.5   L7 6/7 sea 58% post=5.5 id=5144091
+             L7 MIN['28', '29', '29', '36', '34', '38', '31'] PTS['14', '11', '25', '24', '19', '12', '20'] REB['4', '3', '6', '5', '6', '4', '5'] AST['5', '8', '5', '5', '2', '7', '7']
+
+── UTAH @ HOU · 11/13 - 8:30 PM EST · HOU -15.5 ou 220.5 ──
+  OUT: HOU Clint Capela, HOU Steven Adams, UTAH Trey Alexander, UTAH Lauri Markkanen, UTAH Jusuf Nurkic, UTAH Jaren Jackson Jr.
+  KEEP       Alperen Sengun         PTS O15.5  L7 6/7 sea 90% post=20.5 id=4871144
+             L7 MIN['37', '35', '32', '39', '38', '33', '37'] PTS['19', '20', '15', '17', '26', '16', '29'] REB['13', '11', '6', '12', '7', '9', '9'] AST['9', '8', '5', '10', '10', '9', '9']
+  KEEP       Kevin Durant           PTS O13.5  L7 6/7 sea 92% post=21.5 id=3202
+             L7 MIN['34', '36', '38', '35', '33', '27', '37'] PTS['20', '23', '21', '21', '12', '14', '28'] REB['4', '12', '10', '5', '3', '3', '5'] AST['5', '8', '3', '2', '3', '4', '1']
+  KEEP       Darryn Peterson        PTS O13.5  L7 6/7 sea 75% post=17.5 id=5041955
+             L7 MIN['33', '31', '35', '30', '30', '33', '36'] PTS['22', '25', '26', '21', '7', '14', '16'] REB['4', '4', '6', '2', '2', '4', '4'] AST['5', '4', '4', '5', '7', '5', '4']
+  KEEP       Alperen Sengun         REB O5.5   L7 7/7 sea 100% post=9.5 id=4871144
+             L7 MIN['37', '35', '32', '39', '38', '33', '37'] PTS['19', '20', '15', '17', '26', '16', '29'] REB['13', '11', '6', '12', '7', '9', '9'] AST['9', '8', '5', '10', '10', '9', '9']
+  KEEP       Ace Bailey             REB O4.5   L7 6/7 sea 92% post=5.5 id=4873138
+             L7 MIN['31', '35', '32', '29', '35', '24', '37'] PTS['18', '23', '7', '12', '15', '5', '9'] REB['7', '7', '2', '5', '5', '6', '7'] AST['2', '2', '3', '0', '1', '2', '1']
+  TRAP-SHAVE Alperen Sengun         AST O7.5   L7 6/7 sea 60% post=6.5 id=4871144
+             L7 MIN['37', '35', '32', '39', '38', '33', '37'] PTS['19', '20', '15', '17', '26', '16', '29'] REB['13', '11', '6', '12', '7', '9', '9'] AST['9', '8', '5', '10', '10', '9', '9']
+  TRAP-SHAVE Darryn Peterson        AST O3.5   L7 7/7 sea 67% post=4.5 id=5041955
+             L7 MIN['33', '31', '35', '30', '30', '33', '36'] PTS['22', '25', '26', '21', '7', '14', '16'] REB['4', '4', '6', '2', '2', '4', '4'] AST['5', '4', '4', '5', '7', '5', '4']
+  TRAP-SHAVE Darryn Peterson        3PT O1.5   L7 6/7 sea 67% post=2.5 id=5041955
+             L7 MIN['33', '31', '35', '30', '30', '33', '36'] PTS['22', '25', '26', '21', '7', '14', '16'] REB['4', '4', '6', '2', '2', '4', '4'] AST['5', '4', '4', '5', '7', '5', '4']
+
+── GS @ SA · 11/13 - 9:30 PM EST · SA -11.5 ou 217.5 ──
+  OUT: SA Tobias Harris, SA Jayden Quaintance, GS Stephen Curry, GS Brandon Williams, GS Kristaps Porzingis, GS Moses Moody
+  GTD: SA Devin Vassell (Day-To-Day), SA De'Aaron Fox (Day-To-Day), GS Charles Bassey (Day-To-Day)
+
+── POR @ SAC · 11/13 - 10:00 PM EST · POR -10.5 ou 229.5 ──
+  OUT: SAC Maxime Raynaud, SAC Ben Simmons, POR Chris Youngblood, POR Vit Krejci, POR Ja Morant, POR Shaedon Sharpe
+  GTD: SAC Precious Achiuwa (Day-To-Day)
+
+── OKC @ LAC · 11/13 - 10:30 PM EST · OKC -7.5 ou 222.5 ──
+  OUT: LAC Brandon Ingram, LAC Yanic Konan Niederhauser, LAC Bradley Beal, LAC Jordan Miller, OKC Thomas Sorber, OKC Jaylin Williams, OKC Cason Wallace, OKC Chet Holmgren
+  GTD: OKC Ajay Mitchell (Day-To-Day)
+
+============================================================
+BAN
+============================================================
+  Soft floors · STL/BLK spine · GTD star props · NCAAM -20+ · -1000 juice
+  Raw -10+ NFL/NCAAF without soft alt · soft total pads that can still die (U232.5 lesson)
+  Auto dog when favorite is healthy and crushing (DAL+ lesson)
+
+============================================================
+CLEAN SLIPS
+============================================================
+SLIP A — NBA SAFE PROPS (6)
+  Top firm KEEP AST/REB/PTS from BANGERS · confirm HR · REB cushion
+SLIP B — SIDES MIX (6)
+  Soft chalk / dogs from NCAAF+NFL list · no raw -10
+SLIP C — BANGERS MULTI (8)
+  8 from BANGERS section
+
+COMPLETION
+  require_gate PASS · KEEP=41 RISK=10 BANGERS=14 NFL=14
+  BANGERS yes · SAFE yes · PRIMARY yes · STL research yes · by-game yes · BAN yes · clean slips yes · G3=confirm HR

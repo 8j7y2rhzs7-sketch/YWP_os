@@ -1,0 +1,36 @@
+GRADE · THU 11/12 · checked Fri 11/13 12:55 PM ET
+
+════════════════════════════════════════════════════════
+FINALS
+════════════════════════════════════════════════════════
+  TOR 112 @ PHI 123 (235) · DET 144 @ WSH 140 (284) · DAL 94 @ MIN 133 (227) · CHA 96 @ PHX 101 (197)
+  WSH 24 @ NYG 21 · MEM 52 @ USF 41
+  NHL: MIN 5-2 TOR · OTT 4-3 COL · FLA 5-4 DET · STL 1-0 UTA · BUF 2-3 CHI · TB 3-1 CBJ · NYI 5-2 LA …
+
+════════════════════════════════════════════════════════
+OUR KEEPS / CALLS
+════════════════════════════════════════════════════════
+  HIT  WAS +2.5 · PHX −3.5 · PHX ML · DET ML · PHI ML
+  HIT  Duncan Robinson PTS O11.5 (13) · Cade AST O6.5 (11) · Ausar REB O4.5 (11) · Booker PTS O19.5 (30)
+  MISS Shead AST O5.5 (5) · Flagg AST O5.5 (3) · Gobert REB O8.5/9.5 (6 blowout) · PJ REB O4.5 (3)
+  MISS PHX −6.5 (won by 5) · DAL +5.5 (lost by 39) · TNF U41 (45)
+
+════════════════════════════════════════════════════════
+USER SLIPS
+════════════════════════════════════════════════════════
+  3-over: TOR/PHI O HIT · DET/WSH O HIT · CHA/PHX O MISS (197) → 2/3
+  Close-dog thesis: right on DET/WSH (144-140); wrong on CHA/PHX pace
+  PHX −3.5 switch: CORRECT ( −6.5 would miss )
+  DET −500 ML: would have HIT (we cut for juice — correct process, wrong result)
+  Soft U232.5 pad: MISS (284) — padding is not free
+  NHL 8-leg: MIN/OTT/FLA/STL/O5.5 HIT · O6.5 + CBJ+1.5 + U232.5 MISS → no cash
+  SGPMAX: USF ML MISS · O41.5 HIT · U41 MISS · PHX −6.5 MISS
+
+════════════════════════════════════════════════════════
+LESSONS → 11/13
+════════════════════════════════════════════════════════
+  1. Soft −3.5 > main −6.5 when dog thinned but game stays tight
+  2. Soft total pads can still die in track meets (U232.5)
+  3. Injury-dog sides need the favorite to also be compromised (DAL+ failed)
+  4. REB cushion still right (Gobert exact died in blowout)
+  5. Role AST can fail when usage goes to scoring (Shead 5 AST / Franz yesterday)

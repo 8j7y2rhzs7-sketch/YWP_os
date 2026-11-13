@@ -1,0 +1,29 @@
+THREE TICKETS · FRI 11/13 · after 11/12 grade
+
+══ SLIP A — NBA SAFE PROPS (6) ══
+  1. KAT REB O10.5           NY @ IND · Hali OUT · id=3136195
+  2. Bam REB O7.5            CLE @ MIA · Mobley OUT · id=4066261
+  3. WCJ REB O6.5            MIL @ ORL · Paolo OUT · id=4277847
+  4. Jalen Johnson REB O6.5  ATL @ CHI · id=4701230
+  5. Giddey AST O4.5         ATL @ CHI · id=4871145
+  6. Sengun REB O5.5         UTA @ HOU · Adams/Capela OUT · id=4871144
+
+══ SLIP B — SCRIPT + SOFT SIDES (6) ══
+  1. Franz REB O4.5          Paolo OUT
+  2. Franz PTS O14.5         shave from ~24.5
+  3. Mitchell PTS O14.5      shave from ~25.5
+  4. PITT −3.5               vs FSU
+  5. UCLA −5.5               soft from −10
+  6. HOU −3.5 @ COLO         soft from −7.5
+
+══ SLIP C — WEEKEND NFL + FRI (8) ══
+  1. KAT REB O10.5
+  2. Bam REB O7.5
+  3. WCJ REB O6.5
+  4. PITT −3.5
+  5. HOU NFL −4.5 / ML @ CLE
+  6. JAX −5.5
+  7. BUF −3
+  8. CAR +2.5
+
+BAN: UCLA −10 raw · JAX −10.5 raw · GTD Giannis/Fox props · soft pads as locks
