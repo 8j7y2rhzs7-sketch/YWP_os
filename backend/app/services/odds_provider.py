@@ -158,9 +158,7 @@ def sport_public_label(app_sport: str) -> str:
 def _tennis_keys_from_catalog(*, force_refresh: bool = False) -> list[str]:
     active = in_season_odds_keys(force_refresh=force_refresh)
     keys = sorted(
-        key
-        for key in active
-        if key.startswith("tennis_atp_") or key.startswith("tennis_wta_")
+        key for key in active if key.startswith("tennis_atp_") or key.startswith("tennis_wta_")
     )
     if keys:
         return keys
