@@ -232,7 +232,7 @@ def test_health_reports_api_version(client: TestClient) -> None:
     live = client.get("/healthz")
     assert live.status_code == 200
     assert live.json()["status"] == "ok"
-    assert live.json()["version"] == "3.3.73"
+    assert live.json()["version"] == "3.3.78"
 
 
 def test_health_stays_up_when_database_is_down(client: TestClient, monkeypatch) -> None:
