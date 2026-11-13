@@ -1,0 +1,51 @@
+ALL-SPORTS · THU 11/12/2026 · EXHAUSTIVE · refreshed 11:24 AM ET
+GATE PASS 257/257 · G1 dual-window · G2 Betravon · G3 confirm HR
+Full board: betting/EXHAUSTIVE-20261112.txt (+ .json)
+Posted card: betting/posted-card-20261112.txt
+Grade 11/11: betting/GRADE-2026-11-11.txt (Wemby under hit on weeded slip)
+
+════════════════════════════════════════════════════════
+BANGERS (dual-window KEEP · full sheets in EXHAUSTIVE)
+════════════════════════════════════════════════════════
+  Duncan Robinson  PTS O11.5  id=3157465  SHAVE 15.5→11.5  sea 10/10
+  Kyshawn George   PTS O11.5  id=5174563  SHAVE 14.5→11.5  sea 10/12
+  P.J. Washington  REB O4.5   id=4278078  SHAVE 6.5→4.5   sea 9/11
+  Naz Reid         REB O4.5   id=4396971  SHAVE 8.5→4.5   sea 11/11
+  Ausar Thompson   REB O4.5   id=4684742  cushion/Duren OUT sea 8/9
+  Devin Booker     PTS O19.5  id=3136193  SHAVE 24.5→19.5 · or U24.5 lesson
+  Cooper Flagg     PTS O18.5 / AST O5.5  id=5041939
+  Cade Cunningham  AST O6.5   id=4432166
+  Rudy Gobert      REB O8.5   id=3032976  cushion from O9.5 KEEP
+  RISK Jamal Shead AST O5.5   id=4432241  sea 8/11=73% · Barnes OUT
+
+════════════════════════════════════════════════════════
+SAFE
+════════════════════════════════════════════════════════
+  Duncan O11.5 · Cade AST O6.5 · Flagg AST O5.5 · Ausar REB O4.5
+  Gobert REB O8.5 · WAS +2.5
+
+════════════════════════════════════════════════════════
+PRIMARY / LESSON SIDES
+════════════════════════════════════════════════════════
+  DAL +5.5 (Ant OUT) · WSH +5.5 (vs DET −10.5) · PHX −3.5
+  DET −3.5 soft · PHI −5.5 ONLY if Embiid/LeBron ACTIVE (both DTD)
+  Booker U24.5 under lean (yesterday’s winner style)
+
+════════════════════════════════════════════════════════
+STL/SOG
+════════════════════════════════════════════════════════
+  STL/BLK = research only (never spine)
+  Pastrnak SOG O2.5 only if HR≤2.5 — CUT at posted 3.5
+
+════════════════════════════════════════════════════════
+BAN
+════════════════════════════════════════════════════════
+  DET −10.5 · PHI −9.5 raw · CAR −305 · soft floors · GTD props
+  Naked exact-clear REB without −1 cushion · auto-chalk vs decimated teams
+
+════════════════════════════════════════════════════════
+CLEAN SLIPS → see EXHAUSTIVE (A SAFE / B LESSON / C BANGERS / D NHL-NFL)
+════════════════════════════════════════════════════════
+
+COMPLETION: require_gate PASS · BANGERS yes · SAFE yes · PRIMARY yes
+  STL/SOG yes · by-game yes · BAN yes · clean slips yes · G3=confirm HR

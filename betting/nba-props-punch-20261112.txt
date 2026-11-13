@@ -1,0 +1,21 @@
+NBA PROPS PUNCH · THU 11/12 · EXHAUSTIVE 5:39 PM ET
+GATE PASS · full board: NBA-PROPS-EXHAUSTIVE-20261112.txt
+
+BANGERS / KEEP (shave · confirm HR)
+  Booker PTS O19.5          SHAVE from 24.5 · id=3136193 · or U24.5 lesson
+  Duncan Robinson PTS O11.5 SHAVE from 15.5 · id=3157465
+  Cade AST O6.5             SHAVE from 8.5 · id=4432166
+  Flagg AST O5.5            SHAVE from 6.5 · id=5041939
+  Ausar REB O4.5            cushion · Duren OUT · id=4684742
+  PJ Washington REB O4.5    SHAVE from 6.5 · id=4278078
+  Gobert REB O8.5           cushion from O9.5 KEEP · id=3032976
+  Maxey PTS O18.5           SHAVE from 25.5 · id=4431678
+  RISK Shead AST O5.5       sea 73% · Barnes OUT · id=4432241
+
+SECONDARY
+  Booker 3PT O1.5 · George PTS O11.5 · Trae PTS O14.5 · AD REB O8.5 · Sarr REB O6.5
+
+BAN
+  LeBron props OUT · Embiid DTD props · STL/BLK spine · soft REB O2.5
+
+PLAY SLIP A or C in exhaustive file

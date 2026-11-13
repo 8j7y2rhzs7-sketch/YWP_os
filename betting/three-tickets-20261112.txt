@@ -1,0 +1,30 @@
+THREE TICKETS · THU 11/12 · EXHAUSTIVE 11:24 AM ET
+Source: EXHAUSTIVE-20261112.txt · GATE PASS · confirm HR (G3)
+
+══ SLIP A — SAFE (6) ══
+  1. Duncan Robinson PTS O11.5  KEEP id=3157465
+  2. Cade AST O6.5              KEEP id=4432166
+  3. Flagg AST O5.5             KEEP id=5041939
+  4. Ausar REB O4.5             KEEP id=4684742 · Duren OUT
+  5. Gobert REB O8.5            KEEP cushion id=3032976
+  6. WAS +2.5                   TNF
+
+══ SLIP B — LESSON / Wemby-under style (6) ══
+  1. DAL +5.5
+  2. WSH +5.5
+  3. WAS +2.5
+  4. Booker PTS U24.5           (alt O19.5 KEEP id=3136193)
+  5. Shead AST O5.5             RISK-KEEP id=4432241
+  6. PJ Washington REB O4.5     KEEP id=4278078
+
+══ SLIP C — BANGERS (8) ══
+  1. Duncan Robinson PTS O11.5
+  2. Shead AST O5.5
+  3. Cade AST O6.5
+  4. Flagg AST O5.5
+  5. Ausar REB O4.5
+  6. Gobert REB O8.5
+  7. DAL +5.5
+  8. WAS +2.5 / PHX −3.5
+
+BAN: DET −10.5 · PHI −9.5 raw · CAR −305 · Embiid/LeBron props while DTD
