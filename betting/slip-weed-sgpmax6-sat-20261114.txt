@@ -1,0 +1,27 @@
+SLIP WEED · HR SGPMAX 6 · +7141 · Sat 11/14 ~11:54 AM ET
+GATE PASS date=20261114 · expands prior 4-leg (same CUTs)
+
+1. Giannis PTS U28.5  DET@MIA SGP
+   CUT — L7 under 2/7 [37,30,29,20,27,30,31] id=3032977
+
+2. Heat +4.5
+   RISK-KEEP — only soft save on the ticket
+
+3. Texas Tech ML (+135)  TTU@OKST · OKST −3.5
+   RISK — TTU 8-1 road dog can win outright, but ML ≫ +3.5
+   Prefer TTU +3.5 if taking them · ML is price chase
+
+4. Texas ML (+165)  TEX@LSU · LSU −4.5
+   RISK — TEX 7-2 · prefer TEX +4.5 over ML
+
+5. Pelicans +12.5  DEN@NO
+   CUT — NO getting crushed (−31/−34/−51)
+
+6. LaMelo AR O10.5 (−155)  CHI@MIN · LaMelo on MIN
+   CUT — L7 3/7 [12,8,10,8,9,12,11] id=4432816
+
+══ VERDICT ══
+  Don’t run the 6 · same poison legs (Giannis U · LaMelo · NO)
+  +7141 is the book paying you to stack dogs + trap under
+  Rebuild 3: Heat +4.5 · TTU +3.5 · TEX +4.5
+  Optional 4th: TTU ML alone (not with Giannis/LaMelo)
