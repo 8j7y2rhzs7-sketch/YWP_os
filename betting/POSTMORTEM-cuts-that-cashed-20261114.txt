@@ -1,0 +1,75 @@
+POSTMORTEM · CUTs that cashed · Sat 11/14 AM
+User call: “app agreed with you then this hits” — fair. L7 CUT ≠ impossible.
+
+════════════════════════════════════════════════════════
+TICKET A (Fri weed said 0/4 trash) — ACTUAL: WON
+════════════════════════════════════════════════════════
+UTA 118 @ HOU 125 · CLE @ MIA · HOU 32 @ COLO 42
+
+1. Durant PA O25.5 → 22+6 = 28  HIT
+   Pre: L7 2/7 CUT
+   Script that made it live: close game (7-pt HOU win), KD 33 MIN, 6 AST pad
+   on a 22-pt night. Cleared by +2.5 — not a smash, a thin clear.
+   Lesson: 2/7 ≠ dead · star PA floors can print once; still not spine
+
+2. Sengun AST U6.5 → 5  HIT
+   Pre: L7 1/7 CUT (vals 9,8,5,10,10,9,9)
+   Script: Sengun went SCORER not facilitator — 43 PTS / 12 REB / 5 AST
+   My wrong story: “Utah gutted → more HOU possessions → more dimes”
+   Real story: primary usage → shot diet ↑ · AST ↓
+   Lesson: AST unders on bigs are live ONLY with score-first script
+   Still 1/7 base rate — possible, not probable
+
+3. Giannis AR U17.5 → 9+2 = 11  HIT  (−125)
+   Pre weed was U18.5 CUT (3/7); this ticket used U17.5
+   Script: 37 PTS scoring explosion · only 2 AST · 9 REB
+   Points ate the counting — AR collapsed
+   Lesson: star AR unders live when PTS spikes and playmaking drops
+   Flip of “he always gets his boards”
+
+4. Colorado ML +230 → COL 42–32  HIT
+   Pre: CUT (fade our HOU −3.5 board)
+   Script: outright dog win — chalk failed
+   Lesson: plus-money dogs can cash; our HOU soft was the preferred SIDE
+   not a lock. Dog ML as parlay juice is still price > edge
+
+════════════════════════════════════════════════════════
+TICKET B (early weed you flagged) — WON · $15 → $100.38
+════════════════════════════════════════════════════════
+BKN 145 @ NO 111 · Wemby PR U41.5 → 41 · OKC 108 @ POR 118
+
+1. Nets +3.5 → won by 34  HIT
+   Script: total dog smash — NO collapsed
+2. Wemby PR U41.5 → 41  HIT (half-point)
+   Script: managed/ceiling night · died on the number almost
+3. POR ML → won by 10  HIT
+   Script: OKC road dog/decimated chalk faded — close-game thesis you pushed
+
+════════════════════════════════════════════════════════
+WHAT WAS WRONG IN THE WEED PROCESS
+════════════════════════════════════════════════════════
+  • Treated L7 hit rate as “won’t happen” instead of “low base rate”
+  • Missed score-first scripts that kill AST/AR overs (Sengun 43, Giannis 37)
+  • Over-anchored to preferred chalk (HOU CFB) as if inverse = impossible
+  • Fri REB spine + soft PTS shaves HIT — those were right; CUT tickets
+    can ALSO hit when script flips counting categories
+
+════════════════════════════════════════════════════════
+CALIBRATION GOING FORWARD
+════════════════════════════════════════════════════════
+  KEEP = high base rate + script aligned
+  RISK-KEEP = low base rate BUT named live script (score-first AST under,
+              dog ML in one-score range, PR under with minute risk)
+  CUT = no live script path OR contradicts stronger preferred side
+        without a clear counter-script
+
+  For THESE exact shapes next time:
+  • Sengun AST U → RISK-KEEP if you expect 30+ PTS night, else CUT
+  • Durant PA O25.5 → RISK (not auto CUT) as soft star floor
+  • Giannis AR U17.5/18.5 → RISK-KEEP if projecting PTS spike / low AST
+  • COLO ML / POR ML / BKN + → RISK dog tickets — tag as script bets
+    not “trash,” size smaller than KEEP spine
+
+  Do NOT flip to backing every under/dog — Fri KEEP spines still
+  cashed cleaner (REB 6/6 + soft-shave PTS). CUTs that hit were
+  script exceptions, not proof the L7 rates were wrong.
