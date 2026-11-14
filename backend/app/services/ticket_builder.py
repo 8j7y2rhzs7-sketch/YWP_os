@@ -123,7 +123,17 @@ def build_cards(
 
     eligible = sorted(best_by_thesis.values(), key=_score, reverse=True)
     strongest = eligible[:1]
+    # Official / cash cards MUST prefer low miss-by-1. Using full `eligible` for
+    # core_3/4/5 was the ticket-killer bug: one thin cushion leg looked strong on
+    # confidence/edge and then died. cash_builder/fortress already used safe_pool;
+    # align core + tickets A/B/C to the same pool.
     safe_pool = [item for item in eligible if float(item.miss_by_one_risk) < 0.55]
+    official_pool = safe_pool if safe_pool else eligible
+    official_warn = (
+        ["SAFE_POOL_EMPTY: fell back to eligible — expect higher ticket-kill risk."]
+        if not safe_pool and eligible
+        else []
+    )
     cash_pool = sorted(
         safe_pool,
         key=lambda item: (
@@ -133,27 +143,27 @@ def build_cards(
         ),
     )
     cash = _diverse(cash_pool, min(2, max_legs))
-    core = _diverse(eligible, min(max(3, min(max_legs, 5)), len(eligible)))
+    core = _diverse(official_pool, min(max(3, min(max_legs, 5)), len(official_pool) or 1))
     edge_pool = sorted(
         eligible,
         key=lambda item: (float(item.expected_value), item.confidence_score),
         reverse=True,
     )
     edge = _diverse(edge_pool, min(3, max_legs))
-    elite_two = _diverse(eligible, min(2, max_legs))
-    core_3 = _diverse(eligible, min(3, max_legs))
-    core_4 = _diverse(eligible, min(4, max_legs))
-    core_5 = _diverse(eligible, min(5, max_legs))
+    elite_two = _diverse(official_pool, min(2, max_legs))
+    core_3 = _diverse(official_pool, min(3, max_legs))
+    core_4 = _diverse(official_pool, min(4, max_legs))
+    core_5 = _diverse(official_pool, min(5, max_legs))
     fortress = _diverse(safe_pool, min(3, max_legs))
     handicap_pool = sorted(
-        eligible,
+        official_pool,
         key=lambda item: (float(item.vision_score), float(item.edge), item.confidence_score),
         reverse=True,
     )
     handicap = _diverse(handicap_pool, min(3, max_legs))
     no_stress = _diverse(cash_pool, min(3, max_legs))
     scripted_pool = sorted(
-        eligible,
+        official_pool,
         key=lambda item: (
             float(item.snapshot.get("script_alignment", 0)),
             item.confidence_score,
@@ -163,39 +173,50 @@ def build_cards(
     scripted = _diverse(scripted_pool, min(3, max_legs))
     ghostt_pool = [item for item in edge_pool if float(item.edge) >= 0.03]
     ghostt = _diverse(ghostt_pool, min(4, max_legs))
-    quick_cash = _diverse([item for item in eligible if item.quick_cash], min(3, max_legs))
+    quick_cash = _diverse(
+        [item for item in official_pool if item.quick_cash], min(3, max_legs)
+    )
     chain_reaction = _diverse(
-        [item for item in eligible if item.chain_reaction_key], min(3, max_legs)
+        [item for item in official_pool if item.chain_reaction_key], min(3, max_legs)
     )
 
-    a = _diverse(eligible, min(3, max_legs))
+    a = _diverse(official_pool, min(3, max_legs))
     a_entities = {item.player_key or item.event_id for item in a}
-    b = _diverse(eligible, min(3, max_legs), existing=a_entities)
+    b = _diverse(official_pool, min(3, max_legs), existing=a_entities)
     c_pool = sorted({item.id: item for item in [*a, *b]}.values(), key=_score, reverse=True)
     c = _diverse(c_pool, min(3, max_legs))
 
     cards = {
         "max_bet": _card("max_bet", "Max Bet — strongest single", strongest),
-        "elite_two": _card("elite_two", "Elite 2-Pick", elite_two),
-        "core_parlay": _card("core_parlay", "Core Parlay", core),
-        "core_3": _card("core_3", "Official 3-Pick", core_3),
-        "core_4": _card("core_4", "Official 4-Pick", core_4),
-        "core_5": _card("core_5", "Official 5-Pick", core_5),
+        "elite_two": _card("elite_two", "Elite 2-Pick", elite_two, official_warn),
+        "core_parlay": _card("core_parlay", "Core Parlay", core, official_warn),
+        "core_3": _card("core_3", "Official 3-Pick", core_3, official_warn),
+        "core_4": _card("core_4", "Official 4-Pick", core_4, official_warn),
+        "core_5": _card("core_5", "Official 5-Pick", core_5, official_warn),
         "cash_builder": _card("cash_builder", "Cash Builder", cash),
-        "edge_plays": _card("edge_plays", "Edge Plays", edge),
+        "edge_plays": _card(
+            "edge_plays",
+            "Edge Plays",
+            edge,
+            ["Upside card — may include thinner cushions than Official/Cash."],
+        ),
         "fortress": _card("fortress", "Fortress Card", fortress),
-        "handicap": _card("handicap", "Handicap Card — biggest cushion", handicap),
+        "handicap": _card(
+            "handicap", "Handicap Card — biggest cushion", handicap, official_warn
+        ),
         "no_stress": _card("no_stress", "No Stress Card", no_stress),
-        "scripted": _card("scripted", "Scripted Card", scripted),
+        "scripted": _card("scripted", "Scripted Card", scripted, official_warn),
         "quick_cash": _card(
             "quick_cash",
             "Quick Cash — early-settlement edge",
             quick_cash,
+            official_warn,
         ),
         "chain_reaction": _card(
             "chain_reaction",
             "Chain Reaction — verified trigger paths",
             chain_reaction,
+            official_warn,
         ),
         "ghostt": _card(
             "ghostt",
@@ -212,8 +233,10 @@ def build_cards(
                 "stake or action."
             ],
         ),
-        "ticket_a": _card("ticket_a", "Ticket A — strongest plays", a),
-        "ticket_b": _card("ticket_b", "Ticket B — different players/theses", b),
-        "ticket_c": _card("ticket_c", "Ticket C — best of A + B", c),
+        "ticket_a": _card("ticket_a", "Ticket A — strongest plays", a, official_warn),
+        "ticket_b": _card(
+            "ticket_b", "Ticket B — different players/theses", b, official_warn
+        ),
+        "ticket_c": _card("ticket_c", "Ticket C — best of A + B", c, official_warn),
     }
     return cards, quarantined
