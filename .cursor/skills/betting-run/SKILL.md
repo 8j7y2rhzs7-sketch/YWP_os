@@ -21,7 +21,8 @@ User wants a daily card, exhaustive board, slip weed, sport MLs, steals, SOG, or
 6. **STL / SOG / by-game / BAN**
 7. **Matchup weed (mandatory)** — every SAFE + RISK clear vs tonight's opponent D (PTS/REB/AST/3PT/STL/SOG allow + OUT/short notes). Output **LIST 1 DIFFICULT** and **LIST 2 BETTER** with full detail in chat.
 8. **Weed last** (if slip) — KEEP / RISK-KEEP / CUT; rebuild cleaned slip in the reply. Same full-stat + opponent depth.
-9. **Completion block** (required in the reply)
+9. **NO-KILL filter (locked 2026-11-14)** — before CLEAN/SAFE/Official slips: apply `betting/no_kill_ticket.py`. Spine needs L7≥6/7 + avg clear margin≥1.5 + mpg≥24. Drop thin 6/7 and all 5/7 from official. Soft floors pad-only. Match app cash/fortress, not sexy thin lines.
+10. **Completion block** (required in the reply)
 
 ## Delivery (locked 2026-11-07 — never make user ask twice)
 - Paste **full lists in chat**. No GitHub links, no "see file", no truncated "etc".
@@ -42,7 +43,14 @@ BAN (true bans only)
 LIST 1 DIFFICULT (full detail in chat)
 LIST 2 BETTER (full detail in chat)
 CLEAN SLIPS: SAFE · MIX · UPSIDE
+  (SAFE/CLEAN must be no-kill; UPSIDE may hold RISK-KEEP script)
 ```
+
+## No-kill spine (permanent — 2026-11-14)
+- Code: `betting/no_kill_ticket.py` · Rule: `.cursor/rules/betting-no-kill.mdc`
+- Official spine ≠ 5/7, ≠ exact-clear, ≠ soft REB/AST≤1.5 as identity
+- Prefer juiced floors with cushion (app win pattern) over thin mains that die by 1
+- Script unders/dogs → `RISK-KEEP (script)`, not auto-CUT
 
 ## Weed shape (user parlay / screenshot)
 For **every leg**: hit rate vs posted line · full cats · opponent D for that category · OUT/role note · KEEP / RISK-KEEP / CUT.
@@ -68,6 +76,7 @@ DONE CHECK
 - sheets_path=…
 - BANGERS section: yes|no
 - athlete_ids shown: yes|no
+- no-kill filter on SAFE/CLEAN: yes|no
 - task shape matched user ask: yes|no
 ```
 If any line is FAIL/no, do not present the card as finished — fix first.
