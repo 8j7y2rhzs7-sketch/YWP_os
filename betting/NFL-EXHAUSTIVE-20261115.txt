@@ -1,0 +1,861 @@
+NFL SUNDAY EXHAUSTIVE · 20261115 · Fri 11/13 05:30 PM ET
+GATE sheets 481/481 · games 12 · posted props graded 244
+G1 ESPN offense gamelogs · G2 Betravon mains · G3 confirm HR floor before bet
+Unmatched posted (no sheet): 25
+
+============================================================
+BANGERS (posted KEEP or shave→6/7)
+============================================================
+1. Brock Bowers  REC_YD O59.5  [KEEP]  L7 7/7 · posted O59.5 · posted KEEP
+   SEA @ LV · LV TE · id=4432665
+   L7 vals [111.0, 92.0, 73.0, 70.0, 110.0, 86.0, 116.0]
+   source=espn:site.web.api/nfl/athletes/4432665/gamelog
+
+2. Trey McBride  REC O6.5  [KEEP]  L7 7/7 · posted O6.5 · posted KEEP
+   LAR @ ARI · ARI TE · id=4361307
+   L7 vals [7.0, 7.0, 10.0, 7.0, 9.0, 7.0, 9.0]
+   source=espn:site.web.api/nfl/athletes/4361307/gamelog
+
+3. Jordan Love  PASS_YD O251.5  [KEEP]  L7 6/7 · posted O251.5 · posted KEEP
+   MIN @ GB · GB QB · id=4036378
+   L7 vals [372.0, 288.0, 274.0, 276.0, 367.0, 197.0, 312.0]
+   source=espn:site.web.api/nfl/athletes/4036378/gamelog
+
+4. Kirk Cousins  PASS_YD O235.5  [KEEP]  L7 6/7 · posted O235.5 · posted KEEP
+   MIN @ GB · MIN QB · id=14880
+   L7 vals [216.0, 247.0, 295.0, 313.0, 243.0, 365.0, 248.0]
+   source=espn:site.web.api/nfl/athletes/14880/gamelog
+
+5. Ashton Jeanty  REC_YD O25.5  [KEEP]  L7 6/7 · posted O25.5 · posted KEEP
+   SEA @ LV · LV RB · id=4890973
+   L7 vals [-5.0, 64.0, 61.0, 36.0, 50.0, 68.0, 37.0]
+   source=espn:site.web.api/nfl/athletes/4890973/gamelog
+
+6. Jaylen Warren  REC_YD O25.5  [KEEP]  L7 6/7 · posted O25.5 · posted KEEP
+   PIT @ CIN · PIT RB · id=4569987
+   L7 vals [0.0, 36.0, 28.0, 87.0, 33.0, 49.0, 34.0]
+   source=espn:site.web.api/nfl/athletes/4569987/gamelog
+
+7. Brock Bowers  REC O5.5  [KEEP]  L7 6/7 · posted O5.5 · posted KEEP
+   SEA @ LV · LV TE · id=4432665
+   L7 vals [7.0, 7.0, 6.0, 4.0, 8.0, 6.0, 10.0]
+   source=espn:site.web.api/nfl/athletes/4432665/gamelog
+
+8. Josh Downs  REC O2.5  [KEEP]  L7 6/7 · posted O2.5 · posted KEEP
+   KC @ ATL · KC WR · id=4688813
+   L7 vals [3.0, 4.0, 2.0, 4.0, 3.0, 3.0, 5.0]
+   source=espn:site.web.api/nfl/athletes/4688813/gamelog
+
+9. Bhayshul Tuten  REC O1.5  [KEEP]  L7 6/7 · posted O1.5 · posted KEEP
+   JAX @ TEN · JAX RB · id=4882093
+   L7 vals [0.0, 2.0, 4.0, 2.0, 2.0, 2.0, 2.0]
+   source=espn:site.web.api/nfl/athletes/4882093/gamelog
+
+10. Matthew Golden  REC O4.5  [KEEP]  L7 5/7 · posted O5.5 · shave −1.0 → 6/7+
+   MIN @ GB · GB WR · id=4701936
+   L7 vals [10.0, 7.0, 6.0, 6.0, 6.0, 3.0, 5.0]
+   source=espn:site.web.api/nfl/athletes/4701936/gamelog
+
+11. Malik Washington  REC O2.5  [KEEP]  L7 5/7 · posted O3.5 · shave −1.0 → 6/7+
+   MIA @ IND · MIA WR · id=4569603
+   L7 vals [2.0, 5.0, 3.0, 6.0, 5.0, 5.0, 4.0]
+   source=espn:site.web.api/nfl/athletes/4569603/gamelog
+
+12. Kyren Williams  REC O1.5  [KEEP]  L7 5/7 · posted O2.5 · shave −1.0 → 6/7+
+   LAR @ ARI · LAR RB · id=4430737
+   L7 vals [3.0, 1.0, 2.0, 3.0, 6.0, 10.0, 6.0]
+   source=espn:site.web.api/nfl/athletes/4430737/gamelog
+
+13. Braelon Allen  RUSH_YD O32.5  [KEEP]  L7 5/7 · posted O34.5 · shave −2.0 → 6/7+
+   BUF @ NYJ · NYJ RB · id=4685247
+   L7 vals [33.0, 147.0, 104.0, 78.0, 116.0, 59.0, 14.0]
+   source=espn:site.web.api/nfl/athletes/4685247/gamelog
+
+14. Devaughn Vele  REC_YD O25.5  [KEEP]  L7 5/7 · posted O27.5 · shave −2.0 → 6/7+
+   CAR @ NO · NO WR · id=4569559
+   L7 vals [17.0, 54.0, 42.0, 26.0, 54.0, 39.0, 64.0]
+   source=espn:site.web.api/nfl/athletes/4569559/gamelog
+
+15. Chris Olave  REC O3.5  [KEEP]  L7 5/7 · posted O5.5 · shave −2.0 → 6/7+
+   CAR @ NO · NO WR · id=4361370
+   L7 vals [7.0, 6.0, 4.0, 4.0, 8.0, 9.0, 8.0]
+   source=espn:site.web.api/nfl/athletes/4361370/gamelog
+
+16. Christian Watson  REC O2.5  [KEEP]  L7 5/7 · posted O4.5 · shave −2.0 → 6/7+
+   MIN @ GB · GB WR · id=4248528
+   L7 vals [7.0, 8.0, 5.0, 3.0, 6.0, 3.0, 7.0]
+   source=espn:site.web.api/nfl/athletes/4248528/gamelog
+
+17. George Kittle  REC_YD O57.5  [KEEP]  L7 5/7 · posted O62.5 · shave −5.0 → 6/7+
+   SF @ DAL · SF TE · id=3040151
+   L7 vals [58.0, 88.0, 69.0, 24.0, 70.0, 82.0, 80.0]
+   source=espn:site.web.api/nfl/athletes/3040151/gamelog
+
+18. Travis Kelce  REC_YD O43.5  [KEEP]  L7 5/7 · posted O49.5 · shave −6.0 → 6/7+
+   KC @ ATL · KC TE · id=15847
+   L7 vals [72.0, 67.0, 44.0, 53.0, 15.0, 59.0, 101.0]
+   source=espn:site.web.api/nfl/athletes/15847/gamelog
+
+19. Elijah Higgins  REC_YD O10.5  [KEEP]  L7 5/7 · posted O16.5 · shave −6.0 → 6/7+
+   LAR @ ARI · ARI TE · id=4426844
+   L7 vals [11.0, 10.0, 17.0, 28.0, 57.0, 19.0, 20.0]
+   source=espn:site.web.api/nfl/athletes/4426844/gamelog
+
+20. Tony Pollard  RUSH_YD O51.5  [KEEP]  L7 5/7 · posted O59.5 · shave −8.0 → 6/7+
+   JAX @ TEN · TEN RB · id=3916148
+   L7 vals [117.0, 129.0, 76.0, 52.0, 48.0, 74.0, 64.0]
+   source=espn:site.web.api/nfl/athletes/3916148/gamelog
+
+21. Seth McGowan  RUSH_YD O15.5  [KEEP]  L7 5/7 · posted O23.5 · shave −8.0 → 6/7+
+   MIA @ IND · IND RB · id=4686468
+   L7 vals [45.0, 29.0, 46.0, 27.0, 16.0, 31.0, 14.0]
+   source=espn:site.web.api/nfl/athletes/4686468/gamelog
+
+22. Malik Washington  REC_YD O26.5  [KEEP]  L7 5/7 · posted O35.5 · shave −9.0 → 6/7+
+   MIA @ IND · MIA WR · id=4569603
+   L7 vals [21.0, 40.0, 27.0, 43.0, 67.0, 56.0, 43.0]
+   source=espn:site.web.api/nfl/athletes/4569603/gamelog
+
+23. Ja'Marr Chase  REC_YD O61.5  [KEEP]  L7 5/7 · posted O74.5 · shave −13.0 → 6/7+
+   PIT @ CIN · CIN WR · id=4362628
+   L7 vals [155.0, 141.0, 62.0, 77.0, 27.0, 98.0, 75.0]
+   source=espn:site.web.api/nfl/athletes/4362628/gamelog
+
+24. Patrick Mahomes  PASS_YD O224.5  [KEEP]  L7 5/7 · posted O238.5 · shave −14.0 → 6/7+
+   KC @ ATL · KC QB · id=3139477
+   L7 vals [242.0, 321.0, 165.0, 272.0, 225.0, 246.0, 382.0]
+   source=espn:site.web.api/nfl/athletes/3139477/gamelog
+
+25. James Cook III  RUSH_YD O79.5  [KEEP]  L7 5/7 · posted O93.5 · shave −14.0 → 6/7+
+   BUF @ NYJ · BUF RB · id=4379399
+   L7 vals [107.0, 80.0, 95.0, 111.0, 75.0, 154.0, 135.0]
+   source=espn:site.web.api/nfl/athletes/4379399/gamelog
+
+============================================================
+SAFE (KEEP @ posted, non-soft)
+============================================================
+  KEEP  7/7  Trey McBride           O6.5 REC     LAR @ ARI id=4361307
+         L=[7.0, 7.0, 10.0, 7.0, 9.0, 7.0, 9.0]
+  KEEP  7/7  Brock Bowers           O59.5 REC_YD  SEA @ LV id=4432665
+         L=[111.0, 92.0, 73.0, 70.0, 110.0, 86.0, 116.0]
+  KEEP  6/7  Jordan Love            O251.5 PASS_YD MIN @ GB id=4036378
+         L=[372.0, 288.0, 274.0, 276.0, 367.0, 197.0, 312.0]
+  KEEP  6/7  Kirk Cousins           O235.5 PASS_YD MIN @ GB id=14880
+         L=[216.0, 247.0, 295.0, 313.0, 243.0, 365.0, 248.0]
+  KEEP  6/7  Bhayshul Tuten         O1.5 REC     JAX @ TEN id=4882093
+         L=[0.0, 2.0, 4.0, 2.0, 2.0, 2.0, 2.0]
+  KEEP  6/7  Brock Bowers           O5.5 REC     SEA @ LV id=4432665
+         L=[7.0, 7.0, 6.0, 4.0, 8.0, 6.0, 10.0]
+  KEEP  6/7  Josh Downs             O2.5 REC     KC @ ATL id=4688813
+         L=[3.0, 4.0, 2.0, 4.0, 3.0, 3.0, 5.0]
+  KEEP  6/7  Ashton Jeanty          O25.5 REC_YD  SEA @ LV id=4890973
+         L=[-5.0, 64.0, 61.0, 36.0, 50.0, 68.0, 37.0]
+  KEEP  6/7  Jaylen Warren          O25.5 REC_YD  PIT @ CIN id=4569987
+         L=[0.0, 36.0, 28.0, 87.0, 33.0, 49.0, 34.0]
+
+============================================================
+PRIMARY (SAFE + best shaves)
+============================================================
+  KEEP       Trey McBride           REC O6.5  LAR @ ARI  
+  KEEP       Brock Bowers           REC_YD O59.5  SEA @ LV  
+  KEEP       Jordan Love            PASS_YD O251.5  MIN @ GB  
+  KEEP       Kirk Cousins           PASS_YD O235.5  MIN @ GB  
+  KEEP       Bhayshul Tuten         REC O1.5  JAX @ TEN  
+  KEEP       Brock Bowers           REC O5.5  SEA @ LV  
+  KEEP       Josh Downs             REC O2.5  KC @ ATL  
+  KEEP       Ashton Jeanty          REC_YD O25.5  SEA @ LV  
+  KEEP       Jaylen Warren          REC_YD O25.5  PIT @ CIN  
+  RISK-KEEP  Matthew Golden         REC O4.5  MIN @ GB  shave −1.0 → 6/7+
+  RISK-KEEP  Malik Washington       REC O2.5  MIA @ IND  shave −1.0 → 6/7+
+  RISK-KEEP  Kyren Williams         REC O1.5  LAR @ ARI  shave −1.0 → 6/7+
+  RISK-KEEP  Braelon Allen          RUSH_YD O32.5  BUF @ NYJ  shave −2.0 → 6/7+
+  RISK-KEEP  Devaughn Vele          REC_YD O25.5  CAR @ NO  shave −2.0 → 6/7+
+  RISK-KEEP  Chris Olave            REC O3.5  CAR @ NO  shave −2.0 → 6/7+
+  RISK-KEEP  Christian Watson       REC O2.5  MIN @ GB  shave −2.0 → 6/7+
+  RISK-KEEP  George Kittle          REC_YD O57.5  SF @ DAL  shave −5.0 → 6/7+
+  RISK-KEEP  Travis Kelce           REC_YD O43.5  KC @ ATL  shave −6.0 → 6/7+
+  RISK-KEEP  Elijah Higgins         REC_YD O10.5  LAR @ ARI  shave −6.0 → 6/7+
+  RISK-KEEP  Tony Pollard           RUSH_YD O51.5  JAX @ TEN  shave −8.0 → 6/7+
+  RISK-KEEP  Seth McGowan           RUSH_YD O15.5  MIA @ IND  shave −8.0 → 6/7+
+  RISK-KEEP  Malik Washington       REC_YD O26.5  MIA @ IND  shave −9.0 → 6/7+
+  RISK-KEEP  Ja'Marr Chase          REC_YD O61.5  PIT @ CIN  shave −13.0 → 6/7+
+  RISK-KEEP  Patrick Mahomes        PASS_YD O224.5  KC @ ATL  shave −14.0 → 6/7+
+
+============================================================
+GAME MARKETS (every game)
+============================================================
+  NE VS DET     DET -3        O/U 49.5  kick=2026-11-15T14:30Z
+  KC @ ATL      KC -3         O/U 47.5  kick=2026-11-15T18:00Z
+  HOU @ CLE     HOU -4.5      O/U 40.5  kick=2026-11-15T18:00Z
+  MIN @ GB      GB -3         O/U 42.5  kick=2026-11-15T18:00Z
+  JAX @ TEN     JAX -10.5     O/U 46.5 BAN-RAW · soft JAX −5.5  kick=2026-11-15T18:00Z
+  MIA @ IND     IND -3.5      O/U 38.5  kick=2026-11-15T18:00Z
+  CAR @ NO      NO -2.5       O/U 48.5  kick=2026-11-15T18:00Z
+  BUF @ NYJ     BUF -8.5      O/U 50.5 · soft alt −3.0  kick=2026-11-15T18:00Z
+  SEA @ LV      SEA -6.5      O/U 40.5 · soft alt −3.0  kick=2026-11-15T21:05Z
+  LAR @ ARI     LAR -9.5      O/U 39.5 BAN-RAW · soft LAR −3.0  kick=2026-11-15T21:05Z
+  SF @ DAL      SF -3.5       O/U 55.5  kick=2026-11-15T21:25Z
+  PIT @ CIN     CIN -3.5      O/U 49.5  kick=2026-11-16T01:20Z
+
+============================================================
+BY-GAME PROPS (all graded posted)
+============================================================
+
+── BUF @ NYJ ──
+  CUT        3/7  Josh Allen             O249.5 PASS_YD id=3918298 · shave→O209.5 6/7
+             L=[234.0, 289.0, 255.0, 210.0, 253.0, 204.0, 248.0]
+  CUT        3/5  Adonai Mitchell        O2.5 REC     id=4597500
+             L=[0.0, 7.0, 0.0, 6.0, 3.0]
+  CUT        3/4  Breece Hall            O2.5 REC     id=4427366
+             L=[3.0, 3.0, 5.0, 2.0]
+  CUT        3/6  DJ Moore               O3.5 REC     id=3915416
+             L=[3.0, 4.0, 1.0, 6.0, 0.0, 5.0]
+  CUT        3/7  Dalton Kincaid         O3.5 REC     id=4385690 · shave→O0.5 7/7
+             L=[3.0, 4.0, 7.0, 1.0, 1.0, 2.0, 7.0]
+  CUT        3/7  Garrett Wilson         O5.5 REC     id=4569618 · shave→O2.5 6/7
+             L=[6.0, 2.0, 4.0, 7.0, 3.0, 10.0, 5.0]
+  CUT        3/7  James Cook III         O1.5 REC     id=4379399
+             L=[0.0, 2.0, 3.0, 1.0, 2.0, 0.0, 1.0]
+  CUT        3/5  Adonai Mitchell        O36.5 REC_YD  id=4597500
+             L=[0.0, 142.0, 0.0, 63.0, 60.0]
+  CUT        3/4  Breece Hall            O17.5 REC_YD  id=4427366
+             L=[26.0, 23.0, 63.0, 16.0]
+  CUT        3/6  DJ Moore               O44.5 REC_YD  id=3915416
+             L=[25.0, 82.0, 11.0, 67.0, 0.0, 100.0]
+  CUT        2/7  Dalton Kincaid         O41.5 REC_YD  id=4385690
+             L=[28.0, 86.0, 38.0, 7.0, 7.0, 38.0, 95.0]
+  CUT        3/7  Garrett Wilson         O61.5 REC_YD  id=4569618 · shave→O26.5 6/7
+             L=[83.0, 26.0, 44.0, 104.0, 27.0, 107.0, 57.0]
+  CUT        3/7  James Cook III         O7.5 REC_YD  id=4379399
+             L=[0.0, 21.0, 58.0, 7.0, 8.0, 0.0, 4.0]
+  CUT        2/4  Breece Hall            O52.5 RUSH_YD id=4427366
+             L=[61.0, 32.0, 29.0, 102.0]
+  CUT        3/7  Geno Smith             O5.5 RUSH_YD id=15864
+             L=[8.0, 4.0, 0.0, -1.0, 7.0, 0.0, 12.0]
+  CUT        3/7  Josh Allen             O27.5 RUSH_YD id=3918298
+             L=[15.0, 30.0, 1.0, 121.0, 4.0, 22.0, 69.0]
+  RISK       4/7  Geno Smith             O224.5 PASS_YD id=15864 · shave→O164.5 6/7
+             L=[165.0, 290.0, 287.0, 252.0, 182.0, 119.0, 321.0]
+  RISK       4/7  Khalil Shakir          O3.5 REC     id=4373678 · shave→O2.5 6/7
+             L=[4.0, 5.0, 4.0, 3.0, 7.0, 1.0, 3.0]
+  RISK       4/7  Khalil Shakir          O44.5 REC_YD  id=4373678 · shave→O33.5 6/7
+             L=[58.0, 64.0, 34.0, 80.0, 82.0, 6.0, 38.0]
+  RISK-KEEP  5/7  Braelon Allen          O34.5 RUSH_YD id=4685247 · shave→O32.5 6/7
+             L=[33.0, 147.0, 104.0, 78.0, 116.0, 59.0, 14.0]
+  RISK-KEEP  5/7  James Cook III         O93.5 RUSH_YD id=4379399 · shave→O79.5 6/7
+             L=[107.0, 80.0, 95.0, 111.0, 75.0, 154.0, 135.0]
+
+── CAR @ NO ──
+  CUT        3/7  Jalen Coker            O4.5 REC     id=4695883 · shave→O1.5 6/7
+             L=[4.0, 2.0, 1.0, 6.0, 2.0, 8.0, 8.0]
+  CUT        3/7  Tetairoa McMillan      O5.5 REC     id=4685472 · shave→O3.5 6/7
+             L=[4.0, 6.0, 4.0, 6.0, 14.0, 2.0, 5.0]
+  CUT        2/7  Chris Olave            O99.5 REC_YD  id=4361370 · shave→O45.5 6/7
+             L=[98.0, 56.0, 43.0, 46.0, 116.0, 107.0, 86.0]
+  CUT        3/7  Chuba Hubbard          O17.5 REC_YD  id=4241416
+             L=[17.0, 38.0, 27.0, 1.0, 7.0, 28.0, 11.0]
+  CUT        3/7  Jalen Coker            O47.5 REC_YD  id=4695883 · shave→O17.5 6/7
+             L=[29.0, 36.0, 9.0, 97.0, 18.0, 66.0, 138.0]
+  CUT        3/7  Tetairoa McMillan      O65.5 REC_YD  id=4685472 · shave→O39.5 6/7
+             L=[56.0, 58.0, 40.0, 86.0, 192.0, 17.0, 101.0]
+  CUT        2/7  Bryce Young            O7.5 RUSH_YD id=4685720
+             L=[13.0, 0.0, 9.0, 6.0, 3.0, 0.0, 6.0]
+  RISK       4/7  Chuba Hubbard          O2.5 REC     id=4241416 · shave→O0.5 7/7
+             L=[4.0, 7.0, 4.0, 1.0, 1.0, 4.0, 2.0]
+  RISK       4/7  Devaughn Vele          O3.5 REC     id=4569559 · shave→O2.5 6/7
+             L=[2.0, 5.0, 3.0, 4.0, 6.0, 3.0, 5.0]
+  RISK       4/7  Chuba Hubbard          O79.5 RUSH_YD id=4241416 · shave→O52.5 6/7
+             L=[79.0, 81.0, 33.0, 120.0, 122.0, 82.0, 53.0]
+  RISK       4/7  Tyler Shough           O16.5 RUSH_YD id=4360689
+             L=[51.0, 7.0, 32.0, 0.0, 5.0, 36.0, 23.0]
+  RISK-KEEP  5/7  Bryce Young            O249.5 PASS_YD id=4685720 · shave→O208.5 6/7
+             L=[276.0, 209.0, 163.0, 281.0, 329.0, 291.0, 287.0]
+  RISK-KEEP  5/7  Tyler Shough           O251.5 PASS_YD id=4360689
+             L=[265.0, 278.0, 144.0, 96.0, 286.0, 255.0, 252.0]
+  RISK-KEEP  5/7  Chris Olave            O5.5 REC     id=4361370 · shave→O3.5 7/7
+             L=[7.0, 6.0, 4.0, 4.0, 8.0, 9.0, 8.0]
+  RISK-KEEP  5/7  Devaughn Vele          O27.5 REC_YD  id=4569559 · shave→O25.5 6/7
+             L=[17.0, 54.0, 42.0, 26.0, 54.0, 39.0, 64.0]
+  SKIP       1/1  Jordyn Tyson           O3.5 REC     id=4880281
+             L=[4.0]
+  SKIP       1/1  Jordyn Tyson           O29.5 REC_YD  id=4880281
+             L=[30.0]
+
+── HOU @ CLE ──
+  CUT        3/7  Dalton Schultz         O3.5 REC     id=3117256 · shave→O1.5 7/7
+             L=[2.0, 5.0, 4.0, 3.0, 2.0, 3.0, 12.0]
+  CUT        3/7  Denzel Boston          O3.5 REC     id=4832800 · shave→O1.5 6/7
+             L=[6.0, 6.0, 3.0, 1.0, 3.0, 4.0, 2.0]
+  CUT        3/6  Nico Collins           O4.5 REC     id=4258173 · shave→O1.5 6/6
+             L=[4.0, 2.0, 3.0, 5.0, 7.0, 7.0]
+  CUT        3/7  Woody Marks            O1.5 REC     id=4429059 · shave→O0.5 6/7
+             L=[1.0, 1.0, 2.0, 4.0, 0.0, 1.0, 5.0]
+  CUT        3/7  Denzel Boston          O44.5 REC_YD  id=4832800 · shave→O26.5 6/7
+             L=[98.0, 37.0, 27.0, 15.0, 46.0, 89.0, 41.0]
+  CUT        3/6  Nico Collins           O59.5 REC_YD  id=4258173
+             L=[55.0, 6.0, 74.0, 56.0, 118.0, 75.0]
+  CUT        3/7  Deshaun Watson         O24.5 RUSH_YD id=3122840 · shave→O18.5 6/7
+             L=[2.0, 19.0, 29.0, 40.0, 22.0, 45.0, 22.0]
+  CUT        3/7  Quinshon Judkins       O44.5 RUSH_YD id=4685702 · shave→O24.5 6/7
+             L=[43.0, 25.0, 96.0, 44.0, 53.0, 70.0, 21.0]
+  CUT        3/7  Woody Marks            O59.5 RUSH_YD id=4429059 · shave→O14.5 6/7
+             L=[70.0, 66.0, 56.0, 62.0, 22.0, 15.0, 8.0]
+  OUT        -/-  Tank Dell              O2.5 REC     id=4366031
+  OUT        -/-  Tank Dell              O41.5 REC_YD  id=4366031
+  RISK       4/7  Deshaun Watson         O209.5 PASS_YD id=3122840 · shave→O154.5 6/7
+             L=[324.0, 308.0, 164.0, 155.0, 268.0, 144.0, 238.0]
+  RISK       4/7  Dalton Schultz         O30.5 REC_YD  id=3117256 · shave→O29.5 6/7
+             L=[42.0, 45.0, 33.0, 30.0, 9.0, 30.0, 140.0]
+  RISK       4/7  Woody Marks            O10.5 REC_YD  id=4429059
+             L=[4.0, 15.0, 25.0, 23.0, 0.0, 6.0, 27.0]
+  RISK       4/7  C.J. Stroud            O8.5 RUSH_YD id=4432577
+             L=[20.0, 4.0, 5.0, 5.0, 12.0, 10.0, 29.0]
+  RISK-KEEP  5/7  C.J. Stroud            O244.5 PASS_YD id=4432577 · shave→O166.5 6/7
+             L=[384.0, 153.0, 312.0, 261.0, 347.0, 167.0, 353.0]
+  RISK-KEEP  5/7  Quinshon Judkins       O1.5 REC     id=4685702 · shave→O0.5 7/7
+             L=[1.0, 2.0, 1.0, 3.0, 6.0, 2.0, 5.0]
+  SKIP       1/3  Dylan Sampson          O3.5 REC     id=5081397
+             L=[3.0, 6.0, 3.0]
+  SKIP       3/3  Dylan Sampson          O22.5 REC_YD  id=5081397
+             L=[27.0, 62.0, 32.0]
+  SKIP       2/3  Dylan Sampson          O18.5 RUSH_YD id=5081397
+             L=[21.0, 7.0, 45.0]
+  SOFT       6/7  Quinshon Judkins       O5.5 REC_YD  id=4685702
+             L=[2.0, 24.0, 8.0, 6.0, 43.0, 9.0, 27.0]
+
+── JAX @ TEN ──
+  CUT        2/7  Trevor Lawrence        O246.5 PASS_YD id=4360310 · shave→O188.5 6/7
+             L=[242.0, 210.0, 306.0, 331.0, 227.0, 182.0, 189.0]
+  CUT        3/7  Brenton Strange        O3.5 REC     id=4430539 · shave→O1.5 7/7
+             L=[2.0, 2.0, 5.0, 7.0, 7.0, 3.0, 2.0]
+  CUT        2/7  Chimere Dike           O2.5 REC     id=4431268
+             L=[5.0, 0.0, 0.0, 3.0, 1.0, 1.0, 0.0]
+  CUT        3/7  Elic Ayomanor          O1.5 REC     id=4883647 · shave→O0.5 7/7
+             L=[3.0, 3.0, 1.0, 1.0, 1.0, 1.0, 2.0]
+  CUT        1/7  Gunnar Helm            O3.5 REC     id=4686728
+             L=[5.0, 3.0, 0.0, 0.0, 1.0, 2.0, 2.0]
+  CUT        3/7  Jakobi Meyers          O3.5 REC     id=3916433 · shave→O1.5 6/7
+             L=[4.0, 2.0, 5.0, 2.0, 3.0, 7.0, 1.0]
+  CUT        2/7  Parker Washington      O4.5 REC     id=4432620 · shave→O0.5 7/7
+             L=[2.0, 1.0, 4.0, 6.0, 1.0, 3.0, 7.0]
+  CUT        3/7  Wan'Dale Robinson      O5.5 REC     id=4569587 · shave→O2.5 6/7
+             L=[6.0, 4.0, 3.0, 6.0, 3.0, 7.0, 1.0]
+  CUT        2/7  Bhayshul Tuten         O24.5 REC_YD  id=4882093
+             L=[0.0, 55.0, 48.0, 24.0, 18.0, 17.0, -3.0]
+  CUT        3/7  Brenton Strange        O49.5 REC_YD  id=4430539 · shave→O21.5 6/7
+             L=[22.0, 55.0, 44.0, 68.0, 95.0, 32.0, 17.0]
+  CUT        2/7  Chimere Dike           O27.5 REC_YD  id=4431268
+             L=[71.0, 0.0, 0.0, 28.0, 15.0, 3.0, 0.0]
+  CUT        3/7  Elic Ayomanor          O26.5 REC_YD  id=4883647 · shave→O10.5 6/7
+             L=[34.0, 44.0, 3.0, 17.0, 22.0, 11.0, 69.0]
+  CUT        1/7  Gunnar Helm            O28.5 REC_YD  id=4686728
+             L=[76.0, 24.0, 0.0, 0.0, 5.0, 14.0, 13.0]
+  CUT        3/7  Jakobi Meyers          O41.5 REC_YD  id=3916433 · shave→O27.5 6/7
+             L=[65.0, 24.0, 83.0, 37.0, 33.0, 64.0, 28.0]
+  CUT        3/7  Wan'Dale Robinson      O37.5 REC_YD  id=4569587 · shave→O8.5 6/7
+             L=[57.0, 7.0, 22.0, 53.0, 19.0, 57.0, 9.0]
+  KEEP       6/7  Bhayshul Tuten         O1.5 REC     id=4882093
+             L=[0.0, 2.0, 4.0, 2.0, 2.0, 2.0, 2.0]
+  RISK       4/7  Parker Washington      O60.5 REC_YD  id=4432620 · shave→O15.5 6/7
+             L=[61.0, 16.0, 64.0, 124.0, 7.0, 40.0, 98.0]
+  RISK       4/7  Bhayshul Tuten         O66.5 RUSH_YD id=4882093 · shave→O38.5 6/7
+             L=[29.0, 104.0, 39.0, 72.0, 73.0, 73.0, 65.0]
+  RISK       4/7  Trevor Lawrence        O7.5 RUSH_YD id=4360310
+             L=[-1.0, 10.0, 11.0, 25.0, 0.0, 25.0, 6.0]
+  RISK-KEEP  5/7  Tony Pollard           O59.5 RUSH_YD id=3916148 · shave→O51.5 6/7
+             L=[117.0, 129.0, 76.0, 52.0, 48.0, 74.0, 64.0]
+
+── KC @ ATL ──
+  CUT        2/7  Bijan Robinson         O4.5 REC     id=4430807 · shave→O0.5 6/7
+             L=[6.0, 0.0, 5.0, 2.0, 4.0, 1.0, 2.0]
+  CUT        3/7  Drake London           O5.5 REC     id=4426502 · shave→O3.5 6/7
+             L=[5.0, 1.0, 7.0, 4.0, 7.0, 5.0, 9.0]
+  CUT        1/7  Jahan Dotson           O2.5 REC     id=4361409 · shave→O0.5 7/7
+             L=[2.0, 2.0, 1.0, 3.0, 2.0, 2.0, 1.0]
+  CUT        2/6  Rashee Rice            O5.5 REC     id=4428331
+             L=[5.0, 7.0, 0.0, 7.0, 4.0, 2.0]
+  CUT        2/7  Travis Kelce           O4.5 REC     id=15847 · shave→O1.5 7/7
+             L=[4.0, 5.0, 4.0, 4.0, 2.0, 2.0, 9.0]
+  CUT        3/7  Bijan Robinson         O28.5 REC_YD  id=4430807
+             L=[47.0, 0.0, 59.0, -8.0, 32.0, 2.0, 19.0]
+  CUT        3/7  Drake London           O72.5 REC_YD  id=4426502 · shave→O61.5 6/7
+             L=[68.0, 8.0, 66.0, 62.0, 118.0, 96.0, 194.0]
+  CUT        1/7  Emmett Johnson         O24.5 REC_YD  id=4832955
+             L=[0.0, 128.0, 17.0, 18.0, 10.0, 0.0, 20.0]
+  CUT        3/7  Josh Downs             O24.5 REC_YD  id=4688813 · shave→O17.5 6/7
+             L=[24.0, 23.0, 18.0, 40.0, 47.0, 16.0, 77.0]
+  CUT        3/7  Kenneth Walker III     O18.5 REC_YD  id=4567048
+             L=[41.0, 15.0, 21.0, 11.0, 2.0, 3.0, 61.0]
+  CUT        2/6  Rashee Rice            O54.5 REC_YD  id=4428331
+             L=[49.0, 53.0, 0.0, 88.0, 83.0, 19.0]
+  CUT        3/7  Michael Penix Jr.      O7.5 RUSH_YD id=4360423
+             L=[50.0, 11.0, -1.0, 1.0, 8.0, -2.0, -2.0]
+  CUT        3/7  Patrick Mahomes        O8.5 RUSH_YD id=3139477
+             L=[8.0, 6.0, 14.0, 16.0, 0.0, 1.0, 17.0]
+  KEEP       6/7  Josh Downs             O2.5 REC     id=4688813
+             L=[3.0, 4.0, 2.0, 4.0, 3.0, 3.0, 5.0]
+  RISK       4/7  Emmett Johnson         O1.5 REC     id=4832955
+             L=[0.0, 5.0, 2.0, 2.0, 1.0, 0.0, 2.0]
+  RISK       4/7  Kenneth Walker III     O2.5 REC     id=4567048 · shave→O1.5 6/7
+             L=[4.0, 4.0, 4.0, 2.0, 1.0, 2.0, 6.0]
+  RISK       4/7  Jahan Dotson           O28.5 REC_YD  id=4361409 · shave→O10.5 6/7
+             L=[16.0, 95.0, 6.0, 87.0, 54.0, 54.0, 11.0]
+  RISK       4/7  Bijan Robinson         O84.5 RUSH_YD id=4430807 · shave→O62.5 6/7
+             L=[100.0, 76.0, 63.0, 61.0, 86.0, 145.0, 194.0]
+  RISK       4/7  Emmett Johnson         O9.5 RUSH_YD id=4832955
+             L=[34.0, 15.0, 0.0, 6.0, 0.0, 17.0, 15.0]
+  RISK       4/7  Kenneth Walker III     O89.5 RUSH_YD id=4567048 · shave→O68.5 6/7
+             L=[102.0, 69.0, 36.0, 128.0, 177.0, 70.0, 117.0]
+  RISK-KEEP  5/7  Michael Penix Jr.      O212.5 PASS_YD id=4360423 · shave→O161.5 6/7
+             L=[162.0, 125.0, 213.0, 225.0, 240.0, 223.0, 256.0]
+  RISK-KEEP  5/7  Patrick Mahomes        O238.5 PASS_YD id=3139477 · shave→O224.5 6/7
+             L=[242.0, 321.0, 165.0, 272.0, 225.0, 246.0, 382.0]
+  RISK-KEEP  5/7  Travis Kelce           O49.5 REC_YD  id=15847 · shave→O43.5 6/7
+             L=[72.0, 67.0, 44.0, 53.0, 15.0, 59.0, 101.0]
+
+── LAR @ ARI ──
+  CUT        3/7  Blake Corum            O1.5 REC     id=4429096
+             L=[0.0, 0.0, 1.0, 2.0, 3.0, 1.0, 2.0]
+  CUT        0/5  Reggie Virgil          O2.5 REC     id=4869132
+             L=[1.0, 0.0, 0.0, 0.0, 2.0]
+  CUT        3/7  Tyler Allgeier         O2.5 REC     id=4373626 · shave→O1.5 6/7
+             L=[2.0, 5.0, 3.0, 1.0, 2.0, 2.0, 4.0]
+  CUT        1/5  Reggie Virgil          O25.5 REC_YD  id=4869132
+             L=[25.0, 0.0, 0.0, 0.0, 29.0]
+  CUT        2/7  Tyler Allgeier         O10.5 REC_YD  id=4373626
+             L=[0.0, 44.0, 30.0, 10.0, 9.0, 7.0, 10.0]
+  CUT        3/7  Tyler Higbee           O39.5 REC_YD  id=2573401 · shave→O13.5 6/7
+             L=[13.0, 14.0, 14.0, 22.0, 83.0, 67.0, 62.0]
+  CUT        2/7  Blake Corum            O58.5 RUSH_YD id=4429096 · shave→O14.5 6/7
+             L=[58.0, 73.0, 93.0, 42.0, 19.0, 14.0, 15.0]
+  CUT        3/7  Kyren Williams         O64.5 RUSH_YD id=4430737 · shave→O48.5 6/7
+             L=[45.0, 56.0, 99.0, 50.0, 49.0, 80.0, 88.0]
+  CUT        3/7  Matthew Stafford       O0.5 RUSH_YD id=12483
+             L=[1.0, 0.0, -3.0, 0.0, 0.0, 10.0, 13.0]
+  CUT        3/7  Tyler Allgeier         O39.5 RUSH_YD id=4373626 · shave→O6.5 6/7
+             L=[46.0, 147.0, 19.0, 38.0, 7.0, 42.0, -1.0]
+  KEEP       7/7  Trey McBride           O6.5 REC     id=4361307
+             L=[7.0, 7.0, 10.0, 7.0, 9.0, 7.0, 9.0]
+  NOT_FETCHED -/-  Carson Beck            O174.5 PASS_YD id=4430841
+  NOT_FETCHED -/-  Carson Beck            O11.5 RUSH_YD id=4430841
+  RISK       4/7  Elijah Higgins         O2.5 REC     id=4426844 · shave→O1.5 7/7
+             L=[2.0, 2.0, 3.0, 3.0, 3.0, 2.0, 3.0]
+  RISK       4/7  Tyler Higbee           O3.5 REC     id=2573401 · shave→O0.5 7/7
+             L=[1.0, 1.0, 2.0, 4.0, 5.0, 5.0, 8.0]
+  RISK       4/7  Blake Corum            O6.5 REC_YD  id=4429096
+             L=[0.0, 0.0, 8.0, 18.0, 53.0, 7.0, 0.0]
+  RISK       4/7  Kyren Williams         O19.5 REC_YD  id=4430737 · shave→O15.5 6/7
+             L=[16.0, 3.0, 22.0, 17.0, 27.0, 67.0, 70.0]
+  RISK       4/7  Trey McBride           O59.5 REC_YD  id=4361307 · shave→O52.5 6/7
+             L=[54.0, 72.0, 111.0, 53.0, 66.0, 31.0, 75.0]
+  RISK-KEEP  5/7  Matthew Stafford       O213.5 PASS_YD id=12483 · shave→O194.5 6/7
+             L=[228.0, 157.0, 195.0, 222.0, 383.0, 317.0, 390.0]
+  RISK-KEEP  5/7  Kyren Williams         O2.5 REC     id=4430737 · shave→O1.5 6/7
+             L=[3.0, 1.0, 2.0, 3.0, 6.0, 10.0, 6.0]
+  RISK-KEEP  5/7  Elijah Higgins         O16.5 REC_YD  id=4426844 · shave→O10.5 6/7
+             L=[11.0, 10.0, 17.0, 28.0, 57.0, 19.0, 20.0]
+
+── MIA @ IND ──
+  CUT        3/7  Daniel Jones           O188.5 PASS_YD id=3917792
+             L=[180.0, 144.0, 108.0, 269.0, 267.0, 143.0, 235.0]
+  CUT        3/5  Caleb Douglas          O3.5 REC     id=4869645 · shave→O1.5 5/5
+             L=[6.0, 4.0, 2.0, 2.0, 5.0]
+  CUT        2/7  Jonathan Taylor        O3.5 REC     id=4242335 · shave→O1.5 6/7
+             L=[5.0, 4.0, 2.0, 2.0, 3.0, 1.0, 2.0]
+  CUT        1/7  Laquon Treadwell       O2.5 REC     id=3051889 · shave→O0.5 6/7
+             L=[0.0, 1.0, 2.0, 2.0, 2.0, 5.0, 1.0]
+  CUT        3/7  Tyler Warren           O5.5 REC     id=4431459 · shave→O3.5 6/7
+             L=[4.0, 4.0, 7.0, 5.0, 9.0, 6.0, 3.0]
+  CUT        2/7  Jonathan Taylor        O24.5 REC_YD  id=4242335
+             L=[18.0, 24.0, 15.0, 57.0, 37.0, 2.0, 4.0]
+  CUT        2/7  Laquon Treadwell       O27.5 REC_YD  id=3051889 · shave→O17.5 6/7
+             L=[0.0, 18.0, 19.0, 21.0, 34.0, 42.0, 20.0]
+  CUT        2/7  Tyler Warren           O44.5 REC_YD  id=4431459 · shave→O17.5 6/7
+             L=[44.0, 18.0, 83.0, 41.0, 55.0, 21.0, 13.0]
+  CUT        3/7  Daniel Jones           O7.5 RUSH_YD id=3917792
+             L=[11.0, 7.0, 13.0, 30.0, 4.0, 2.0, 5.0]
+  CUT        3/7  Jonathan Taylor        O68.5 RUSH_YD id=4242335 · shave→O44.5 6/7
+             L=[46.0, 23.0, 95.0, 94.0, 45.0, 95.0, 68.0]
+  CUT        3/7  Ollie Gordon II        O70.5 RUSH_YD id=4711533 · shave→O40.5 6/7
+             L=[55.0, 69.0, 103.0, 88.0, 100.0, 41.0, 7.0]
+  NOT_FETCHED -/-  Kyle McCord            O160.5 PASS_YD id=4433971
+  NOT_FETCHED -/-  Kyle McCord            O6.5 RUSH_YD id=4433971
+  RISK       4/7  Greg Dulcich           O3.5 REC     id=4367209 · shave→O1.5 6/7
+             L=[2.0, 4.0, 5.0, 4.0, 0.0, 5.0, 2.0]
+  RISK       4/7  Greg Dulcich           O34.5 REC_YD  id=4367209 · shave→O13.5 6/7
+             L=[14.0, 43.0, 86.0, 37.0, 0.0, 55.0, 17.0]
+  RISK-KEEP  5/7  Malik Washington       O3.5 REC     id=4569603 · shave→O2.5 6/7
+             L=[2.0, 5.0, 3.0, 6.0, 5.0, 5.0, 4.0]
+  RISK-KEEP  4/5  Caleb Douglas          O42.5 REC_YD  id=4869645 · shave→O18.5 5/5
+             L=[70.0, 43.0, 70.0, 19.0, 94.0]
+  RISK-KEEP  5/7  Malik Washington       O35.5 REC_YD  id=4569603 · shave→O26.5 6/7
+             L=[21.0, 40.0, 27.0, 43.0, 67.0, 56.0, 43.0]
+  RISK-KEEP  5/7  Seth McGowan           O23.5 RUSH_YD id=4686468 · shave→O15.5 6/7
+             L=[45.0, 29.0, 46.0, 27.0, 16.0, 31.0, 14.0]
+
+── MIN @ GB ──
+  CUT        2/7  Jordan Addison         O3.5 REC     id=4429205 · shave→O1.5 6/7
+             L=[2.0, 3.0, 2.0, 4.0, 5.0, 2.0, 0.0]
+  CUT        1/4  Jordan Mason           O0.5 REC     id=4360569
+             L=[2.0, 0.0, 0.0, 0.0]
+  CUT        1/7  Justin Jefferson       O6.5 REC     id=4262921 · shave→O2.5 6/7
+             L=[3.0, 5.0, 4.0, 6.0, 2.0, 3.0, 8.0]
+  CUT        3/4  Savion Williams        O2.5 REC     id=4431487
+             L=[3.0, 1.0, 3.0, 4.0]
+  CUT        1/7  T.J. Hockenson         O4.5 REC     id=4036133 · shave→O1.5 6/7
+             L=[4.0, 4.0, 4.0, 1.0, 13.0, 2.0, 3.0]
+  CUT        3/7  Aaron Jones Sr.        O9.5 REC_YD  id=3042519
+             L=[5.0, 18.0, 0.0, 4.0, 34.0, 34.0, 0.0]
+  CUT        3/7  Jordan Addison         O39.5 REC_YD  id=4429205 · shave→O19.5 6/7
+             L=[28.0, 66.0, 20.0, 52.0, 90.0, 21.0, 0.0]
+  CUT        1/4  Jordan Mason           O2.5 REC_YD  id=4360569
+             L=[7.0, 0.0, 0.0, 0.0]
+  CUT        2/7  Justin Jefferson       O59.5 REC_YD  id=4262921 · shave→O32.5 6/7
+             L=[58.0, 33.0, 44.0, 79.0, 32.0, 55.0, 92.0]
+  CUT        3/4  Savion Williams        O18.5 REC_YD  id=4431487
+             L=[25.0, 5.0, 47.0, 32.0]
+  CUT        2/7  T.J. Hockenson         O39.5 REC_YD  id=4036133 · shave→O10.5 6/7
+             L=[33.0, 58.0, 35.0, 7.0, 119.0, 11.0, 29.0]
+  CUT        3/7  Jordan Love            O4.5 RUSH_YD id=4036378
+             L=[13.0, 0.0, 0.0, 12.0, 6.0, -8.0, 0.0]
+  CUT        2/4  Jordan Mason           O45.5 RUSH_YD id=4360569
+             L=[35.0, 20.0, 68.0, 59.0]
+  CUT        3/7  Kirk Cousins           O0.5 RUSH_YD id=14880
+             L=[0.0, 3.0, 6.0, 0.0, 0.0, 0.0, 3.0]
+  KEEP       6/7  Jordan Love            O251.5 PASS_YD id=4036378
+             L=[372.0, 288.0, 274.0, 276.0, 367.0, 197.0, 312.0]
+  KEEP       6/7  Kirk Cousins           O235.5 PASS_YD id=14880
+             L=[216.0, 247.0, 295.0, 313.0, 243.0, 365.0, 248.0]
+  RISK       4/7  Aaron Jones Sr.        O1.5 REC     id=3042519 · shave→O0.5 6/7
+             L=[1.0, 2.0, 1.0, 3.0, 4.0, 5.0, 0.0]
+  RISK       4/7  Tucker Kraft           O4.5 REC     id=4572680 · shave→O3.5 6/7
+             L=[1.0, 6.0, 4.0, 5.0, 5.0, 6.0, 4.0]
+  RISK       4/7  Christian Watson       O74.5 REC_YD  id=4248528 · shave→O56.5 6/7
+             L=[171.0, 113.0, 57.0, 64.0, 143.0, 47.0, 96.0]
+  RISK       4/7  Tucker Kraft           O37.5 REC_YD  id=4572680 · shave→O25.5 6/7
+             L=[1.0, 53.0, 48.0, 37.0, 64.0, 42.0, 26.0]
+  RISK       4/7  Aaron Jones Sr.        O28.5 RUSH_YD id=3042519 · shave→O21.5 6/7
+             L=[16.0, 22.0, 26.0, 113.0, 94.0, 58.0, 105.0]
+  RISK-KEEP  5/7  Christian Watson       O4.5 REC     id=4248528 · shave→O2.5 7/7
+             L=[7.0, 8.0, 5.0, 3.0, 6.0, 3.0, 7.0]
+  RISK-KEEP  5/7  Matthew Golden         O5.5 REC     id=4701936 · shave→O4.5 6/7
+             L=[10.0, 7.0, 6.0, 6.0, 6.0, 3.0, 5.0]
+  RISK-KEEP  5/7  Matthew Golden         O69.5 REC_YD  id=4701936 · shave→O38.5 6/7
+             L=[164.0, 79.0, 39.0, 104.0, 123.0, 21.0, 100.0]
+
+── NE VS DET ──
+  CUT        3/7  Hunter Henry           O3.5 REC     id=3046439 · shave→O2.5 6/7
+             L=[3.0, 3.0, 7.0, 4.0, 3.0, 5.0, 1.0]
+  CUT        3/7  Isaac TeSlaa           O1.5 REC     id=5123663
+             L=[1.0, 0.0, 1.0, 0.0, 4.0, 3.0, 2.0]
+  CUT        3/7  Sam LaPorta            O4.5 REC     id=4430027 · shave→O2.5 6/7
+             L=[4.0, 3.0, 1.0, 5.0, 8.0, 3.0, 6.0]
+  CUT        3/7  Amon-Ra St. Brown      O79.5 REC_YD  id=4374302 · shave→O45.5 6/7
+             L=[86.0, 46.0, 153.0, 69.0, 75.0, 19.0, 142.0]
+  CUT        3/7  Isaac TeSlaa           O20.5 REC_YD  id=5123663
+             L=[9.0, 0.0, 10.0, 0.0, 95.0, 66.0, 26.0]
+  CUT        3/7  Jahmyr Gibbs           O32.5 REC_YD  id=4429795 · shave→O14.5 6/7
+             L=[0.0, 15.0, 27.0, 56.0, 31.0, 65.0, 61.0]
+  CUT        3/7  Jameson Williams       O56.5 REC_YD  id=4426388 · shave→O32.5 6/7
+             L=[31.0, 70.0, 91.0, 47.0, 102.0, 49.0, 33.0]
+  CUT        1/7  Drake Maye             O27.5 RUSH_YD id=4431452
+             L=[3.0, 5.0, 26.0, 24.0, 25.0, 54.0, 18.0]
+  CUT        3/7  Jahmyr Gibbs           O99.5 RUSH_YD id=4429795 · shave→O51.5 6/7
+             L=[74.0, 153.0, 116.0, 151.0, 46.0, 99.0, 52.0]
+  RISK       4/7  Drake Maye             O262.5 PASS_YD id=4431452 · shave→O198.5 7/7
+             L=[299.0, 199.0, 321.0, 235.0, 374.0, 269.0, 199.0]
+  RISK       4/7  Amon-Ra St. Brown      O7.5 REC     id=4374302 · shave→O5.5 6/7
+             L=[8.0, 7.0, 9.0, 6.0, 8.0, 4.0, 9.0]
+  RISK       4/7  Jahmyr Gibbs           O4.5 REC     id=4429795 · shave→O1.5 6/7
+             L=[0.0, 2.0, 5.0, 5.0, 4.0, 7.0, 6.0]
+  RISK       4/7  Jameson Williams       O3.5 REC     id=4426388 · shave→O1.5 6/7
+             L=[1.0, 4.0, 5.0, 2.0, 6.0, 4.0, 2.0]
+  RISK       4/7  Hunter Henry           O35.5 REC_YD  id=3046439 · shave→O29.5 6/7
+             L=[35.0, 30.0, 71.0, 48.0, 44.0, 62.0, 5.0]
+  RISK       4/7  Sam LaPorta            O42.5 REC_YD  id=4430027 · shave→O31.5 6/7
+             L=[32.0, 33.0, 18.0, 88.0, 84.0, 44.0, 52.0]
+  RISK       4/7  Jared Goff             O0.5 RUSH_YD id=3046779
+             L=[5.0, 0.0, -1.0, 1.0, 0.0, 6.0, 7.0]
+  RISK-KEEP  5/7  Jared Goff             O265.5 PASS_YD id=3046779 · shave→O175.5 6/7
+             L=[170.0, 176.0, 303.0, 271.0, 412.0, 269.0, 327.0]
+  SKIP       0/3  A.J. Brown             O3.5 REC     id=4047646
+             L=[3.0, 3.0, 3.0]
+  SKIP       0/3  A.J. Brown             O49.5 REC_YD  id=4047646
+             L=[48.0, 27.0, 26.0]
+
+── PIT @ CIN ──
+  CUT        3/7  Aaron Rodgers          O240.5 PASS_YD id=8439 · shave→O186.5 6/7
+             L=[172.0, 212.0, 253.0, 235.0, 299.0, 292.0, 187.0]
+  CUT        3/7  Joe Burrow             O289.5 PASS_YD id=3915511 · shave→O206.5 6/7
+             L=[271.0, 462.0, 292.0, 190.0, 428.0, 282.0, 207.0]
+  CUT        2/7  Chase Brown            O4.5 REC     id=4362238 · shave→O2.5 6/7
+             L=[3.0, 8.0, 4.0, 3.0, 11.0, 2.0, 3.0]
+  CUT        2/7  DK Metcalf             O4.5 REC     id=4047650 · shave→O1.5 6/7
+             L=[1.0, 2.0, 11.0, 3.0, 5.0, 3.0, 4.0]
+  CUT        3/7  Dohnte Meyers          O2.5 REC     id=4384852
+             L=[2.0, 3.0, 0.0, 2.0, 7.0, 3.0, 0.0]
+  CUT        3/7  Germie Bernard         O4.5 REC     id=4685261 · shave→O1.5 6/7
+             L=[5.0, 3.0, 11.0, 6.0, 2.0, 1.0, 4.0]
+  CUT        3/7  Ja'Marr Chase          O7.5 REC     id=4362628 · shave→O4.5 6/7
+             L=[10.0, 11.0, 5.0, 6.0, 3.0, 9.0, 7.0]
+  CUT        2/5  Rico Dowdle            O2.5 REC     id=4038815
+             L=[0.0, 6.0, 3.0, 2.0, 2.0]
+  CUT        2/7  Chase Brown            O26.5 REC_YD  id=4362238
+             L=[18.0, 46.0, 19.0, 21.0, 71.0, 8.0, 2.0]
+  CUT        3/7  DK Metcalf             O49.5 REC_YD  id=4047650 · shave→O11.5 6/7
+             L=[4.0, 56.0, 93.0, 12.0, 115.0, 31.0, 27.0]
+  CUT        2/7  Germie Bernard         O47.5 REC_YD  id=4685261 · shave→O13.5 6/7
+             L=[30.0, 27.0, 87.0, 80.0, 11.0, 14.0, 35.0]
+  CUT        2/5  Rico Dowdle            O14.5 REC_YD  id=4038815
+             L=[0.0, 45.0, 9.0, 22.0, 6.0]
+  CUT        3/7  Samaje Perine          O7.5 REC_YD  id=3116389
+             L=[0.0, 9.0, 0.0, 10.0, 0.0, 5.0, 16.0]
+  CUT        3/5  Rico Dowdle            O29.5 RUSH_YD id=4038815 · shave→O14.5 5/5
+             L=[56.0, 41.0, 40.0, 22.0, 15.0]
+  CUT        2/7  Samaje Perine          O19.5 RUSH_YD id=3116389 · shave→O6.5 6/7
+             L=[43.0, 10.0, 16.0, 68.0, 7.0, 9.0, 6.0]
+  KEEP       6/7  Jaylen Warren          O25.5 REC_YD  id=4569987
+             L=[0.0, 36.0, 28.0, 87.0, 33.0, 49.0, 34.0]
+  RISK       4/7  Jaylen Warren          O2.5 REC     id=4569987 · shave→O1.5 6/7
+             L=[1.0, 3.0, 2.0, 6.0, 3.0, 3.0, 2.0]
+  RISK       4/7  Samaje Perine          O0.5 REC     id=3116389
+             L=[0.0, 1.0, 0.0, 2.0, 0.0, 1.0, 1.0]
+  RISK       4/7  Tee Higgins            O5.5 REC     id=4239993 · shave→O4.5 6/7
+             L=[5.0, 10.0, 6.0, 2.0, 11.0, 6.0, 5.0]
+  RISK       4/7  Dohnte Meyers          O20.5 REC_YD  id=4384852
+             L=[47.0, 34.0, 0.0, 12.0, 82.0, 29.0, 0.0]
+  RISK       4/7  Aaron Rodgers          O0.5 RUSH_YD id=8439
+             L=[0.0, 6.0, -1.0, 6.0, 0.0, 10.0, 5.0]
+  RISK       4/7  Chase Brown            O45.5 RUSH_YD id=4362238 · shave→O38.5 6/7
+             L=[57.0, 55.0, 39.0, 39.0, 10.0, 61.0, 80.0]
+  RISK-KEEP  5/7  Ja'Marr Chase          O74.5 REC_YD  id=4362628 · shave→O61.5 6/7
+             L=[155.0, 141.0, 62.0, 77.0, 27.0, 98.0, 75.0]
+  RISK-KEEP  5/7  Tee Higgins            O75.5 REC_YD  id=4239993 · shave→O31.5 6/7
+             L=[32.0, 155.0, 148.0, 22.0, 157.0, 90.0, 95.0]
+  RISK-KEEP  5/7  Jaylen Warren          O64.5 RUSH_YD id=4569987 · shave→O49.5 6/7
+             L=[143.0, 101.0, 50.0, 101.0, 93.0, 127.0, 43.0]
+  RISK-KEEP  5/7  Joe Burrow             O6.5 RUSH_YD id=3915511 · shave→O5.5 6/7
+             L=[7.0, 10.0, 12.0, 10.0, 6.0, 13.0, -1.0]
+
+── SEA @ LV ──
+  CUT        1/5  Drew Lock              O203.5 PASS_YD id=3924327
+             L=[175.0, 0.0, 0.0, 235.0, 187.0]
+  CUT        3/7  Ashton Jeanty          O4.5 REC     id=4890973 · shave→O2.5 7/7
+             L=[5.0, 3.0, 8.0, 4.0, 3.0, 6.0, 3.0]
+  CUT        3/6  Jadarian Price         O1.5 REC     id=4685512
+             L=[4.0, 2.0, 0.0, 1.0, 1.0, 2.0]
+  CUT        3/7  Jaxon Smith-Njigba     O7.5 REC     id=4430878 · shave→O4.5 7/7
+             L=[7.0, 6.0, 9.0, 12.0, 5.0, 5.0, 10.0]
+  CUT        1/6  Jadarian Price         O10.5 REC_YD  id=4685512
+             L=[54.0, 8.0, 0.0, 7.0, 8.0, 6.0]
+  CUT        3/7  Jaxon Smith-Njigba     O124.5 REC_YD  id=4430878 · shave→O75.5 6/7
+             L=[51.0, 118.0, 150.0, 134.0, 102.0, 76.0, 128.0]
+  CUT        2/7  Ashton Jeanty          O33.5 RUSH_YD id=4890973 · shave→O14.5 6/7
+             L=[25.0, 9.0, 15.0, 22.0, 27.0, 58.0, 56.0]
+  CUT        2/5  Drew Lock              O5.5 RUSH_YD id=3924327
+             L=[16.0, 0.0, 0.0, 0.0, 13.0]
+  CUT        2/6  Jadarian Price         O42.5 RUSH_YD id=4685512
+             L=[24.0, 29.0, 0.0, 15.0, 52.0, 52.0]
+  KEEP       6/7  Brock Bowers           O5.5 REC     id=4432665
+             L=[7.0, 7.0, 6.0, 4.0, 8.0, 6.0, 10.0]
+  KEEP       6/7  Ashton Jeanty          O25.5 REC_YD  id=4890973
+             L=[-5.0, 64.0, 61.0, 36.0, 50.0, 68.0, 37.0]
+  KEEP       7/7  Brock Bowers           O59.5 REC_YD  id=4432665
+             L=[111.0, 92.0, 73.0, 70.0, 110.0, 86.0, 116.0]
+  RISK       4/7  Mike Washington Jr.    O25.5 RUSH_YD id=4686658
+             L=[-3.0, 83.0, 27.0, 43.0, 5.0, 18.0, 54.0]
+  SKIP       0/3  Fernando Mendoza       O179.5 PASS_YD id=4837248
+             L=[48.0, 0.0, 0.0]
+  SKIP       1/2  Zach Charbonnet        O1.5 REC     id=4426385
+             L=[1.0, 3.0]
+  SKIP       0/2  Zach Charbonnet        O9.5 REC_YD  id=4426385
+             L=[9.0, 6.0]
+  SKIP       0/3  Fernando Mendoza       O12.5 RUSH_YD id=4837248
+             L=[3.0, 0.0, 0.0]
+  SKIP       1/2  Zach Charbonnet        O65.5 RUSH_YD id=4426385
+             L=[77.0, 23.0]
+
+── SF @ DAL ──
+  CUT        3/7  CeeDee Lamb            O7.5 REC     id=4241389 · shave→O4.5 6/7
+             L=[10.0, 7.0, 5.0, 9.0, 2.0, 17.0, 7.0]
+  CUT        2/7  Christian McCaffrey    O4.5 REC     id=3117251 · shave→O2.5 6/7
+             L=[2.0, 6.0, 9.0, 3.0, 3.0, 4.0, 4.0]
+  CUT        2/7  George Kittle          O5.5 REC     id=3040151 · shave→O3.5 7/7
+             L=[4.0, 8.0, 5.0, 5.0, 4.0, 6.0, 4.0]
+  CUT        2/7  Javonte Williams       O2.5 REC     id=4361579 · shave→O0.5 6/7
+             L=[4.0, 1.0, 0.0, 2.0, 2.0, 5.0, 2.0]
+  CUT        3/7  CeeDee Lamb            O88.5 REC_YD  id=4241389 · shave→O57.5 6/7
+             L=[195.0, 58.0, 74.0, 70.0, 9.0, 189.0, 112.0]
+  CUT        3/7  Javonte Williams       O13.5 REC_YD  id=4361579
+             L=[23.0, 1.0, 0.0, 9.0, 17.0, 21.0, 5.0]
+  CUT        2/7  Dak Prescott           O9.5 RUSH_YD id=2577417
+             L=[1.0, 20.0, 8.0, 7.0, 0.0, 7.0, 19.0]
+  CUT        3/7  Kaelon Black           O33.5 RUSH_YD id=4696044 · shave→O15.5 6/7
+             L=[70.0, 63.0, 34.0, 16.0, 13.0, 17.0, 25.0]
+  RISK       4/7  Brock Purdy            O257.5 PASS_YD id=4361741 · shave→O217.5 6/7
+             L=[232.0, 288.0, 264.0, 189.0, 218.0, 297.0, 287.0]
+  RISK       4/7  Dak Prescott           O268.5 PASS_YD id=2577417 · shave→O211.5 6/7
+             L=[335.0, 195.0, 212.0, 258.0, 316.0, 335.0, 276.0]
+  RISK       4/7  Christian McCaffrey    O33.5 REC_YD  id=3117251 · shave→O17.5 6/7
+             L=[19.0, 61.0, 53.0, 15.0, 18.0, 41.0, 43.0]
+  RISK       4/7  Christian McCaffrey    O61.5 RUSH_YD id=3117251 · shave→O38.5 6/7
+             L=[68.0, 39.0, 64.0, 68.0, 52.0, 75.0, 23.0]
+  RISK       4/7  Javonte Williams       O61.5 RUSH_YD id=4361579 · shave→O44.5 6/7
+             L=[101.0, 56.0, 155.0, 41.0, 45.0, 62.0, 98.0]
+  RISK-KEEP  5/7  George Kittle          O62.5 REC_YD  id=3040151 · shave→O57.5 6/7
+             L=[58.0, 88.0, 69.0, 24.0, 70.0, 82.0, 80.0]
+  RISK-KEEP  5/7  Brock Purdy            O19.5 RUSH_YD id=4361741 · shave→O5.5 6/7
+             L=[40.0, 5.0, 28.0, 6.0, 29.0, 34.0, 30.0]
+
+============================================================
+RISK-KEEP @ posted
+============================================================
+  5/7 Jared Goff             O265.5 PASS_YD · →O175.5
+  5/7 Tyler Shough           O251.5 PASS_YD · no 6/7 above soft
+  5/7 Bryce Young            O249.5 PASS_YD · →O208.5
+  5/7 C.J. Stroud            O244.5 PASS_YD · →O166.5
+  5/7 Patrick Mahomes        O238.5 PASS_YD · →O224.5
+  5/7 Matthew Stafford       O213.5 PASS_YD · →O194.5
+  5/7 Michael Penix Jr.      O212.5 PASS_YD · →O161.5
+  5/7 James Cook III         O93.5 RUSH_YD · →O79.5
+  5/7 Jaylen Warren          O64.5 RUSH_YD · →O49.5
+  5/7 Tony Pollard           O59.5 RUSH_YD · →O51.5
+  5/7 Braelon Allen          O34.5 RUSH_YD · →O32.5
+  5/7 Seth McGowan           O23.5 RUSH_YD · →O15.5
+  5/7 Brock Purdy            O19.5 RUSH_YD · →O5.5
+  5/7 Joe Burrow             O6.5 RUSH_YD · →O5.5
+  5/7 Tee Higgins            O75.5 REC_YD · →O31.5
+  5/7 Ja'Marr Chase          O74.5 REC_YD · →O61.5
+  5/7 Matthew Golden         O69.5 REC_YD · →O38.5
+  5/7 George Kittle          O62.5 REC_YD · →O57.5
+  5/7 Travis Kelce           O49.5 REC_YD · →O43.5
+  4/5 Caleb Douglas          O42.5 REC_YD · →O18.5
+  5/7 Malik Washington       O35.5 REC_YD · →O26.5
+  5/7 Devaughn Vele          O27.5 REC_YD · →O25.5
+  5/7 Elijah Higgins         O16.5 REC_YD · →O10.5
+  5/7 Matthew Golden         O5.5 REC · →O4.5
+  5/7 Chris Olave            O5.5 REC · →O3.5
+  5/7 Christian Watson       O4.5 REC · →O2.5
+  5/7 Malik Washington       O3.5 REC · →O2.5
+  5/7 Kyren Williams         O2.5 REC · →O1.5
+  5/7 Quinshon Judkins       O1.5 REC · →O0.5
+
+============================================================
+BAN
+============================================================
+  Raw −9.5/+ spreads without soft alt
+  BAN RAW JAX -10.5 → use soft −5.5 / ML
+  BAN RAW LAR -9.5 → use soft −3.0 / ML
+  Soft juice pads: REC O0.5 · REC_YD ≤8.5 · RUSH_YD ≤5.5 as spine
+  Posted OUT / IR props:
+  OUT Tank Dell REC_YD O41.5 None
+  OUT Tank Dell REC O2.5 None
+  IR roster (82) — do not spine:
+  IR Alec Pierce IND WR id=4360078
+  IR Andrei Iosivas CIN WR id=4368003
+  IR Arian Smith NYJ WR id=4429105
+  IR Brashard Smith KC RB id=4596602
+  IR Brian Robinson Jr. ATL RB id=4241474
+  IR British Brooks HOU RB id=4373273
+  IR Carson Towt IND TE id=4702120
+  IR Caullin Lacy NYJ WR id=4430185
+  IR Chip Trayanum NYJ RB id=4430893
+  IR Chris Brazzell II CAR WR id=5091739
+  IR Chris Brooks GB RB id=3149687
+  IR Christian Kirk SF WR id=3895856
+  IR Cole Burgess PIT WR id=5192448
+  IR Cole Turner MIA TE id=4361438
+  IR D.J. Montgomery IND WR id=4249030
+  IR Davante Adams LAR WR id=16800
+  IR De'Von Achane MIA RB id=4429160
+  IR De'Zhaun Stribling SF WR id=4710714
+  IR Dean Connors LAR RB id=5082269
+  IR Demond Claiborne MIN RB id=4832846
+  IR Elijah Arroyo SEA TE id=4678006
+  IR Erick All Jr. CIN TE id=4427834
+  IR Gardner Minshew II ARI QB id=4038524
+  IR Graham Mertz HOU QB id=4426335
+  IR Hunter Long ARI TE id=4239944
+  IR Isaac Guerendo SF RB id=4372561
+  IR Isiah Pacheco DET RB id=4361529
+  IR Jake Bobo SEA WR id=4360405
+  IR Jake Tonges SF TE id=4259147
+  IR Jalen Brooks ARI WR id=4692835
+  IR James Conner ARI RB id=3045147
+  IR Jaren Kanak TEN TE id=4877034
+  IR Jayden Higgins HOU WR id=4877706
+  IR Jayden Reed GB WR id=4362249
+  IR Jaylin Noel HOU WR id=4586312
+  IR Jeff Caldwell KC WR id=4885466
+  IR Jeremiyah Love ARI RB id=4870808
+  IR Jimmy Holiday KC WR id=4431142
+  IR Joe Royer CLE TE id=4565859
+  IR John Michael Gyllenborg KC TE id=4708490
+  Questionable (20) — confirm active:
+  Q A.J. Brown NE WR status=Questionable id=4047646
+  Q Adonai Mitchell NYJ WR status=Questionable id=4597500
+  Q Amon-Ra St. Brown DET WR status=Questionable id=4374302
+  Q Cameron Latu NE TE status=Questionable id=4372026
+  Q Chris Bell MIA WR status=Doubtful id=4869961
+  Q David Montgomery HOU RB status=Questionable id=4035538
+  Q Davis Allen LAR TE status=Questionable id=4426553
+  Q Denzel Boston CLE WR status=Questionable id=4832800
+  Q Dont'e Thornton Jr. LV WR status=Questionable id=4432775
+  Q Garrett Wilson NYJ WR status=Questionable id=4569618
+  Q Jaydn Ott KC RB status=Questionable id=4685489
+  Q Jonathan Mingo DAL WR status=Questionable id=4426485
+  Q Jordan Addison MIN WR status=Questionable id=4429205
+  Q KaVontae Turpin DAL WR status=Questionable id=3676833
+  Q Kenneth Walker III KC RB status=Questionable id=4567048
+  Q Omar Cooper Jr. NYJ WR status=Questionable id=4723820
+  Q Rhamondre Stevenson NE RB status=Questionable id=4569173
+  Q Sione Vaki DET RB status=Questionable id=4912274
+  Q Tyjae Spears TEN RB status=Questionable id=4428557
+  Q Will Mallory IND TE status=Questionable id=4362523
+
+============================================================
+CLEAN SLIPS
+============================================================
+SLIP A — SIDES (soft chalk / small numbers)
+  1. DET -3
+  2. KC -3
+  3. HOU -4.5
+  4. GB -3
+  5. JAX −5.5 (soft from JAX -10.5)
+  6. IND -3.5
+  7. NO -2.5
+  8. BUF −3.0 (soft from BUF -8.5)
+  9. SEA −3.0 (soft from SEA -6.5)
+  10. LAR −3.0 (soft from LAR -9.5)
+  11. SF -3.5
+  12. CIN -3.5
+
+SLIP B — PROP BANGERS (4)
+  1. Brock Bowers REC_YD O59.5  (SEA @ LV)
+  2. Trey McBride REC O6.5  (LAR @ ARI)
+  3. Jordan Love PASS_YD O251.5  (MIN @ GB)
+  4. Kirk Cousins PASS_YD O235.5  (MIN @ GB)
+
+SLIP C — MIX (3 sides + 3 props)
+  1. DET -3
+  2. KC -3
+  3. HOU -4.5
+  4. Brock Bowers REC_YD O59.5
+  5. Trey McBride REC O6.5
+  6. Jordan Love PASS_YD O251.5
+
+SLIP D — TOTALS lean (confirm script)
+  NE VS DET O/U 49.5 — grade live vs pace; no auto
+  KC @ ATL O/U 47.5 — grade live vs pace; no auto
+  HOU @ CLE O/U 40.5 — grade live vs pace; no auto
+  MIN @ GB O/U 42.5 — grade live vs pace; no auto
+  JAX @ TEN O/U 46.5 — grade live vs pace; no auto
+  MIA @ IND O/U 38.5 — grade live vs pace; no auto
+  CAR @ NO O/U 48.5 — grade live vs pace; no auto
+  BUF @ NYJ O/U 50.5 — grade live vs pace; no auto
+  SEA @ LV O/U 40.5 — grade live vs pace; no auto
+  LAR @ ARI O/U 39.5 — grade live vs pace; no auto
+  SF @ DAL O/U 55.5 — grade live vs pace; no auto
+  PIT @ CIN O/U 49.5 — grade live vs pace; no auto
+
+SUMMARY: KEEP=9 RISK-KEEP=29 RISK=51 CUT=136 SOFT=1 OUT=2 BANGERS=88 games=12 sheets=481
