@@ -173,9 +173,7 @@ def build_cards(
     scripted = _diverse(scripted_pool, min(3, max_legs))
     ghostt_pool = [item for item in edge_pool if float(item.edge) >= 0.03]
     ghostt = _diverse(ghostt_pool, min(4, max_legs))
-    quick_cash = _diverse(
-        [item for item in official_pool if item.quick_cash], min(3, max_legs)
-    )
+    quick_cash = _diverse([item for item in official_pool if item.quick_cash], min(3, max_legs))
     chain_reaction = _diverse(
         [item for item in official_pool if item.chain_reaction_key], min(3, max_legs)
     )
@@ -201,9 +199,7 @@ def build_cards(
             ["Upside card — may include thinner cushions than Official/Cash."],
         ),
         "fortress": _card("fortress", "Fortress Card", fortress),
-        "handicap": _card(
-            "handicap", "Handicap Card — biggest cushion", handicap, official_warn
-        ),
+        "handicap": _card("handicap", "Handicap Card — biggest cushion", handicap, official_warn),
         "no_stress": _card("no_stress", "No Stress Card", no_stress),
         "scripted": _card("scripted", "Scripted Card", scripted, official_warn),
         "quick_cash": _card(
@@ -234,9 +230,7 @@ def build_cards(
             ],
         ),
         "ticket_a": _card("ticket_a", "Ticket A — strongest plays", a, official_warn),
-        "ticket_b": _card(
-            "ticket_b", "Ticket B — different players/theses", b, official_warn
-        ),
+        "ticket_b": _card("ticket_b", "Ticket B — different players/theses", b, official_warn),
         "ticket_c": _card("ticket_c", "Ticket C — best of A + B", c, official_warn),
     }
     return cards, quarantined

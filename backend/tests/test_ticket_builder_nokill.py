@@ -1,4 +1,5 @@
 """Official cards must use safe_pool (miss_by_one < 0.55) — locked 2026-11-14."""
+
 from __future__ import annotations
 
 from types import SimpleNamespace
