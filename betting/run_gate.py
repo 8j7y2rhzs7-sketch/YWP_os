@@ -433,14 +433,14 @@ def main() -> int:
             }
         except Exception as e:
             err = str(e)
-            # 404 on obscure roster entries = skip
-            if "404" in err:
+            # 404/500 on obscure roster entries = skip (ESPN blips)
+            if "404" in err or "500" in err:
                 return name, {
                     "sport": "nba",
                     "athlete_id": aid,
                     "team": team,
                     "ok": True,
-                    "skip": "http_404",
+                    "skip": "http_404" if "404" in err else "http_500",
                     "error": err,
                     "missing_cats": [],
                     "n_rs": 0,
@@ -534,13 +534,14 @@ def main() -> int:
             }
         except Exception as e:
             err = str(e)
-            if "404" in err:
+            # 404/500 on obscure roster entries = skip (ESPN blips)
+            if "404" in err or "500" in err:
                 return name, {
                     "sport": "ncaam",
                     "athlete_id": aid,
                     "team": team,
                     "ok": True,
-                    "skip": "http_404",
+                    "skip": "http_404" if "404" in err else "http_500",
                     "error": err,
                     "missing_cats": [],
                     "n_rs": 0,
