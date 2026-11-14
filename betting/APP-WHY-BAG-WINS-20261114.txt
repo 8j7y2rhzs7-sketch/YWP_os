@@ -1,0 +1,58 @@
+WHY THE APP’S “BAG” LOOKS LIKE THIS · Sat 11/14
+
+════════════════════════════════════════════════════════
+SHORT ANSWER
+════════════════════════════════════════════════════════
+The Fri cashes (REB floors + soft PTS shaves) are exactly what YWP’s
+decision engine is built to prefer when inputs are real:
+
+  vision = 30% hit_rate + 25% cushion + matchup + script + paths
+  miss_by_one_risk PUNISHES thin lines
+  ticket_builder only ships PLAY/LEAN with ywp_rating ≥ 6.5
+  demo slate literally seeds “6+ rebounds / 15+ points” role floors
+
+So the wins aren’t magic — they’re high hit-rate + big cushion overs,
+juiced by the book. You’re getting paid short (+154 / +260) because
+the book agrees they’re likely.
+
+════════════════════════════════════════════════════════
+CODE PATH (what’s actually optimizing)
+════════════════════════════════════════════════════════
+1. Candidate inputs carry:
+   recent_hit_rate · average_cushion · script_alignment · miss_by_one_count
+   (backend/app/services/decision_engine.py)
+
+2. Vision score rewards hit rate + cushion hardest (0.30 / 0.25).
+   That’s REB O5.5–O10.5 and PTS shaved 2–5 under main.
+
+3. Miss-by-1 gate kills naked exact clears (the thing that burned
+   thin overs). Soft shaves survive because cushion is large.
+
+4. ticket_builder.build_cards ranks by confidence / ywp_rating /
+   vision / edge / low miss-by-1 / low variance — then diversifies
+   by script_key. Output cards: core_4, core_parlay, cash_builder,
+   handicap (“biggest cushion”), no_stress.
+
+5. Constitution BLOCKS “heavily_juiced_filler” unless
+   independent_value_verified — so −1000 alone isn’t enough;
+   the floor (6/7 L7) is the value case. Our Fri REB ticket had
+   both: juice + verified floors.
+
+6. Gap: live_generic_slate still mostly emits ML/spread/total and
+   fakes hit_rate ≈ implied — so in-app LIVE NBA props are thin.
+   The bag you’ve been cashing matches betting/ gate KEEP logic
+   (and Hard Rock alt floors), more than a fully wired live prop
+   slate. Demo basketball already shows the intended shape
+   (providers._demo_basketball: points/assists/rebounds floors).
+
+════════════════════════════════════════════════════════
+WHAT TO WIRE NEXT (so the app stops “shocking” you)
+════════════════════════════════════════════════════════
+  Feed GATE L7 vals → candidate.recent_hit_rate + average_cushion
+  Emit NBA prop candidates from GATE_SHEETS (not just demo)
+  Tag soft shaves as alt_line_approved when first_67 found
+  Separate cards: REB_SPINE · PTS_SHAVE_CLONE (mirror Fri bags)
+  Keep FILLER_LEG_TAX so −900 without 6/7 never becomes PLAY
+
+Until then: use today’s SAT-CLONE-BAG slips — same machine that
+printed Fri.

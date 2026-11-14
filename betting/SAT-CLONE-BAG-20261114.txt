@@ -1,0 +1,78 @@
+SATURDAY 11/14 · CLONE THE CASHING BAG
+GATE PASS · 755 sheets · same shapes that hit Fri:
+  (A) juiced REB floors  ·  (B) soft PTS shaves + soft REB pad
+
+════════════════════════════════════════════════════════
+WHAT THE FRI BAG WAS (and why it printed)
+════════════════════════════════════════════════════════
+REB spine: KAT O10.5 · WCJ O6.5 · Boozer O5.5 · Bam O7.5 · JJ O6.5 · Sengun O5.5
+  → high L7 floors, big cushion, juice −230 to −1000, still cleared
+PTS clone: Brunson O20.5 · Nembhard O10.5 · Sengun O14.5 · Bey O12.5 · Keyonte REB O1.5
+  → 2–5 pt shaves under main + one soft REB pad
+
+════════════════════════════════════════════════════════
+A · REB SPINE (play 5–6) — Sat
+════════════════════════════════════════════════════════
+1. Bam Adebayo      REB O7.5   DET@MIA  7/7  [14,8,8,10,10,9,9]
+   id=4066261 · posted ~8.5 · SHAVE −1 · Fri cashing twin
+2. Jaden McDaniels  REB O5.5   CHI@MIN  6/7  [9,6,6,8,6,3,6]
+   id=4431671 · KEEP @ posted
+3. Cameron Boozer   REB O6.5   BKN@MEM  6/7  [10,11,7,12,6,9,9]
+   id=5041935 · posted ~9.5 · SHAVE · Fri O5.5 hit with room
+4. Cedric Coward    REB O6.5   BKN@MEM  6/7  [7,11,6,9,9,9,7]
+   id=4903027 · posted ~7.5 · soft shave
+5. Ausar Thompson   REB O5.5   DET@MIA  6/7  [11,5,11,17,6,8,9]
+   id=4684742 · posted ~7.5 · SHAVE −2
+6. Michael Porter   REB O5.5   BKN@MEM  6/7  [6,9,9,10,5,9,7]
+   id=4278104 · posted ~6.5 · SHAVE −1
+
+ALTS: Gobert REB O5.5 (6/7) · Jarrett Allen REB O5.5 (6/7) · Flagg REB O4.5 (6/7)
+BAN raw juice as “edge” — floors are the edge; −1000 is the tax
+
+SLIP A (6): Bam O7.5 · McDaniels O5.5 · Boozer O6.5 · Coward O6.5 · Ausar O5.5 · MPJ O5.5
+
+════════════════════════════════════════════════════════
+B · SOFT PTS SHAVE + PAD (play 5) — Sat Thu-clone
+════════════════════════════════════════════════════════
+1. Davion Mitchell  PTS O14.5  DET@MIA  6/7 KEEP  [22,19,17,22,11,15,15]
+   id=4278053 · Brunson-role floor at posted
+2. Bam Adebayo      PTS O15.5  DET@MIA  6/7       [37,11,18,18,35,16,27]
+   id=4066261 · SHAVE from ~17.5 · AD-style star floor
+3. Duncan Robinson  PTS O12.5  DET@MIA  6/7       [13,22,12,27,24,17,13]
+   id=3157465 · SHAVE from ~15.5 · exact Thu Duncan shape
+4. Nolan Traore     PTS O12.5  BKN@MEM  6/7 KEEP  [14,19,16,17,16,9,15]
+   id=5279130
+5. Jerami Grant     PTS O10.5  BKN@MEM  6/7 KEEP  [22,14,17,10,11,11,14]
+   id=2991070
+PAD: Terrence Shannon Jr. REB O2.5  CHI@MIN  6/7  [2,3,3,3,6,4,4]
+     id=4432847 · Gillespie/Keyonte pad
+ALT pad: LaMelo REB O1.5 (7/7 floor) if you want juicier pad
+
+SLIP B (5): Davion O14.5 · Bam PTS O15.5 · Duncan O12.5 · Traore O12.5 · Shannon REB O2.5
+SLIP B2: swap Traore → Grant O10.5 · or add Grant for 6
+
+════════════════════════════════════════════════════════
+C · MIX (best of both · 6)
+════════════════════════════════════════════════════════
+1. Bam REB O7.5
+2. Boozer REB O6.5
+3. McDaniels REB O5.5
+4. Davion PTS O14.5
+5. Duncan PTS O12.5
+6. Shannon REB O2.5   (or Bam PTS O15.5 if you want no soft pad)
+
+════════════════════════════════════════════════════════
+SCRIPT WATCH
+════════════════════════════════════════════════════════
+  MIN −15.5: McDaniels/Gobert floors usually hit early — blowout sit is late
+  DET@MIA: Bam + Davion + Duncan stack OK (same game correlation on MIA)
+  BKN@MEM: Boozer/Coward/MPJ REB + Traore/Grant PTS — good two-game split
+  DEN@NO: Bey PTS shave O12.5 only as RISK (3/7 at main) — not spine after Fri smash
+  Giannis PTS O26.5 = RISK-KEEP (6/7) — not the U28.5 trap
+
+════════════════════════════════════════════════════════
+BAN
+════════════════════════════════════════════════════════
+  Giannis PTS U28.5 · LaMelo AR O10.5 · NO +12.5 as ticket identity
+  Raw −900 REB without confirming the floor is actually 6/7+
+  Climbing lines for payout without new hit-rate
