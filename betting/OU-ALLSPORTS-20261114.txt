@@ -1,0 +1,161 @@
+ALL-SPORT O/U BOARD — Sat 2026-11-14 (ET) + NFL Sun 11/15
+GATE: PASS date=20261114 sheets_ok=755/755
+METHOD: L5 team points-for sum proxy vs posted total (not true H2H game-total sample).
+SAFE = STRONG only + big cushion. NHL main unders = PRIMARY not SAFE.
+
+============================================================
+NBA
+============================================================
+LEAN   UNDER  DEN @ NO            O/U 234.5  L5combo 223.2  O 1/5 U 4/5  margin -11.3  spr DEN -12.5  
+LEAN   OVER   DET @ MIA           O/U 228.5  L5combo 238.2  O 4/5 U 1/5  margin 9.7  spr DET -4.5  
+LEAN   UNDER  DAL @ CLE           O/U 231.5  L5combo 227.2  O 2/5 U 3/5  margin -4.3  spr DAL -1.5  
+NO     PASS   CHI @ MIN           O/U 235.5  L5combo 233.8  O 2/5 U 3/5  margin -1.7  spr MIN -15.5  
+NO     PASS   BKN @ MEM           O/U 228.5  L5combo 228.2  O 2/5 U 3/5  margin -0.3  spr MEM -3.5  
+
+============================================================
+NHL
+============================================================
+STRONG UNDER  SJ @ UTA            O/U 6.5  L5combo 4.6  O 0/5 U 5/5  margin -1.9  spr UTAH -205  NHL U on main — PRIMARY only; SAFE needs alt U with ≥+2 cush (HARD_RULES)
+STRONG UNDER  EDM @ TOR           O/U 6.5  L5combo 5.2  O 0/5 U 5/5  margin -1.3  spr EDM -148  NHL U on main — PRIMARY only; SAFE needs alt U with ≥+2 cush (HARD_RULES)
+LEAN   OVER   WPG @ CHI           O/U 6.5  L5combo 7.6  O 3/5 U 2/5  margin 1.1  spr WPG -162  
+LEAN   OVER   MIN @ BOS           O/U 6.5  L5combo 7.6  O 4/5 U 1/5  margin 1.1  spr MIN -118  
+LEAN   OVER   COL @ MTL           O/U 6.5  L5combo 7.2  O 4/5 U 1/5  margin 0.7  spr MTL -122  
+LEAN   UNDER  OTT @ PIT           O/U 6.5  L5combo 5.8  O 2/5 U 3/5  margin -0.7  spr OTT -130  NHL U on main — PRIMARY only; SAFE needs alt U with ≥+2 cush (HARD_RULES)
+LEAN   OVER   NJ @ WSH            O/U 6.5  L5combo 7.2  O 3/5 U 2/5  margin 0.7  spr NJ -120  
+LEAN   UNDER  BUF @ DAL           O/U 6.5  L5combo 5.8  O 2/5 U 3/5  margin -0.7  spr DAL -135  NHL U on main — PRIMARY only; SAFE needs alt U with ≥+2 cush (HARD_RULES)
+LEAN   OVER   NYI @ ANA           O/U 6.5  L5combo 7.2  O 4/5 U 1/5  margin 0.7  spr ANA -115  
+LEAN   UNDER  CGY @ LA            O/U 5.5  L5combo 4.8  O 1/5 U 4/5  margin -0.7  spr LA -175  NHL U on main — PRIMARY only; SAFE needs alt U with ≥+2 cush (HARD_RULES)
+LEAN   UNDER  PHI @ CBJ           O/U 5.5  L5combo 5.0  O 1/5 U 4/5  margin -0.5  spr CBJ -135  NHL U on main — PRIMARY only; SAFE needs alt U with ≥+2 cush (HARD_RULES)
+NO     PASS   DET @ TB            O/U 6.5  L5combo 6.2  O 2/5 U 3/5  margin -0.3  spr TB -225  
+NO     PASS   SEA @ CAR           O/U 6.5  L5combo 6.6  O 2/5 U 3/5  margin 0.1  spr CAR -395  
+NO     PASS   FLA @ STL           O/U 5.5  L5combo 5.6  O 4/5 U 1/5  margin 0.1  spr FLA -115  
+
+============================================================
+NCAAF
+============================================================
+STRONG OVER   ORST @ BOIS         O/U 63.5  L5combo 85.8  O 5/5 U 0/5  margin 22.3  spr BOIS -16.5  
+STRONG UNDER  AUB @ MSST          O/U 51.5  L5combo 32.6  O 0/5 U 5/5  margin -18.9  spr AUB -2.5  
+STRONG OVER   TEX @ LSU           O/U 46.5  L5combo 65.2  O 5/5 U 0/5  margin 18.7  spr LSU -4.5  
+STRONG OVER   DUKE @ MIA          O/U 54.5  L5combo 69.0  O 5/5 U 0/5  margin 14.5  spr MIA -14  
+STRONG OVER   UTAH @ ARIZ         O/U 55.5  L5combo 69.2  O 5/5 U 0/5  margin 13.7  spr UTAH -1.5  
+LEAN   OVER   WAKE @ SMU          O/U 60.5  L5combo 84.6  O 4/5 U 1/5  margin 24.1  spr SMU -1.5  
+LEAN   UNDER  NEB @ RUTG          O/U 51.5  L5combo 33.4  O 1/5 U 4/5  margin -18.1  spr NEB -15.5  
+LEAN   OVER   FAU @ TLSA          O/U 72.5  L5combo 89.0  O 4/5 U 1/5  margin 16.5  spr TLSA -6.5  
+LEAN   UNDER  CSU @ WSU           O/U 64.5  L5combo 48.6  O 1/5 U 4/5  margin -15.9  spr WSU -9.5  
+LEAN   OVER   UNLV @ UNM          O/U 46.5  L5combo 60.8  O 4/5 U 1/5  margin 14.3  spr UNM -17.5  
+LEAN   OVER   TTU @ OKST          O/U 73.5  L5combo 87.8  O 4/5 U 1/5  margin 14.3  spr OKST -3.5  
+LEAN   UNDER  CAL @ UVA           O/U 46.5  L5combo 32.8  O 1/5 U 4/5  margin -13.7  spr UVA -11.5  
+LEAN   UNDER  APP @ MRSH          O/U 54.5  L5combo 41.0  O 1/5 U 4/5  margin -13.5  spr APP -1.5  
+LEAN   UNDER  NEV @ NIU           O/U 47.5  L5combo 34.4  O 1/5 U 4/5  margin -13.1  spr NEV -6  
+LEAN   OVER   LOU @ UNC           O/U 57.5  L5combo 70.0  O 4/5 U 1/5  margin 12.5  spr LOU -3.5  
+LEAN   OVER   JMU @ CONN          O/U 56.5  L5combo 67.8  O 4/5 U 1/5  margin 11.3  spr JMU -4.5  
+LEAN   UNDER  FLA @ UK            O/U 52.5  L5combo 41.8  O 1/5 U 4/5  margin -10.7  spr UK -3  
+LEAN   UNDER  STAN @ VT           O/U 57.5  L5combo 46.8  O 1/5 U 4/5  margin -10.7  spr VT -16.5  
+LEAN   OVER   MTSU @ LIB          O/U 53.5  L5combo 63.2  O 4/5 U 1/5  margin 9.7  spr LIB -21  
+LEAN   UNDER  NMSU @ MOST         O/U 49.5  L5combo 40.0  O 1/5 U 4/5  margin -9.5  spr MOST -1.5  
+LEAN   OVER   BC @ ND             O/U 51.5  L5combo 60.6  O 4/5 U 1/5  margin 9.1  spr ND -29.5  
+LEAN   OVER   BAY @ BYU           O/U 50.5  L5combo 59.6  O 4/5 U 1/5  margin 9.1  spr BYU -8.5  
+LEAN   UNDER  KENN @ SHSU         O/U 45.5  L5combo 37.2  O 2/5 U 3/5  margin -8.3  spr KENN -7.5  
+LEAN   OVER   MIZ @ UGA           O/U 48.5  L5combo 56.0  O 3/5 U 2/5  margin 7.5  spr UGA -16.5  
+LEAN   OVER   NU @ OSU            O/U 45.5  L5combo 51.8  O 3/5 U 2/5  margin 6.3  spr OSU -14  
+LEAN   UNDER  KU @ WVU            O/U 68.5  L5combo 62.2  O 2/5 U 3/5  margin -6.3  spr WVU -2.5  
+LEAN   OVER   NDSU @ HAW          O/U 39.5  L5combo 44.8  O 4/5 U 1/5  margin 5.3  spr NDSU -7  
+LEAN   OVER   TENN @ TA&M         O/U 43.5  L5combo 48.4  O 3/5 U 2/5  margin 4.9  spr TENN -1.5  
+LEAN   UNDER  WYO @ UTEP          O/U 40.5  L5combo 35.6  O 2/5 U 3/5  margin -4.9  spr WYO -7  
+LEAN   UNDER  USC @ IU            O/U 51.5  L5combo 47.6  O 2/5 U 3/5  margin -3.9  spr IU -9.5  
+LEAN   UNDER  MINN @ PSU          O/U 42.5  L5combo 39.0  O 2/5 U 3/5  margin -3.5  spr PSU -12.5  
+LEAN   OVER   UNT @ UTSA          O/U 76.5  L5combo 80.0  O 4/5 U 1/5  margin 3.5  spr UNT -2.5  
+LEAN   UNDER  CIN @ ISU           O/U 58.5  L5combo 55.4  O 1/5 U 4/5  margin -3.1  spr ISU -2.5  
+LEAN   OVER   USM @ LT            O/U 56.5  L5combo 59.6  O 4/5 U 1/5  margin 3.1  spr LT -17.5  
+LEAN   UNDER  ECU @ CLT           O/U 45.5  L5combo 43.0  O 2/5 U 3/5  margin -2.5  spr ECU -10.5  
+LEAN   UNDER  TULN @ RICE         O/U 48.5  L5combo 46.0  O 1/5 U 4/5  margin -2.5  spr RICE -3  
+NO     PASS   FRES @ TXST         O/U 59.5  L5combo 66.0  O 2/5 U 3/5  margin 6.5  spr TXST -10  
+NO     PASS   SYR @ NCSU          O/U 54.5  L5combo 48.2  O 3/5 U 2/5  margin -6.3  spr SYR -3  
+NO     PASS   USU @ SDSU          O/U 43.5  L5combo 49.2  O 2/5 U 3/5  margin 5.7  spr USU -3  
+NO     PASS   GASO @ GAST         O/U 55.5  L5combo 60.2  O 2/5 U 3/5  margin 4.7  spr GASO -6  
+NO     PASS   PUR @ IOWA          O/U 47.5  L5combo 51.2  O 2/5 U 3/5  margin 3.7  spr IOWA -17.5  
+NO     PASS   UAB @ TEM           O/U 47.5  L5combo 44.2  O 3/5 U 2/5  margin -3.3  spr TEM -2.5  
+NO     PASS   ASU @ UCF           O/U 47.5  L5combo 49.8  O 3/5 U 2/5  margin 2.3  spr UCF -3.5  
+NO     PASS   WASH @ MSU          O/U 44.5  L5combo 42.2  O 2/5 U 3/5  margin -2.3  spr WASH -2.5  
+NO     PASS   SC @ ARK            O/U 51.5  L5combo 49.2  O 3/5 U 2/5  margin -2.3  spr SC -7.5  
+NO     PASS   GT @ CLEM           O/U 47.5  L5combo 45.4  O 1/5 U 4/5  margin -2.1  spr CLEM -15.5  
+NO     PASS   FIU @ DEL           O/U 54.5  L5combo 56.4  O 2/5 U 3/5  margin 1.9  spr DEL -3.5  
+NO     PASS   ARST @ CCU          O/U 52.5  L5combo 53.8  O 3/5 U 2/5  margin 1.3  spr CCU -1.5  
+NO     PASS   KSU @ TCU           O/U 44.5  L5combo 43.4  O 3/5 U 2/5  margin -1.1  spr TCU -13.5  
+NO     PASS   MICH @ ORE          O/U 39.5  L5combo 38.4  O 2/5 U 3/5  margin -1.1  spr ORE -10  
+NO     PASS   TROY @ USA          O/U 55.5  L5combo 56.6  O 2/5 U 3/5  margin 1.1  spr USA -3  
+NO     PASS   SJSU @ AFA          O/U 48.5  L5combo 47.6  O 3/5 U 2/5  margin -0.9  spr AF -14  
+NO     PASS   WIS @ MD            O/U 41.5  L5combo 40.8  O 3/5 U 2/5  margin -0.7  spr WIS -8.5  
+NO     PASS   ALA @ VAN           O/U 47.5  L5combo 47.8  O 3/5 U 2/5  margin 0.3  spr ALA -14  
+NO     PASS   JXST @ WKU          O/U 54.5  L5combo 54.8  O 2/5 U 3/5  margin 0.3  spr JXST -7.5  
+
+============================================================
+NCAAM
+============================================================
+STRONG OVER   USA @ UNT           O/U 132.5  L5combo 167.0  O 3/3 U 0/3  margin 34.5  spr UNT -8.5  
+STRONG OVER   LONG @ ODU          O/U 136.5  L5combo 170.5  O 4/4 U 0/4  margin 34.0  spr ODU -7.5  
+STRONG OVER   RICE @ SFA          O/U 148.5  L5combo 176.3  O 3/3 U 0/3  margin 27.8  spr SFA -9.5  
+STRONG UNDER  NJIT @ FAIR         O/U 141.5  L5combo 114.7  O 0/3 U 3/3  margin -26.8  spr FAIR -11.5  
+STRONG OVER   APSU @ WICH         O/U 154.5  L5combo 179.3  O 3/3 U 0/3  margin 24.8  spr WICH -12.5  
+STRONG OVER   LAF @ SBU           O/U 144.5  L5combo 165.7  O 3/3 U 0/3  margin 21.2  spr SBU -16.5  
+STRONG OVER   FUR @ BEL           O/U 154.5  L5combo 173.7  O 3/3 U 0/3  margin 19.2  spr BEL -2.5  
+STRONG UNDER  WGA @ CHSO          O/U 148.5  L5combo 134.0  O 0/3 U 3/3  margin -14.5  spr CHSO -5.5  
+STRONG OVER   UNM @ SCU           O/U 166.5  L5combo 180.7  O 3/3 U 0/3  margin 14.2  spr UNM -1.5  
+STRONG OVER   UNCA @ GT           O/U 156.5  L5combo 168.0  O 3/3 U 0/3  margin 11.5  spr GT -17.5  
+STRONG OVER   CIN @ DAY           O/U 147.5  L5combo 158.3  O 3/3 U 0/3  margin 10.8  spr CIN -6.5  
+LEAN   OVER   RGV @ UTA           O/U 139.5  L5combo 160.3  O 2/3 U 1/3  margin 20.8  spr UTA -4.5  
+LEAN   OVER   UCR @ FRES          O/U 147.5  L5combo 167.3  O 2/3 U 1/3  margin 19.8  spr FRES -4.5  
+LEAN   OVER   SUU @ WAKE          O/U 154.5  L5combo 171.7  O 2/3 U 1/3  margin 17.2  spr WAKE -18.5  
+LEAN   OVER   SDST VS UNCO        O/U 150.5  L5combo 167.3  O 2/3 U 1/3  margin 16.8  spr SDST -3.5  
+LEAN   OVER   UAB @ JXST          O/U 147.5  L5combo 163.0  O 2/3 U 1/3  margin 15.5  spr UAB -2.5  
+LEAN   OVER   LT @ NICH           O/U 135.5  L5combo 149.0  O 2/3 U 1/3  margin 13.5  spr NICH -1.5  
+LEAN   OVER   LIP @ WCU           O/U 157.5  L5combo 170.3  O 2/3 U 1/3  margin 12.8  spr WCU -3.5  
+LEAN   OVER   HOW @ DAV           O/U 141.5  L5combo 153.3  O 2/3 U 1/3  margin 11.8  spr DAV -9.5  
+LEAN   OVER   ULM @ GCU           O/U 162.5  L5combo 174.0  O 2/3 U 1/3  margin 11.5  spr GCU -31.5  
+LEAN   OVER   STMN @ ARMY         O/U 146.5  L5combo 156.8  O 3/4 U 1/4  margin 10.2  spr STMN -5.5  
+LEAN   OVER   HAMP @ NAVY         O/U 136.5  L5combo 144.0  O 2/3 U 1/3  margin 7.5  spr NAVY -1.5  Early NCAAM — RISK unless model+market agree
+LEAN   UNDER  MRSH @ YSU          O/U 159.5  L5combo 152.2  O 1/4 U 3/4  margin -7.2  spr YSU -1.5  Early NCAAM — RISK unless model+market agree
+LEAN   UNDER  WOF @ QUC           O/U 174.5  L5combo 167.2  O 0/4 U 4/4  margin -7.2  spr QUC -5.5  Early NCAAM — RISK unless model+market agree
+LEAN   UNDER  MAN @ LEM           O/U 147.5  L5combo 140.3  O 1/3 U 2/3  margin -7.2  spr LEM -2.5  Early NCAAM — RISK unless model+market agree
+LEAN   OVER   BING @ DUQ          O/U 140.5  L5combo 146.0  O 2/3 U 1/3  margin 5.5  spr DUQ -17.5  Early NCAAM — RISK unless model+market agree
+LEAN   OVER   LUC @ CSU           O/U 151.5  L5combo 156.5  O 3/4 U 1/4  margin 5.0  spr CSU -7.5  Early NCAAM — RISK unless model+market agree
+LEAN   OVER   DSU @ ECU           O/U 146.5  L5combo 151.3  O 2/3 U 1/3  margin 4.8  spr ECU -15.5  Early NCAAM — RISK unless model+market agree
+LEAN   OVER   RID @ VILL          O/U 144.5  L5combo 149.3  O 2/3 U 1/3  margin 4.8  spr VILL -35.5  Early NCAAM — RISK unless model+market agree
+LEAN   UNDER  UPST @ CAM          O/U 143.5  L5combo 139.3  O 1/3 U 2/3  margin -4.2  spr CAM -9.5  Early NCAAM — RISK unless model+market agree
+LEAN   UNDER  UTU @ CAL           O/U 159.5  L5combo 155.3  O 1/3 U 2/3  margin -4.2  spr CAL -14.5  Early NCAAM — RISK unless model+market agree
+LEAN   OVER   IUIN @ MORE         O/U 159.5  L5combo 163.7  O 2/3 U 1/3  margin 4.2  spr IUIN -2.5  Early NCAAM — RISK unless model+market agree
+LEAN   OVER   TULN @ AKR          O/U 155.5  L5combo 159.0  O 2/3 U 1/3  margin 3.5  spr AKR -12.5  Early NCAAM — RISK unless model+market agree
+NO     PASS   PRST @ SF           O/U 143.5  L5combo 153.3  O 1/3 U 2/3  margin 9.8  spr SF -9.5  
+NO     PASS   NWST @ LR           O/U 143.5  L5combo 137.3  O 2/3 U 1/3  margin -6.2  spr LR -9.5  
+NO     PASS   BRAD VS GMU         O/U 130.5  L5combo 125.5  O 2/4 U 2/4  margin -5.0  spr GMU -12.5  
+NO     PASS   CMU @ NKU           O/U 161.5  L5combo 166.3  O 1/3 U 2/3  margin 4.8  spr NKU -3.5  
+NO     PASS   NIU @ BELL          O/U 149.5  L5combo 153.2  O 2/4 U 2/4  margin 3.8  spr NIU -1.5  
+NO     PASS   BRWN @ SIE          O/U 159.5  L5combo 156.3  O 1/3 U 2/3  margin -3.2  spr SIE -10.5  
+NO     PASS   DREX @ ME           O/U 130.5  L5combo 133.0  O 2/4 U 2/4  margin 2.5  spr DREX -3.5  
+NO     PASS   STO @ TTU           O/U 143.5  L5combo 146.0  O 1/3 U 2/3  margin 2.5  spr TTU -39.5  
+NO     PASS   GWEB @ SC           O/U 142.5  L5combo 140.0  O 1/3 U 2/3  margin -2.5  spr SC -27.5  
+NO     PASS   MORG VS L-MD        O/U 153.5  L5combo 155.5  O 2/4 U 2/4  margin 2.0  spr MORG -1.5  
+NO     PASS   UMBC @ TOW          O/U 146.5  L5combo 148.2  O 2/4 U 2/4  margin 1.8  spr TOW -10.5  
+NO     PASS   COLO @ PROV         O/U 155.5  L5combo 154.0  O 2/3 U 1/3  margin -1.5  spr PROV -12.5  
+NO     PASS   JKST @ WIN          O/U 164.5  L5combo 163.7  O 1/3 U 2/3  margin -0.8  spr WIN -9.5  
+NO     PASS   UNI @ OAK           O/U 157.5  L5combo 156.8  O 1/4 U 3/4  margin -0.8  spr OAK -1.5  
+NO     PASS   CIT @ UNF           O/U 155.5  L5combo 156.0  O 2/3 U 1/3  margin 0.5  spr UNF -4.5  
+NO     PASS   COPP @ USF          O/U 150.5  L5combo 151.0  O 1/3 U 2/3  margin 0.5  spr USF -26.5  
+NO     PASS   PENN @ JOES         O/U 152.5  L5combo 152.0  O 1/3 U 2/3  margin -0.5  spr JOES -4.5  
+NO     PASS   MONT @ UND          O/U 150.5  L5combo 150.7  O 1/3 U 2/3  margin 0.2  spr MONT -1.5  
+
+============================================================
+NFL Sunday 11/15
+============================================================
+PASS         NE VS DET       O/U 49.5  DET -2.5  +5.5 avg but split
+UNDER-LEAN   KC @ ATL        O/U 47.5  KC -3  avg 41.2
+OVER-LEAN    HOU @ CLE       O/U 40.5  HOU -4.5  avg 47.0
+PASS         MIN @ GB        O/U 42.5  GB -2.5  push-ish
+OVER-LEAN    JAX @ TEN       O/U 46.5  JAX -10.5  avg 50.8
+UNDER-LEAN   MIA @ IND       O/U 37.5  IND -4.5  avg 34.4
+UNDER-LEAN   CAR @ NO        O/U 48.5  NO -2.5  avg 42.8 4/5 U
+PASS         BUF @ NYJ       O/U 50.5  BUF -7.5  
+OVER-LEAN    SEA @ LV        O/U 40.5  SEA -6.5  4/5 O
+OVER-LEAN    LAR @ ARI       O/U 39.5  LAR -9.5  avg 44
+UNDER-LEAN   SF @ DAL        O/U 55.5  SF -3.5  avg 52.2
+OVER         PIT @ CIN       O/U 49.5  CIN -3.5  avg 57.4 4/5 O
