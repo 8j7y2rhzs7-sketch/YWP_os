@@ -1,0 +1,19 @@
+---
+description: Permanent no-kill spine — agent tickets must match app cash/fortress cushion rules
+alwaysApply: true
+---
+
+betting-no-kill:
+
+- User complaint locked 2026-11-14: app bags cash on floors/cushion; agent tickets look good then die on **1 thin leg**. Never regress.
+- Before publishing any Official / CLEAN / SAFE / cash slip: filter legs with `python3 betting/no_kill_ticket.py` rules (import `grade_leg` / `build_no_kill_slip` or re-implement identically).
+- **Spine hard requirements (all must pass):**
+  1. L7 hits ≥ 6/7 (or 5/5 if n=5). **5/7 = not spine.**
+  2. Avg clear margin ≥ **1.5** (kills exact-clear / miss-by-1 killers).
+  3. L7 avg MIN ≥ **24** when minutes exist.
+  4. Season ≥75% at line when season_n ≥8 (dual-window).
+- Soft floors (REB/AST/STL ≤1.5 · 3PT ≤0.5 · SOG ≤1.5) are **pad-only** (max 1 per slip), never spine identity.
+- RISK-KEEP / script unders / live dogs may appear on UPSIDE / Ghostt cards only — never as Official spine without an explicit script label the user accepts.
+- Weed: do not auto-CUT script-supported unders/dogs that the app priced; tag `RISK-KEEP (script)` when L7 base rate is low but usage/script case exists.
+- Backend must keep Official cards on `safe_pool` (miss_by_one_risk &lt; 0.55). Edge/Ghostt may stay thinner and must be labeled upside.
+- Canon: `betting/ALIGN-AGENT-APP.md`, `betting/no_kill_ticket.py`, `betting/HARD_RULES.md` § Locked 2026-11-14.

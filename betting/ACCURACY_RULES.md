@@ -37,6 +37,18 @@ If L7 mean − season mean ≥ **+3** on PTS/REB/AST → shave **one extra step*
 Even at 7/7: REB/AST/STL ≤1.5 · 3PT ≤0.5 · SOG ≤1.5  
 Season scan found **600+** fake-firm soft clears — juice traps, not edges.
 
+## No-kill spine (agent ↔ app align)
+
+See `betting/no_kill_ticket.py` + `betting/ALIGN-AGENT-APP.md`.
+
+Spine legs only if:
+1. L7 ≥ 6/7 (5/7 is **never** spine)
+2. Avg clear margin ≥ **1.5** (kills exact-clear ticket-killers)
+3. L7 avg MIN ≥ 24
+4. Soft floors pad-only (max 1), never spine
+
+Backend: Official core_3/4/5 + tickets A/B/C use `safe_pool` (miss_by_one &lt; 0.55), same as cash_builder/fortress.
+
 ## STL / BLK = research only
 
 League avg season hit:

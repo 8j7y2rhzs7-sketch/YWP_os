@@ -375,3 +375,20 @@ The "1 player" is usually the **climb we weeded** or a **soft-cush PRIMARY** tha
 4. **Early NCAAM (openers ≤2 weeks):** no side/ML as SAFE. Troy + KSU outright losses. Skip or RISK-only with ≥90% + ranked chalk.
 5. **Prefer soft PL (+1.5/+2.5 on near-pick'em) over a third star SOG** when building mix length.
 6. **Weed bias check:** dog +1.5 needs an explicit failure mode before CUT (Jets/Perfetti class).
+
+## Locked 2026-11-14 — NO-KILL / agent↔app align (PERMANENT)
+**User:** "my app is on my side even when I don’t like the picks they cash — you give me shit that looks good and then 1 of them kills my ticket — something doesn’t align in the back end."
+**Receipts:** Fri app/clone bags cashed (REB spine Bam/KAT/WCJ/Boozer/JJ/Sengun; soft PTS shave Brunson/Nembhard/Keyonte/Sengun/Bey). Agent "looks good" tickets repeatedly died on one thin-cushion / exact-clear / 5/7 spine. App CUTs that were actually script (Sengun AST U, Giannis AR U, Colorado ML, Wemby PR U) also cashed — agent over-CUT script.
+### Root cause
+1. App `decision_engine` weights hit rate + **cushion**; `cash_builder`/`fortress` use `safe_pool` (miss_by_one &lt; 0.55).
+2. Official `core_3/4/5` / tickets A/B/C were built from full `eligible` — thin high-confidence legs killed tickets. **Fixed to `safe_pool`.**
+3. Agent chat slips were not bound to the same filter.
+### Rules (do not weaken)
+1. **Official / CLEAN / SAFE = no-kill only.** Run `betting/no_kill_ticket.py` (or identical bars).
+2. Spine: L7 ≥6/7 **and** avg clear margin ≥1.5 **and** mpg ≥24. **5/7 never spine.**
+3. Soft floors pad-only (max 1). Exact-clear 6/7 with thin margin = CUT from official.
+4. Backend Official cards stay on `safe_pool`. Edge/Ghostt = labeled upside only.
+5. Script unders/dogs: `RISK-KEEP (script)` — do not auto-CUT just because L7 under-base is low.
+6. Prefer ugly juiced floors with cushion over sexy thin mains — that is the app win pattern.
+### Canon
+`.cursor/rules/betting-no-kill.mdc` · `betting/ALIGN-AGENT-APP.md` · `betting/no_kill_ticket.py` · `THREE_GATES.md` Gate 0

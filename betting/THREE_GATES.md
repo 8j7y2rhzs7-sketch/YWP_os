@@ -40,3 +40,21 @@ A leg is LOCK-eligible only if:
 Tag every locked leg: `G1 · G2 · G3 · LINE · KEEP|RISK-KEEP · source`
 
 If any gate fails → CUT that leg. Rebuild from legs that clear all three.
+
+---
+
+## GATE 0 — NO-KILL SPINE (locked 2026-11-14)
+
+**Permanent.** Official / CLEAN / SAFE / cash slips do not ship without this.
+
+Aligns agent slips with app `cash_builder` / `fortress` (`miss_by_one_risk < 0.55`).
+
+| Rule | Bar |
+|------|-----|
+| Hit | L7 ≥ **6/7** (5/7 ≠ spine) |
+| Cushion | Avg clear margin ≥ **1.5** |
+| Minutes | L7 avg MIN ≥ **24** |
+| Soft floors | REB/AST/STL ≤1.5 pad-only (max 1) |
+| Backend | Official core_3/4/5 + A/B/C = `safe_pool` only |
+
+Code: `betting/no_kill_ticket.py` · Why: `betting/ALIGN-AGENT-APP.md` · Rules: `.cursor/rules/betting-no-kill.mdc`
