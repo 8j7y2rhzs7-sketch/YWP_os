@@ -1,0 +1,6 @@
+SUNDAY 2026-11-15 ALL-SPORTS EXHAUSTIVE
+GATE: PASS date=20261115 sheets_ok=660/660
+Posted mains: betting/posted-mains-20261115.json (740)
+NFL exhaustive: betting/NFL-EXHAUSTIVE-20261115.txt
+NBA/NHL props grade: betting/out/NBA_NHL_PROPS_20261115.json
+See chat for SAFE/PRIMARY/BANGERS/CLEAN SLIPS.
