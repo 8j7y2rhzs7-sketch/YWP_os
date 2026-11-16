@@ -13,7 +13,6 @@ import re
 from datetime import UTC, date, datetime
 from decimal import Decimal
 from typing import Any
-from zoneinfo import ZoneInfo
 
 from pydantic import ValidationError
 
@@ -177,7 +176,7 @@ def _build_market_board_uncached(
         start_time = _parse_start(event.get("commence_time"))
         if start_time is None:
             continue
-        if not _on_slate_date(start_time, slate_date):
+        if not _on_slate_date(start_time, slate_date, sport=sport_lower):
             continue
         matched_events += 1
         league = str(event.get("_ywp_league") or _LEAGUE.get(sport_lower, sport_lower.upper()))
@@ -232,7 +231,9 @@ def _build_market_board_uncached(
                 if priced >= max_events:
                     break
                 start_time = _parse_start(event.get("commence_time"))
-                if start_time is None or not _on_slate_date(start_time, slate_date):
+                if start_time is None or not _on_slate_date(
+                    start_time, slate_date, sport=sport_lower
+                ):
                     continue
                 event_id = str(event.get("id") or "")
                 if not event_id:
@@ -960,11 +961,7 @@ def _parse_start(value: Any) -> datetime | None:
         return None
 
 
-def _on_slate_date(start_time: datetime, slate_date: date) -> bool:
-    if start_time.astimezone(UTC).date() == slate_date:
-        return True
-    try:
-        local = start_time.astimezone(ZoneInfo("America/New_York")).date()
-    except Exception:
-        return False
-    return local == slate_date
+def _on_slate_date(start_time: datetime, slate_date: date, *, sport: str | None = None) -> bool:
+    from app.services.live_generic_slate import event_matches_slate_date
+
+    return event_matches_slate_date(start_time, slate_date, sport=sport)
