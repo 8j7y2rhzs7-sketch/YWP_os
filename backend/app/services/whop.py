@@ -29,7 +29,7 @@ DECISION_ENGINE_CHECKOUT_URL = "https://whop.com/checkout/plan_MwJ2qcFxmvqDY"
 # Latest published sideload. The API version can be newer than this APK.
 DEFAULT_APP_DOWNLOAD_URL = (
     "https://github.com/8j7y2rhzs7-sketch/YWP_os/releases/download/"
-    "android-v3.3.81/YWP-OS-3.3.81.apk"
+    "android-v3.3.82/YWP-OS-3.3.82.apk"
 )
 
 

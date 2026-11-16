@@ -18,6 +18,7 @@ import { ShareCard } from "@/components/ShareCard";
 import { YwpButton } from "@/components/YwpButton";
 import { useAppData } from "@/context/AppDataContext";
 import { useAuth } from "@/context/AuthContext";
+import { useSafeBack } from "@/hooks/useSafeBack";
 import { colors, spacing, type , registerStyles } from "@/theme";
 
 export default function ShareCardScreen() {
@@ -28,6 +29,7 @@ export default function ShareCardScreen() {
   const cardKey = Array.isArray(params.cardKey) ? params.cardKey[0] : params.cardKey;
   const { analyses, builds, ready } = useAppData();
   const { user, loading: authLoading } = useAuth();
+  const goBack = useSafeBack("/(tabs)");
   const analysis = analysisId ? analyses[analysisId] : undefined;
   const card = analysisId && cardKey ? builds[analysisId]?.cards[cardKey] : undefined;
   const cardRef = useRef<View>(null);
@@ -98,13 +100,19 @@ export default function ShareCardScreen() {
     return (
       <Screen>
         <ErrorNotice message="The selected card is no longer in memory. Return to the Decision Board and open its graphic again." />
-        <YwpButton label="BACK TO PROTOCOL RUN" onPress={() => router.replace("/(tabs)/slate")} />
+        <YwpButton label="BACK TO HOME" onPress={goBack} />
+        <YwpButton
+          label="BACK TO PROTOCOL RUN"
+          variant="outline"
+          onPress={() => router.replace("/(tabs)/slate")}
+        />
       </Screen>
     );
   }
 
   return (
     <Screen>
+      <YwpButton label="‹ BACK" variant="outline" onPress={goBack} />
       <Text style={styles.title}>YWP GRAPHIC STUDIO</Text>
       <Text style={type.caption}>
         The live component below is the production template. Export generates a
@@ -124,7 +132,7 @@ export default function ShareCardScreen() {
         />
       </View>
       <YwpButton label="EXPORT / SHARE 1080 × 1350 PNG" onPress={() => void exportCard()} loading={exporting} />
-      <YwpButton label="BACK TO DECISION BOARD" variant="outline" onPress={() => router.back()} />
+      <YwpButton label="BACK TO DECISION BOARD" variant="outline" onPress={goBack} />
     </Screen>
   );
 }

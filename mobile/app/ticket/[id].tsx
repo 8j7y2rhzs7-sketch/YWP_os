@@ -14,6 +14,8 @@ import { SlipBuilder } from "@/components/SlipBuilder";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
+import { useSafeBack } from "@/hooks/useSafeBack";
+import { rememberSession } from "@/lib/session";
 import { colors, spacing, type , registerStyles } from "@/theme";
 import type { LockCheck, Recommendation, SettleDayResponse, Ticket } from "@/types";
 
@@ -21,6 +23,7 @@ export default function TicketDetailScreen() {
   const params = useLocalSearchParams<{ id: string }>();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
   const { request } = useAuth();
+  const goBack = useSafeBack("/(tabs)");
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [lock, setLock] = useState<LockCheck | null>(null);
   const [alternatives, setAlternatives] = useState<Recommendation[]>([]);
@@ -80,6 +83,15 @@ export default function TicketDetailScreen() {
       Alert.alert(
         "YWP OS",
         "Ticket marked placed. Sync scores after games finish, or grade process later.",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              rememberSession({ pathname: "/(tabs)", phase: "idle" });
+              router.replace("/(tabs)");
+            },
+          },
+        ],
       );
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Ticket could not be placed");
@@ -243,8 +255,9 @@ export default function TicketDetailScreen() {
   if (!ticket) {
     return (
       <Screen>
+        <BrandHeader title="TICKET" compact onBack={goBack} backLabel="HOME" />
         <ErrorNotice message={error ?? "Ticket not found"} />
-        <YwpButton label="BACK TO TICKETS" onPress={() => router.replace("/(tabs)/tickets")} />
+        <YwpButton label="BACK TO HOME" onPress={goBack} />
       </Screen>
     );
   }
@@ -254,7 +267,14 @@ export default function TicketDetailScreen() {
 
   return (
     <Screen sport={ticket.sport} refreshing={loading} onRefresh={() => void load()}>
-      <BrandHeader title="LOCK CENTER" subtitle="EDIT • SWAP • FINAL SWEEP" compact sport={ticket.sport} />
+      <BrandHeader
+        title="LOCK CENTER"
+        subtitle="EDIT • SWAP • FINAL SWEEP"
+        compact
+        sport={ticket.sport}
+        onBack={goBack}
+        backLabel="HOME"
+      />
       <MetalPanel tone={ticket.last_lock_status === "LOCKED" ? "success" : "gold"}>
         <View style={styles.header}>
           <View style={styles.flex}>

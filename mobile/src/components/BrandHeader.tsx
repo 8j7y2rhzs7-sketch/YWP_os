@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Animated, Image, StyleSheet, Text, View } from "react-native";
+import { Animated, Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { brandAssets } from "@/brandAssets";
 import { MetalShimmer } from "@/components/MetalShimmer";
@@ -11,6 +11,9 @@ interface BrandHeaderProps {
   subtitle?: string;
   compact?: boolean;
   sport?: string;
+  /** When set, shows a visible BACK control (needed after session restore). */
+  onBack?: () => void;
+  backLabel?: string;
 }
 
 export function BrandHeader({
@@ -18,6 +21,8 @@ export function BrandHeader({
   subtitle = brand.descriptor,
   compact = false,
   sport,
+  onBack,
+  backLabel = "BACK",
 }: BrandHeaderProps) {
   const look = sportLook(sport);
   const enter = useRef(new Animated.Value(0)).current;
@@ -51,6 +56,18 @@ export function BrandHeader({
       ]}
     >
       {sport ? <View style={[styles.sportStripe, { backgroundColor: look.accent }]} /> : null}
+      {onBack ? (
+        <Pressable
+          onPress={onBack}
+          accessibilityRole="button"
+          accessibilityLabel={backLabel}
+          hitSlop={10}
+          style={({ pressed }) => [styles.backBtn, pressed && styles.backBtnPressed]}
+        >
+          <Text style={styles.backChevron}>‹</Text>
+          <Text style={styles.backLabel}>{backLabel}</Text>
+        </Pressable>
+      ) : null}
       <MetalShimmer intensity="soft" periodMs={3600} style={styles.crestGlow}>
         <Image
           source={brandAssets.crest}
@@ -83,7 +100,7 @@ const styles = registerStyles(() => StyleSheet.create({
   wrap: {
     flexDirection: "row",
     alignItems: "center",
-    gap: spacing.lg,
+    gap: spacing.md,
     paddingTop: spacing.sm,
     paddingBottom: spacing.lg,
     borderBottomColor: "rgba(255,255,255,0.08)",
@@ -99,6 +116,36 @@ const styles = registerStyles(() => StyleSheet.create({
     width: 3,
     borderRadius: 2,
     opacity: 0.95,
+  },
+  backBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 2,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "rgba(240,193,74,0.55)",
+    backgroundColor: "rgba(240,193,74,0.12)",
+    marginRight: 2,
+  },
+  backBtnPressed: {
+    backgroundColor: "rgba(240,193,74,0.22)",
+  },
+  backChevron: {
+    color: colors.gold,
+    fontFamily: fonts.display,
+    fontSize: 22,
+    fontWeight: "800",
+    lineHeight: 24,
+    marginTop: -1,
+  },
+  backLabel: {
+    color: colors.gold,
+    fontFamily: fonts.bodyBold,
+    fontSize: 11,
+    fontWeight: "700",
+    letterSpacing: 1.0,
   },
   crestGlow: {
     borderRadius: 18,

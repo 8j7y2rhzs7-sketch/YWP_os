@@ -13,6 +13,7 @@ import { SectionTitle } from "@/components/SectionTitle";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
+import { useSafeBack } from "@/hooks/useSafeBack";
 import { colors, radius, spacing, type , registerStyles } from "@/theme";
 import type { Recommendation, ResultRecord } from "@/types";
 
@@ -82,6 +83,7 @@ function optional(value: string): string | undefined {
 }
 
 export default function ResultGradeScreen() {
+  const goBack = useSafeBack("/(tabs)");
   const params = useLocalSearchParams<{ id: string }>();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
   const { request } = useAuth();
@@ -205,7 +207,7 @@ export default function ResultGradeScreen() {
   if (loading) {
     return (
       <Screen>
-        <BrandHeader title="RESULT & PROCESS" compact />
+        <BrandHeader title="RESULT & PROCESS" compact onBack={goBack} backLabel="HOME" />
         <LoadingState label="Loading the stored recommendation…" />
       </Screen>
     );
@@ -214,7 +216,13 @@ export default function ResultGradeScreen() {
   if (record) {
     return (
       <Screen>
-        <BrandHeader title="RESULT RECORDED" subtitle="OUTCOME ≠ PROCESS" compact />
+        <BrandHeader
+          title="RESULT RECORDED"
+          subtitle="OUTCOME ≠ PROCESS"
+          compact
+          onBack={goBack}
+          backLabel="HOME"
+        />
         <MetalPanel tone={record.outcome === "WIN" ? "success" : "gold"}>
           <StatusPill value={record.outcome} />
           <Text style={styles.title}>Learning ledger updated</Text>
@@ -230,7 +238,7 @@ export default function ResultGradeScreen() {
           </Text>
         </MetalPanel>
         <YwpButton label="OPEN LEARNING LAB" onPress={() => router.replace("/(tabs)/learning")} />
-        <YwpButton label="BACK" variant="outline" onPress={() => router.back()} />
+        <YwpButton label="BACK TO HOME" variant="outline" onPress={goBack} />
       </Screen>
     );
   }
@@ -238,15 +246,22 @@ export default function ResultGradeScreen() {
   if (!recommendation) {
     return (
       <Screen>
+        <BrandHeader title="RESULT & PROCESS" compact onBack={goBack} backLabel="HOME" />
         <ErrorNotice message={error ?? "Recommendation not found"} />
-        <YwpButton label="BACK" onPress={() => router.back()} />
+        <YwpButton label="BACK TO HOME" onPress={goBack} />
       </Screen>
     );
   }
 
   return (
     <Screen>
-      <BrandHeader title="RESULT & PROCESS" subtitle="GRADE HONESTLY • TRAIN THE ENGINE" compact />
+      <BrandHeader
+        title="RESULT & PROCESS"
+        subtitle="GRADE HONESTLY • TRAIN THE ENGINE"
+        compact
+        onBack={goBack}
+        backLabel="HOME"
+      />
       {error ? <ErrorNotice message={error} /> : null}
       <MetalPanel tone="gold">
         <Text style={type.eyebrow}>{recommendation.sport} • {recommendation.market_type.replaceAll("_", " ")}</Text>
