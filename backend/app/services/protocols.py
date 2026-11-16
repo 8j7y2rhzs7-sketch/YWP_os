@@ -336,16 +336,34 @@ def run_protocol_health_check(
     )
 
     checks: list[dict[str, Any]] = []
+    sport_l = (sport or "").strip().lower()
+    if sport_l in {"multi", "mixed"}:
+        sport_l = "all"
+
+    def _candidate_sport_ok(candidate: CandidateInput) -> bool:
+        cand = (candidate.sport or "").strip().lower()
+        if cand == "ncaam":
+            cand = "ncaab"
+        if sport_l == "all":
+            # ALL SPORTS boards intentionally mix nba/nfl/soccer/… keys.
+            return bool(cand)
+        if sport_l == "ncaam":
+            return cand == "ncaab"
+        return cand == sport_l
+
     checks.append(
         {
             "key": "schedule_and_identity",
             "label": "Schedule, sport, event, and candidate identity",
             "status": "PASS"
             if len(candidate_ids) == len(set(candidate_ids))
-            and all(candidate.sport.lower() == sport.lower() for candidate in candidates)
+            and all(_candidate_sport_ok(candidate) for candidate in candidates)
             else "FAIL",
             "detail": (
-                "Candidate IDs must be unique and every candidate must match the slate sport."
+                "Candidate IDs must be unique and every candidate must match the slate sport "
+                "(ALL SPORTS may mix sports)."
+                if sport_l == "all"
+                else "Candidate IDs must be unique and every candidate must match the slate sport."
             ),
         }
     )
