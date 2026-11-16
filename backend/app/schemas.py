@@ -304,15 +304,24 @@ class CandidateInput(YWPModel):
         return self
 
 
+def _normalize_request_sport(sport: str) -> str:
+    key = (sport or "").strip().lower()
+    if key == "ncaam":
+        return "ncaab"
+    if key in {"multi", "mixed"}:
+        return "all"
+    return key
+
+
 class SportsAnalyzeRequest(YWPModel):
     sport: str = Field(min_length=2, max_length=24)
     date: date
     mode: Literal["pregame", "live"] = "pregame"
     user_risk_profile: RiskProfile = RiskProfile.balanced
     bankroll: Decimal | None = Field(default=None, ge=0)
-    # Full sport prop boards (WNBA/NFL) routinely exceed 500 priced sides.
-    # Do not truncate the user's slate — analyze whatever the raw board returns.
-    candidates: list[CandidateInput] = Field(min_length=1, max_length=10000)
+    # Full sport prop boards (WNBA/NFL) and ALL SPORTS merges routinely exceed
+    # a few thousand priced sides. Cap high enough for mega boards.
+    candidates: list[CandidateInput] = Field(min_length=1, max_length=12000)
     # Sheet Check path: upgrade selected sportsbook-menu legs with model twins.
     # Default on so older APKs get model grades without a new client build.
     # Load board still keeps overlay forced off for reliability.
@@ -326,8 +335,10 @@ class SportsAnalyzeRequest(YWPModel):
 
     @model_validator(mode="after")
     def candidates_match_sport(self) -> SportsAnalyzeRequest:
-        expected = self.sport.lower()
-        if any(candidate.sport.lower() != expected for candidate in self.candidates):
+        expected = _normalize_request_sport(self.sport)
+        if expected != "all" and any(
+            _normalize_request_sport(candidate.sport) != expected for candidate in self.candidates
+        ):
             raise ValueError("Every candidate must match the requested sport")
         candidate_ids = [candidate.candidate_id for candidate in self.candidates]
         if len(candidate_ids) != len(set(candidate_ids)):
@@ -340,14 +351,16 @@ class PropWarmRequest(YWPModel):
 
     sport: str = Field(min_length=2, max_length=24)
     date: date
-    candidates: list[CandidateInput] = Field(min_length=1, max_length=10000)
+    candidates: list[CandidateInput] = Field(min_length=1, max_length=12000)
     # Keep each pass under Render's ~30s proxy; client loops for full coverage.
     budget_seconds: float = Field(default=18.0, ge=3.0, le=22.0)
 
     @model_validator(mode="after")
     def candidates_match_sport(self) -> PropWarmRequest:
-        expected = self.sport.lower()
-        if any(candidate.sport.lower() != expected for candidate in self.candidates):
+        expected = _normalize_request_sport(self.sport)
+        if expected != "all" and any(
+            _normalize_request_sport(candidate.sport) != expected for candidate in self.candidates
+        ):
             raise ValueError("Every candidate must match the requested sport")
         return self
 

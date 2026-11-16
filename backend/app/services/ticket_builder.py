@@ -79,16 +79,36 @@ def _diverse(
     selected: list[Recommendation] = []
     used_scripts: set[str] = set()
     used_entities = set(existing or set())
+    used_sports: set[str] = set()
     entity = entity or (lambda item: item.player_key or item.event_id)
-    for item in sorted(pool, key=_priority):
+    ranked = sorted(pool, key=_priority)
+    # Prefer spreading sports when the board is multi-sport (ALL SPORTS run).
+    sport_keys = {(item.sport or "").lower() for item in ranked if item.sport}
+    prefer_sport_spread = len(sport_keys) >= 2
+
+    def _accept(item: Recommendation) -> bool:
         item_entity = entity(item)
         if item.script_key in used_scripts or item_entity in used_entities:
-            continue
+            return False
         selected.append(item)
         used_scripts.add(item.script_key)
         used_entities.add(item_entity)
+        used_sports.add((item.sport or "").lower())
+        return True
+
+    if prefer_sport_spread:
+        for sport in sorted(sport_keys):
+            if len(selected) >= count:
+                break
+            for item in ranked:
+                if (item.sport or "").lower() != sport:
+                    continue
+                if _accept(item):
+                    break
+    for item in ranked:
         if len(selected) >= count:
             break
+        _accept(item)
     return selected
 
 
@@ -617,6 +637,11 @@ def build_cards(
             [
                 "Built only from legs with miss-by-1 risk under 0.55. "
                 "Thin closes are Max Bet singles or PASS — never stacked."
+                + (
+                    " Mixed-sport board: legs prefer distinct sports when available."
+                    if len({(item.sport or "").lower() for item in safe_pool}) >= 2
+                    else ""
+                )
             ],
         ),
         "core_3": _card("core_3", "Official 3-Pick — safe cushion only", core_3),

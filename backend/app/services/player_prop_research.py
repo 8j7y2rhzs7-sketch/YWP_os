@@ -28,6 +28,41 @@ logger = logging.getLogger(__name__)
 
 PROP_MODEL_SPORTS = frozenset({"wnba", "nba", "ncaab", "ncaam", "nfl", "ncaaf", "basketball"})
 
+# One warm request must stay small. A 4,000-row body spends the whole
+# Render window on JSON and never finishes a calculation, so the phone
+# sits on WARM. Plus-money +4000 and longer is reserved in every slice
+# so those prices are not stuck behind the -110 board.
+WARM_PASS_LIMIT = 96
+LONGSHOT_ODDS = 4000
+LONGSHOT_RESERVE = 32
+
+
+def _is_pending_prop(candidate: CandidateInput) -> bool:
+    return str(candidate.market_type or "").startswith("player_") and (
+        candidate.probability_source == "market_implied"
+    )
+
+
+def select_warm_slice(
+    candidates: list[CandidateInput],
+) -> tuple[list[CandidateInput], list[CandidateInput]]:
+    """Return (this pass, everything else).
+
+    The pass mixes standard prices with +4000-and-up longshots. The rest
+    stays on the phone and comes back on the next warm call.
+    """
+    pending = [row for row in candidates if _is_pending_prop(row)]
+    other = [row for row in candidates if not _is_pending_prop(row)]
+    longshots = [row for row in pending if int(row.american_odds or 0) >= LONGSHOT_ODDS]
+    standard = [row for row in pending if int(row.american_odds or 0) < LONGSHOT_ODDS]
+    take_long = longshots[:LONGSHOT_RESERVE]
+    room = max(0, WARM_PASS_LIMIT - len(take_long))
+    take_standard = standard[:room]
+    chosen = {row.candidate_id for row in take_long + take_standard}
+    held = [row for row in pending if row.candidate_id not in chosen]
+    return take_standard + take_long, other + held
+
+
 # Process-local enriched-prop cache (survives across slate refresh → LAUNCH).
 _PROP_CACHE_TTL_SECONDS = 20 * 60
 _prop_cache: dict[tuple[Any, ...], tuple[float, dict[str, Any] | None]] = {}
@@ -456,11 +491,28 @@ def enrich_player_prop_candidates(
     return [row if row is not None else candidates[i] for i, row in enumerate(out)]
 
 
+def _prop_live_trigger(sport: str, market: str, existing: str | None) -> str | None:
+    from app.services.live_cashout import locked_live_trigger
+
+    return locked_live_trigger(sport, market) or existing
+
+
 def min_prop_cushion(candidate: CandidateInput) -> float:
     """Minimum average L10 cushion required before a modeled prop can PLAY."""
     scale = float(candidate.cushion_scale or 4.0)
     sport = (candidate.sport or "").lower()
     market = str(candidate.market_type or "").lower()
+    from app.services.calculation_discipline import (
+        is_points_count_market,
+        is_reception_count_market,
+    )
+
+    # Two-catch games sit inside a 1.0 reception cushion. Require a full extra catch.
+    if is_reception_count_market(market):
+        return 1.5
+    # One point is the basketball loss. Straight points need more than that unit.
+    if sport in {"wnba", "nba", "basketball"} and is_points_count_market(market):
+        return 1.5
     if sport in {"nfl", "ncaaf"}:
         return max(1.0, 0.20 * scale)
     if sport == "mlb":
@@ -622,6 +674,7 @@ def _enrich_one(
                 f"Average cushion {avg_cushion:+.2f}; miss-by-1 count L10={miss_by_one}.",
                 "Sportsbook price used only for value comparison after form projection.",
             ],
+            "live_trigger": _prop_live_trigger(sport, market, candidate.live_trigger),
             "ain_checks": {
                 **(candidate.ain_checks or {}),
                 "recent_form_l5_l10": True,

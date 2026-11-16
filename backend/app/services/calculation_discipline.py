@@ -77,6 +77,47 @@ def market_family(market_type: str | None) -> str:
     return text or "unknown"
 
 
+def is_points_count_market(market_type: str | None) -> bool:
+    """Straight points, not a combo. One point is the whole miss."""
+    market = str(market_type or "").lower()
+    if "point" not in market:
+        return False
+    return not any(token in market for token in ("rebounds", "assists", "pra", "threes", "three"))
+
+
+def is_reception_count_market(market_type: str | None) -> bool:
+    """Catch totals only. Yards, TDs, and longest catch are different markets."""
+    market = str(market_type or "").lower()
+    if "reception" not in market:
+        return False
+    return not any(token in market for token in ("yard", "td", "touchdown", "longest"))
+
+
+def is_batter_prop_market(market_type: str | None) -> bool:
+    """Hitter props that can still cash on the next plate appearance."""
+    market = str(market_type or "").lower()
+    if market.startswith("pitcher_") or "strikeout" in market or "allowed" in market:
+        return False
+    tokens = (
+        "player_hits",
+        "player_hr",
+        "player_home_run",
+        "player_rbi",
+        "player_runs",
+        "player_total_bases",
+        "player_walks",
+        "player_hrr",
+        "batter_hits",
+        "batter_home",
+        "batter_rbis",
+        "batter_runs",
+        "batter_total_bases",
+        "batter_walks",
+        "batter_hits_runs",
+    )
+    return any(token in market for token in tokens)
+
+
 def is_modeled_prop_market(sport: str | None, market_type: str | None) -> bool:
     sport_l = str(sport or "").lower()
     market_l = str(market_type or "").lower()

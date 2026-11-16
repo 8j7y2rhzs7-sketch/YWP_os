@@ -10,12 +10,17 @@ import { LoadingState } from "@/components/LoadingState";
 import { MetalPanel } from "@/components/MetalPanel";
 import { MotionReveal } from "@/components/MotionReveal";
 import { ProtocolRunDock } from "@/components/ProtocolRunDock";
+import {
+  RunActivityBanner,
+  type RunActivity,
+} from "@/components/RunActivityBanner";
 import { Screen } from "@/components/Screen";
 import { SectionTitle } from "@/components/SectionTitle";
 import { SportBallIcon } from "@/components/SportBallIcon";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useRunKeepAwake } from "@/components/StayAwake";
+import { brandAssets } from "@/brandAssets";
 import { useAppData } from "@/context/AppDataContext";
 import { useAuth } from "@/context/AuthContext";
 import {
@@ -38,11 +43,11 @@ import type {
 } from "@/types";
 
 const CANDIDATE_PAGE = 20;
-const PROP_SPORTS = new Set(["wnba", "nba", "ncaab", "nfl", "ncaaf"]);
+const PROP_SPORTS = new Set(["wnba", "nba", "ncaab", "nfl", "ncaaf", "all"]);
 /** Chunked warm passes — each stays under Render's ~30s proxy. */
 const MAX_WARM_ROUNDS = 14;
-/** Giant boards need more slices than a normal slate. */
-const MAX_WARM_ROUNDS_HUGE = 64;
+/** Giant boards (ALL SPORTS / 5k+) need many slices. */
+const MAX_WARM_ROUNDS_HUGE = 96;
 /** Props shipped per warm request. Full boards time out without this. */
 const WARM_CHUNK = 96;
 const WARM_LONGSHOT_ODDS = 4000;
@@ -55,6 +60,29 @@ const WARM_RETRY_LIMIT = 3;
 const WARM_EDGE_RETRY_LIMIT = 5;
 /** Auto-continue a paused warm instead of making the user tap WARM again. */
 const AUTO_RESUME_LIMIT = 4;
+
+const LOAD_STAGE_LINES = [
+  { icon: "📡", title: "PULLING SLATE", detail: "Talking to books and schedule feeds…" },
+  { icon: "🌍", title: "SCANNING LEAGUES", detail: "Checking every in-season board for this date…" },
+  { icon: "⚽", title: "WIDENING SOCCER", detail: "UCL, top-5 Europe, cups, Americas, Asia…" },
+  { icon: "⧉", title: "MERGING BOARD", detail: "Deduping events and stacking priced sides…" },
+] as const;
+
+const ALL_LOAD_STAGE_LINES = [
+  { icon: "🧠", title: "ALL SPORTS", detail: "Loading every in-season sport at once…" },
+  { icon: "🏀", title: "COURT + HARDWOOD", detail: "NBA / NCAAM / WNBA priced sides…" },
+  { icon: "🏈", title: "GRIDIRON", detail: "NFL / NCAAF markets and props…" },
+  { icon: "⚽", title: "GLOBAL PITCH", detail: "Soccer leagues across us+uk+eu books…" },
+  { icon: "🏒", title: "ICE + RACKET", detail: "NHL and tennis when books are live…" },
+  { icon: "⧉", title: "ONE BOARD", detail: "Merging mixed-sport candidates for Launch…" },
+] as const;
+
+const GRADE_STAGE_LINES = [
+  { icon: "🧠", title: "AIN SCORING", detail: "Model edge, cushion, and miss-by-1…" },
+  { icon: "🛡", title: "STRICT MODE", detail: "Research gates — WAIT stays off cards…" },
+  { icon: "🎫", title: "PACKAGING", detail: "Building official cards and mixed parlays…" },
+  { icon: "📊", title: "HIVE CAPTURE", detail: "Logging board plays for Sync Scores…" },
+] as const;
 
 function isEdgeThrottleError(reason: unknown): boolean {
   if (!(reason instanceof Error)) return false;
@@ -145,6 +173,7 @@ function CompactCandidateRow({
 }
 
 const sports = [
+  { key: "all", label: "ALL", icon: "ALL" },
   { key: "mlb", label: "MLB", icon: "⚾" },
   { key: "wnba", label: "WNBA", icon: "🏀" },
   { key: "nba", label: "NBA", icon: "🏀" },
@@ -190,9 +219,21 @@ export default function SlateScreen() {
   const [loadingSlate, setLoadingSlate] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [researchNote, setResearchNote] = useState<string | null>(null);
+  const [runActivity, setRunActivity] = useState<RunActivity | null>(
+    resumed?.phase === "warming"
+      ? {
+          phase: "warming",
+          pct: null,
+          title: "RESEARCH WARM",
+          detail: "Picking the run back up…",
+          icon: "🔥",
+        }
+      : null,
+  );
   const [launchArmed, setLaunchArmed] = useState(resumed?.phase === "armed");
   const [warming, setWarming] = useState(resumed?.phase === "warming");
   const [error, setError] = useState<string | null>(null);
+  const activityStartedAt = useRef<number>(Date.now());
   const [catalogByKey, setCatalogByKey] = useState<Record<string, SportCatalogItem>>({});
   const [catalogReady, setCatalogReady] = useState(false);
   const [prefetchNote, setPrefetchNote] = useState<string | null>(null);
@@ -202,6 +243,25 @@ export default function SlateScreen() {
   const heldSession = useRef<Awaited<ReturnType<typeof loadSession>>>(null);
   const launchWhenReady = useRef(false);
   const autoResumeCount = useRef(0);
+  const stageIndex = useRef(0);
+
+  function publishActivity(next: RunActivity | null) {
+    setRunActivity((prev) => {
+      if (next && next.phase !== "idle" && (!prev || prev.phase !== next.phase)) {
+        activityStartedAt.current = Date.now();
+        stageIndex.current = 0;
+      }
+      return next;
+    });
+  }
+
+  function elapsedLabel(): string {
+    const seconds = Math.max(0, Math.floor((Date.now() - activityStartedAt.current) / 1000));
+    if (seconds < 60) return `${seconds}s`;
+    const mins = Math.floor(seconds / 60);
+    const rem = seconds % 60;
+    return `${mins}m ${rem}s`;
+  }
 
   async function loadCatalog() {
     try {
@@ -221,17 +281,35 @@ export default function SlateScreen() {
   async function warmInSeasonOdds() {
     setPrefetching(true);
     setPrefetchNote(null);
+    publishActivity({
+      phase: "loading",
+      pct: null,
+      title: "WARMING ODDS",
+      detail: "Paid prefetch across in-season sports — this uses Odds credits…",
+      icon: "💳",
+    });
     try {
       const response = await request<OddsPrefetchResponse>("/sports/prefetch-odds", {
         method: "POST",
         body: "{}",
       });
-      setPrefetchNote(
+      const note =
         `Warmed ${response.warmed.length} sport(s), ${response.credits_spent} credits. ` +
-          `Category switches reuse cache for ~${Math.round(response.cache_ttl_seconds / 60)} min.`,
-      );
+        `Category switches reuse cache for ~${Math.round(response.cache_ttl_seconds / 60)} min.`;
+      setPrefetchNote(note);
+      publishActivity({
+        phase: "loading",
+        pct: 100,
+        title: "ODDS CACHED",
+        detail: note,
+        icon: "✅",
+      });
+      setTimeout(() => {
+        if (!loadingSlate && !warming && !analyzing) publishActivity(null);
+      }, 2400);
     } catch (reason) {
       setPrefetchNote(reason instanceof Error ? reason.message : "Prefetch failed");
+      publishActivity(null);
     } finally {
       setPrefetching(false);
     }
@@ -245,14 +323,27 @@ export default function SlateScreen() {
     if (!PROP_SPORTS.has(sportKey) || pendingPropCount(base.candidates) <= 0) {
       if (epoch === warmEpoch.current) {
         setLaunchArmed(true);
-        setResearchNote(null);
+        setResearchNote(
+          sportKey === "all"
+            ? "ALL board ready — no pending props. LAUNCH is gold."
+            : null,
+        );
         setWarming(false);
+        publishActivity(null);
       }
       return base;
     }
     if (epoch === warmEpoch.current) {
       setLaunchArmed(false);
       setWarming(true);
+      const pending = pendingPropCount(base.candidates);
+      publishActivity({
+        phase: "warming",
+        pct: 0,
+        title: "RESEARCH WARM",
+        detail: `Modeling ${pending} props in chunks so Launch stays under the proxy…`,
+        icon: "🔥",
+      });
     }
     let candidates = base.candidates;
     let latest = base;
@@ -260,10 +351,10 @@ export default function SlateScreen() {
     let errors = 0;
     const pendingStart = pendingPropCount(candidates);
     const roundCap =
-      pendingStart > 400
+      pendingStart > 200 || sportKey === "all"
         ? Math.min(
             MAX_WARM_ROUNDS_HUGE,
-            Math.max(MAX_WARM_ROUNDS, Math.ceil(pendingStart / WARM_CHUNK) + 2),
+            Math.max(MAX_WARM_ROUNDS, Math.ceil(pendingStart / WARM_CHUNK) + 4),
           )
         : MAX_WARM_ROUNDS;
     try {
@@ -271,9 +362,15 @@ export default function SlateScreen() {
         if (epoch !== warmEpoch.current) return null;
         const pendingBefore = pendingPropCount(candidates);
         if (pendingBefore <= 0) break;
-        setResearchNote(
-          `Researching props… pass ${round + 1}/${roundCap}`,
-        );
+        const passNote = `Researching props… pass ${round + 1}/${roundCap}`;
+        setResearchNote(passNote);
+        publishActivity({
+          phase: "warming",
+          pct: Math.min(98, Math.round(((round + 0.15) / roundCap) * 100)),
+          title: "RESEARCH WARM",
+          detail: `${passNote} · ${elapsedLabel()} elapsed · app is working`,
+          icon: "🔥",
+        });
         // Only ship a slice. A 4,000-row body never returns and the
         // button stays on WARM. Keep +4000-and-up in every slice.
         const pendingOnlyAll = candidates.filter(
@@ -318,9 +415,15 @@ export default function SlateScreen() {
               : reason instanceof Error && reason.message.trim()
                 ? reason.message.trim()
                 : "request failed";
-          setResearchNote(
-            `Research retry ${errors}/${limit} — ${detail}`,
-          );
+          const retryNote = `Research retry ${errors}/${limit} — ${detail}`;
+          setResearchNote(retryNote);
+          publishActivity({
+            phase: "warming",
+            pct: null,
+            title: "HOLDING LINE",
+            detail: `${retryNote} · still alive ${elapsedLabel()}`,
+            icon: "⏳",
+          });
           if (errors >= limit) break;
           await new Promise((resolve) => setTimeout(resolve, waitMs));
           continue;
@@ -345,15 +448,29 @@ export default function SlateScreen() {
         ).length;
         const coverage =
           propTotal > 0 ? Math.round((modeled / propTotal) * 100) : 100;
-        setResearchNote(`${modeled}/${propTotal} modeled (${coverage}%)`);
+        const coverageNote = `${modeled}/${propTotal} modeled (${coverage}%)`;
+        setResearchNote(coverageNote);
+        publishActivity({
+          phase: "warming",
+          pct: coverage,
+          title: "RESEARCH WARM",
+          detail: `${coverageNote} · pass ${round + 1}/${roundCap} · ${pendingAfter} left · ${elapsedLabel()}`,
+          icon: "🔬",
+        });
         if (pendingAfter <= 0 || coverage >= 92) {
           break;
         }
         if (warm.enriched_this_pass <= 0 && pendingAfter >= pendingBefore) {
           stallRounds += 1;
-          setResearchNote(
-            `${modeled}/${propTotal} modeled — stall ${stallRounds}/${STALL_ROUNDS_TO_ARM}`,
-          );
+          const stallNote = `${modeled}/${propTotal} modeled — stall ${stallRounds}/${STALL_ROUNDS_TO_ARM}`;
+          setResearchNote(stallNote);
+          publishActivity({
+            phase: "warming",
+            pct: coverage,
+            title: "SOURCES THIN",
+            detail: `${stallNote} · still checking · ${elapsedLabel()}`,
+            icon: "📡",
+          });
           if (stallRounds >= STALL_ROUNDS_TO_ARM) break;
         } else {
           stallRounds = 0;
@@ -367,15 +484,38 @@ export default function SlateScreen() {
         setLaunchArmed(true);
         setWarming(false);
         autoResumeCount.current = 0;
-        setResearchNote(
+        const armedNote =
           stillPending > 0
             ? launchWhenReady.current
               ? `Research armed — launching with ${stillPending} sportsbook-only props skipped.`
               : `Research armed — ${stillPending} props still sportsbook-only (will SKIP). Gold = grade.`
             : launchWhenReady.current
               ? "Research ready — launching."
-              : "Research ready — LAUNCH is gold. Tap to grade.",
+              : "Research ready — LAUNCH is gold. Tap to grade.";
+        setResearchNote(armedNote);
+        publishActivity(
+          launchWhenReady.current
+            ? {
+                phase: "queued",
+                pct: 100,
+                title: "QUEUED FOR LAUNCH",
+                detail: armedNote,
+                icon: "🚀",
+              }
+            : {
+                phase: "warming",
+                pct: 100,
+                title: "RESEARCH READY",
+                detail: armedNote,
+                icon: "✅",
+              },
         );
+        if (!launchWhenReady.current) {
+          // Brief ready flash, then clear so the board reads clean.
+          setTimeout(() => {
+            if (warmEpoch.current === epoch) publishActivity(null);
+          }, 2200);
+        }
       }
       return latest;
     } catch (reason) {
@@ -388,16 +528,28 @@ export default function SlateScreen() {
             : "request failed";
         if (autoResumeCount.current < AUTO_RESUME_LIMIT) {
           autoResumeCount.current += 1;
-          setResearchNote(
-            `Research paused — auto-continuing ${autoResumeCount.current}/${AUTO_RESUME_LIMIT}. ${detail}`,
-          );
+          const pauseNote = `Research paused — auto-continuing ${autoResumeCount.current}/${AUTO_RESUME_LIMIT}. ${detail}`;
+          setResearchNote(pauseNote);
+          publishActivity({
+            phase: "warming",
+            pct: null,
+            title: "AUTO-RESUME",
+            detail: pauseNote,
+            icon: "↻",
+          });
           await new Promise((resolve) => setTimeout(resolve, 2_000));
           if (epoch !== warmEpoch.current) return latest;
           return warmResearch(latest, epoch);
         }
-        setResearchNote(
-          `Research paused — tap RUN once to continue. ${detail}`,
-        );
+        const manualNote = `Research paused — tap RUN once to continue. ${detail}`;
+        setResearchNote(manualNote);
+        publishActivity({
+          phase: "warming",
+          pct: null,
+          title: "TAP TO CONTINUE",
+          detail: manualNote,
+          icon: "👆",
+        });
       }
       return latest;
     }
@@ -417,6 +569,7 @@ export default function SlateScreen() {
     if (requestSport !== "mlb" && catalog?.in_season === false) {
       setSlate(null);
       setLoadingSlate(false);
+      publishActivity(null);
       setError(
         `${catalog.label} is out of season — paid Odds refresh skipped. Pick an in-season sport.`,
       );
@@ -425,6 +578,15 @@ export default function SlateScreen() {
     setLoadingSlate(true);
     setError(null);
     setSlate(null);
+    const loadKick =
+      requestSport === "all" ? ALL_LOAD_STAGE_LINES[0] : LOAD_STAGE_LINES[0];
+    publishActivity({
+      phase: "loading",
+      pct: null,
+      title: loadKick.title,
+      detail: `${loadKick.detail} · ${requestSport.toUpperCase()} ${requestDate}`,
+      icon: loadKick.icon,
+    });
     try {
       const response = await request<SlateResponse>(
         `/sports/slate?sport=${encodeURIComponent(requestSport)}&date=${encodeURIComponent(requestDate)}`,
@@ -435,6 +597,13 @@ export default function SlateScreen() {
       setSlate(response);
       saveSlate(response);
       setLoadingSlate(false);
+      publishActivity({
+        phase: "loading",
+        pct: 100,
+        title: "SLATE LOADED",
+        detail: `${response.candidates.length} priced sides · starting research warm…`,
+        icon: "✦",
+      });
       // Auto-warm so gold LAUNCH means research finished — not a rushed grade.
       void warmResearch(response, epoch);
     } catch (reason) {
@@ -448,6 +617,7 @@ export default function SlateScreen() {
           : "Slate failed to load — check sign-in and retry REFRESH RAW SLATE.";
       setError(message);
       setLoadingSlate(false);
+      publishActivity(null);
     }
   }
 
@@ -456,6 +626,14 @@ export default function SlateScreen() {
     setError(null);
     setResearchNote("Grading with full research…");
     launchWhenReady.current = false;
+    const first = GRADE_STAGE_LINES[0];
+    publishActivity({
+      phase: "analyzing",
+      pct: null,
+      title: first.title,
+      detail: `${first.detail} · ${board.candidates.length} candidates · keep the screen awake`,
+      icon: first.icon,
+    });
     try {
       const response = await request<AnalyzeResponse>("/sports/analyze", {
         method: "POST",
@@ -467,6 +645,13 @@ export default function SlateScreen() {
           candidates: board.candidates,
         }),
       });
+      publishActivity({
+        phase: "analyzing",
+        pct: 100,
+        title: "BOARD SEALED",
+        detail: "Opening Analysis with official cards…",
+        icon: "🏆",
+      });
       saveAnalysis(response);
       router.push(`/analysis/${response.analysis_id}`);
     } catch (reason) {
@@ -475,6 +660,7 @@ export default function SlateScreen() {
           ? reason.message.trim()
           : "Analysis failed — reload the slate and try again.",
       );
+      publishActivity(null);
     } finally {
       setAnalyzing(false);
       setResearchNote(null);
@@ -490,7 +676,15 @@ export default function SlateScreen() {
     // One press during warm queues Launch — no need to keep tapping.
     if (warming) {
       launchWhenReady.current = true;
-      setResearchNote("Queued — will launch when research turns gold.");
+      const queued = "Queued — will launch when research turns gold.";
+      setResearchNote(queued);
+      publishActivity({
+        phase: "queued",
+        pct: runActivity?.pct ?? null,
+        title: "LAUNCH QUEUED",
+        detail: queued,
+        icon: "🚀",
+      });
       return;
     }
     if (!launchArmed) {
@@ -498,6 +692,13 @@ export default function SlateScreen() {
       setError(null);
       launchWhenReady.current = true;
       setResearchNote("Continuing research — will launch when ready…");
+      publishActivity({
+        phase: "queued",
+        pct: null,
+        title: "CONTINUING WARM",
+        detail: "Finishing research, then auto-launch…",
+        icon: "🔥",
+      });
       await warmResearch(slate, epoch);
       return;
     }
@@ -514,6 +715,35 @@ export default function SlateScreen() {
           ? "armed"
           : "idle";
   useRunKeepAwake(phase !== "idle" || Boolean(slate));
+
+  // Rotate customer-facing stage copy while a long single request is in flight
+  // so load / grade never looks frozen.
+  useEffect(() => {
+    const busyPhase =
+      loadingSlate ? "loading" : analyzing ? "analyzing" : null;
+    if (!busyPhase) return;
+    const lines =
+      busyPhase === "loading"
+        ? sport === "all"
+          ? ALL_LOAD_STAGE_LINES
+          : LOAD_STAGE_LINES
+        : GRADE_STAGE_LINES;
+    const tick = () => {
+      stageIndex.current = (stageIndex.current + 1) % lines.length;
+      const stage = lines[stageIndex.current] ?? lines[0];
+      if (!stage) return;
+      publishActivity({
+        phase: busyPhase,
+        pct: null,
+        title: stage.title,
+        detail: `${stage.detail} · ${elapsedLabel()} · still working`,
+        icon: stage.icon,
+      });
+    };
+    const id = setInterval(tick, 2800);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadingSlate, analyzing, sport]);
 
   useEffect(() => {
     if (!slate || !launchArmed || warming || analyzing || loadingSlate) return;
@@ -708,6 +938,15 @@ export default function SlateScreen() {
         </MotionReveal>
       </View>
 
+      <RunActivityBanner
+        activity={runActivity}
+        accent={
+          runActivity?.phase === "analyzing" || runActivity?.phase === "queued"
+            ? look.glow
+            : look.accent
+        }
+      />
+
       <MetalPanel tone="gold" accent={look.accent}>
         <Text style={type.eyebrow}>SELECT SPORT</Text>
         <View style={styles.sports}>
@@ -716,12 +955,14 @@ export default function SlateScreen() {
             const outOfSeason = catalog?.in_season === false;
             const itemLook = sportLook(item.key);
             const active = sport === item.key;
+            const isAll = item.key === "all";
             return (
               <Pressable
                 key={item.key}
                 onPress={() => setSport(item.key)}
                 style={[
                   styles.sport,
+                  isAll && styles.sportAll,
                   active && {
                     borderColor: itemLook.accent,
                     backgroundColor: itemLook.accentSoft,
@@ -732,12 +973,14 @@ export default function SlateScreen() {
                 <View style={[styles.sportStripe, { backgroundColor: itemLook.accent }]} />
                 <SportBallIcon
                   icon={item.icon}
+                  image={isAll ? brandAssets.crest : undefined}
                   spinning={active && (loadingSlate || analyzing)}
-                  size={28}
+                  size={isAll ? 30 : 28}
                 />
                 <Text
                   style={[
                     styles.sportLabel,
+                    isAll && styles.sportLabelAll,
                     active && { color: itemLook.stripe },
                     outOfSeason && styles.sportLabelOutOfSeason,
                   ]}
@@ -775,7 +1018,15 @@ export default function SlateScreen() {
       </MetalPanel>
 
       {error && error.trim() ? <ErrorNotice message={error} /> : null}
-      {loadingSlate ? <LoadingState label="Verifying schedule and candidates…" /> : null}
+      {loadingSlate ? (
+        <LoadingState
+          label={
+            sport === "all"
+              ? "Merging every in-season sport — watch the bar above…"
+              : "Verifying schedule and candidates — progress bar is live…"
+          }
+        />
+      ) : null}
 
       {slate ? (
         <>
@@ -899,8 +1150,18 @@ export default function SlateScreen() {
         playCount={slate?.candidates.length ?? 0}
         readiness={slate ? slateReadiness(slate) : undefined}
         armed={launchArmed && !warming}
-        loading={analyzing || warming}
-        statusText={warming ? "WARM" : analyzing ? "RUN" : null}
+        loading={analyzing || warming || runActivity?.phase === "queued"}
+        statusText={
+          warming
+            ? "WARM"
+            : analyzing
+              ? "RUN"
+              : runActivity?.phase === "queued"
+                ? "QUEUE"
+                : null
+        }
+        detailText={runActivity && runActivity.phase !== "idle" ? runActivity.detail : null}
+        progressPct={runActivity?.pct ?? null}
         disabled={!slate?.candidates.length}
         onPress={() => void analyze()}
       />
@@ -959,6 +1220,11 @@ const styles = registerStyles(() => StyleSheet.create({
     borderRadius: 2,
     opacity: 0.9,
   },
+  sportAll: {
+    minWidth: 112,
+    borderColor: "rgba(240,193,74,0.45)",
+    backgroundColor: "rgba(240,193,74,0.08)",
+  },
   sportOutOfSeason: { opacity: 0.42 },
   sportLabel: {
     color: colors.silver,
@@ -966,6 +1232,10 @@ const styles = registerStyles(() => StyleSheet.create({
     fontWeight: "700",
     fontSize: 12,
     letterSpacing: 0.3,
+  },
+  sportLabelAll: {
+    color: "#F0C14A",
+    letterSpacing: 1.2,
   },
   sportLabelOutOfSeason: { color: colors.muted },
   oosBadge: {
