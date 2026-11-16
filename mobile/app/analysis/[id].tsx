@@ -25,7 +25,12 @@ import { YwpButton } from "@/components/YwpButton";
 import { useAppData } from "@/context/AppDataContext";
 import { useAuth } from "@/context/AuthContext";
 import { colors, radius, spacing, type , registerStyles } from "@/theme";
-import type { BuildTicketResponse, Ticket, TicketCard } from "@/types";
+import type {
+  BuildTicketResponse,
+  HiveLearningSummary,
+  Ticket,
+  TicketCard,
+} from "@/types";
 
 const cardOrder = [
   "max_bet",
@@ -66,6 +71,7 @@ export default function AnalysisScreen() {
   const [selectedPickIds, setSelectedPickIds] = useState<string[]>([]);
   const [customCard, setCustomCard] = useState<TicketCard | null>(null);
   const [customPreviewBusy, setCustomPreviewBusy] = useState(false);
+  const [hiveLive, setHiveLive] = useState<HiveLearningSummary | null>(null);
 
   const runBuilder = useCallback(async () => {
     if (!id || !analysis) return;
@@ -100,6 +106,25 @@ export default function AnalysisScreen() {
   useEffect(() => {
     if (!build) void runBuilder();
   }, [build, runBuilder]);
+
+  // Analysis payloads used to zero Hive on huge boards. Always refresh live maturity
+  // so the meter reflects settled samples, not the sweep stub.
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const sport = analysis?.ranked_picks?.[0]?.sport;
+        const q = sport ? `?sport=${encodeURIComponent(sport)}` : "";
+        const maturity = await request<HiveLearningSummary>(`/hive/maturity${q}`);
+        if (!cancelled) setHiveLive(maturity);
+      } catch {
+        if (!cancelled) setHiveLive(null);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [analysis?.analysis_id, analysis?.ranked_picks, request]);
 
   const orderedCards = useMemo(
     () =>
@@ -281,8 +306,11 @@ export default function AnalysisScreen() {
           unknown source labels {analysis.data_quality_summary.unknown_source_labels}
         </Text>
         <HiveAccuracyMeter
-          hive={analysis.data_quality_summary.hive_learning}
-          optimumAccuracyPct={analysis.data_quality_summary.hive_optimum_accuracy_pct}
+          hive={hiveLive ?? analysis.data_quality_summary.hive_learning}
+          optimumAccuracyPct={
+            hiveLive?.optimum_accuracy_pct ??
+            analysis.data_quality_summary.hive_optimum_accuracy_pct
+          }
         />
       </MetalPanel>
       {!selectedCard && error ? <ErrorNotice message={error} /> : null}

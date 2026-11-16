@@ -1299,8 +1299,13 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         if str(value).lower() == "unknown"
     )
     readiness = slate_readiness(candidates)
-    if huge_board or time.monotonic() >= analyze_deadline:
-        # Four COUNT queries on Hive tables are not worth a 502 on 500+ boards.
+    # Always return live Hive maturity. The old huge-board path zeroed the meter
+    # (0.0% BUILDING 0/200) which made users think Hive never moves after a
+    # full sweep. Maturity is a few COUNT queries — cheap vs the analyze work.
+    try:
+        hive_learning = hive_learning_maturity(db=db, sport=payload.sport)
+    except Exception:
+        logger.exception("hive_learning_maturity failed sport=%s", payload.sport)
         from app.hive.config import settings as hive_settings
 
         hive_learning = {
@@ -1321,8 +1326,6 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             "status": "deferred_large_board",
             "release_version": hive_settings.release_version,
         }
-    else:
-        hive_learning = hive_learning_maturity(db=db, sport=payload.sport)
     logger.info(
         "analyze done sport=%s candidates=%s board=%s skip_persisted=%s/%s elapsed=%.1fs",
         payload.sport,
