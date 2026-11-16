@@ -1,60 +1,14 @@
-MONDAY ALL-SPORTS 2026-11-16 (America/New_York)
+MONDAY ALL-SPORTS 2026-11-16 AM refresh (America/New_York)
 GATE: PASS date=20261116 sheets_ok=497/497
 Sports: NBA 8 · NHL 2 · NFL 1 (LAC@BAL) · NCAAM 33
-Source: ESPN L7 gamelog + Betravon posted mains + no_kill_ticket spine filter
+Source: ESPN L7 + Betravon posted mains + no_kill_ticket
 See chat for full SAFE / PRIMARY / BANGERS / weed / CLEAN SLIPS.
 
-NO-KILL: spine = L7≥6/7 + avg clear margin≥1.5 + mpg≥24; soft floors pad-only.
+LOCKED USER TICKET (all KEEP):
+  Coward REB O4.5 · Sarr REB O7.5 · Clingan REB O7.5 · Ayo PTS O17.5
+  Sengun AST O4.5 · Booker PTS O16.5
 
-=== TIP TIMES (ET) ===
-7:00  ORL@BOS · CHI@CLE · MEM@WSH
-7:30  PHI@BKN · HOU@MIA · MTL@NYR
-8:00  POR@MIN · GS@NO
-8:15  LAC@BAL (MNF)
-9:00  PHX@DEN
-9:30  VAN@UTA
+Heat board: LIVE (52 HOU/MIA props). Davion AST O7.5 now posted KEEP.
 
-=== KEY OUT / ROLE ===
-OUT: Stephen Curry, Anthony Edwards, Paolo Banchero, Ja Morant, Shaedon Sharpe,
-     Jimmy Butler, Kristaps Porzingis, Fred VanVleet, Marcus Smart (SUS), Evan Mobley,
-     Tre Johnson, Trey Murphy III, Dejounte Murray, Mark Williams, Ladd McConkey (LAC)
-DTD: Joel Embiid, Zach Edey, Jalen Smith — demote if inactive
-MNF: Lamar Jackson IR → Jacoby Brissett; LAC 0-8; total 38.5 / BAL -4.5
-
-=== SAFE (no-kill fortress) — playable lines only ===
-NOTE: HOU@MIA is on ESPN slate (7:30 ET) but Betravon has 0 Heat/Rockets props yet
-      → Davion / Sengun / Bam OFF official until books list the game.
-7/7 +4.50  Cedric Coward REB O4.5 — MEM vs WSH (id 4903027) vals 12/7/11/6/9/9/9
-6/7 +6.17  Donovan Clingan REB O6.5 — POR vs MIN (id 5105565) vals 11/12/13/5/11/11/18
-           (book floor = 6.5; posted main REB O11.5 FAIL; do NOT use phantom O4.5)
-7/7 +1.79  Alex Sarr REB O7.5 — WSH vs MEM (id 5160992) vals 9/9/8/8/14/8/9
-7/7 +9.64  Devin Booker PTS O16.5 — PHX vs DEN (id 3136193) vals 17/30/17/32/24/30/33
-6/6 +4.83  Ayo Dosunmu PTS O17.5 — MIN vs POR (id 4397002) POSTED KEEP vals 24/18/26/26/21/19
-7/7 +3.50  Cameron Boozer REB O5.5 — MEM vs WSH (id 5041935) vals 8/10/11/7/12/6/9
-6/7 +2.83  Wendell Carter Jr. REB O7.5 — ORL vs BOS (id 4277847)
-7/7 +23.6  Derrick Henry RUSH O44.5 — BAL vs LAC (id 3043078)
-           posted Henry RUSH O79.5 FAIL — shave only
-
-=== PRIMARY ===
-Coward REB O6.5 (6/7 +3.0) · Clingan REB O10.5 (6/7 +2.17) — climb from 6.5 floor
-Boozer REB O5.5 · AD REB O7.5 · Franz PTS O14.5 / AST O5.5 · Giddey AST O4.5
-Maxey AST O3.5 · Zion PTS O21.5 POSTED KEEP · Jokic REB/AST O7.5 · Podz 3PT O1.5
-Keller SOG O1.5 UTA
-HOLD (Heat board opens): Sengun AST O4.5 · Sengun REB O6.5 · Bam REB O4.5 · Davion AST O7.5
-
-=== BANGERS ===
-Clingan REB O10.5 · Sarr REB O7.5 · Booker PTS O16.5 · Coward REB O6.5
-Caufield SOG O1.5/O2.5 RISK · JT Miller SOG O1.5 thin-cushion RISK
-BAL -4.5 RISK-KEEP (script) · U38.5 RISK-KEEP (script) · Henry anytime TD RISK (script)
-
-=== BAN (true) ===
-Any OUT listed above. Embiid/Allen if scratched or minutes managed.
-Henry RUSH O79.5 posted. Flowers/Herbert/Brissett at posted (Gate 0 FAIL).
-UTAH ML -340 juice trap. Clingan REB below 6.5 (not offered).
-
-=== CLEAN SLIPS ===
-SAFE A: Coward REB O4.5 · Clingan REB O6.5 · Sarr REB O7.5 · Booker PTS O16.5 · Ayo PTS O17.5
-SAFE B: Coward REB O4.5 · Clingan REB O6.5 · Boozer REB O5.5 · Wendell REB O7.5 · Henry RUSH O44.5
-MIX: SAFE A + Clingan climb O10.5 + Franz AST O5.5
-UPSIDE: Clingan REB O10.5 · Zion PTS O21.5 · BAL -4.5 · Caufield SOG O1.5
-         (+ Heat legs only after books post HOU@MIA)
+Clingan: book floor 6.5 · play O7.5 · climb O10.5 · BAN posted O11.5
+Henry: posted RUSH O80.5 FAIL · fortress shave O44.5 only
