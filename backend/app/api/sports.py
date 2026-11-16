@@ -65,6 +65,7 @@ from app.services.decision_engine import (
     money,
 )
 from app.services.learning import apply_micro_learning, load_feature_weights, record_usage_event
+from app.services.live_cashout import locked_live_trigger
 from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate, upcoming_odds_dates
 from app.services.live_mlb_slate import live_mlb_slate, props_slate_notice
 from app.services.live_wnba_slate import (
@@ -170,14 +171,25 @@ def warm_props(payload: PropWarmRequest, _: SubscribedUser) -> PropWarmResponse:
             ),
         )
 
-    from app.services.player_prop_research import enrich_player_prop_candidates
-
-    enriched = enrich_player_prop_candidates(
-        list(payload.candidates),
-        slate_date=payload.date,
-        budget_seconds=float(payload.budget_seconds),
+    from app.services.player_prop_research import (
+        enrich_player_prop_candidates,
+        select_warm_slice,
     )
-    total, modeled, pending, coverage = _prop_research_stats(enriched)
+
+    this_pass, held = select_warm_slice(list(payload.candidates))
+    enriched_pass = (
+        enrich_player_prop_candidates(
+            this_pass,
+            slate_date=payload.date,
+            budget_seconds=float(payload.budget_seconds),
+        )
+        if this_pass
+        else []
+    )
+    # Stats cover the whole board. The body is only this slice so a
+    # 4,000-pick warm does not die on the proxy and stay spinning.
+    full = enriched_pass + held
+    total, modeled, pending, coverage = _prop_research_stats(full)
     gained = max(0, modeled - before_modeled)
     # Only "ready" when coverage is high or nothing left. Never stop after a
     # single zero-gain pass — ESPN lookups often spend a slice with no upgrades
@@ -193,7 +205,7 @@ def warm_props(payload: PropWarmRequest, _: SubscribedUser) -> PropWarmResponse:
     return PropWarmResponse(
         sport=payload.sport,
         date=payload.date,
-        candidates=enriched,
+        candidates=enriched_pass,
         prop_total=total,
         prop_modeled=modeled,
         prop_pending=pending,
@@ -412,7 +424,7 @@ def slate(
                         "Open-Meteo (ESPN has no baseball/kbo path). Full-game markets can "
                         "clear when schedule, recent form, weather, and price consensus verify."
                     )
-                elif sport_lower in {"nfl", "ncaaf"}:
+                elif sport_lower in {"nfl", "ncaaf", "nba"}:
                     prop_n = sum(
                         1 for c in candidates if str(c.market_type or "").startswith("player_")
                     )
@@ -422,9 +434,14 @@ def slate(
                         if str(c.market_type or "").startswith("player_")
                         and c.probability_source == "model"
                     )
+                    prop_menu = (
+                        "points, rebounds, assists, threes, and PRA"
+                        if sport_lower == "nba"
+                        else "the expanded player-prop menu"
+                    )
                     notice = (
                         f"Live {sport_lower.upper()} from The Odds API: full-game markets plus "
-                        f"expanded player props ({prop_n} lines, {model_n} ESPN form-modeled). "
+                        f"{prop_menu} ({prop_n} lines, {model_n} ESPN form-modeled). "
                         "Thin-cushion / miss-by-1 closes hard-SKIP before PLAY."
                     )
                 else:
@@ -709,7 +726,8 @@ def _persist_day_forge_evaluations(
             safer_alternative=candidate.safer_alternative,
             higher_upside=candidate.higher_upside,
             invalidation_conditions=candidate.invalidation_conditions,
-            live_trigger=candidate.live_trigger,
+            live_trigger=locked_live_trigger(candidate.sport, candidate.market_type)
+            or candidate.live_trigger,
             hedge=candidate.hedge,
             quick_cash=candidate.quick_cash,
             chain_reaction_key=candidate.chain_reaction_key,
@@ -932,6 +950,37 @@ def day_forge(
     )
 
 
+MASS_GRADE = 800
+GRADE_PROP_CAP = 400
+
+
+def _grade_slice(candidates: list) -> tuple[list, int]:
+    """On a multi-thousand board, grade modeled props and team markets only.
+
+    Unmodeled player props cannot clear Strict Mode. Walking all of them
+    is what makes LAUNCH die on the Render proxy.
+    """
+    if len(candidates) < MASS_GRADE:
+        return candidates, 0
+    ready_props = []
+    other = []
+    deferred = 0
+    for candidate in candidates:
+        is_prop = str(candidate.market_type or "").startswith("player_")
+        modeled = candidate.probability_source in {"model", "manual_verified"}
+        if is_prop and not modeled:
+            deferred += 1
+            continue
+        if is_prop:
+            ready_props.append(candidate)
+        else:
+            other.append(candidate)
+    if len(ready_props) > GRADE_PROP_CAP:
+        deferred += len(ready_props) - GRADE_PROP_CAP
+        ready_props = ready_props[:GRADE_PROP_CAP]
+    return other + ready_props, deferred
+
+
 @router.post("/analyze", response_model=AnalyzeResponse, status_code=status.HTTP_201_CREATED)
 def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> AnalyzeResponse:
     # Render free proxy hard-kills ~30s. Keep wall-clock headroom so huge WNBA/NFL
@@ -979,6 +1028,8 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             candidates, slate_date=payload.date, budget_seconds=enrich_budget
         )
 
+    grade_candidates, deferred_props = _grade_slice(candidates)
+
     protocol_run = run_protocol_health_check(
         db,
         analysis_id=analysis_id,
@@ -994,7 +1045,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
     hive_policy = get_active_policy(db=db)
     hive_signal_cache: dict[tuple[str, str, str, str, str], object] = {}
     try:
-        for candidate in candidates:
+        for candidate in grade_candidates:
             evaluation = decision_engine.evaluate(
                 candidate,
                 payload.user_risk_profile,
@@ -1182,7 +1233,8 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             safer_alternative=candidate.safer_alternative,
             higher_upside=candidate.higher_upside,
             invalidation_conditions=candidate.invalidation_conditions,
-            live_trigger=candidate.live_trigger,
+            live_trigger=locked_live_trigger(candidate.sport, candidate.market_type)
+            or candidate.live_trigger,
             hedge=candidate.hedge,
             quick_cash=candidate.quick_cash,
             chain_reaction_key=candidate.chain_reaction_key,
@@ -1202,7 +1254,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         elif is_skip:
             stay_away_records.append(record)
 
-    stay_away_all_count = len(stay_away_records)
+    stay_away_all_count = len(stay_away_records) + deferred_props
     stay_away_limit = (
         persist_skip_sample if persist_skip_sample is not None else stay_away_all_count
     )
@@ -1365,6 +1417,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             "hive_optimum_accuracy_pct": hive_learning["optimum_accuracy_pct"],
             "analyze_elapsed_seconds": round(time.monotonic() - analyze_started, 2),
             "huge_board_fast_path": huge_board,
+            "ungraded_pending_props": deferred_props,
             "pipeline_version": "1.0",
             "qualify_count": sum(1 for item in ranked if item.pipeline_threshold == "qualify"),
             "borderline_count": sum(
