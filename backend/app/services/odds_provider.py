@@ -161,7 +161,11 @@ def _soccer_keys_from_catalog(*, force_refresh: bool = False) -> list[str]:
         return preferred[:SOCCER_MAX_LEAGUES_PER_FETCH]
     ranked = [key for key in preferred if key in active]
     extras = sorted(key for key in active if key.startswith("soccer_") and key not in preferred_set)
-    return (ranked + extras)[:SOCCER_MAX_LEAGUES_PER_FETCH]
+    merged = ranked + extras
+    # Catalog may be warm with non-soccer sports only — never return empty.
+    if not merged:
+        return preferred[:SOCCER_MAX_LEAGUES_PER_FETCH]
+    return merged[:SOCCER_MAX_LEAGUES_PER_FETCH]
 
 
 def tennis_league_label(odds_key: str) -> str:

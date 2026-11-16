@@ -202,7 +202,7 @@ def test_soccer_maps_multiple_leagues_and_in_season_any(monkeypatch) -> None:
     assert "soccer_spain_la_liga" in keys
     assert "soccer_france_ligue_one" in keys
     assert "soccer_usa_mls" in keys
-    assert odds_mod.soccer_odds_regions("soccer") == "us,uk"
+    assert odds_mod.soccer_odds_regions("soccer") == "us,uk,eu"
     assert odds_mod.soccer_odds_regions("mlb") == "us"
 
     monkeypatch.setattr(

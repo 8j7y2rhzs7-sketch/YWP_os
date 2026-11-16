@@ -381,6 +381,8 @@ def enrich_player_prop_candidates(
             continue
         if sport == "basketball":
             sport = "nba"
+        elif sport == "ncaam":
+            sport = "ncaab"
         key = _cache_key(candidate, sport=sport, slate_date=slate_date)
         cached = _cache_get(key)
         if cached is not _CACHE_MISS:
@@ -400,7 +402,11 @@ def enrich_player_prop_candidates(
 
     def _sport_for(candidate: CandidateInput) -> str:
         sport = (candidate.sport or "").lower()
-        return "nba" if sport == "basketball" else sport
+        if sport == "basketball":
+            return "nba"
+        if sport == "ncaam":
+            return "ncaab"
+        return sport
 
     def _run_one(idx: int) -> tuple[int, CandidateInput | None]:
         candidate = candidates[idx]
