@@ -729,7 +729,8 @@ export default function SlateScreen() {
         : GRADE_STAGE_LINES;
     const tick = () => {
       stageIndex.current = (stageIndex.current + 1) % lines.length;
-      const stage = lines[stageIndex.current];
+      const stage = lines[stageIndex.current] ?? lines[0];
+      if (!stage) return;
       publishActivity({
         phase: busyPhase,
         pct: null,

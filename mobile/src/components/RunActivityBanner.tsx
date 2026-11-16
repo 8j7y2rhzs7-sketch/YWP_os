@@ -70,7 +70,10 @@ export function RunActivityBanner({ activity, accent = colors.circuitBlueBright 
   if (!activity || activity.phase === "idle") return null;
 
   const known = activity.pct != null && Number.isFinite(activity.pct);
-  const fill = known ? Math.max(2, Math.min(100, activity.pct ?? 0)) : null;
+  const fillPct = known
+    ? Math.max(2, Math.min(100, Number(activity.pct)))
+    : 0;
+  const fillWidth = `${fillPct}%` as `${number}%`;
   const fillColor =
     activity.phase === "analyzing"
       ? colors.gold
@@ -124,7 +127,7 @@ export function RunActivityBanner({ activity, accent = colors.circuitBlueBright 
           <View
             style={[
               styles.fill,
-              { width: `${fill}%`, backgroundColor: fillColor },
+              { width: fillWidth, backgroundColor: fillColor },
             ]}
           />
         ) : (
