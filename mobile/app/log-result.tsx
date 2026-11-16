@@ -102,8 +102,8 @@ export default function LogExternalResultScreen() {
           Use this for sportsbook legs that never appeared on today's board
           (strikeouts, F5, book-only parlays).
         </Text>
-        <FormField label="EVENT" value={eventName} onChangeText={setEventName} placeholder="Cardinals @ Dodgers" />
-        <FormField label="SELECTION" value={selection} onChangeText={setSelection} placeholder="Michael Wacha Over 4.5 Strikeouts" />
+        <FormField label="Event" value={eventName} onChangeText={setEventName} placeholder="Cardinals @ Dodgers" />
+        <FormField label="Selection" value={selection} onChangeText={setSelection} placeholder="Michael Wacha Over 4.5 Strikeouts" />
         <Text style={styles.label}>MARKET</Text>
         <View style={styles.choices}>
           {markets.map((item) => (
@@ -118,8 +118,8 @@ export default function LogExternalResultScreen() {
             </Pressable>
           ))}
         </View>
-        <FormField label="LINE" value={line} onChangeText={setLine} placeholder="4.5" keyboardType="decimal-pad" />
-        <FormField label="AMERICAN ODDS" value={odds} onChangeText={setOdds} placeholder="-140" keyboardType="numbers-and-punctuation" />
+        <FormField label="Line" value={line} onChangeText={setLine} placeholder="4.5" keyboardType="decimal-pad" />
+        <FormField label="American odds" value={odds} onChangeText={setOdds} placeholder="-140" keyboardType="numbers-and-punctuation" />
         <Text style={styles.label}>OUTCOME</Text>
         <View style={styles.choices}>
           {outcomes.map((item) => (
@@ -134,10 +134,10 @@ export default function LogExternalResultScreen() {
             </Pressable>
           ))}
         </View>
-        <FormField label="ACTUAL VALUE" value={actualValue} onChangeText={setActualValue} placeholder="7" keyboardType="decimal-pad" />
-        <FormField label="FINAL / NOTE" value={finalScore} onChangeText={setFinalScore} placeholder="Wacha 7 Ks" />
-        <FormField label="PLAYER KEY (optional)" value={playerKey} onChangeText={setPlayerKey} placeholder="michael_wacha" />
-        <FormField label="LESSON" value={lesson} onChangeText={setLesson} />
+        <FormField label="Actual value" value={actualValue} onChangeText={setActualValue} placeholder="7" keyboardType="decimal-pad" />
+        <FormField label="Final note" value={finalScore} onChangeText={setFinalScore} placeholder="Wacha 7 Ks" />
+        <FormField label="Player key (optional)" value={playerKey} onChangeText={setPlayerKey} placeholder="michael_wacha" />
+        <FormField label="Lesson" value={lesson} onChangeText={setLesson} />
         <Pressable
           onPress={() => setKilledTicket((value) => !value)}
           style={[styles.toggle, killedTicket && styles.toggleOn]}
@@ -148,7 +148,7 @@ export default function LogExternalResultScreen() {
         </Pressable>
       </MetalPanel>
 
-      <YwpButton label="SAVE TO MEMORY" onPress={() => void save()} loading={saving} disabled={!canSave} />
+      <YwpButton label="Save to memory" onPress={() => void save()} loading={saving} disabled={!canSave} />
       <Text style={[type.caption, styles.footer]}>
         Does not create a vault ticket. Only grades learning memory.
       </Text>

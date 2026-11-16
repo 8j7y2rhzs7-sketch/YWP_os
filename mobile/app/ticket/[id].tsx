@@ -244,7 +244,7 @@ export default function TicketDetailScreen() {
     return (
       <Screen>
         <ErrorNotice message={error ?? "Ticket not found"} />
-        <YwpButton label="BACK TO TICKETS" onPress={() => router.replace("/(tabs)/tickets")} />
+        <YwpButton label="Back to tickets" onPress={() => router.replace("/(tabs)/tickets")} />
       </Screen>
     );
   }
@@ -254,7 +254,7 @@ export default function TicketDetailScreen() {
 
   return (
     <Screen sport={ticket.sport} refreshing={loading} onRefresh={() => void load()}>
-      <BrandHeader title="LOCK CENTER" subtitle="EDIT • SWAP • FINAL SWEEP" compact sport={ticket.sport} />
+      <BrandHeader title="Lock center" subtitle="Edit, swap, final sweep" compact sport={ticket.sport} />
       <MetalPanel tone={ticket.last_lock_status === "LOCKED" ? "success" : "gold"}>
         <View style={styles.header}>
           <View style={styles.flex}>
@@ -307,12 +307,12 @@ export default function TicketDetailScreen() {
           {canEdit && leg.action !== "skip" ? (
             <>
               <YwpButton
-                label="SWAP THIS LEG"
+                label="Swap this leg"
                 variant="outline"
                 onPress={() => setPickerLegId(leg.id)}
               />
               <YwpButton
-                label="REMOVE WEAKEST LEG"
+                label="Remove weakest leg"
                 variant="danger"
                 onPress={() => void skipLeg(leg.id)}
                 loading={action === leg.id}
@@ -321,7 +321,7 @@ export default function TicketDetailScreen() {
           ) : null}
           {canEdit && leg.action === "skip" ? (
             <YwpButton
-              label="PUT THIS LEG BACK"
+              label="Put this leg back"
               variant="outline"
               onPress={() => void restoreLeg(leg.id)}
               loading={action === leg.id}
@@ -329,7 +329,7 @@ export default function TicketDetailScreen() {
           ) : null}
           {ticket.status === "placed" && leg.action !== "skip" && !leg.outcome ? (
             <YwpButton
-              label="GRADE RESULT & PROCESS"
+              label="Grade result"
               variant="outline"
               onPress={() => router.push(`/result/${leg.recommendation_id}`)}
             />
@@ -349,7 +349,7 @@ export default function TicketDetailScreen() {
       {(ticket.status === "placed" || ticket.status === "settled") &&
       ticket.legs.some((leg) => leg.action !== "skip" && !leg.outcome) ? (
         <YwpButton
-          label="SYNC SCORES & RESULTS"
+          label="Sync scores and results"
           onPress={() => void syncScores()}
           loading={action === "settle"}
         />
@@ -357,7 +357,7 @@ export default function TicketDetailScreen() {
 
       {canEdit ? (
         <YwpButton
-          label="ADD ANOTHER QUALIFIED PLAY"
+          label="Add another qualified play"
           variant="outline"
           onPress={() => setPickerLegId("add")}
           disabled={!alternatives.length}
@@ -366,7 +366,7 @@ export default function TicketDetailScreen() {
 
       {canEdit && activeLegs.length ? (
         <YwpButton
-          label="RUN FINAL LOCK CHECK"
+          label="Run final lock check"
           onPress={() => void lockCheck()}
           loading={action === "lock"}
         />
@@ -404,7 +404,7 @@ export default function TicketDetailScreen() {
       ) : null}
 
       {ticket.last_lock_status === "LOCKED" && ticket.status !== "placed" ? (
-        <YwpButton label="MARK TICKET PLACED" variant="success" onPress={() => void place()} loading={action === "place"} />
+        <YwpButton label="Mark ticket placed" variant="success" onPress={() => void place()} loading={action === "place"} />
       ) : null}
       {ticket.status !== "settled" && ticket.status !== "cancelled" ? (
         <YwpButton
@@ -503,7 +503,7 @@ export default function TicketDetailScreen() {
                 <Text style={type.body}>No other qualified plays remain on this slate.</Text>
               )}
             </ScrollView>
-            <YwpButton label="CLOSE" variant="outline" onPress={() => setPickerLegId(null)} />
+            <YwpButton label="Close" variant="outline" onPress={() => setPickerLegId(null)} />
           </Pressable>
         </Pressable>
       </Modal>

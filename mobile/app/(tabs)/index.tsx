@@ -150,7 +150,7 @@ export default function CommandCenter() {
       <View style={styles.heroViewport}>
         <MotionReveal delay={0} fromY={28}>
           <EngineStage
-            size={268}
+            size={188}
             tone="idle"
             intensity="hero"
             calloutsActive
@@ -177,7 +177,7 @@ export default function CommandCenter() {
         </MotionReveal>
         <MotionReveal delay={520} style={styles.ctaGroup}>
           <YwpButton
-            label="RUN TODAY'S FULL PROTOCOL"
+            label="Run today's protocol"
             onPress={() => router.push("/(tabs)/slate")}
           />
           <Text style={styles.welcome}>
@@ -258,7 +258,7 @@ export default function CommandCenter() {
               <StatusPill value={ticket.last_lock_status ?? ticket.status} />
             </View>
             <YwpButton
-              label="OPEN TICKET"
+              label="Open ticket"
               variant="outline"
               onPress={() => router.push(`/ticket/${ticket.id}`)}
             />
@@ -266,7 +266,7 @@ export default function CommandCenter() {
         ))
       ) : (
         <MetalPanel>
-          <Text style={styles.panelTitle}>NO TICKET FORCED</Text>
+          <Text style={styles.panelTitle}>No ticket forced</Text>
           <Text style={type.body}>
             Run the slate when you are ready. If nothing qualifies, YWP OS will
             return PASS instead of manufacturing action.
@@ -306,7 +306,7 @@ export default function CommandCenter() {
 
 const styles = StyleSheet.create({
   heroViewport: {
-    minHeight: 620,
+    minHeight: 420,
     alignItems: "center",
     justifyContent: "center",
     gap: spacing.md,
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
   brandMark: {
     color: colors.goldBright,
     fontFamily: fonts.display,
-    fontSize: 42,
+    fontSize: 36,
     fontWeight: "800",
     letterSpacing: -1.4,
     textAlign: "center",

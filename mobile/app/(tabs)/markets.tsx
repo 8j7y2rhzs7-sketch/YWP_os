@@ -61,7 +61,7 @@ export default function MarketsScreen() {
   if (loading) {
     return (
       <Screen>
-        <BrandHeader title="MARKETS" subtitle="READ ONLY" compact />
+        <BrandHeader title="Markets" subtitle="Read only" compact />
         <LoadingState label="Loading public prices…" />
       </Screen>
     );
@@ -70,7 +70,7 @@ export default function MarketsScreen() {
   const calls = board?.calls ?? [];
   return (
     <Screen refreshing={refreshing} onRefresh={() => void load(true)}>
-      <BrandHeader title="MARKETS" subtitle="PUBLIC PRICES · NO ORDERS" compact />
+      <BrandHeader title="Markets" subtitle="Public prices · no orders" compact />
       {error ? <ErrorNotice message={error} /> : null}
       <View style={styles.toggle}>
         <Pressable
@@ -94,10 +94,10 @@ export default function MarketsScreen() {
         <Text style={type.eyebrow}>TRACK RECORD</Text>
         <Text style={styles.note}>{record?.note ?? "Markets grades stay separate from sports."}</Text>
         <View style={styles.metrics}>
-          <Metric label="CALLS" value={record?.n_calls ?? 0} />
-          <Metric label="GRADED" value={record?.n_graded ?? 0} />
-          <Metric label="HIT RATE" value={percent(record?.hit_rate)} />
-          <Metric label="EV AFTER FEES" value={percent(record?.mean_ev)} />
+          <Metric label="Calls" value={record?.n_calls ?? 0} />
+          <Metric label="Graded" value={record?.n_graded ?? 0} />
+          <Metric label="Hit rate" value={percent(record?.hit_rate)} />
+          <Metric label="EV after fees" value={percent(record?.mean_ev)} />
         </View>
         <Text style={type.caption}>
           {health?.enabled
@@ -106,7 +106,7 @@ export default function MarketsScreen() {
         </Text>
       </MetalPanel>
       <SectionTitle
-        title={venue === "crypto" ? "CRYPTO BRACKETS" : "SPORTS EXCHANGE"}
+        title={venue === "crypto" ? "Crypto brackets" : "Sports exchange"}
         subtitle="Verdict, edge after fees, and why"
       />
       {calls.length === 0 ? (
@@ -139,13 +139,13 @@ const styles = StyleSheet.create({
   },
   toggleItem: {
     flex: 1,
-    minHeight: 40,
+    minHeight: 48,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: radius.md,
   },
-  toggleOn: { backgroundColor: colors.goldMute },
-  toggleText: { color: colors.dim, fontSize: 13, fontWeight: "700" },
+  toggleOn: { backgroundColor: colors.surfaceRaised },
+  toggleText: { color: colors.muted, fontSize: 14, fontWeight: "700" },
   toggleTextOn: { color: colors.goldBright },
   note: { color: colors.muted, fontSize: 13, lineHeight: 18 },
   metrics: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },

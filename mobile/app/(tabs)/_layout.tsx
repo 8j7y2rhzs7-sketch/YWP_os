@@ -1,44 +1,56 @@
+import { Ionicons } from "@expo/vector-icons";
 import { Redirect, Tabs } from "expo-router";
-import { Image, Platform, StyleSheet, type ColorValue, type ImageSourcePropType } from "react-native";
+import type { ComponentProps } from "react";
+import { Platform, StyleSheet, View, type ColorValue } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { brandAssets } from "@/brandAssets";
 import { useAuth } from "@/context/AuthContext";
 import { colors, fonts, radius } from "@/theme";
 
-function BrandTabIcon({
-  source,
-  label,
+type IonName = ComponentProps<typeof Ionicons>["name"];
+
+const tabIcons = {
+  index: { idle: "home-outline", active: "home" },
+  slate: { idle: "play-outline", active: "play" },
+  sheet: { idle: "grid-outline", active: "grid" },
+  tickets: { idle: "layers-outline", active: "layers" },
+  learning: { idle: "school-outline", active: "school" },
+  markets: { idle: "stats-chart-outline", active: "stats-chart" },
+  settings: { idle: "options-outline", active: "options" },
+} as const satisfies Record<string, { idle: IonName; active: IonName }>;
+
+function TabGlyph({
+  route,
   focused,
 }: {
-  source: ImageSourcePropType;
-  label: string;
+  route: keyof typeof tabIcons;
   color: ColorValue;
   size: number;
   focused: boolean;
 }) {
+  const icon = tabIcons[route];
   return (
-    <Image
-      source={source}
-      style={[styles.tabEmblem, focused && styles.tabEmblemActive]}
-      resizeMode="contain"
-      accessibilityLabel={label}
-    />
+    <View style={[styles.glyph, focused && styles.glyphOn]}>
+      <Ionicons
+        name={focused ? icon.active : icon.idle}
+        size={18}
+        color={focused ? colors.ink : colors.muted}
+      />
+    </View>
   );
 }
 
-function tabIcon(source: ImageSourcePropType, label: string) {
-  return function TabEmblemIcon(props: { color: ColorValue; size: number; focused: boolean }) {
-    return <BrandTabIcon {...props} source={source} label={label} />;
+function tabIcon(route: keyof typeof tabIcons) {
+  return function Icon(props: { color: ColorValue; size: number; focused: boolean }) {
+    return <TabGlyph {...props} route={route} />;
   };
 }
 
 export default function TabLayout() {
   const { user, loading } = useAuth();
   const insets = useSafeAreaInsets();
-  // Floating dock: clear of Android system nav, inset from screen edges.
-  const bottomInset = Math.max(insets.bottom, 10);
-  const tabBarHeight = 58 + bottomInset;
+  const bottomInset = Math.max(insets.bottom, 8);
+  const tabBarHeight = 62 + bottomInset;
 
   if (!loading && !user) return <Redirect href="/(auth)/login" />;
   if (!loading && user && !user.has_app_access) return <Redirect href="/(auth)/paywall" />;
@@ -47,87 +59,86 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: colors.goldBright,
-        tabBarInactiveTintColor: colors.dim,
+        tabBarInactiveTintColor: colors.muted,
         tabBarHideOnKeyboard: true,
         tabBarStyle: {
-          backgroundColor: "rgba(7,14,22,0.94)",
+          backgroundColor: "rgba(8,12,18,0.96)",
           borderTopWidth: 0,
           borderWidth: StyleSheet.hairlineWidth,
-          borderColor: "rgba(240,193,74,0.28)",
+          borderColor: "rgba(255,255,255,0.1)",
           borderRadius: radius.xl,
           height: tabBarHeight,
-          paddingTop: 8,
+          paddingTop: 6,
           paddingBottom: bottomInset,
           position: "absolute",
-          left: 12,
-          right: 12,
+          left: 10,
+          right: 10,
           bottom: 8,
-          elevation: 12,
+          elevation: 16,
           ...Platform.select({
             ios: {
               shadowColor: "#000",
-              shadowOffset: { width: 0, height: 10 },
-              shadowOpacity: 0.35,
-              shadowRadius: 18,
+              shadowOffset: { width: 0, height: 12 },
+              shadowOpacity: 0.4,
+              shadowRadius: 20,
             },
             default: {},
           }),
         },
         tabBarItemStyle: {
-          paddingVertical: 2,
+          paddingVertical: 0,
         },
         tabBarLabelStyle: {
-          fontSize: 10,
+          fontSize: 9,
           fontFamily: fonts.bodyBold,
           fontWeight: "700",
-          letterSpacing: 0.3,
-          marginBottom: 2,
+          letterSpacing: 0,
+          marginTop: 2,
+          marginBottom: 0,
         },
       }}
     >
       <Tabs.Screen
         name="index"
-        options={{
-          title: "Home",
-          tabBarLabel: "Home",
-          tabBarIcon: tabIcon(brandAssets.crest, "Home"),
-        }}
+        options={{ title: "Home", tabBarLabel: "Home", tabBarIcon: tabIcon("index") }}
       />
       <Tabs.Screen
         name="slate"
-        options={{ title: "Run", tabBarIcon: tabIcon(brandAssets.tabRun, "Run") }}
+        options={{ title: "Run", tabBarLabel: "Run", tabBarIcon: tabIcon("slate") }}
       />
       <Tabs.Screen
         name="sheet"
-        options={{ title: "Sheet", tabBarIcon: tabIcon(brandAssets.tabSheet, "Sheet") }}
+        options={{ title: "Sheet", tabBarLabel: "Sheet", tabBarIcon: tabIcon("sheet") }}
       />
       <Tabs.Screen
         name="tickets"
-        options={{ title: "Tickets", tabBarIcon: tabIcon(brandAssets.tabTickets, "Tickets") }}
+        options={{ title: "Tickets", tabBarLabel: "Tickets", tabBarIcon: tabIcon("tickets") }}
       />
       <Tabs.Screen
         name="learning"
-        options={{ title: "Learning", tabBarIcon: tabIcon(brandAssets.tabLearning, "Learning") }}
+        options={{ title: "Learn", tabBarLabel: "Learn", tabBarIcon: tabIcon("learning") }}
       />
       <Tabs.Screen
         name="markets"
-        options={{ title: "Markets", tabBarIcon: tabIcon(brandAssets.crest, "Markets") }}
+        options={{ title: "Markets", tabBarLabel: "Markets", tabBarIcon: tabIcon("markets") }}
       />
       <Tabs.Screen
         name="settings"
-        options={{ title: "Controls", tabBarIcon: tabIcon(brandAssets.tabControls, "Controls") }}
+        options={{ title: "More", tabBarLabel: "More", tabBarIcon: tabIcon("settings") }}
       />
     </Tabs>
   );
 }
 
 const styles = StyleSheet.create({
-  tabEmblem: {
-    width: 28,
-    height: 28,
-    opacity: 0.7,
+  glyph: {
+    width: 32,
+    height: 24,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  tabEmblemActive: {
-    opacity: 1,
+  glyphOn: {
+    backgroundColor: colors.gold,
   },
 });
