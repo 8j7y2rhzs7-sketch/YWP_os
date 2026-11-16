@@ -17,6 +17,8 @@ function statusLabel(status?: string): string {
       return "CALIBRATING";
     case "collecting":
       return "COLLECTING";
+    case "deferred_large_board":
+      return "SYNC NEEDED";
     default:
       return "BUILDING";
   }
@@ -30,9 +32,11 @@ export function HiveAccuracyMeter({ hive, optimumAccuracyPct }: Props) {
   const eligible = hive?.eligible_samples ?? 0;
   const optimal = hive?.optimal_sample ?? 200;
   const pending = hive?.pending_samples ?? 0;
+  const minSample = hive?.min_sample_for_calibration ?? 40;
   const volume = hive?.volume_score_pct ?? null;
   const calibration = hive?.calibration_score_pct ?? null;
-  const active = hive?.calibration_active ?? eligible >= (hive?.min_sample_for_calibration ?? 40);
+  const active = hive?.calibration_active ?? eligible >= minSample;
+  const deferred = hive?.status === "deferred_large_board";
   const fillColor =
     pct >= 100 ? colors.success : pct >= 40 ? colors.gold : colors.warning;
 
@@ -50,19 +54,27 @@ export function HiveAccuracyMeter({ hive, optimumAccuracyPct }: Props) {
       <View style={styles.metaRow}>
         <Text style={styles.meta}>{statusLabel(hive?.status)}</Text>
         <Text style={styles.meta}>
-          {eligible}/{optimal} settled
-          {pending ? ` · ${pending} pending sync` : ""}
+          {eligible}/{optimal} settled eligible
+          {pending ? ` · ${pending} awaiting results` : ""}
         </Text>
       </View>
-      {volume != null && calibration != null ? (
+      {deferred ? (
+        <Text style={styles.formula}>
+          Sweep was too large to attach live Hive counts. Open Learning → Sync
+          Scores after games finish — this bar only moves on settled outcomes,
+          not when a Run finishes.
+        </Text>
+      ) : volume != null && calibration != null ? (
         <Text style={styles.formula}>
           Volume {volume.toFixed(1)}% + calibration {calibration.toFixed(1)}%
-          {active ? " · blend active" : " · blend locked until min sample"}
+          {active
+            ? " · blend active"
+            : ` · blend locked until ${minSample} settled (${eligible}/${minSample})`}
         </Text>
       ) : (
         <Text style={styles.formula}>
-          Calculated from settled Hive outcomes vs {optimal}-sample optimum
-          {active ? "" : " · blend locked until min sample"}
+          Moves after Sync Scores maps graded results — not after Launch.
+          {active ? "" : ` Blend unlocks at ${minSample} settled.`}
         </Text>
       )}
     </View>
