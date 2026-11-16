@@ -65,7 +65,13 @@ from app.services.decision_engine import (
     money,
 )
 from app.services.learning import apply_micro_learning, load_feature_weights, record_usage_event
-from app.services.live_generic_slate import SPORT_KEYS, live_generic_slate, upcoming_odds_dates
+from app.services.live_generic_slate import (
+    SPORT_KEYS,
+    event_matches_slate_date,
+    live_all_slate,
+    live_generic_slate,
+    upcoming_odds_dates,
+)
 from app.services.live_mlb_slate import live_mlb_slate, props_slate_notice
 from app.services.live_wnba_slate import (
     live_wnba_slate,
@@ -143,15 +149,17 @@ def warm_props(payload: PropWarmRequest, _: SubscribedUser) -> PropWarmResponse:
     so the engine is not rushed into grading sportsbook-only lines.
     """
     sport_l = canonical_app_sport(payload.sport or "")
-    before_total, before_modeled, before_pending, _ = _prop_research_stats(payload.candidates)
-    if before_pending <= 0 or sport_l not in {
+    prop_warm_sports = {
         "wnba",
         "nba",
         "ncaab",
         "basketball",
         "nfl",
         "ncaaf",
-    }:
+        "all",
+    }
+    before_total, before_modeled, before_pending, _ = _prop_research_stats(payload.candidates)
+    if before_pending <= 0 or sport_l not in prop_warm_sports:
         total, modeled, pending, coverage = _prop_research_stats(payload.candidates)
         return PropWarmResponse(
             sport=payload.sport,
@@ -170,14 +178,25 @@ def warm_props(payload: PropWarmRequest, _: SubscribedUser) -> PropWarmResponse:
             ),
         )
 
-    from app.services.player_prop_research import enrich_player_prop_candidates
-
-    enriched = enrich_player_prop_candidates(
-        list(payload.candidates),
-        slate_date=payload.date,
-        budget_seconds=float(payload.budget_seconds),
+    from app.services.player_prop_research import (
+        enrich_player_prop_candidates,
+        select_warm_slice,
     )
-    total, modeled, pending, coverage = _prop_research_stats(enriched)
+
+    this_pass, held = select_warm_slice(list(payload.candidates))
+    enriched_pass = (
+        enrich_player_prop_candidates(
+            this_pass,
+            slate_date=payload.date,
+            budget_seconds=float(payload.budget_seconds),
+        )
+        if this_pass
+        else []
+    )
+    # Stats cover the whole board. The body is only this slice so a
+    # 4,000-pick warm does not die on the proxy and stay spinning.
+    full = enriched_pass + held
+    total, modeled, pending, coverage = _prop_research_stats(full)
     gained = max(0, modeled - before_modeled)
     # Only "ready" when coverage is high or nothing left. Never stop after a
     # single zero-gain pass — ESPN lookups often spend a slice with no upgrades
@@ -193,7 +212,7 @@ def warm_props(payload: PropWarmRequest, _: SubscribedUser) -> PropWarmResponse:
     return PropWarmResponse(
         sport=payload.sport,
         date=payload.date,
-        candidates=enriched,
+        candidates=enriched_pass,
         prop_total=total,
         prop_modeled=modeled,
         prop_pending=pending,
@@ -249,8 +268,15 @@ def _candidate_event_local_date(
     start = candidate.start_time
     if start.tzinfo is None:
         start = start.replace(tzinfo=UTC)
-    sport_l = (candidate.sport or "").lower()
-    zone_name = timezone_name or ("Asia/Seoul" if sport_l == "kbo" else "America/New_York")
+    sport_l = canonical_app_sport(candidate.sport or "")
+    if timezone_name:
+        zone_name = timezone_name
+    elif sport_l == "kbo":
+        zone_name = "Asia/Seoul"
+    elif sport_l in {"soccer", "epl", "mls"}:
+        zone_name = "Europe/London"
+    else:
+        zone_name = "America/New_York"
     try:
         zone = ZoneInfo(zone_name)
     except Exception:  # noqa: BLE001
@@ -262,19 +288,20 @@ def _assert_candidates_match_slate_date(payload: SportsAnalyzeRequest) -> None:
     mismatched = [
         candidate.candidate_id
         for candidate in payload.candidates
-        if _candidate_event_local_date(candidate) != payload.date
+        if not event_matches_slate_date(candidate.start_time, payload.date, sport=candidate.sport)
     ]
     if mismatched:
+        sport_l = canonical_app_sport(payload.sport or "")
+        hint = ""
+        if sport_l == "kbo":
+            hint = " KBO uses Korea (Asia/Seoul) calendar dates."
+        elif sport_l in {"soccer", "epl", "mls", "all"}:
+            hint = " Soccer dates match ET and major European/Asia kickoff calendars."
         raise HTTPException(
             status_code=409,
             detail=(
                 "Candidate events do not match the requested slate date. "
-                "Reload the slate for that date before analyzing."
-                + (
-                    " KBO uses Korea (Asia/Seoul) calendar dates."
-                    if payload.sport.lower() == "kbo"
-                    else ""
-                )
+                "Reload the slate for that date before analyzing." + hint
             ),
         )
 
@@ -402,6 +429,49 @@ def slate(
         except Exception:
             logger.exception("Live WNBA slate failed")
 
+    if not settings.demo_mode and sport_lower == "all" and settings.odds_api_key:
+        try:
+            candidates = live_all_slate(slate_date)
+            if candidates:
+                by_sport: dict[str, int] = {}
+                for item in candidates:
+                    key = canonical_app_sport(item.sport or "")
+                    by_sport[key] = by_sport.get(key, 0) + 1
+                mix = ", ".join(
+                    f"{sport_public_label(key)} {count}"
+                    for key, count in sorted(by_sport.items(), key=lambda pair: (-pair[1], pair[0]))
+                )
+                return _slate_response(
+                    sport="all",
+                    slate_date=slate_date,
+                    mode="live",
+                    notice=(
+                        f"ALL SPORTS board: {len(candidates)} priced sides "
+                        f"({mix}). Parlays may mix sports. "
+                        "Huge boards warm and grade in chunks so Launch stays under "
+                        "the proxy window."
+                    ),
+                    candidates=candidates,
+                )
+            nearby = upcoming_odds_dates("all")
+            return _slate_response(
+                sport="all",
+                slate_date=slate_date,
+                mode="live",
+                notice=(
+                    f"No in-season Odds events on {slate_date.isoformat()}. "
+                    + (
+                        f"Nearest dates with prices: {', '.join(nearby)}. "
+                        if nearby
+                        else "No priced events in the current Odds upcoming feed. "
+                    )
+                    + "Change the slate date and refresh — demo data is not substituted."
+                ),
+                candidates=[],
+            )
+        except Exception:
+            logger.exception("Live ALL SPORTS slate failed")
+
     if not settings.demo_mode and sport_lower in SPORT_KEYS and settings.odds_api_key:
         try:
             candidates = live_generic_slate(sport_lower, slate_date)
@@ -412,7 +482,7 @@ def slate(
                         "Open-Meteo (ESPN has no baseball/kbo path). Full-game markets can "
                         "clear when schedule, recent form, weather, and price consensus verify."
                     )
-                elif sport_lower in {"nfl", "ncaaf"}:
+                elif sport_lower in {"nfl", "ncaaf", "nba"}:
                     prop_n = sum(
                         1 for c in candidates if str(c.market_type or "").startswith("player_")
                     )
@@ -422,14 +492,27 @@ def slate(
                         if str(c.market_type or "").startswith("player_")
                         and c.probability_source == "model"
                     )
+                    prop_menu = (
+                        "points, rebounds, assists, threes, and PRA"
+                        if sport_lower == "nba"
+                        else "the expanded player-prop menu"
+                    )
                     notice = (
                         f"Live {sport_lower.upper()} from The Odds API: full-game markets plus "
-                        f"expanded player props ({prop_n} lines, {model_n} ESPN form-modeled). "
+                        f"{prop_menu} ({prop_n} lines, {model_n} ESPN form-modeled). "
                         "Thin-cushion / miss-by-1 closes hard-SKIP before PLAY."
+                    )
+                elif sport_lower == "soccer":
+                    notice = (
+                        "Live SOCCER from The Odds API across active global leagues "
+                        "(UCL/UEL + top-5 Europe + cups/Americas/Asia when in season), "
+                        "regions us+uk+eu. Dates match ET and major European/Asia "
+                        "kickoff calendars so midweek boards are not dropped. "
+                        "Missing research stays PARTIAL — priced plays are still shown."
                     )
                 else:
                     notice = (
-                        f"Live {sport_lower.upper()} prices from The Odds API with "
+                        f"Live {sport_public_label(sport_lower)} prices from The Odds API with "
                         "multi-source fact cascade (NHL Web API / ESPN / Open-Meteo). "
                         "Missing research stays PARTIAL — priced plays are still shown."
                     )
@@ -932,6 +1015,75 @@ def day_forge(
     )
 
 
+MASS_GRADE = 800
+GRADE_PROP_CAP = 400
+# ALL SPORTS / giant prop boards can exceed 5k sides. Cap what we walk so
+# LAUNCH returns before Render's ~30s proxy kill — deferred stay SKIP.
+TEAM_GRADE_CAP = 1400
+MEGA_GRADE_CAP = 1600
+
+
+def _prioritize_grade_targets(candidates: list) -> list:
+    """Prefer actionable team markets and modeled props when we must truncate."""
+
+    def score(candidate) -> tuple:
+        market = str(candidate.market_type or "")
+        is_prop = market.startswith("player_")
+        modeled = candidate.probability_source in {"model", "manual_verified"}
+        if is_prop and modeled:
+            tier = 0
+        elif market in {
+            "moneyline",
+            "moneyline_draw",
+            "spread",
+            "run_line",
+            "game_total_over",
+            "game_total_under",
+        }:
+            tier = 1
+        else:
+            tier = 2
+        odds = abs(int(candidate.american_odds or 110))
+        return (tier, abs(odds - 110), odds)
+
+    return sorted(candidates, key=score)
+
+
+def _grade_slice(candidates: list) -> tuple[list, int]:
+    """On a multi-thousand board, grade modeled props and team markets only.
+
+    Unmodeled player props cannot clear Strict Mode. Walking all of them
+    is what makes LAUNCH die on the Render proxy. Mega boards also cap
+    team-market walks so a 5k+ ALL SPORTS merge still returns.
+    """
+    if len(candidates) < MASS_GRADE:
+        return candidates, 0
+    ready_props = []
+    other = []
+    deferred = 0
+    for candidate in candidates:
+        is_prop = str(candidate.market_type or "").startswith("player_")
+        modeled = candidate.probability_source in {"model", "manual_verified"}
+        if is_prop and not modeled:
+            deferred += 1
+            continue
+        if is_prop:
+            ready_props.append(candidate)
+        else:
+            other.append(candidate)
+    if len(ready_props) > GRADE_PROP_CAP:
+        deferred += len(ready_props) - GRADE_PROP_CAP
+        ready_props = _prioritize_grade_targets(ready_props)[:GRADE_PROP_CAP]
+    if len(other) > TEAM_GRADE_CAP:
+        deferred += len(other) - TEAM_GRADE_CAP
+        other = _prioritize_grade_targets(other)[:TEAM_GRADE_CAP]
+    graded = other + ready_props
+    if len(graded) > MEGA_GRADE_CAP:
+        deferred += len(graded) - MEGA_GRADE_CAP
+        graded = _prioritize_grade_targets(graded)[:MEGA_GRADE_CAP]
+    return graded, deferred
+
+
 @router.post("/analyze", response_model=AnalyzeResponse, status_code=status.HTTP_201_CREATED)
 def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> AnalyzeResponse:
     # Render free proxy hard-kills ~30s. Keep wall-clock headroom so huge WNBA/NFL
@@ -962,14 +1114,16 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
     # Mode can PLAY instead of hard-SKIP for missing independent model.
     # Budget enrichment so 400+ prop boards do not 502 on Render.
     sport_l = canonical_app_sport(payload.sport or "")
-    if sport_l in {"wnba", "nba", "ncaab", "basketball", "nfl", "ncaaf"} and any(
+    if sport_l in {"wnba", "nba", "ncaab", "basketball", "nfl", "ncaaf", "all"} and any(
         str(c.market_type or "").startswith("player_") and c.probability_source == "market_implied"
         for c in candidates
     ):
         from app.services.player_prop_research import enrich_player_prop_candidates
 
         remaining = max(0.5, analyze_deadline - time.monotonic())
-        if len(candidates) >= 400:
+        if len(candidates) >= 2500:
+            enrich_budget = min(4.0, remaining)
+        elif len(candidates) >= 400:
             enrich_budget = min(5.0, remaining)
         elif huge_board:
             enrich_budget = min(8.0, remaining)
@@ -978,6 +1132,8 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         candidates = enrich_player_prop_candidates(
             candidates, slate_date=payload.date, budget_seconds=enrich_budget
         )
+
+    grade_candidates, deferred_props = _grade_slice(candidates)
 
     protocol_run = run_protocol_health_check(
         db,
@@ -994,7 +1150,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
     hive_policy = get_active_policy(db=db)
     hive_signal_cache: dict[tuple[str, str, str, str, str], object] = {}
     try:
-        for candidate in candidates:
+        for candidate in grade_candidates:
             evaluation = decision_engine.evaluate(
                 candidate,
                 payload.user_risk_profile,
@@ -1202,7 +1358,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
         elif is_skip:
             stay_away_records.append(record)
 
-    stay_away_all_count = len(stay_away_records)
+    stay_away_all_count = len(stay_away_records) + deferred_props
     stay_away_limit = (
         persist_skip_sample if persist_skip_sample is not None else stay_away_all_count
     )
@@ -1365,6 +1521,7 @@ def analyze(payload: SportsAnalyzeRequest, user: SubscribedUser, db: DB) -> Anal
             "hive_optimum_accuracy_pct": hive_learning["optimum_accuracy_pct"],
             "analyze_elapsed_seconds": round(time.monotonic() - analyze_started, 2),
             "huge_board_fast_path": huge_board,
+            "ungraded_pending_props": deferred_props,
             "pipeline_version": "1.0",
             "qualify_count": sum(1 for item in ranked if item.pipeline_threshold == "qualify"),
             "borderline_count": sum(

@@ -38,11 +38,11 @@ import type {
 } from "@/types";
 
 const CANDIDATE_PAGE = 20;
-const PROP_SPORTS = new Set(["wnba", "nba", "ncaab", "nfl", "ncaaf"]);
+const PROP_SPORTS = new Set(["wnba", "nba", "ncaab", "nfl", "ncaaf", "all"]);
 /** Chunked warm passes — each stays under Render's ~30s proxy. */
 const MAX_WARM_ROUNDS = 14;
-/** Giant boards need more slices than a normal slate. */
-const MAX_WARM_ROUNDS_HUGE = 64;
+/** Giant boards (ALL SPORTS / 5k+) need many slices. */
+const MAX_WARM_ROUNDS_HUGE = 96;
 /** Props shipped per warm request. Full boards time out without this. */
 const WARM_CHUNK = 96;
 const WARM_LONGSHOT_ODDS = 4000;
@@ -145,6 +145,7 @@ function CompactCandidateRow({
 }
 
 const sports = [
+  { key: "all", label: "ALL", icon: "✦" },
   { key: "mlb", label: "MLB", icon: "⚾" },
   { key: "wnba", label: "WNBA", icon: "🏀" },
   { key: "nba", label: "NBA", icon: "🏀" },
@@ -260,10 +261,10 @@ export default function SlateScreen() {
     let errors = 0;
     const pendingStart = pendingPropCount(candidates);
     const roundCap =
-      pendingStart > 400
+      pendingStart > 200 || sportKey === "all"
         ? Math.min(
             MAX_WARM_ROUNDS_HUGE,
-            Math.max(MAX_WARM_ROUNDS, Math.ceil(pendingStart / WARM_CHUNK) + 2),
+            Math.max(MAX_WARM_ROUNDS, Math.ceil(pendingStart / WARM_CHUNK) + 4),
           )
         : MAX_WARM_ROUNDS;
     try {
@@ -716,12 +717,14 @@ export default function SlateScreen() {
             const outOfSeason = catalog?.in_season === false;
             const itemLook = sportLook(item.key);
             const active = sport === item.key;
+            const isAll = item.key === "all";
             return (
               <Pressable
                 key={item.key}
                 onPress={() => setSport(item.key)}
                 style={[
                   styles.sport,
+                  isAll && styles.sportAll,
                   active && {
                     borderColor: itemLook.accent,
                     backgroundColor: itemLook.accentSoft,
@@ -733,11 +736,12 @@ export default function SlateScreen() {
                 <SportBallIcon
                   icon={item.icon}
                   spinning={active && (loadingSlate || analyzing)}
-                  size={28}
+                  size={isAll ? 30 : 28}
                 />
                 <Text
                   style={[
                     styles.sportLabel,
+                    isAll && styles.sportLabelAll,
                     active && { color: itemLook.stripe },
                     outOfSeason && styles.sportLabelOutOfSeason,
                   ]}
@@ -959,6 +963,11 @@ const styles = registerStyles(() => StyleSheet.create({
     borderRadius: 2,
     opacity: 0.9,
   },
+  sportAll: {
+    minWidth: 112,
+    borderColor: "rgba(240,193,74,0.45)",
+    backgroundColor: "rgba(240,193,74,0.08)",
+  },
   sportOutOfSeason: { opacity: 0.42 },
   sportLabel: {
     color: colors.silver,
@@ -966,6 +975,10 @@ const styles = registerStyles(() => StyleSheet.create({
     fontWeight: "700",
     fontSize: 12,
     letterSpacing: 0.3,
+  },
+  sportLabelAll: {
+    color: "#F0C14A",
+    letterSpacing: 1.2,
   },
   sportLabelOutOfSeason: { color: colors.muted },
   oosBadge: {

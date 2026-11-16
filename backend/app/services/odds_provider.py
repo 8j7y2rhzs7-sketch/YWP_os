@@ -60,14 +60,17 @@ APP_SPORT_TO_ODDS_KEY: dict[str, str] = {
     "tennis": "tennis_atp_us_open",
 }
 
-# Major soccer competitions under the app "soccer" chip.
-# Order matters: midweek UCL/UEL often hosts the clubs users look for on Hard Rock
-# (Arsenal, PSG, Liverpool, Barcelona) while domestic leagues are quieter.
-# Paid cost ≈ markets×regions credits × in-season keys fetched.
+# Preferred soccer competitions under the app "soccer" chip (order = priority).
+# Midweek UCL/UEL first; then top-5 Europe + cups/Americas/Asia so Hard Rock
+# boards stop missing leagues the free Odds catalog already lists as active.
+# Any other in-season soccer_* key from the free catalog is appended after these.
 SOCCER_ODDS_LEAGUES: list[tuple[str, str]] = [
     ("soccer_uefa_champs_league", "UCL"),
     ("soccer_uefa_europa_league", "UEL"),
     ("soccer_uefa_europa_conference_league", "UECL"),
+    ("soccer_uefa_nations_league", "Nations League"),
+    ("soccer_fifa_world_cup", "World Cup"),
+    ("soccer_uefa_european_championship", "Euros"),
     ("soccer_epl", "EPL"),
     ("soccer_spain_la_liga", "La Liga"),
     ("soccer_france_ligue_one", "Ligue 1"),
@@ -75,22 +78,42 @@ SOCCER_ODDS_LEAGUES: list[tuple[str, str]] = [
     ("soccer_germany_bundesliga", "Bundesliga"),
     ("soccer_usa_mls", "MLS"),
     ("soccer_efl_champ", "EFL Championship"),
+    ("soccer_fa_cup", "FA Cup"),
+    ("soccer_england_efl_cup", "EFL Cup"),
     ("soccer_portugal_primeira_liga", "Primeira Liga"),
     ("soccer_netherlands_eredivisie", "Eredivisie"),
+    ("soccer_belgium_first_div", "Belgian Pro League"),
+    ("soccer_turkey_super_league", "Süper Lig"),
+    ("soccer_spl", "Scottish Premiership"),
     ("soccer_mexico_ligamx", "Liga MX"),
+    ("soccer_brazil_campeonato", "Brasilirão"),
+    ("soccer_argentina_primera_division", "Argentina Primera"),
+    ("soccer_conmebol_copa_libertadores", "Libertadores"),
+    ("soccer_conmebol_copa_sudamericana", "Sudamericana"),
+    ("soccer_australia_aleague", "A-League"),
+    ("soccer_japan_j_league", "J-League"),
+    ("soccer_korea_kleague1", "K League 1"),
+    ("soccer_saudi_arabia_pro_league", "Saudi Pro League"),
+    ("soccer_denmark_superliga", "Danish Superliga"),
+    ("soccer_switzerland_superleague", "Swiss Super League"),
+    ("soccer_austria_bundesliga", "Austrian Bundesliga"),
+    ("soccer_poland_ekstraklasa", "Ekstraklasa"),
+    ("soccer_greece_super_league", "Greek Super League"),
 ]
 
-# Soft cap so one SOCCER refresh cannot burn the whole Odds quota.
-SOCCER_MAX_LEAGUES_PER_FETCH = 10
+# Soft cap — prefer discovery of every active soccer_* over silent drops.
+# Busy midweeks (UCL + domestics + cups) routinely exceed 20 active keys.
+SOCCER_MAX_LEAGUES_PER_FETCH = 32
 # Tennis is one key per tournament. Cap paid pulls on busy weeks.
 TENNIS_MAX_TOURNAMENTS_PER_FETCH = 8
 
 # US-only regions often under-cover European soccer vs Hard Rock / DK.
-# us+uk keeps Hard Rock while picking up EPL/UCL books (credits = markets×2).
-SOCCER_ODDS_REGIONS = "us,uk"
+# us+uk+eu keeps Hard Rock while picking up EPL/UCL/Serie A books.
+SOCCER_ODDS_REGIONS = "us,uk,eu"
 # KBO books are thin on US-only; eu/uk often carry baseball_kbo prices.
 KBO_ODDS_REGIONS = "us,eu,uk"
 TENNIS_ODDS_REGIONS = "us,uk,eu"
+ALL_SPORTS_ODDS_REGIONS = "us,uk,eu"
 
 # Majors kept as a last-resort map when the free catalog is empty.
 TENNIS_FALLBACK_ODDS_KEYS: list[tuple[str, str]] = [
@@ -114,6 +137,8 @@ def soccer_odds_regions(app_sport: str | None = None) -> str:
         return KBO_ODDS_REGIONS
     if key == "tennis":
         return TENNIS_ODDS_REGIONS
+    if key == "all":
+        return ALL_SPORTS_ODDS_REGIONS
     return "us"
 
 
@@ -121,7 +146,22 @@ def soccer_league_label(odds_key: str) -> str:
     for key, label in SOCCER_ODDS_LEAGUES:
         if key == odds_key:
             return label
-    return "Soccer"
+    raw = (odds_key or "").removeprefix("soccer_").replace("_", " ").strip()
+    return raw.title() if raw else "Soccer"
+
+
+def _soccer_keys_from_catalog(*, force_refresh: bool = False) -> list[str]:
+    """Active soccer Odds keys: preferred order first, then any other soccer_*."""
+    preferred = [key for key, _ in SOCCER_ODDS_LEAGUES]
+    preferred_set = set(preferred)
+    if not odds_api_configured():
+        return preferred[:SOCCER_MAX_LEAGUES_PER_FETCH]
+    active = in_season_odds_keys(force_refresh=force_refresh)
+    if not active:
+        return preferred[:SOCCER_MAX_LEAGUES_PER_FETCH]
+    ranked = [key for key in preferred if key in active]
+    extras = sorted(key for key in active if key.startswith("soccer_") and key not in preferred_set)
+    return (ranked + extras)[:SOCCER_MAX_LEAGUES_PER_FETCH]
 
 
 def tennis_league_label(odds_key: str) -> str:
@@ -142,6 +182,8 @@ def canonical_app_sport(app_sport: str) -> str:
     key = (app_sport or "").strip().lower()
     if key == "ncaam":
         return "ncaab"
+    if key in {"multi", "mixed"}:
+        return "all"
     return key
 
 
@@ -152,6 +194,8 @@ def sport_public_label(app_sport: str) -> str:
         return "NCAAM"
     if key == "tennis":
         return "TENNIS"
+    if key == "all":
+        return "ALL SPORTS"
     return key.upper()
 
 
@@ -169,9 +213,11 @@ def odds_keys_for_app_sport(app_sport: str) -> list[str]:
     """Odds API sport keys used when the app loads this sport."""
     key = canonical_app_sport(app_sport)
     if key == "soccer":
-        return [odds_key for odds_key, _ in SOCCER_ODDS_LEAGUES]
+        return _soccer_keys_from_catalog()
     if key == "tennis":
         return _tennis_keys_from_catalog()
+    if key == "all":
+        return []
     single = APP_SPORT_TO_ODDS_KEY.get(key)
     return [single] if single else []
 
@@ -186,6 +232,8 @@ def active_odds_keys_for_app_sport(app_sport: str, *, force_refresh: bool = Fals
     if key == "tennis":
         mapped = _tennis_keys_from_catalog(force_refresh=force_refresh)
         return mapped[:TENNIS_MAX_TOURNAMENTS_PER_FETCH]
+    if key == "soccer":
+        return _soccer_keys_from_catalog(force_refresh=force_refresh)
     mapped = odds_keys_for_app_sport(app_sport)
     if not mapped:
         return []
@@ -194,10 +242,7 @@ def active_odds_keys_for_app_sport(app_sport: str, *, force_refresh: bool = Fals
     active = in_season_odds_keys(force_refresh=force_refresh)
     if not active:
         return mapped
-    filtered = [item for item in mapped if item in active]
-    if key == "soccer":
-        return filtered[:SOCCER_MAX_LEAGUES_PER_FETCH]
-    return filtered
+    return [item for item in mapped if item in active]
 
 
 # Free /v4/sports cache — endpoint does not consume usage credits.
@@ -410,7 +455,19 @@ def app_sport_in_season(app_sport: str, *, force_refresh: bool = False) -> bool 
 
     Multi-league sports (soccer) are in season when ANY mapped league is active.
     """
-    mapped = odds_keys_for_app_sport(app_sport)
+    key = canonical_app_sport(app_sport)
+    if key == "all":
+        # ALL is in season when any priced app sport is live.
+        flags = [
+            app_sport_in_season(sport, force_refresh=force_refresh)
+            for sport in APP_SPORT_TO_ODDS_KEY
+            if sport not in {"mls", "epl"}
+        ]
+        known = [flag for flag in flags if flag is not None]
+        if not known:
+            return None
+        return any(known)
+    mapped = odds_keys_for_app_sport(key)
     if not mapped:
         return None
     if not odds_api_configured():
@@ -419,7 +476,7 @@ def app_sport_in_season(app_sport: str, *, force_refresh: bool = False) -> bool 
     if not active:
         # Catalog empty/unavailable — do not claim out-of-season.
         return None
-    return any(key in active for key in mapped)
+    return any(item in active for item in mapped)
 
 
 def build_app_sports_catalog(*, force_refresh: bool = False) -> list[dict[str, Any]]:
@@ -428,6 +485,7 @@ def build_app_sports_catalog(*, force_refresh: bool = False) -> list[dict[str, A
     catalog_error = _sports_cache.get("error")
     rows: list[dict[str, Any]] = []
     labels = {
+        "all": "ALL SPORTS",
         "mlb": "MLB",
         "wnba": "WNBA",
         "nba": "NBA",
@@ -440,6 +498,34 @@ def build_app_sports_catalog(*, force_refresh: bool = False) -> list[dict[str, A
         "kbo": "KBO",
     }
     for app_key, label in labels.items():
+        if app_key == "all":
+            active = app_sport_in_season("all", force_refresh=force_refresh)
+            rows.append(
+                {
+                    "key": "all",
+                    "label": label,
+                    "odds_key": None,
+                    "odds_keys": [],
+                    "active_odds_keys": [],
+                    "in_season": active,
+                    "priced_slate_available": active is True,
+                    "note": (
+                        "Runs every in-season sport on one board. Mixed-sport parlays. "
+                        "Large boards warm and grade in chunks."
+                        if active is True
+                        else (
+                            "No in-season sports on the Odds catalog right now."
+                            if active is False
+                            else (
+                                "Odds catalog unavailable"
+                                if catalog_error
+                                else "Odds key not configured"
+                            )
+                        )
+                    ),
+                }
+            )
+            continue
         mapped = odds_keys_for_app_sport(app_key)
         odds_key = mapped[0] if mapped else None
         if app_key == "tennis":
@@ -449,6 +535,14 @@ def build_app_sports_catalog(*, force_refresh: bool = False) -> list[dict[str, A
                     key.startswith("tennis_atp_") or key.startswith("tennis_wta_")
                     for key in in_season
                 )
+            elif odds_api_configured() and not in_season:
+                active = None
+            else:
+                active = None
+        elif app_key == "soccer":
+            active_keys = list(mapped) if mapped else []
+            if odds_api_configured() and in_season:
+                active = bool(active_keys)
             elif odds_api_configured() and not in_season:
                 active = None
             else:
@@ -615,38 +709,44 @@ def get_game_odds(
 def prefetch_in_season_app_odds(
     *,
     markets: str = "h2h,spreads,totals",
-    regions: str = "us",
+    regions: str | None = None,
 ) -> dict[str, Any]:
     """Optionally warm paid odds for every in-season app sport (uses credits).
 
-    Cost ≈ 3 credits × number of in-season Odds keys warmed (soccer may warm
-    several leagues). Prefer this only when the user will browse multiple sports.
+    Cost ≈ markets×regions credits × number of in-season Odds keys warmed
+    (soccer may warm many leagues). Prefer this only when browsing many sports.
     """
     catalog = build_app_sports_catalog()
     warmed: list[str] = []
     skipped: list[str] = []
     credits_spent = 0
     for row in catalog:
+        app_key = str(row.get("key") or "")
+        if app_key == "all":
+            # ALL merges per-sport boards; warming each sport below covers it.
+            skipped.append("all")
+            continue
         if row.get("in_season") is not True:
-            skipped.append(str(row.get("key")))
+            skipped.append(app_key)
             continue
         odds_keys = row.get("active_odds_keys") or (
             [row.get("odds_key")] if row.get("odds_key") else []
         )
         if not odds_keys:
-            skipped.append(str(row.get("key")))
+            skipped.append(app_key)
             continue
+        sport_regions = regions or soccer_odds_regions(app_key)
         for odds_key in odds_keys:
             if not odds_key:
                 continue
-            get_game_odds(sport=str(odds_key), markets=markets, regions=regions)
+            get_game_odds(sport=str(odds_key), markets=markets, regions=sport_regions)
             after = get_last_fetch_status()
             spent = int(after.get("credit_cost") or 0)
             credits_spent += spent
             if after.get("cache_hit"):
-                warmed.append(f"{row['key']}:{odds_key}:cache")
+                warmed.append(f"{app_key}:{odds_key}:cache")
             else:
-                warmed.append(f"{row['key']}:{odds_key}:{spent}c")
+                warmed.append(f"{app_key}:{odds_key}:{spent}c")
     return {
         "warmed": warmed,
         "skipped_out_of_season_or_unmapped": [s for s in skipped if s],
@@ -654,8 +754,8 @@ def prefetch_in_season_app_odds(
         "cache_ttl_seconds": _ODDS_CACHE_TTL_SECONDS,
         "note": (
             "Prefetch spends credits once per Odds key then category switches are free "
-            f"for ~{_ODDS_CACHE_TTL_SECONDS // 60} minutes. Soccer may warm multiple leagues. "
-            "Skip prefetch if you only use one sport."
+            f"for ~{_ODDS_CACHE_TTL_SECONDS // 60} minutes. Soccer uses us+uk+eu and may "
+            "warm many leagues. Skip prefetch if you only use one sport."
         ),
     }
 

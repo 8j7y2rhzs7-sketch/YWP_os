@@ -67,9 +67,104 @@ SPORT_DISPLAY: dict[str, tuple[str, str]] = {
 SOCCER_KEYS = {"soccer", "epl", "mls"}
 TENNIS_KEYS = {"tennis"}
 
+# Soccer kickoffs span many local calendars. Match ET + major soccer zones so
+# a London Saturday night or early Asia kickoff is not dropped for US users.
+SOCCER_DATE_ZONES = (
+    "America/New_York",
+    "Europe/London",
+    "Europe/Paris",
+    "America/Sao_Paulo",
+    "Asia/Tokyo",
+)
+
+# Order for ALL SPORTS merge — each keeps its own candidate.sport for parlays.
+ALL_SLATE_SPORTS: tuple[str, ...] = (
+    "mlb",
+    "wnba",
+    "nba",
+    "nfl",
+    "ncaaf",
+    "ncaab",
+    "nhl",
+    "soccer",
+    "tennis",
+    "kbo",
+)
+
+
+def event_matches_slate_date(
+    start_time: datetime, slate_date: date, *, sport: str | None = None
+) -> bool:
+    """True when the event belongs on this slate date for the sport's calendars."""
+    if start_time.tzinfo is None:
+        start_time = start_time.replace(tzinfo=UTC)
+    if start_time.astimezone(UTC).date() == slate_date:
+        return True
+    sport_l = canonical_app_sport(sport or "")
+    if sport_l == "kbo":
+        zones = ("Asia/Seoul",)
+    elif sport_l in SOCCER_KEYS:
+        zones = SOCCER_DATE_ZONES
+    else:
+        zones = ("America/New_York",)
+    from zoneinfo import ZoneInfo
+
+    for zone in zones:
+        try:
+            if start_time.astimezone(ZoneInfo(zone)).date() == slate_date:
+                return True
+        except Exception:  # noqa: BLE001
+            continue
+    return False
+
+
+def live_all_slate(slate_date: date) -> list[CandidateInput]:
+    """Merge every in-season sport board into one slate (mixed-sport parlays)."""
+    from app.services.live_mlb_slate import live_mlb_slate
+    from app.services.live_wnba_slate import live_wnba_slate
+    from app.services.odds_provider import app_sport_in_season
+
+    merged: list[CandidateInput] = []
+    sports_hit: list[str] = []
+    for sport in ALL_SLATE_SPORTS:
+        if app_sport_in_season(sport) is False:
+            continue
+        try:
+            if sport == "mlb":
+                batch = live_mlb_slate(slate_date)
+            elif sport == "wnba":
+                batch = live_wnba_slate(slate_date)
+            else:
+                batch = live_generic_slate(sport, slate_date)
+        except Exception:
+            logger.exception("ALL slate: failed loading %s", sport)
+            continue
+        if not batch:
+            continue
+        sports_hit.append(sport)
+        merged.extend(batch)
+
+    seen: set[str] = set()
+    out: list[CandidateInput] = []
+    for candidate in merged:
+        cid = candidate.candidate_id
+        if cid in seen:
+            continue
+        seen.add(cid)
+        out.append(candidate)
+    logger.info(
+        "Built ALL SPORTS slate: %d candidates from %s on %s",
+        len(out),
+        ",".join(sports_hit) or "none",
+        slate_date.isoformat(),
+    )
+    return out
+
 
 def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
     sport_lower = canonical_app_sport(sport)
+    if sport_lower == "all":
+        return live_all_slate(slate_date)
     if sport_lower not in SPORT_KEYS:
         logger.warning("No Odds API sport key for %s", sport)
         return []
@@ -123,10 +218,7 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
         start_time = _parse_start(event.get("commence_time"))
         if start_time is None:
             continue
-        if (
-            start_time.astimezone(UTC).date() != slate_date
-            and _event_local_date(start_time, sport=sport_lower) != slate_date
-        ):
+        if not event_matches_slate_date(start_time, slate_date, sport=sport_lower):
             continue
         matched_events += 1
         event_id = event.get("id", "")
@@ -285,30 +377,43 @@ def _append_football_player_props(
 
 
 def upcoming_odds_dates(sport: str, *, limit: int = 5) -> list[str]:
-    """Nearest UTC slate dates that currently have Odds events for this sport.
+    """Nearest slate dates that currently have Odds events for this sport.
 
     Uses the same market bundle as the live slate so a prior paid fetch can be
-    served from the short Odds TTL cache (0 extra credits).
+    served from the short Odds TTL cache (0 extra credits). Soccer dates include
+    ET + major European/Asia calendars so nearby tips match the slate filter.
     """
-    sport_lower = sport.lower()
+    sport_lower = canonical_app_sport(sport)
+    if sport_lower == "all":
+        dates: list[str] = []
+        for item in ALL_SLATE_SPORTS:
+            for stamp in upcoming_odds_dates(item, limit=limit):
+                if stamp not in dates:
+                    dates.append(stamp)
+            if len(dates) >= limit:
+                break
+        return sorted(dates)[:limit]
     odds_keys = active_odds_keys_for_app_sport(sport_lower)
     if not odds_keys:
         odds_key = SPORT_KEYS.get(sport_lower)
         odds_keys = [odds_key] if odds_key else []
     if not odds_keys:
         return []
-    dates: list[str] = []
+    dates = []
     regions = soccer_odds_regions(sport_lower)
+    markets = "h2h" if sport_lower in TENNIS_KEYS else "h2h,spreads,totals"
     for odds_key in odds_keys:
         try:
-            events = get_game_odds(sport=odds_key, markets="h2h,spreads,totals", regions=regions)
+            events = get_game_odds(sport=odds_key, markets=markets, regions=regions)
         except Exception:
             continue
         for event in events:
             start = _parse_start(event.get("commence_time"))
             if start is None:
                 continue
-            stamp = start.astimezone(UTC).date().isoformat()
+            # Prefer the sport-local calendar the slate filter uses.
+            local = _event_local_date(start, sport=sport_lower)
+            stamp = local.isoformat()
             if stamp not in dates:
                 dates.append(stamp)
             if len(dates) >= limit:
@@ -524,7 +629,14 @@ def _event_local_date(start_time: datetime, *, sport: str | None = None) -> date
 
     if start_time.tzinfo is None:
         start_time = start_time.replace(tzinfo=UTC)
-    zone = "Asia/Seoul" if (sport or "").lower() == "kbo" else "America/New_York"
+    sport_l = canonical_app_sport(sport or "")
+    if sport_l == "kbo":
+        zone = "Asia/Seoul"
+    elif sport_l in SOCCER_KEYS:
+        # Primary soccer tip sheet calendar for "nearby dates" tips.
+        zone = "Europe/London"
+    else:
+        zone = "America/New_York"
     return start_time.astimezone(ZoneInfo(zone)).date()
 
 

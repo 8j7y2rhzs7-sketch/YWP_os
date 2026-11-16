@@ -11,6 +11,16 @@ export type SportLook = {
 
 /** Jersey / venue energy per sport — gold stays brand, accents follow the game. */
 export const sportLooks: Record<string, SportLook> = {
+  all: {
+    emoji: "✦",
+    accent: "#F0C14A",
+    accentSoft: "rgba(240,193,74,0.20)",
+    field: "#12100A",
+    glow: "#FFE566",
+    stripe: "#FFF6D6",
+    page: ["#100E08", "#06080C", "#141008"],
+    label: "MULTIVERSE",
+  },
   mlb: {
     emoji: "⚾",
     accent: "#3DB8FF",
