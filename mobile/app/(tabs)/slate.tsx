@@ -20,6 +20,7 @@ import { SportBallIcon } from "@/components/SportBallIcon";
 import { StatusPill } from "@/components/StatusPill";
 import { YwpButton } from "@/components/YwpButton";
 import { useRunKeepAwake } from "@/components/StayAwake";
+import { brandAssets } from "@/brandAssets";
 import { useAppData } from "@/context/AppDataContext";
 import { useAuth } from "@/context/AuthContext";
 import {
@@ -68,7 +69,7 @@ const LOAD_STAGE_LINES = [
 ] as const;
 
 const ALL_LOAD_STAGE_LINES = [
-  { icon: "✦", title: "ALL SPORTS", detail: "Loading every in-season sport at once…" },
+  { icon: "🧠", title: "ALL SPORTS", detail: "Loading every in-season sport at once…" },
   { icon: "🏀", title: "COURT + HARDWOOD", detail: "NBA / NCAAM / WNBA priced sides…" },
   { icon: "🏈", title: "GRIDIRON", detail: "NFL / NCAAF markets and props…" },
   { icon: "⚽", title: "GLOBAL PITCH", detail: "Soccer leagues across us+uk+eu books…" },
@@ -172,7 +173,7 @@ function CompactCandidateRow({
 }
 
 const sports = [
-  { key: "all", label: "ALL", icon: "✦" },
+  { key: "all", label: "ALL", icon: "ALL" },
   { key: "mlb", label: "MLB", icon: "⚾" },
   { key: "wnba", label: "WNBA", icon: "🏀" },
   { key: "nba", label: "NBA", icon: "🏀" },
@@ -972,6 +973,7 @@ export default function SlateScreen() {
                 <View style={[styles.sportStripe, { backgroundColor: itemLook.accent }]} />
                 <SportBallIcon
                   icon={item.icon}
+                  image={isAll ? brandAssets.crest : undefined}
                   spinning={active && (loadingSlate || analyzing)}
                   size={isAll ? 30 : 28}
                 />

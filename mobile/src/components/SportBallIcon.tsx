@@ -1,5 +1,12 @@
 import { useEffect, useRef } from "react";
-import { Animated, Easing, StyleSheet, Text } from "react-native";
+import {
+  Animated,
+  Easing,
+  Image,
+  StyleSheet,
+  Text,
+  type ImageSourcePropType,
+} from "react-native";
 
 import { useReduceMotion } from "@/hooks/useReduceMotion";
 import { registerStyles } from "@/theme";
@@ -8,13 +15,16 @@ import { registerStyles } from "@/theme";
  * Sport emoji/ball for the Select Sport grid.
  * Spins while the slate (or analysis) is loading for the active tile,
  * then settles with a short bounce when that load finishes.
+ * Pass `image` (brand crest) for ALL instead of a star emoji.
  */
 export function SportBallIcon({
   icon,
+  image,
   spinning = false,
   size = 28,
 }: {
-  icon: string;
+  icon?: string;
+  image?: ImageSourcePropType;
   spinning?: boolean;
   size?: number;
 }) {
@@ -112,7 +122,11 @@ export function SportBallIcon({
         },
       ]}
     >
-      <Text style={[styles.icon, { fontSize: size, lineHeight: size + 4 }]}>{icon}</Text>
+      {image ? (
+        <Image source={image} style={{ width: size, height: size }} resizeMode="contain" />
+      ) : (
+        <Text style={[styles.icon, { fontSize: size, lineHeight: size + 4 }]}>{icon}</Text>
+      )}
     </Animated.View>
   );
 }
