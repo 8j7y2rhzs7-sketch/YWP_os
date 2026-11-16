@@ -23,6 +23,10 @@ interface ProtocolRunDockProps {
   loading?: boolean;
   disabled?: boolean;
   statusText?: string | null;
+  /** Live customer-facing line under the play count. */
+  detailText?: string | null;
+  /** 0–100 when known; omit for spinner-only. */
+  progressPct?: number | null;
   onPress: () => void;
 }
 
@@ -40,6 +44,8 @@ export function ProtocolRunDock({
   loading = false,
   disabled = false,
   statusText = null,
+  detailText = null,
+  progressPct = null,
   onPress,
 }: ProtocolRunDockProps) {
   const insets = useSafeAreaInsets();
@@ -175,7 +181,40 @@ export function ProtocolRunDock({
             </Text>
             <Text style={[styles.ready, !armed && styles.readyWarming]}>
               {readyLabel}
+              {loading && progressPct != null && Number.isFinite(progressPct)
+                ? ` · ${Math.round(progressPct)}%`
+                : ""}
             </Text>
+            {detailText ? (
+              <Text style={styles.detail} numberOfLines={2}>
+                {detailText}
+              </Text>
+            ) : null}
+            {loading ? (
+              <View style={styles.progressTrack}>
+                {progressPct != null && Number.isFinite(progressPct) ? (
+                  <View
+                    style={[
+                      styles.progressFill,
+                      {
+                        width: `${Math.max(4, Math.min(100, progressPct))}%`,
+                        backgroundColor: armed ? colors.gold : colors.circuitBlueBright,
+                      },
+                    ]}
+                  />
+                ) : (
+                  <View
+                    style={[
+                      styles.progressFill,
+                      styles.progressIndeterminate,
+                      {
+                        backgroundColor: armed ? colors.gold : colors.circuitBlueBright,
+                      },
+                    ]}
+                  />
+                )}
+              </View>
+            ) : null}
           </View>
 
           <View style={styles.stylusTrack} pointerEvents="none">
@@ -312,6 +351,29 @@ const styles = registerStyles(() => StyleSheet.create({
   },
   readyWarming: {
     color: colors.circuitBlueBright,
+  },
+  detail: {
+    fontFamily: fonts.bodyMedium,
+    fontSize: 10,
+    lineHeight: 13,
+    color: colors.silver,
+    marginTop: 2,
+    maxWidth: 180,
+  },
+  progressTrack: {
+    marginTop: 6,
+    height: 4,
+    borderRadius: 2,
+    overflow: "hidden",
+    backgroundColor: "rgba(255,255,255,0.1)",
+    maxWidth: 180,
+  },
+  progressFill: {
+    height: "100%",
+    borderRadius: 2,
+  },
+  progressIndeterminate: {
+    width: "42%",
   },
   stylusTrack: {
     width: 28,
