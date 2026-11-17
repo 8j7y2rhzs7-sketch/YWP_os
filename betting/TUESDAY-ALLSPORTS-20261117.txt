@@ -1,4 +1,2 @@
-TUESDAY ALL-SPORTS 2026-11-17 (America/New_York)
-GATE: PASS date=20261117 sheets_ok=755/755
-NBA 5 · NHL 11 · NCAAF 3 · NCAAM 68
-YDAY grade + full Tuesday card in chat.
+TUESDAY ALL-GATES SCRIPT RUN 2026-11-17 ~12:53 ET
+GATE PASS 755/755 — full card in chat
