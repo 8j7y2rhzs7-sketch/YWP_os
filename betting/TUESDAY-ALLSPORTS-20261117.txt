@@ -1,2 +1,6 @@
-TUESDAY ALL-GATES SCRIPT RUN 2026-11-17 ~12:53 ET
-GATE PASS 755/755 — full card in chat
+TUESDAY EXHAUSTIVE ALL-GATES RESCAN 2026-11-17 ~15:59 ET
+GATE PASS 755/755
+Posted NBA 306 legs scanned | Posted Gate0 KEEP: 1 (Keyonte AST O6.5)
+Line moves since noon: Luka PTS main 35.5->36.5, Cade PTS 24.5->25.5, KAT REB 12.5->13.5, Shead AST 4.5->5.5
+NEW OUT: Kuminga. NEW DTD: Deni Avdija (demote).
+Official ticket delivered in chat.
