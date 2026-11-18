@@ -9,6 +9,7 @@ import { MetalPanel } from "@/components/MetalPanel";
 import { Screen } from "@/components/Screen";
 import { YwpButton } from "@/components/YwpButton";
 import { useAuth } from "@/context/AuthContext";
+import { useSafeBack } from "@/hooks/useSafeBack";
 import { colors, radius, spacing, type , registerStyles } from "@/theme";
 
 const outcomes = ["WIN", "LOSS", "PUSH", "VOID"] as const;
@@ -27,6 +28,7 @@ function todayIso(): string {
 
 export default function LogExternalResultScreen() {
   const { request } = useAuth();
+  const goBack = useSafeBack("/(tabs)");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [eventName, setEventName] = useState("");
@@ -80,7 +82,7 @@ export default function LogExternalResultScreen() {
         }),
       });
       Alert.alert("Logged", "Pick is in WIN/LOSS memory now.", [
-        { text: "OK", onPress: () => router.back() },
+        { text: "OK", onPress: goBack },
       ]);
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Could not log result");
@@ -94,6 +96,8 @@ export default function LogExternalResultScreen() {
       <BrandHeader
         title="Log Book Result"
         subtitle="For picks you bet on the sportsbook but never locked here — especially strikeouts."
+        onBack={goBack}
+        backLabel="HOME"
       />
       {error ? <ErrorNotice message={error} /> : null}
 

@@ -24,6 +24,7 @@ import { TicketCardView } from "@/components/TicketCardView";
 import { YwpButton } from "@/components/YwpButton";
 import { useAppData } from "@/context/AppDataContext";
 import { useAuth } from "@/context/AuthContext";
+import { useSafeBack } from "@/hooks/useSafeBack";
 import { colors, radius, spacing, type , registerStyles } from "@/theme";
 import type {
   BuildTicketResponse,
@@ -58,6 +59,7 @@ export default function AnalysisScreen() {
   const params = useLocalSearchParams<{ id: string }>();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
   const { request } = useAuth();
+  const goBack = useSafeBack("/(tabs)");
   const { analyses, builds, saveBuild, ready } = useAppData();
   const analysis = id ? analyses[id] : undefined;
   const build = id ? builds[id] : undefined;
@@ -245,9 +247,14 @@ export default function AnalysisScreen() {
   if (!analysis) {
     return (
       <Screen>
-        <BrandHeader title="ANALYSIS EXPIRED" compact />
+        <BrandHeader title="ANALYSIS EXPIRED" compact onBack={goBack} backLabel="HOME" />
         <ErrorNotice message="This in-memory analysis is no longer available. Run the slate again; stored recommendations remain protected on the server." />
-        <YwpButton label="BACK TO PROTOCOL RUN" onPress={() => router.replace("/(tabs)/slate")} />
+        <YwpButton label="BACK TO HOME" onPress={goBack} />
+        <YwpButton
+          label="BACK TO PROTOCOL RUN"
+          variant="outline"
+          onPress={() => router.replace("/(tabs)/slate")}
+        />
       </Screen>
     );
   }
@@ -266,6 +273,8 @@ export default function AnalysisScreen() {
         subtitle="FINAL SWEEP • BUILD YOUR OWN"
         compact
         sport={analysis.ranked_picks[0]?.sport ?? analysis.stay_away[0]?.sport}
+        onBack={goBack}
+        backLabel="HOME"
       />
       <MetalPanel
         tone={

@@ -84,27 +84,35 @@ export default function CommandCenter() {
     async (refresh = false) => {
       refresh ? setRefreshing(true) : setLoading(true);
       setError(null);
-      try {
-        const [nextBankroll, nextTickets, nextPerformance, nextProtocol, nextPulse] =
-          await Promise.all([
-            request<Bankroll>("/bankroll"),
-            request<Ticket[]>("/tickets?limit=4"),
-            request<Performance>("/learning/performance"),
-            request<ProtocolDefinition>("/protocol/current"),
-            request<LearningPulse>("/learning/pulse"),
-          ]);
-        setBankroll(nextBankroll);
-        setTickets(nextTickets);
-        setPerformance(nextPerformance);
-        setProtocol(nextProtocol);
-        setPulse(nextPulse);
-        void loadForge();
-      } catch (reason) {
-        setError(reason instanceof Error ? reason.message : "Dashboard failed to load");
-      } finally {
-        setLoading(false);
-        setRefreshing(false);
+      // Tickets are the durable vault — never let a learning/bankroll blip
+      // wipe Recent Tickets via Promise.all failing the whole dashboard.
+      const settled = await Promise.allSettled([
+        request<Bankroll>("/bankroll"),
+        request<Ticket[]>("/tickets?limit=25"),
+        request<Performance>("/learning/performance"),
+        request<ProtocolDefinition>("/protocol/current"),
+        request<LearningPulse>("/learning/pulse"),
+      ]);
+      const [bankrollR, ticketsR, performanceR, protocolR, pulseR] = settled;
+      if (ticketsR.status === "fulfilled") {
+        setTickets(ticketsR.value);
+      } else if (!refresh) {
+        setTickets([]);
       }
+      if (bankrollR.status === "fulfilled") setBankroll(bankrollR.value);
+      if (performanceR.status === "fulfilled") setPerformance(performanceR.value);
+      if (protocolR.status === "fulfilled") setProtocol(protocolR.value);
+      if (pulseR.status === "fulfilled") setPulse(pulseR.value);
+      const firstFail = settled.find((item) => item.status === "rejected") as
+        | PromiseRejectedResult
+        | undefined;
+      if (firstFail) {
+        const reason = firstFail.reason;
+        setError(reason instanceof Error ? reason.message : "Dashboard failed to load");
+      }
+      void loadForge();
+      setLoading(false);
+      setRefreshing(false);
     },
     [loadForge, request],
   );
@@ -244,15 +252,23 @@ export default function CommandCenter() {
         <Text style={styles.rule}>✓ Micro-learning on every graded result</Text>
       </MetalPanel>
 
-      <SectionTitle title="Recent Tickets" subtitle="Every active thesis remains visible." />
+      <SectionTitle
+        title="Recent Tickets"
+        subtitle={
+          tickets.length
+            ? `${tickets.length} saved on this account · vault is server-side`
+            : "Vault is server-side — Decision Boards are local only"
+        }
+      />
       {tickets.length ? (
-        tickets.map((ticket) => (
+        tickets.slice(0, 8).map((ticket) => (
           <MetalPanel key={ticket.id}>
             <View style={styles.ticketRow}>
               <View style={styles.heroCopy}>
                 <Text style={styles.ticketTitle}>{ticket.label}</Text>
                 <Text style={type.caption}>
-                  {ticket.legs.length} legs • ${ticket.stake} • potential ${ticket.potential_payout}
+                  {ticket.sport.toUpperCase()} • {ticket.slate_date} • {ticket.status.toUpperCase()} •{" "}
+                  {ticket.legs.length} legs • ${ticket.stake}
                 </Text>
               </View>
               <StatusPill value={ticket.last_lock_status ?? ticket.status} />
@@ -266,11 +282,13 @@ export default function CommandCenter() {
         ))
       ) : (
         <MetalPanel>
-          <Text style={styles.panelTitle}>NO TICKET FORCED</Text>
+          <Text style={styles.panelTitle}>NO TICKETS ON THIS LOGIN</Text>
           <Text style={type.body}>
-            Run the slate when you are ready. If nothing qualifies, YWP OS will
-            return PASS instead of manufacturing action.
+            Signed in as {user?.email ?? "—"}. Ticket Vault lives on the server for
+            that email. Decision Board runs stay on this phone and clear if you
+            reinstall. Open Tickets, or confirm Controls shows your real account.
           </Text>
+          <YwpButton label="OPEN TICKET VAULT" onPress={() => router.push("/(tabs)/tickets")} />
         </MetalPanel>
       )}
 

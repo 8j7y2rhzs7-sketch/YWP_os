@@ -62,7 +62,12 @@ function ReturnToSession() {
     void loadSession().then((session) => {
       const target = session?.pathname;
       if (!target || LANDING.has(target) || target.startsWith("/(auth)")) return;
-      router.replace(target as Href);
+      // Land on Home first so Back / hardware back have somewhere to go —
+      // a bare replace left an empty stack and exited the app on Back.
+      router.replace("/(tabs)" as Href);
+      setTimeout(() => {
+        router.push(target as Href);
+      }, 0);
     });
   }, [loading, pathname, user]);
 

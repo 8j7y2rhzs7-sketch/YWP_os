@@ -16,6 +16,9 @@ import { useAuth } from "@/context/AuthContext";
 import { colors, spacing, type , registerStyles } from "@/theme";
 import type { SettleDayResponse, Ticket } from "@/types";
 
+const VAULT_HINT =
+  "Ticket Vault is saved on the server for your login email. Decision Board cards are only on this phone and clear after a reinstall.";
+
 const PAGE_SIZE = 25;
 
 function summarizeSettle(result: SettleDayResponse): string {
@@ -65,7 +68,7 @@ function summarizeSettle(result: SettleDayResponse): string {
 }
 
 export default function TicketsScreen() {
-  const { request } = useAuth();
+  const { user, request } = useAuth();
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -178,12 +181,19 @@ export default function TicketsScreen() {
       {!loading && !tickets.length ? (
         <MetalPanel tone="gold">
           <StatusPill value="PASS" />
-          <Text style={styles.title}>No tickets saved.</Text>
+          <Text style={styles.title}>No tickets on this login</Text>
           <Text style={type.body}>
-            This is clean exposure. Run the protocol when a verified slate is ready.
+            Signed in as {user?.email ?? "—"}. {VAULT_HINT}
           </Text>
           <YwpButton label="RUN A SLATE" onPress={() => router.push("/(tabs)/slate")} />
         </MetalPanel>
+      ) : null}
+      {!loading && tickets.length ? (
+        <Text style={[type.caption, { marginBottom: spacing.sm }]}>
+          {tickets.length}
+          {hasMore ? "+" : ""} tickets for {user?.email ?? "this account"} · settled + locked +
+          draft stay here
+        </Text>
       ) : null}
       {tickets.map((ticket, index) => (
         <MetalPanel

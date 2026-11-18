@@ -2,7 +2,7 @@
   "expo": {
     "name": "YWP OS",
     "slug": "ywp-os",
-    "version": "3.3.81",
+    "version": "3.3.83",
     "orientation": "portrait",
     "scheme": "ywpos",
     "userInterfaceStyle": "automatic",
@@ -46,7 +46,7 @@
     },
     "android": {
       "package": "com.ywpos.app",
-      "versionCode": 60,
+      "versionCode": 63,
       "adaptiveIcon": {
         "foregroundImage": "./assets/brand/vision/decision-engine-emblem-square.png",
         "backgroundColor": "#02050A"

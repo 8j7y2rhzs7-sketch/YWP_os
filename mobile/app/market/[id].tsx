@@ -2,6 +2,7 @@ import { useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
+import { BrandHeader } from "@/components/BrandHeader";
 import { ErrorNotice } from "@/components/ErrorNotice";
 import { LoadingState } from "@/components/LoadingState";
 import { MarketCallCard } from "@/components/MarketCallCard";
@@ -9,6 +10,7 @@ import { MetalPanel } from "@/components/MetalPanel";
 import { Screen } from "@/components/Screen";
 import { StatusPill } from "@/components/StatusPill";
 import { useAuth } from "@/context/AuthContext";
+import { useSafeBack } from "@/hooks/useSafeBack";
 import { colors, spacing, type , registerStyles } from "@/theme";
 import type { MarketCall } from "@/types";
 
@@ -20,6 +22,7 @@ function percent(value: number | null | undefined): string {
 export default function MarketDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { request } = useAuth();
+  const goBack = useSafeBack("/(tabs)/markets");
   const [call, setCall] = useState<MarketCall | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -44,6 +47,7 @@ export default function MarketDetailScreen() {
   if (loading) {
     return (
       <Screen>
+        <BrandHeader title="MARKET CALL" compact onBack={goBack} backLabel="BACK" />
         <LoadingState label="Opening the call…" />
       </Screen>
     );
@@ -52,6 +56,7 @@ export default function MarketDetailScreen() {
   if (!call) {
     return (
       <Screen>
+        <BrandHeader title="MARKET CALL" compact onBack={goBack} backLabel="BACK" />
         <ErrorNotice message={error ?? "This call is not on the board."} />
       </Screen>
     );
@@ -59,6 +64,7 @@ export default function MarketDetailScreen() {
 
   return (
     <Screen>
+      <BrandHeader title="MARKET CALL" compact onBack={goBack} backLabel="BACK" />
       {error ? <ErrorNotice message={error} /> : null}
       <MarketCallCard item={call} />
       <MetalPanel>
