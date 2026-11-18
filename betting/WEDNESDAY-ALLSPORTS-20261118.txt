@@ -1,0 +1,6 @@
+WEDNESDAY FRESH ALL-GATES RESCAN 2026-11-18 ~12:05 ET
+GATE PASS date=20261118 sheets_ok=537/537
+Posted NBA 465 legs (noon refresh). Posted Gate0 KEEP: 8
+Line moves: CLE -4.5, MIA -11.5, LAL -10.5, DET -6.5; DMitch main O25.5; Keyonte AST O6.5 KEEP
+DTD delta: Reaves/Kessler DTD (were OUT); Holland/Prince DTD
+Full card in chat.
