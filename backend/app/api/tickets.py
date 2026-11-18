@@ -271,6 +271,7 @@ def list_tickets(
     user: SubscribedUser,
     db: DB,
     limit: int = 100,
+    offset: int = 0,
     include_cancelled: bool = False,
 ) -> list[TicketOut]:
     query = (
@@ -278,6 +279,7 @@ def list_tickets(
         .options(selectinload(Ticket.legs).selectinload(TicketLeg.recommendation))
         .where(Ticket.user_id == user.id)
         .order_by(Ticket.created_at.desc())
+        .offset(max(offset, 0))
         .limit(min(max(limit, 1), 500))
     )
     if not include_cancelled:
