@@ -1,0 +1,7 @@
+THURSDAY ALL-GATES RUN 2026-11-19 ~11:05 ET
+GATE PASS date=20261119 sheets_ok=721/721
+NBA 4 | NHL 12 | NFL 1 (IND@HOU 8:15) | NCAAF 1 | NCAAM 36
+Posted KEEP: Ayo O17.5 PTS (L10 8/10), Brunson O26.5 PTS (L10 7/10)
+YDAY Official SAFE 8/11 (+Cade VOID) · Slip1 4/5 · Slip2 4/4+void · O220 HIT
+Soft-skip ESPN 500 restored in run_gate.py
+Full SAFE/PRIMARY/BANGERS in chat.
