@@ -1,0 +1,15 @@
+THURSDAY 2026-11-19 GRADE (ET)
+Official SAFE (15 core, excl. Brunson soft O22.5): 10/15
+HIT: McDaniels O13.5 PTS · KAT O16.5/O10.5 · Wemby O24.5/O8.5 · Garland O15.5 · Castle O9.5/O4.5 AST · Lillard O11.5 · Gobert O5.5
+MISS: Ayo O17.5 (6) · Brunson O26.5 (21) · McDaniels O4.5 REB (3) · Lillard O2.5 AST (0) · Boozer O6.5 REB (6 hook)
+PRIMARY: Garland AST O5.5 MISS (5 hook) · Clingan O7.5 REB HIT (13)
+SIDES: MEM ML HIT 126-98 · MIL +11.5 HIT (POR 124-114)
+User 7-leg: LA+1.5 HIT · MTL+1.5 HIT · RICE/TEM O41.5 HIT · CGY+1.5 MISS · MEM ML HIT · MIL+11.5 HIT · IND/HOU O39.5 MISS (29) → 5/7
+TNF: IND 3 @ HOU 26 — soft O39.5 died in −12.5 script
+
+ACCURACY UPDATES locked for Friday:
+1) no_kill catastrophic dud: PTS miss-by-8+ in L7 → reject SAFE (kills Ayo-style)
+2) Soft team totals under big-favorite blowouts ≠ KEEP
+3) Star-OUT usage ≠ auto PTS SAFE
+4) Soft AST O2.5 can print 0 — prefer REB/PTS spines
+5) Gate NBA cap raised to 400 so LAL/DEN/HOU stars are sheeted (was truncating)
