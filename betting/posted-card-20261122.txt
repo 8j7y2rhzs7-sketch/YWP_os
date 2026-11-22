@@ -1,0 +1,161 @@
+POSTED-MAIN CARD — 2026-11-22
+Source: Betravon consensus mains + GATE RS sheets. Soft floors NOT listed.
+Graded 432 / unmatched 253
+
+=== KEEP (perfect clear at POSTED main) ===
+  7/7  Klay Thompson O0.5 BLK  MIA vs OKC  id=6475  L=[1.0, 1.0, 1.0, 2.0, 2.0, 2.0, 1.0]
+  7/7  Davion Mitchell O14.5 PTS  MIA vs OKC  id=4278053  L=[24.0, 16.0, 15.0, 22.0, 19.0, 17.0, 22.0]
+  7/7  Onyeka Okongwu O14.5 PTS  ATL vs DET  id=4431680  L=[16.0, 28.0, 16.0, 17.0, 16.0, 16.0, 22.0]
+
+=== RISK-KEEP (one miss at POSTED main) ===
+  6/7  Anthony Black O1.5 3PT  miss=[1.0]  id=4712849
+  6/7  Daniss Jenkins O1.5 3PT  miss=[1.0]  id=5107199
+  6/7  Jalen Brunson O2.5 3PT  miss=[1.0]  id=3934672
+  6/7  Jayson Tatum O2.5 3PT  miss=[2.0]  id=4065648
+  6/7  Karl-Anthony Towns O1.5 3PT  miss=[1.0]  id=3136195
+  6/7  Pascal Siakam O1.5 3PT  miss=[0.0]  id=3149673
+  6/7  Pelle Larsson O0.5 3PT  miss=[0.0]  id=4601025
+  6/7  Aaron Wiggins O2.5 AST  miss=[1.0]  id=4397183
+  6/7  Caleb Martin O2.5 AST  miss=[2.0]  id=3138160
+  6/7  Jalen Smith O1.5 AST  miss=[0.0]  id=4397189
+  6/7  Klay Thompson O1.5 AST  miss=[1.0]  id=6475
+  6/7  Kyshawn George O0.5 BLK  miss=[0.0]  id=5174563
+  6/7  Franz Wagner O25.5 PTS  miss=[21.0]  id=4566434
+  6/7  Jalen Smith O12.5 PTS  miss=[3.0]  id=4397189
+  6/7  Karl-Anthony Towns O20.5 PTS  miss=[16.0]  id=3136195
+  6/7  Kelly Oubre Jr. O12.5 PTS  miss=[2.0]  id=3133603
+  6/7  Pascal Siakam O19.5 PTS  miss=[19.0]  id=3149673
+  6/7  Bilal Coulibaly O3.5 REB  miss=[2.0]  id=5104155
+  6/7  Daniss Jenkins O3.5 REB  miss=[1.0]  id=5107199
+  6/7  Dyson Daniels O7.5 REB  miss=[6.0]  id=4869342
+  6/7  Yaxel Lendeborg O6.5 REB  miss=[5.0]  id=5175737
+  6/7  Anthony Davis O0.5 STL  miss=[0.0]  id=6583
+  6/7  Ausar Thompson O1.5 STL  miss=[1.0]  id=4684742
+  6/7  Daniss Jenkins O0.5 STL  miss=[0.0]  id=5107199
+  6/7  Draymond Green O0.5 STL  miss=[0.0]  id=6589
+  6/7  Norman Powell O0.5 STL  miss=[0.0]  id=2595516
+  6/7  Pelle Larsson O0.5 STL  miss=[0.0]  id=4601025
+
+=== RISK (≈70%+ at POSTED main) ===
+  8/10  Leon Draisaitl O3.5 SOG  miss=[2.0, 3.0]
+  8/10  Tye Kartye O1.5 SOG  miss=[1.0, 0.0]
+  5/7  Aaron Wiggins O2.5 3PT  miss=[1.0, 1.0]
+  5/7  Andrew Nembhard O1.5 3PT  miss=[1.0, 1.0]
+  5/7  Cooper Flagg O1.5 3PT  miss=[0.0, 1.0]
+  5/7  Davion Mitchell O2.5 3PT  miss=[1.0, 2.0]
+  5/7  Desmond Bane O3.5 3PT  miss=[3.0, 3.0]
+  5/7  Klay Thompson O3.5 3PT  miss=[2.0, 2.0]
+  5/7  Kyshawn George O1.5 3PT  miss=[1.0, 1.0]
+  5/7  Matas Buzelis O2.5 3PT  miss=[1.0, 2.0]
+  5/7  P.J. Washington O1.5 3PT  miss=[0.0, 1.0]
+  5/7  Ace Bailey O1.5 AST  miss=[1.0, 1.0]
+  5/7  Anthony Black O5.5 AST  miss=[5.0, 5.0]
+  5/7  Christian Braun O2.5 AST  miss=[1.0, 1.0]
+  5/7  Daniel Gafford O1.5 AST  miss=[1.0, 1.0]
+  5/7  Isaiah Hartenstein O4.5 AST  miss=[4.0, 2.0]
+  5/7  Kingston Flemings O3.5 AST  miss=[1.0, 1.0]
+  5/7  Matas Buzelis O1.5 AST  miss=[1.0, 0.0]
+  5/7  Neemias Queta O1.5 AST  miss=[1.0, 1.0]
+  5/7  Nickeil Alexander-Walker O2.5 AST  miss=[1.0, 2.0]
+  5/7  Nikola Jokic O0.5 BLK  miss=[0.0, 0.0]
+  5/7  Aaron Wiggins O13.5 PTS  miss=[7.0, 9.0]
+  5/7  Charles Bassey O7.5 PTS  miss=[4.0, 7.0]
+  5/7  Daniss Jenkins O16.5 PTS  miss=[14.0, 10.0]
+  5/7  Jared McCain O14.5 PTS  miss=[12.0, 10.0]
+  5/7  Kingston Flemings O7.5 PTS  miss=[0.0, 2.0]
+  5/7  Tristan da Silva O11.5 PTS  miss=[6.0, 10.0]
+  5/7  AJ Dybantsa O6.5 REB  miss=[5.0, 4.0]
+  5/7  Ace Bailey O5.5 REB  miss=[1.0, 3.0]
+  5/7  Anthony Davis O10.5 REB  miss=[4.0, 8.0]
+  5/7  Christian Braun O4.5 REB  miss=[3.0, 4.0]
+  5/7  Davion Mitchell O2.5 REB  miss=[2.0, 2.0]
+  5/7  Franz Wagner O6.5 REB  miss=[5.0, 6.0]
+  5/7  Giannis Antetokounmpo O12.5 REB  miss=[9.0, 11.0]
+  5/7  Isaiah Hartenstein O10.5 REB  miss=[8.0, 9.0]
+  5/7  Jalen Suggs O4.5 REB  miss=[2.0, 3.0]
+  5/7  Nickeil Alexander-Walker O3.5 REB  miss=[3.0, 2.0]
+  5/7  Bam Adebayo O1.5 STL  miss=[0.0, 1.0]
+  5/7  Brandin Podziemski O0.5 STL  miss=[0.0, 0.0]
+  5/7  Jared McCain O0.5 STL  miss=[0.0, 0.0]
+
+=== CUT at POSTED main (do not bet) ===
+  357 props fail at book main — including soft-floor favorites.
+  6/10  Adam Fox O1.5 SOG  miss=[1.0, 1.0, 1.0, 0.0]
+  6/10  Brayden Point O2.5 SOG  miss=[2.0, 2.0, 0.0, 2.0]
+  6/10  Brock Boeser O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0]
+  6/10  Erik Karlsson O1.5 SOG  miss=[1.0, 0.0, 0.0, 1.0]
+  6/10  Frank Nazar O2.5 SOG  miss=[1.0, 2.0, 1.0, 2.0]
+  6/10  Gabe Perreault O1.5 SOG  miss=[0.0, 0.0, 1.0, 1.0]
+  6/10  Jonathan Lekkerimaki O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0]
+  6/10  Logan Stankoven O2.5 SOG  miss=[1.0, 1.0, 0.0, 1.0]
+  6/10  Rickard Rakell O2.5 SOG  miss=[2.0, 0.0, 2.0, 2.0]
+  6/10  Sidney Crosby O1.5 SOG  miss=[1.0, 0.0, 0.0, 1.0]
+  6/10  Vasily Podkolzin O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0]
+  6/10  Wyatt Johnston O2.5 SOG  miss=[2.0, 1.0, 2.0, 2.0]
+  6/10  Zach Benson O2.5 SOG  miss=[2.0, 1.0, 2.0, 2.0]
+  4/7  Franz Wagner O1.5 3PT  miss=[1.0, 0.0, 1.0]
+  4/7  Franz Wagner O7.5 AST  miss=[7.0, 1.0, 7.0]
+  4/7  Nickeil Alexander-Walker O19.5 PTS  miss=[17.0, 19.0, 16.0]
+  4/7  Nikola Jokic O25.5 PTS  miss=[24.0, 25.0, 19.0]
+  5/10  Andrei Svechnikov O2.5 SOG  miss=[2.0, 2.0, 0.0, 1.0, 2.0]
+  5/10  Ben Kindel O1.5 SOG  miss=[1.0, 0.0, 1.0, 0.0, 0.0]
+  5/10  Charle-Edouard D'Astous O1.5 SOG  miss=[1.0, 1.0, 0.0, 1.0, 0.0]
+  5/10  Connor McDavid O2.5 SOG  miss=[0.0, 2.0, 2.0, 2.0, 1.0]
+  5/10  Egor Chinakhov O1.5 SOG  miss=[0.0, 1.0, 1.0, 1.0, 0.0]
+  5/10  Jack Quinn O2.5 SOG  miss=[2.0, 0.0, 2.0, 1.0, 2.0]
+  5/10  Jake DeBrusk O2.5 SOG  miss=[0.0, 1.0, 2.0, 2.0, 1.0]
+  5/10  Jake Guentzel O2.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 0.0]
+  5/10  John Carlson O1.5 SOG  miss=[1.0, 1.0, 1.0, 0.0, 1.0]
+  5/10  Josh Doan O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 1.0]
+  5/10  Pavel Buchnevich O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 1.0]
+  5/10  Roman Kantserov O1.5 SOG  miss=[0.0, 0.0, 1.0, 1.0, 0.0]
+  5/10  Roope Hintz O1.5 SOG  miss=[0.0, 0.0, 0.0, 0.0, 1.0]
+  5/10  Sam Rinzel O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 1.0]
+  5/10  Thomas Harley O1.5 SOG  miss=[1.0, 0.0, 1.0, 1.0, 1.0]
+  5/10  Tyler Seguin O1.5 SOG  miss=[1.0, 1.0, 1.0, 0.0, 0.0]
+  3/7  Nikola Jokic O1.5 3PT  miss=[1.0, 1.0, 1.0, 1.0]
+  3/7  Isaiah Hartenstein O0.5 BLK  miss=[0.0, 0.0, 0.0, 0.0]
+  3/7  Nikola Jokic O11.5 REB  miss=[7.0, 8.0, 8.0, 11.0]
+  3/7  Franz Wagner O1.5 STL  miss=[0.0, 0.0, 1.0, 1.0]
+  3/7  Nickeil Alexander-Walker O1.5 STL  miss=[0.0, 1.0, 1.0, 0.0]
+  4/10  Anthony Cirelli O1.5 SOG  miss=[0.0, 1.0, 1.0, 1.0, 0.0, 1.0]
+  4/10  Dylan Holloway O2.5 SOG  miss=[2.0, 1.0, 2.0, 1.0, 2.0, 1.0]
+  4/10  Filip Chytil O2.5 SOG  miss=[2.0, 0.0, 2.0, 2.0, 1.0, 2.0]
+  4/10  Ilya Mikheyev O1.5 SOG  miss=[1.0, 1.0, 0.0, 0.0, 1.0, 1.0]
+  4/10  J.T. Miller O2.5 SOG  miss=[2.0, 2.0, 2.0, 2.0, 2.0, 1.0]
+  4/10  Jason Robertson O3.5 SOG  miss=[3.0, 3.0, 2.0, 3.0, 3.0, 1.0]
+  4/10  Jimmy Snuggerud O2.5 SOG  miss=[2.0, 1.0, 0.0, 2.0, 2.0, 1.0]
+  4/10  Marco Rossi O1.5 SOG  miss=[1.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+  4/10  Mikko Rantanen O2.5 SOG  miss=[0.0, 1.0, 0.0, 2.0, 1.0, 1.0]
+  4/10  Philip Broberg O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 1.0, 0.0]
+  4/10  Rasmus Dahlin O2.5 SOG  miss=[2.0, 2.0, 1.0, 2.0, 1.0, 2.0]
+  2/5  Sam O'Reilly O1.5 SOG  miss=[1.0, 0.0, 0.0]
+  4/10  Sebastian Aho O2.5 SOG  miss=[1.0, 2.0, 2.0, 1.0, 1.0, 1.0]
+  4/10  Tage Thompson O3.5 SOG  miss=[1.0, 2.0, 3.0, 2.0, 3.0, 2.0]
+  4/10  Will Cuylle O1.5 SOG  miss=[1.0, 1.0, 0.0, 0.0, 1.0, 1.0]
+  3/10  Alexis Lafreniere O2.5 SOG  miss=[2.0, 2.0, 0.0, 2.0, 1.0, 2.0, 2.0]
+  3/10  Evan Bouchard O2.5 SOG  miss=[1.0, 1.0, 2.0, 2.0, 1.0, 1.0, 1.0]
+  3/10  Filip Hronek O1.5 SOG  miss=[1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+  3/10  Jackson Blake O2.5 SOG  miss=[2.0, 1.0, 2.0, 2.0, 1.0, 1.0, 1.0]
+  3/10  Jake Neighbours O1.5 SOG  miss=[0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0]
+  3/10  Jamie Benn O1.5 SOG  miss=[0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0]
+  3/10  Kasperi Kapanen O1.5 SOG  miss=[0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0]
+  3/10  Linus Karlsson O1.5 SOG  miss=[0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0]
+  3/10  Miro Heiskanen O1.5 SOG  miss=[1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0]
+  3/10  Nikita Kucherov O3.5 SOG  miss=[0.0, 3.0, 2.0, 1.0, 3.0, 3.0, 1.0]
+  3/10  Patrick Kane O2.5 SOG  miss=[2.0, 2.0, 0.0, 2.0, 1.0, 1.0, 2.0]
+  3/10  Tyler Bertuzzi O1.5 SOG  miss=[1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0]
+  2/7  Nickeil Alexander-Walker O3.5 3PT  miss=[2.0, 3.0, 2.0, 1.0, 2.0]
+  2/7  Nikola Jokic O9.5 AST  miss=[9.0, 7.0, 8.0, 9.0, 8.0]
+  2/7  Isaiah Hartenstein O9.5 PTS  miss=[5.0, 6.0, 3.0, 7.0, 2.0]
+  2/10  Mason McTavish O2.5 SOG  miss=[1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0]
+  2/10  Mika Zibanejad O2.5 SOG  miss=[2.0, 2.0, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0]
+  2/10  Seth Jarvis O2.5 SOG  miss=[2.0, 1.0, 2.0, 1.0, 2.0, 0.0, 1.0, 0.0]
+  1/7  Nikola Jokic O1.5 STL  miss=[0.0, 0.0, 1.0, 1.0, 1.0, 1.0]
+
+=== CLEAN SLIP (KEEP @ posted mains only) ===
+  1. Klay Thompson O0.5 BLK  (7/7)  MIA vs OKC
+  2. Davion Mitchell O14.5 PTS  (7/7)  MIA vs OKC
+  3. Onyeka Okongwu O14.5 PTS  (7/7)  ATL vs DET
+
+DONE: No soft floors. If a KEEP number is missing on HR, skip that leg — do not invent a lower alt.
