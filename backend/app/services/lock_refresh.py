@@ -149,6 +149,37 @@ def _map_game_status(abstract: str | None, detailed: str | None = None) -> str:
     return "UNKNOWN"
 
 
+
+def _parse_snap_start(snap: dict) -> datetime | None:
+    raw = snap.get("start_time") or snap.get("commence_time")
+    if not raw:
+        return None
+    if isinstance(raw, datetime):
+        return raw if raw.tzinfo else raw.replace(tzinfo=UTC)
+    try:
+        text = str(raw).replace("Z", "+00:00")
+        parsed = datetime.fromisoformat(text)
+        return parsed if parsed.tzinfo else parsed.replace(tzinfo=UTC)
+    except ValueError:
+        return None
+
+
+def _market_open_for_status(game_status: str, snap: dict, now: datetime) -> bool:
+    """PRE_GAME always open-eligible; LIVE only during early-tip grace."""
+    status = (game_status or "PRE_GAME").upper()
+    if status == "PRE_GAME":
+        return True
+    if status != "LIVE":
+        return False
+    from app.services.ticket_gates import early_live_grace
+
+    start = _parse_snap_start(snap)
+    if start is None:
+        # No tip clock — keep early LIVE open when the feed still says LIVE.
+        return True
+    return start <= now <= start + early_live_grace()
+
+
 def _mlb_lock_update(recommendation: Recommendation, now: datetime) -> CurrentStateUpdate | None:
     snap = recommendation.snapshot or {}
     notes: list[str] = []
@@ -212,14 +243,18 @@ def _mlb_lock_update(recommendation: Recommendation, now: datetime) -> CurrentSt
             recommendation_id=recommendation.id,
             source_timestamp=now,
             current_odds=None,
-            market_available=game_status == "PRE_GAME",
+            market_available=_market_open_for_status(game_status, snap, now),
             starter_changed=starter_changed,
             lineup_changed=lineup_changed,
             key_injury_change=key_injury_change,
             severe_weather_change=severe_weather_change,
             data_quality=data_quality,
             game_status=game_status,  # type: ignore[arg-type]
-            market_status="CLOSED" if game_status != "PRE_GAME" else market_status,  # type: ignore[arg-type]
+            market_status=(
+                market_status
+                if _market_open_for_status(game_status, snap, now)
+                else "CLOSED"
+            ),  # type: ignore[arg-type]
             notes=notes + ["Lock refresh incomplete without a sportsbook price snapshot."],
         )
 
@@ -242,7 +277,7 @@ def _mlb_lock_update(recommendation: Recommendation, now: datetime) -> CurrentSt
 
     current_odds, market_available, odds_notes = odds_update
     notes.extend(odds_notes)
-    if game_status != "PRE_GAME":
+    if not _market_open_for_status(game_status, snap, now):
         market_available = False
         market_status = "LOCKED" if game_status == "LIVE" else "CLOSED"
     elif not market_available:
@@ -287,12 +322,13 @@ def _odds_only_lock_update(
     current_odds, market_available, notes = odds_update
     snap = recommendation.snapshot or {}
     game_status = str(snap.get("game_status") or "PRE_GAME")
-    market_status = "OPEN" if market_available and game_status == "PRE_GAME" else "CLOSED"
+    open_ok = market_available and _market_open_for_status(game_status, snap, now)
+    market_status = "OPEN" if open_ok else "CLOSED"
     return CurrentStateUpdate(
         recommendation_id=recommendation.id,
         source_timestamp=now,
         current_odds=current_odds,
-        market_available=market_available and game_status == "PRE_GAME",
+        market_available=open_ok,
         data_quality=float(recommendation.data_quality),
         game_status=game_status,  # type: ignore[arg-type]
         market_status=market_status,  # type: ignore[arg-type]

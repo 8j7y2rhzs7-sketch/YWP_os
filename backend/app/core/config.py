@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "YWP OS API"
-    app_version: str = "3.3.80"
+    app_version: str = "3.3.84"
     api_prefix: str = "/api/v1"
     env: Literal["development", "test", "staging", "production"] = Field(
         default="development", validation_alias="YWP_ENV"
@@ -209,6 +209,13 @@ class Settings(BaseSettings):
     )
 
     lock_check_ttl_seconds: int = 300
+    # After tip/kickoff, keep LIVE markets OPEN this long so Run still boards plays.
+    early_live_grace_seconds: int = Field(
+        default=45 * 60,
+        ge=0,
+        le=3 * 60 * 60,
+        validation_alias="YWP_EARLY_LIVE_GRACE_SECONDS",
+    )
     odds_warning_move_probability_points: float = 0.03
     odds_blocking_move_probability_points: float = 0.06
     minimum_data_quality: float = 0.65

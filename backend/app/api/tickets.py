@@ -124,7 +124,10 @@ def create_ticket(payload: TicketCreate, user: SubscribedUser, db: DB) -> Ticket
     if any("DATA_ANOMALY" in (item.reason_codes or []) for item in recommendations):
         raise HTTPException(status_code=422, detail="DATA_ANOMALY candidates cannot be saved")
     if any(not game_status_ok(snapshot_game_status(item.snapshot)) for item in recommendations):
-        raise HTTPException(status_code=422, detail="Only PRE_GAME tickets can be saved")
+        raise HTTPException(
+            status_code=422,
+            detail="Only open pre-game/early-live tickets can be saved",
+        )
     if any(not market_status_ok(snapshot_market_status(item.snapshot)) for item in recommendations):
         raise HTTPException(status_code=422, detail="Only OPEN markets can be saved")
     if any(model_edge_quarantine(float(item.edge)) for item in recommendations):
@@ -340,7 +343,10 @@ def change_leg(
         if "DATA_ANOMALY" in (replacement.reason_codes or []):
             raise HTTPException(status_code=422, detail="DATA_ANOMALY candidates cannot be saved")
         if not game_status_ok(snapshot_game_status(replacement.snapshot)):
-            raise HTTPException(status_code=422, detail="Only PRE_GAME tickets can be edited")
+            raise HTTPException(
+                status_code=422,
+                detail="Only open pre-game/early-live tickets can be edited",
+            )
         if not market_status_ok(snapshot_market_status(replacement.snapshot)):
             raise HTTPException(status_code=422, detail="Only OPEN markets can be added")
         if model_edge_quarantine(float(replacement.edge)):
@@ -446,7 +452,10 @@ def add_ticket_leg(
     if recommendation.thesis_key in {leg.thesis_key for leg in active}:
         raise HTTPException(status_code=422, detail="A thesis may appear only once on a ticket")
     if not game_status_ok(snapshot_game_status(recommendation.snapshot)):
-        raise HTTPException(status_code=422, detail="Only PRE_GAME tickets can be edited")
+        raise HTTPException(
+            status_code=422,
+            detail="Only open pre-game/early-live tickets can be edited",
+        )
     if not market_status_ok(snapshot_market_status(recommendation.snapshot)):
         raise HTTPException(status_code=422, detail="Only OPEN markets can be added")
     if model_edge_quarantine(float(recommendation.edge)):
