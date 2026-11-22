@@ -530,10 +530,7 @@ def run_protocol_health_check(
                 "Game is PRE_GAME or early-LIVE with OPEN markets",
                 [
                     candidate.game_status == "PRE_GAME"
-                    or (
-                        candidate.game_status == "LIVE"
-                        and candidate.market_status == "OPEN"
-                    )
+                    or (candidate.game_status == "LIVE" and candidate.market_status == "OPEN")
                     for candidate in candidates
                 ],
             ),
