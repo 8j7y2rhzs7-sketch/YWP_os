@@ -91,6 +91,20 @@ ALL_SLATE_SPORTS: tuple[str, ...] = (
     "kbo",
 )
 
+# Run slate player props. NBA/NCAAM price the basketball menu — not schedule-only.
+_SLATE_PROP_SPORTS = frozenset({"nfl", "ncaaf", "nba", "ncaab"})
+
+
+def _slate_prop_event_cap(sport: str) -> int:
+    if sport == "nfl":
+        return max(0, int(getattr(settings, "nfl_max_prop_events", None) or 8))
+    if sport == "nba":
+        return max(0, int(getattr(settings, "nba_max_prop_events", None) or 8))
+    if sport == "ncaab":
+        return max(0, int(getattr(settings, "nba_max_prop_events", None) or 6))
+    # NCAAF default
+    return 4
+
 
 def event_matches_slate_date(
     start_time: datetime, slate_date: date, *, sport: str | None = None
@@ -244,7 +258,7 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
             )
             research = _odds_only_research(bookmakers, home_team=home, sport=sport)
 
-        if event_id and sport_lower in {"nfl", "ncaaf"}:
+        if event_id and sport_lower in _SLATE_PROP_SPORTS:
             prop_event_contexts.append(
                 {
                     "event": event,
@@ -275,16 +289,13 @@ def live_generic_slate(sport: str, slate_date: date) -> list[CandidateInput]:
             logger.exception("Failed building candidates for %s %s", sport, event_name)
 
     prop_candidates: list[CandidateInput] = []
-    if sport_lower in {"nfl", "ncaaf"} and prop_event_contexts:
-        max_events = int(
-            getattr(settings, "nfl_max_prop_events", None) if sport_lower == "nfl" else 4
-        )
+    if sport_lower in _SLATE_PROP_SPORTS and prop_event_contexts:
         prop_candidates = _append_football_player_props(
             prop_event_contexts,
             sport=sport_lower,
             now=now,
             slate_date=slate_date,
-            max_events=max(0, max_events),
+            max_events=_slate_prop_event_cap(sport_lower),
         )
         candidates.extend(prop_candidates)
 
@@ -317,7 +328,7 @@ def _append_football_player_props(
     slate_date: date,
     max_events: int,
 ) -> list[CandidateInput]:
-    """Price NFL/NCAAF player props onto the Run slate and attach ESPN form models."""
+    """Price NFL/NCAAF/NBA/NCAAM player props onto the Run slate and attach form models."""
     markets = _PROP_MARKETS_BY_SPORT.get(sport)
     if max_events <= 0 or not contexts or not markets:
         return []
