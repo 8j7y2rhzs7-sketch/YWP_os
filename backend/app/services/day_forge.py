@@ -79,9 +79,9 @@ def _allowed_probability_sources() -> set[str]:
 
 def candidate_is_forge_fuel(candidate: CandidateInput) -> bool:
     """Cheap pre-filter before we spend engine cycles."""
-    if candidate.game_status != "PRE_GAME":
-        return False
-    if candidate.market_status != "OPEN":
+    from app.services.ticket_gates import board_game_eligible
+
+    if not board_game_eligible(candidate.game_status, candidate.market_status):
         return False
     if not _odds_in_band(int(candidate.american_odds)):
         return False
@@ -211,7 +211,7 @@ def recommendation_is_day_forge_eligible(rec: Any, *, allow_lean: bool = False) 
 
     game_status = str(snap.get("game_status") or "PRE_GAME")
     market_status = str(snap.get("market_status") or "OPEN")
-    if game_status not in {"PRE_GAME", ""}:
+    if game_status not in {"PRE_GAME", "LIVE", ""}:
         return False
     return market_status in {"OPEN", ""}
 

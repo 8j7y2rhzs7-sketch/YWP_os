@@ -527,8 +527,15 @@ def run_protocol_health_check(
             ),
             _check(
                 "pre_game_only",
-                "Game status is PRE_GAME",
-                [candidate.game_status == "PRE_GAME" for candidate in candidates],
+                "Game is PRE_GAME or early-LIVE with OPEN markets",
+                [
+                    candidate.game_status == "PRE_GAME"
+                    or (
+                        candidate.game_status == "LIVE"
+                        and candidate.market_status == "OPEN"
+                    )
+                    for candidate in candidates
+                ],
             ),
             _check(
                 "market_open",

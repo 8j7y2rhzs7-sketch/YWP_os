@@ -440,17 +440,19 @@ class DecisionEngine:
             )
             reasons.append(code)
 
-        if candidate.game_status != "PRE_GAME":
-            hard_skip_reasons.append(
-                f"Game status is {candidate.game_status}; only PRE_GAME markets are eligible."
-            )
-            reasons.append("GAME_NOT_PRE_GAME")
+        from app.services.ticket_gates import board_game_eligible
 
-        if candidate.market_status != "OPEN":
+        if not board_game_eligible(candidate.game_status, candidate.market_status):
             hard_skip_reasons.append(
-                f"Market status is {candidate.market_status}; only OPEN markets are eligible."
+                f"Game/market {candidate.game_status}/{candidate.market_status}; "
+                "need PRE_GAME or early-LIVE with OPEN markets."
             )
-            reasons.append("MARKET_NOT_OPEN")
+            if candidate.game_status not in {"PRE_GAME", "LIVE"}:
+                reasons.append("GAME_NOT_PRE_GAME")
+            if candidate.market_status != "OPEN":
+                reasons.append("MARKET_NOT_OPEN")
+            if candidate.game_status == "LIVE" and candidate.market_status != "OPEN":
+                reasons.append("GAME_NOT_PRE_GAME")
 
         from app.services.board_metrics import FORM_PROP_OUTLIER_EDGE_REVIEW
 
