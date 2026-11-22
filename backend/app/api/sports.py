@@ -648,9 +648,12 @@ def market_board(
         )
     except Exception:
         logger.exception("Market board failed for %s", sport_lower)
-        candidates, notice = [], (
-            "Sportsbook menu hit a temporary error while loading prices. "
-            "Try Load again (props load in smaller chunks), or use Run for the model slate."
+        candidates, notice = (
+            [],
+            (
+                "Sportsbook menu hit a temporary error while loading prices. "
+                "Try Load again (props load in smaller chunks), or use Run for the model slate."
+            ),
         )
 
     if not candidates and (odds_api_unavailable() or not notice):

@@ -132,8 +132,7 @@ def run_lock_check(
 
         if not game_status_ok(game_status):
             changes.append(
-                f"Game status is {game_status}; "
-                "need PRE_GAME or early-LIVE with OPEN markets."
+                f"Game status is {game_status}; need PRE_GAME or early-LIVE with OPEN markets."
             )
             leg_status = "SKIP"
             checks["market_availability"] = "FAIL"
