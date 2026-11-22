@@ -64,7 +64,10 @@ def test_late_live_closed_market_is_rejected() -> None:
         candidate(game_status="LIVE", market_status="CLOSED")
     )
     assert evaluation.decision == "SKIP"
-    assert "GAME_NOT_PRE_GAME" in evaluation.reason_codes or "MARKET_NOT_OPEN" in evaluation.reason_codes
+    assert (
+        "GAME_NOT_PRE_GAME" in evaluation.reason_codes
+        or "MARKET_NOT_OPEN" in evaluation.reason_codes
+    )
 
 
 def test_early_live_open_market_stays_eligible() -> None:

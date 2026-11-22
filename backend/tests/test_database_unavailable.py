@@ -5,11 +5,6 @@ import subprocess
 import sys
 
 import pytest
-from fastapi.testclient import TestClient
-from sqlalchemy.exc import OperationalError
-from sqlalchemy.orm import Session
-
-from app.core.config import DEV_JWT_SECRET, settings
 from app.services.database_guard import (
     DATABASE_UNAVAILABLE_MESSAGE,
     enforce_production_secrets,
@@ -18,6 +13,11 @@ from app.services.database_guard import (
     sanitize_database_error,
     try_prepare_database,
 )
+from fastapi.testclient import TestClient
+from sqlalchemy.exc import OperationalError
+from sqlalchemy.orm import Session
+
+from app.core.config import DEV_JWT_SECRET, settings
 
 
 def test_sqlite_programming_errors_are_not_an_outage() -> None:
