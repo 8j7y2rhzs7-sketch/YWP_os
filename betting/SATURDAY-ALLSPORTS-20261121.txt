@@ -1,6 +1,24 @@
-SATURDAY ALL-GATES RUN 2026-11-21 ~15:40 ET
+SATURDAY ALL-GATES RUN 2026-11-21
 GATE PASS date=20261121 sheets_ok=910/910
-NBA 6 (MIL@PHI FINAL) | NHL 14 | NCAAF 58 | NCAAM 57 | NFL 0
-Posted Gate0 KEEP: Zion O19.5 · KAT O20.5 (Q illness) · Sabonis O11.5 REB · LaVine O2.5 REB
+Evening rescan ~19:33 ET (post MIL@PHI final)
+
+NBA left (live ESPN):
+  POR@NY  POR -1.5 / 213.5   ← FLIP (was NY -3.5) · KAT OUT · OG OUT
+  LAC@DAL DAL -4.5 / 230.5   · PJ Washington OUT
+  MEM@MIN MIN -5.5 / 227.5
+  NO@SA   SA -18.5 / 229.5   · soft total RISK in −18.5 script
+  BOS@SAC BOS -12.5 / 215.5  · Tatum OUT · White OUT
+
+OUT / status deltas vs morning card:
+  KAT OUT (illness) → CUT all KAT overs
+  OG Anunoby OUT (calf) → CUT OG
+  PJ Washington OUT → CUT PJ
+  Tatum OUT (rest) · White OUT (shoulder) → CUT both
+  Deni Avdija — not on injury list (treat ACTIVE)
+
+Posted Gate0 KEEP (morning): Zion O19.5 · KAT O20.5 (now CUT) · Sabonis O11.5 REB · LaVine O2.5 REB
 YDAY Official SAFE 19/30
-Full SAFE/PRIMARY/BANGERS in chat.
+Full SAFE/PRIMARY/BANGERS in chat (morning). Evening: apply OUT cuts above; Brunson/Lillard still playable with POR now −1.5.
+
+HR 8-leg weed (UGA−7.5 · MIZ 1H · UAB+13.5 · UTA ML · BOIS ML · MIN+1.5 · SEA+2.5 · ORST ML):
+  see chat WEED table · killer = MIZ 1H · BOIS −1600 = pad juice
