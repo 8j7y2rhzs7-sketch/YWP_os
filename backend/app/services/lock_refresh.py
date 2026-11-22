@@ -149,7 +149,6 @@ def _map_game_status(abstract: str | None, detailed: str | None = None) -> str:
     return "UNKNOWN"
 
 
-
 def _parse_snap_start(snap: dict) -> datetime | None:
     raw = snap.get("start_time") or snap.get("commence_time")
     if not raw:
@@ -251,9 +250,7 @@ def _mlb_lock_update(recommendation: Recommendation, now: datetime) -> CurrentSt
             data_quality=data_quality,
             game_status=game_status,  # type: ignore[arg-type]
             market_status=(
-                market_status
-                if _market_open_for_status(game_status, snap, now)
-                else "CLOSED"
+                market_status if _market_open_for_status(game_status, snap, now) else "CLOSED"
             ),  # type: ignore[arg-type]
             notes=notes + ["Lock refresh incomplete without a sportsbook price snapshot."],
         )

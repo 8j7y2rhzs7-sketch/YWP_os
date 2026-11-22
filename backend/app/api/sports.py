@@ -90,6 +90,11 @@ from app.services.odds_provider import (
 )
 from app.services.protocols import run_protocol_health_check
 from app.services.providers import demo_slate
+from app.services.public_verified_slate import (
+    odds_api_unavailable,
+    public_fallback_notice,
+    public_verified_slate,
+)
 from app.services.readiness import slate_readiness, verification_summary
 from app.services.settlement import settle_user_day
 from app.services.ticket_builder import build_cards, preview_custom_card
@@ -394,7 +399,7 @@ def slate(
         except Exception:
             logger.exception("Live MLB slate failed")
 
-    if not settings.demo_mode and sport_lower in ("wnba", "basketball") and settings.odds_api_key:
+    if not settings.demo_mode and sport_lower in ("wnba", "basketball") and odds_api_configured():
         try:
             candidates = live_wnba_slate(slate_date)
             if candidates:
@@ -429,7 +434,7 @@ def slate(
         except Exception:
             logger.exception("Live WNBA slate failed")
 
-    if not settings.demo_mode and sport_lower == "all" and settings.odds_api_key:
+    if not settings.demo_mode and sport_lower == "all" and odds_api_configured():
         try:
             candidates = live_all_slate(slate_date)
             if candidates:
@@ -454,25 +459,27 @@ def slate(
                     candidates=candidates,
                 )
             nearby = upcoming_odds_dates("all")
-            return _slate_response(
-                sport="all",
-                slate_date=slate_date,
-                mode="live",
-                notice=(
-                    f"No in-season Odds events on {slate_date.isoformat()}. "
-                    + (
-                        f"Nearest dates with prices: {', '.join(nearby)}. "
-                        if nearby
-                        else "No priced events in the current Odds upcoming feed. "
-                    )
-                    + "Change the slate date and refresh — demo data is not substituted."
-                ),
-                candidates=[],
-            )
+            if not odds_api_unavailable():
+                return _slate_response(
+                    sport="all",
+                    slate_date=slate_date,
+                    mode="live",
+                    notice=(
+                        f"No in-season Odds events on {slate_date.isoformat()}. "
+                        + (
+                            f"Nearest dates with prices: {', '.join(nearby)}. "
+                            if nearby
+                            else "No priced events in the current Odds upcoming feed. "
+                        )
+                        + "Change the slate date and refresh — demo data is not substituted."
+                    ),
+                    candidates=[],
+                )
+            # Odds is down — fall through to public verified schedule fallback.
         except Exception:
             logger.exception("Live ALL SPORTS slate failed")
 
-    if not settings.demo_mode and sport_lower in SPORT_KEYS and settings.odds_api_key:
+    if not settings.demo_mode and sport_lower in SPORT_KEYS and odds_api_configured():
         try:
             candidates = live_generic_slate(sport_lower, slate_date)
             if candidates:
@@ -524,7 +531,7 @@ def slate(
                     candidates=candidates,
                 )
             nearby = upcoming_odds_dates(sport_lower)
-            if nearby:
+            if nearby and not odds_api_unavailable():
                 return _slate_response(
                     sport=sport_lower,
                     slate_date=slate_date,
@@ -540,13 +547,37 @@ def slate(
             logger.exception("Live %s slate failed", sport_lower)
 
     if not settings.demo_mode:
+        # Backup generator: when Odds is down / empty, board schedule-verified
+        # public feeds so Run does not hard-stop with CHECK REQUIRED.
+        try:
+            public_candidates = public_verified_slate(sport_lower, slate_date)
+        except Exception:
+            logger.exception("Public verified fallback failed for %s", sport_lower)
+            public_candidates = []
+        if public_candidates:
+            why = (
+                "Odds API unavailable"
+                if odds_api_unavailable()
+                else "no priced Odds events for this date"
+            )
+            return _slate_response(
+                sport=sport_lower,
+                slate_date=slate_date,
+                mode="live",
+                notice=(
+                    public_fallback_notice(sport_lower, len(public_candidates))
+                    + f" Trigger: {why}."
+                ),
+                candidates=public_candidates,
+            )
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=(
-                "No verified live slate is available. The server will not silently substitute "
-                "demo data in production. Check provider configuration or pick a date that "
-                "has Odds API events, then refresh. You can still submit verified candidates "
-                "through POST /sports/analyze."
+                "No verified live slate is available from Odds or public schedule feeds. "
+                "The server will not silently substitute demo data in production. "
+                "Check provider configuration or pick a date with scheduled games, then "
+                "refresh. You can still submit verified candidates through POST "
+                "/sports/analyze."
             ),
         )
 
@@ -617,17 +648,28 @@ def market_board(
         )
     except Exception:
         logger.exception("Market board failed for %s", sport_lower)
-        # Prefer an empty board + honest notice over a hard 503 — Sheet can still retry.
-        return _slate_response(
-            sport=sport_lower,
-            slate_date=slate_date,
-            mode="live",
-            notice=(
+        candidates, notice = (
+            [],
+            (
                 "Sportsbook menu hit a temporary error while loading prices. "
                 "Try Load again (props load in smaller chunks), or use Run for the model slate."
             ),
-            candidates=[],
         )
+
+    if not candidates and (odds_api_unavailable() or not notice):
+        try:
+            public_candidates = public_verified_slate(sport_lower, slate_date)
+        except Exception:
+            logger.exception("Public market-board fallback failed for %s", sport_lower)
+            public_candidates = []
+        if public_candidates:
+            return _slate_response(
+                sport=sport_lower,
+                slate_date=slate_date,
+                mode="live",
+                notice=public_fallback_notice(sport_lower, len(public_candidates)),
+                candidates=public_candidates,
+            )
 
     if not candidates:
         return _slate_response(

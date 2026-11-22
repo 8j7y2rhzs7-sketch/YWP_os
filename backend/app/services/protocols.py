@@ -177,6 +177,8 @@ CURRENT_PROTOCOL = {
             "Flag the likeliest ticket-killer and offer a safer line or remove it.",
             "Do not raise a line for payout without separate hit-rate and cushion approval.",
             "Quarantine critical miss-by-one legs from Cash Builder and Fortress cards.",
+            "Treat receptions legs that often finish on two catches as role risk, not payout bait.",
+            "Prefer a safer line when the projection sits within a point of the posted number.",
         ],
         "post_result": [
             "Store actual value, line, signed miss distance, whether it killed the ticket, "
@@ -209,6 +211,10 @@ CURRENT_PROTOCOL = {
             "Never chase, double down, or create a second correlated loss path.",
             "Never cash out solely because the wager is temporarily losing or hold solely to "
             "recover the original stake.",
+            "Never cash out a hitter prop while a plate appearance remains.",
+            "Never cash out a receptions leg that can still finish on two catches.",
+            "Never cash out a scoring/rebounds/assists leg within 1.5 of the line without a "
+            "verified thesis break.",
             "Never act on a stale screen, unavailable market, guessed probability, or unverified "
             "injury and lineup change.",
         ],
@@ -530,10 +536,7 @@ def run_protocol_health_check(
                 "Game is PRE_GAME or early-LIVE with OPEN markets",
                 [
                     candidate.game_status == "PRE_GAME"
-                    or (
-                        candidate.game_status == "LIVE"
-                        and candidate.market_status == "OPEN"
-                    )
+                    or (candidate.game_status == "LIVE" and candidate.market_status == "OPEN")
                     for candidate in candidates
                 ],
             ),

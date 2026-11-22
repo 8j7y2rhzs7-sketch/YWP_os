@@ -7,6 +7,17 @@
       "appConfigFieldsNotSyncedCheck": {
         "enabled": false
       }
+    },
+    "install": {
+      "exclude": [
+        "expo",
+        "expo-build-properties",
+        "expo-constants",
+        "expo-linking",
+        "expo-router",
+        "expo-sharing",
+        "expo-splash-screen"
+      ]
     }
   },
   "main": "expo-router/entry",
