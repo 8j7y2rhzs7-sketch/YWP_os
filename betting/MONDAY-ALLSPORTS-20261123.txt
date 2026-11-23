@@ -1,0 +1,12 @@
+MONDAY ALL-GATES RUN 2026-11-23 ~17:00 ET
+GATE PASS date=20261123 sheets_ok=929/929
+YDAY Official SAFE 4/8 (PTS softs clipped; AST/REB better)
+NBA 10 | NHL 7 | NFL 1 (CIN@WSH) | NCAAM 46 | NCAAF 0
+
+Q/CUT until ACTIVE: Embiid Q · Siakam Q · Wemby Q · Giannis OUT (prior) · Morant OUT
+Zion PROBABLE vs PHX
+
+MNF: CIN -6 / 54.5 — Chase O79.5 · Higgins O62.5 · O54.5 (from Sun fix)
+Full SAFE/PRIMARY/BANGERS → chat.
+
+Gate note: soft-skip ESPN HTTP 500 on sheet fetch (Johni Broome flake).
