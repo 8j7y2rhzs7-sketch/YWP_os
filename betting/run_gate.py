@@ -219,7 +219,26 @@ def main() -> int:
         help="cap NHL sheets; must cover full slate teams (was 120 → truncated late games)",
     )
     ap.add_argument("--max-ncaam-players", type=int, default=180, help="cap NCAAM featured sheets")
+    ap.add_argument(
+        "--all-ncaam",
+        action="store_true",
+        help="sheet every NCAAM slate team (no rank/spread featured filter)",
+    )
+    ap.add_argument(
+        "--exhaustive",
+        action="store_true",
+        help="no-shortcut caps: all NCAAM teams + high NBA/NHL/NCAAM player ceilings",
+    )
     args = ap.parse_args()
+    if args.exhaustive:
+        args.all_ncaam = True
+        # High enough to cover full slate rosters without silent truncation.
+        if args.max_nba_players == 200:
+            args.max_nba_players = 500
+        if args.max_nhl_players == 400:
+            args.max_nhl_players = 800
+        if args.max_ncaam_players == 180:
+            args.max_ncaam_players = 2500
     date = args.date
     started = datetime.now(timezone.utc).isoformat()
 
@@ -312,33 +331,39 @@ def main() -> int:
         return None
 
     ncaam_featured_teams: set[str] = set()
-    for g in sports_present.get("NCAAM") or []:
-        # ranks live on scoreboard parse? re-enrich from stored odds only
-        mag = _spread_mag(g.get("odds"))
-        # always include if we cannot parse spread and name suggests VS ranked later;
-        # featured filter applied after enrichment below
-        if mag is not None and mag <= 12:
+    if args.all_ncaam:
+        # Exhaustive: every team on today's NCAAM scoreboard.
+        for g in sports_present.get("NCAAM") or []:
             ncaam_featured_teams.add(g["away_id"])
             ncaam_featured_teams.add(g["home_id"])
-
-    # Enrich featured with ranked teams from raw scoreboard
-    try:
-        for e in ncaam_sb.get("events") or []:
-            comp = e["competitions"][0]
-            away = next(t for t in comp["competitors"] if t["homeAway"] == "away")
-            home = next(t for t in comp["competitors"] if t["homeAway"] == "home")
-            ar = (away.get("curatedRank") or {}).get("current") or 99
-            hr = (home.get("curatedRank") or {}).get("current") or 99
-            if ar <= 25 or hr <= 25:
-                ncaam_featured_teams.add(away["team"]["id"])
-                ncaam_featured_teams.add(home["team"]["id"])
-            odds = (comp.get("odds") or [{}])[0]
-            mag = _spread_mag(odds.get("details"))
+    else:
+        for g in sports_present.get("NCAAM") or []:
+            # ranks live on scoreboard parse? re-enrich from stored odds only
+            mag = _spread_mag(g.get("odds"))
+            # always include if we cannot parse spread and name suggests VS ranked later;
+            # featured filter applied after enrichment below
             if mag is not None and mag <= 12:
-                ncaam_featured_teams.add(away["team"]["id"])
-                ncaam_featured_teams.add(home["team"]["id"])
-    except Exception as e:
-        failures.append(f"NCAAM featured enrich failed: {e}")
+                ncaam_featured_teams.add(g["away_id"])
+                ncaam_featured_teams.add(g["home_id"])
+
+        # Enrich featured with ranked teams from raw scoreboard
+        try:
+            for e in ncaam_sb.get("events") or []:
+                comp = e["competitions"][0]
+                away = next(t for t in comp["competitors"] if t["homeAway"] == "away")
+                home = next(t for t in comp["competitors"] if t["homeAway"] == "home")
+                ar = (away.get("curatedRank") or {}).get("current") or 99
+                hr = (home.get("curatedRank") or {}).get("current") or 99
+                if ar <= 25 or hr <= 25:
+                    ncaam_featured_teams.add(away["team"]["id"])
+                    ncaam_featured_teams.add(home["team"]["id"])
+                odds = (comp.get("odds") or [{}])[0]
+                mag = _spread_mag(odds.get("details"))
+                if mag is not None and mag <= 12:
+                    ncaam_featured_teams.add(away["team"]["id"])
+                    ncaam_featured_teams.add(home["team"]["id"])
+        except Exception as e:
+            failures.append(f"NCAAM featured enrich failed: {e}")
 
     for tid in sorted(ncaam_featured_teams):
         try:
@@ -433,14 +458,15 @@ def main() -> int:
             }
         except Exception as e:
             err = str(e)
-            # 404 on obscure roster entries = skip
-            if "404" in err:
+            # 404/500 on obscure roster entries = soft-skip (ESPN flake)
+            if "404" in err or "500" in err:
+                code = "http_404" if "404" in err else "http_500"
                 return name, {
                     "sport": "nba",
                     "athlete_id": aid,
                     "team": team,
                     "ok": True,
-                    "skip": "http_404",
+                    "skip": code,
                     "error": err,
                     "missing_cats": [],
                     "n_rs": 0,
@@ -484,13 +510,14 @@ def main() -> int:
             }
         except Exception as e:
             err = str(e)
-            if "404" in err:
+            if "404" in err or "500" in err:
+                code = "http_404" if "404" in err else "http_500"
                 return name, {
                     "sport": "nhl",
                     "athlete_id": aid,
                     "team": team,
                     "ok": True,
-                    "skip": "http_404",
+                    "skip": code,
                     "error": err,
                     "missing_cats": [],
                     "n_rs": 0,
@@ -534,13 +561,14 @@ def main() -> int:
             }
         except Exception as e:
             err = str(e)
-            if "404" in err:
+            if "404" in err or "500" in err:
+                code = "http_404" if "404" in err else "http_500"
                 return name, {
                     "sport": "ncaam",
                     "athlete_id": aid,
                     "team": team,
                     "ok": True,
-                    "skip": "http_404",
+                    "skip": code,
                     "error": err,
                     "missing_cats": [],
                     "n_rs": 0,
@@ -630,11 +658,19 @@ def main() -> int:
             "No place card / weed / exhaustive without status=PASS",
             "Full NBA cats required: MIN/PTS/REB/AST/STL/BLK/TO/3P",
             "NCAAM gated: slate discovery + featured roster sheets (rank<=25 or |spread|<=12)",
+            "NCAAM --all-ncaam/--exhaustive: every slate team sheeted (no featured filter)",
             "NCAAM early-season: empty 2026-27 logs OK; no prior-year as SAFE counting",
             "BANGERS board required in delivery after gate",
             "Weed cannot contradict from-scratch KEEP/PRIMARY",
             "Show athlete_id + source on every cited player",
         ],
+        "exhaustive": bool(args.exhaustive),
+        "all_ncaam": bool(args.all_ncaam),
+        "max_players": {
+            "nba": args.max_nba_players,
+            "nhl": args.max_nhl_players,
+            "ncaam": args.max_ncaam_players,
+        },
         "ncaam_featured_team_ids": sorted(ncaam_featured_teams),
         "ncaam_sheets": sum(1 for s in sheets.values() if s.get("sport") == "ncaam"),
     }
