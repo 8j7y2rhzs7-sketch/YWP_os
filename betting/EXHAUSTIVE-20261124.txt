@@ -1,0 +1,306 @@
+EXHAUSTIVE ALL-GATES 20261124  generated=2026-11-24T09:51:35.039502-05:00
+GATE PASS sheets_ok=2660/2660 exhaustive=True all_ncaam=True
+Slate: NBA 3 | NHL 1 | NCAAF 2 | NFL 0 | NCAAM 87 | WNBA 0
+NCAAM: ALL 174 slate teams sheeted (no featured shortcut). Caps nba=500 nhl=800 ncaam=2500.
+
+=== GAMES ===
+NBA:
+  DET @ ORL  DET -2.5  O/U 213.5
+  BOS @ WSH  BOS -10.5  O/U 217.5
+  DAL @ DEN  DEN -7.5  O/U 233.5
+NHL:
+  VGK @ EDM  VGK -118  O/U 6.5
+NCAAF:
+  KENT @ EMU  EMU -5.5  O/U 46.5
+  M-OH @ WMU  WMU -6.5  O/U 45.5
+NCAAM:
+  WRST @ SBU  SBU -1.5  O/U 145.5
+  OHIO @ NMSU  OHIO -4.5  O/U 149.5
+  BEL @ AKR  AKR -2.5  O/U 143.5
+  SELA @ UNCO  UNCO -3.5  O/U 145.5
+  SUU @ FIU  FIU -8.5  O/U 167.5
+  VTSR @ STO  None  O/U None
+  RICE @ UIC  UIC -7.5  O/U 142.5
+  OU @ PITT  PITT -2.5  O/U 148.5
+  ORST @ SF  ORST -8.5  O/U 148.5
+  MISS @ BYU  MISS -1.5  O/U 159.5
+  TENN @ MD  TENN -3.5  O/U 147.5
+  MIA @ TCU  MIA -5.5  O/U 153.5
+  APP @ YALE  APP -1.5  O/U 133.5
+  UND @ DETM  UND -4.5  O/U 151.5
+  LBSU @ ARST  ARST -5.5  O/U 158.5
+  LIN @ NHVN  LIN -2.5  O/U 133.5
+  TLSA @ ILST  TLSA -1.5  O/U 143.5
+  PSBK @ NAVY  None  O/U None
+  PROV @ ARIZ  ARIZ -7.5  O/U 155.5
+  BBU @ WAG  None  O/U None
+  EMRS @ QUIN  None  O/U None
+  WYO @ KENT  WYO -8.5  O/U 146.5
+  SDSU @ ISU  ISU -8.5  O/U 142.5
+  CREI @ MICH  MICH -6.5  O/U 162.5
+  SHU @ RUTG  RUTG -23.5  O/U 157.5
+  USI @ VMI  VMI -5.5  O/U 142.5
+  MER @ FAU  FAU -7.5  O/U 160.5
+  QUC @ WOF  WOF -1.5  O/U 172.5
+  EMU @ KENN  KENN -4.5  O/U 147.5
+  DEP @ PUR  PUR -3.5  O/U 134.5
+  RMU @ LAM  LAM -3.5  O/U 157.5
+  ELON @ FUR  FUR -7.5  O/U 148.5
+  MILW @ FLA  FLA -34.5  O/U 153.5
+  VAN @ OSU  VAN -1.5  O/U 156.5
+  JAX @ IU  IU -27.5  O/U 146.5
+  NCCC @ PRES  None  O/U None
+  HAMP @ ODU  ODU -7.5  O/U 130.5
+  TAR @ WEB  WEB -1.5  O/U 155.5
+  BRY @ MRST  MRST -1.5  O/U 133.5
+  COPP @ VILL  VILL -32.5  O/U 144.5
+  RID @ L-MD  L-MD -3.5  O/U 138.5
+  BELL @ GASO  GASO -1.5  O/U 154.5
+  DSU @ UTC  UTC -15.5  O/U 147.5
+  MSM @ MORG  MORG -1.5  O/U 146.5
+  UNH @ HALL  HALL -20.5  O/U 129.5
+  CAM @ CCU  CCU -1.5  O/U 148.5
+  UMBC @ IOWA  IOWA -27.5  O/U 144.5
+  UVM @ SIE  SIE -4.5  O/U 160.5
+  BU @ HARV  HARV -5.5  O/U 134.5
+  SAM @ GT  GT -10.5  O/U 161.5
+  SNYF @ MERC  None  O/U None
+  STET @ USF  USF -18.5  O/U 152.5
+  NEV @ SCU  NEV -1.5  O/U 158.5
+  CHSO @ JMU  JMU -13.5  O/U 154.5
+  BING @ LEH  LEH -8.5  O/U 137.5
+  GWEB @ BGSU  BGSU -12.5  O/U 145.5
+  ABU @ ETAM  None  O/U None
+  PFW @ SEMO  SEMO -3.5  O/U 149.5
+  ALCN @ LT  LT -16.5  O/U 144.5
+  HPU @ DUQ  HPU -9.5  O/U 141.5
+  HCU @ ULM  HCU -1.5  O/U 151.5
+  WGA @ TNTC  TNTC -15.5  O/U 163.5
+  TTU @ LOU  TTU -2.5  O/U 153.5
+  FAMU @ USA  USA -18.5  O/U 142.5
+  ARBA @ LR  None  O/U None
+  ORU @ UTA  UTA -4.5  O/U 148.5
+  AAMU @ UNA  UNA -2.5  O/U 142.5
+  BUCK @ COR  COR -10.5  O/U 154.5
+  CLEM @ WASH  CLEM -1.5  O/U 151.5
+  DREX @ PENN  PENN -5.5  O/U 142.5
+  GB @ KC  KC -1.5  O/U 145.5
+  LIP @ AUB  AUB -25.5  O/U 157.5
+  ARMY @ AF  AF -3.5  O/U 155.5
+  CMU @ ND  ND -20.5  O/U 152.5
+  LCHR @ UL  None  O/U None
+  COFC @ UTEP  COFC -2.5  O/U 147.5
+  SHSU @ WSU  WSU -5.5  O/U 155.5
+  UNCG @ UCSB  UCSB -18.5  O/U 146.5
+  IDST @ BOIS  BOIS -19.5  O/U 164.5
+  EVAN @ MIZ  MIZ -31.5  O/U 149.5
+  UNCA @ FSU  FSU -28.5  O/U 159.5
+  GCU @ SLU  GCU -1.5  O/U 165.5
+  BAY @ ALA  ALA -1.5  O/U 174.5
+  ORE @ SJU  SJU -10.5  O/U 154.5
+  VCU @ CSU  VCU -5.5  O/U 149.5
+  STAN @ COLO  STAN -4.5  O/U 143.5
+  GONZ @ KSU  GONZ -15.5  O/U 157.5
+
+=== INJURY / STATUS (roster status ≠ Active) ===
+  (none flagged on ESPN roster status for slate teams — recheck tips)
+
+=== POSTED-MAIN KEEP (Gate2 books) ===
+  7/7  Caleb Martin O2.5 AST  DAL vs DEN  id=3138160  L=None
+
+=== POSTED-MAIN RISK-KEEP ===
+  6/7  Tristan da Silva O10.5 PTS  miss=[6.0]  id=4702382
+  6/7  Franz Wagner O6.5 REB  miss=[5.0]  id=4566434
+  6/7  Christian Braun O4.5 REB  miss=[3.0]  id=4431767
+  6/7  Anthony Black O4.5 AST  miss=[2.0]  id=4712849
+  6/7  Desmond Bane O2.5 AST  miss=[2.0]  id=4066320
+  6/7  Christian Braun O2.5 AST  miss=[1.0]  id=4431767
+  6/7  Neemias Queta O1.5 AST  miss=[1.0]  id=4397424
+  6/7  Jayson Tatum O2.5 3PT  miss=[2.0]  id=4065648
+  6/7  Anthony Black O1.5 3PT  miss=[1.0]  id=4712849
+  6/7  Anthony Davis O0.5 STL  miss=[0.0]  id=6583
+  6/7  Alex Sarr O0.5 BLK  miss=[0.0]  id=5160992
+
+=== INTERNAL SOFT FLOORS (research only — not bet instructions unless on HR) ===
+-- NBA 7/7 soft floors (MIN≥24) — lowest clearing line --
+  7/7  Nikola Jokic O0.5 3PT  DEN vs DAL  id=3112335  MIN≈38.6  season 9/12 (75%) DUAL  L=[1.0, 2.0, 3.0, 2.0, 1.0, 1.0, 1.0]
+  7/7  Nikola Jokic O1.5 AST  DEN vs DAL  id=3112335  MIN≈38.6  season 12/12 (100%) DUAL  L=[11.0, 11.0, 9.0, 7.0, 10.0, 8.0, 9.0]
+  7/7  Nikola Jokic O3.5 REB  DEN vs DAL  id=3112335  MIN≈38.6  season 12/12 (100%) DUAL  L=[18.0, 7.0, 8.0, 15.0, 8.0, 11.0, 16.0]
+  7/7  Nikola Jokic O9.5 PTS  DEN vs DAL  id=3112335  MIN≈38.6  season 12/12 (100%) DUAL  L=[37.0, 26.0, 24.0, 28.0, 26.0, 27.0, 25.0]
+  7/7  Daniss Jenkins O0.5 3PT  DET vs ORL  id=5107199  MIN≈37.7  season 11/12 (92%) DUAL  L=[1.0, 2.0, 3.0, 3.0, 1.0, 3.0, 2.0]
+  7/7  Daniss Jenkins O9.5 PTS  DET vs ORL  id=5107199  MIN≈37.7  season 9/12 (75%) DUAL  L=[11.0, 14.0, 17.0, 25.0, 10.0, 21.0, 22.0]
+  7/7  Jamal Murray O1.5 AST  DEN vs DAL  id=3936299  MIN≈37.6  season 12/12 (100%) DUAL  L=[7.0, 7.0, 2.0, 4.0, 9.0, 8.0, 2.0]
+  7/7  Jamal Murray O9.5 PTS  DEN vs DAL  id=3936299  MIN≈37.6  season 12/12 (100%) DUAL  L=[45.0, 14.0, 21.0, 28.0, 23.0, 30.0, 38.0]
+  7/7  Cade Cunningham O1.5 AST  DET vs ORL  id=4432166  MIN≈36.6  season 12/12 (100%) DUAL  L=[15.0, 9.0, 6.0, 8.0, 11.0, 7.0, 8.0]
+  7/7  Franz Wagner O3.5 REB  ORL vs DET  id=4566434  MIN≈36.4  season 11/12 (92%) DUAL  L=[8.0, 5.0, 8.0, 8.0, 9.0, 8.0, 7.0]
+  7/7  Franz Wagner O9.5 PTS  ORL vs DET  id=4566434  MIN≈36.4  season 12/12 (100%) DUAL  L=[16.0, 35.0, 27.0, 21.0, 35.0, 38.0, 33.0]
+  7/7  Anthony Black O0.5 3PT  ORL vs DET  id=4712849  MIN≈35.9  season 11/12 (92%) DUAL  L=[2.0, 2.0, 2.0, 3.0, 1.0, 3.0, 2.0]
+  7/7  Anthony Black O0.5 STL  ORL vs DET  id=4712849  MIN≈35.9  season 11/12 (92%) DUAL  L=[2.0, 3.0, 1.0, 3.0, 1.0, 1.0, 4.0]
+  7/7  Anthony Black O1.5 AST  ORL vs DET  id=4712849  MIN≈35.9  season 11/12 (92%) DUAL  L=[2.0, 6.0, 6.0, 7.0, 5.0, 8.0, 5.0]
+  7/7  AJ Dybantsa O0.5 STL  WSH vs BOS  id=5142718  MIN≈35.4  season 9/12 (75%) DUAL  L=[1.0, 2.0, 1.0, 3.0, 1.0, 1.0, 1.0]
+  7/7  AJ Dybantsa O3.5 REB  WSH vs BOS  id=5142718  MIN≈35.4  season 12/12 (100%) DUAL  L=[8.0, 10.0, 12.0, 5.0, 7.0, 8.0, 4.0]
+  7/7  Desmond Bane O0.5 3PT  ORL vs DET  id=4066320  MIN≈35.1  season 12/12 (100%) DUAL  L=[3.0, 7.0, 5.0, 3.0, 6.0, 7.0, 4.0]
+  7/7  Desmond Bane O1.5 AST  ORL vs DET  id=4066320  MIN≈35.1  season 10/12 (83%) DUAL  L=[5.0, 3.0, 3.0, 5.0, 3.0, 2.0, 4.0]
+  7/7  Desmond Bane O9.5 PTS  ORL vs DET  id=4066320  MIN≈35.1  season 12/12 (100%) DUAL  L=[17.0, 21.0, 15.0, 24.0, 21.0, 25.0, 15.0]
+  7/7  Anthony Davis O3.5 REB  WSH vs BOS  id=6583  MIN≈35.0  season 12/12 (100%) DUAL  L=[7.0, 11.0, 14.0, 4.0, 8.0, 15.0, 13.0]
+  7/7  Anthony Davis O9.5 PTS  WSH vs BOS  id=6583  MIN≈35.0  season 12/12 (100%) DUAL  L=[22.0, 36.0, 25.0, 23.0, 14.0, 30.0, 21.0]
+  7/7  Kyshawn George O0.5 3PT  WSH vs BOS  id=5174563  MIN≈34.9  season 12/12 (100%) DUAL  L=[6.0, 1.0, 4.0, 2.0, 1.0, 3.0, 5.0]
+  7/7  Kyshawn George O9.5 PTS  WSH vs BOS  id=5174563  MIN≈34.9  season 12/12 (100%) DUAL  L=[24.0, 11.0, 20.0, 18.0, 11.0, 14.0, 25.0]
+  7/7  Jayson Tatum O0.5 3PT  BOS vs WSH  id=4065648  MIN≈34.3  season 12/12 (100%) DUAL  L=[4.0, 3.0, 3.0, 5.0, 2.0, 3.0, 5.0]
+  7/7  Jayson Tatum O1.5 AST  BOS vs WSH  id=4065648  MIN≈34.3  season 12/12 (100%) DUAL  L=[6.0, 3.0, 4.0, 6.0, 8.0, 4.0, 6.0]
+  7/7  Jayson Tatum O3.5 REB  BOS vs WSH  id=4065648  MIN≈34.3  season 12/12 (100%) DUAL  L=[10.0, 8.0, 12.0, 6.0, 7.0, 6.0, 4.0]
+  7/7  Jayson Tatum O9.5 PTS  BOS vs WSH  id=4065648  MIN≈34.3  season 12/12 (100%) DUAL  L=[27.0, 24.0, 24.0, 32.0, 24.0, 21.0, 21.0]
+  7/7  Christian Braun O0.5 STL  DEN vs DAL  id=4431767  MIN≈33.4  season 12/12 (100%) DUAL  L=[1.0, 4.0, 2.0, 2.0, 4.0, 1.0, 3.0]
+  7/7  Trae Young O1.5 AST  WSH vs BOS  id=4277905  MIN≈33.3  season 12/12 (100%) DUAL  L=[11.0, 5.0, 8.0, 12.0, 8.0, 14.0, 4.0]
+  7/7  Cooper Flagg O1.5 AST  DAL vs DEN  id=5041939  MIN≈33.1  season 12/12 (100%) DUAL  L=[4.0, 8.0, 9.0, 4.0, 5.0, 3.0, 6.0]
+
+-- NBA DUAL-WINDOW (L7 7/7 + season≥75%) --
+  7/7  Nikola Jokic O0.5 3PT  DEN vs DAL  id=3112335  season 9/12 (75%)  MIN≈38.6
+  7/7  Nikola Jokic O1.5 AST  DEN vs DAL  id=3112335  season 12/12 (100%)  MIN≈38.6
+  7/7  Nikola Jokic O3.5 REB  DEN vs DAL  id=3112335  season 12/12 (100%)  MIN≈38.6
+  7/7  Nikola Jokic O9.5 PTS  DEN vs DAL  id=3112335  season 12/12 (100%)  MIN≈38.6
+  7/7  Daniss Jenkins O0.5 3PT  DET vs ORL  id=5107199  season 11/12 (92%)  MIN≈37.7
+  7/7  Daniss Jenkins O9.5 PTS  DET vs ORL  id=5107199  season 9/12 (75%)  MIN≈37.7
+  7/7  Jamal Murray O1.5 AST  DEN vs DAL  id=3936299  season 12/12 (100%)  MIN≈37.6
+  7/7  Jamal Murray O9.5 PTS  DEN vs DAL  id=3936299  season 12/12 (100%)  MIN≈37.6
+  7/7  Cade Cunningham O1.5 AST  DET vs ORL  id=4432166  season 12/12 (100%)  MIN≈36.6
+  7/7  Franz Wagner O3.5 REB  ORL vs DET  id=4566434  season 11/12 (92%)  MIN≈36.4
+  7/7  Franz Wagner O9.5 PTS  ORL vs DET  id=4566434  season 12/12 (100%)  MIN≈36.4
+  7/7  Anthony Black O0.5 3PT  ORL vs DET  id=4712849  season 11/12 (92%)  MIN≈35.9
+  7/7  Anthony Black O0.5 STL  ORL vs DET  id=4712849  season 11/12 (92%)  MIN≈35.9
+  7/7  Anthony Black O1.5 AST  ORL vs DET  id=4712849  season 11/12 (92%)  MIN≈35.9
+  7/7  AJ Dybantsa O0.5 STL  WSH vs BOS  id=5142718  season 9/12 (75%)  MIN≈35.4
+  7/7  AJ Dybantsa O3.5 REB  WSH vs BOS  id=5142718  season 12/12 (100%)  MIN≈35.4
+  7/7  Desmond Bane O0.5 3PT  ORL vs DET  id=4066320  season 12/12 (100%)  MIN≈35.1
+  7/7  Desmond Bane O1.5 AST  ORL vs DET  id=4066320  season 10/12 (83%)  MIN≈35.1
+  7/7  Desmond Bane O9.5 PTS  ORL vs DET  id=4066320  season 12/12 (100%)  MIN≈35.1
+  7/7  Anthony Davis O3.5 REB  WSH vs BOS  id=6583  season 12/12 (100%)  MIN≈35.0
+  7/7  Anthony Davis O9.5 PTS  WSH vs BOS  id=6583  season 12/12 (100%)  MIN≈35.0
+  7/7  Kyshawn George O0.5 3PT  WSH vs BOS  id=5174563  season 12/12 (100%)  MIN≈34.9
+  7/7  Kyshawn George O9.5 PTS  WSH vs BOS  id=5174563  season 12/12 (100%)  MIN≈34.9
+  7/7  Jayson Tatum O0.5 3PT  BOS vs WSH  id=4065648  season 12/12 (100%)  MIN≈34.3
+  7/7  Jayson Tatum O1.5 AST  BOS vs WSH  id=4065648  season 12/12 (100%)  MIN≈34.3
+  7/7  Jayson Tatum O3.5 REB  BOS vs WSH  id=4065648  season 12/12 (100%)  MIN≈34.3
+  7/7  Jayson Tatum O9.5 PTS  BOS vs WSH  id=4065648  season 12/12 (100%)  MIN≈34.3
+  7/7  Christian Braun O0.5 STL  DEN vs DAL  id=4431767  season 12/12 (100%)  MIN≈33.4
+  7/7  Trae Young O1.5 AST  WSH vs BOS  id=4277905  season 12/12 (100%)  MIN≈33.3
+  7/7  Cooper Flagg O1.5 AST  DAL vs DEN  id=5041939  season 12/12 (100%)  MIN≈33.1
+  7/7  Cooper Flagg O9.5 PTS  DAL vs DEN  id=5041939  season 12/12 (100%)  MIN≈33.1
+  7/7  Ausar Thompson O0.5 STL  DET vs ORL  id=4684742  season 10/12 (83%)  MIN≈31.9
+  7/7  Ausar Thompson O1.5 AST  DET vs ORL  id=4684742  season 12/12 (100%)  MIN≈31.9
+  7/7  Ausar Thompson O3.5 REB  DET vs ORL  id=4684742  season 12/12 (100%)  MIN≈31.9
+  7/7  Kyrie Irving O0.5 3PT  DAL vs DEN  id=6442  season 11/12 (92%)  MIN≈31.7
+  7/7  Kyrie Irving O1.5 AST  DAL vs DEN  id=6442  season 12/12 (100%)  MIN≈31.7
+  7/7  Kyrie Irving O9.5 PTS  DAL vs DEN  id=6442  season 12/12 (100%)  MIN≈31.7
+  7/7  Duncan Robinson O0.5 3PT  DET vs ORL  id=3157465  season 12/12 (100%)  MIN≈30.6
+  7/7  Duncan Robinson O9.5 PTS  DET vs ORL  id=3157465  season 12/12 (100%)  MIN≈30.6
+  7/7  Cameron Johnson O0.5 STL  DEN vs DAL  id=3138196  season 11/12 (92%)  MIN≈30.0
+
+-- NBA BANGERS candidates (high line still ≥6/7) --
+  6/7  Nikola Jokic O24.5 PTS  DEN vs DAL  id=3112335  season 8/12  L=[37.0, 26.0, 24.0, 28.0, 26.0, 27.0, 25.0]
+  7/7  Jayson Tatum O20.5 PTS  BOS vs WSH  id=4065648  season 11/12  L=[27.0, 24.0, 24.0, 32.0, 24.0, 21.0, 21.0]
+  6/7  Jamal Murray O20.5 PTS  DEN vs DAL  id=3936299  season 9/12  L=[45.0, 14.0, 21.0, 28.0, 23.0, 30.0, 38.0]
+  6/7  Franz Wagner O20.5 PTS  ORL vs DET  id=4566434  season 9/12  L=[16.0, 35.0, 27.0, 21.0, 35.0, 38.0, 33.0]
+  6/7  Anthony Davis O20.5 PTS  WSH vs BOS  id=6583  season 10/12  L=[22.0, 36.0, 25.0, 23.0, 14.0, 30.0, 21.0]
+  6/7  Nikola Jokic O7.5 REB  DEN vs DAL  id=3112335  season 10/12  L=[18.0, 7.0, 8.0, 15.0, 8.0, 11.0, 16.0]
+  6/7  Nikola Jokic O7.5 AST  DEN vs DAL  id=3112335  season 11/12  L=[11.0, 11.0, 9.0, 7.0, 10.0, 8.0, 9.0]
+  6/7  Cade Cunningham O6.5 AST  DET vs ORL  id=4432166  season 10/12  L=[15.0, 9.0, 6.0, 8.0, 11.0, 7.0, 8.0]
+  6/7  Franz Wagner O6.5 REB  ORL vs DET  id=4566434  season 7/12  L=[8.0, 5.0, 8.0, 8.0, 9.0, 8.0, 7.0]
+  6/7  Anthony Davis O6.5 REB  WSH vs BOS  id=6583  season 10/12  L=[7.0, 11.0, 14.0, 4.0, 8.0, 15.0, 13.0]
+  6/7  Franz Wagner O5.5 AST  ORL vs DET  id=4566434  season 11/12  L=[6.0, 7.0, 11.0, 9.0, 12.0, 1.0, 7.0]
+  6/7  Anthony Black O4.5 AST  ORL vs DET  id=4712849  season 9/12  L=[2.0, 6.0, 6.0, 7.0, 5.0, 8.0, 5.0]
+  6/7  Trae Young O4.5 AST  WSH vs BOS  id=4277905  season 10/12  L=[11.0, 5.0, 8.0, 12.0, 8.0, 14.0, 4.0]
+  7/7  Desmond Bane O2.5 3PT  ORL vs DET  id=4066320  season 11/12  L=[3.0, 7.0, 5.0, 3.0, 6.0, 7.0, 4.0]
+  6/7  Jayson Tatum O2.5 3PT  BOS vs WSH  id=4065648  season 7/12  L=[4.0, 3.0, 3.0, 5.0, 2.0, 3.0, 5.0]
+  7/7  Duncan Robinson O1.5 3PT  DET vs ORL  id=3157465  season 12/12  L=[2.0, 3.0, 4.0, 3.0, 7.0, 6.0, 2.0]
+
+-- NHL SOG (O2.5+ preferred; O1.5 = RISK pad only) --
+SAFE-ish O2.5+:
+  10/10  Tristan Jarry O2.5 SOG  EDM vs VGK  id=3042020  season 11/11  L=[27.0, 36.0, 33.0, 34.0, 18.0, 24.0, 28.0, 30.0, 28.0, 20.0]
+  10/10  Tristan Jarry O3.5 SOG  EDM vs VGK  id=3042020  season 11/11  L=[27.0, 36.0, 33.0, 34.0, 18.0, 24.0, 28.0, 30.0, 28.0, 20.0]
+  10/10  Tristan Jarry O4.5 SOG  EDM vs VGK  id=3042020  season 11/11  L=[27.0, 36.0, 33.0, 34.0, 18.0, 24.0, 28.0, 30.0, 28.0, 20.0]
+  10/10  Frederik Andersen O2.5 SOG  EDM vs VGK  id=2517899  season 15/15  L=[16.0, 26.0, 23.0, 24.0, 18.0, 13.0, 12.0, 21.0, 17.0, 19.0]
+  10/10  Frederik Andersen O3.5 SOG  EDM vs VGK  id=2517899  season 15/15  L=[16.0, 26.0, 23.0, 24.0, 18.0, 13.0, 12.0, 21.0, 17.0, 19.0]
+  10/10  Frederik Andersen O4.5 SOG  EDM vs VGK  id=2517899  season 15/15  L=[16.0, 26.0, 23.0, 24.0, 18.0, 13.0, 12.0, 21.0, 17.0, 19.0]
+  10/10  Carter Hart O2.5 SOG  VGK vs EDM  id=4064582  season 13/13  L=[30.0, 26.0, 17.0, 26.0, 27.0, 20.0, 21.0, 30.0, 27.0, 27.0]
+  10/10  Carter Hart O3.5 SOG  VGK vs EDM  id=4064582  season 13/13  L=[30.0, 26.0, 17.0, 26.0, 27.0, 20.0, 21.0, 30.0, 27.0, 27.0]
+  10/10  Carter Hart O4.5 SOG  VGK vs EDM  id=4064582  season 13/13  L=[30.0, 26.0, 17.0, 26.0, 27.0, 20.0, 21.0, 30.0, 27.0, 27.0]
+  10/10  Devon Levi O2.5 SOG  EDM vs VGK  id=4894487  season 13/13  L=[36.0, 20.0, 22.0, 19.0, 31.0, 23.0, 27.0, 30.0, 24.0, 40.0]
+  10/10  Devon Levi O3.5 SOG  EDM vs VGK  id=4894487  season 13/13  L=[36.0, 20.0, 22.0, 19.0, 31.0, 23.0, 27.0, 30.0, 24.0, 40.0]
+  10/10  Devon Levi O4.5 SOG  EDM vs VGK  id=4894487  season 13/13  L=[36.0, 20.0, 22.0, 19.0, 31.0, 23.0, 27.0, 30.0, 24.0, 40.0]
+  10/10  Adin Hill O2.5 SOG  VGK vs EDM  id=3939714  season 12/12  L=[22.0, 22.0, 33.0, 29.0, 25.0, 31.0, 26.0, 31.0, 24.0, 28.0]
+  10/10  Adin Hill O3.5 SOG  VGK vs EDM  id=3939714  season 12/12  L=[22.0, 22.0, 33.0, 29.0, 25.0, 31.0, 26.0, 31.0, 24.0, 28.0]
+  10/10  Adin Hill O4.5 SOG  VGK vs EDM  id=3939714  season 12/12  L=[22.0, 22.0, 33.0, 29.0, 25.0, 31.0, 26.0, 31.0, 24.0, 28.0]
+O1.5 RISK pads:
+  10/10  Leon Draisaitl O1.5 SOG  EDM vs VGK  id=3114727  L=[2.0, 4.0, 5.0, 2.0, 3.0, 4.0, 4.0, 4.0, 7.0, 6.0]
+  10/10  Tristan Jarry O1.5 SOG  EDM vs VGK  id=3042020  L=[27.0, 36.0, 33.0, 34.0, 18.0, 24.0, 28.0, 30.0, 28.0, 20.0]
+  10/10  Frederik Andersen O1.5 SOG  EDM vs VGK  id=2517899  L=[16.0, 26.0, 23.0, 24.0, 18.0, 13.0, 12.0, 21.0, 17.0, 19.0]
+  10/10  Carter Hart O1.5 SOG  VGK vs EDM  id=4064582  L=[30.0, 26.0, 17.0, 26.0, 27.0, 20.0, 21.0, 30.0, 27.0, 27.0]
+  10/10  Devon Levi O1.5 SOG  EDM vs VGK  id=4894487  L=[36.0, 20.0, 22.0, 19.0, 31.0, 23.0, 27.0, 30.0, 24.0, 40.0]
+  10/10  Adin Hill O1.5 SOG  VGK vs EDM  id=3939714  L=[22.0, 22.0, 33.0, 29.0, 25.0, 31.0, 26.0, 31.0, 24.0, 28.0]
+  9/10  Tomas Hertl O1.5 SOG  VGK vs EDM  id=2976844  L=[4.0, 2.0, 3.0, 3.0, 3.0, 1.0, 4.0, 2.0, 3.0, 4.0]
+  9/10  Connor McDavid O1.5 SOG  EDM vs VGK  id=3895074  L=[2.0, 0.0, 2.0, 2.0, 4.0, 3.0, 2.0, 4.0, 3.0, 3.0]
+  8/10  Trevor Connelly O1.5 SOG  VGK vs EDM  id=5216887  L=[3.0, 4.0, 6.0, 3.0, 4.0, 2.0, 1.0, 2.0, 4.0, 1.0]
+  8/10  Mitch Marner O1.5 SOG  VGK vs EDM  id=3899937  L=[4.0, 3.0, 3.0, 3.0, 1.0, 3.0, 3.0, 3.0, 3.0, 1.0]
+
+-- NCAAM 7/7 soft floors (sample; confirm HR line) --
+  7/7  Jake Lemelman O9.5 PTS  MERC vs SNYF  id=5243381  season 8/8  L=[29.0, 23.0, 13.0, 19.0, 20.0, 13.0, 18.0]
+  7/7  Jake Lemelman O1.5 AST  MERC vs SNYF  id=5243381  season 8/8  L=[4.0, 5.0, 3.0, 3.0, 6.0, 12.0, 4.0]
+  7/7  Geoff Sprouse O0.5 3PT  MERC vs SNYF  id=5105660  season 7/8  L=[1.0, 2.0, 1.0, 3.0, 1.0, 3.0, 3.0]
+  7/7  Mateo Esmeraldo O1.5 AST  LIP vs AUB  id=5107530  season 8/8  L=[3.0, 6.0, 8.0, 5.0, 5.0, 4.0, 4.0]
+  7/7  Aidan Able O0.5 3PT  UMBC vs IOWA  id=5457859  season 8/8  L=[1.0, 1.0, 2.0, 3.0, 6.0, 2.0, 1.0]
+  7/7  Kyrone Alexander O9.5 PTS  BU vs HARV  id=5176037  season 7/7  L=[24.0, 23.0, 30.0, 16.0, 11.0, 29.0, 19.0]
+  7/7  Kyrone Alexander O0.5 3PT  BU vs HARV  id=5176037  season 7/7  L=[3.0, 3.0, 4.0, 1.0, 1.0, 2.0, 2.0]
+  7/7  Johnny Kinziger O1.5 AST  ILST vs TLSA  id=5176352  season 7/7  L=[3.0, 3.0, 4.0, 4.0, 2.0, 5.0, 4.0]
+  7/7  Johnny Kinziger O0.5 3PT  ILST vs TLSA  id=5176352  season 7/7  L=[4.0, 2.0, 3.0, 1.0, 1.0, 5.0, 6.0]
+  7/7  Truman Claytor IV O0.5 3PT  GASO vs BELL  id=5314308  season 7/7  L=[3.0, 5.0, 2.0, 3.0, 5.0, 3.0, 1.0]
+  7/7  Dallas Gardner O9.5 PTS  GASO vs BELL  id=5312450  season 7/7  L=[16.0, 21.0, 18.0, 25.0, 28.0, 11.0, 13.0]
+  7/7  Mier Panoam O1.5 AST  UTA vs ORU  id=5175711  season 7/7  L=[3.0, 3.0, 3.0, 8.0, 2.0, 3.0, 5.0]
+  7/7  Marcus Hall O0.5 3PT  GB vs KC  id=5176814  season 7/7  L=[2.0, 3.0, 2.0, 3.0, 2.0, 1.0, 2.0]
+  7/7  Eltramon Smith O9.5 PTS  GASO vs BELL  id=5314592  season 7/7  L=[12.0, 21.0, 16.0, 13.0, 15.0, 20.0, 24.0]
+  7/7  Eltramon Smith O3.5 REB  GASO vs BELL  id=5314592  season 7/7  L=[9.0, 7.0, 9.0, 4.0, 8.0, 6.0, 5.0]
+  7/7  Eltramon Smith O0.5 3PT  GASO vs BELL  id=5314592  season 7/7  L=[1.0, 2.0, 3.0, 2.0, 3.0, 4.0, 3.0]
+  7/7  Thomas Haugh O9.5 PTS  FLA vs MILW  id=5080489  season 7/7  L=[22.0, 18.0, 14.0, 15.0, 21.0, 14.0, 19.0]
+  7/7  Jeremiah Quigley O1.5 AST  BING vs LEH  id=5177097  season 7/7  L=[4.0, 2.0, 5.0, 6.0, 12.0, 3.0, 3.0]
+  7/7  Tey Barbour O0.5 3PT  HARV vs BU  id=5241728  season 7/7  L=[3.0, 2.0, 5.0, 1.0, 1.0, 2.0, 4.0]
+  7/7  Jake Ensminger O3.5 REB  SCU vs NEV  id=5109789  season 7/7  L=[5.0, 8.0, 9.0, 6.0, 5.0, 7.0, 5.0]
+  7/7  Jake Ensminger O1.5 AST  SCU vs NEV  id=5109789  season 7/7  L=[3.0, 2.0, 3.0, 2.0, 3.0, 4.0, 4.0]
+  7/7  Trevor Mullin O0.5 3PT  YALE vs APP  id=5177185  season 7/7  L=[1.0, 3.0, 5.0, 3.0, 4.0, 2.0, 1.0]
+  7/7  Dionte Neal O1.5 AST  UNCG vs UCSB  id=5144475  season 7/7  L=[3.0, 3.0, 4.0, 8.0, 7.0, 5.0, 7.0]
+  7/7  Jaylen Smith O1.5 AST  KC vs GB  id=5176209  season 7/7  L=[3.0, 3.0, 3.0, 5.0, 5.0, 6.0, 5.0]
+  7/7  Malik Messina-Moore O1.5 AST  ILST vs TLSA  id=5105454  season 7/7  L=[4.0, 5.0, 7.0, 4.0, 2.0, 3.0, 4.0]
+  7/7  Andre Pasha O3.5 REB  BRY vs MRST  id=5314320  season 7/7  L=[12.0, 5.0, 4.0, 5.0, 10.0, 8.0, 6.0]
+  7/7  Alex Condon O3.5 REB  FLA vs MILW  id=5174657  season 7/7  L=[6.0, 5.0, 10.0, 6.0, 10.0, 12.0, 7.0]
+  7/7  Alex Condon O1.5 AST  FLA vs MILW  id=5174657  season 7/7  L=[3.0, 4.0, 5.0, 4.0, 2.0, 8.0, 3.0]
+  7/7  RJ Greer O0.5 3PT  UNCG vs UCSB  id=5311850  season 7/7  L=[2.0, 2.0, 3.0, 4.0, 3.0, 4.0, 3.0]
+  7/7  Alfred Worrell Jr. O9.5 PTS  MORG vs MSM  id=5240664  season 7/7  L=[28.0, 19.0, 22.0, 22.0, 20.0, 20.0, 27.0]
+  7/7  Alfred Worrell Jr. O0.5 3PT  MORG vs MSM  id=5240664  season 7/7  L=[5.0, 2.0, 2.0, 1.0, 3.0, 3.0, 6.0]
+  7/7  Josiah Lake II O1.5 AST  ORST vs SF  id=5175011  season 7/7  L=[8.0, 5.0, 4.0, 6.0, 4.0, 4.0, 5.0]
+  7/7  Sash Gavalyugov O0.5 3PT  SCU vs NEV  id=5215425  season 7/7  L=[4.0, 4.0, 3.0, 1.0, 2.0, 1.0, 4.0]
+  7/7  Daniel Ogunyemi O3.5 REB  YALE vs APP  id=5313389  season 7/7  L=[6.0, 12.0, 7.0, 11.0, 5.0, 9.0, 11.0]
+  7/7  Ryan Zan O0.5 3PT  UNH vs HALL  id=5105901  season 7/7  L=[4.0, 3.0, 1.0, 1.0, 3.0, 1.0, 1.0]
+
+-- NCAAF sides (no prop sheets; scoreboard only) --
+  KENT @ EMU  EMU -5.5  O/U 46.5
+  M-OH @ WMU  WMU -6.5  O/U 45.5
+
+DONE exhaustive sheet scan. Card delivery in chat uses this + matchup weed.
+
+=== OUT / ROLE REFRESH (ESPN injuries) ===
+NBA OUT: Paolo Banchero (ORL ankle 4-6w) · Jalen Duren (DET hamstring) · Duncan Robinson (DET quad) ·
+  Mitchell Robinson (BOS illness) · Jonathan Isaac (ORL) · Tobi Lawal / Lively II (DAL) ·
+  Tristan Vukcevic / Beekman / Champagnie / Watkins (WSH)
+NBA Q/PROB: Cade Cunningham PROBABLE (knee) · P.J. Washington QUESTIONABLE (illness)
+NHL: Frederik Andersen IR · Zach Hyman DTD · Ryan Nugent-Hopkins DTD · Savoie/Janmark/Regula IR
+BAN: goalie "SOG" clears (Jarry/Andersen/Hart/Hill/Levi) — not skater shot props
+BAN: Duncan Robinson props (OUT)
+
+=== NHL SKATER SOG (goalies removed) ===
+  10/10 Leon Draisaitl O1.5 SOG EDM vs VGK id=3114727  (RISK pad — soft floor ban as SAFE spine)
+  8/10  Leon Draisaitl O2.5 SOG EDM vs VGK id=3114727  KEEP soft / PRIMARY
+  8/10  Mitch Marner O2.5 SOG VGK vs EDM id=3899937  KEEP soft / PRIMARY
+  9/10  Tomas Hertl O1.5 SOG VGK vs EDM id=2976844  RISK pad
+  9/10  Connor McDavid O1.5 SOG EDM vs VGK id=3895074  RISK pad (posted O2.5 was CUT 5/10)
+  7/10  Tomas Hertl O2.5 SOG VGK vs EDM id=2976844  RISK
+  8/10  Trevor Connelly O1.5 SOG VGK vs EDM id=5216887  RISK pad
+

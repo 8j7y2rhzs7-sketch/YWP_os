@@ -1,0 +1,2567 @@
+{
+  "date": "20261124",
+  "gate": {
+    "sheets_ok": 2660,
+    "sheets_total": 2660,
+    "sports": {
+      "NBA": 3,
+      "NHL": 1,
+      "NCAAF": 2,
+      "NFL": 0,
+      "WNBA": 0,
+      "NCAAM": 87
+    }
+  },
+  "posted_keep": [
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Caleb Martin",
+      "slug": "caleb-martin",
+      "team": "DAL",
+      "opponent": "DEN",
+      "is_home": false,
+      "game_time": "2026-11-25T03:00:00.000Z",
+      "stat": "AST",
+      "stat_slug": "assists",
+      "line": 2.5,
+      "books": 12,
+      "l10_n": 10,
+      "l10_over": 7,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Caleb Martin",
+      "hits": 7,
+      "n": 7,
+      "vals": [
+        4.0,
+        3.0,
+        3.0,
+        5.0,
+        3.0,
+        5.0,
+        5.0
+      ],
+      "misses": [],
+      "call": "KEEP",
+      "athlete_id": "3138160"
+    }
+  ],
+  "posted_risk_keep": [
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Tristan da Silva",
+      "slug": "tristan-da-silva",
+      "team": "ORL",
+      "opponent": "DET",
+      "is_home": true,
+      "game_time": "2026-11-25T00:00:00.000Z",
+      "stat": "PTS",
+      "stat_slug": "points",
+      "line": 10.5,
+      "books": 15,
+      "l10_n": 10,
+      "l10_over": 7,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Tristan da Silva",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        18.0,
+        6.0,
+        12.0,
+        13.0,
+        12.0,
+        19.0,
+        18.0
+      ],
+      "misses": [
+        6.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4702382"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Franz Wagner",
+      "slug": "franz-wagner",
+      "team": "ORL",
+      "opponent": "DET",
+      "is_home": true,
+      "game_time": "2026-11-25T00:00:00.000Z",
+      "stat": "REB",
+      "stat_slug": "rebounds",
+      "line": 6.5,
+      "books": 15,
+      "l10_n": 10,
+      "l10_over": 7,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Franz Wagner",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        8.0,
+        5.0,
+        8.0,
+        8.0,
+        9.0,
+        8.0,
+        7.0
+      ],
+      "misses": [
+        5.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4566434"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Christian Braun",
+      "slug": "christian-braun",
+      "team": "DEN",
+      "opponent": "DAL",
+      "is_home": true,
+      "game_time": "2026-11-25T03:00:00.000Z",
+      "stat": "REB",
+      "stat_slug": "rebounds",
+      "line": 4.5,
+      "books": 13,
+      "l10_n": 10,
+      "l10_over": 6,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Christian Braun",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        8.0,
+        5.0,
+        5.0,
+        3.0,
+        7.0,
+        5.0,
+        5.0
+      ],
+      "misses": [
+        3.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4431767"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Anthony Black",
+      "slug": "anthony-black",
+      "team": "ORL",
+      "opponent": "DET",
+      "is_home": true,
+      "game_time": "2026-11-25T00:00:00.000Z",
+      "stat": "AST",
+      "stat_slug": "assists",
+      "line": 4.5,
+      "books": 15,
+      "l10_n": 10,
+      "l10_over": 8,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Anthony Black",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        2.0,
+        6.0,
+        6.0,
+        7.0,
+        5.0,
+        8.0,
+        5.0
+      ],
+      "misses": [
+        2.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4712849"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Desmond Bane",
+      "slug": "desmond-bane",
+      "team": "ORL",
+      "opponent": "DET",
+      "is_home": true,
+      "game_time": "2026-11-25T00:00:00.000Z",
+      "stat": "AST",
+      "stat_slug": "assists",
+      "line": 2.5,
+      "books": 14,
+      "l10_n": 10,
+      "l10_over": 7,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Desmond Bane",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        5.0,
+        3.0,
+        3.0,
+        5.0,
+        3.0,
+        2.0,
+        4.0
+      ],
+      "misses": [
+        2.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4066320"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Christian Braun",
+      "slug": "christian-braun",
+      "team": "DEN",
+      "opponent": "DAL",
+      "is_home": true,
+      "game_time": "2026-11-25T03:00:00.000Z",
+      "stat": "AST",
+      "stat_slug": "assists",
+      "line": 2.5,
+      "books": 13,
+      "l10_n": 10,
+      "l10_over": 8,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Christian Braun",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        1.0,
+        4.0,
+        3.0
+      ],
+      "misses": [
+        1.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4431767"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Neemias Queta",
+      "slug": "neemias-queta",
+      "team": "BOS",
+      "opponent": "WSH",
+      "is_home": false,
+      "game_time": "2026-11-25T01:00:00.000Z",
+      "stat": "AST",
+      "stat_slug": "assists",
+      "line": 1.5,
+      "books": 10,
+      "l10_n": 10,
+      "l10_over": 7,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Neemias Queta",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        4.0,
+        1.0,
+        3.0,
+        2.0,
+        3.0,
+        3.0,
+        4.0
+      ],
+      "misses": [
+        1.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4397424"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Jayson Tatum",
+      "slug": "jayson-tatum",
+      "team": "BOS",
+      "opponent": "WSH",
+      "is_home": false,
+      "game_time": "2026-11-25T01:00:00.000Z",
+      "stat": "3PT",
+      "stat_slug": "threes",
+      "line": 2.5,
+      "books": 13,
+      "l10_n": 10,
+      "l10_over": 7,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Jayson Tatum",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        4.0,
+        3.0,
+        3.0,
+        5.0,
+        2.0,
+        3.0,
+        5.0
+      ],
+      "misses": [
+        2.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4065648"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Anthony Black",
+      "slug": "anthony-black",
+      "team": "ORL",
+      "opponent": "DET",
+      "is_home": true,
+      "game_time": "2026-11-25T00:00:00.000Z",
+      "stat": "3PT",
+      "stat_slug": "threes",
+      "line": 1.5,
+      "books": 14,
+      "l10_n": 10,
+      "l10_over": 7,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Anthony Black",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        2.0,
+        2.0,
+        2.0,
+        3.0,
+        1.0,
+        3.0,
+        2.0
+      ],
+      "misses": [
+        1.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4712849"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Anthony Davis",
+      "slug": "anthony-davis",
+      "team": "WSH",
+      "opponent": "BOS",
+      "is_home": true,
+      "game_time": "2026-11-25T01:00:00.000Z",
+      "stat": "STL",
+      "stat_slug": "steals",
+      "line": 0.5,
+      "books": 2,
+      "l10_n": 10,
+      "l10_over": 8,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Anthony Davis",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        2.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "misses": [
+        0.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "6583"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Alex Sarr",
+      "slug": "alex-sarr",
+      "team": "WSH",
+      "opponent": "BOS",
+      "is_home": true,
+      "game_time": "2026-11-25T01:00:00.000Z",
+      "stat": "BLK",
+      "stat_slug": "blocks",
+      "line": 0.5,
+      "books": 2,
+      "l10_n": 10,
+      "l10_over": 8,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Alex Sarr",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        1.0,
+        1.0,
+        3.0,
+        2.0,
+        3.0,
+        1.0,
+        0.0
+      ],
+      "misses": [
+        0.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "5160992"
+    }
+  ],
+  "nba_soft_7of7": [
+    {
+      "player": "Nikola Jokic",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "3112335",
+      "min": 38.57142857142857,
+      "season": "9/12",
+      "vals": [
+        1.0,
+        2.0,
+        3.0,
+        2.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "player": "Nikola Jokic",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "3112335",
+      "min": 38.57142857142857,
+      "season": "12/12",
+      "vals": [
+        11.0,
+        11.0,
+        9.0,
+        7.0,
+        10.0,
+        8.0,
+        9.0
+      ]
+    },
+    {
+      "player": "Nikola Jokic",
+      "stat": "REB",
+      "line": 3.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "3112335",
+      "min": 38.57142857142857,
+      "season": "12/12",
+      "vals": [
+        18.0,
+        7.0,
+        8.0,
+        15.0,
+        8.0,
+        11.0,
+        16.0
+      ]
+    },
+    {
+      "player": "Nikola Jokic",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "3112335",
+      "min": 38.57142857142857,
+      "season": "12/12",
+      "vals": [
+        37.0,
+        26.0,
+        24.0,
+        28.0,
+        26.0,
+        27.0,
+        25.0
+      ]
+    },
+    {
+      "player": "Daniss Jenkins",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "DET",
+      "opp": "ORL",
+      "id": "5107199",
+      "min": 37.714285714285715,
+      "season": "11/12",
+      "vals": [
+        1.0,
+        2.0,
+        3.0,
+        3.0,
+        1.0,
+        3.0,
+        2.0
+      ]
+    },
+    {
+      "player": "Daniss Jenkins",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "DET",
+      "opp": "ORL",
+      "id": "5107199",
+      "min": 37.714285714285715,
+      "season": "9/12",
+      "vals": [
+        11.0,
+        14.0,
+        17.0,
+        25.0,
+        10.0,
+        21.0,
+        22.0
+      ]
+    },
+    {
+      "player": "Jamal Murray",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "3936299",
+      "min": 37.57142857142857,
+      "season": "12/12",
+      "vals": [
+        7.0,
+        7.0,
+        2.0,
+        4.0,
+        9.0,
+        8.0,
+        2.0
+      ]
+    },
+    {
+      "player": "Jamal Murray",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "3936299",
+      "min": 37.57142857142857,
+      "season": "12/12",
+      "vals": [
+        45.0,
+        14.0,
+        21.0,
+        28.0,
+        23.0,
+        30.0,
+        38.0
+      ]
+    },
+    {
+      "player": "Cade Cunningham",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "DET",
+      "opp": "ORL",
+      "id": "4432166",
+      "min": 36.57142857142857,
+      "season": "12/12",
+      "vals": [
+        15.0,
+        9.0,
+        6.0,
+        8.0,
+        11.0,
+        7.0,
+        8.0
+      ]
+    },
+    {
+      "player": "Franz Wagner",
+      "stat": "REB",
+      "line": 3.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4566434",
+      "min": 36.42857142857143,
+      "season": "11/12",
+      "vals": [
+        8.0,
+        5.0,
+        8.0,
+        8.0,
+        9.0,
+        8.0,
+        7.0
+      ]
+    },
+    {
+      "player": "Franz Wagner",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4566434",
+      "min": 36.42857142857143,
+      "season": "12/12",
+      "vals": [
+        16.0,
+        35.0,
+        27.0,
+        21.0,
+        35.0,
+        38.0,
+        33.0
+      ]
+    },
+    {
+      "player": "Anthony Black",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4712849",
+      "min": 35.857142857142854,
+      "season": "11/12",
+      "vals": [
+        2.0,
+        2.0,
+        2.0,
+        3.0,
+        1.0,
+        3.0,
+        2.0
+      ]
+    },
+    {
+      "player": "Anthony Black",
+      "stat": "STL",
+      "line": 0.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4712849",
+      "min": 35.857142857142854,
+      "season": "11/12",
+      "vals": [
+        2.0,
+        3.0,
+        1.0,
+        3.0,
+        1.0,
+        1.0,
+        4.0
+      ]
+    },
+    {
+      "player": "Anthony Black",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4712849",
+      "min": 35.857142857142854,
+      "season": "11/12",
+      "vals": [
+        2.0,
+        6.0,
+        6.0,
+        7.0,
+        5.0,
+        8.0,
+        5.0
+      ]
+    },
+    {
+      "player": "AJ Dybantsa",
+      "stat": "STL",
+      "line": 0.5,
+      "team": "WSH",
+      "opp": "BOS",
+      "id": "5142718",
+      "min": 35.42857142857143,
+      "season": "9/12",
+      "vals": [
+        1.0,
+        2.0,
+        1.0,
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "player": "AJ Dybantsa",
+      "stat": "REB",
+      "line": 3.5,
+      "team": "WSH",
+      "opp": "BOS",
+      "id": "5142718",
+      "min": 35.42857142857143,
+      "season": "12/12",
+      "vals": [
+        8.0,
+        10.0,
+        12.0,
+        5.0,
+        7.0,
+        8.0,
+        4.0
+      ]
+    },
+    {
+      "player": "Desmond Bane",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4066320",
+      "min": 35.142857142857146,
+      "season": "12/12",
+      "vals": [
+        3.0,
+        7.0,
+        5.0,
+        3.0,
+        6.0,
+        7.0,
+        4.0
+      ]
+    },
+    {
+      "player": "Desmond Bane",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4066320",
+      "min": 35.142857142857146,
+      "season": "10/12",
+      "vals": [
+        5.0,
+        3.0,
+        3.0,
+        5.0,
+        3.0,
+        2.0,
+        4.0
+      ]
+    },
+    {
+      "player": "Desmond Bane",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4066320",
+      "min": 35.142857142857146,
+      "season": "12/12",
+      "vals": [
+        17.0,
+        21.0,
+        15.0,
+        24.0,
+        21.0,
+        25.0,
+        15.0
+      ]
+    },
+    {
+      "player": "Anthony Davis",
+      "stat": "REB",
+      "line": 3.5,
+      "team": "WSH",
+      "opp": "BOS",
+      "id": "6583",
+      "min": 35.0,
+      "season": "12/12",
+      "vals": [
+        7.0,
+        11.0,
+        14.0,
+        4.0,
+        8.0,
+        15.0,
+        13.0
+      ]
+    },
+    {
+      "player": "Anthony Davis",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "WSH",
+      "opp": "BOS",
+      "id": "6583",
+      "min": 35.0,
+      "season": "12/12",
+      "vals": [
+        22.0,
+        36.0,
+        25.0,
+        23.0,
+        14.0,
+        30.0,
+        21.0
+      ]
+    },
+    {
+      "player": "Kyshawn George",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "WSH",
+      "opp": "BOS",
+      "id": "5174563",
+      "min": 34.857142857142854,
+      "season": "12/12",
+      "vals": [
+        6.0,
+        1.0,
+        4.0,
+        2.0,
+        1.0,
+        3.0,
+        5.0
+      ]
+    },
+    {
+      "player": "Kyshawn George",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "WSH",
+      "opp": "BOS",
+      "id": "5174563",
+      "min": 34.857142857142854,
+      "season": "12/12",
+      "vals": [
+        24.0,
+        11.0,
+        20.0,
+        18.0,
+        11.0,
+        14.0,
+        25.0
+      ]
+    },
+    {
+      "player": "Jayson Tatum",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "BOS",
+      "opp": "WSH",
+      "id": "4065648",
+      "min": 34.285714285714285,
+      "season": "12/12",
+      "vals": [
+        4.0,
+        3.0,
+        3.0,
+        5.0,
+        2.0,
+        3.0,
+        5.0
+      ]
+    },
+    {
+      "player": "Jayson Tatum",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "BOS",
+      "opp": "WSH",
+      "id": "4065648",
+      "min": 34.285714285714285,
+      "season": "12/12",
+      "vals": [
+        6.0,
+        3.0,
+        4.0,
+        6.0,
+        8.0,
+        4.0,
+        6.0
+      ]
+    },
+    {
+      "player": "Jayson Tatum",
+      "stat": "REB",
+      "line": 3.5,
+      "team": "BOS",
+      "opp": "WSH",
+      "id": "4065648",
+      "min": 34.285714285714285,
+      "season": "12/12",
+      "vals": [
+        10.0,
+        8.0,
+        12.0,
+        6.0,
+        7.0,
+        6.0,
+        4.0
+      ]
+    },
+    {
+      "player": "Jayson Tatum",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "BOS",
+      "opp": "WSH",
+      "id": "4065648",
+      "min": 34.285714285714285,
+      "season": "12/12",
+      "vals": [
+        27.0,
+        24.0,
+        24.0,
+        32.0,
+        24.0,
+        21.0,
+        21.0
+      ]
+    },
+    {
+      "player": "Christian Braun",
+      "stat": "STL",
+      "line": 0.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "4431767",
+      "min": 33.42857142857143,
+      "season": "12/12",
+      "vals": [
+        1.0,
+        4.0,
+        2.0,
+        2.0,
+        4.0,
+        1.0,
+        3.0
+      ]
+    },
+    {
+      "player": "Trae Young",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "WSH",
+      "opp": "BOS",
+      "id": "4277905",
+      "min": 33.285714285714285,
+      "season": "12/12",
+      "vals": [
+        11.0,
+        5.0,
+        8.0,
+        12.0,
+        8.0,
+        14.0,
+        4.0
+      ]
+    },
+    {
+      "player": "Cooper Flagg",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "DAL",
+      "opp": "DEN",
+      "id": "5041939",
+      "min": 33.142857142857146,
+      "season": "12/12",
+      "vals": [
+        4.0,
+        8.0,
+        9.0,
+        4.0,
+        5.0,
+        3.0,
+        6.0
+      ]
+    },
+    {
+      "player": "Cooper Flagg",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "DAL",
+      "opp": "DEN",
+      "id": "5041939",
+      "min": 33.142857142857146,
+      "season": "12/12",
+      "vals": [
+        28.0,
+        22.0,
+        33.0,
+        17.0,
+        18.0,
+        12.0,
+        43.0
+      ]
+    },
+    {
+      "player": "Ausar Thompson",
+      "stat": "STL",
+      "line": 0.5,
+      "team": "DET",
+      "opp": "ORL",
+      "id": "4684742",
+      "min": 31.857142857142858,
+      "season": "10/12",
+      "vals": [
+        1.0,
+        2.0,
+        2.0,
+        5.0,
+        2.0,
+        3.0,
+        2.0
+      ]
+    },
+    {
+      "player": "Ausar Thompson",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "DET",
+      "opp": "ORL",
+      "id": "4684742",
+      "min": 31.857142857142858,
+      "season": "12/12",
+      "vals": [
+        5.0,
+        3.0,
+        4.0,
+        12.0,
+        5.0,
+        11.0,
+        4.0
+      ]
+    },
+    {
+      "player": "Ausar Thompson",
+      "stat": "REB",
+      "line": 3.5,
+      "team": "DET",
+      "opp": "ORL",
+      "id": "4684742",
+      "min": 31.857142857142858,
+      "season": "12/12",
+      "vals": [
+        11.0,
+        6.0,
+        7.0,
+        9.0,
+        8.0,
+        11.0,
+        5.0
+      ]
+    },
+    {
+      "player": "Kyrie Irving",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "DAL",
+      "opp": "DEN",
+      "id": "6442",
+      "min": 31.714285714285715,
+      "season": "11/12",
+      "vals": [
+        4.0,
+        3.0,
+        1.0,
+        7.0,
+        2.0,
+        7.0,
+        2.0
+      ]
+    },
+    {
+      "player": "Kyrie Irving",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "DAL",
+      "opp": "DEN",
+      "id": "6442",
+      "min": 31.714285714285715,
+      "season": "12/12",
+      "vals": [
+        8.0,
+        4.0,
+        5.0,
+        5.0,
+        4.0,
+        4.0,
+        4.0
+      ]
+    },
+    {
+      "player": "Kyrie Irving",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "DAL",
+      "opp": "DEN",
+      "id": "6442",
+      "min": 31.714285714285715,
+      "season": "12/12",
+      "vals": [
+        16.0,
+        25.0,
+        17.0,
+        34.0,
+        10.0,
+        35.0,
+        21.0
+      ]
+    },
+    {
+      "player": "Duncan Robinson",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "DET",
+      "opp": "ORL",
+      "id": "3157465",
+      "min": 30.571428571428573,
+      "season": "12/12",
+      "vals": [
+        2.0,
+        3.0,
+        4.0,
+        3.0,
+        7.0,
+        6.0,
+        2.0
+      ]
+    },
+    {
+      "player": "Duncan Robinson",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "DET",
+      "opp": "ORL",
+      "id": "3157465",
+      "min": 30.571428571428573,
+      "season": "12/12",
+      "vals": [
+        10.0,
+        13.0,
+        22.0,
+        12.0,
+        27.0,
+        24.0,
+        17.0
+      ]
+    },
+    {
+      "player": "Cameron Johnson",
+      "stat": "STL",
+      "line": 0.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "3138196",
+      "min": 30.0,
+      "season": "11/12",
+      "vals": [
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        2.0
+      ]
+    }
+  ],
+  "nba_dual": [
+    {
+      "player": "Nikola Jokic",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "3112335",
+      "min": 38.57142857142857,
+      "season": "12/12"
+    },
+    {
+      "player": "Nikola Jokic",
+      "stat": "REB",
+      "line": 3.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "3112335",
+      "min": 38.57142857142857,
+      "season": "12/12"
+    },
+    {
+      "player": "Nikola Jokic",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "3112335",
+      "min": 38.57142857142857,
+      "season": "12/12"
+    },
+    {
+      "player": "Nikola Jokic",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "3112335",
+      "min": 38.57142857142857,
+      "season": "9/12"
+    },
+    {
+      "player": "Daniss Jenkins",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "DET",
+      "opp": "ORL",
+      "id": "5107199",
+      "min": 37.714285714285715,
+      "season": "9/12"
+    },
+    {
+      "player": "Daniss Jenkins",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "DET",
+      "opp": "ORL",
+      "id": "5107199",
+      "min": 37.714285714285715,
+      "season": "11/12"
+    },
+    {
+      "player": "Jamal Murray",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "3936299",
+      "min": 37.57142857142857,
+      "season": "12/12"
+    },
+    {
+      "player": "Jamal Murray",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "3936299",
+      "min": 37.57142857142857,
+      "season": "12/12"
+    },
+    {
+      "player": "Cade Cunningham",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "DET",
+      "opp": "ORL",
+      "id": "4432166",
+      "min": 36.57142857142857,
+      "season": "12/12"
+    },
+    {
+      "player": "Franz Wagner",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4566434",
+      "min": 36.42857142857143,
+      "season": "12/12"
+    },
+    {
+      "player": "Franz Wagner",
+      "stat": "REB",
+      "line": 3.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4566434",
+      "min": 36.42857142857143,
+      "season": "11/12"
+    },
+    {
+      "player": "Anthony Black",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4712849",
+      "min": 35.857142857142854,
+      "season": "11/12"
+    },
+    {
+      "player": "Anthony Black",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4712849",
+      "min": 35.857142857142854,
+      "season": "11/12"
+    },
+    {
+      "player": "Anthony Black",
+      "stat": "STL",
+      "line": 0.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4712849",
+      "min": 35.857142857142854,
+      "season": "11/12"
+    },
+    {
+      "player": "AJ Dybantsa",
+      "stat": "REB",
+      "line": 3.5,
+      "team": "WSH",
+      "opp": "BOS",
+      "id": "5142718",
+      "min": 35.42857142857143,
+      "season": "12/12"
+    },
+    {
+      "player": "AJ Dybantsa",
+      "stat": "STL",
+      "line": 0.5,
+      "team": "WSH",
+      "opp": "BOS",
+      "id": "5142718",
+      "min": 35.42857142857143,
+      "season": "9/12"
+    },
+    {
+      "player": "Desmond Bane",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4066320",
+      "min": 35.142857142857146,
+      "season": "12/12"
+    },
+    {
+      "player": "Desmond Bane",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4066320",
+      "min": 35.142857142857146,
+      "season": "10/12"
+    },
+    {
+      "player": "Desmond Bane",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4066320",
+      "min": 35.142857142857146,
+      "season": "12/12"
+    },
+    {
+      "player": "Anthony Davis",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "WSH",
+      "opp": "BOS",
+      "id": "6583",
+      "min": 35.0,
+      "season": "12/12"
+    },
+    {
+      "player": "Anthony Davis",
+      "stat": "REB",
+      "line": 3.5,
+      "team": "WSH",
+      "opp": "BOS",
+      "id": "6583",
+      "min": 35.0,
+      "season": "12/12"
+    },
+    {
+      "player": "Kyshawn George",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "WSH",
+      "opp": "BOS",
+      "id": "5174563",
+      "min": 34.857142857142854,
+      "season": "12/12"
+    },
+    {
+      "player": "Kyshawn George",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "WSH",
+      "opp": "BOS",
+      "id": "5174563",
+      "min": 34.857142857142854,
+      "season": "12/12"
+    },
+    {
+      "player": "Jayson Tatum",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "BOS",
+      "opp": "WSH",
+      "id": "4065648",
+      "min": 34.285714285714285,
+      "season": "12/12"
+    },
+    {
+      "player": "Jayson Tatum",
+      "stat": "REB",
+      "line": 3.5,
+      "team": "BOS",
+      "opp": "WSH",
+      "id": "4065648",
+      "min": 34.285714285714285,
+      "season": "12/12"
+    },
+    {
+      "player": "Jayson Tatum",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "BOS",
+      "opp": "WSH",
+      "id": "4065648",
+      "min": 34.285714285714285,
+      "season": "12/12"
+    },
+    {
+      "player": "Jayson Tatum",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "BOS",
+      "opp": "WSH",
+      "id": "4065648",
+      "min": 34.285714285714285,
+      "season": "12/12"
+    },
+    {
+      "player": "Christian Braun",
+      "stat": "STL",
+      "line": 0.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "4431767",
+      "min": 33.42857142857143,
+      "season": "12/12"
+    },
+    {
+      "player": "Trae Young",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "WSH",
+      "opp": "BOS",
+      "id": "4277905",
+      "min": 33.285714285714285,
+      "season": "12/12"
+    },
+    {
+      "player": "Cooper Flagg",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "DAL",
+      "opp": "DEN",
+      "id": "5041939",
+      "min": 33.142857142857146,
+      "season": "12/12"
+    },
+    {
+      "player": "Cooper Flagg",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "DAL",
+      "opp": "DEN",
+      "id": "5041939",
+      "min": 33.142857142857146,
+      "season": "12/12"
+    },
+    {
+      "player": "Ausar Thompson",
+      "stat": "REB",
+      "line": 3.5,
+      "team": "DET",
+      "opp": "ORL",
+      "id": "4684742",
+      "min": 31.857142857142858,
+      "season": "12/12"
+    },
+    {
+      "player": "Ausar Thompson",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "DET",
+      "opp": "ORL",
+      "id": "4684742",
+      "min": 31.857142857142858,
+      "season": "12/12"
+    },
+    {
+      "player": "Ausar Thompson",
+      "stat": "STL",
+      "line": 0.5,
+      "team": "DET",
+      "opp": "ORL",
+      "id": "4684742",
+      "min": 31.857142857142858,
+      "season": "10/12"
+    },
+    {
+      "player": "Kyrie Irving",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "DAL",
+      "opp": "DEN",
+      "id": "6442",
+      "min": 31.714285714285715,
+      "season": "12/12"
+    },
+    {
+      "player": "Kyrie Irving",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "DAL",
+      "opp": "DEN",
+      "id": "6442",
+      "min": 31.714285714285715,
+      "season": "12/12"
+    },
+    {
+      "player": "Kyrie Irving",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "DAL",
+      "opp": "DEN",
+      "id": "6442",
+      "min": 31.714285714285715,
+      "season": "11/12"
+    },
+    {
+      "player": "Duncan Robinson",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "DET",
+      "opp": "ORL",
+      "id": "3157465",
+      "min": 30.571428571428573,
+      "season": "12/12"
+    },
+    {
+      "player": "Duncan Robinson",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "DET",
+      "opp": "ORL",
+      "id": "3157465",
+      "min": 30.571428571428573,
+      "season": "12/12"
+    },
+    {
+      "player": "Cameron Johnson",
+      "stat": "STL",
+      "line": 0.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "3138196",
+      "min": 30.0,
+      "season": "11/12"
+    }
+  ],
+  "bangers": [
+    {
+      "player": "Nikola Jokic",
+      "stat": "PTS",
+      "line": 24.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "3112335",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        37.0,
+        26.0,
+        24.0,
+        28.0,
+        26.0,
+        27.0,
+        25.0
+      ]
+    },
+    {
+      "player": "Jayson Tatum",
+      "stat": "PTS",
+      "line": 20.5,
+      "team": "BOS",
+      "opp": "WSH",
+      "id": "4065648",
+      "hits": 7,
+      "n": 7,
+      "vals": [
+        27.0,
+        24.0,
+        24.0,
+        32.0,
+        24.0,
+        21.0,
+        21.0
+      ]
+    },
+    {
+      "player": "Jamal Murray",
+      "stat": "PTS",
+      "line": 20.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "3936299",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        45.0,
+        14.0,
+        21.0,
+        28.0,
+        23.0,
+        30.0,
+        38.0
+      ]
+    },
+    {
+      "player": "Franz Wagner",
+      "stat": "PTS",
+      "line": 20.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4566434",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        16.0,
+        35.0,
+        27.0,
+        21.0,
+        35.0,
+        38.0,
+        33.0
+      ]
+    },
+    {
+      "player": "Anthony Davis",
+      "stat": "PTS",
+      "line": 20.5,
+      "team": "WSH",
+      "opp": "BOS",
+      "id": "6583",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        22.0,
+        36.0,
+        25.0,
+        23.0,
+        14.0,
+        30.0,
+        21.0
+      ]
+    },
+    {
+      "player": "Nikola Jokic",
+      "stat": "REB",
+      "line": 7.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "3112335",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        18.0,
+        7.0,
+        8.0,
+        15.0,
+        8.0,
+        11.0,
+        16.0
+      ]
+    },
+    {
+      "player": "Nikola Jokic",
+      "stat": "AST",
+      "line": 7.5,
+      "team": "DEN",
+      "opp": "DAL",
+      "id": "3112335",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        11.0,
+        11.0,
+        9.0,
+        7.0,
+        10.0,
+        8.0,
+        9.0
+      ]
+    },
+    {
+      "player": "Cade Cunningham",
+      "stat": "AST",
+      "line": 6.5,
+      "team": "DET",
+      "opp": "ORL",
+      "id": "4432166",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        15.0,
+        9.0,
+        6.0,
+        8.0,
+        11.0,
+        7.0,
+        8.0
+      ]
+    },
+    {
+      "player": "Franz Wagner",
+      "stat": "REB",
+      "line": 6.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4566434",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        8.0,
+        5.0,
+        8.0,
+        8.0,
+        9.0,
+        8.0,
+        7.0
+      ]
+    },
+    {
+      "player": "Anthony Davis",
+      "stat": "REB",
+      "line": 6.5,
+      "team": "WSH",
+      "opp": "BOS",
+      "id": "6583",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        7.0,
+        11.0,
+        14.0,
+        4.0,
+        8.0,
+        15.0,
+        13.0
+      ]
+    },
+    {
+      "player": "Franz Wagner",
+      "stat": "AST",
+      "line": 5.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4566434",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        6.0,
+        7.0,
+        11.0,
+        9.0,
+        12.0,
+        1.0,
+        7.0
+      ]
+    },
+    {
+      "player": "Anthony Black",
+      "stat": "AST",
+      "line": 4.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4712849",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        2.0,
+        6.0,
+        6.0,
+        7.0,
+        5.0,
+        8.0,
+        5.0
+      ]
+    },
+    {
+      "player": "Trae Young",
+      "stat": "AST",
+      "line": 4.5,
+      "team": "WSH",
+      "opp": "BOS",
+      "id": "4277905",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        11.0,
+        5.0,
+        8.0,
+        12.0,
+        8.0,
+        14.0,
+        4.0
+      ]
+    },
+    {
+      "player": "Desmond Bane",
+      "stat": "3PT",
+      "line": 2.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4066320",
+      "hits": 7,
+      "n": 7,
+      "vals": [
+        3.0,
+        7.0,
+        5.0,
+        3.0,
+        6.0,
+        7.0,
+        4.0
+      ]
+    },
+    {
+      "player": "Jayson Tatum",
+      "stat": "3PT",
+      "line": 2.5,
+      "team": "BOS",
+      "opp": "WSH",
+      "id": "4065648",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        4.0,
+        3.0,
+        3.0,
+        5.0,
+        2.0,
+        3.0,
+        5.0
+      ]
+    },
+    {
+      "player": "Duncan Robinson",
+      "stat": "3PT",
+      "line": 1.5,
+      "team": "DET",
+      "opp": "ORL",
+      "id": "3157465",
+      "hits": 7,
+      "n": 7,
+      "vals": [
+        2.0,
+        3.0,
+        4.0,
+        3.0,
+        7.0,
+        6.0,
+        2.0
+      ]
+    },
+    {
+      "player": "Tristan da Silva",
+      "stat": "3PT",
+      "line": 1.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4702382",
+      "hits": 7,
+      "n": 7,
+      "vals": [
+        4.0,
+        2.0,
+        2.0,
+        3.0,
+        2.0,
+        5.0,
+        4.0
+      ]
+    },
+    {
+      "player": "Anthony Black",
+      "stat": "3PT",
+      "line": 1.5,
+      "team": "ORL",
+      "opp": "DET",
+      "id": "4712849",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        2.0,
+        2.0,
+        2.0,
+        3.0,
+        1.0,
+        3.0,
+        2.0
+      ]
+    },
+    {
+      "player": "Ausar Thompson",
+      "stat": "STL",
+      "line": 1.5,
+      "team": "DET",
+      "opp": "ORL",
+      "id": "4684742",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        1.0,
+        2.0,
+        2.0,
+        5.0,
+        2.0,
+        3.0,
+        2.0
+      ]
+    },
+    {
+      "player": "Kyrie Irving",
+      "stat": "3PT",
+      "line": 1.5,
+      "team": "DAL",
+      "opp": "DEN",
+      "id": "6442",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        4.0,
+        3.0,
+        1.0,
+        7.0,
+        2.0,
+        7.0,
+        2.0
+      ]
+    }
+  ],
+  "nhl": {
+    "o25": [
+      {
+        "player": "Tristan Jarry",
+        "line": 2.5,
+        "team": "EDM",
+        "opp": "VGK",
+        "id": "3042020",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Tristan Jarry",
+        "line": 3.5,
+        "team": "EDM",
+        "opp": "VGK",
+        "id": "3042020",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Tristan Jarry",
+        "line": 4.5,
+        "team": "EDM",
+        "opp": "VGK",
+        "id": "3042020",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Frederik Andersen",
+        "line": 2.5,
+        "team": "EDM",
+        "opp": "VGK",
+        "id": "2517899",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Frederik Andersen",
+        "line": 3.5,
+        "team": "EDM",
+        "opp": "VGK",
+        "id": "2517899",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Frederik Andersen",
+        "line": 4.5,
+        "team": "EDM",
+        "opp": "VGK",
+        "id": "2517899",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Carter Hart",
+        "line": 2.5,
+        "team": "VGK",
+        "opp": "EDM",
+        "id": "4064582",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Carter Hart",
+        "line": 3.5,
+        "team": "VGK",
+        "opp": "EDM",
+        "id": "4064582",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Carter Hart",
+        "line": 4.5,
+        "team": "VGK",
+        "opp": "EDM",
+        "id": "4064582",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Devon Levi",
+        "line": 2.5,
+        "team": "EDM",
+        "opp": "VGK",
+        "id": "4894487",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Devon Levi",
+        "line": 3.5,
+        "team": "EDM",
+        "opp": "VGK",
+        "id": "4894487",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Devon Levi",
+        "line": 4.5,
+        "team": "EDM",
+        "opp": "VGK",
+        "id": "4894487",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Adin Hill",
+        "line": 2.5,
+        "team": "VGK",
+        "opp": "EDM",
+        "id": "3939714",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Adin Hill",
+        "line": 3.5,
+        "team": "VGK",
+        "opp": "EDM",
+        "id": "3939714",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Adin Hill",
+        "line": 4.5,
+        "team": "VGK",
+        "opp": "EDM",
+        "id": "3939714",
+        "hits": 10,
+        "n": 10
+      }
+    ],
+    "o15": [
+      {
+        "player": "Leon Draisaitl",
+        "team": "EDM",
+        "opp": "VGK",
+        "id": "3114727",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Tristan Jarry",
+        "team": "EDM",
+        "opp": "VGK",
+        "id": "3042020",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Frederik Andersen",
+        "team": "EDM",
+        "opp": "VGK",
+        "id": "2517899",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Carter Hart",
+        "team": "VGK",
+        "opp": "EDM",
+        "id": "4064582",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Devon Levi",
+        "team": "EDM",
+        "opp": "VGK",
+        "id": "4894487",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Adin Hill",
+        "team": "VGK",
+        "opp": "EDM",
+        "id": "3939714",
+        "hits": 10,
+        "n": 10
+      },
+      {
+        "player": "Tomas Hertl",
+        "team": "VGK",
+        "opp": "EDM",
+        "id": "2976844",
+        "hits": 9,
+        "n": 10
+      },
+      {
+        "player": "Connor McDavid",
+        "team": "EDM",
+        "opp": "VGK",
+        "id": "3895074",
+        "hits": 9,
+        "n": 10
+      },
+      {
+        "player": "Trevor Connelly",
+        "team": "VGK",
+        "opp": "EDM",
+        "id": "5216887",
+        "hits": 8,
+        "n": 10
+      },
+      {
+        "player": "Mitch Marner",
+        "team": "VGK",
+        "opp": "EDM",
+        "id": "3899937",
+        "hits": 8,
+        "n": 10
+      }
+    ]
+  },
+  "ncaam_top": [
+    {
+      "player": "Jake Lemelman",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "MERC",
+      "opp": "SNYF",
+      "id": "5243381",
+      "season": "8/8"
+    },
+    {
+      "player": "Jake Lemelman",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "MERC",
+      "opp": "SNYF",
+      "id": "5243381",
+      "season": "8/8"
+    },
+    {
+      "player": "Geoff Sprouse",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "MERC",
+      "opp": "SNYF",
+      "id": "5105660",
+      "season": "7/8"
+    },
+    {
+      "player": "Mateo Esmeraldo",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "LIP",
+      "opp": "AUB",
+      "id": "5107530",
+      "season": "8/8"
+    },
+    {
+      "player": "Aidan Able",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "UMBC",
+      "opp": "IOWA",
+      "id": "5457859",
+      "season": "8/8"
+    },
+    {
+      "player": "Kyrone Alexander",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "BU",
+      "opp": "HARV",
+      "id": "5176037",
+      "season": "7/7"
+    },
+    {
+      "player": "Kyrone Alexander",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "BU",
+      "opp": "HARV",
+      "id": "5176037",
+      "season": "7/7"
+    },
+    {
+      "player": "Johnny Kinziger",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "ILST",
+      "opp": "TLSA",
+      "id": "5176352",
+      "season": "7/7"
+    },
+    {
+      "player": "Johnny Kinziger",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "ILST",
+      "opp": "TLSA",
+      "id": "5176352",
+      "season": "7/7"
+    },
+    {
+      "player": "Truman Claytor IV",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "GASO",
+      "opp": "BELL",
+      "id": "5314308",
+      "season": "7/7"
+    },
+    {
+      "player": "Dallas Gardner",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "GASO",
+      "opp": "BELL",
+      "id": "5312450",
+      "season": "7/7"
+    },
+    {
+      "player": "Mier Panoam",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "UTA",
+      "opp": "ORU",
+      "id": "5175711",
+      "season": "7/7"
+    },
+    {
+      "player": "Marcus Hall",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "GB",
+      "opp": "KC",
+      "id": "5176814",
+      "season": "7/7"
+    },
+    {
+      "player": "Eltramon Smith",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "GASO",
+      "opp": "BELL",
+      "id": "5314592",
+      "season": "7/7"
+    },
+    {
+      "player": "Eltramon Smith",
+      "stat": "REB",
+      "line": 3.5,
+      "team": "GASO",
+      "opp": "BELL",
+      "id": "5314592",
+      "season": "7/7"
+    },
+    {
+      "player": "Eltramon Smith",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "GASO",
+      "opp": "BELL",
+      "id": "5314592",
+      "season": "7/7"
+    },
+    {
+      "player": "Thomas Haugh",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "FLA",
+      "opp": "MILW",
+      "id": "5080489",
+      "season": "7/7"
+    },
+    {
+      "player": "Jeremiah Quigley",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "BING",
+      "opp": "LEH",
+      "id": "5177097",
+      "season": "7/7"
+    },
+    {
+      "player": "Tey Barbour",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "HARV",
+      "opp": "BU",
+      "id": "5241728",
+      "season": "7/7"
+    },
+    {
+      "player": "Jake Ensminger",
+      "stat": "REB",
+      "line": 3.5,
+      "team": "SCU",
+      "opp": "NEV",
+      "id": "5109789",
+      "season": "7/7"
+    },
+    {
+      "player": "Jake Ensminger",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "SCU",
+      "opp": "NEV",
+      "id": "5109789",
+      "season": "7/7"
+    },
+    {
+      "player": "Trevor Mullin",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "YALE",
+      "opp": "APP",
+      "id": "5177185",
+      "season": "7/7"
+    },
+    {
+      "player": "Dionte Neal",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "UNCG",
+      "opp": "UCSB",
+      "id": "5144475",
+      "season": "7/7"
+    },
+    {
+      "player": "Jaylen Smith",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "KC",
+      "opp": "GB",
+      "id": "5176209",
+      "season": "7/7"
+    },
+    {
+      "player": "Malik Messina-Moore",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "ILST",
+      "opp": "TLSA",
+      "id": "5105454",
+      "season": "7/7"
+    },
+    {
+      "player": "Andre Pasha",
+      "stat": "REB",
+      "line": 3.5,
+      "team": "BRY",
+      "opp": "MRST",
+      "id": "5314320",
+      "season": "7/7"
+    },
+    {
+      "player": "Alex Condon",
+      "stat": "REB",
+      "line": 3.5,
+      "team": "FLA",
+      "opp": "MILW",
+      "id": "5174657",
+      "season": "7/7"
+    },
+    {
+      "player": "Alex Condon",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "FLA",
+      "opp": "MILW",
+      "id": "5174657",
+      "season": "7/7"
+    },
+    {
+      "player": "RJ Greer",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "UNCG",
+      "opp": "UCSB",
+      "id": "5311850",
+      "season": "7/7"
+    },
+    {
+      "player": "Alfred Worrell Jr.",
+      "stat": "PTS",
+      "line": 9.5,
+      "team": "MORG",
+      "opp": "MSM",
+      "id": "5240664",
+      "season": "7/7"
+    },
+    {
+      "player": "Alfred Worrell Jr.",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "MORG",
+      "opp": "MSM",
+      "id": "5240664",
+      "season": "7/7"
+    },
+    {
+      "player": "Josiah Lake II",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "ORST",
+      "opp": "SF",
+      "id": "5175011",
+      "season": "7/7"
+    },
+    {
+      "player": "Sash Gavalyugov",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "SCU",
+      "opp": "NEV",
+      "id": "5215425",
+      "season": "7/7"
+    },
+    {
+      "player": "Daniel Ogunyemi",
+      "stat": "REB",
+      "line": 3.5,
+      "team": "YALE",
+      "opp": "APP",
+      "id": "5313389",
+      "season": "7/7"
+    },
+    {
+      "player": "Ryan Zan",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "UNH",
+      "opp": "HALL",
+      "id": "5105901",
+      "season": "7/7"
+    },
+    {
+      "player": "TJ Johnson",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "VMI",
+      "opp": "USI",
+      "id": "5107076",
+      "season": "7/7"
+    },
+    {
+      "player": "Mason Klabo",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "ILST",
+      "opp": "TLSA",
+      "id": "5313852",
+      "season": "7/7"
+    },
+    {
+      "player": "Mason Klabo",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "ILST",
+      "opp": "TLSA",
+      "id": "5313852",
+      "season": "7/7"
+    },
+    {
+      "player": "Daniel Freitag",
+      "stat": "AST",
+      "line": 1.5,
+      "team": "ORST",
+      "opp": "SF",
+      "id": "5101672",
+      "season": "7/7"
+    },
+    {
+      "player": "Trap Johnson",
+      "stat": "3PT",
+      "line": 0.5,
+      "team": "VMI",
+      "opp": "USI",
+      "id": "5241292",
+      "season": "7/7"
+    }
+  ],
+  "injuries": []
+}
