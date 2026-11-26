@@ -1,0 +1,161 @@
+POSTED-MAIN CARD — 2026-11-26
+Source: Betravon consensus mains + GATE RS sheets. Soft floors NOT listed.
+Graded 348 / unmatched 299
+
+=== KEEP (perfect clear at POSTED main) ===
+  7/7  Alperen Sengun O0.5 3PT  HOU vs PHX  id=4871144  L=[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  7/7  Collin Gillespie O1.5 3PT  PHX vs HOU  id=4278585  L=[3.0, 3.0, 2.0, 2.0, 5.0, 3.0, 4.0]
+  7/7  Deni Avdija O1.5 3PT  POR vs SA  id=4683021  L=[5.0, 2.0, 3.0, 3.0, 4.0, 2.0, 2.0]
+
+=== RISK-KEEP (one miss at POSTED main) ===
+  6/7  De'Andre Hunter O1.5 AST  miss=[1.0]  id=4065732
+  6/7  Devin Booker O4.5 AST  miss=[3.0]  id=3136193
+  6/7  Jrue Holiday O4.5 AST  miss=[3.0]  id=3995
+  6/7  Collin Gillespie O9.5 PTS  miss=[9.0]  id=4278585
+  6/7  Kel'el Ware O7.5 PTS  miss=[6.0]  id=5105623
+  6/7  Marcus Smart O1.5 REB  miss=[1.0]  id=2990992
+  6/7  Will Richard O1.5 REB  miss=[0.0]  id=4897262
+  6/7  Yaxel Lendeborg O6.5 REB  miss=[5.0]  id=5175737
+  6/7  Day'Ron Sharpe O0.5 STL  miss=[0.0]  id=4432194
+  6/7  Jrue Holiday O0.5 STL  miss=[0.0]  id=3995
+  6/7  Michael Porter Jr. O0.5 STL  miss=[0.0]  id=4278104
+  6/7  Tyler Herro O0.5 STL  miss=[0.0]  id=4395725
+  4/5  Brock Faber O1.5 SOG  miss=[1.0]  id=4697449
+
+=== RISK (≈70%+ at POSTED main) ===
+  8/10  Jonathan Marchessault O1.5 SOG  miss=[1.0, 0.0]
+  5/7  Dillon Brooks O1.5 3PT  miss=[0.0, 0.0]
+  5/7  Fred VanVleet O2.5 3PT  miss=[2.0, 2.0]
+  5/7  Julian Champagnie O2.5 3PT  miss=[1.0, 1.0]
+  5/7  Keegan Murray O1.5 3PT  miss=[0.0, 0.0]
+  5/7  Kel'el Ware O0.5 3PT  miss=[0.0, 0.0]
+  5/7  Kevin Durant O1.5 3PT  miss=[0.0, 1.0]
+  5/7  Stephon Castle O1.5 3PT  miss=[0.0, 1.0]
+  5/7  Day'Ron Sharpe O4.5 AST  miss=[2.0, 1.0]
+  5/7  De'Anthony Melton O2.5 AST  miss=[2.0, 1.0]
+  5/7  Dillon Brooks O1.5 AST  miss=[0.0, 1.0]
+  5/7  Kevin Durant O3.5 AST  miss=[3.0, 3.0]
+  5/7  Miles Bridges O2.5 AST  miss=[2.0, 2.0]
+  5/7  Myles Turner O1.5 AST  miss=[1.0, 1.0]
+  5/7  Kel'el Ware O0.5 BLK  miss=[0.0, 0.0]
+  5/7  Oso Ighodaro O0.5 BLK  miss=[0.0, 0.0]
+  5/7  Amen Thompson O14.5 PTS  miss=[12.0, 8.0]
+  5/7  Brayden Burries O12.5 PTS  miss=[3.0, 8.0]
+  5/7  Danny Wolf O9.5 PTS  miss=[6.0, 3.0]
+  5/7  Deni Avdija O22.5 PTS  miss=[20.0, 15.0]
+  5/7  Dillon Brooks O14.5 PTS  miss=[1.0, 8.0]
+  5/7  Jrue Holiday O12.5 PTS  miss=[10.0, 6.0]
+  5/7  Khaman Maluach O5.5 PTS  miss=[4.0, 4.0]
+  5/7  Miles Bridges O12.5 PTS  miss=[11.0, 8.0]
+  5/7  Stephon Castle O18.5 PTS  miss=[10.0, 11.0]
+  5/7  Will Richard O6.5 PTS  miss=[3.0, 4.0]
+  5/7  Amen Thompson O6.5 REB  miss=[4.0, 6.0]
+  5/7  Collin Gillespie O2.5 REB  miss=[2.0, 2.0]
+  5/7  Devin Vassell O3.5 REB  miss=[2.0, 2.0]
+  5/7  Donovan Clingan O11.5 REB  miss=[10.0, 11.0]
+  5/7  Jalen Green O3.5 REB  miss=[3.0, 2.0]
+  5/7  Jordan Goodwin O3.5 REB  miss=[2.0, 3.0]
+  5/7  Kyle Kuzma O4.5 REB  miss=[4.0, 1.0]
+  5/7  Miles Bridges O5.5 REB  miss=[3.0, 4.0]
+  5/7  Myles Turner O5.5 REB  miss=[5.0, 3.0]
+  5/7  Ryan Rollins O3.5 REB  miss=[1.0, 3.0]
+  5/7  Sidy Cissoko O3.5 REB  miss=[2.0, 2.0]
+  5/7  Toumani Camara O4.5 REB  miss=[0.0, 2.0]
+  5/7  Alperen Sengun O0.5 STL  miss=[0.0, 0.0]
+  5/7  Amen Thompson O0.5 STL  miss=[0.0, 0.0]
+
+=== CUT at POSTED main (do not bet) ===
+  271 props fail at book main — including soft-floor favorites.
+  6/10  Alexandre Texier O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0]
+  6/10  Arttu Hyry O1.5 SOG  miss=[0.0, 1.0, 1.0, 0.0]
+  6/10  Blake Coleman O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0]
+  6/10  Cole Caufield O2.5 SOG  miss=[1.0, 1.0, 2.0, 2.0]
+  6/10  Devon Toews O1.5 SOG  miss=[1.0, 0.0, 1.0, 1.0]
+  6/10  Eric Pohlkamp O1.5 SOG  miss=[0.0, 0.0, 0.0, 1.0]
+  6/10  Filip Forsberg O2.5 SOG  miss=[1.0, 2.0, 0.0, 2.0]
+  6/10  Frank Nazar O2.5 SOG  miss=[2.0, 1.0, 2.0, 1.0]
+  6/10  Ivar Stenberg O1.5 SOG  miss=[1.0, 1.0, 1.0, 0.0]
+  6/10  Jaden Schwartz O1.5 SOG  miss=[1.0, 0.0, 0.0, 1.0]
+  6/10  Mikael Granlund O2.5 SOG  miss=[1.0, 1.0, 1.0, 1.0]
+  6/10  Mikhail Sergachev O1.5 SOG  miss=[0.0, 1.0, 0.0, 1.0]
+  6/10  Nazem Kadri O2.5 SOG  miss=[1.0, 2.0, 1.0, 2.0]
+  6/10  Nils Hoglander O1.5 SOG  miss=[0.0, 0.0, 0.0, 0.0]
+  6/10  Roman Josi O2.5 SOG  miss=[2.0, 1.0, 2.0, 2.0]
+  6/10  Roman Kantserov O1.5 SOG  miss=[0.0, 0.0, 1.0, 1.0]
+  6/10  Sam Rinzel O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0]
+  6/10  Thomas Harley O1.5 SOG  miss=[1.0, 0.0, 1.0, 1.0]
+  4/7  Julius Randle O1.5 3PT  miss=[1.0, 0.0, 0.0]
+  4/7  Day'Ron Sharpe O0.5 BLK  miss=[0.0, 0.0, 0.0]
+  4/7  Victor Wembanyama O3.5 BLK  miss=[1.0, 1.0, 2.0]
+  4/7  Julius Randle O21.5 PTS  miss=[17.0, 17.0, 13.0]
+  4/7  Victor Wembanyama O29.5 PTS  miss=[25.0, 26.0, 12.0]
+  4/7  Julius Randle O0.5 STL  miss=[0.0, 0.0, 0.0]
+  5/10  Anders Lee O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 1.0]
+  5/10  Anton Frondell O1.5 SOG  miss=[1.0, 1.0, 0.0, 0.0, 1.0]
+  5/10  Clayton Keller O2.5 SOG  miss=[0.0, 0.0, 2.0, 2.0, 1.0]
+  5/10  Danila Yurov O1.5 SOG  miss=[1.0, 1.0, 0.0, 0.0, 1.0]
+  5/10  Darnell Nurse O1.5 SOG  miss=[0.0, 0.0, 1.0, 0.0, 1.0]
+  5/10  Dylan Larkin O2.5 SOG  miss=[2.0, 1.0, 2.0, 2.0, 1.0]
+  5/10  Joel Eriksson Ek O2.5 SOG  miss=[2.0, 1.0, 2.0, 2.0, 2.0]
+  5/10  Jordan Eberle O1.5 SOG  miss=[1.0, 1.0, 0.0, 1.0, 1.0]
+  5/10  Kaapo Kakko O1.5 SOG  miss=[0.0, 1.0, 0.0, 0.0, 1.0]
+  5/10  Mavrik Bourque O1.5 SOG  miss=[0.0, 1.0, 0.0, 1.0, 1.0]
+  5/10  Maxim Shabanov O1.5 SOG  miss=[0.0, 1.0, 1.0, 0.0, 1.0]
+  3/6  Nico Myatovic O0.5 SOG  miss=[0.0, 0.0, 0.0]
+  5/10  Shane Wright O1.5 SOG  miss=[0.0, 1.0, 0.0, 0.0, 0.0]
+  5/10  Steven Stamkos O2.5 SOG  miss=[2.0, 2.0, 2.0, 1.0, 2.0]
+  5/10  Tristan Luneau O1.5 SOG  miss=[0.0, 1.0, 1.0, 0.0, 1.0]
+  5/10  Tyler Seguin O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 0.0]
+  5/10  Vincent Trocheck O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 0.0]
+  3/7  Julius Randle O4.5 AST  miss=[4.0, 4.0, 1.0, 4.0]
+  3/7  Victor Wembanyama O3.5 AST  miss=[1.0, 3.0, 1.0, 3.0]
+  3/7  Day'Ron Sharpe O9.5 PTS  miss=[6.0, 6.0, 6.0, 6.0]
+  3/7  Day'Ron Sharpe O7.5 REB  miss=[5.0, 5.0, 4.0, 4.0]
+  4/10  Artturi Lehkonen O2.5 SOG  miss=[2.0, 2.0, 1.0, 2.0, 2.0, 2.0]
+  4/10  Bobby McMann O2.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 2.0, 2.0]
+  4/10  Brent Burns O1.5 SOG  miss=[0.0, 1.0, 0.0, 1.0, 0.0, 1.0]
+  4/10  Brock Nelson O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 0.0, 1.0]
+  4/10  Cale Makar O2.5 SOG  miss=[2.0, 1.0, 2.0, 0.0, 2.0, 1.0]
+  4/10  Cutter Gauthier O4.5 SOG  miss=[4.0, 1.0, 3.0, 3.0, 4.0, 3.0]
+  4/10  Dylan Guenther O2.5 SOG  miss=[0.0, 1.0, 2.0, 0.0, 2.0, 2.0]
+  4/10  Jackson LaCombe O1.5 SOG  miss=[1.0, 1.0, 0.0, 0.0, 1.0, 0.0]
+  4/10  Juraj Slafkovsky O2.5 SOG  miss=[2.0, 0.0, 1.0, 2.0, 1.0, 2.0]
+  4/10  Kailer Yamamoto O1.5 SOG  miss=[1.0, 1.0, 1.0, 0.0, 1.0, 0.0]
+  4/10  Mackie Samoskevich O2.5 SOG  miss=[2.0, 1.0, 0.0, 0.0, 0.0, 2.0]
+  4/10  Matt Boldy O3.5 SOG  miss=[2.0, 3.0, 3.0, 3.0, 2.0, 2.0]
+  4/10  Matty Beniers O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 0.0, 0.0]
+  4/10  Mikko Rantanen O2.5 SOG  miss=[1.0, 0.0, 1.0, 0.0, 2.0, 1.0]
+  4/10  Miro Heiskanen O1.5 SOG  miss=[1.0, 1.0, 0.0, 1.0, 0.0, 0.0]
+  4/10  Nick Suzuki O2.5 SOG  miss=[2.0, 1.0, 2.0, 2.0, 0.0, 1.0]
+  4/10  Noah Dobson O1.5 SOG  miss=[1.0, 1.0, 1.0, 0.0, 1.0, 1.0]
+  4/10  Patrick Kane O2.5 SOG  miss=[2.0, 2.0, 0.0, 2.0, 1.0, 1.0]
+  4/10  Ryan Donato O1.5 SOG  miss=[1.0, 0.0, 0.0, 1.0, 0.0, 0.0]
+  4/10  Ryan O'Reilly O1.5 SOG  miss=[0.0, 0.0, 1.0, 1.0, 0.0, 0.0]
+  4/10  Tyler Bertuzzi O1.5 SOG  miss=[1.0, 1.0, 1.0, 0.0, 0.0, 1.0]
+  4/10  Vince Dunn O2.5 SOG  miss=[2.0, 2.0, 1.0, 1.0, 0.0, 2.0]
+  4/10  Will Smith O2.5 SOG  miss=[1.0, 1.0, 2.0, 0.0, 2.0, 0.0]
+  3/10  Alex Killorn O1.5 SOG  miss=[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0]
+  3/10  Dmitry Orlov O1.5 SOG  miss=[1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0]
+  3/10  Gabriel Landeskog O1.5 SOG  miss=[0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0]
+  3/10  Jason Robertson O3.5 SOG  miss=[1.0, 3.0, 3.0, 2.0, 3.0, 3.0, 1.0]
+  3/10  Judd Caulfield O1.5 SOG  miss=[0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0]
+  3/10  Martin Necas O2.5 SOG  miss=[2.0, 1.0, 2.0, 2.0, 2.0, 1.0, 2.0]
+  3/10  Matthew Wood O1.5 SOG  miss=[1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0]
+  3/10  Roope Hintz O2.5 SOG  miss=[2.0, 0.0, 0.0, 2.0, 0.0, 2.0, 0.0]
+  2/7  Victor Wembanyama O2.5 3PT  miss=[2.0, 1.0, 0.0, 2.0, 2.0]
+  2/7  Victor Wembanyama O12.5 REB  miss=[11.0, 10.0, 12.0, 9.0, 11.0]
+  2/7  Victor Wembanyama O1.5 STL  miss=[1.0, 1.0, 1.0, 1.0, 0.0]
+  2/10  Berkly Catton O1.5 SOG  miss=[0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0]
+  2/10  Brandon Montour O2.5 SOG  miss=[1.0, 2.0, 2.0, 2.0, 1.0, 2.0, 1.0, 2.0]
+  2/10  Kirill Kaprizov O3.5 SOG  miss=[2.0, 1.0, 1.0, 3.0, 3.0, 1.0, 2.0, 1.0]
+  2/10  Nicolas Roy O1.5 SOG  miss=[1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0]
+  2/10  Roger McQueen O1.5 SOG  miss=[0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0]
+  1/7  Julius Randle O6.5 REB  miss=[4.0, 0.0, 6.0, 4.0, 4.0, 4.0]
+  0/7  Troy Terry O2.5 SOG  miss=[2.0, 1.0, 2.0, 1.0, 1.0, 2.0, 0.0]
+
+=== CLEAN SLIP (KEEP @ posted mains only) ===
+  1. Alperen Sengun O0.5 3PT  (7/7)  HOU vs PHX
+  2. Collin Gillespie O1.5 3PT  (7/7)  PHX vs HOU
+  3. Deni Avdija O1.5 3PT  (7/7)  POR vs SA
+
+DONE: No soft floors. If a KEEP number is missing on HR, skip that leg — do not invent a lower alt.
