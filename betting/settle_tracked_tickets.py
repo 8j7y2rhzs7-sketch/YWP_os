@@ -45,31 +45,38 @@ def nba_box_player(event_id: str, athlete_id: str) -> dict | None:
 
 
 def nhl_box_sog(event_id: str, athlete_id: str) -> float | None:
+    """Return shots on goal. ESPN label 'SOG' is shootout goals — use shotsTotal / 'S'."""
     s = get(
         f"https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/summary?event={event_id}"
     )
     for side in (s.get("boxscore") or {}).get("players") or []:
         for st in side.get("statistics") or []:
             keys = st.get("keys") or []
+            labels = st.get("labels") or []
             for ath in st.get("athletes") or []:
                 a = ath.get("athlete") or {}
-                if str(a.get("id")) == str(athlete_id):
-                    stats = dict(zip(keys, ath.get("stats") or []))
-                    for k in ("sog", "shots", "shotsOnGoal", "SOG"):
-                        if k in stats and stats[k] not in (None, ""):
-                            try:
-                                return float(stats[k])
-                            except Exception:
-                                pass
-                    # sometimes labels
-                    labels = st.get("labels") or []
-                    raw = dict(zip(labels, ath.get("stats") or []))
-                    for k in ("SOG", "S", "Shots"):
-                        if k in raw:
-                            try:
-                                return float(raw[k])
-                            except Exception:
-                                pass
+                if str(a.get("id")) != str(athlete_id):
+                    continue
+                stats = dict(zip(keys, ath.get("stats") or []))
+                # Prefer true SOG fields — never treat label SOG (shootout goals) as shots
+                for k in ("shotsTotal", "shots", "shotsOnGoal"):
+                    if stats.get(k) not in (None, ""):
+                        try:
+                            return float(stats[k])
+                        except Exception:
+                            pass
+                raw = dict(zip(labels, ath.get("stats") or []))
+                for k in ("S", "Shots", "SOG "):  # 'S' = shots on goal in ESPN NHL box
+                    if raw.get(k) not in (None, ""):
+                        try:
+                            return float(raw[k])
+                        except Exception:
+                            pass
+                if raw.get("S") not in (None, ""):
+                    try:
+                        return float(raw["S"])
+                    except Exception:
+                        pass
     return None
 
 

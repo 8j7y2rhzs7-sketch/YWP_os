@@ -1,11 +1,11 @@
-TRACK SETTLE 20261127 @ 2026-11-27T15:40:52.382064-05:00
+TRACK SETTLE 20261127 @ 2026-11-27T15:41:23.987443-05:00
 overall=OPEN
 
-=== A_MAIN7 Main LIST2 SGPMAX7 → LOST ===
-  PENDING Under 37.5  | End of 1st Quarter
-  PENDING DEN ML  | End of 1st Quarter
-  PENDING Jaylen Warren O40.5 rush  | End of 1st Quarter
-  MISS    Timo Meier O1.5 SOG  | 0.0 SOG (need >1.5)
+=== A_MAIN7 Main LIST2 SGPMAX7 → OPEN ===
+  PENDING Under 37.5  | 15:00 - 2nd Quarter
+  PENDING DEN ML  | 15:00 - 2nd Quarter
+  PENDING Jaylen Warren O40.5 rush  | 15:00 - 2nd Quarter
+  HIT     Timo Meier O1.5 SOG  | 5.0 SOG (need >1.5)
   PENDING Zach Werenski O1.5 SOG  | game not final
   PENDING Andrew Nembhard O4.5 AST  | game not final
   PENDING Deni Avdija O1.5 3PT  | game not final

@@ -26,7 +26,7 @@
             "weather clears and pass game opens"
           ],
           "result": "PENDING",
-          "actual": "End of 1st Quarter"
+          "actual": "15:00 - 2nd Quarter"
         },
         {
           "id": "A2",
@@ -41,7 +41,7 @@
             "correlated with Under if PIT wins low"
           ],
           "result": "PENDING",
-          "actual": "End of 1st Quarter",
+          "actual": "15:00 - 2nd Quarter",
           "event_id": "401873083"
         },
         {
@@ -59,7 +59,7 @@
             "pass-heavy PIT if weather better"
           ],
           "result": "PENDING",
-          "actual": "End of 1st Quarter",
+          "actual": "15:00 - 2nd Quarter",
           "event_id": "401873083"
         },
         {
@@ -77,8 +77,8 @@
             "0-1 SOG night",
             "TOI scratch/injury"
           ],
-          "result": "MISS",
-          "actual": "0.0 SOG (need >1.5)",
+          "result": "HIT",
+          "actual": "5.0 SOG (need >1.5)",
           "event_id": "401892796"
         },
         {
@@ -151,7 +151,7 @@
         "most_likely_sole_killer": "Deni O1.5 3PT",
         "cash_path": "SOG floors + Nembhard + weather Under hold; Deni is the variance spike"
       },
-      "status": "LOST"
+      "status": "OPEN"
     },
     {
       "id": "B_NCAAM4",
@@ -247,5 +247,5 @@
       "status": "OPEN"
     }
   ],
-  "last_settled_et": "2026-11-27T15:40:52.382064-05:00"
+  "last_settled_et": "2026-11-27T15:41:23.987443-05:00"
 }
