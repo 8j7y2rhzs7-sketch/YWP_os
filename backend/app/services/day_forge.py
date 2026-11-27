@@ -91,6 +91,9 @@ def candidate_is_forge_fuel(candidate: CandidateInput) -> bool:
         return False
     if candidate.probability_source not in _allowed_probability_sources():
         return False
+    if str(candidate.data_source or "").upper() == "PUBLIC_SCHEDULE_FALLBACK":
+        # Odds-down schedule board is forge fuel even while PARTIAL.
+        return bool(candidate.schedule_verified)
     return candidate_readiness(candidate) != "PARTIAL" or settings.demo_mode
 
 
@@ -180,13 +183,24 @@ def recommendation_is_day_forge_eligible(rec: Any, *, allow_lean: bool = False) 
         # Prefer known independent sources; allow unknown only in demo.
         pass
 
+    reasons = set(getattr(rec, "reason_codes", None) or [])
+    public_fallback = (
+        "PUBLIC_FALLBACK_LEAN" in reasons
+        or "PUBLIC_SCHEDULE_FALLBACK" in reasons
+        or str(snap.get("data_source") or "").upper() == "PUBLIC_SCHEDULE_FALLBACK"
+    )
+
     confidence = int(getattr(rec, "confidence_score", 0) or 0)
-    min_conf = MIN_CONFIDENCE_PLAY if decision == "PLAY" else MIN_CONFIDENCE_LEAN
+    min_conf = (
+        65
+        if public_fallback
+        else (MIN_CONFIDENCE_PLAY if decision == "PLAY" else MIN_CONFIDENCE_LEAN)
+    )
     if confidence < min_conf:
         return False
 
     edge = float(getattr(rec, "edge", 0) or 0)
-    if edge < MIN_EDGE:
+    if not public_fallback and edge < MIN_EDGE:
         return False
 
     miss = float(getattr(rec, "miss_by_one_risk", 1) or 1)
@@ -198,15 +212,18 @@ def recommendation_is_day_forge_eligible(rec: Any, *, allow_lean: bool = False) 
         return False
 
     ywp = float(getattr(rec, "ywp_rating", 0) or 0)
-    if ywp < MIN_YWP_RATING:
+    if not public_fallback and ywp < MIN_YWP_RATING:
         return False
 
     risk = str(getattr(rec, "risk", "") or "").lower()
     if risk == "high":
         return False
 
-    reasons = set(getattr(rec, "reason_codes", None) or [])
-    if reasons & BLOCKING_REASON_CODES:
+    blocking = set(BLOCKING_REASON_CODES)
+    if public_fallback:
+        # Odds is down — RESEARCH_INCOMPLETE / NO_CLEAN_EDGE are expected, not fatal.
+        blocking -= {"RESEARCH_INCOMPLETE", "NO_CLEAN_EDGE", "ODDS_TOO_EXPENSIVE"}
+    if reasons & blocking:
         return False
 
     game_status = str(snap.get("game_status") or "PRE_GAME")

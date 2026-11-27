@@ -29,6 +29,7 @@ from app.services.readiness import (
     candidate_readiness,
     candidate_verification_gaps,
     is_mlb_team_market,
+    is_public_schedule_fallback,
 )
 
 
@@ -137,6 +138,7 @@ class DecisionEngine:
         confidence_penalty = 0.0
 
         readiness = candidate_readiness(candidate)
+        public_fallback = is_public_schedule_fallback(candidate)
         # Local YWP_DEMO_MODE fixtures may PLAY for end-to-end testing.
         # Production / non-demo runs never promote demo/synthetic probabilities.
         if (
@@ -148,12 +150,21 @@ class DecisionEngine:
             reasons.append("DEMO_DATA")
         if readiness == "PARTIAL":
             gaps = candidate_verification_gaps(candidate)
-            hard_skip_reasons.append(
-                "Official play blocked until required research is verified: "
-                + ", ".join(gaps)
-                + "."
-            )
-            reasons.append("RESEARCH_INCOMPLETE")
+            if public_fallback:
+                # Odds is down — public schedule board stays usable as LEAN, not a hard stop.
+                # Do not stamp RESEARCH_INCOMPLETE (that empties cards via quant unverified).
+                warnings.append(
+                    "PUBLIC FALLBACK (Odds down): schedule/form only — capped at LEAN, "
+                    "no sportsbook price. Gaps: " + (", ".join(gaps) if gaps else "none") + "."
+                )
+                reasons.append("PUBLIC_FALLBACK_LEAN")
+            else:
+                hard_skip_reasons.append(
+                    "Official play blocked until required research is verified: "
+                    + ", ".join(gaps)
+                    + "."
+                )
+                reasons.append("RESEARCH_INCOMPLETE")
         if candidate.probability_source == "market_implied":
             hard_skip_reasons.append(
                 "Sportsbook implied probability is not an independent YWP projection."
@@ -197,6 +208,19 @@ class DecisionEngine:
             verification_checks["starter"] = candidate.starter_confirmed
         if sport_l in OUTDOOR_WEATHER_SPORTS:
             verification_checks["weather"] = candidate.weather_verified
+        if public_fallback:
+            # Odds-only / depth-chart signals cannot clear while books are down.
+            for key in (
+                "market movement",
+                "sport-specific sweep",
+                "actual L5/L10",
+                "injuries",
+                "motivation/rotation",
+                "lineup",
+                "starter",
+                "weather",
+            ):
+                verification_checks.pop(key, None)
         unverified = [name for name, passed in verification_checks.items() if not passed]
         if unverified:
             warnings.append("Unverified: " + ", ".join(unverified))
@@ -515,15 +539,30 @@ class DecisionEngine:
             reasons.append("EXTRA_TIME_TRAP")
 
         if quality < settings.minimum_data_quality:
-            hard_skip_reasons.append("Data quality is below the YWP minimum.")
-            reasons.append("DATA_QUALITY_BAD")
+            if public_fallback and quality >= 0.55:
+                warnings.append("PUBLIC FALLBACK quality is soft while Odds is down — LEAN only.")
+                reasons.append("PUBLIC_FALLBACK_QUALITY")
+                confidence_penalty += 6
+            else:
+                hard_skip_reasons.append("Data quality is below the YWP minimum.")
+                reasons.append("DATA_QUALITY_BAD")
 
         if edge < settings.minimum_edge or expected_value <= 0:
-            hard_skip_reasons.append("Current price does not provide a clean positive edge.")
-            reasons.extend(["NO_CLEAN_EDGE", "ODDS_TOO_EXPENSIVE"])
+            if public_fallback:
+                # Fair odds were derived from the model — there is no book price to beat.
+                warnings.append(
+                    "No sportsbook price while Odds is down — edge gate waived for PUBLIC FALLBACK."
+                )
+                reasons.append("PUBLIC_FALLBACK_NO_BOOK_EDGE")
+            else:
+                hard_skip_reasons.append("Current price does not provide a clean positive edge.")
+                reasons.extend(["NO_CLEAN_EDGE", "ODDS_TOO_EXPENSIVE"])
 
         confidence = int(clamp(confidence, 35, 97))
         wait_codes = wait_reasons(candidate, hard_skip_reasons + reasons)
+        if public_fallback:
+            # Do not convert PUBLIC FALLBACK into WAIT/NO PICK solely for Odds-only gaps.
+            wait_codes = [code for code in wait_codes if code != "WAIT_RESEARCH_INCOMPLETE"]
         fatal_codes = {
             "IDENTITY_PLAYER_KEY_MISSING",
             "IDENTITY_SELECTION_TOO_THIN",
@@ -571,6 +610,19 @@ class DecisionEngine:
             decision = Decision.review.value
             confidence = min(confidence, 80)
             warnings.extend(review_reasons)
+        elif public_fallback:
+            # Odds-down board: never PLAY — LEAN when schedule is verified so Run
+            # still produces ticket-eligible picks (WATCH alone leaves the app empty).
+            if candidate.schedule_verified and confidence >= 60:
+                decision = Decision.lean.value
+                reasons.append("PUBLIC_FALLBACK_LEAN")
+                confidence = min(max(confidence, 70), 84)
+            elif confidence >= 55:
+                decision = Decision.watch.value
+                reasons.append("PUBLIC_FALLBACK_WATCH")
+            else:
+                decision = Decision.skip.value
+                reasons.append("CONFIDENCE_BELOW_THRESHOLD")
         elif confidence >= 85 and edge >= 0.03:
             decision = Decision.play.value
         elif confidence >= 75 and edge >= settings.minimum_edge:
