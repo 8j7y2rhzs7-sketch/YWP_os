@@ -6,7 +6,8 @@ alwaysApply: true
 betting-hard-gate:
 
 - Before any place card, exhaustive board, or slip weed: run `python3 betting/require_gate.py`. If it exits non-zero, run `python3 betting/run_gate.py` then require again. Do not publish picks without `GATE_TODAY.json` status=PASS for today's ET date.
-- **VENUE + WEATHER (locked 2026-11-26):** Before any NFL/NCAAF card or slip weed, run `python3 betting/pull_game_conditions.py`. Every boarded/weeded game must state venue · city · indoor/outdoor · home/away/neutral. Outdoor football must include temp/wind-gust/precip%/condition. Pass-hostile (≤40°F or precip≥40% or gust≥20 or rain/snow) → demote pass/rec overs; prefer rush, Under, soft sides. Publishing outdoor football without this is a failed task.
+- **VENUE + WEATHER (locked 2026-11-26):** Before any NFL/NCAAF card or slip weed, run `python3 betting/pull_game_conditions.py`. Every boarded/weeded game must state venue · city · indoor/outdoor · home/away/neutral. Outdoor football must include temp/wind-gust/precip%/condition. Pass-hostile (≤40°F or precip≥40% or gust≥20 or rain/snow) → **CUT** pass/rec overs from blessed slips (not RISK-KEEP); prefer rush, Under, soft sides. Publishing outdoor football without this is a failed task.
+- **KEEP SCRUB (locked 2026-11-27):** Form/posted KEEP is not SAFE. OUT/GTD → BAN until ACTIVE. Binary (STL/BLK/O0.5 3PT) → add-only, never SAFE/CLEAN identity. cush_min&lt;1 → PRIMARY max with hook warning. `grade_posted_card.py` enforces this scrub.
 - Full counting categories on every boarded NBA player: MIN, PTS, REB, AST, STL, BLK, TO (and 3P when relevant). Silent omit is forbidden — print `NOT FETCHED` if missing.
 - Every cited player must include `athlete_id` + source. No vibe numbers.
 - Delivery shape is mandatory when user asks for a run/exhaustive: SAFE · PRIMARY · **BANGERS** · STL/SOG · by-game · BAN · clean slips. SAFE-only cards are a failed task.

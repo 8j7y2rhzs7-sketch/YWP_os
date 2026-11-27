@@ -1,0 +1,1496 @@
+[
+  {
+    "name": "Miles McBride",
+    "team": "NY",
+    "status": "Day-To-Day",
+    "fantasy": "GTD",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Jordan Clarkson",
+    "team": "NY",
+    "status": "Out",
+    "fantasy": "GTD",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "OG Anunoby",
+    "team": "NY",
+    "status": "Out",
+    "fantasy": "GTD",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Andre Drummond",
+    "team": "NY",
+    "status": "Day-To-Day",
+    "fantasy": "GTD",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Giannis Antetokounmpo",
+    "team": "MIA",
+    "status": "Day-To-Day",
+    "fantasy": "GTD",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Andrew Wiggins",
+    "team": "MIA",
+    "status": "Day-To-Day",
+    "fantasy": "GTD",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Duncan Robinson",
+    "team": "DET",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Cade Cunningham",
+    "team": "DET",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Jalen Duren",
+    "team": "DET",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Ebuka Okorie",
+    "team": "DET",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Taurean Prince",
+    "team": "DET",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Kelly Oubre Jr.",
+    "team": "IND",
+    "status": "Day-To-Day",
+    "fantasy": "GTD",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Larry Nance Jr.",
+    "team": "IND",
+    "status": "Day-To-Day",
+    "fantasy": "GTD",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "T.J. McConnell",
+    "team": "IND",
+    "status": "Day-To-Day",
+    "fantasy": "GTD",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Tyrese Haliburton",
+    "team": "IND",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Ben Sheppard",
+    "team": "IND",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Joel Embiid",
+    "team": "PHI",
+    "status": "Day-To-Day",
+    "fantasy": "GTD",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Jaylen Brown",
+    "team": "PHI",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Ariel Hukporti",
+    "team": "PHI",
+    "status": "Out",
+    "fantasy": "OFS",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Alijah Martin",
+    "team": "TOR",
+    "status": "Day-To-Day",
+    "fantasy": "GTD",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Kawhi Leonard",
+    "team": "TOR",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Nate Bittle",
+    "team": "TOR",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "RJ Barrett",
+    "team": "TOR",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Moritz Wagner",
+    "team": "BKN",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Nolan Traore",
+    "team": "BKN",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Mitchell Robinson",
+    "team": "BOS",
+    "status": "Out",
+    "fantasy": "GTD",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Jock Landale",
+    "team": "ATL",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Asa Newell",
+    "team": "ATL",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "CJ McCollum",
+    "team": "ATL",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Mouhamed Gueye",
+    "team": "ATL",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Henri Veesaar",
+    "team": "ATL",
+    "status": "Out",
+    "fantasy": "OFS",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "LaMelo Ball",
+    "team": "MIN",
+    "status": "Day-To-Day",
+    "fantasy": "GTD",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Donte DiVincenzo",
+    "team": "MIN",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Jaylen Clark",
+    "team": "MIN",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Anthony Edwards",
+    "team": "MIN",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Isaiah Stewart",
+    "team": "MEM",
+    "status": "Day-To-Day",
+    "fantasy": "GTD",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Zach Edey",
+    "team": "MEM",
+    "status": "Day-To-Day",
+    "fantasy": "GTD",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Scotty Pippen Jr.",
+    "team": "MEM",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Cameron Boozer",
+    "team": "MEM",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Jerami Grant",
+    "team": "MEM",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Mark Williams",
+    "team": "PHX",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Tobi Lawal",
+    "team": "DAL",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Sergio de Larrea",
+    "team": "DAL",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Dereck Lively II",
+    "team": "DAL",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Tarik Biberovic",
+    "team": "DAL",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Dylan Harper",
+    "team": "SA",
+    "status": "Out",
+    "fantasy": "GTD",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "De'Aaron Fox",
+    "team": "SA",
+    "status": "Day-To-Day",
+    "fantasy": "GTD",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Tobias Harris",
+    "team": "SA",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Jayden Quaintance",
+    "team": "SA",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Austin Reaves",
+    "team": "LAL",
+    "status": "Out",
+    "fantasy": "GTD",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Jaxson Hayes",
+    "team": "UTAH",
+    "status": "Day-To-Day",
+    "fantasy": "GTD",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Jusuf Nurkic",
+    "team": "UTAH",
+    "status": "Out",
+    "fantasy": "GTD",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Lauri Markkanen",
+    "team": "UTAH",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Jaren Jackson Jr.",
+    "team": "UTAH",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Bradley Beal",
+    "team": "LAC",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Jordan Miller",
+    "team": "LAC",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Trendon Watford",
+    "team": "NO",
+    "status": "Out",
+    "fantasy": "GTD",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Bennedict Mathurin",
+    "team": "NO",
+    "status": "Out",
+    "fantasy": "GTD",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Julian Reese",
+    "team": "NO",
+    "status": "Day-To-Day",
+    "fantasy": "GTD",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Dejounte Murray",
+    "team": "NO",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Chris Youngblood",
+    "team": "POR",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Vit Krejci",
+    "team": "POR",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Ja Morant",
+    "team": "POR",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Shaedon Sharpe",
+    "team": "POR",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Stephen Curry",
+    "team": "GS",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Kristaps Porzingis",
+    "team": "GS",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Moses Moody",
+    "team": "GS",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Jimmy Butler III",
+    "team": "GS",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "James Hagens",
+    "team": "BOS",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Jack Roslovic",
+    "team": "TOR",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Kirill Marchenko",
+    "team": "TOR",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Colton Sissons",
+    "team": "TOR",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Cole McWard",
+    "team": "TOR",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Nick Blankenburg",
+    "team": "TOR",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Brenden Dillon",
+    "team": "NJ",
+    "status": "Suspension",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Anthony Mantha",
+    "team": "NJ",
+    "status": "Injured Reserve",
+    "fantasy": "IR-LT",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Johnathan Kovacevic",
+    "team": "NJ",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Seamus Casey",
+    "team": "NJ",
+    "status": "Injured Reserve",
+    "fantasy": "IR-LT",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Morgan Frost",
+    "team": "CGY",
+    "status": "Day-To-Day",
+    "fantasy": "DAY-TO-DAY",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Martin Pospisil",
+    "team": "CGY",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Jonathan Huberdeau",
+    "team": "CGY",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Kevin Bahl",
+    "team": "CGY",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Michael Carcone",
+    "team": "UTA",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "John Marino",
+    "team": "UTA",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Nick Schmaltz",
+    "team": "UTA",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Nate Schmidt",
+    "team": "UTA",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Maveric Lamoureux",
+    "team": "UTA",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Pavel Buchnevich",
+    "team": "STL",
+    "status": "Day-To-Day",
+    "fantasy": "DAY-TO-DAY",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Jimmy Snuggerud",
+    "team": "STL",
+    "status": "Day-To-Day",
+    "fantasy": "DAY-TO-DAY",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Connor McMichael",
+    "team": "STL",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Brandon Carlo",
+    "team": "STL",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Torey Krug",
+    "team": "STL",
+    "status": "Injured Reserve",
+    "fantasy": "IR-LT",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Kyle Capobianco",
+    "team": "DAL",
+    "status": "Injured Reserve",
+    "fantasy": "IR-LT",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Lian Bichsel",
+    "team": "DAL",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Matt Duchene",
+    "team": "DAL",
+    "status": "Injured Reserve",
+    "fantasy": "IR-LT",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Victor Hedman",
+    "team": "TB",
+    "status": "Day-To-Day",
+    "fantasy": "DAY-TO-DAY",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Erik Cernak",
+    "team": "TB",
+    "status": "Day-To-Day",
+    "fantasy": "DAY-TO-DAY",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Pontus Holmberg",
+    "team": "TB",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Conor Geekie",
+    "team": "TB",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Andre Burakovsky",
+    "team": "OTT",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Hayden Hodgson",
+    "team": "OTT",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Warren Foegele",
+    "team": "OTT",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "William Eklund",
+    "team": "OTT",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Nikita Grebenkin",
+    "team": "PHI",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Elias Pettersson",
+    "team": "VAN",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Brendan Gallagher",
+    "team": "VAN",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Guillaume Brisebois",
+    "team": "VAN",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Mackenzie MacEachern",
+    "team": "VAN",
+    "status": "Injured Reserve",
+    "fantasy": "IR-NR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Thatcher Demko",
+    "team": "VAN",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Vincent Desharnais",
+    "team": "WSH",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Rasmus Sandin",
+    "team": "WSH",
+    "status": "Injured Reserve",
+    "fantasy": "IR-LT",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Jordan Kyrou",
+    "team": "WSH",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Jonah Gadjovich",
+    "team": "FLA",
+    "status": "Injured Reserve",
+    "fantasy": "IR-LT",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Denton Mateychuk",
+    "team": "CBJ",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "William Wallinder",
+    "team": "DET",
+    "status": "Day-To-Day",
+    "fantasy": "DAY-TO-DAY",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Sam Montembeault",
+    "team": "DET",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Simon Edvinsson",
+    "team": "DET",
+    "status": "Injured Reserve",
+    "fantasy": "IR-NR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Quinn Hughes",
+    "team": "MIN",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Olli Maatta",
+    "team": "MIN",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Gavin Brindley",
+    "team": "COL",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Nathan MacKinnon",
+    "team": "COL",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Josh Manson",
+    "team": "COL",
+    "status": "Injured Reserve",
+    "fantasy": "IR-LT",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Zachary L'Heureux",
+    "team": "COL",
+    "status": "Injured Reserve",
+    "fantasy": "IR-LT",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Leo Carlsson",
+    "team": "ANA",
+    "status": "Day-To-Day",
+    "fantasy": "DAY-TO-DAY",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Ryan Poehling",
+    "team": "ANA",
+    "status": "Injured Reserve",
+    "fantasy": "IR-LT",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "A.J. Greer",
+    "team": "ANA",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Erik Gustafsson",
+    "team": "LA",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Jakub Dvorak",
+    "team": "LA",
+    "status": "Injured Reserve",
+    "fantasy": "IR-NR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Jacob Trouba",
+    "team": "SJ",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Kiefer Sherwood",
+    "team": "SJ",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Igor Chernyshov",
+    "team": "SJ",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Quentin Musty",
+    "team": "SJ",
+    "status": "Injured Reserve",
+    "fantasy": "IR-NR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Kyle Keyser",
+    "team": "SJ",
+    "status": "Injured Reserve",
+    "fantasy": "IR-NR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Marc Gatcomb",
+    "team": "VGK",
+    "status": "Day-To-Day",
+    "fantasy": "DAY-TO-DAY",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Tyler Bertuzzi",
+    "team": "CHI",
+    "status": "Day-To-Day",
+    "fantasy": "DAY-TO-DAY",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Connor Bedard",
+    "team": "CHI",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Wyatt Kaiser",
+    "team": "CHI",
+    "status": "Suspension",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Bowen Byram",
+    "team": "CHI",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Gabe Perreault",
+    "team": "NYR",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Pavel Dorofeyev",
+    "team": "NYR",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Oliver Bjorkstrand",
+    "team": "NYR",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Alberts Smits",
+    "team": "NYR",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Joe Veleno",
+    "team": "NYR",
+    "status": "Injured Reserve",
+    "fantasy": "IR-LT",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Kyle Palmieri",
+    "team": "NYI",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Ryan Pulock",
+    "team": "NYI",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Alexander Romanov",
+    "team": "NYI",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Dylan DeMelo",
+    "team": "WPG",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Isak Rosen",
+    "team": "WPG",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Vladislav Namestnikov",
+    "team": "WPG",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Nick Bjugstad",
+    "team": "WPG",
+    "status": "Injured Reserve",
+    "fantasy": "IR-LT",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Tyson Kozak",
+    "team": "BUF",
+    "status": "Day-To-Day",
+    "fantasy": "DAY-TO-DAY",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Konsta Helenius",
+    "team": "BUF",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Justin Danforth",
+    "team": "BUF",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Matt Grzelcyk",
+    "team": "BUF",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Egor Chinakhov",
+    "team": "PIT",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Bryan Rust",
+    "team": "PIT",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Nick Robertson",
+    "team": "PIT",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Elmer Soderblom",
+    "team": "PIT",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Ryan Graves",
+    "team": "PIT",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Zach Hyman",
+    "team": "EDM",
+    "status": "Day-To-Day",
+    "fantasy": "DAY-TO-DAY",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Filip Hallander",
+    "team": "EDM",
+    "status": "Day-To-Day",
+    "fantasy": "DAY-TO-DAY",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
+    "name": "Alec Regula",
+    "team": "EDM",
+    "status": "Injured Reserve",
+    "fantasy": "IR-LT",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Matt Savoie",
+    "team": "EDM",
+    "status": "Injured Reserve",
+    "fantasy": "IR-LT",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Frederik Andersen",
+    "team": "EDM",
+    "status": "Injured Reserve",
+    "fantasy": "IR-NR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Jake O'Brien",
+    "team": "SEA",
+    "status": "Injured Reserve",
+    "fantasy": "IR-NR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Jared McCann",
+    "team": "SEA",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  }
+]

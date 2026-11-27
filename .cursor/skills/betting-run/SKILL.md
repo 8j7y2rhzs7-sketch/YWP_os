@@ -62,6 +62,10 @@ When citing a player, show a compact full row + id:
 - Answering a different question than asked
 - Outdoor NFL/NCAAF card or slip without venue + weather (locked 2026-11-26)
 - Pass/rec SAFE spines in pass-hostile weather
+- Form/posted KEEP promoted to SAFE/CLEAN while OUT/GTD (Reaves) (locked 2026-11-27)
+- Binary O0.5 3PT / STL/BLK as SAFE or CLEAN slip identity (locked 2026-11-27)
+- Hook cush&lt;1 clears sold as SAFE3 spine (locked 2026-11-27)
+- Leaving pass overs RISK-KEEP on pass-hostile slate until user asks about weather (TNF)
 
 ## Completion block (paste at end of every run)
 ```

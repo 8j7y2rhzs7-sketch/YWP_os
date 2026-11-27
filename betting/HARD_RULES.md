@@ -28,6 +28,15 @@ If those files are missing, any claim that a gate exists is false.
 5. NBA/NHL: venue + home/away still required on BY GAME; weather only if outdoor event (rare).
 6. Completion block must include `game_conditions: PASS|FAIL|N/A`.
 
+## Locked 2026-11-26/27 — TNF kill + false KEEP scrub (user: "we have been making mistakes")
+**Incident:** Blessed TNF 6-leg kept **Allen O208.5 / Rice O44.5** as RISK-KEEP off L7 only. Weather was pass-hostile; Allen **70**, Rice **19**. Cook rush + Bills + TTU + Under was the weather-fit ticket — agent only said Under after user asked. Same night/next card: **Reaves** graded form KEEP while ESPN **Out**, and CLEAN SLIP auto-promoted **Portis O0.5 3PT** + **Daniels O1.5 STL** (binary) as slip identity.
+### Rules
+1. **Weather before weed labels on outdoor football.** Pass-hostile → CUT pass/rec overs from blessed slips; do not leave RISK-KEEP "for volume." Rebuild Under/rush/side first, then ask.
+2. **Posted/form KEEP ≠ SAFE.** `grade_posted_card.py` must scrub: OUT/GTD → BAN; binary (STL/BLK/O0.5 3PT) → add-only; cush_min&lt;1 → KEEP_HOOK (PRIMARY max, not SAFE spine).
+3. **CLEAN SLIP never includes OUT, GTD, or binary spines.** Prefer ACTIVE counting clears with cush≥1; if slate has none, say so and use weather sides / RISK-KEEP — do not invent SAFE from binaries.
+4. **OUT/GTD confirm on every KEEP name before tip** (Reaves class). Status Out with fantasy GTD still = BAN until ACTIVE.
+5. **Hook clears (cush_min&lt;1) are not SAFE3 identity** even at 7/7 — Edgecombe O3.5 / Davion O13.5 class = PRIMARY unless OUT-driven usage + explicit hook warning.
+
 ## Locked — NFL ≠ NBA grading
 - NFL: MATCHUP → **venue/weather** → script → role → then L10. Never L10-first.
 - Do not lead with juice ghosts (Young 189.5 class). Soft alt missing → climb to posted line and re-grade.

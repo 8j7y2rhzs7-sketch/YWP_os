@@ -1,10 +1,112 @@
-FRIDAY ALL-GATES 2026-11-26 23:09 ET
+FRIDAY REBUILD 2026-11-26 23:20 ET (post-TNF scrub)
 GATE PASS 20261127 sheets 2269/2269
 NBA11 NHL15 NFL1 NCAAF13 NCAAM55
 
-CONDITIONS pass_hostile: DEN@PIT · NEB@IOWA · BUFF@AKR · TOL@OHIO · MINN@WIS
-BAN pass/rec spines those games → rush/Under.
+WHY REBUILD (mistakes locked):
+- TNF: Allen/Rice pass overs left RISK-KEEP in pass-hostile rain — dead (70 / 19). Weather must CUT pass/rec before weed labels.
+- Form KEEP ≠ SAFE: Reaves 7/7 PTS was OUT; Portis O0.5 3PT + Daniels O1.5 STL are binary ≠ SAFE/CLEAN identity.
+- Hook cush<1 (Edgecombe/Davion) = PRIMARY max, not SAFE3 spine.
+- grade_posted_card.py now scrubs OUT/GTD/binary/hook before CLEAN SLIP.
 
-KEY OUT: Reaves Q/Out · Cade OUT · Curry OUT · Edwards OUT · Jaylen Brown OUT · OG doubtful
-Posted KEEP: Edgecombe AST · Davion PTS · Portis 3PT · Daniels STL · Reaves PTS (HOLD if inactive)
-Full board → chat.
+CONDITIONS pass_hostile: DEN@PIT (43F precip55 gust29) · NEB@IOWA · BUFF@AKR · TOL@OHIO · MINN@WIS
+→ CUT Nix/Rodgers/WR-TE overs those games. Prefer U36.5 · DEN −4.5 · Warren/Coleman rush.
+
+KEY STATUS (ESPN summary):
+BAN OUT: Austin Reaves · Cade · Curry · Edwards · Jaylen Brown · Hali · Ja · Sharpe · Porzingis · Jimmy Butler
+GTD/HOLD: Embiid · Fox · OG (listed Out) · McBride · Drummond
+ACTIVE hooks only after scrub: Edgecombe · Davion
+
+=== SAFE (honest — no fake posted SAFE after scrub) ===
+1. DEN/PIT U36.5 — Acrisure PASS_HOSTILE precip55 gust29 · weather spine
+2. DEN −4.5 / ML — same script; BAN pass overs
+3. Timo Meier O1.5 SOG — NJ vs CGY — id=3899978 — L10=[2,5,3,3,3,4,3,5,8,6] 10/10 · Prudential indoor
+4. Zach Werenski O1.5 SOG — CBJ vs DET — id=3899972 — L10=[2,6,4,2,3,4,5,6,3,5] 10/10
+(If HR posts Nembhard O4.5 AST: 7/7 cush1.5 L=[6,8,8,6,10,12,8] — promote to SAFE. Posted main O7.5 is only 5/7 = RISK.)
+
+=== PRIMARY (hook clears + OUT-driven — NOT SAFE3 identity) ===
+- 7/7 VJ Edgecombe O3.5 AST — PHI vs IND — id=5124612 — L=[5,7,6,6,4,6,8] cush_min=0.5 HOOK · Brown OUT
+- 7/7 Davion Mitchell O13.5 PTS — MIA vs NY — id=4278053 — L=[20,14,24,16,15,22,19] cush_min=0.5 HOOK · MSG
+- 7/7 Andrew Nembhard soft O5.5 AST (if posted) — IND vs PHI — id=4395712 — L=[6,8,8,6,10,12,8] · Hali OUT · posted O7.5 = 5/7 only
+- 6/7 Castle O1.5 3PT / Siakam O1.5 3PT / Okongwu O1.5 3PT — RISK-KEEP threes
+- Jaylen Warren O64.5 RUSH — PIT vs DEN weather · CUT his REC overs as spine
+
+=== BANGERS ===
+1. Maxey O25.5 PTS — PHI vs IND — id=4431678 — Brown OUT usage (posted main; soft O20.5 better if HR)
+2. Brunson O27.5 PTS — NY vs MIA — id=3934672 — OG Out · juice (soft floor if posted)
+3. Deni Avdija O22.5+ PTS — POR vs GS — id=4683021 — Curry OUT GS · L7 PTS=[33,31,20,27,34,28,24]
+4. Siakam O22.5 PTS — IND vs PHI — id=3149673 — L7=[20,25,21,24,31,19,28]
+5. Towns O10.5 REB soft / O12.5 posted RISK — NY vs MIA — id=3136195
+6. Jokic O22.5 PTS soft path — DEN vs UTAH — id=3112335 — BAN posted O26.5 / O11.5 REB / O9.5 AST
+7. Luka O26.5 soft / O33.5 posted CUT-ish — LAL vs SA — id=3945274 — Reaves OUT usage bump
+8. Pasta O1.5 SOG (prefer) / O2.5 9/10 — BOS vs TOR — id=3114778 — miss=[1]
+9. Marner O1.5 SOG 9/10 — VGK vs SJ — id=3899937
+
+=== STL / NHL SOG ===
+- Daniels O1.5 STL — ATL vs BOS — id=4869342 — 7/7 BINARY add only (not SAFE/CLEAN)
+- BAN Thybulle/Kessler STL spines
+- Meier O1.5 · Werenski O1.5 · Pasta O1.5 · Marner O1.5 · Gauthier O1.5
+- Cap ≤2 SOG on mix tickets (McDavid-class rule)
+
+=== BY GAME (venue) ===
+- MIA@NY MSG indoor NY −3.5/222.5 — Davion hook · Brunson/Towns · OG Out
+- MIL@DET LCA indoor DET −9.5 — Cade OUT → number RISK / MIL +9.5
+- PHI@IND Gainbridge indoor PHI −2.5 — Edgecombe hook · Maxey bang · Nembhard soft · Brown OUT · Hali OUT
+- BKN@TOR Scotiabank TOR −7.5
+- ATL@BOS TD Garden BOS −9.5 — Daniels STL add · Pasta elsewhere
+- MEM@MIN Target Center MIN −3.5 — Edwards OUT
+- DAL@PHX Phoenix indoor PHX −2.5
+- LAL@SA Frost Bank SA −5.5 — Reaves OUT BAN all Reaves props · Luka/Castle/Wemby
+- DEN@UTAH Delta Center DEN −9.5 — Jokic soft path
+- NO@LAC Intuit LAC −3.5
+- GS@POR Moda POR −9.5 — Curry OUT · Deni bang
+- DEN@PIT Acrisure PASS_HOSTILE 43F precip55 gust29 — U36.5 · DEN −4.5 · Warren rush · CUT Nix/Rodgers/rec spines
+- NCAAF cold: IOWA −3.5/U40.5 · WIS −8.5/U37.5 · TEX −10.5 Kyle clear · MISS −17.5 · UTAH −26.5
+- NHL: Meier NJ · Werenski CBJ · Pasta BOS · Marner VGK
+
+=== BAN ===
+Reaves all props (OUT) · Cade · Curry · Edwards · Brown · Fox/Embiid until ACTIVE
+Nix O201.5 / Rodgers O199.5 / WR-TE overs in PIT rain-wind
+Wemby O30.5 / O12.5 · Jokic O11.5 REB / O9.5 AST / O26.5 posted
+Portis O0.5 3PT as SAFE/CLEAN identity · Daniels STL as SAFE/CLEAN identity
+DET −9.5 / POR −9.5 / BOS −9.5 as SAFE spines (big numbers)
+
+=== LIST 1 DIFFICULT ===
+| Leg | Why |
+|-----|-----|
+| Allen/Rice-class pass overs in rain | TNF receipt — CUT in pass-hostile |
+| Reaves form KEEP | OUT — void/kill |
+| Portis O0.5 / Daniels O1.5 as SAFE | binary variance |
+| Edgecombe/Davion as SAFE3 | hook cush 0.5 |
+| DET/POR/BOS −9.5 | cover tax + outs |
+| Nix/Rodgers PIT | precip55 gust29 |
+| Posted Jokic/Wemby hooks | CUT at main |
+| Pasta O2.5 | one-miss L10; prefer O1.5 |
+
+=== LIST 2 BETTER ===
+| Leg | Why |
+|-----|-----|
+| U36.5 DEN/PIT | weather total |
+| DEN −4.5 | weather + chalk |
+| Meier O1.5 SOG | 10/10 min2 |
+| Werenski O1.5 SOG | 10/10 |
+| Nembhard ≤O5.5 AST if HR | 7/7 · Hali OUT |
+| Edgecombe O3.5 / Davion O13.5 | PRIMARY hooks + OUT context |
+| Maxey / Deni / Brunson | OUT-driven bangs |
+| Warren rush PIT | weather fit |
+| Pasta/Marner O1.5 | volume floor vs O2.5 |
+
+=== CLEAN SLIPS (rebuilt) ===
+SAFE-lean 3: U36.5 DEN/PIT · Meier O1.5 SOG · Werenski O1.5 SOG
+MIX 5: SAFE3 + Edgecombe O3.5 AST + Davion O13.5 PTS  (hooks — know the risk)
+UPSIDE 4: Maxey O25.5 · Deni O22.5+ · Brunson soft floor if posted · Pasta O1.5 SOG
+NEVER on blessed: Reaves · Nix/Rodgers pass · Portis/Daniels as spine · Rice/Allen-class in pass-hostile
+
+DONE CHECK
+- require_gate: PASS date=20261127 sheets_ok=2269/2269
+- GATE_TODAY.json date=20261127 status=PASS
+- sheets_path=/cursor/stores/self/betting/GATE_SHEETS_20261127.json
+- game_conditions: PASS pass_hostile=DEN@PIT,NEB@IOWA,BUFF@AKR,TOL@OHIO,MINN@WIS
+- KEEP scrub: Reaves BAN_OUT · Portis/Daniels BINARY · Edgecombe/Davion HOOK
+- BANGERS section: yes
+- athlete_ids shown: yes
+- task shape matched user ask: yes (rebuild after mistakes)

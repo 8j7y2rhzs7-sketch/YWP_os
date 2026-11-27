@@ -38,7 +38,12 @@
         32.0
       ],
       "call": "CUT",
-      "athlete_id": "3945274"
+      "athlete_id": "3945274",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -8.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -75,7 +80,12 @@
         12.0
       ],
       "call": "CUT",
-      "athlete_id": "5104157"
+      "athlete_id": "5104157",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -18.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -112,7 +122,12 @@
         29.0
       ],
       "call": "CUT",
-      "athlete_id": "3032977"
+      "athlete_id": "3032977",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -9.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -149,7 +164,12 @@
         21.0
       ],
       "call": "CUT",
-      "athlete_id": "3934672"
+      "athlete_id": "3934672",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -8.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -187,7 +207,12 @@
         21.0
       ],
       "call": "CUT",
-      "athlete_id": "4065648"
+      "athlete_id": "4065648",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -5.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -225,7 +250,12 @@
         26.0
       ],
       "call": "CUT",
-      "athlete_id": "3112335"
+      "athlete_id": "3112335",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -8.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -263,7 +293,12 @@
         24.0
       ],
       "call": "CUT",
-      "athlete_id": "4431678"
+      "athlete_id": "4431678",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -8.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -302,7 +337,12 @@
         17.0
       ],
       "call": "CUT",
-      "athlete_id": "3136193"
+      "athlete_id": "3136193",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -8.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -339,7 +379,12 @@
         22.0
       ],
       "call": "CUT",
-      "athlete_id": "4433134"
+      "athlete_id": "4433134",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -7.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -377,7 +422,12 @@
         23.0
       ],
       "call": "CUT",
-      "athlete_id": "3936299"
+      "athlete_id": "3936299",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -10.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -415,7 +465,12 @@
         12.0
       ],
       "call": "CUT",
-      "athlete_id": "5041939"
+      "athlete_id": "5041939",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -11.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -453,7 +508,12 @@
         6.0
       ],
       "call": "CUT",
-      "athlete_id": "3059318"
+      "athlete_id": "3059318",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -16.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -492,7 +552,12 @@
         21.0
       ],
       "call": "CUT",
-      "athlete_id": "4065733"
+      "athlete_id": "4065733",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -5.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -529,7 +594,12 @@
         19.0
       ],
       "call": "CUT",
-      "athlete_id": "3149673"
+      "athlete_id": "3149673",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -566,7 +636,12 @@
         22.0
       ],
       "call": "CUT",
-      "athlete_id": "4395628"
+      "athlete_id": "4395628",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -6.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -604,7 +679,12 @@
         10.0
       ],
       "call": "CUT",
-      "athlete_id": "6442"
+      "athlete_id": "6442",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -12.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -641,7 +721,12 @@
         21.0
       ],
       "call": "CUT",
-      "athlete_id": "3136195"
+      "athlete_id": "3136195",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -9.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -677,7 +762,12 @@
         17.0
       ],
       "call": "RISK",
-      "athlete_id": "3064514"
+      "athlete_id": "3064514",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -715,7 +805,12 @@
         13.0
       ],
       "call": "CUT",
-      "athlete_id": "4433627"
+      "athlete_id": "4433627",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -8.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -755,7 +850,12 @@
         20.0
       ],
       "call": "CUT",
-      "athlete_id": "4278039"
+      "athlete_id": "4278039",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -793,7 +893,12 @@
         18.0
       ],
       "call": "CUT",
-      "athlete_id": "4395725"
+      "athlete_id": "4395725",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -15.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -830,7 +935,12 @@
         20.0
       ],
       "call": "CUT",
-      "athlete_id": "4396907"
+      "athlete_id": "4396907",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -8.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -869,7 +979,12 @@
         11.0
       ],
       "call": "CUT",
-      "athlete_id": "4395724"
+      "athlete_id": "4395724",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -8.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -908,7 +1023,12 @@
         19.0
       ],
       "call": "CUT",
-      "athlete_id": "4278104"
+      "athlete_id": "4278104",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -14.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -947,7 +1067,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "5175737"
+      "athlete_id": "5175737",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -16.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -984,7 +1109,12 @@
         18.0
       ],
       "call": "CUT",
-      "athlete_id": "4431671"
+      "athlete_id": "4431671",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -6.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1022,7 +1152,12 @@
         15.0
       ],
       "call": "CUT",
-      "athlete_id": "4701230"
+      "athlete_id": "4701230",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -6.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1058,7 +1193,12 @@
         7.0
       ],
       "call": "RISK",
-      "athlete_id": "4251"
+      "athlete_id": "4251",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -11.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1097,7 +1237,12 @@
         10.0
       ],
       "call": "CUT",
-      "athlete_id": "5107199"
+      "athlete_id": "5107199",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -8.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1136,7 +1281,12 @@
         6.0
       ],
       "call": "CUT",
-      "athlete_id": "4432816"
+      "athlete_id": "4432816",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -12.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -1173,7 +1323,12 @@
         8.0
       ],
       "call": "CUT",
-      "athlete_id": "4397002"
+      "athlete_id": "4397002",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -12.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1209,7 +1364,12 @@
         11.0
       ],
       "call": "RISK",
-      "athlete_id": "1966"
+      "athlete_id": "1966",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -7.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1244,7 +1404,12 @@
         10.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4845367"
+      "athlete_id": "4845367",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -7.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1277,7 +1442,12 @@
       ],
       "misses": [],
       "call": "KEEP",
-      "athlete_id": "4066457"
+      "athlete_id": "4066457",
+      "inj_status": "OUT",
+      "binary": false,
+      "cush_min": 0.5,
+      "playable": "BAN_OUT",
+      "ban_reason": "OUT/inactive \u2014 never SAFE/PRIMARY/CLEAN"
     },
     {
       "source": "betravon",
@@ -1314,7 +1484,12 @@
         11.0
       ],
       "call": "CUT",
-      "athlete_id": "4066261"
+      "athlete_id": "4066261",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -13.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1351,7 +1526,12 @@
         13.0
       ],
       "call": "CUT",
-      "athlete_id": "5144091"
+      "athlete_id": "5144091",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -10.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1381,7 +1561,12 @@
         16.0
       ],
       "call": "CUT",
-      "athlete_id": "3913176"
+      "athlete_id": "3913176",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1419,7 +1604,12 @@
         13.0
       ],
       "call": "CUT",
-      "athlete_id": "5041955"
+      "athlete_id": "5041955",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -10.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1456,7 +1646,12 @@
         12.0
       ],
       "call": "CUT",
-      "athlete_id": "4437244"
+      "athlete_id": "4437244",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -6.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1491,7 +1686,12 @@
         14.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4903027"
+      "athlete_id": "4903027",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1530,7 +1730,12 @@
         9.0
       ],
       "call": "CUT",
-      "athlete_id": "4395712"
+      "athlete_id": "4395712",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -6.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1567,7 +1772,12 @@
         7.0
       ],
       "call": "CUT",
-      "athlete_id": "4873138"
+      "athlete_id": "4873138",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -10.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1605,7 +1815,12 @@
         14.0
       ],
       "call": "CUT",
-      "athlete_id": "4433247"
+      "athlete_id": "4433247",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -7.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1642,7 +1857,12 @@
         11.0
       ],
       "call": "CUT",
-      "athlete_id": "5124612"
+      "athlete_id": "5124612",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1678,7 +1898,12 @@
         10.0
       ],
       "call": "RISK",
-      "athlete_id": "4397136"
+      "athlete_id": "4397136",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -12.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1715,7 +1940,12 @@
         6.0
       ],
       "call": "CUT",
-      "athlete_id": "4684272"
+      "athlete_id": "4684272",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -8.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1752,7 +1982,12 @@
         8.0
       ],
       "call": "CUT",
-      "athlete_id": "4709138"
+      "athlete_id": "4709138",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -6.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1791,7 +2026,12 @@
         11.0
       ],
       "call": "CUT",
-      "athlete_id": "4066383"
+      "athlete_id": "4066383",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -12.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1824,7 +2064,12 @@
       ],
       "misses": [],
       "call": "KEEP",
-      "athlete_id": "4278053"
+      "athlete_id": "4278053",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": 0.5,
+      "playable": "KEEP_HOOK",
+      "ban_reason": "hook cush_min=0.5 \u2014 PRIMARY max unless OUT-driven"
     },
     {
       "source": "betravon",
@@ -1862,7 +2107,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "3914044"
+      "athlete_id": "3914044",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -8.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1900,7 +2150,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "3078576"
+      "athlete_id": "3078576",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -8.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1935,7 +2190,12 @@
         6.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4431680"
+      "athlete_id": "4431680",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -7.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -1974,7 +2234,12 @@
         11.0
       ],
       "call": "CUT",
-      "athlete_id": "4066372"
+      "athlete_id": "4066372",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -11.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2013,7 +2278,12 @@
         9.0
       ],
       "call": "CUT",
-      "athlete_id": "3064290"
+      "athlete_id": "3064290",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -12.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2049,7 +2319,12 @@
         7.0
       ],
       "call": "RISK",
-      "athlete_id": "4066648"
+      "athlete_id": "4066648",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -9.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2087,7 +2362,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "3147657"
+      "athlete_id": "3147657",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -7.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2126,7 +2406,12 @@
         8.0
       ],
       "call": "CUT",
-      "athlete_id": "4066259"
+      "athlete_id": "4066259",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -7.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -2164,7 +2449,12 @@
         7.0
       ],
       "call": "CUT",
-      "athlete_id": "4395630"
+      "athlete_id": "4395630",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -6.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2201,7 +2491,12 @@
         11.0
       ],
       "call": "CUT",
-      "athlete_id": "6475"
+      "athlete_id": "6475",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -5.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2238,7 +2533,12 @@
         10.0
       ],
       "call": "CUT",
-      "athlete_id": "4066354"
+      "athlete_id": "4066354",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -7.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2276,7 +2576,12 @@
         12.0
       ],
       "call": "CUT",
-      "athlete_id": "4433136"
+      "athlete_id": "4433136",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2313,7 +2618,12 @@
         10.0
       ],
       "call": "CUT",
-      "athlete_id": "4684742"
+      "athlete_id": "4684742",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -6.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2352,7 +2662,12 @@
         6.0
       ],
       "call": "CUT",
-      "athlete_id": "4432848"
+      "athlete_id": "4432848",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -9.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2391,7 +2706,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4396909"
+      "athlete_id": "4396909",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -10.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2429,7 +2749,12 @@
         4.0
       ],
       "call": "CUT",
-      "athlete_id": "4397424"
+      "athlete_id": "4397424",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -7.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2464,7 +2789,12 @@
         9.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "3134907"
+      "athlete_id": "3134907",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2501,7 +2831,12 @@
         8.0
       ],
       "call": "CUT",
-      "athlete_id": "4017837"
+      "athlete_id": "4017837",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -7.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2537,7 +2872,12 @@
         2.0
       ],
       "call": "RISK",
-      "athlete_id": "4397014"
+      "athlete_id": "4397014",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -8.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2574,7 +2914,12 @@
         7.0
       ],
       "call": "CUT",
-      "athlete_id": "4592479"
+      "athlete_id": "4592479",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -6.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2613,7 +2958,12 @@
         8.0
       ],
       "call": "CUT",
-      "athlete_id": "4591725"
+      "athlete_id": "4591725",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -8.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2652,7 +3002,12 @@
         6.0
       ],
       "call": "CUT",
-      "athlete_id": "3134908"
+      "athlete_id": "3134908",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -7.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2690,7 +3045,12 @@
         6.0
       ],
       "call": "CUT",
-      "athlete_id": "4278078"
+      "athlete_id": "4278078",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2729,7 +3089,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "5112087"
+      "athlete_id": "5112087",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -5.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2767,7 +3132,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "3062679"
+      "athlete_id": "3062679",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -9.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2804,7 +3174,12 @@
         7.0
       ],
       "call": "CUT",
-      "athlete_id": "4601025"
+      "athlete_id": "4601025",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -5.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2842,7 +3217,12 @@
         9.0
       ],
       "call": "CUT",
-      "athlete_id": "4869342"
+      "athlete_id": "4869342",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2879,7 +3259,12 @@
         6.0
       ],
       "call": "CUT",
-      "athlete_id": "4432194"
+      "athlete_id": "4432194",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2914,7 +3299,12 @@
         9.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4869780"
+      "athlete_id": "4869780",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2951,7 +3341,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "4278049"
+      "athlete_id": "4278049",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -6.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -2988,7 +3383,12 @@
         8.0
       ],
       "call": "CUT",
-      "athlete_id": "3059319"
+      "athlete_id": "3059319",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -3026,7 +3426,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "4397020"
+      "athlete_id": "4397020",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -6.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3062,7 +3467,12 @@
         8.0
       ],
       "call": "RISK",
-      "athlete_id": "5149077"
+      "athlete_id": "5149077",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -8.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3101,7 +3511,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "4065778"
+      "athlete_id": "4065778",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -8.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3139,7 +3554,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "3032976"
+      "athlete_id": "3032976",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -8.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3175,7 +3595,12 @@
         3.0
       ],
       "call": "RISK",
-      "athlete_id": "4065804"
+      "athlete_id": "4065804",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3212,7 +3637,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "3064482"
+      "athlete_id": "3064482",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3250,7 +3680,12 @@
         4.0
       ],
       "call": "CUT",
-      "athlete_id": "4592691"
+      "athlete_id": "4592691",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -5.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3288,7 +3723,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "6589"
+      "athlete_id": "6589",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3326,7 +3766,12 @@
         9.0
       ],
       "call": "CUT",
-      "athlete_id": "5104157"
+      "athlete_id": "5104157",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3363,7 +3808,12 @@
         11.0
       ],
       "call": "CUT",
-      "athlete_id": "3136195"
+      "athlete_id": "3136195",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3399,7 +3849,12 @@
         11.0
       ],
       "call": "RISK",
-      "athlete_id": "3032977"
+      "athlete_id": "3032977",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -3438,7 +3893,12 @@
         11.0
       ],
       "call": "CUT",
-      "athlete_id": "3112335"
+      "athlete_id": "3112335",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3474,7 +3934,12 @@
         10.0
       ],
       "call": "RISK",
-      "athlete_id": "4433136"
+      "athlete_id": "4433136",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3513,7 +3978,12 @@
         10.0
       ],
       "call": "CUT",
-      "athlete_id": "3032976"
+      "athlete_id": "3032976",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -6.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3549,7 +4019,12 @@
         5.0
       ],
       "call": "RISK",
-      "athlete_id": "4017837"
+      "athlete_id": "4017837",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -6.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3587,7 +4062,12 @@
         8.0
       ],
       "call": "CUT",
-      "athlete_id": "4066261"
+      "athlete_id": "4066261",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -7.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3626,7 +4106,12 @@
         7.0
       ],
       "call": "CUT",
-      "athlete_id": "3059318"
+      "athlete_id": "3059318",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -3663,7 +4148,12 @@
         8.0
       ],
       "call": "CUT",
-      "athlete_id": "4684742"
+      "athlete_id": "4684742",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3700,7 +4190,12 @@
         7.0
       ],
       "call": "CUT",
-      "athlete_id": "4701230"
+      "athlete_id": "4701230",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3737,7 +4232,12 @@
         4.0
       ],
       "call": "CUT",
-      "athlete_id": "4432194"
+      "athlete_id": "4432194",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3774,7 +4274,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4431680"
+      "athlete_id": "4431680",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -5.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3812,7 +4317,12 @@
         6.0
       ],
       "call": "CUT",
-      "athlete_id": "4065648"
+      "athlete_id": "4065648",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3847,7 +4357,12 @@
         6.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4869342"
+      "athlete_id": "4869342",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3885,7 +4400,12 @@
         6.0
       ],
       "call": "CUT",
-      "athlete_id": "4397424"
+      "athlete_id": "4397424",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3922,7 +4442,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "4903027"
+      "athlete_id": "4903027",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3959,7 +4484,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "3134908"
+      "athlete_id": "3134908",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -3998,7 +4528,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "3945274"
+      "athlete_id": "3945274",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4037,7 +4572,12 @@
         4.0
       ],
       "call": "CUT",
-      "athlete_id": "3064514"
+      "athlete_id": "3064514",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -6.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4075,7 +4615,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "3149673"
+      "athlete_id": "3149673",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4113,7 +4658,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "1966"
+      "athlete_id": "1966",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4148,7 +4698,12 @@
         5.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "5175737"
+      "athlete_id": "5175737",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4187,7 +4742,12 @@
         6.0
       ],
       "call": "CUT",
-      "athlete_id": "4433134"
+      "athlete_id": "4433134",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4226,7 +4786,12 @@
         6.0
       ],
       "call": "CUT",
-      "athlete_id": "4278104"
+      "athlete_id": "4278104",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4265,7 +4830,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "5041939"
+      "athlete_id": "5041939",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4302,7 +4872,12 @@
         6.0
       ],
       "call": "CUT",
-      "athlete_id": "4066383"
+      "athlete_id": "4066383",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4342,7 +4917,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "4278049"
+      "athlete_id": "4278049",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4379,7 +4959,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "3062679"
+      "athlete_id": "3062679",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4417,7 +5002,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "4845367"
+      "athlete_id": "4845367",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4455,7 +5045,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "4592479"
+      "athlete_id": "4592479",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4493,7 +5088,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "4251"
+      "athlete_id": "4251",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4529,7 +5129,12 @@
         4.0
       ],
       "call": "RISK",
-      "athlete_id": "5124612"
+      "athlete_id": "5124612",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4567,7 +5172,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "4431671"
+      "athlete_id": "4431671",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4606,7 +5216,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "4433247"
+      "athlete_id": "4433247",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4644,7 +5259,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "4873138"
+      "athlete_id": "4873138",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4682,7 +5302,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "5144091"
+      "athlete_id": "5144091",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4721,7 +5346,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "3064290"
+      "athlete_id": "3064290",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4758,7 +5388,12 @@
         4.0
       ],
       "call": "CUT",
-      "athlete_id": "4395628"
+      "athlete_id": "4395628",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4795,7 +5430,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4066648"
+      "athlete_id": "4066648",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4831,7 +5471,12 @@
         5.0
       ],
       "call": "RISK",
-      "athlete_id": "4869780"
+      "athlete_id": "4869780",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4869,7 +5514,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "3064482"
+      "athlete_id": "3064482",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4908,7 +5558,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "5107199"
+      "athlete_id": "5107199",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4946,7 +5601,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4395725"
+      "athlete_id": "4395725",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -4983,7 +5643,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "3134907"
+      "athlete_id": "3134907",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5018,7 +5683,12 @@
         2.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4432816"
+      "athlete_id": "4432816",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -5056,7 +5726,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4432848"
+      "athlete_id": "4432848",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5094,7 +5769,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "4684272"
+      "athlete_id": "4684272",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5132,7 +5812,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "6589"
+      "athlete_id": "6589",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5168,7 +5853,12 @@
         4.0
       ],
       "call": "RISK",
-      "athlete_id": "4397136"
+      "athlete_id": "4397136",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5196,7 +5886,12 @@
       ],
       "misses": [],
       "call": "CUT",
-      "athlete_id": "3913176"
+      "athlete_id": "3913176",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": 0.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5234,7 +5929,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "4709138"
+      "athlete_id": "4709138",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5272,7 +5972,12 @@
         4.0
       ],
       "call": "CUT",
-      "athlete_id": "3936299"
+      "athlete_id": "3936299",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5308,7 +6013,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "5041955"
+      "athlete_id": "5041955",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5348,7 +6058,12 @@
         4.0
       ],
       "call": "CUT",
-      "athlete_id": "4397002"
+      "athlete_id": "4397002",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5384,7 +6099,12 @@
         3.0
       ],
       "call": "RISK",
-      "athlete_id": "4278078"
+      "athlete_id": "4278078",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5423,7 +6143,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "3934672"
+      "athlete_id": "3934672",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5461,7 +6186,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "4066259"
+      "athlete_id": "4066259",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -5500,7 +6230,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "4066457"
+      "athlete_id": "4066457",
+      "inj_status": "OUT",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "BAN_OUT",
+      "ban_reason": "OUT/inactive \u2014 never SAFE/PRIMARY/CLEAN"
     },
     {
       "source": "betravon",
@@ -5538,7 +6273,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4066354"
+      "athlete_id": "4066354",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5574,7 +6314,12 @@
         3.0
       ],
       "call": "RISK",
-      "athlete_id": "4278039"
+      "athlete_id": "4278039",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5611,7 +6356,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4397014"
+      "athlete_id": "4397014",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5650,7 +6400,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4065804"
+      "athlete_id": "4065804",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5688,7 +6443,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "3147657"
+      "athlete_id": "3147657",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5724,7 +6484,12 @@
         2.0
       ],
       "call": "RISK",
-      "athlete_id": "4395630"
+      "athlete_id": "4395630",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5763,7 +6528,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "3078576"
+      "athlete_id": "3078576",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5800,7 +6570,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "4592691"
+      "athlete_id": "4592691",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5838,7 +6613,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4395724"
+      "athlete_id": "4395724",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5875,7 +6655,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "4591725"
+      "athlete_id": "4591725",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5912,7 +6697,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4065733"
+      "athlete_id": "4065733",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5948,7 +6738,12 @@
         2.0
       ],
       "call": "RISK",
-      "athlete_id": "4437244"
+      "athlete_id": "4437244",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -5985,7 +6780,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4433627"
+      "athlete_id": "4433627",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6023,7 +6823,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4066372"
+      "athlete_id": "4066372",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6061,7 +6866,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4065778"
+      "athlete_id": "4065778",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6099,7 +6909,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4431678"
+      "athlete_id": "4431678",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6137,7 +6952,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "3136193"
+      "athlete_id": "3136193",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6174,7 +6994,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "6442"
+      "athlete_id": "6442",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6211,7 +7036,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "5112087"
+      "athlete_id": "5112087",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6249,7 +7079,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4396909"
+      "athlete_id": "4396909",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6288,7 +7123,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "3059319"
+      "athlete_id": "3059319",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -6328,7 +7168,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "6475"
+      "athlete_id": "6475",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6365,7 +7210,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4397020"
+      "athlete_id": "4397020",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6400,7 +7250,12 @@
         2.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4278053"
+      "athlete_id": "4278053",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6436,7 +7291,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4601025"
+      "athlete_id": "4601025",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6474,7 +7334,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "5149077"
+      "athlete_id": "5149077",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6511,7 +7376,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4396907"
+      "athlete_id": "4396907",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6549,7 +7419,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4395712"
+      "athlete_id": "4395712",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6586,7 +7461,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "3914044"
+      "athlete_id": "3914044",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6624,7 +7504,12 @@
         8.0
       ],
       "call": "CUT",
-      "athlete_id": "3112335"
+      "athlete_id": "3112335",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6660,7 +7545,12 @@
         6.0
       ],
       "call": "RISK",
-      "athlete_id": "4278053"
+      "athlete_id": "4278053",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6697,7 +7587,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "3945274"
+      "athlete_id": "3945274",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6736,7 +7631,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "5107199"
+      "athlete_id": "5107199",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -7.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6775,7 +7675,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "1966"
+      "athlete_id": "1966",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6811,7 +7716,12 @@
         6.0
       ],
       "call": "RISK",
-      "athlete_id": "4395712"
+      "athlete_id": "4395712",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6848,7 +7758,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "3934672"
+      "athlete_id": "3934672",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6884,7 +7799,12 @@
         6.0
       ],
       "call": "RISK",
-      "athlete_id": "4845367"
+      "athlete_id": "4845367",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6923,7 +7843,12 @@
         4.0
       ],
       "call": "CUT",
-      "athlete_id": "4065648"
+      "athlete_id": "4065648",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -6962,7 +7887,12 @@
         6.0
       ],
       "call": "CUT",
-      "athlete_id": "4701230"
+      "athlete_id": "4701230",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -6.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7001,7 +7931,12 @@
         4.0
       ],
       "call": "CUT",
-      "athlete_id": "4395724"
+      "athlete_id": "4395724",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7038,7 +7973,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "4396907"
+      "athlete_id": "4396907",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7074,7 +8014,12 @@
         6.0
       ],
       "call": "RISK",
-      "athlete_id": "4433627"
+      "athlete_id": "4433627",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7112,7 +8057,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "5041939"
+      "athlete_id": "5041939",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7150,7 +8100,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "3032977"
+      "athlete_id": "3032977",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -7187,7 +8142,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4066259"
+      "athlete_id": "4066259",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -7225,7 +8185,12 @@
         4.0
       ],
       "call": "CUT",
-      "athlete_id": "3062679"
+      "athlete_id": "3062679",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7262,7 +8227,12 @@
         4.0
       ],
       "call": "CUT",
-      "athlete_id": "4869342"
+      "athlete_id": "4869342",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7300,7 +8270,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "4433134"
+      "athlete_id": "4433134",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7338,7 +8313,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "4684742"
+      "athlete_id": "4684742",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7375,7 +8355,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4432816"
+      "athlete_id": "4432816",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -5.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -7413,7 +8398,12 @@
         5.0
       ],
       "call": "CUT",
-      "athlete_id": "4065733"
+      "athlete_id": "4065733",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7451,7 +8441,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "6589"
+      "athlete_id": "6589",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7488,7 +8483,12 @@
         4.0
       ],
       "call": "CUT",
-      "athlete_id": "4431678"
+      "athlete_id": "4431678",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7525,7 +8525,12 @@
         4.0
       ],
       "call": "CUT",
-      "athlete_id": "3936299"
+      "athlete_id": "3936299",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7561,7 +8566,12 @@
         3.0
       ],
       "call": "RISK",
-      "athlete_id": "3136193"
+      "athlete_id": "3136193",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7598,7 +8608,12 @@
         4.0
       ],
       "call": "CUT",
-      "athlete_id": "5144091"
+      "athlete_id": "5144091",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7634,7 +8649,12 @@
         3.0
       ],
       "call": "RISK",
-      "athlete_id": "3136195"
+      "athlete_id": "3136195",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7671,7 +8691,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "3078576"
+      "athlete_id": "3078576",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7709,7 +8734,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4066354"
+      "athlete_id": "4066354",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7747,7 +8777,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "3064514"
+      "athlete_id": "3064514",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7783,7 +8818,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4432194"
+      "athlete_id": "4432194",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7822,7 +8862,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4397002"
+      "athlete_id": "4397002",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7860,7 +8905,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4395725"
+      "athlete_id": "4395725",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7897,7 +8947,12 @@
         4.0
       ],
       "call": "CUT",
-      "athlete_id": "6442"
+      "athlete_id": "6442",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7935,7 +8990,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "5041955"
+      "athlete_id": "5041955",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -7970,7 +9030,12 @@
         2.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4066457"
+      "athlete_id": "4066457",
+      "inj_status": "OUT",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "BAN_OUT",
+      "ban_reason": "OUT/inactive \u2014 never SAFE/PRIMARY/CLEAN"
     },
     {
       "source": "betravon",
@@ -8008,7 +9073,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "5104157"
+      "athlete_id": "5104157",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8046,7 +9116,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4251"
+      "athlete_id": "4251",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8082,7 +9157,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "5149077"
+      "athlete_id": "5149077",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8118,7 +9198,12 @@
         3.0
       ],
       "call": "RISK",
-      "athlete_id": "4431671"
+      "athlete_id": "4431671",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8155,7 +9240,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4903027"
+      "athlete_id": "4903027",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8194,7 +9284,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "3149673"
+      "athlete_id": "3149673",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8233,7 +9328,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "5175737"
+      "athlete_id": "5175737",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8272,7 +9372,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4591725"
+      "athlete_id": "4591725",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8300,7 +9405,12 @@
       ],
       "misses": [],
       "call": "CUT",
-      "athlete_id": "3913176"
+      "athlete_id": "3913176",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": 0.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8338,7 +9448,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4709138"
+      "athlete_id": "4709138",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8377,7 +9492,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4437244"
+      "athlete_id": "4437244",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8415,7 +9535,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4066372"
+      "athlete_id": "4066372",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8453,7 +9578,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "3059318"
+      "athlete_id": "3059318",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -8486,7 +9616,12 @@
       ],
       "misses": [],
       "call": "KEEP",
-      "athlete_id": "5124612"
+      "athlete_id": "5124612",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": 0.5,
+      "playable": "KEEP_HOOK",
+      "ban_reason": "hook cush_min=0.5 \u2014 PRIMARY max unless OUT-driven"
     },
     {
       "source": "betravon",
@@ -8523,7 +9658,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "3147657"
+      "athlete_id": "3147657",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8562,7 +9702,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4395630"
+      "athlete_id": "4395630",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8601,7 +9746,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4431680"
+      "athlete_id": "4431680",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8637,7 +9787,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "4397014"
+      "athlete_id": "4397014",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8673,7 +9828,12 @@
         2.0
       ],
       "call": "RISK",
-      "athlete_id": "4066261"
+      "athlete_id": "4066261",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8710,7 +9870,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4601025"
+      "athlete_id": "4601025",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8746,7 +9911,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4278039"
+      "athlete_id": "4278039",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8786,7 +9956,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "3134907"
+      "athlete_id": "3134907",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8823,7 +9998,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4432848"
+      "athlete_id": "4432848",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8860,7 +10040,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4433247"
+      "athlete_id": "4433247",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8897,7 +10082,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4065778"
+      "athlete_id": "4065778",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8936,7 +10126,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4395628"
+      "athlete_id": "4395628",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -8971,7 +10166,12 @@
         2.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4066383"
+      "athlete_id": "4066383",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9007,7 +10207,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "4397136"
+      "athlete_id": "4397136",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9046,7 +10251,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4684272"
+      "athlete_id": "4684272",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9085,7 +10295,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "3064290"
+      "athlete_id": "3064290",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9124,7 +10339,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4869780"
+      "athlete_id": "4869780",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9162,7 +10382,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "3914044"
+      "athlete_id": "3914044",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9198,7 +10423,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "4592691"
+      "athlete_id": "4592691",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9234,7 +10464,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "6475"
+      "athlete_id": "6475",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9269,7 +10504,12 @@
         1.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4397424"
+      "athlete_id": "4397424",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9305,7 +10545,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "4278104"
+      "athlete_id": "4278104",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9343,7 +10588,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4592479"
+      "athlete_id": "4592479",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9379,7 +10629,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4433136"
+      "athlete_id": "4433136",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9417,7 +10672,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "3059319"
+      "athlete_id": "3059319",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -9454,7 +10714,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4066648"
+      "athlete_id": "4066648",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9493,7 +10758,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4278078"
+      "athlete_id": "4278078",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9531,7 +10801,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "5112087"
+      "athlete_id": "5112087",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9567,7 +10842,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4278049"
+      "athlete_id": "4278049",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9603,7 +10883,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4396909"
+      "athlete_id": "4396909",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9641,7 +10926,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4017837"
+      "athlete_id": "4017837",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9677,7 +10967,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "3032976"
+      "athlete_id": "3032976",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9714,7 +11009,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "3134908"
+      "athlete_id": "3134908",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9752,7 +11052,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "3945274"
+      "athlete_id": "3945274",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9789,7 +11094,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "3934672"
+      "athlete_id": "3934672",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9826,7 +11136,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "6475"
+      "athlete_id": "6475",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9864,7 +11179,12 @@
         3.0
       ],
       "call": "CUT",
-      "athlete_id": "4065648"
+      "athlete_id": "4065648",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9903,7 +11223,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4278039"
+      "athlete_id": "4278039",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -9942,7 +11267,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4432816"
+      "athlete_id": "4432816",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -9980,7 +11310,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4397136"
+      "athlete_id": "4397136",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10017,7 +11352,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4592479"
+      "athlete_id": "4592479",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10054,7 +11394,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "3914044"
+      "athlete_id": "3914044",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10091,7 +11436,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4251"
+      "athlete_id": "4251",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10129,7 +11479,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4066354"
+      "athlete_id": "4066354",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10166,7 +11521,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4395724"
+      "athlete_id": "4395724",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10204,7 +11564,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4278104"
+      "athlete_id": "4278104",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10242,7 +11607,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4684272"
+      "athlete_id": "4684272",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10279,7 +11649,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4431678"
+      "athlete_id": "4431678",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10316,7 +11691,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4396907"
+      "athlete_id": "4396907",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10354,7 +11734,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4065733"
+      "athlete_id": "4065733",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10392,7 +11777,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4397002"
+      "athlete_id": "4397002",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10429,7 +11819,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4709138"
+      "athlete_id": "4709138",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10467,7 +11862,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "5107199"
+      "athlete_id": "5107199",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10504,7 +11904,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4395725"
+      "athlete_id": "4395725",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10543,7 +11948,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "3936299"
+      "athlete_id": "3936299",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10580,7 +11990,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "6442"
+      "athlete_id": "6442",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10618,7 +12033,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4433627"
+      "athlete_id": "4433627",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10657,7 +12077,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4873138"
+      "athlete_id": "4873138",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10695,7 +12120,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "5101761"
+      "athlete_id": "5101761",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10733,7 +12163,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "4397688"
+      "athlete_id": "4397688",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10772,7 +12207,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4066648"
+      "athlete_id": "4066648",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10808,7 +12248,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "3147657"
+      "athlete_id": "3147657",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10847,7 +12292,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4066259"
+      "athlete_id": "4066259",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -10884,7 +12334,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4395630"
+      "athlete_id": "4395630",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10924,7 +12379,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "3062679"
+      "athlete_id": "3062679",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -10963,7 +12423,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4066261"
+      "athlete_id": "4066261",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11000,7 +12465,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4601025"
+      "athlete_id": "4601025",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11038,7 +12508,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4066457"
+      "athlete_id": "4066457",
+      "inj_status": "OUT",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "BAN_OUT",
+      "ban_reason": "OUT/inactive \u2014 never SAFE/PRIMARY/CLEAN"
     },
     {
       "source": "betravon",
@@ -11075,7 +12550,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "3078576"
+      "athlete_id": "3078576",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11115,7 +12595,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4701230"
+      "athlete_id": "4701230",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11152,7 +12637,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4397014"
+      "athlete_id": "4397014",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11191,7 +12681,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4397020"
+      "athlete_id": "4397020",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11227,7 +12722,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "3136195"
+      "athlete_id": "3136195",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11263,7 +12763,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4278053"
+      "athlete_id": "4278053",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11299,7 +12804,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "5104157"
+      "athlete_id": "5104157",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11334,7 +12844,12 @@
         0.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4845367"
+      "athlete_id": "4845367",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11369,7 +12884,12 @@
         1.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4431680"
+      "athlete_id": "4431680",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11405,7 +12925,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4065804"
+      "athlete_id": "4065804",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11441,7 +12966,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "3064514"
+      "athlete_id": "3064514",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11477,7 +13007,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "3134907"
+      "athlete_id": "3134907",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11516,7 +13051,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4591725"
+      "athlete_id": "4591725",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11555,7 +13095,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4432848"
+      "athlete_id": "4432848",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11594,7 +13139,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4066372"
+      "athlete_id": "4066372",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11629,7 +13179,12 @@
         0.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "3149673"
+      "athlete_id": "3149673",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11667,7 +13222,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "1966"
+      "athlete_id": "1966",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11706,7 +13266,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "5124612"
+      "athlete_id": "5124612",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11742,7 +13307,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "4431671"
+      "athlete_id": "4431671",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11779,7 +13349,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "5112087"
+      "athlete_id": "5112087",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11818,7 +13393,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4433247"
+      "athlete_id": "4433247",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11856,7 +13436,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "5144091"
+      "athlete_id": "5144091",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11895,7 +13480,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4065778"
+      "athlete_id": "4065778",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11925,7 +13515,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "3913176"
+      "athlete_id": "3913176",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -11964,7 +13559,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "5175737"
+      "athlete_id": "5175737",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12001,7 +13601,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "5041939"
+      "athlete_id": "5041939",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12041,7 +13646,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "3064290"
+      "athlete_id": "3064290",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12078,7 +13688,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "3136193"
+      "athlete_id": "3136193",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12116,7 +13731,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4437244"
+      "athlete_id": "4437244",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12154,7 +13774,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "3112335"
+      "athlete_id": "3112335",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12190,7 +13815,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "3155526"
+      "athlete_id": "3155526",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12228,7 +13858,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "5041955"
+      "athlete_id": "5041955",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12264,7 +13899,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "4903027"
+      "athlete_id": "4903027",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12301,7 +13941,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4278078"
+      "athlete_id": "4278078",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12337,7 +13982,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4431767"
+      "athlete_id": "4431767",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12374,7 +14024,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4433083"
+      "athlete_id": "4433083",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12413,7 +14068,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4396909"
+      "athlete_id": "4396909",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12450,7 +14110,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "3133603"
+      "athlete_id": "3133603",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -12486,7 +14151,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4395712"
+      "athlete_id": "4395712",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12524,7 +14194,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4066383"
+      "athlete_id": "4066383",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12557,7 +14232,12 @@
       ],
       "misses": [],
       "call": "KEEP",
-      "athlete_id": "3064482"
+      "athlete_id": "3064482",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": 0.5,
+      "playable": "KEEP_BINARY",
+      "ban_reason": "binary (STL/BLK/O0.5 3PT) \u2014 add only, not CLEAN spine"
     },
     {
       "source": "betravon",
@@ -12595,7 +14275,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4592691"
+      "athlete_id": "4592691",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12631,7 +14316,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "3059319"
+      "athlete_id": "3059319",
+      "inj_status": "GTD",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -12668,7 +14358,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4433134"
+      "athlete_id": "4433134",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12707,7 +14402,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "3059318"
+      "athlete_id": "3059318",
+      "inj_status": "GTD",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -12745,7 +14445,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "3032977"
+      "athlete_id": "3032977",
+      "inj_status": "GTD",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -12784,7 +14489,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4432194"
+      "athlete_id": "4432194",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12821,7 +14531,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "6589"
+      "athlete_id": "6589",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12857,7 +14572,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "4066436"
+      "athlete_id": "4066436",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12893,7 +14613,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "5149077"
+      "athlete_id": "5149077",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12928,7 +14653,12 @@
         0.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "3138160"
+      "athlete_id": "3138160",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -12965,7 +14695,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "3945274"
+      "athlete_id": "3945274",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13004,7 +14739,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "5104157"
+      "athlete_id": "5104157",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13041,7 +14781,12 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4251"
+      "athlete_id": "4251",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13074,7 +14819,12 @@
       ],
       "misses": [],
       "call": "KEEP",
-      "athlete_id": "4869342"
+      "athlete_id": "4869342",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": 0.5,
+      "playable": "KEEP_BINARY",
+      "ban_reason": "binary (STL/BLK/O0.5 3PT) \u2014 add only, not CLEAN spine"
     },
     {
       "source": "betravon",
@@ -13109,7 +14859,12 @@
         1.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "3907498"
+      "athlete_id": "3907498",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13144,7 +14899,12 @@
         0.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4433136"
+      "athlete_id": "4433136",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13182,7 +14942,12 @@
         2.0
       ],
       "call": "CUT",
-      "athlete_id": "5104157"
+      "athlete_id": "5104157",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -2.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13219,7 +14984,12 @@
         1.0
       ],
       "call": "CUT",
-      "athlete_id": "4433136"
+      "athlete_id": "4433136",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13257,43 +15027,16 @@
         0.0
       ],
       "call": "CUT",
-      "athlete_id": "4397424"
+      "athlete_id": "4397424",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -1.5,
+      "playable": "CUT",
+      "ban_reason": null
     }
   ],
-  "keep": [
-    {
-      "source": "betravon",
-      "sport": "nba",
-      "player": "Austin Reaves",
-      "slug": "austin-reaves",
-      "team": "LAL",
-      "opponent": "SA",
-      "is_home": false,
-      "game_time": "2026-11-28T02:30:00.000Z",
-      "stat": "PTS",
-      "stat_slug": "points",
-      "line": 17.5,
-      "books": 11,
-      "l10_n": 10,
-      "l10_over": 9,
-      "posted_kind": "MAIN",
-      "hr_confirmed": false,
-      "sheet_name": "Austin Reaves",
-      "hits": 7,
-      "n": 7,
-      "vals": [
-        18.0,
-        43.0,
-        25.0,
-        21.0,
-        27.0,
-        19.0,
-        21.0
-      ],
-      "misses": [],
-      "call": "KEEP",
-      "athlete_id": "4066457"
-    },
+  "keep": [],
+  "keep_hook": [
     {
       "source": "betravon",
       "sport": "nba",
@@ -13325,7 +15068,12 @@
       ],
       "misses": [],
       "call": "KEEP",
-      "athlete_id": "4278053"
+      "athlete_id": "4278053",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": 0.5,
+      "playable": "KEEP_HOOK",
+      "ban_reason": "hook cush_min=0.5 \u2014 PRIMARY max unless OUT-driven"
     },
     {
       "source": "betravon",
@@ -13358,8 +15106,15 @@
       ],
       "misses": [],
       "call": "KEEP",
-      "athlete_id": "5124612"
-    },
+      "athlete_id": "5124612",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": 0.5,
+      "playable": "KEEP_HOOK",
+      "ban_reason": "hook cush_min=0.5 \u2014 PRIMARY max unless OUT-driven"
+    }
+  ],
+  "keep_binary": [
     {
       "source": "betravon",
       "sport": "nba",
@@ -13391,7 +15146,12 @@
       ],
       "misses": [],
       "call": "KEEP",
-      "athlete_id": "3064482"
+      "athlete_id": "3064482",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": 0.5,
+      "playable": "KEEP_BINARY",
+      "ban_reason": "binary (STL/BLK/O0.5 3PT) \u2014 add only, not CLEAN spine"
     },
     {
       "source": "betravon",
@@ -13424,7 +15184,1269 @@
       ],
       "misses": [],
       "call": "KEEP",
-      "athlete_id": "4869342"
+      "athlete_id": "4869342",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": 0.5,
+      "playable": "KEEP_BINARY",
+      "ban_reason": "binary (STL/BLK/O0.5 3PT) \u2014 add only, not CLEAN spine"
+    }
+  ],
+  "ban_status": [
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Giannis Antetokounmpo",
+      "slug": "giannis-antetokounmpo",
+      "team": "MIA",
+      "opponent": "NY",
+      "is_home": false,
+      "game_time": "2026-11-28T00:00:00.000Z",
+      "stat": "PTS",
+      "stat_slug": "points",
+      "line": 29.5,
+      "books": 12,
+      "l10_n": 10,
+      "l10_over": 5,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Giannis Antetokounmpo",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        32.0,
+        27.0,
+        20.0,
+        34.0,
+        37.0,
+        30.0,
+        29.0
+      ],
+      "misses": [
+        27.0,
+        20.0,
+        29.0
+      ],
+      "call": "CUT",
+      "athlete_id": "3032977",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -9.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Joel Embiid",
+      "slug": "joel-embiid",
+      "team": "PHI",
+      "opponent": "IND",
+      "is_home": false,
+      "game_time": "2026-11-28T00:30:00.000Z",
+      "stat": "PTS",
+      "stat_slug": "points",
+      "line": 22.5,
+      "books": 5,
+      "l10_n": 10,
+      "l10_over": 4,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Joel Embiid",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        26.0,
+        26.0,
+        37.0,
+        20.0,
+        16.0,
+        18.0,
+        6.0
+      ],
+      "misses": [
+        20.0,
+        16.0,
+        18.0,
+        6.0
+      ],
+      "call": "CUT",
+      "athlete_id": "3059318",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -16.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "LaMelo Ball",
+      "slug": "lamelo-ball",
+      "team": "MIN",
+      "opponent": "MEM",
+      "is_home": true,
+      "game_time": "2026-11-28T01:30:00.000Z",
+      "stat": "PTS",
+      "stat_slug": "points",
+      "line": 18.5,
+      "books": 5,
+      "l10_n": 10,
+      "l10_over": 5,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "LaMelo Ball",
+      "hits": 2,
+      "n": 7,
+      "vals": [
+        19.0,
+        17.0,
+        12.0,
+        15.0,
+        18.0,
+        6.0,
+        19.0
+      ],
+      "misses": [
+        17.0,
+        12.0,
+        15.0,
+        18.0,
+        6.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4432816",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -12.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Austin Reaves",
+      "slug": "austin-reaves",
+      "team": "LAL",
+      "opponent": "SA",
+      "is_home": false,
+      "game_time": "2026-11-28T02:30:00.000Z",
+      "stat": "PTS",
+      "stat_slug": "points",
+      "line": 17.5,
+      "books": 11,
+      "l10_n": 10,
+      "l10_over": 9,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Austin Reaves",
+      "hits": 7,
+      "n": 7,
+      "vals": [
+        18.0,
+        43.0,
+        25.0,
+        21.0,
+        27.0,
+        19.0,
+        21.0
+      ],
+      "misses": [],
+      "call": "KEEP",
+      "athlete_id": "4066457",
+      "inj_status": "OUT",
+      "binary": false,
+      "cush_min": 0.5,
+      "playable": "BAN_OUT",
+      "ban_reason": "OUT/inactive \u2014 never SAFE/PRIMARY/CLEAN"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "De'Aaron Fox",
+      "slug": "deaaron-fox",
+      "team": "SA",
+      "opponent": "LAL",
+      "is_home": true,
+      "game_time": "2026-11-28T02:30:00.000Z",
+      "stat": "PTS",
+      "stat_slug": "points",
+      "line": 12.5,
+      "books": 11,
+      "l10_n": 10,
+      "l10_over": 2,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "De'Aaron Fox",
+      "hits": 2,
+      "n": 7,
+      "vals": [
+        5.0,
+        10.0,
+        6.0,
+        7.0,
+        17.0,
+        15.0,
+        8.0
+      ],
+      "misses": [
+        5.0,
+        10.0,
+        6.0,
+        7.0,
+        8.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4066259",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -7.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Andrew Wiggins",
+      "slug": "andrew-wiggins",
+      "team": "MIA",
+      "opponent": "NY",
+      "is_home": false,
+      "game_time": "2026-11-28T00:00:00.000Z",
+      "stat": "PTS",
+      "stat_slug": "points",
+      "line": 8.5,
+      "books": 12,
+      "l10_n": 10,
+      "l10_over": 4,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Andrew Wiggins",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        8.0,
+        5.0,
+        11.0,
+        17.0,
+        10.0,
+        8.0,
+        13.0
+      ],
+      "misses": [
+        8.0,
+        5.0,
+        8.0
+      ],
+      "call": "CUT",
+      "athlete_id": "3059319",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Giannis Antetokounmpo",
+      "slug": "giannis-antetokounmpo",
+      "team": "MIA",
+      "opponent": "NY",
+      "is_home": false,
+      "game_time": "2026-11-28T00:00:00.000Z",
+      "stat": "REB",
+      "stat_slug": "rebounds",
+      "line": 11.5,
+      "books": 12,
+      "l10_n": 10,
+      "l10_over": 8,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Giannis Antetokounmpo",
+      "hits": 5,
+      "n": 7,
+      "vals": [
+        14.0,
+        14.0,
+        13.0,
+        14.0,
+        9.0,
+        11.0,
+        14.0
+      ],
+      "misses": [
+        9.0,
+        11.0
+      ],
+      "call": "RISK",
+      "athlete_id": "3032977",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Joel Embiid",
+      "slug": "joel-embiid",
+      "team": "PHI",
+      "opponent": "IND",
+      "is_home": false,
+      "game_time": "2026-11-28T00:30:00.000Z",
+      "stat": "REB",
+      "stat_slug": "rebounds",
+      "line": 8.5,
+      "books": 5,
+      "l10_n": 10,
+      "l10_over": 3,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Joel Embiid",
+      "hits": 2,
+      "n": 7,
+      "vals": [
+        17.0,
+        6.0,
+        5.0,
+        4.0,
+        6.0,
+        10.0,
+        7.0
+      ],
+      "misses": [
+        6.0,
+        5.0,
+        4.0,
+        6.0,
+        7.0
+      ],
+      "call": "CUT",
+      "athlete_id": "3059318",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "LaMelo Ball",
+      "slug": "lamelo-ball",
+      "team": "MIN",
+      "opponent": "MEM",
+      "is_home": true,
+      "game_time": "2026-11-28T01:30:00.000Z",
+      "stat": "REB",
+      "stat_slug": "rebounds",
+      "line": 4.5,
+      "books": 5,
+      "l10_n": 10,
+      "l10_over": 6,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "LaMelo Ball",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        7.0,
+        2.0,
+        5.0,
+        8.0,
+        9.0,
+        5.0,
+        8.0
+      ],
+      "misses": [
+        2.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4432816",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "De'Aaron Fox",
+      "slug": "deaaron-fox",
+      "team": "SA",
+      "opponent": "LAL",
+      "is_home": true,
+      "game_time": "2026-11-28T02:30:00.000Z",
+      "stat": "REB",
+      "stat_slug": "rebounds",
+      "line": 3.5,
+      "books": 11,
+      "l10_n": 10,
+      "l10_over": 3,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "De'Aaron Fox",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        2.0,
+        2.0,
+        2.0,
+        5.0,
+        4.0,
+        9.0,
+        3.0
+      ],
+      "misses": [
+        2.0,
+        2.0,
+        2.0,
+        3.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4066259",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Austin Reaves",
+      "slug": "austin-reaves",
+      "team": "LAL",
+      "opponent": "SA",
+      "is_home": false,
+      "game_time": "2026-11-28T02:30:00.000Z",
+      "stat": "REB",
+      "stat_slug": "rebounds",
+      "line": 3.5,
+      "books": 11,
+      "l10_n": 10,
+      "l10_over": 4,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Austin Reaves",
+      "hits": 2,
+      "n": 7,
+      "vals": [
+        3.0,
+        5.0,
+        3.0,
+        3.0,
+        2.0,
+        3.0,
+        4.0
+      ],
+      "misses": [
+        3.0,
+        3.0,
+        3.0,
+        2.0,
+        3.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4066457",
+      "inj_status": "OUT",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "BAN_OUT",
+      "ban_reason": "OUT/inactive \u2014 never SAFE/PRIMARY/CLEAN"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Andrew Wiggins",
+      "slug": "andrew-wiggins",
+      "team": "MIA",
+      "opponent": "NY",
+      "is_home": false,
+      "game_time": "2026-11-28T00:00:00.000Z",
+      "stat": "REB",
+      "stat_slug": "rebounds",
+      "line": 2.5,
+      "books": 12,
+      "l10_n": 10,
+      "l10_over": 5,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Andrew Wiggins",
+      "hits": 2,
+      "n": 7,
+      "vals": [
+        2.0,
+        2.0,
+        2.0,
+        5.0,
+        2.0,
+        3.0,
+        0.0
+      ],
+      "misses": [
+        2.0,
+        2.0,
+        2.0,
+        2.0,
+        0.0
+      ],
+      "call": "CUT",
+      "athlete_id": "3059319",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Giannis Antetokounmpo",
+      "slug": "giannis-antetokounmpo",
+      "team": "MIA",
+      "opponent": "NY",
+      "is_home": false,
+      "game_time": "2026-11-28T00:00:00.000Z",
+      "stat": "AST",
+      "stat_slug": "assists",
+      "line": 5.5,
+      "books": 12,
+      "l10_n": 10,
+      "l10_over": 5,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Giannis Antetokounmpo",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        4.0,
+        9.0,
+        6.0,
+        8.0,
+        2.0,
+        4.0,
+        3.0
+      ],
+      "misses": [
+        4.0,
+        2.0,
+        4.0,
+        3.0
+      ],
+      "call": "CUT",
+      "athlete_id": "3032977",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "De'Aaron Fox",
+      "slug": "deaaron-fox",
+      "team": "SA",
+      "opponent": "LAL",
+      "is_home": true,
+      "game_time": "2026-11-28T02:30:00.000Z",
+      "stat": "AST",
+      "stat_slug": "assists",
+      "line": 5.5,
+      "books": 11,
+      "l10_n": 10,
+      "l10_over": 4,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "De'Aaron Fox",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        10.0,
+        5.0,
+        2.0,
+        1.0,
+        9.0,
+        6.0,
+        6.0
+      ],
+      "misses": [
+        5.0,
+        2.0,
+        1.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4066259",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "LaMelo Ball",
+      "slug": "lamelo-ball",
+      "team": "MIN",
+      "opponent": "MEM",
+      "is_home": true,
+      "game_time": "2026-11-28T01:30:00.000Z",
+      "stat": "AST",
+      "stat_slug": "assists",
+      "line": 5.5,
+      "books": 5,
+      "l10_n": 10,
+      "l10_over": 6,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "LaMelo Ball",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        8.0,
+        3.0,
+        7.0,
+        8.0,
+        2.0,
+        0.0,
+        6.0
+      ],
+      "misses": [
+        3.0,
+        2.0,
+        0.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4432816",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -5.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Austin Reaves",
+      "slug": "austin-reaves",
+      "team": "LAL",
+      "opponent": "SA",
+      "is_home": false,
+      "game_time": "2026-11-28T02:30:00.000Z",
+      "stat": "AST",
+      "stat_slug": "assists",
+      "line": 3.5,
+      "books": 11,
+      "l10_n": 10,
+      "l10_over": 8,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Austin Reaves",
+      "hits": 6,
+      "n": 7,
+      "vals": [
+        5.0,
+        4.0,
+        2.0,
+        4.0,
+        5.0,
+        4.0,
+        5.0
+      ],
+      "misses": [
+        2.0
+      ],
+      "call": "RISK-KEEP",
+      "athlete_id": "4066457",
+      "inj_status": "OUT",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "BAN_OUT",
+      "ban_reason": "OUT/inactive \u2014 never SAFE/PRIMARY/CLEAN"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Joel Embiid",
+      "slug": "joel-embiid",
+      "team": "PHI",
+      "opponent": "IND",
+      "is_home": false,
+      "game_time": "2026-11-28T00:30:00.000Z",
+      "stat": "AST",
+      "stat_slug": "assists",
+      "line": 3.5,
+      "books": 2,
+      "l10_n": 10,
+      "l10_over": 4,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Joel Embiid",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        9.0,
+        7.0,
+        1.0,
+        3.0,
+        1.0,
+        5.0,
+        1.0
+      ],
+      "misses": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "call": "CUT",
+      "athlete_id": "3059318",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Andrew Wiggins",
+      "slug": "andrew-wiggins",
+      "team": "MIA",
+      "opponent": "NY",
+      "is_home": false,
+      "game_time": "2026-11-28T00:00:00.000Z",
+      "stat": "AST",
+      "stat_slug": "assists",
+      "line": 1.5,
+      "books": 3,
+      "l10_n": 10,
+      "l10_over": 4,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Andrew Wiggins",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        2.0,
+        1.0,
+        2.0,
+        1.0,
+        1.0,
+        4.0,
+        0.0
+      ],
+      "misses": [
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "call": "CUT",
+      "athlete_id": "3059319",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "LaMelo Ball",
+      "slug": "lamelo-ball",
+      "team": "MIN",
+      "opponent": "MEM",
+      "is_home": true,
+      "game_time": "2026-11-28T01:30:00.000Z",
+      "stat": "3PT",
+      "stat_slug": "threes",
+      "line": 3.5,
+      "books": 4,
+      "l10_n": 10,
+      "l10_over": 4,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "LaMelo Ball",
+      "hits": 2,
+      "n": 7,
+      "vals": [
+        5.0,
+        2.0,
+        1.0,
+        3.0,
+        3.0,
+        2.0,
+        4.0
+      ],
+      "misses": [
+        2.0,
+        1.0,
+        3.0,
+        3.0,
+        2.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4432816",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "De'Aaron Fox",
+      "slug": "deaaron-fox",
+      "team": "SA",
+      "opponent": "LAL",
+      "is_home": true,
+      "game_time": "2026-11-28T02:30:00.000Z",
+      "stat": "3PT",
+      "stat_slug": "threes",
+      "line": 1.5,
+      "books": 10,
+      "l10_n": 10,
+      "l10_over": 2,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "De'Aaron Fox",
+      "hits": 2,
+      "n": 7,
+      "vals": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.0,
+        2.0,
+        1.0
+      ],
+      "misses": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4066259",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Austin Reaves",
+      "slug": "austin-reaves",
+      "team": "LAL",
+      "opponent": "SA",
+      "is_home": false,
+      "game_time": "2026-11-28T02:30:00.000Z",
+      "stat": "3PT",
+      "stat_slug": "threes",
+      "line": 1.5,
+      "books": 10,
+      "l10_n": 10,
+      "l10_over": 5,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Austin Reaves",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        1.0,
+        4.0,
+        1.0,
+        1.0,
+        4.0,
+        2.0,
+        1.0
+      ],
+      "misses": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "call": "CUT",
+      "athlete_id": "4066457",
+      "inj_status": "OUT",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "BAN_OUT",
+      "ban_reason": "OUT/inactive \u2014 never SAFE/PRIMARY/CLEAN"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Kelly Oubre Jr.",
+      "slug": "kelly-oubre-jr",
+      "team": "IND",
+      "opponent": "PHI",
+      "is_home": true,
+      "game_time": "2026-11-28T00:30:00.000Z",
+      "stat": "3PT",
+      "stat_slug": "threes",
+      "line": 1.5,
+      "books": 2,
+      "l10_n": 10,
+      "l10_over": 5,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Kelly Oubre Jr.",
+      "hits": 4,
+      "n": 7,
+      "vals": [
+        4.0,
+        0.0,
+        3.0,
+        2.0,
+        2.0,
+        1.0,
+        0.0
+      ],
+      "misses": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "call": "CUT",
+      "athlete_id": "3133603",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Andrew Wiggins",
+      "slug": "andrew-wiggins",
+      "team": "MIA",
+      "opponent": "NY",
+      "is_home": false,
+      "game_time": "2026-11-28T00:00:00.000Z",
+      "stat": "3PT",
+      "stat_slug": "threes",
+      "line": 0.5,
+      "books": 8,
+      "l10_n": 10,
+      "l10_over": 7,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Andrew Wiggins",
+      "hits": 5,
+      "n": 7,
+      "vals": [
+        0.0,
+        1.0,
+        1.0,
+        3.0,
+        0.0,
+        1.0,
+        2.0
+      ],
+      "misses": [
+        0.0,
+        0.0
+      ],
+      "call": "RISK",
+      "athlete_id": "3059319",
+      "inj_status": "GTD",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Joel Embiid",
+      "slug": "joel-embiid",
+      "team": "PHI",
+      "opponent": "IND",
+      "is_home": false,
+      "game_time": "2026-11-28T00:30:00.000Z",
+      "stat": "3PT",
+      "stat_slug": "threes",
+      "line": 0.5,
+      "books": 4,
+      "l10_n": 10,
+      "l10_over": 2,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Joel Embiid",
+      "hits": 2,
+      "n": 7,
+      "vals": [
+        0.0,
+        0.0,
+        2.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "misses": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "call": "CUT",
+      "athlete_id": "3059318",
+      "inj_status": "GTD",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Giannis Antetokounmpo",
+      "slug": "giannis-antetokounmpo",
+      "team": "MIA",
+      "opponent": "NY",
+      "is_home": false,
+      "game_time": "2026-11-28T00:00:00.000Z",
+      "stat": "3PT",
+      "stat_slug": "threes",
+      "line": 0.5,
+      "books": 4,
+      "l10_n": 10,
+      "l10_over": 4,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Giannis Antetokounmpo",
+      "hits": 3,
+      "n": 7,
+      "vals": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "misses": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "call": "CUT",
+      "athlete_id": "3032977",
+      "inj_status": "GTD",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
+    }
+  ],
+  "keep_form_raw": [
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Austin Reaves",
+      "slug": "austin-reaves",
+      "team": "LAL",
+      "opponent": "SA",
+      "is_home": false,
+      "game_time": "2026-11-28T02:30:00.000Z",
+      "stat": "PTS",
+      "stat_slug": "points",
+      "line": 17.5,
+      "books": 11,
+      "l10_n": 10,
+      "l10_over": 9,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Austin Reaves",
+      "hits": 7,
+      "n": 7,
+      "vals": [
+        18.0,
+        43.0,
+        25.0,
+        21.0,
+        27.0,
+        19.0,
+        21.0
+      ],
+      "misses": [],
+      "call": "KEEP",
+      "athlete_id": "4066457",
+      "inj_status": "OUT",
+      "binary": false,
+      "cush_min": 0.5,
+      "playable": "BAN_OUT",
+      "ban_reason": "OUT/inactive \u2014 never SAFE/PRIMARY/CLEAN"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Davion Mitchell",
+      "slug": "davion-mitchell",
+      "team": "MIA",
+      "opponent": "NY",
+      "is_home": false,
+      "game_time": "2026-11-28T00:00:00.000Z",
+      "stat": "PTS",
+      "stat_slug": "points",
+      "line": 13.5,
+      "books": 12,
+      "l10_n": 10,
+      "l10_over": 9,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Davion Mitchell",
+      "hits": 7,
+      "n": 7,
+      "vals": [
+        20.0,
+        14.0,
+        24.0,
+        16.0,
+        15.0,
+        22.0,
+        19.0
+      ],
+      "misses": [],
+      "call": "KEEP",
+      "athlete_id": "4278053",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": 0.5,
+      "playable": "KEEP_HOOK",
+      "ban_reason": "hook cush_min=0.5 \u2014 PRIMARY max unless OUT-driven"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "VJ Edgecombe",
+      "slug": "vj-edgecombe",
+      "team": "PHI",
+      "opponent": "IND",
+      "is_home": false,
+      "game_time": "2026-11-28T00:30:00.000Z",
+      "stat": "AST",
+      "stat_slug": "assists",
+      "line": 3.5,
+      "books": 2,
+      "l10_n": 0,
+      "l10_over": 0,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "VJ Edgecombe",
+      "hits": 7,
+      "n": 7,
+      "vals": [
+        5.0,
+        7.0,
+        6.0,
+        6.0,
+        4.0,
+        6.0,
+        8.0
+      ],
+      "misses": [],
+      "call": "KEEP",
+      "athlete_id": "5124612",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": 0.5,
+      "playable": "KEEP_HOOK",
+      "ban_reason": "hook cush_min=0.5 \u2014 PRIMARY max unless OUT-driven"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Bobby Portis Jr.",
+      "slug": "bobby-portis-jr",
+      "team": "MIA",
+      "opponent": "NY",
+      "is_home": false,
+      "game_time": "2026-11-28T00:00:00.000Z",
+      "stat": "3PT",
+      "stat_slug": "threes",
+      "line": 0.5,
+      "books": 10,
+      "l10_n": 10,
+      "l10_over": 8,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Bobby Portis",
+      "hits": 7,
+      "n": 7,
+      "vals": [
+        1.0,
+        1.0,
+        1.0,
+        2.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "misses": [],
+      "call": "KEEP",
+      "athlete_id": "3064482",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": 0.5,
+      "playable": "KEEP_BINARY",
+      "ban_reason": "binary (STL/BLK/O0.5 3PT) \u2014 add only, not CLEAN spine"
+    },
+    {
+      "source": "betravon",
+      "sport": "nba",
+      "player": "Dyson Daniels",
+      "slug": "dyson-daniels",
+      "team": "ATL",
+      "opponent": "BOS",
+      "is_home": false,
+      "game_time": "2026-11-28T01:00:00.000Z",
+      "stat": "STL",
+      "stat_slug": "steals",
+      "line": 1.5,
+      "books": 2,
+      "l10_n": 10,
+      "l10_over": 9,
+      "posted_kind": "MAIN",
+      "hr_confirmed": false,
+      "sheet_name": "Dyson Daniels",
+      "hits": 7,
+      "n": 7,
+      "vals": [
+        5.0,
+        4.0,
+        2.0,
+        2.0,
+        2.0,
+        4.0,
+        6.0
+      ],
+      "misses": [],
+      "call": "KEEP",
+      "athlete_id": "4869342",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": 0.5,
+      "playable": "KEEP_BINARY",
+      "ban_reason": "binary (STL/BLK/O0.5 3PT) \u2014 add only, not CLEAN spine"
     }
   ],
   "risk_keep": [
@@ -13461,7 +16483,12 @@
         10.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4845367"
+      "athlete_id": "4845367",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -7.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13496,7 +16523,12 @@
         14.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4903027"
+      "athlete_id": "4903027",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13531,7 +16563,12 @@
         6.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4431680"
+      "athlete_id": "4431680",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -7.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13566,7 +16603,12 @@
         9.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "3134907"
+      "athlete_id": "3134907",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13601,7 +16643,12 @@
         9.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4869780"
+      "athlete_id": "4869780",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13636,7 +16683,12 @@
         6.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4869342"
+      "athlete_id": "4869342",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13671,7 +16723,12 @@
         5.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "5175737"
+      "athlete_id": "5175737",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13706,7 +16763,12 @@
         2.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4432816"
+      "athlete_id": "4432816",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -13741,7 +16803,12 @@
         2.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4278053"
+      "athlete_id": "4278053",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13776,7 +16843,12 @@
         2.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4066457"
+      "athlete_id": "4066457",
+      "inj_status": "OUT",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "BAN_OUT",
+      "ban_reason": "OUT/inactive \u2014 never SAFE/PRIMARY/CLEAN"
     },
     {
       "source": "betravon",
@@ -13811,7 +16883,12 @@
         2.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4066383"
+      "athlete_id": "4066383",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13846,7 +16923,12 @@
         1.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4397424"
+      "athlete_id": "4397424",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13881,7 +16963,12 @@
         0.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4845367"
+      "athlete_id": "4845367",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13916,7 +17003,12 @@
         1.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4431680"
+      "athlete_id": "4431680",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13951,7 +17043,12 @@
         0.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "3149673"
+      "athlete_id": "3149673",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -13986,7 +17083,12 @@
         0.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "3138160"
+      "athlete_id": "3138160",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14021,7 +17123,12 @@
         1.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "3907498"
+      "athlete_id": "3907498",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14056,7 +17163,12 @@
         0.0
       ],
       "call": "RISK-KEEP",
-      "athlete_id": "4433136"
+      "athlete_id": "4433136",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "RISK-KEEP",
+      "ban_reason": null
     }
   ],
   "risk": [
@@ -14094,7 +17206,12 @@
         17.0
       ],
       "call": "RISK",
-      "athlete_id": "3064514"
+      "athlete_id": "3064514",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14130,7 +17247,12 @@
         7.0
       ],
       "call": "RISK",
-      "athlete_id": "4251"
+      "athlete_id": "4251",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -11.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14166,7 +17288,12 @@
         11.0
       ],
       "call": "RISK",
-      "athlete_id": "1966"
+      "athlete_id": "1966",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -7.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14202,7 +17329,12 @@
         10.0
       ],
       "call": "RISK",
-      "athlete_id": "4397136"
+      "athlete_id": "4397136",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -12.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14238,7 +17370,12 @@
         7.0
       ],
       "call": "RISK",
-      "athlete_id": "4066648"
+      "athlete_id": "4066648",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -9.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14274,7 +17411,12 @@
         2.0
       ],
       "call": "RISK",
-      "athlete_id": "4397014"
+      "athlete_id": "4397014",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -8.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14310,7 +17452,12 @@
         8.0
       ],
       "call": "RISK",
-      "athlete_id": "5149077"
+      "athlete_id": "5149077",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -8.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14346,7 +17493,12 @@
         3.0
       ],
       "call": "RISK",
-      "athlete_id": "4065804"
+      "athlete_id": "4065804",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14382,7 +17534,12 @@
         11.0
       ],
       "call": "RISK",
-      "athlete_id": "3032977"
+      "athlete_id": "3032977",
+      "inj_status": "GTD",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -14418,7 +17575,12 @@
         10.0
       ],
       "call": "RISK",
-      "athlete_id": "4433136"
+      "athlete_id": "4433136",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14454,7 +17616,12 @@
         5.0
       ],
       "call": "RISK",
-      "athlete_id": "4017837"
+      "athlete_id": "4017837",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -6.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14490,7 +17657,12 @@
         4.0
       ],
       "call": "RISK",
-      "athlete_id": "5124612"
+      "athlete_id": "5124612",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14526,7 +17698,12 @@
         5.0
       ],
       "call": "RISK",
-      "athlete_id": "4869780"
+      "athlete_id": "4869780",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14562,7 +17739,12 @@
         4.0
       ],
       "call": "RISK",
-      "athlete_id": "4397136"
+      "athlete_id": "4397136",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14598,7 +17780,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "5041955"
+      "athlete_id": "5041955",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14634,7 +17821,12 @@
         3.0
       ],
       "call": "RISK",
-      "athlete_id": "4278078"
+      "athlete_id": "4278078",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14670,7 +17862,12 @@
         3.0
       ],
       "call": "RISK",
-      "athlete_id": "4278039"
+      "athlete_id": "4278039",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14706,7 +17903,12 @@
         2.0
       ],
       "call": "RISK",
-      "athlete_id": "4395630"
+      "athlete_id": "4395630",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14742,7 +17944,12 @@
         2.0
       ],
       "call": "RISK",
-      "athlete_id": "4437244"
+      "athlete_id": "4437244",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14778,7 +17985,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4601025"
+      "athlete_id": "4601025",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14814,7 +18026,12 @@
         6.0
       ],
       "call": "RISK",
-      "athlete_id": "4278053"
+      "athlete_id": "4278053",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14850,7 +18067,12 @@
         6.0
       ],
       "call": "RISK",
-      "athlete_id": "4395712"
+      "athlete_id": "4395712",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14886,7 +18108,12 @@
         6.0
       ],
       "call": "RISK",
-      "athlete_id": "4845367"
+      "athlete_id": "4845367",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14922,7 +18149,12 @@
         6.0
       ],
       "call": "RISK",
-      "athlete_id": "4433627"
+      "athlete_id": "4433627",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -4.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14958,7 +18190,12 @@
         3.0
       ],
       "call": "RISK",
-      "athlete_id": "3136193"
+      "athlete_id": "3136193",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -14994,7 +18231,12 @@
         3.0
       ],
       "call": "RISK",
-      "athlete_id": "3136195"
+      "athlete_id": "3136195",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15030,7 +18272,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4432194"
+      "athlete_id": "4432194",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -3.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15066,7 +18313,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "5149077"
+      "athlete_id": "5149077",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15102,7 +18354,12 @@
         3.0
       ],
       "call": "RISK",
-      "athlete_id": "4431671"
+      "athlete_id": "4431671",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15138,7 +18395,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "4397014"
+      "athlete_id": "4397014",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15174,7 +18436,12 @@
         2.0
       ],
       "call": "RISK",
-      "athlete_id": "4066261"
+      "athlete_id": "4066261",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15210,7 +18477,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4278039"
+      "athlete_id": "4278039",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15246,7 +18518,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "4397136"
+      "athlete_id": "4397136",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -2.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15282,7 +18559,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "4592691"
+      "athlete_id": "4592691",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15318,7 +18600,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "6475"
+      "athlete_id": "6475",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15354,7 +18641,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "4278104"
+      "athlete_id": "4278104",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15390,7 +18682,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4433136"
+      "athlete_id": "4433136",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15426,7 +18723,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4278049"
+      "athlete_id": "4278049",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15462,7 +18764,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4396909"
+      "athlete_id": "4396909",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15498,7 +18805,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "3032976"
+      "athlete_id": "3032976",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15534,7 +18846,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "3147657"
+      "athlete_id": "3147657",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15570,7 +18887,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "3136195"
+      "athlete_id": "3136195",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15606,7 +18928,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4278053"
+      "athlete_id": "4278053",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15642,7 +18969,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "5104157"
+      "athlete_id": "5104157",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15678,7 +19010,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4065804"
+      "athlete_id": "4065804",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15714,7 +19051,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "3064514"
+      "athlete_id": "3064514",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15750,7 +19092,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "3134907"
+      "athlete_id": "3134907",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15786,7 +19133,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "4431671"
+      "athlete_id": "4431671",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15822,7 +19174,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "3155526"
+      "athlete_id": "3155526",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15858,7 +19215,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "4903027"
+      "athlete_id": "4903027",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -1.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15894,7 +19256,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4431767"
+      "athlete_id": "4431767",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15930,7 +19297,12 @@
         1.0
       ],
       "call": "RISK",
-      "athlete_id": "4395712"
+      "athlete_id": "4395712",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -15966,7 +19338,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "3059319"
+      "athlete_id": "3059319",
+      "inj_status": "GTD",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "BAN_GTD",
+      "ban_reason": "GTD/Q \u2014 HOLD until ACTIVE confirm"
     },
     {
       "source": "betravon",
@@ -16002,7 +19379,12 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "4066436"
+      "athlete_id": "4066436",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     },
     {
       "source": "betravon",
@@ -16038,45 +19420,18 @@
         0.0
       ],
       "call": "RISK",
-      "athlete_id": "5149077"
+      "athlete_id": "5149077",
+      "inj_status": "CLEAR",
+      "binary": true,
+      "cush_min": -0.5,
+      "playable": "RISK",
+      "ban_reason": null
     }
   ],
   "cut_n": 277,
   "unmatched_n": 259,
+  "injuries_n": 166,
   "clean_slip": [
-    {
-      "source": "betravon",
-      "sport": "nba",
-      "player": "Bobby Portis Jr.",
-      "slug": "bobby-portis-jr",
-      "team": "MIA",
-      "opponent": "NY",
-      "is_home": false,
-      "game_time": "2026-11-28T00:00:00.000Z",
-      "stat": "3PT",
-      "stat_slug": "threes",
-      "line": 0.5,
-      "books": 10,
-      "l10_n": 10,
-      "l10_over": 8,
-      "posted_kind": "MAIN",
-      "hr_confirmed": false,
-      "sheet_name": "Bobby Portis",
-      "hits": 7,
-      "n": 7,
-      "vals": [
-        1.0,
-        1.0,
-        1.0,
-        2.0,
-        1.0,
-        1.0,
-        1.0
-      ],
-      "misses": [],
-      "call": "KEEP",
-      "athlete_id": "3064482"
-    },
     {
       "source": "betravon",
       "sport": "nba",
@@ -16108,40 +19463,12 @@
       ],
       "misses": [],
       "call": "KEEP",
-      "athlete_id": "5124612"
-    },
-    {
-      "source": "betravon",
-      "sport": "nba",
-      "player": "Austin Reaves",
-      "slug": "austin-reaves",
-      "team": "LAL",
-      "opponent": "SA",
-      "is_home": false,
-      "game_time": "2026-11-28T02:30:00.000Z",
-      "stat": "PTS",
-      "stat_slug": "points",
-      "line": 17.5,
-      "books": 11,
-      "l10_n": 10,
-      "l10_over": 9,
-      "posted_kind": "MAIN",
-      "hr_confirmed": false,
-      "sheet_name": "Austin Reaves",
-      "hits": 7,
-      "n": 7,
-      "vals": [
-        18.0,
-        43.0,
-        25.0,
-        21.0,
-        27.0,
-        19.0,
-        21.0
-      ],
-      "misses": [],
-      "call": "KEEP",
-      "athlete_id": "4066457"
+      "athlete_id": "5124612",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": 0.5,
+      "playable": "KEEP_HOOK",
+      "ban_reason": "hook cush_min=0.5 \u2014 PRIMARY max unless OUT-driven"
     },
     {
       "source": "betravon",
@@ -16174,40 +19501,12 @@
       ],
       "misses": [],
       "call": "KEEP",
-      "athlete_id": "4278053"
-    },
-    {
-      "source": "betravon",
-      "sport": "nba",
-      "player": "Dyson Daniels",
-      "slug": "dyson-daniels",
-      "team": "ATL",
-      "opponent": "BOS",
-      "is_home": false,
-      "game_time": "2026-11-28T01:00:00.000Z",
-      "stat": "STL",
-      "stat_slug": "steals",
-      "line": 1.5,
-      "books": 2,
-      "l10_n": 10,
-      "l10_over": 9,
-      "posted_kind": "MAIN",
-      "hr_confirmed": false,
-      "sheet_name": "Dyson Daniels",
-      "hits": 7,
-      "n": 7,
-      "vals": [
-        5.0,
-        4.0,
-        2.0,
-        2.0,
-        2.0,
-        4.0,
-        6.0
-      ],
-      "misses": [],
-      "call": "KEEP",
-      "athlete_id": "4869342"
+      "athlete_id": "4278053",
+      "inj_status": "CLEAR",
+      "binary": false,
+      "cush_min": 0.5,
+      "playable": "KEEP_HOOK",
+      "ban_reason": "hook cush_min=0.5 \u2014 PRIMARY max unless OUT-driven"
     }
   ]
 }
