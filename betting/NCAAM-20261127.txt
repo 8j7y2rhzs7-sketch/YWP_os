@@ -1,69 +1,66 @@
-NCAAM 2026-11-27 12:20 ET · GATE PASS 2901/2901
-55 games · skip LIVE: UVA VS XAV
-Troy rule: no mid-major soft spread as SAFE · BAN covers ≥20 (ML only)
+NCAAM SIDES/ML ONLY · 2026-11-27 12:22 ET
+GATE PASS 2901/2901 · NO PLAYER PROPS (user lock)
+Skip LIVE: UVA VS XAV
+Troy rule: mid-major soft spreads ≠ SAFE · BAN covers ≥20
 
-=== SAFE (soft floors — HR must post; else skip) ===
-1. 7/7 Ivan Juric O4.5 REB — PSU vs MSST — id=5312025 — L=[11,16,10,15,13,10,15] cush5.5 — Imperial Arena indoor
-2. 7/7 Quinn Ellis O2.5 AST — SJU vs ISU — id=5214635 — L=[6,8,10,6,9,11,7] cush3.5 — Michelob ULTRA · SJU -1.5/151.5
-3. 6/6 Flory Bidunga O4.5 REB — LOU vs TENN — id=5044426 — L=[9,9,12,9,7,9] cush2.5 — Michelob ULTRA
-4. 7/7 Brock Harding O2.5 AST — TCU vs BAY — id=5103589 — L=[10,9,11,7,8,12,5] cush2.5 — T-Mobile
-5. 6/6 William Berg O4.5 REB — WICH @ UK — id=5105857 — L=[10,16,9,9,11,16] cush4.5 — Rupp · UK -4.5
+=== SAFE ===
+1. HOU ML — vs OAK — Fertitta · board HOU -36.5 → ML only (BAN cover)
+2. IU ML — vs BGSU — Assembly Hall · IU -22.5 → ML only
+3. ILL ML — vs WKU — State Farm Center · ILL -26.5 → ML only
+(Alt SAFE ML: VAN ML · MIZ ML · GW ML — same BAN-cover class)
 
 === PRIMARY ===
-- 7/7 Elijah Crawford O2.5 AST — VILL @ KU — id=5060703 — L=[9,5,5,6,6,8,5] · Allen Fieldhouse · KU -10.5 RISK number
-- 7/7 Gavin Placide O4.5 REB — WAKE vs MEM — id=5144551 — L=[11,7,10,7,8,8,7]
-- 6/6 Dovydas Butka O4.5 REB — BOIS vs DRKE — id=5240935
-- 6/6 Malachi Moreno O4.5 REB — UK vs WICH — id=5101849 — home glass
-- 7/7 Brandon Benjamin O4.5 REB — BC vs CIN — id=5311734 — CIN -8.5
-- Soft PTS if posted ≤O10.5: Ian Jackson / Keyshawn Hall (SJU) · Josh Hubbard (MSST) · Shelton Henderson (MIA)
+- UK -4.5 / UK ML — vs WICH — Rupp · O/U 157.5 — soft number
+- BAY -4.5 / BAY ML — vs TCU — T-Mobile · O/U 149.5 — soft
+- GONZ -5.5 / GONZ ML — vs CREI — T-Mobile · O/U 160.5
+- TTU -8.5 / TTU ML — vs SDSU — Michelob ULTRA · O/U 143.5
+- UCLA -7.5 / UCLA ML — vs GTWN — Jenny Craig · O/U 149.5
+- MSST -6.5 / MSST ML — vs PSU — Imperial · O/U 156.5
+- Soft pick'ems (ML lean, not SAFE spine): SJU ML (−1.5) · MIA ML (−2.5) · MEM ML (−1.5) · MARQ ML (−1.5) · LOU −3.5 · MD −3.5 · WVU −3.5
 
 === BANGERS ===
-1. Dedan Thomas Jr. O8.5/O10.5 PTS — HOU vs OAK — id=4873093 — L6=[16,30,21,17,20,16] · HOU -36.5 script (blowout sit RISK if huge lead)
-2. Dior Johnson O12.5+ PTS climb — UCF vs UGA — id=4432741 — L=[23,30,26,25,24,28,41]
-3. Ian Jackson O10.5/O12.5 PTS — SJU vs ISU — id=4869770
-4. Josh Hubbard O12.5 PTS — MSST vs PSU — id=4895740
-5. Markus Burton O2.5 AST — IU vs BGSU — id=5101623 — IU -22.5 · ML>cover
-6. Sides juice: KU -10.5 RISK · MICH -9.5 RISK · TTU -8.5 · GONZ -5.5 · BAY -4.5 soft
+1. KU -10.5 — vs VILL — Allen Fieldhouse · O/U 158.5 — RISK cover (ML safer)
+2. MICH -9.5 — vs KSU — T-Mobile · O/U 164.5 — RISK cover
+3. TEX -7.5 — vs SMC — Jenny Craig · O/U 160.5
+4. CIN -8.5 — vs BC — State Farm Field House
+5. Soft upset tickets (not SAFE): ISU +1.5 · ALA +2.5 · TA&M +1.5 · UNC +3.5
 
-=== SIDES / ML ===
-BAN COVER (≥20 → ML only if anything): VAN -37.5 · MIZ -48.5 · HOU -36.5 · ILL -26.5 · IU -22.5 · GW -21.5 · BTLR -18.5 · VT -17.5
-SOFT NUM (prefer ML or skip as SAFE): SJU -1.5 · MIA -2.5 · LOU/WVU/MD ~-3.5 · UK -4.5 · BAY -4.5
-RISK covers: KU -10.5 · MICH -9.5 · TTU -8.5 · CIN -8.5 · UCLA -7.5 · TEX -7.5
-PLAY lean: HOU ML · IU ML · ILL ML · VAN ML (no covers) · BAY -4.5 / UK -4.5 soft · SJU ML pick'em
+=== SIDES BOARD ===
+BAN COVER ≥20 (ML only): MIZ -48.5 · VAN -37.5 · HOU -36.5 · ILL -26.5 · IU -22.5 · GW -21.5
+RISK COVER ≥9.5: BTLR -18.5 · VT -17.5 · UCSB -13.5 · NU -12.5 · WSU -11.5 · KU -10.5 · LAS -9.5 · MICH -9.5 · ETSU -9.5
+MID 5–9: CIN/TTU -8.5 · UCLA/UNCW/AMER/TEX -7.5 · MSST/PAC -6.5 · BOIS/UGA/UNT/GONZ -5.5
+SOFT ≤4.5: UK/BAY/FAIR/TXST/LAF/ORU/JXST -4.5 · MD/PENN/WVU/LOU -3.5 · USA/HOF/MIA -2.5 · SJU/UVM/UML/MEM/LEM/MARQ -1.5
 
 === BAN ===
-Any ≥20 cover · Troy-class soft mid-major spreads as SAFE
-OAK/SOU/UAPB/BGSU/WKU dog props in blowout spots
-Binary O0.5 3PT/STL as SAFE spine
-UVA/XAV (LIVE — skip)
+Player props (user ask) · any ≥20 cover · Troy-class soft mid-major as SAFE3 identity · LIVE UVA/XAV
 
 === LIST 1 DIFFICULT ===
 | Leg | Why |
 |-----|-----|
 | KU -10.5 / MICH -9.5 | cover tax |
-| VAN/HOU/MIZ/ILL -20+ | BAN cover |
-| Dedan PTS in −36.5 | sit if blowout |
-| SJU -1.5 | coin-flip number |
-| Road AST @ KU (Crawford) | Allen Fieldhouse |
+| BTLR -18.5 / VT -17.5 | still fat covers |
+| SJU/MIA/MEM -1.5 | coin-flip |
+| HOU/IU/ILL -20+ spreads | BAN — use ML |
+| Dog + big number | trap |
 
 === LIST 2 BETTER ===
 | Leg | Why |
 |-----|-----|
-| Juric O4.5 REB | cush 5.5 glass |
-| Ellis O2.5 AST | cush 3.5 |
-| Bidunga O4.5 REB | LOU glass |
-| Harding O2.5 AST | TCU |
-| Berg O4.5 REB | cush 4.5 |
-| HOU/IU/ILL ML | chalk win no cover |
-| BAY -4.5 / UK -4.5 | soft numbers |
+| HOU ML · IU ML · ILL ML | chalk win, no cover |
+| UK -4.5 · BAY -4.5 | softest power numbers |
+| GONZ -5.5 · TTU -8.5 | mid chalk with identity |
+| VAN/MIZ/GW ML | if needing more chalk ML |
+| Skip props entirely | per user |
 
 === CLEAN SLIPS ===
-SAFE3 props: Juric O4.5 REB · Ellis O2.5 AST · Bidunga O4.5 REB
-MIX5: SAFE3 + Harding O2.5 AST + Berg O4.5 REB
-CHALK ML3: HOU ML · IU ML · ILL ML
-UPSIDE: Dior Johnson PTS climb · Jackson SJU · KU -10.5 (accept variance)
+SAFE3 ML: HOU ML · IU ML · ILL ML
+MIX4: SAFE3 + UK -4.5 (or BAY -4.5)
+PRIMARY4: UK -4.5 · BAY -4.5 · GONZ -5.5 · TTU ML
+UPSIDE: KU -10.5 · MICH -9.5 · TEX -7.5
+AVOID: any player prop · any −20+ cover
 
 DONE CHECK
 - require_gate: PASS date=20261127 sheets_ok=2901/2901
-- game_conditions: N/A indoor NCAAM (venues listed)
-- BANGERS: yes · athlete_ids: yes · Troy cover ban: yes
+- NCAAM props: skipped (user)
+- BANGERS: yes (sides) · athlete_ids: n/a
+- Troy ≥20 cover ban: yes
