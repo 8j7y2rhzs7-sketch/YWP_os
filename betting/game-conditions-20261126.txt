@@ -1,0 +1,8 @@
+GAME CONDITIONS — 20261126
+pass_hostile: ['KC @ BUF']
+weather_missing_outdoor: none
+
+  [PASS_HOSTILE] nfl KC @ BUF | Highmark Stadium (Orchard Park, NY) indoor=False | Freezing rain 34F precip=83 gust=24 | None O/U None | notes=['cold≤40°F(34)', 'precip≥40%(83)', 'gust≥20(24)']
+  [INDOOR/NA] nfl CHI @ DET | Ford Field (Detroit, MI) indoor=True | None NoneF precip=None gust=None | None O/U None | notes=[]
+  [INDOOR/NA] nfl PHI @ DAL | AT&T Stadium (Arlington, TX) indoor=True | None NoneF precip=None gust=None | None O/U None | notes=[]
+  [OUTDOOR] ncaaf TCU @ TTU | Galaxy Stadium (Lubbock, TX) indoor=False | Clear 44F precip=0 gust=4 | None O/U None | notes=[]
