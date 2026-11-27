@@ -1,0 +1,100 @@
+POSTED-MAIN CARD — 2026-11-27
+Source: Betravon consensus mains + GATE RS sheets. Soft floors NOT listed.
+Graded 355 / unmatched 259
+
+=== KEEP (perfect clear at POSTED main) ===
+  7/7  Bobby Portis O0.5 3PT  MIA vs NY  id=3064482  L=[1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0]
+  7/7  VJ Edgecombe O3.5 AST  PHI vs IND  id=5124612  L=[5.0, 7.0, 6.0, 6.0, 4.0, 6.0, 8.0]
+  7/7  Austin Reaves O17.5 PTS  LAL vs SA  id=4066457  L=[18.0, 43.0, 25.0, 21.0, 27.0, 19.0, 21.0]
+  7/7  Davion Mitchell O13.5 PTS  MIA vs NY  id=4278053  L=[20.0, 14.0, 24.0, 16.0, 15.0, 22.0, 19.0]
+  7/7  Dyson Daniels O1.5 STL  ATL vs BOS  id=4869342  L=[5.0, 4.0, 2.0, 2.0, 2.0, 4.0, 6.0]
+
+=== RISK-KEEP (one miss at POSTED main) ===
+  6/7  Caleb Martin O0.5 3PT  miss=[0.0]  id=3138160
+  6/7  Onyeka Okongwu O1.5 3PT  miss=[1.0]  id=4431680
+  6/7  Pascal Siakam O1.5 3PT  miss=[0.0]  id=3149673
+  6/7  Stephon Castle O1.5 3PT  miss=[0.0]  id=4845367
+  6/7  Austin Reaves O3.5 AST  miss=[2.0]  id=4066457
+  6/7  Miles Bridges O2.5 AST  miss=[2.0]  id=4066383
+  6/7  Neemias Queta O1.5 AST  miss=[1.0]  id=4397424
+  6/7  Cedric Coward O15.5 PTS  miss=[14.0]  id=4903027
+  6/7  Derik Queen O9.5 PTS  miss=[9.0]  id=4869780
+  6/7  Kyle Kuzma O11.5 PTS  miss=[9.0]  id=3134907
+  6/7  Onyeka Okongwu O13.5 PTS  miss=[6.0]  id=4431680
+  6/7  Stephon Castle O17.5 PTS  miss=[10.0]  id=4845367
+  6/7  Davion Mitchell O2.5 REB  miss=[2.0]  id=4278053
+  6/7  Dyson Daniels O7.5 REB  miss=[6.0]  id=4869342
+  6/7  LaMelo Ball O4.5 REB  miss=[2.0]  id=4432816
+  6/7  Yaxel Lendeborg O6.5 REB  miss=[5.0]  id=5175737
+  6/7  Matisse Thybulle O1.5 STL  miss=[1.0]  id=3907498
+  6/7  Walker Kessler O0.5 STL  miss=[0.0]  id=4433136
+
+=== RISK (≈70%+ at POSTED main) ===
+  5/7  Andrew Nembhard O1.5 3PT  miss=[1.0, 1.0]
+  5/7  Andrew Wiggins O0.5 3PT  miss=[0.0, 0.0]
+  5/7  Cedric Coward O1.5 3PT  miss=[0.0, 0.0]
+  5/7  Christian Braun O1.5 3PT  miss=[1.0, 1.0]
+  5/7  Davion Mitchell O1.5 3PT  miss=[1.0, 1.0]
+  5/7  De'Anthony Melton O0.5 3PT  miss=[0.0, 0.0]
+  5/7  Dillon Brooks O1.5 3PT  miss=[0.0, 0.0]
+  5/7  Jaden McDaniels O1.5 3PT  miss=[1.0, 0.0]
+  5/7  Julius Randle O1.5 3PT  miss=[1.0, 0.0]
+  5/7  Karl-Anthony Towns O1.5 3PT  miss=[1.0, 1.0]
+  5/7  Kingston Flemings O0.5 3PT  miss=[0.0, 0.0]
+  5/7  Kyle Kuzma O1.5 3PT  miss=[1.0, 1.0]
+  5/7  Mikal Bridges O1.5 3PT  miss=[1.0, 0.0]
+  5/7  Sam Hauser O1.5 3PT  miss=[1.0, 1.0]
+  5/7  Victor Wembanyama O1.5 3PT  miss=[1.0, 0.0]
+  5/7  Aaron Nesmith O1.5 AST  miss=[1.0, 1.0]
+  5/7  Andrew Nembhard O7.5 AST  miss=[6.0, 6.0]
+  5/7  Bam Adebayo O2.5 AST  miss=[2.0, 2.0]
+  5/7  Daniel Gafford O1.5 AST  miss=[1.0, 1.0]
+  5/7  Davion Mitchell O7.5 AST  miss=[3.0, 6.0]
+  5/7  Day'Ron Sharpe O4.5 AST  miss=[2.0, 1.0]
+  5/7  Devin Booker O5.5 AST  miss=[5.0, 3.0]
+  5/7  Jaden McDaniels O3.5 AST  miss=[1.0, 3.0]
+  5/7  Jake LaRavia O1.5 AST  miss=[1.0, 0.0]
+  5/7  Karl-Anthony Towns O4.5 AST  miss=[4.0, 3.0]
+  5/7  Keyonte George O6.5 AST  miss=[2.0, 6.0]
+  5/7  Kingston Flemings O3.5 AST  miss=[1.0, 1.0]
+  5/7  Klay Thompson O1.5 AST  miss=[1.0, 1.0]
+  5/7  Michael Porter Jr. O1.5 AST  miss=[1.0, 0.0]
+  5/7  Nickeil Alexander-Walker O2.5 AST  miss=[1.0, 1.0]
+  5/7  Quentin Grimes O2.5 AST  miss=[1.0, 0.0]
+  5/7  Rudy Gobert O1.5 AST  miss=[0.0, 0.0]
+  5/7  Saddiq Bey O2.5 AST  miss=[2.0, 0.0]
+  5/7  Stephon Castle O6.5 AST  miss=[6.0, 6.0]
+  5/7  Walker Kessler O1.5 AST  miss=[0.0, 1.0]
+  5/7  Julius Randle O21.5 PTS  miss=[17.0, 17.0]
+  5/7  Kingston Flemings O8.5 PTS  miss=[0.0, 8.0]
+  5/7  LeBron James O18.5 PTS  miss=[15.0, 11.0]
+  5/7  Paul George O18.5 PTS  miss=[10.0, 7.0]
+  5/7  Quentin Grimes O10.5 PTS  miss=[9.0, 2.0]
+
+=== CUT at POSTED main (do not bet) ===
+  277 props fail at book main — including soft-floor favorites.
+  4/7  Day'Ron Sharpe O9.5 PTS  miss=[6.0, 6.0, 6.0]
+  4/7  Victor Wembanyama O30.5 PTS  miss=[25.0, 26.0, 12.0]
+  4/7  Day'Ron Sharpe O8.5 REB  miss=[5.0, 5.0, 4.0]
+  3/7  Nikola Jokic O1.5 3PT  miss=[1.0, 1.0, 1.0, 1.0]
+  3/7  Julius Randle O4.5 AST  miss=[3.0, 4.0, 4.0, 1.0]
+  3/7  Nikola Jokic O9.5 AST  miss=[5.0, 9.0, 7.0, 8.0]
+  3/7  Victor Wembanyama O3.5 AST  miss=[3.0, 1.0, 3.0, 1.0]
+  3/7  Victor Wembanyama O3.5 BLK  miss=[2.0, 1.0, 1.0, 2.0]
+  3/7  Nikola Jokic O26.5 PTS  miss=[18.0, 26.0, 24.0, 26.0]
+  3/7  Victor Wembanyama O12.5 REB  miss=[11.0, 10.0, 12.0, 9.0]
+  2/7  Day'Ron Sharpe O0.5 3PT  miss=[0.0, 0.0, 0.0, 0.0, 0.0]
+  2/7  Nickeil Alexander-Walker O3.5 3PT  miss=[2.0, 3.0, 2.0, 1.0, 2.0]
+  2/7  Julius Randle O6.5 REB  miss=[4.0, 0.0, 6.0, 4.0, 4.0]
+  2/7  Nikola Jokic O11.5 REB  miss=[11.0, 7.0, 8.0, 8.0, 11.0]
+  2/7  Victor Wembanyama O1.5 STL  miss=[1.0, 1.0, 1.0, 1.0, 1.0]
+  1/7  Nickeil Alexander-Walker O20.5 PTS  miss=[17.0, 19.0, 20.0, 16.0, 20.0, 20.0]
+
+=== CLEAN SLIP (KEEP @ posted mains only) ===
+  1. Bobby Portis O0.5 3PT  (7/7)  MIA vs NY
+  2. VJ Edgecombe O3.5 AST  (7/7)  PHI vs IND
+  3. Austin Reaves O17.5 PTS  (7/7)  LAL vs SA
+  4. Davion Mitchell O13.5 PTS  (7/7)  MIA vs NY
+  5. Dyson Daniels O1.5 STL  (7/7)  ATL vs BOS
+
+DONE: No soft floors. If a KEEP number is missing on HR, skip that leg — do not invent a lower alt.

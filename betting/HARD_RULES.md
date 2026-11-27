@@ -11,14 +11,25 @@ If those files are missing, any claim that a gate exists is false.
 
 ## Daily run order
 1. Identify every sport with games today (NBA, NFL, NHL, MLB, WNBA, NCAAF, soccer if posted).
-2. For each sport, exhaustive boards with **sport-specific** grading.
-3. **Regular season only for L10/L5 — never mix preseason into hit rates.**
-4. Main-first + ladders; HR playable only (no PP soft ghosts).
-5. Role-aware stitch; when unsure → CUR_ONLY.
-6. Separated lists by sport first; then mix if asked.
+2. **Venue + weather** — `python3 betting/pull_game_conditions.py` (mandatory). BY GAME states venue/city/indoor-outdoor/home-away. Outdoor NFL/NCAAF include temp · gust · precip% · condition.
+3. For each sport, exhaustive boards with **sport-specific** grading.
+4. **Regular season only for L10/L5 — never mix preseason into hit rates.**
+5. Main-first + ladders; HR playable only (no PP soft ghosts).
+6. Role-aware stitch; when unsure → CUR_ONLY.
+7. Separated lists by sport first; then mix if asked.
+
+## Locked 2026-11-26 — venue + weather always (user catch)
+**Incident:** TNF KC@BUF card/slip weed published on L7 hit rates only. Highmark was outdoor rain/~35°F/gust~27/precip~83%. Pass/rec overs (Allen/Shakir/Rice) were left RISK-KEEP until user asked about weather. Unacceptable.
+### Rules
+1. **Every run and every slip weed** must include location (venue · city · home/away/neutral · indoor/outdoor).
+2. **Outdoor NFL/NCAAF** must pull live weather before SAFE/PRIMARY/weed labels. Artifact: `betting/game-conditions-YYYYMMDD.json` via `pull_game_conditions.py`.
+3. **Pass-hostile** = temp≤40°F OR precip%≥40 OR gust≥20 OR rain/snow display → demote QB pass / WR-TE rec overs; prefer RB rush, game Under, soft sides/alts.
+4. Domed/indoor games: still print venue + indoor=yes (weather N/A).
+5. NBA/NHL: venue + home/away still required on BY GAME; weather only if outdoor event (rare).
+6. Completion block must include `game_conditions: PASS|FAIL|N/A`.
 
 ## Locked — NFL ≠ NBA grading
-- NFL: MATCHUP → script → role → then L10. Never L10-first.
+- NFL: MATCHUP → **venue/weather** → script → role → then L10. Never L10-first.
 - Do not lead with juice ghosts (Young 189.5 class). Soft alt missing → climb to posted line and re-grade.
 - Mix parlays stay on. Do not nuke mix because one NFL spine was dumb.
 - Kill-class: QB pass OVER as floor; juiced NBA PTS above real floor; Kap-class O2.5 SOG as spine.

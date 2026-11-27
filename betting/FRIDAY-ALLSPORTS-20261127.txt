@@ -1,0 +1,10 @@
+FRIDAY ALL-GATES 2026-11-26 23:09 ET
+GATE PASS 20261127 sheets 2269/2269
+NBA11 NHL15 NFL1 NCAAF13 NCAAM55
+
+CONDITIONS pass_hostile: DEN@PIT · NEB@IOWA · BUFF@AKR · TOL@OHIO · MINN@WIS
+BAN pass/rec spines those games → rush/Under.
+
+KEY OUT: Reaves Q/Out · Cade OUT · Curry OUT · Edwards OUT · Jaylen Brown OUT · OG doubtful
+Posted KEEP: Edgecombe AST · Davion PTS · Portis 3PT · Daniels STL · Reaves PTS (HOLD if inactive)
+Full board → chat.
