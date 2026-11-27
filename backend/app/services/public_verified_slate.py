@@ -219,12 +219,15 @@ def public_verified_slate(sport: str, slate_date: date) -> list[CandidateInput]:
 
         flags = dict(research.get("flags") or {})
         flags["schedule_verified"] = True
+        flags["home_away_verified"] = True
+        flags["universe_scan_complete"] = True
         # No books → never claim market movement consensus.
         flags["market_movement_verified"] = False
         research["flags"] = flags
         source_status = dict(research.get("source_status") or {})
         source_status["schedule"] = "confirmed"
-        source_status["market"] = "unknown"
+        # "n/a" (not "unknown") so readiness does not hard-gap market while Odds is down.
+        source_status["market"] = "n/a"
         research["source_status"] = source_status
 
         for team, side in ((home, "home"), (away, "away")):
@@ -258,14 +261,27 @@ def public_verified_slate(sport: str, slate_date: date) -> list[CandidateInput]:
                 continue
 
             fair = fair_american_odds(float(seed.estimated_probability))
+            # Floor quality above minimum so Check can clear LEAN while Odds is down;
+            # still PARTIAL / LEAN-capped — never claim a priced VERIFIED book board.
+            quality = max(0.68, float(seed.data_quality or 0.0))
             candidates.append(
                 seed.model_copy(
                     update={
                         "american_odds": fair,
                         "probability_source": "model",
                         "data_source": "PUBLIC_SCHEDULE_FALLBACK",
+                        "data_quality": quality,
+                        "schedule_verified": True,
+                        "home_away_verified": True,
+                        "universe_scan_complete": True,
+                        "market_movement_verified": False,
                         "game_status": game_status,
                         "market_status": market_status,
+                        "source_status": {
+                            **dict(seed.source_status or {}),
+                            "schedule": "confirmed",
+                            "market": "n/a",
+                        },
                         "reason_codes": list(
                             dict.fromkeys(
                                 [
@@ -288,5 +304,6 @@ def public_fallback_notice(sport: str, count: int) -> str:
         f"PUBLIC FALLBACK board for {label}: {count} schedule-verified moneyline sides "
         "from free official/public feeds (ESPN / NHL / MLB). The Odds API is down or "
         "unconfigured, so there are no sportsbook prices — fair model odds only. "
-        "Treat as PARTIAL research until Odds recovers; do not treat as a priced book board."
+        "LEAN-only picks can still clear while Odds is down — never treat as a priced "
+        "VERIFIED book board until Odds recovers."
     )

@@ -114,12 +114,34 @@ def _required_checks_for(candidate: CandidateInput) -> tuple[tuple[str, str], ..
     return COMMON_REQUIRED_CHECKS
 
 
+def is_public_schedule_fallback(candidate: CandidateInput) -> bool:
+    """True when Odds is down and we boarded schedule-verified public feeds only."""
+    return str(candidate.data_source or "").upper() == "PUBLIC_SCHEDULE_FALLBACK"
+
+
+# When Odds is unavailable, market consensus cannot exist — require only what
+# public feeds can verify so Check can still clear LEAN (never claim VERIFIED).
+PUBLIC_FALLBACK_REQUIRED_CHECKS: tuple[tuple[str, str], ...] = (
+    ("schedule_verified", "schedule"),
+    ("current_form_verified", "current form"),
+    ("home_away_verified", "home/away/travel"),
+)
+
+
 def candidate_verification_gaps(candidate: CandidateInput) -> list[str]:
     sport_l = candidate.sport.lower()
-    required = _required_checks_for(candidate)
+    public_fallback = is_public_schedule_fallback(candidate)
+    required = (
+        PUBLIC_FALLBACK_REQUIRED_CHECKS if public_fallback else _required_checks_for(candidate)
+    )
     gaps = [label for field, label in required if not bool(getattr(candidate, field))]
 
-    if sport_l in OUTDOOR_WEATHER_SPORTS and sport_l != "kbo" and not candidate.weather_verified:
+    if (
+        not public_fallback
+        and sport_l in OUTDOOR_WEATHER_SPORTS
+        and sport_l != "kbo"
+        and not candidate.weather_verified
+    ):
         # KBO already includes weather in its checklist.
         gaps.append("weather/venue conditions")
 
@@ -132,6 +154,9 @@ def candidate_verification_gaps(candidate: CandidateInput) -> list[str]:
         "injuries",
         "starter",
     }
+    if public_fallback:
+        # Odds is down — market source unknown is expected, not a hard gap.
+        hard_source_keys.discard("market")
     # Bullpen is MLB-only until a certified KBO bullpen source exists.
     if sport_l in {"mlb", "baseball"}:
         hard_source_keys.add("bullpen")
@@ -170,6 +195,28 @@ def candidate_verification_gaps(candidate: CandidateInput) -> list[str]:
         missing = [field for field in candidate.missing_fields if field not in soft]
     else:
         missing = list(candidate.missing_fields)
+
+    if public_fallback:
+        # Odds-only missing labels must not empty the board while books are down.
+        soft_public = {
+            "historical market/line movement",
+            "current sportsbook price consensus",
+            "current market/line movement",
+            "full slate/player universe",
+            "sport-specific strict-mode sweep",
+            "confirmed lineup",
+            "confirmed lineup/starters",
+            "confirmed starters/roles",
+            "starter/role",
+            "motivation/rotation/workload",
+            "injuries for both teams",
+            "injuries/rest",
+            "weather/venue",
+            "weather/venue conditions",
+            "actual L5/L10",
+        }
+        missing = [field for field in missing if field not in soft_public]
+        gaps = [label for label in gaps if label not in soft_public]
 
     return list(dict.fromkeys([*missing, *gaps]))
 

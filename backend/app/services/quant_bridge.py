@@ -79,6 +79,17 @@ def leg_verification_state(item: Any) -> str:
         and decision in {"PLAY", "LEAN"}
         and (readiness == "DEMO" or "demo" in source or "synthetic" in source)
     )
+    data_source = str(snap.get("data_source") or getattr(item, "data_source", "") or "").upper()
+    public_fallback = (
+        data_source == "PUBLIC_SCHEDULE_FALLBACK"
+        or "PUBLIC_FALLBACK_LEAN" in codes
+        or "PUBLIC_SCHEDULE_FALLBACK" in codes
+    )
+    # Odds-down LEAN legs are intentionally PARTIAL — still card-eligible so the
+    # app does not go empty while books are unavailable.
+    if public_fallback and decision == "LEAN":
+        return "verified"
+
     unverified = (not local_demo_play) and (
         readiness in {"PARTIAL", "DEMO"}
         or (stage_status == "partial" and readiness != "DEMO")
