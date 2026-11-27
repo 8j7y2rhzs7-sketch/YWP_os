@@ -1,0 +1,140 @@
+{
+  "date": "20261126",
+  "generated_at": "2026-11-26T21:22:21.880896-05:00",
+  "n": 4,
+  "pass_hostile_games": [
+    "KC @ BUF"
+  ],
+  "weather_missing_outdoor": [],
+  "rows": [
+    {
+      "sport": "nfl",
+      "event_id": "401873082",
+      "name": "KC @ BUF",
+      "status": "7:55 - 2nd Quarter",
+      "venue": "Highmark Stadium",
+      "city": "Orchard Park",
+      "state": "NY",
+      "indoor": false,
+      "outdoor": true,
+      "odds": null,
+      "ou": null,
+      "weather": {
+        "temperature": 34,
+        "highTemperature": 34,
+        "lowTemperature": 34,
+        "conditionId": "Freezing rain",
+        "gust": 24,
+        "precipitation": 83,
+        "link": {
+          "language": "en-US",
+          "rel": [
+            "14127"
+          ],
+          "href": "http://www.accuweather.com/en/us/highmark-stadium-ny/14127/current-weather/43037_poi?lang=en-us",
+          "text": "Weather",
+          "shortText": "Weather",
+          "isExternal": true,
+          "isPremium": false
+        }
+      },
+      "temp_f": 34,
+      "precip_pct": 83,
+      "gust_mph": 24,
+      "condition": "Freezing rain",
+      "pass_hostile": true,
+      "notes": [
+        "cold\u226440\u00b0F(34)",
+        "precip\u226540%(83)",
+        "gust\u226520(24)"
+      ],
+      "weather_critical": true
+    },
+    {
+      "sport": "nfl",
+      "event_id": "401873081",
+      "name": "CHI @ DET",
+      "status": "Final",
+      "venue": "Ford Field",
+      "city": "Detroit",
+      "state": "MI",
+      "indoor": true,
+      "outdoor": false,
+      "odds": null,
+      "ou": null,
+      "weather": {},
+      "temp_f": null,
+      "precip_pct": null,
+      "gust_mph": null,
+      "condition": null,
+      "pass_hostile": false,
+      "notes": [],
+      "weather_critical": true
+    },
+    {
+      "sport": "nfl",
+      "event_id": "401873080",
+      "name": "PHI @ DAL",
+      "status": "Final",
+      "venue": "AT&T Stadium",
+      "city": "Arlington",
+      "state": "TX",
+      "indoor": true,
+      "outdoor": false,
+      "odds": null,
+      "ou": null,
+      "weather": {},
+      "temp_f": null,
+      "precip_pct": null,
+      "gust_mph": null,
+      "condition": null,
+      "pass_hostile": false,
+      "notes": [],
+      "weather_critical": true
+    },
+    {
+      "sport": "ncaaf",
+      "event_id": "401856879",
+      "name": "TCU @ TTU",
+      "status": "3:54 - 2nd Quarter",
+      "venue": "Galaxy Stadium",
+      "city": "Lubbock",
+      "state": "TX",
+      "indoor": false,
+      "outdoor": true,
+      "odds": null,
+      "ou": null,
+      "weather": {
+        "temperature": 44,
+        "highTemperature": 44,
+        "lowTemperature": 44,
+        "conditionId": "Clear",
+        "gust": 4,
+        "precipitation": 0,
+        "link": {
+          "language": "en-US",
+          "rel": [
+            "79401"
+          ],
+          "href": "http://www.accuweather.com/en/us/jones-at-t-stadium-tx/79401/current-weather/53649_poi?lang=en-us",
+          "text": "Weather",
+          "shortText": "Weather",
+          "isExternal": true,
+          "isPremium": false
+        }
+      },
+      "temp_f": 44,
+      "precip_pct": 0,
+      "gust_mph": 4,
+      "condition": "Clear",
+      "pass_hostile": false,
+      "notes": [],
+      "weather_critical": true
+    }
+  ],
+  "rules": {
+    "outdoor_football": "Pull venue+weather before any NFL/NCAAF card or slip weed",
+    "pass_hostile": "temp\u226440 OR precip%\u226540 OR gust\u226520 OR rain/snow \u2192 demote pass/rec overs; prefer rush + Under + soft sides",
+    "location": "Always state venue city + home/away/neutral + indoor/outdoor on BY GAME"
+  }
+}

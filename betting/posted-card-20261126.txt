@@ -1,0 +1,17 @@
+POSTED-MAIN CARD — 2026-11-26
+Source: Betravon consensus mains + GATE RS sheets. Soft floors NOT listed.
+Graded 0 / unmatched 309
+
+=== KEEP (perfect clear at POSTED main) ===
+
+=== RISK-KEEP (one miss at POSTED main) ===
+
+=== RISK (≈70%+ at POSTED main) ===
+
+=== CUT at POSTED main (do not bet) ===
+  0 props fail at book main — including soft-floor favorites.
+
+=== CLEAN SLIP (KEEP @ posted mains only) ===
+  (no perfect KEEP at posted mains — use RISK-KEEP short card)
+
+DONE: No soft floors. If a KEEP number is missing on HR, skip that leg — do not invent a lower alt.
