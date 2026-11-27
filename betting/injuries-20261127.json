@@ -1,5 +1,14 @@
 [
   {
+    "name": "Andre Drummond",
+    "team": "NY",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
     "name": "Miles McBride",
     "team": "NY",
     "status": "Day-To-Day",
@@ -25,15 +34,6 @@
     "tag": "OUT",
     "out": true,
     "gtd": false
-  },
-  {
-    "name": "Andre Drummond",
-    "team": "NY",
-    "status": "Day-To-Day",
-    "fantasy": "GTD",
-    "tag": "GTD",
-    "out": false,
-    "gtd": true
   },
   {
     "name": "Giannis Antetokounmpo",
@@ -99,6 +99,15 @@
     "gtd": false
   },
   {
+    "name": "Tyrese Haliburton",
+    "team": "IND",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
     "name": "Kelly Oubre Jr.",
     "team": "IND",
     "status": "Day-To-Day",
@@ -124,15 +133,6 @@
     "tag": "GTD",
     "out": false,
     "gtd": true
-  },
-  {
-    "name": "Tyrese Haliburton",
-    "team": "IND",
-    "status": "Out",
-    "fantasy": "OUT",
-    "tag": "OUT",
-    "out": true,
-    "gtd": false
   },
   {
     "name": "Ben Sheppard",
@@ -450,6 +450,15 @@
     "gtd": false
   },
   {
+    "name": "Mo Bamba",
+    "team": "UTAH",
+    "status": "Day-To-Day",
+    "fantasy": "GTD",
+    "tag": "GTD",
+    "out": false,
+    "gtd": true
+  },
+  {
     "name": "Jaxson Hayes",
     "team": "UTAH",
     "status": "Day-To-Day",
@@ -630,24 +639,6 @@
     "gtd": false
   },
   {
-    "name": "Kirill Marchenko",
-    "team": "TOR",
-    "status": "Injured Reserve",
-    "fantasy": "IR",
-    "tag": "TAGGED",
-    "out": false,
-    "gtd": false
-  },
-  {
-    "name": "Colton Sissons",
-    "team": "TOR",
-    "status": "Injured Reserve",
-    "fantasy": "IR",
-    "tag": "TAGGED",
-    "out": false,
-    "gtd": false
-  },
-  {
     "name": "Cole McWard",
     "team": "TOR",
     "status": "Injured Reserve",
@@ -663,6 +654,33 @@
     "fantasy": "IR",
     "tag": "TAGGED",
     "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Miles Wood",
+    "team": "TOR",
+    "status": "Injured Reserve",
+    "fantasy": "IR-LT",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Marshall Rifai",
+    "team": "TOR",
+    "status": "Injured Reserve",
+    "fantasy": "IR",
+    "tag": "TAGGED",
+    "out": false,
+    "gtd": false
+  },
+  {
+    "name": "Declan Chisholm",
+    "team": "NJ",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
     "gtd": false
   },
   {
@@ -981,7 +999,7 @@
     "gtd": false
   },
   {
-    "name": "Vincent Desharnais",
+    "name": "Jordan Kyrou",
     "team": "WSH",
     "status": "Injured Reserve",
     "fantasy": "IR",
@@ -996,15 +1014,6 @@
     "fantasy": "IR-LT",
     "tag": "TAGGED",
     "out": false,
-    "gtd": false
-  },
-  {
-    "name": "Jordan Kyrou",
-    "team": "WSH",
-    "status": "Out",
-    "fantasy": "OUT",
-    "tag": "OUT",
-    "out": true,
     "gtd": false
   },
   {
@@ -1350,6 +1359,24 @@
     "gtd": false
   },
   {
+    "name": "Noah Ostlund",
+    "team": "BUF",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
+    "name": "Zach Benson",
+    "team": "BUF",
+    "status": "Out",
+    "fantasy": "OUT",
+    "tag": "OUT",
+    "out": true,
+    "gtd": false
+  },
+  {
     "name": "Tyson Kozak",
     "team": "BUF",
     "status": "Day-To-Day",
@@ -1369,15 +1396,6 @@
   },
   {
     "name": "Justin Danforth",
-    "team": "BUF",
-    "status": "Injured Reserve",
-    "fantasy": "IR",
-    "tag": "TAGGED",
-    "out": false,
-    "gtd": false
-  },
-  {
-    "name": "Matt Grzelcyk",
     "team": "BUF",
     "status": "Injured Reserve",
     "fantasy": "IR",
