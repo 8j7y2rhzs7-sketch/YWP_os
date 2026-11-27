@@ -1,0 +1,251 @@
+{
+  "date": "20261127",
+  "tz": "America/New_York",
+  "created_et": "2026-11-27T12:40:00-05:00",
+  "status": "OPEN",
+  "tickets": [
+    {
+      "id": "A_MAIN7",
+      "name": "Main LIST2 SGPMAX7",
+      "odds_note": "+718 SGPMAX (approx)",
+      "blessed": true,
+      "legs": [
+        {
+          "id": "A1",
+          "sport": "nfl",
+          "event": "DEN @ PIT",
+          "event_id": "401873083",
+          "market": "TOTAL",
+          "pick": "Under 37.5",
+          "line": 37.5,
+          "side": "under",
+          "stress": "HIGH",
+          "kill_modes": [
+            "shootout / ST scores",
+            "garbage TDs late",
+            "weather clears and pass game opens"
+          ],
+          "result": "PENDING",
+          "actual": "Fri, November 27th at 3:00 PM EST"
+        },
+        {
+          "id": "A2",
+          "sport": "nfl",
+          "event": "DEN @ PIT",
+          "market": "ML",
+          "pick": "DEN ML",
+          "stress": "MED",
+          "kill_modes": [
+            "PIT home upset",
+            "turnover script",
+            "correlated with Under if PIT wins low"
+          ],
+          "result": "PENDING",
+          "actual": "Fri, November 27th at 3:00 PM EST",
+          "event_id": "401873083"
+        },
+        {
+          "id": "A3",
+          "sport": "nfl",
+          "event": "DEN @ PIT",
+          "market": "RUSH_YD",
+          "pick": "Jaylen Warren O40.5 rush",
+          "player": "Jaylen Warren",
+          "line": 40.5,
+          "stress": "MED-HIGH",
+          "kill_modes": [
+            "committee / Dowdle steals",
+            "DEN blowout negative script",
+            "pass-heavy PIT if weather better"
+          ],
+          "result": "PENDING",
+          "actual": "Fri, November 27th at 3:00 PM EST",
+          "event_id": "401873083"
+        },
+        {
+          "id": "A4",
+          "sport": "nhl",
+          "event": "CGY @ NJ",
+          "market": "SOG",
+          "pick": "Timo Meier O1.5 SOG",
+          "player": "Timo Meier",
+          "athlete_id": "3899978",
+          "line": 1.5,
+          "form": "10/10 L10 min2",
+          "stress": "LOW",
+          "kill_modes": [
+            "0-1 SOG night",
+            "TOI scratch/injury"
+          ],
+          "result": "PENDING",
+          "actual": "game not final",
+          "event_id": "401892796"
+        },
+        {
+          "id": "A5",
+          "sport": "nhl",
+          "event": "DET @ CBJ",
+          "market": "SOG",
+          "pick": "Zach Werenski O1.5 SOG",
+          "player": "Zach Werenski",
+          "athlete_id": "3899972",
+          "line": 1.5,
+          "form": "10/10 L10 min2",
+          "stress": "LOW",
+          "kill_modes": [
+            "0-1 SOG night",
+            "D pair limited TOI"
+          ],
+          "result": "PENDING",
+          "actual": "game not final",
+          "event_id": "401892802"
+        },
+        {
+          "id": "A6",
+          "sport": "nba",
+          "event": "PHI @ IND",
+          "market": "AST",
+          "pick": "Andrew Nembhard O4.5 AST",
+          "player": "Andrew Nembhard",
+          "athlete_id": "4395712",
+          "line": 4.5,
+          "form": "7/7 cush1.5 Hali OUT",
+          "stress": "LOW-MED",
+          "kill_modes": [
+            "prints 4",
+            "foul trouble / short minutes",
+            "Embiid ACTIVE changes PHI script"
+          ],
+          "result": "PENDING",
+          "actual": "game not final",
+          "event_id": "401909328"
+        },
+        {
+          "id": "A7",
+          "sport": "nba",
+          "event": "GS @ POR",
+          "market": "3PT",
+          "pick": "Deni Avdija O1.5 3PT",
+          "player": "Deni Avdija",
+          "athlete_id": "4683021",
+          "line": 1.5,
+          "form": "7/7 cush0.5 Curry OUT",
+          "stress": "HIGH",
+          "kill_modes": [
+            "0-1 made threes (thinnest leg)",
+            "paint-only night",
+            "foul out early"
+          ],
+          "result": "PENDING",
+          "actual": "game not final",
+          "event_id": "401909336"
+        }
+      ],
+      "stress_summary": {
+        "weakest_legs": [
+          "A7 Deni O1.5 3PT",
+          "A3 Warren O40.5",
+          "A1 Under 37.5"
+        ],
+        "correlation": "DEN ML + Under + Warren rush share one NFL script \u2014 one weather game can kill 1-3 legs together",
+        "most_likely_sole_killer": "Deni O1.5 3PT",
+        "cash_path": "SOG floors + Nembhard + weather Under hold; Deni is the variance spike"
+      },
+      "status": "OPEN"
+    },
+    {
+      "id": "B_NCAAM4",
+      "name": "NCAAM PRIMARY4",
+      "odds_note": "BAY -3.5 (-120) \u00b7 UK -4.5 \u00b7 TTU ML \u00b7 GONZ -5.5",
+      "blessed": true,
+      "legs": [
+        {
+          "id": "B1",
+          "sport": "ncaam",
+          "event": "TCU vs BAY",
+          "event_id": "401920542",
+          "tip_et": "2026-11-27T15:00:00-05:00",
+          "market": "SPREAD",
+          "pick": "BAY -3.5",
+          "line": -3.5,
+          "hr_juice": -120,
+          "venue": "T-Mobile Arena Las Vegas indoor",
+          "stress": "MED",
+          "kill_modes": [
+            "TCU keeps within 3",
+            "neutral-site variance",
+            "cover fail 1-possession"
+          ],
+          "result": "PENDING",
+          "actual": "Fri, November 27th at 3:00 PM EST"
+        },
+        {
+          "id": "B2",
+          "sport": "ncaam",
+          "event": "WICH @ UK",
+          "event_id": "401919033",
+          "tip_et": "2026-11-27T21:00:00-05:00",
+          "market": "SPREAD",
+          "pick": "UK -4.5",
+          "line": -4.5,
+          "venue": "Rupp Arena Lexington indoor",
+          "stress": "MED",
+          "kill_modes": [
+            "WICH 6-1 road dog cover",
+            "UK cold shooting home"
+          ],
+          "result": "PENDING",
+          "actual": "Fri, November 27th at 9:00 PM EST"
+        },
+        {
+          "id": "B3",
+          "sport": "ncaam",
+          "event": "SDSU vs TTU",
+          "event_id": "401920535",
+          "tip_et": "2026-11-27T23:30:00-05:00",
+          "market": "ML",
+          "pick": "TTU ML",
+          "line": null,
+          "board_spread": -8.5,
+          "venue": "Michelob ULTRA Arena Las Vegas indoor",
+          "stress": "LOW",
+          "kill_modes": [
+            "#5 TTU outright upset vs SDSU"
+          ],
+          "result": "PENDING",
+          "actual": "Fri, November 27th at 11:30 PM EST"
+        },
+        {
+          "id": "B4",
+          "sport": "ncaam",
+          "event": "CREI vs GONZ",
+          "event_id": "401920544",
+          "tip_et": "2026-11-27T23:00:00-05:00",
+          "market": "SPREAD",
+          "pick": "GONZ -5.5",
+          "line": -5.5,
+          "venue": "T-Mobile Arena Las Vegas indoor",
+          "stress": "MED",
+          "kill_modes": [
+            "Creighton 6-1 keeps within 5",
+            "neutral Vegas script"
+          ],
+          "result": "PENDING",
+          "actual": "Fri, November 27th at 11:00 PM EST"
+        }
+      ],
+      "stress_summary": {
+        "weakest_legs": [
+          "B1 BAY -3.5",
+          "B4 GONZ -5.5",
+          "B2 UK -4.5"
+        ],
+        "strongest_leg": "B3 TTU ML",
+        "most_likely_sole_killer": "BAY -3.5 cover (softest HR number still cover risk)",
+        "cash_path": "TTU wins outright + two of three soft spreads cover"
+      },
+      "status": "OPEN"
+    }
+  ],
+  "last_settled_et": "2026-11-27T12:39:53.551282-05:00"
+}

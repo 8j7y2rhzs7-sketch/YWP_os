@@ -1,0 +1,17 @@
+TRACK SETTLE 20261127 @ 2026-11-27T12:39:53.551282-05:00
+overall=OPEN
+
+=== A_MAIN7 Main LIST2 SGPMAX7 → OPEN ===
+  PENDING Under 37.5  | Fri, November 27th at 3:00 PM EST
+  PENDING DEN ML  | Fri, November 27th at 3:00 PM EST
+  PENDING Jaylen Warren O40.5 rush  | Fri, November 27th at 3:00 PM EST
+  PENDING Timo Meier O1.5 SOG  | game not final
+  PENDING Zach Werenski O1.5 SOG  | game not final
+  PENDING Andrew Nembhard O4.5 AST  | game not final
+  PENDING Deni Avdija O1.5 3PT  | game not final
+
+=== B_NCAAM4 NCAAM PRIMARY4 → OPEN ===
+  PENDING BAY -3.5  | Fri, November 27th at 3:00 PM EST
+  PENDING UK -4.5  | Fri, November 27th at 9:00 PM EST
+  PENDING TTU ML  | Fri, November 27th at 11:30 PM EST
+  PENDING GONZ -5.5  | Fri, November 27th at 11:00 PM EST
