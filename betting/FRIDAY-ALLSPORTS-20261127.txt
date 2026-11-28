@@ -1,0 +1,109 @@
+FRIDAY LIVE RE-RUN 2026-11-27 11:45 ET
+GATE PASS 20261127 sheets 2901/2901 exhaustive
+NBA11 NHL15 NFL1 NCAAF13 NCAAM55
+
+CONDITIONS pass_hostile: DEN@PIT (41F precip61 gust29 O/U37.5) · BUFF@AKR · TOL@OHIO · NEB@IOWA · FLA@FSU (gust20) · MINN@WIS
+→ CUT pass/rec overs those games. Prefer rush/Under/soft sides.
+
+SCRUB: Reaves BAN_OUT · Portis/Daniels/Herro BINARY · no playable KEEP cush≥1 at posted mains
+KEEP_HOOK only: Deni O1.5 3PT · Caleb Martin O2.5 AST
+
+KEY OUT: Reaves OUT · Cade OUT · Curry OUT · Edwards OUT · Jaylen Brown OUT · Hali OUT · Ja/Sharpe/Porzingis/Butler OUT · Duren OUT · OG Out
+GTD HOLD: Embiid · Fox · Giannis (listed on wrong block — verify) · Wiggins · LaMelo
+
+=== SAFE ===
+1. DEN/PIT U37.5 — Acrisure PASS_HOSTILE 41F precip61 gust29 — weather spine
+2. DEN −4.5 / ML — same script · BAN Nix O202.5 / Rodgers O199.5
+3. Timo Meier O1.5 SOG (soft; posted O3.5 is CUT 5/10) — NJ vs CGY — id=3899978 — L10=[2,5,3,3,3,4,3,5,8,6] 10/10
+4. Zach Werenski O1.5 SOG (soft; posted O3.5 CUT) — CBJ vs DET — id=3899972 — L10=[2,6,4,2,3,4,5,6,3,5] 10/10
+5. Nembhard O4.5 AST if HR (soft; posted O7.5 = 5/7 RISK) — IND vs PHI — id=4395712 — L=[6,8,8,6,10,12,8] cush1.5 · Hali OUT
+
+=== PRIMARY ===
+- 7/7 Deni Avdija O1.5 3PT — POR vs GS — id=4683021 — L=[5,5,2,3,3,4,2] cush0.5 HOOK · Curry OUT GS
+- 7/7 Caleb Martin O2.5 AST — DAL vs PHX — id=3138160 — L=[4,4,3,3,5,3,5] cush0.5 HOOK
+- 6/7 Edgecombe O4.5 AST — PHI vs IND — id=5124612 — L=[5,7,6,6,4,6,8] miss=[4] · Brown OUT
+- 6/7 Davion O14.5 PTS — MIA vs NY — id=4278053 — L=[20,14,24,16,15,22,19] miss=[14]
+- 6/7 Deni O23.5 PTS — POR — id=4683021 — miss=[20] · usage bang
+- 6/7 Castle O1.5 3PT / Siakam O1.5 3PT / Okongwu O1.5 3PT
+- 6/7 Cam Spencer O4.5 AST — MEM vs MIN — id=4433083 — Edwards OUT MIN
+- Jaylen Warren O62.5 RUSH — PIT vs DEN weather · CUT his REC as spine
+
+=== BANGERS ===
+1. Maxey O25.5 PTS — PHI vs IND — id=4431678 — Brown OUT · L7=[30,22,17,24,27,27,24]
+2. Brunson O27.5 PTS juice / soft floor if posted — NY vs MIA — id=3934672 — OG Out · L7=[19,22,30,21,31,28,33]
+3. Deni O23.5 PTS — POR vs GS — Curry OUT · L7=[33,31,20,27,34,28,24]
+4. Siakam O22.5 PTS — IND vs PHI — id=3149673 — L7=[20,25,21,24,31,19,28]
+5. Towns O10.5 soft REB / O12.5 posted RISK — NY — id=3136195
+6. Jokic soft PTS path vs UTAH — BAN posted O26.5-class / O11.5 REB / O9.5 AST
+7. Luka soft path — LAL vs SA — Reaves OUT bump — BAN O33.5 as spine
+8. Pasta O1.5/O2.5 SOG soft (posted O3.5 RISK only) — BOS vs TOR — id=3114778 — L10=[1,4,6,4,6,3,3,4,7,4]
+9. Marner O1.5 SOG soft 9/10 — VGK vs SJ — id=3899937
+
+=== STL / NHL SOG ===
+- Daniels O1.5 STL 7/7 BINARY add only — ATL vs BOS — id=4869342
+- Herro O0.5 STL BINARY add only — not spine
+- BAN Thybulle/Kessler STL spines
+- Meier O1.5 · Werenski O1.5 · Pasta O1.5 · Marner O1.5 · Gauthier O1.5
+- CUT Meier/Werenski/Pasta/Gauthier at posted O3.5/O4.5
+- Cap ≤2 SOG on mix
+
+=== BY GAME ===
+- MIA@NY MSG indoor NY −2.5/221.5 — Davion · Brunson/Towns · OG Out · Portis binary add
+- MIL@DET LCA DET −10.5 — Cade+Duren OUT → number RISK / MIL +10.5
+- PHI@IND Gainbridge PHI −3.5 — Edgecombe · Maxey · Nembhard soft · Brown OUT · Hali OUT · Embiid GTD
+- BKN@TOR Scotiabank TOR −9.5
+- ATL@BOS TD Garden BOS −8.5 — Daniels STL add · Pasta soft
+- MEM@MIN Target MIN −4.5 — Edwards OUT · Cam Spencer AST
+- DAL@PHX Phoenix PHX −1.5 — Caleb Martin AST hook
+- LAL@SA Frost Bank SA −6.5 — Reaves OUT BAN · Luka/Castle/Wemby · Fox GTD
+- DEN@UTAH Delta DEN −10.5 — Jokic soft
+- NO@LAC Intuit LAC −2.5
+- GS@POR Moda POR −9.5 — Curry OUT · Deni bang
+- DEN@PIT Acrisure PASS_HOSTILE 41F precip61 gust29 — U37.5 · DEN −4.5 · Warren/Coleman rush · CUT Nix/Rodgers/Waddle/Sutton/Metcalf overs
+- NCAAF: IOWA −3.5/U40.5 cold · WIS −9.5/U37.5 cold · FLA −6.5 gust20 · TEX/A&M Kyle · MISS · UTAH −25.5
+- NHL: Meier NJ · Werenski CBJ · Pasta BOS · Marner VGK
+
+=== BAN ===
+Reaves all props (OUT) · Cade · Curry · Edwards · Brown · Fox/Embiid until ACTIVE
+Nix O202.5 · Rodgers O199.5 · Waddle/Sutton/Metcalf/Engram overs in PIT rain-wind
+Meier/Werenski/Pasta/Gauthier at posted O3.5+ · Wemby O30.5/O12.5 · Jokic high posted hooks
+Portis O0.5 3PT / Daniels O1.5 STL / Herro O0.5 STL as SAFE/CLEAN identity
+DET −10.5 / TOR −9.5 / POR −9.5 / DEN −10.5 as SAFE spines
+
+=== LIST 1 DIFFICULT ===
+| Leg | Why |
+|-----|-----|
+| Nix/Rodgers/WR overs PIT | precip61 gust29 — TNF lesson |
+| Reaves props | OUT |
+| Posted SOG O3.5 stars | juice climbs fail scrub |
+| Portis/Daniels/Herro SAFE | binary |
+| Edgecombe O4.5 / Davion O14.5 SAFE3 | RISK-KEEP hooks |
+| DET −10.5 / big numbers | Cade+Duren OUT cover trap |
+| Nembhard O7.5 | only 5/7 — need soft ≤O5.5 |
+| Brunson/Maxey posted mains | juice bangs not floors |
+
+=== LIST 2 BETTER ===
+| Leg | Why |
+|-----|-----|
+| U37.5 + DEN −4.5 | weather worse than last night |
+| Meier / Werenski O1.5 soft | 10/10 min2 |
+| Nembhard ≤O4.5 AST if HR | cush1.5 · Hali OUT |
+| Deni O1.5 3PT | 7/7 KEEP_HOOK · Curry OUT |
+| Caleb Martin O2.5 AST | 7/7 KEEP_HOOK |
+| Maxey / Deni PTS bangs | OUT-driven |
+| Warren O62.5 rush | weather fit |
+| Pasta/Marner O1.5 soft | floor vs posted O3.5 |
+| Cam Spencer O4.5 AST | Edwards OUT MIN |
+
+=== CLEAN SLIPS ===
+SAFE-lean 3: U37.5 DEN/PIT · Meier O1.5 SOG · Werenski O1.5 SOG
+MIX 5: SAFE3 + Deni O1.5 3PT + Nembhard ≤O4.5 AST (or Edgecombe O4.5 if no soft)
+UPSIDE 4: Maxey O25.5 · Deni O23.5 · Brunson soft · Pasta O1.5
+NEVER: Reaves · Nix/Rodgers pass · binary spines · O3.5 SOG climbs
+
+DONE CHECK
+- require_gate: PASS date=20261127 sheets_ok=2901/2901
+- GATE_TODAY.json date=20261127 status=PASS
+- sheets_path=/cursor/stores/self/betting/GATE_SHEETS_20261127.json
+- game_conditions: PASS pass_hostile=DEN@PIT,BUFF@AKR,TOL@OHIO,NEB@IOWA,FLA@FSU,MINN@WIS
+- BANGERS: yes · athlete_ids: yes · scrub: yes · shape matched: yes

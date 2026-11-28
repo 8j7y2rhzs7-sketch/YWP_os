@@ -1,0 +1,66 @@
+NCAAM SIDES/ML ONLY · 2026-11-27 12:22 ET
+GATE PASS 2901/2901 · NO PLAYER PROPS (user lock)
+Skip LIVE: UVA VS XAV
+Troy rule: mid-major soft spreads ≠ SAFE · BAN covers ≥20
+
+=== SAFE ===
+1. HOU ML — vs OAK — Fertitta · board HOU -36.5 → ML only (BAN cover)
+2. IU ML — vs BGSU — Assembly Hall · IU -22.5 → ML only
+3. ILL ML — vs WKU — State Farm Center · ILL -26.5 → ML only
+(Alt SAFE ML: VAN ML · MIZ ML · GW ML — same BAN-cover class)
+
+=== PRIMARY ===
+- UK -4.5 / UK ML — vs WICH — Rupp · O/U 157.5 — soft number
+- BAY -4.5 / BAY ML — vs TCU — T-Mobile · O/U 149.5 — soft
+- GONZ -5.5 / GONZ ML — vs CREI — T-Mobile · O/U 160.5
+- TTU -8.5 / TTU ML — vs SDSU — Michelob ULTRA · O/U 143.5
+- UCLA -7.5 / UCLA ML — vs GTWN — Jenny Craig · O/U 149.5
+- MSST -6.5 / MSST ML — vs PSU — Imperial · O/U 156.5
+- Soft pick'ems (ML lean, not SAFE spine): SJU ML (−1.5) · MIA ML (−2.5) · MEM ML (−1.5) · MARQ ML (−1.5) · LOU −3.5 · MD −3.5 · WVU −3.5
+
+=== BANGERS ===
+1. KU -10.5 — vs VILL — Allen Fieldhouse · O/U 158.5 — RISK cover (ML safer)
+2. MICH -9.5 — vs KSU — T-Mobile · O/U 164.5 — RISK cover
+3. TEX -7.5 — vs SMC — Jenny Craig · O/U 160.5
+4. CIN -8.5 — vs BC — State Farm Field House
+5. Soft upset tickets (not SAFE): ISU +1.5 · ALA +2.5 · TA&M +1.5 · UNC +3.5
+
+=== SIDES BOARD ===
+BAN COVER ≥20 (ML only): MIZ -48.5 · VAN -37.5 · HOU -36.5 · ILL -26.5 · IU -22.5 · GW -21.5
+RISK COVER ≥9.5: BTLR -18.5 · VT -17.5 · UCSB -13.5 · NU -12.5 · WSU -11.5 · KU -10.5 · LAS -9.5 · MICH -9.5 · ETSU -9.5
+MID 5–9: CIN/TTU -8.5 · UCLA/UNCW/AMER/TEX -7.5 · MSST/PAC -6.5 · BOIS/UGA/UNT/GONZ -5.5
+SOFT ≤4.5: UK/BAY/FAIR/TXST/LAF/ORU/JXST -4.5 · MD/PENN/WVU/LOU -3.5 · USA/HOF/MIA -2.5 · SJU/UVM/UML/MEM/LEM/MARQ -1.5
+
+=== BAN ===
+Player props (user ask) · any ≥20 cover · Troy-class soft mid-major as SAFE3 identity · LIVE UVA/XAV
+
+=== LIST 1 DIFFICULT ===
+| Leg | Why |
+|-----|-----|
+| KU -10.5 / MICH -9.5 | cover tax |
+| BTLR -18.5 / VT -17.5 | still fat covers |
+| SJU/MIA/MEM -1.5 | coin-flip |
+| HOU/IU/ILL -20+ spreads | BAN — use ML |
+| Dog + big number | trap |
+
+=== LIST 2 BETTER ===
+| Leg | Why |
+|-----|-----|
+| HOU ML · IU ML · ILL ML | chalk win, no cover |
+| UK -4.5 · BAY -4.5 | softest power numbers |
+| GONZ -5.5 · TTU -8.5 | mid chalk with identity |
+| VAN/MIZ/GW ML | if needing more chalk ML |
+| Skip props entirely | per user |
+
+=== CLEAN SLIPS ===
+SAFE3 ML: HOU ML · IU ML · ILL ML
+MIX4: SAFE3 + UK -4.5 (or BAY -4.5)
+PRIMARY4: UK -4.5 · BAY -4.5 · GONZ -5.5 · TTU ML
+UPSIDE: KU -10.5 · MICH -9.5 · TEX -7.5
+AVOID: any player prop · any −20+ cover
+
+DONE CHECK
+- require_gate: PASS date=20261127 sheets_ok=2901/2901
+- NCAAM props: skipped (user)
+- BANGERS: yes (sides) · athlete_ids: n/a
+- Troy ≥20 cover ban: yes

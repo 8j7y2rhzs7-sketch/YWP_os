@@ -1,0 +1,64 @@
+STRESS TEST · 2026-11-27 12:40 ET
+Tickets: A_MAIN7 (LIST2 SGPMAX) · B_NCAAM4 (PRIMARY4)
+Tracker: betting/TRACK-20261127-tickets.json
+Settle: python3 betting/settle_tracked_tickets.py
+
+========== TICKET A — MAIN7 (+718-ish) ==========
+Legs: U37.5 · DEN ML · Warren O40.5 rush · Meier O1.5 · Werenski O1.5 · Nembhard O4.5 AST · Deni O1.5 3PT
+
+STRESS RANK (most likely to kill → least)
+1. Deni O1.5 3PT — HIGH — cush0.5 · threes variance · sole-killer profile
+2. Warren O40.5 — MED-HIGH — committee/script · soft but not free
+3. U37.5 — MED — weather helps (41F precip61 gust29) · ST/garbage risk
+4. DEN ML — MED — chalk · correlated with Under (upset kills both)
+5. Nembhard O4.5 — LOW-MED — 7/7 cush1.5 · Hali OUT · prints-4 risk
+6. Meier O1.5 — LOW — 10/10 min2
+7. Werenski O1.5 — LOW — 10/10 min2
+
+CORRELATION
+- NFL SGP trio shares ONE script: DEN win + low total + Warren rush.
+  Kill combo A: PIT wins low → DEN ML dead (Under may live, Warren may live).
+  Kill combo B: DEN blows out → ML/Under live, Warren can starve.
+  Kill combo C: track meet → Under dead, DEN ML maybe live.
+- SOG pair independent of NFL/NBA.
+- Nembhard / Deni independent games.
+
+WHAT CASHES LOOK LIKE
+- Path: weather Under + DEN win close-ish + Warren 50+ + both SOG 2+ + Nembhard 6+ + Deni 2+ threes.
+- Most likely 6/7 lose: Deni 0-1 threes (classic lost-by-1).
+
+STRESS VERDICT A
+- Structure GOOD (LIST2). Length is the risk (7).
+- Weakest single: Deni. If stress-cutting one: drop Deni → Cash6.
+- Do NOT stress-cut Meier/Werenski/Nembhard first.
+
+========== TICKET B — NCAAM4 ==========
+Legs: BAY -3.5 (-120 HR) · UK -4.5 · TTU ML · GONZ -5.5
+
+STRESS RANK
+1. BAY -3.5 — MED — soft number but cover; TCU 5-2 neutral Vegas
+2. GONZ -5.5 — MED — Creighton 6-1 can hang
+3. UK -4.5 — MED — WICH 6-1 road dog at Rupp
+4. TTU ML — LOW — #5 vs SDSU · win-only (no cover)
+
+CORRELATION
+- Three Vegas/neutral or road-home spreads + one ML — mostly independent.
+- No prop variance.
+
+WHAT CASHES LOOK LIKE
+- TTU wins + BAY by 4+ + UK by 5+ + GONZ by 6+.
+- Most likely sole killer: BAY or GONZ cover fail by 1 possession.
+
+STRESS VERDICT B
+- Correct ML choice on TTU (avoid -8.5).
+- BAY -3.5 better than -4.5 despite -120.
+- Fair 4-leg chalk — expect ~1 cover fail over sample; not "safe lock".
+
+========== CROSS-TICKET ==========
+- Keep SEPARATE. Do not merge A+B into one mega (TNF lost-by-1 lesson × length).
+- Track file updates via settle_tracked_tickets.py after tips.
+
+PASS/FAIL RULES FOR TRACKER
+- HIT / MISS / VOID / PENDING per leg
+- Ticket LOST if any MISS
+- Ticket WON only if all HIT (VOID noted)

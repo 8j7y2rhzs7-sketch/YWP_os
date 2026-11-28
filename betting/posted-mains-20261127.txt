@@ -1,0 +1,1531 @@
+POSTED MAINS (Betravon consensus) — 2026-11-27
+These are book-posted mains across ~12–14 books — NOT soft floors.
+Actionable when ODDS_API_KEY / HR feed missing. Soft alts = internal only.
+Optional upgrade: set ODDS_API_KEY → python3 betting/pull_hr_odds.py for hardrockbet tags.
+
+NBA ATL@BOS · Dyson Daniels
+  3PT O0.5  books=5  betravon_L10=2/10
+  AST O5.5  books=13  betravon_L10=6/10
+  PTS O9.5  books=13  betravon_L10=4/10
+  REB O7.5  books=13  betravon_L10=9/10
+  STL O1.5  books=1  betravon_L10=0/0
+
+NBA ATL@BOS · Jalen Johnson
+  3PT O1.5  books=10  betravon_L10=0/0
+  AST O6.5  books=13  betravon_L10=4/10
+  PTS O18.5  books=13  betravon_L10=3/10
+  REB O8.5  books=13  betravon_L10=5/10
+  STL O0.5  books=2  betravon_L10=5/10
+
+NBA ATL@BOS · Kingston Flemings
+  3PT O1.5  books=12  betravon_L10=0/0
+  AST O3.5  books=14  betravon_L10=8/10
+  PTS O8.5  books=15  betravon_L10=6/10
+  REB O2.5  books=12  betravon_L10=4/10
+
+NBA ATL@BOS · Luguentz Dort
+  3PT O1.5  books=9  betravon_L10=5/10
+  PTS O8.5  books=10  betravon_L10=5/10
+  REB O2.5  books=10  betravon_L10=6/10
+
+NBA ATL@BOS · Nickeil Alexander-Walker
+  3PT O3.5  books=12  betravon_L10=5/10
+  AST O2.5  books=12  betravon_L10=6/10
+  PTS O20.5  books=13  betravon_L10=4/10
+  REB O3.5  books=12  betravon_L10=7/10
+  STL O0.5  books=2  betravon_L10=0/0
+
+NBA ATL@BOS · Onyeka Okongwu
+  3PT O1.5  books=12  betravon_L10=9/10
+  AST O2.5  books=12  betravon_L10=4/10
+  BLK O0.5  books=2  betravon_L10=0/0
+  PTS O13.5  books=13  betravon_L10=8/10
+  REB O7.5  books=13  betravon_L10=7/10
+  STL O0.5  books=2  betravon_L10=0/0
+
+NBA BKN@TOR · Danny Wolf
+  3PT O1.5  books=11  betravon_L10=5/10
+  AST O1.5  books=11  betravon_L10=6/10
+  PTS O8.5  books=11  betravon_L10=7/10
+  REB O4.5  books=12  betravon_L10=7/10
+
+NBA BKN@TOR · Day'Ron Sharpe
+  3PT O0.5  books=1  betravon_L10=0/0
+  AST O4.5  books=13  betravon_L10=8/10
+  BLK O0.5  books=1  betravon_L10=0/0
+  PTS O9.5  books=13  betravon_L10=5/10
+  REB O8.5  books=13  betravon_L10=5/10
+  STL O0.5  books=1  betravon_L10=0/0
+
+NBA BKN@TOR · Egor Dëmin
+  3PT O1.5  books=11  betravon_L10=6/10
+  AST O2.5  books=12  betravon_L10=5/10
+  PTS O10.5  books=12  betravon_L10=5/10
+  REB O2.5  books=12  betravon_L10=6/10
+
+NBA BKN@TOR · Julius Randle
+  3PT O1.5  books=12  betravon_L10=6/10
+  AST O4.5  books=13  betravon_L10=4/10
+  PTS O21.5  books=13  betravon_L10=6/10
+  REB O6.5  books=13  betravon_L10=2/10
+  STL O0.5  books=2  betravon_L10=6/10
+
+NBA BKN@TOR · Michael Porter Jr.
+  3PT O2.5  books=12  betravon_L10=6/10
+  AST O1.5  books=12  betravon_L10=6/10
+  PTS O18.5  books=13  betravon_L10=5/10
+  REB O6.5  books=13  betravon_L10=4/10
+  STL O0.5  books=1  betravon_L10=0/0
+
+NBA BKN@TOR · Mikel Brown Jr.
+  3PT O2.5  books=10  betravon_L10=0/0
+  AST O4.5  books=11  betravon_L10=2/10
+  PTS O13.5  books=9  betravon_L10=0/0
+  REB O2.5  books=11  betravon_L10=0/0
+  STL O0.5  books=2  betravon_L10=0/0
+
+NBA BOS@ATL · Derrick White
+  3PT O1.5  books=4  betravon_L10=5/10
+  AST O4.5  books=13  betravon_L10=7/10
+  PTS O12.5  books=13  betravon_L10=5/10
+  REB O3.5  books=13  betravon_L10=4/10
+  STL O0.5  books=2  betravon_L10=7/10
+
+NBA BOS@ATL · Jayson Tatum
+  3PT O3.5  books=12  betravon_L10=5/10
+  AST O6.5  books=13  betravon_L10=4/10
+  PTS O27.5  books=13  betravon_L10=3/10
+  REB O7.5  books=13  betravon_L10=4/10
+  STL O0.5  books=1  betravon_L10=0/0
+
+NBA BOS@ATL · Neemias Queta
+  3PT O0.5  books=2  betravon_L10=0/0
+  AST O1.5  books=12  betravon_L10=8/10
+  BLK O1.5  books=2  betravon_L10=4/10
+  PTS O11.5  books=12  betravon_L10=4/10
+  REB O8.5  books=13  betravon_L10=4/10
+
+NBA BOS@ATL · Paul George
+  3PT O2.5  books=8  betravon_L10=6/10
+  AST O3.5  books=13  betravon_L10=5/10
+  PTS O18.5  books=13  betravon_L10=6/10
+  REB O5.5  books=13  betravon_L10=4/10
+  STL O1.5  books=2  betravon_L10=6/10
+
+NBA BOS@ATL · Payton Pritchard
+  3PT O2.5  books=12  betravon_L10=6/10
+  AST O4.5  books=13  betravon_L10=5/10
+  PTS O12.5  books=13  betravon_L10=5/10
+  REB O2.5  books=12  betravon_L10=6/10
+
+NBA BOS@ATL · Sam Hauser
+  3PT O1.5  books=7  betravon_L10=7/10
+  PTS O7.5  books=10  betravon_L10=7/10
+  REB O3.5  books=10  betravon_L10=3/10
+
+NBA DAL@PHX · Caleb Martin
+  3PT O0.5  books=3  betravon_L10=6/10
+  AST O2.5  books=4  betravon_L10=0/0
+  PTS O5.5  books=4  betravon_L10=0/0
+  REB O3.5  books=4  betravon_L10=0/0
+
+NBA DAL@PHX · Cooper Flagg
+  3PT O1.5  books=12  betravon_L10=6/10
+  AST O6.5  books=13  betravon_L10=5/10
+  PTS O24.5  books=13  betravon_L10=4/10
+  REB O6.5  books=13  betravon_L10=4/10
+  STL O1.5  books=2  betravon_L10=4/10
+
+NBA DAL@PHX · Daniel Gafford
+  AST O1.5  books=12  betravon_L10=7/10
+  BLK O1.5  books=1  betravon_L10=0/0
+  PTS O9.5  books=13  betravon_L10=5/10
+  REB O6.5  books=13  betravon_L10=0/0
+
+NBA DAL@PHX · Kyrie Irving
+  3PT O3.5  books=12  betravon_L10=4/10
+  AST O4.5  books=13  betravon_L10=5/10
+  PTS O22.5  books=13  betravon_L10=4/10
+  REB O3.5  books=13  betravon_L10=5/10
+  STL O0.5  books=1  betravon_L10=0/0
+
+NBA DAL@PHX · P.J. Washington
+  3PT O1.5  books=1  betravon_L10=7/10
+  AST O1.5  books=3  betravon_L10=3/10
+  PTS O10.5  books=3  betravon_L10=6/10
+  REB O4.5  books=3  betravon_L10=8/10
+
+NBA DEN@UTAH · Aaron Gordon
+  3PT O1.5  books=10  betravon_L10=0/0
+  AST O2.5  books=8  betravon_L10=0/0
+  PTS O12.5  books=11  betravon_L10=0/0
+  REB O4.5  books=11  betravon_L10=5/10
+
+NBA DEN@UTAH · Christian Braun
+  3PT O2.5  books=1  betravon_L10=3/10
+  AST O2.5  books=4  betravon_L10=0/0
+  PTS O12.5  books=2  betravon_L10=0/0
+  REB O4.5  books=2  betravon_L10=0/0
+
+NBA DEN@UTAH · Jamal Murray
+  3PT O2.5  books=10  betravon_L10=3/10
+  AST O5.5  books=11  betravon_L10=6/10
+  PTS O24.5  books=8  betravon_L10=4/10
+  REB O4.5  books=11  betravon_L10=5/10
+  STL O0.5  books=1  betravon_L10=0/0
+
+NBA DEN@UTAH · Nikola Jokić
+  3PT O1.5  books=10  betravon_L10=3/10
+  AST O9.5  books=11  betravon_L10=4/10
+  PTS O27.5  books=11  betravon_L10=3/10
+  REB O12.5  books=11  betravon_L10=4/10
+  STL O1.5  books=1  betravon_L10=0/0
+
+NBA DET@MIL · Ausar Thompson
+  AST O5.5  books=13  betravon_L10=3/10
+  BLK O0.5  books=2  betravon_L10=5/10
+  PTS O11.5  books=13  betravon_L10=4/10
+  REB O8.5  books=13  betravon_L10=6/10
+  STL O1.5  books=2  betravon_L10=6/10
+
+NBA DET@MIL · Daniss Jenkins
+  3PT O2.5  books=12  betravon_L10=4/10
+  AST O7.5  books=13  betravon_L10=3/10
+  PTS O17.5  books=13  betravon_L10=4/10
+  REB O4.5  books=13  betravon_L10=4/10
+  STL O0.5  books=1  betravon_L10=0/0
+
+NBA DET@MIL · Isaiah Joe
+  3PT O2.5  books=11  betravon_L10=3/7
+  AST O2.5  books=12  betravon_L10=1/7
+  PTS O15.5  books=13  betravon_L10=2/7
+  REB O3.5  books=12  betravon_L10=1/7
+  STL O0.5  books=2  betravon_L10=0/0
+
+NBA DET@MIL · Kevin Huerter
+  3PT O1.5  books=12  betravon_L10=4/10
+  AST O3.5  books=12  betravon_L10=4/10
+  PTS O13.5  books=13  betravon_L10=3/10
+  REB O3.5  books=12  betravon_L10=4/10
+  STL O1.5  books=1  betravon_L10=0/0
+
+NBA DET@MIL · Paul Reed
+  AST O2.5  books=12  betravon_L10=0/0
+  BLK O0.5  books=1  betravon_L10=0/0
+  REB O7.5  books=13  betravon_L10=4/10
+  STL O1.5  books=2  betravon_L10=3/10
+
+NBA GS@POR · Brandin Podziemski
+  3PT O2.5  books=11  betravon_L10=6/10
+  AST O3.5  books=12  betravon_L10=4/10
+  PTS O15.5  books=12  betravon_L10=3/10
+  REB O4.5  books=12  betravon_L10=5/10
+
+NBA GS@POR · De'Anthony Melton
+  3PT O2.5  books=10  betravon_L10=2/10
+  AST O2.5  books=9  betravon_L10=0/0
+  PTS O11.5  books=12  betravon_L10=0/0
+  REB O3.5  books=11  betravon_L10=0/0
+
+NBA GS@POR · Draymond Green
+  3PT O0.5  books=8  betravon_L10=0/0
+  AST O5.5  books=12  betravon_L10=5/10
+  PTS O5.5  books=12  betravon_L10=3/10
+  REB O4.5  books=12  betravon_L10=5/10
+
+NBA GS@POR · Yaxel Lendeborg
+  3PT O1.5  books=11  betravon_L10=0/0
+  AST O3.5  books=12  betravon_L10=4/10
+  PTS O18.5  books=12  betravon_L10=4/10
+  REB O6.5  books=12  betravon_L10=9/10
+
+NBA IND@PHI · Aaron Nesmith
+  3PT O1.5  books=3  betravon_L10=4/10
+  AST O1.5  books=4  betravon_L10=7/10
+  PTS O12.5  books=7  betravon_L10=3/10
+  REB O3.5  books=6  betravon_L10=4/10
+
+NBA IND@PHI · Andrew Nembhard
+  3PT O1.5  books=12  betravon_L10=8/10
+  AST O7.5  books=13  betravon_L10=6/10
+  PTS O15.5  books=13  betravon_L10=5/10
+  REB O2.5  books=13  betravon_L10=4/10
+  STL O0.5  books=2  betravon_L10=4/10
+
+NBA IND@PHI · Ivica Zubac
+  AST O1.5  books=12  betravon_L10=5/10
+  PTS O12.5  books=13  betravon_L10=4/10
+  REB O9.5  books=13  betravon_L10=6/10
+
+NBA IND@PHI · Kelly Oubre Jr.
+  3PT O1.5  books=2  betravon_L10=5/10
+
+NBA IND@PHI · Obi Toppin
+  3PT O1.5  books=12  betravon_L10=4/10
+  AST O1.5  books=12  betravon_L10=4/10
+  PTS O11.5  books=14  betravon_L10=2/10
+  REB O4.5  books=14  betravon_L10=4/10
+
+NBA IND@PHI · Pascal Siakam
+  3PT O1.5  books=12  betravon_L10=9/10
+  AST O3.5  books=13  betravon_L10=4/10
+  PTS O22.5  books=13  betravon_L10=6/10
+  REB O6.5  books=13  betravon_L10=4/10
+  STL O0.5  books=1  betravon_L10=0/0
+
+NBA LAC@NO · Brandon Ingram
+  3PT O1.5  books=11  betravon_L10=1/2
+  AST O3.5  books=12  betravon_L10=2/2
+  PTS O17.5  books=12  betravon_L10=1/2
+  REB O4.5  books=12  betravon_L10=2/2
+
+NBA LAC@NO · Brook Lopez
+  3PT O1.5  books=11  betravon_L10=4/10
+  AST O1.5  books=11  betravon_L10=4/10
+  PTS O10.5  books=12  betravon_L10=7/10
+  REB O4.5  books=12  betravon_L10=7/10
+
+NBA LAC@NO · Darius Garland
+  3PT O2.5  books=11  betravon_L10=0/0
+  AST O7.5  books=12  betravon_L10=2/10
+  PTS O20.5  books=12  betravon_L10=6/10
+  REB O2.5  books=9  betravon_L10=5/10
+
+NBA LAC@NO · Max Strus
+  3PT O1.5  books=7  betravon_L10=0/0
+  AST O2.5  books=10  betravon_L10=6/10
+  PTS O8.5  books=10  betravon_L10=4/10
+  REB O3.5  books=10  betravon_L10=5/10
+
+NBA LAC@NO · Rui Hachimura
+  3PT O1.5  books=4  betravon_L10=0/0
+  AST O1.5  books=3  betravon_L10=0/0
+  PTS O13.5  books=4  betravon_L10=7/10
+  REB O5.5  books=3  betravon_L10=0/0
+
+NBA LAL@SA · Austin Reaves
+  3PT O1.5  books=11  betravon_L10=5/10
+  AST O3.5  books=12  betravon_L10=8/10
+  PTS O17.5  books=13  betravon_L10=9/10
+  REB O2.5  books=12  betravon_L10=8/10
+  STL O0.5  books=2  betravon_L10=0/0
+
+NBA LAL@SA · Jake LaRavia
+  3PT O0.5  books=9  betravon_L10=5/10
+  AST O1.5  books=10  betravon_L10=8/10
+  PTS O5.5  books=10  betravon_L10=5/10
+  REB O3.5  books=8  betravon_L10=5/10
+
+NBA LAL@SA · Luka Dončić
+  3PT O4.5  books=9  betravon_L10=0/0
+  AST O7.5  books=12  betravon_L10=5/10
+  PTS O33.5  books=13  betravon_L10=5/10
+  REB O6.5  books=12  betravon_L10=4/10
+  STL O1.5  books=2  betravon_L10=5/10
+
+NBA LAL@SA · Matisse Thybulle
+  STL O1.5  books=2  betravon_L10=9/10
+
+NBA LAL@SA · Quentin Grimes
+  3PT O1.5  books=10  betravon_L10=4/10
+  AST O2.5  books=11  betravon_L10=7/10
+  PTS O10.5  books=13  betravon_L10=5/10
+  REB O2.5  books=11  betravon_L10=6/10
+
+NBA LAL@SA · Walker Kessler
+  AST O1.5  books=3  betravon_L10=7/10
+  BLK O1.5  books=2  betravon_L10=5/10
+  PTS O12.5  books=10  betravon_L10=6/10
+  REB O10.5  books=10  betravon_L10=7/10
+  STL O0.5  books=1  betravon_L10=9/10
+
+NBA MEM@MIN · Cam Spencer
+  3PT O1.5  books=12  betravon_L10=6/10
+  AST O4.5  books=13  betravon_L10=7/10
+  PTS O9.5  books=13  betravon_L10=7/10
+  REB O2.5  books=13  betravon_L10=3/10
+
+NBA MEM@MIN · Cedric Coward
+  3PT O2.5  books=12  betravon_L10=0/0
+  AST O3.5  books=13  betravon_L10=7/10
+  PTS O16.5  books=13  betravon_L10=5/10
+  REB O7.5  books=13  betravon_L10=5/10
+  STL O1.5  books=1  betravon_L10=4/10
+
+NBA MEM@MIN · Jaylen Wells
+  3PT O1.5  books=5  betravon_L10=7/10
+  AST O1.5  books=3  betravon_L10=0/0
+  PTS O10.5  books=7  betravon_L10=5/10
+  REB O3.5  books=6  betravon_L10=5/10
+
+NBA MEM@MIN · Ty Jerome
+  3PT O2.5  books=12  betravon_L10=4/10
+  AST O5.5  books=13  betravon_L10=3/10
+  PTS O22.5  books=13  betravon_L10=4/10
+  REB O3.5  books=13  betravon_L10=6/10
+  STL O1.5  books=2  betravon_L10=0/0
+
+NBA MIA@NY · Andrew Wiggins
+  3PT O0.5  books=8  betravon_L10=7/10
+  AST O1.5  books=3  betravon_L10=4/10
+  PTS O8.5  books=12  betravon_L10=4/10
+  REB O2.5  books=12  betravon_L10=5/10
+
+NBA MIA@NY · Bam Adebayo
+  3PT O1.5  books=10  betravon_L10=2/10
+  AST O3.5  books=11  betravon_L10=5/10
+  BLK O0.5  books=2  betravon_L10=4/10
+  PTS O17.5  books=14  betravon_L10=7/10
+  REB O8.5  books=11  betravon_L10=5/10
+  STL O1.5  books=2  betravon_L10=6/10
+
+NBA MIA@NY · Bobby Portis Jr.
+  3PT O0.5  books=10  betravon_L10=8/10
+  PTS O6.5  books=12  betravon_L10=4/10
+  REB O4.5  books=11  betravon_L10=5/10
+
+NBA MIA@NY · Davion Mitchell
+  3PT O1.5  books=10  betravon_L10=7/10
+  AST O8.5  books=11  betravon_L10=6/10
+  PTS O14.5  books=14  betravon_L10=8/10
+  REB O2.5  books=11  betravon_L10=7/10
+  STL O0.5  books=2  betravon_L10=0/0
+
+NBA MIA@NY · Giannis Antetokounmpo
+  3PT O0.5  books=4  betravon_L10=4/10
+  AST O5.5  books=11  betravon_L10=5/10
+  BLK O0.5  books=1  betravon_L10=0/0
+  PTS O26.5  books=14  betravon_L10=8/10
+  REB O12.5  books=10  betravon_L10=7/10
+  STL O0.5  books=2  betravon_L10=0/0
+
+NBA MIA@NY · Klay Thompson
+  3PT O3.5  books=14  betravon_L10=6/10
+  AST O1.5  books=14  betravon_L10=7/10
+  PTS O14.5  books=15  betravon_L10=5/10
+  REB O2.5  books=12  betravon_L10=2/10
+
+NBA MIA@NY · Pelle Larsson
+  3PT O1.5  books=13  betravon_L10=5/10
+  AST O2.5  books=14  betravon_L10=6/10
+  PTS O9.5  books=15  betravon_L10=6/10
+  REB O3.5  books=14  betravon_L10=3/10
+  STL O0.5  books=3  betravon_L10=8/10
+
+NBA MIL@DET · Brayden Burries
+  3PT O1.5  books=11  betravon_L10=4/10
+  AST O2.5  books=12  betravon_L10=8/10
+  PTS O10.5  books=13  betravon_L10=6/10
+  REB O4.5  books=13  betravon_L10=6/10
+
+NBA MIL@DET · Jaime Jaquez Jr.
+  3PT O1.5  books=11  betravon_L10=4/10
+  AST O2.5  books=12  betravon_L10=6/10
+  PTS O12.5  books=12  betravon_L10=4/10
+  REB O4.5  books=12  betravon_L10=5/10
+
+NBA MIL@DET · Kyle Kuzma
+  3PT O1.5  books=12  betravon_L10=6/10
+  AST O2.5  books=12  betravon_L10=3/10
+  PTS O12.5  books=13  betravon_L10=7/10
+  REB O4.5  books=13  betravon_L10=5/10
+  STL O0.5  books=1  betravon_L10=0/0
+
+NBA MIL@DET · Myles Turner
+  3PT O1.5  books=12  betravon_L10=3/10
+  AST O1.5  books=12  betravon_L10=7/10
+  BLK O1.5  books=2  betravon_L10=0/0
+  PTS O8.5  books=13  betravon_L10=3/10
+  REB O5.5  books=13  betravon_L10=8/10
+
+NBA MIL@DET · Ryan Rollins
+  3PT O1.5  books=12  betravon_L10=4/10
+  AST O3.5  books=13  betravon_L10=4/10
+  PTS O10.5  books=13  betravon_L10=3/10
+  REB O3.5  books=12  betravon_L10=6/10
+  STL O1.5  books=2  betravon_L10=2/10
+
+NBA MIL@DET · Tyler Herro
+  3PT O2.5  books=12  betravon_L10=4/10
+  AST O4.5  books=13  betravon_L10=5/10
+  PTS O20.5  books=13  betravon_L10=5/10
+  REB O4.5  books=13  betravon_L10=4/10
+  STL O0.5  books=2  betravon_L10=0/0
+
+NBA MIN@MEM · Ayo Dosunmu
+  3PT O2.5  books=12  betravon_L10=5/10
+  AST O4.5  books=13  betravon_L10=2/10
+  PTS O18.5  books=13  betravon_L10=6/10
+  REB O4.5  books=13  betravon_L10=1/10
+  STL O0.5  books=2  betravon_L10=7/10
+
+NBA MIN@MEM · Jaden McDaniels
+  3PT O1.5  books=10  betravon_L10=0/0
+  AST O3.5  books=13  betravon_L10=6/10
+  BLK O0.5  books=2  betravon_L10=0/0
+  PTS O19.5  books=13  betravon_L10=5/10
+  REB O5.5  books=13  betravon_L10=6/10
+  STL O1.5  books=2  betravon_L10=5/10
+
+NBA MIN@MEM · Jonathan Kuminga
+  3PT O1.5  books=12  betravon_L10=3/10
+  AST O2.5  books=10  betravon_L10=6/10
+  PTS O14.5  books=13  betravon_L10=5/10
+  REB O5.5  books=13  betravon_L10=4/10
+  STL O0.5  books=1  betravon_L10=0/0
+
+NBA MIN@MEM · LaMelo Ball
+  3PT O3.5  books=12  betravon_L10=4/10
+  AST O5.5  books=13  betravon_L10=6/10
+  PTS O18.5  books=13  betravon_L10=5/10
+  REB O4.5  books=13  betravon_L10=6/10
+  STL O1.5  books=2  betravon_L10=4/10
+
+NBA MIN@MEM · Rudy Gobert
+  AST O1.5  books=12  betravon_L10=0/0
+  BLK O1.5  books=1  betravon_L10=0/0
+  PTS O8.5  books=13  betravon_L10=0/0
+  REB O10.5  books=13  betravon_L10=4/10
+
+NBA NO@LAC · Derik Queen
+  3PT O0.5  books=3  betravon_L10=0/0
+  AST O2.5  books=5  betravon_L10=3/10
+  PTS O9.5  books=6  betravon_L10=7/10
+  REB O5.5  books=5  betravon_L10=5/10
+
+NBA NO@LAC · Jeremiah Fears
+  3PT O1.5  books=11  betravon_L10=5/10
+  AST O6.5  books=12  betravon_L10=5/10
+  PTS O17.5  books=12  betravon_L10=5/10
+  REB O5.5  books=12  betravon_L10=4/10
+
+NBA NO@LAC · Saddiq Bey
+  3PT O2.5  books=11  betravon_L10=4/10
+  AST O2.5  books=12  betravon_L10=7/10
+  PTS O15.5  books=12  betravon_L10=5/10
+  REB O4.5  books=12  betravon_L10=5/10
+
+NBA NO@LAC · Trey Murphy III
+  3PT O2.5  books=8  betravon_L10=4/10
+  AST O2.5  books=9  betravon_L10=0/0
+  PTS O15.5  books=10  betravon_L10=0/0
+  REB O4.5  books=11  betravon_L10=0/0
+
+NBA NO@LAC · Zion Williamson
+  AST O2.5  books=12  betravon_L10=0/0
+  PTS O22.5  books=12  betravon_L10=6/10
+  REB O5.5  books=12  betravon_L10=0/0
+  STL O1.5  books=1  betravon_L10=0/0
+
+NBA NY@MIA · Jalen Brunson
+  3PT O3.5  books=5  betravon_L10=4/10
+  AST O6.5  books=6  betravon_L10=5/10
+  PTS O27.5  books=14  betravon_L10=5/10
+  REB O3.5  books=4  betravon_L10=4/10
+  STL O0.5  books=1  betravon_L10=0/0
+
+NBA NY@MIA · Josh Hart
+  3PT O1.5  books=4  betravon_L10=3/10
+  AST O5.5  books=6  betravon_L10=4/10
+  PTS O10.5  books=14  betravon_L10=2/10
+  REB O7.5  books=5  betravon_L10=2/10
+  STL O1.5  books=2  betravon_L10=4/10
+
+NBA NY@MIA · Karl-Anthony Towns
+  3PT O1.5  books=5  betravon_L10=8/10
+  AST O4.5  books=6  betravon_L10=5/10
+  PTS O21.5  books=14  betravon_L10=5/10
+  REB O12.5  books=4  betravon_L10=6/10
+  STL O0.5  books=1  betravon_L10=0/0
+
+NBA NY@MIA · Landry Shamet
+  3PT O2.5  books=13  betravon_L10=5/10
+  AST O1.5  books=13  betravon_L10=5/10
+  PTS O12.5  books=15  betravon_L10=3/10
+  REB O1.5  books=10  betravon_L10=0/0
+
+NBA NY@MIA · Mikal Bridges
+  3PT O1.5  books=11  betravon_L10=0/0
+  AST O2.5  books=13  betravon_L10=5/10
+  PTS O12.5  books=14  betravon_L10=3/10
+  REB O3.5  books=14  betravon_L10=5/10
+  STL O0.5  books=2  betravon_L10=0/0
+
+NBA PHI@IND · Joel Embiid
+  3PT O0.5  books=9  betravon_L10=0/0
+  AST O3.5  books=13  betravon_L10=4/10
+  BLK O0.5  books=1  betravon_L10=6/10
+  PTS O23.5  books=12  betravon_L10=4/10
+  REB O8.5  books=13  betravon_L10=3/10
+
+NBA PHI@IND · LeBron James
+  3PT O1.5  books=12  betravon_L10=3/10
+  AST O7.5  books=13  betravon_L10=4/10
+  PTS O18.5  books=13  betravon_L10=5/10
+  REB O6.5  books=13  betravon_L10=6/10
+  STL O0.5  books=1  betravon_L10=6/10
+
+NBA PHI@IND · Tyrese Maxey
+  3PT O2.5  books=12  betravon_L10=6/10
+  AST O5.5  books=13  betravon_L10=6/10
+  PTS O25.5  books=12  betravon_L10=4/10
+  REB O3.5  books=12  betravon_L10=4/10
+  STL O0.5  books=1  betravon_L10=5/10
+
+NBA PHI@IND · VJ Edgecombe
+  3PT O1.5  books=12  betravon_L10=4/10
+  AST O4.5  books=13  betravon_L10=7/10
+  PTS O14.5  books=12  betravon_L10=5/10
+  REB O6.5  books=13  betravon_L10=4/10
+  STL O1.5  books=1  betravon_L10=0/0
+
+NBA PHX@DAL · Collin Gillespie
+  3PT O2.5  books=12  betravon_L10=0/0
+  AST O3.5  books=13  betravon_L10=4/10
+  PTS O9.5  books=13  betravon_L10=6/10
+  REB O2.5  books=11  betravon_L10=6/10
+  STL O1.5  books=1  betravon_L10=0/0
+
+NBA PHX@DAL · Devin Booker
+  3PT O1.5  books=11  betravon_L10=7/10
+  AST O5.5  books=13  betravon_L10=5/10
+  PTS O25.5  books=13  betravon_L10=3/10
+  REB O3.5  books=13  betravon_L10=3/10
+  STL O0.5  books=1  betravon_L10=0/0
+
+NBA PHX@DAL · Dillon Brooks
+  3PT O1.5  books=13  betravon_L10=6/10
+  AST O1.5  books=13  betravon_L10=6/10
+  PTS O15.5  books=14  betravon_L10=3/10
+  REB O3.5  books=14  betravon_L10=6/10
+
+NBA PHX@DAL · Jalen Green
+  3PT O1.5  books=10  betravon_L10=0/0
+  AST O3.5  books=13  betravon_L10=4/10
+  PTS O15.5  books=13  betravon_L10=5/10
+  REB O3.5  books=13  betravon_L10=7/10
+  STL O0.5  books=2  betravon_L10=7/10
+
+NBA PHX@DAL · Miles Bridges
+  3PT O1.5  books=12  betravon_L10=4/10
+  AST O2.5  books=12  betravon_L10=7/10
+  PTS O14.5  books=13  betravon_L10=2/10
+  REB O6.5  books=13  betravon_L10=5/10
+  STL O0.5  books=1  betravon_L10=0/0
+
+NBA PHX@DAL · Oso Ighodaro
+  AST O2.5  books=4  betravon_L10=5/10
+  PTS O6.5  books=4  betravon_L10=5/10
+  REB O5.5  books=5  betravon_L10=4/10
+
+NBA POR@GS · Damian Lillard
+  3PT O3.5  books=11  betravon_L10=5/10
+  AST O4.5  books=12  betravon_L10=5/10
+  PTS O21.5  books=12  betravon_L10=5/10
+  REB O3.5  books=12  betravon_L10=1/10
+
+NBA POR@GS · Deni Avdija
+  3PT O1.5  books=11  betravon_L10=8/10
+  AST O5.5  books=12  betravon_L10=6/10
+  PTS O23.5  books=12  betravon_L10=6/10
+  REB O6.5  books=12  betravon_L10=5/10
+
+NBA POR@GS · Donovan Clingan
+  3PT O1.5  books=10  betravon_L10=1/10
+  AST O1.5  books=9  betravon_L10=0/0
+  PTS O10.5  books=11  betravon_L10=0/0
+  REB O11.5  books=12  betravon_L10=0/0
+
+NBA POR@GS · Jrue Holiday
+  3PT O2.5  books=11  betravon_L10=4/10
+  AST O4.5  books=12  betravon_L10=7/10
+  PTS O13.5  books=12  betravon_L10=4/10
+  REB O3.5  books=12  betravon_L10=5/10
+
+NBA POR@GS · Toumani Camara
+  3PT O0.5  books=2  betravon_L10=8/10
+  AST O1.5  books=2  betravon_L10=0/0
+  PTS O11.5  books=4  betravon_L10=0/0
+  REB O4.5  books=3  betravon_L10=0/0
+
+NBA SA@LAL · De'Aaron Fox
+  3PT O1.5  books=11  betravon_L10=2/10
+  AST O5.5  books=12  betravon_L10=4/10
+  PTS O12.5  books=13  betravon_L10=2/10
+  REB O3.5  books=12  betravon_L10=3/10
+  STL O1.5  books=1  betravon_L10=0/0
+
+NBA SA@LAL · Devin Vassell
+  3PT O1.5  books=11  betravon_L10=6/10
+  AST O2.5  books=13  betravon_L10=4/10
+  PTS O12.5  books=13  betravon_L10=5/10
+  REB O3.5  books=13  betravon_L10=6/10
+  STL O1.5  books=1  betravon_L10=0/0
+
+NBA SA@LAL · Julian Champagnie
+  3PT O2.5  books=10  betravon_L10=7/10
+  AST O1.5  books=5  betravon_L10=5/10
+  PTS O10.5  books=8  betravon_L10=7/10
+  REB O5.5  books=11  betravon_L10=3/10
+
+NBA SA@LAL · Stephon Castle
+  3PT O1.5  books=9  betravon_L10=0/0
+  AST O7.5  books=12  betravon_L10=4/10
+  PTS O16.5  books=13  betravon_L10=6/10
+  REB O5.5  books=12  betravon_L10=5/10
+  STL O0.5  books=1  betravon_L10=0/0
+
+NBA SA@LAL · Victor Wembanyama
+  3PT O2.5  books=11  betravon_L10=5/10
+  AST O3.5  books=12  betravon_L10=3/10
+  BLK O3.5  books=1  betravon_L10=0/0
+  PTS O30.5  books=13  betravon_L10=5/10
+  REB O12.5  books=12  betravon_L10=4/10
+  STL O1.5  books=2  betravon_L10=0/0
+
+NBA TOR@BKN · Collin Murray-Boyles
+  AST O1.5  books=12  betravon_L10=6/10
+  PTS O10.5  books=13  betravon_L10=4/10
+  REB O5.5  books=12  betravon_L10=4/10
+
+NBA TOR@BKN · Immanuel Quickley
+  3PT O2.5  books=12  betravon_L10=5/10
+  AST O6.5  books=13  betravon_L10=4/10
+  PTS O18.5  books=13  betravon_L10=3/10
+  REB O3.5  books=13  betravon_L10=5/10
+  STL O1.5  books=2  betravon_L10=2/10
+
+NBA TOR@BKN · Ja'Kobe Walter
+  3PT O2.5  books=10  betravon_L10=0/0
+  AST O2.5  books=12  betravon_L10=2/10
+  PTS O14.5  books=13  betravon_L10=4/10
+  REB O4.5  books=13  betravon_L10=5/10
+  STL O1.5  books=1  betravon_L10=0/0
+
+NBA TOR@BKN · Jakob Poeltl
+  AST O2.5  books=12  betravon_L10=4/10
+  PTS O9.5  books=13  betravon_L10=5/10
+  REB O7.5  books=13  betravon_L10=5/10
+  STL O1.5  books=1  betravon_L10=0/0
+
+NBA TOR@BKN · Scottie Barnes
+  3PT O0.5  books=12  betravon_L10=5/10
+  AST O5.5  books=13  betravon_L10=3/10
+  BLK O1.5  books=2  betravon_L10=4/10
+  PTS O25.5  books=13  betravon_L10=6/10
+  REB O7.5  books=13  betravon_L10=2/10
+  STL O1.5  books=1  betravon_L10=0/0
+
+NBA UTAH@DEN · Ace Bailey
+  3PT O2.5  books=10  betravon_L10=0/0
+  AST O1.5  books=10  betravon_L10=0/0
+  PTS O15.5  books=11  betravon_L10=0/0
+  REB O5.5  books=9  betravon_L10=0/0
+
+NBA UTAH@DEN · Darryn Peterson
+  3PT O2.5  books=10  betravon_L10=4/10
+  AST O4.5  books=11  betravon_L10=4/10
+  PTS O16.5  books=11  betravon_L10=6/10
+  REB O4.5  books=11  betravon_L10=6/10
+
+NBA UTAH@DEN · Keyonte George
+  3PT O2.5  books=10  betravon_L10=3/10
+  AST O6.5  books=11  betravon_L10=8/10
+  PTS O21.5  books=11  betravon_L10=3/10
+  REB O3.5  books=11  betravon_L10=7/10
+
+NFL ARI@WSH · Harrison Wallace III
+  REC_YD O21.5  books=2  betravon_L10=0/0
+
+NFL ARI@WSH · Josh Johnson
+  PASS_YD O162.5  books=8  betravon_L10=0/1
+  RUSH_YD O13.5  books=9  betravon_L10=0/1
+
+NFL ARI@WSH · Simi Fehoko
+  REC O1.5  books=7  betravon_L10=0/9
+  REC_YD O19.5  books=8  betravon_L10=1/9
+
+NFL ARI@WSH · Trey McBride
+  REC O7.5  books=9  betravon_L10=5/10
+  REC_YD O59.5  books=9  betravon_L10=4/10
+
+NFL ARI@WSH · Tyler Allgeier
+  RUSH_YD O31.5  books=9  betravon_L10=4/10
+
+NFL ATL@MIN · Bijan Robinson
+  REC O2.5  books=10  betravon_L10=6/10
+  REC_YD O19.5  books=10  betravon_L10=4/10
+  RUSH_YD O75.5  books=11  betravon_L10=6/10
+
+NFL ATL@MIN · Drake London
+  REC O5.5  books=11  betravon_L10=4/10
+  REC_YD O67.5  books=12  betravon_L10=5/10
+
+NFL ATL@MIN · Michael Penix Jr.
+  PASS_YD O199.5  books=9  betravon_L10=6/8
+  RUSH_YD O7.5  books=10  betravon_L10=4/8
+
+NFL BAL@HOU · Derrick Henry
+  REC O1.5  books=5  betravon_L10=5/10
+  REC_YD O8.5  books=11  betravon_L10=4/10
+  RUSH_YD O69.5  books=11  betravon_L10=4/10
+
+NFL BAL@HOU · Ja'Kobi Lane
+  REC_YD O19.5  books=2  betravon_L10=3/7
+
+NFL BAL@HOU · Jacoby Brissett
+  PASS_YD O235.5  books=11  betravon_L10=6/10
+  RUSH_YD O3.5  books=12  betravon_L10=8/10
+
+NFL BAL@HOU · Mark Andrews
+  REC O2.5  books=1  betravon_L10=0/0
+  REC_YD O22.5  books=2  betravon_L10=7/10
+
+NFL BAL@HOU · Rashod Bateman
+  REC_YD O31.5  books=2  betravon_L10=7/10
+
+NFL BAL@HOU · Zay Flowers
+  REC O6.5  books=11  betravon_L10=4/10
+  REC_YD O74.5  books=12  betravon_L10=5/10
+
+NFL CAR@TB · Bryce Young
+  PASS_YD O233.5  books=9  betravon_L10=7/10
+  RUSH_YD O5.5  books=8  betravon_L10=5/10
+
+NFL CAR@TB · Chuba Hubbard
+  REC O2.5  books=8  betravon_L10=6/10
+  REC_YD O18.5  books=8  betravon_L10=5/10
+  RUSH_YD O63.5  books=9  betravon_L10=7/10
+
+NFL CAR@TB · Jalen Coker
+  REC O3.5  books=8  betravon_L10=5/9
+  REC_YD O44.5  books=8  betravon_L10=4/9
+
+NFL CAR@TB · Tommy Tremble
+  REC O2.5  books=8  betravon_L10=0/0
+  REC_YD O19.5  books=9  betravon_L10=0/0
+
+NFL CIN@NO · Chase Brown
+  REC O4.5  books=10  betravon_L10=5/10
+  REC_YD O25.5  books=11  betravon_L10=4/10
+  RUSH_YD O43.5  books=11  betravon_L10=6/10
+
+NFL CIN@NO · Ja'Marr Chase
+  REC O7.5  books=9  betravon_L10=4/10
+  REC_YD O91.5  books=9  betravon_L10=4/10
+
+NFL CIN@NO · Joe Burrow
+  PASS_YD O294.5  books=10  betravon_L10=4/10
+  RUSH_YD O6.5  books=11  betravon_L10=7/10
+
+NFL CIN@NO · Samaje Perine
+  RUSH_YD O28.5  books=1  betravon_L10=0/0
+
+NFL CIN@NO · Tee Higgins
+  REC O4.5  books=10  betravon_L10=7/10
+  REC_YD O68.5  books=11  betravon_L10=5/10
+
+NFL CLE@LV · Deshaun Watson
+  PASS_YD O224.5  books=8  betravon_L10=5/9
+  RUSH_YD O25.5  books=8  betravon_L10=5/9
+
+NFL CLE@LV · Dylan Sampson
+  REC O2.5  books=8  betravon_L10=4/4
+  REC_YD O21.5  books=8  betravon_L10=4/4
+  RUSH_YD O18.5  books=8  betravon_L10=2/4
+
+NFL CLE@LV · Quinshon Judkins
+  REC O1.5  books=8  betravon_L10=7/9
+  REC_YD O7.5  books=8  betravon_L10=7/9
+  RUSH_YD O56.5  books=9  betravon_L10=2/9
+
+NFL DEN@PIT · Bo Nix
+  PASS_YD O202.5  books=14  betravon_L10=6/10
+  RUSH_YD O10.5  books=15  betravon_L10=1/10
+
+NFL DEN@PIT · Courtland Sutton
+  REC O2.5  books=15  betravon_L10=5/10
+  REC_YD O26.5  books=15  betravon_L10=4/10
+
+NFL DEN@PIT · Evan Engram
+  REC O2.5  books=14  betravon_L10=4/10
+  REC_YD O22.5  books=14  betravon_L10=4/10
+
+NFL DEN@PIT · Jaylen Waddle
+  REC O3.5  books=15  betravon_L10=4/10
+  REC_YD O39.5  books=15  betravon_L10=3/10
+
+NFL DEN@PIT · Jonah Coleman
+  REC O3.5  books=14  betravon_L10=3/5
+  REC_YD O21.5  books=15  betravon_L10=2/5
+  RUSH_YD O73.5  books=15  betravon_L10=1/5
+
+NFL DEN@PIT · Pat Bryant
+  REC O2.5  books=14  betravon_L10=4/6
+  REC_YD O27.5  books=15  betravon_L10=5/6
+
+NFL HOU@BAL · C.J. Stroud
+  PASS_YD O258.5  books=10  betravon_L10=6/10
+  RUSH_YD O11.5  books=11  betravon_L10=6/10
+
+NFL HOU@BAL · David Montgomery
+  REC O1.5  books=11  betravon_L10=4/6
+  REC_YD O6.5  books=11  betravon_L10=5/6
+  RUSH_YD O45.5  books=11  betravon_L10=2/6
+
+NFL HOU@BAL · Nico Collins
+  REC O4.5  books=6  betravon_L10=4/8
+  REC_YD O58.5  books=6  betravon_L10=4/8
+
+NFL HOU@BAL · Tank Dell
+  REC O2.5  books=3  betravon_L10=0/0
+  REC_YD O35.5  books=5  betravon_L10=0/0
+
+NFL HOU@BAL · Woody Marks
+  REC O1.5  books=11  betravon_L10=3/9
+  REC_YD O8.5  books=11  betravon_L10=5/9
+  RUSH_YD O29.5  books=11  betravon_L10=6/9
+
+NFL IND@NYG · Anthony Gould
+  REC O1.5  books=11  betravon_L10=2/8
+  REC_YD O18.5  books=11  betravon_L10=2/8
+
+NFL IND@NYG · Anthony Richardson Sr.
+  PASS_YD O164.5  books=3  betravon_L10=0/0
+
+NFL IND@NYG · Jonathan Taylor
+  REC O2.5  books=11  betravon_L10=5/10
+  REC_YD O14.5  books=11  betravon_L10=7/10
+  RUSH_YD O69.5  books=12  betravon_L10=5/10
+
+NFL IND@NYG · Tyler Warren
+  REC O3.5  books=11  betravon_L10=6/9
+  REC_YD O29.5  books=12  betravon_L10=4/9
+
+NFL JAX@TEN · Brenton Strange
+  REC_YD O29.5  books=6  betravon_L10=5/10
+
+NFL JAX@TEN · Jakobi Meyers
+  REC O3.5  books=11  betravon_L10=4/10
+  REC_YD O49.5  books=11  betravon_L10=4/10
+
+NFL JAX@TEN · Trevor Lawrence
+  PASS_YD O199.5  books=4  betravon_L10=0/0
+  RUSH_YD O8.5  books=8  betravon_L10=5/10
+
+NFL LAC@NE · Kimani Vidal
+  RUSH_YD O19.5  books=8  betravon_L10=0/0
+
+NFL LAC@NE · Omarion Hampton
+  RUSH_YD O62.5  books=9  betravon_L10=3/10
+
+NFL LV@CLE · Ashton Jeanty
+  REC O3.5  books=8  betravon_L10=7/10
+  REC_YD O27.5  books=9  betravon_L10=8/10
+  RUSH_YD O39.5  books=9  betravon_L10=4/10
+
+NFL LV@CLE · Brock Bowers
+  REC O4.5  books=8  betravon_L10=6/8
+  REC_YD O59.5  books=9  betravon_L10=7/8
+
+NFL LV@CLE · Fernando Mendoza
+  PASS_YD O199.5  books=9  betravon_L10=1/5
+  RUSH_YD O14.5  books=8  betravon_L10=2/5
+
+NFL LV@CLE · Mike Washington Jr.
+  RUSH_YD O31.5  books=6  betravon_L10=0/0
+
+NFL LV@CLE · Tre Tucker
+  REC O2.5  books=8  betravon_L10=7/10
+  REC_YD O28.5  books=9  betravon_L10=8/10
+
+NFL MIA@NYJ · Caleb Douglas
+  REC O3.5  books=10  betravon_L10=3/7
+  REC_YD O44.5  books=11  betravon_L10=4/7
+
+NFL MIA@NYJ · Kyle McCord
+  PASS_YD O170.5  books=10  betravon_L10=1/2
+  RUSH_YD O7.5  books=11  betravon_L10=1/2
+
+NFL MIA@NYJ · Ollie Gordon II
+  REC O2.5  books=9  betravon_L10=2/10
+  REC_YD O10.5  books=10  betravon_L10=2/10
+  RUSH_YD O66.5  books=10  betravon_L10=6/10
+
+NFL MIN@ATL · Aaron Jones Sr.
+  REC O1.5  books=2  betravon_L10=4/10
+  REC_YD O7.5  books=2  betravon_L10=5/10
+  RUSH_YD O37.5  books=2  betravon_L10=6/10
+
+NFL MIN@ATL · Jauan Jennings
+  REC O2.5  books=11  betravon_L10=1/7
+  REC_YD O28.5  books=11  betravon_L10=1/7
+
+NFL MIN@ATL · Jordan Mason
+  RUSH_YD O55.5  books=10  betravon_L10=3/6
+
+NFL MIN@ATL · Justin Jefferson
+  REC O6.5  books=10  betravon_L10=3/9
+  REC_YD O85.5  books=12  betravon_L10=2/9
+
+NFL MIN@ATL · Kirk Cousins
+  PASS_YD O249.5  books=10  betravon_L10=4/10
+  RUSH_YD O0.5  books=5  betravon_L10=5/10
+
+NFL MIN@ATL · T.J. Hockenson
+  REC O4.5  books=13  betravon_L10=2/9
+  REC_YD O45.5  books=14  betravon_L10=3/9
+
+NFL MIN@ATL · Tai Felton
+  REC O2.5  books=10  betravon_L10=2/10
+  REC_YD O20.5  books=10  betravon_L10=3/10
+
+NFL NE@LAC · Corey Kiner
+  RUSH_YD O29.5  books=2  betravon_L10=4/10
+
+NFL NE@LAC · DeMario Douglas
+  REC O2.5  books=8  betravon_L10=6/10
+  REC_YD O25.5  books=9  betravon_L10=5/10
+
+NFL NE@LAC · Hunter Henry
+  REC_YD O22.5  books=2  betravon_L10=0/0
+
+NFL NE@LAC · Mack Hollins
+  REC O2.5  books=9  betravon_L10=5/6
+  REC_YD O24.5  books=11  betravon_L10=5/6
+
+NFL NE@LAC · Rhamondre Stevenson
+  REC O2.5  books=8  betravon_L10=7/10
+  REC_YD O14.5  books=9  betravon_L10=6/10
+  RUSH_YD O52.5  books=9  betravon_L10=2/10
+
+NFL NE@LAC · Tommy DeVito
+  PASS_YD O176.5  books=9  betravon_L10=0/4
+  RUSH_YD O19.5  books=7  betravon_L10=0/4
+
+NFL NO@CIN · Chris Olave
+  REC O5.5  books=9  betravon_L10=7/10
+  REC_YD O70.5  books=10  betravon_L10=6/10
+
+NFL NO@CIN · Devaughn Vele
+  REC O3.5  books=11  betravon_L10=6/10
+  REC_YD O30.5  books=11  betravon_L10=7/10
+
+NFL NO@CIN · Jordyn Tyson
+  REC O4.5  books=10  betravon_L10=1/3
+  REC_YD O42.5  books=11  betravon_L10=1/3
+
+NFL NO@CIN · Travis Etienne Jr.
+  REC O2.5  books=8  betravon_L10=2/5
+  REC_YD O12.5  books=8  betravon_L10=3/5
+  RUSH_YD O48.5  books=10  betravon_L10=2/5
+
+NFL NO@CIN · Tyler Shough
+  PASS_YD O242.5  books=10  betravon_L10=6/10
+  RUSH_YD O19.5  books=11  betravon_L10=6/10
+
+NFL NYG@IND · Isaiah Likely
+  REC O4.5  books=11  betravon_L10=7/10
+  REC_YD O49.5  books=11  betravon_L10=6/10
+
+NFL NYG@IND · J.J. McCarthy
+  PASS_YD O199.5  books=10  betravon_L10=3/6
+  RUSH_YD O17.5  books=11  betravon_L10=4/6
+
+NFL NYG@IND · Malik Nabers
+  REC O5.5  books=8  betravon_L10=6/10
+  REC_YD O63.5  books=8  betravon_L10=5/10
+
+NFL NYJ@MIA · Braelon Allen
+  RUSH_YD O39.5  books=2  betravon_L10=7/10
+
+NFL NYJ@MIA · Breece Hall
+  REC O2.5  books=10  betravon_L10=5/6
+  REC_YD O19.5  books=11  betravon_L10=4/6
+  RUSH_YD O59.5  books=11  betravon_L10=3/6
+
+NFL NYJ@MIA · Garrett Wilson
+  REC O4.5  books=10  betravon_L10=6/10
+  REC_YD O52.5  books=10  betravon_L10=6/10
+
+NFL NYJ@MIA · Geno Smith
+  PASS_YD O202.5  books=2  betravon_L10=5/10
+  RUSH_YD O3.5  books=4  betravon_L10=6/10
+
+NFL PIT@DEN · Aaron Rodgers
+  PASS_YD O199.5  books=11  betravon_L10=7/10
+  RUSH_YD O0.5  books=4  betravon_L10=5/10
+
+NFL PIT@DEN · DK Metcalf
+  REC O2.5  books=15  betravon_L10=6/10
+  REC_YD O27.5  books=15  betravon_L10=6/10
+
+NFL PIT@DEN · Darnell Washington
+  REC O1.5  books=14  betravon_L10=7/10
+  REC_YD O16.5  books=14  betravon_L10=6/10
+
+NFL PIT@DEN · Germie Bernard
+  REC O2.5  books=15  betravon_L10=6/10
+  REC_YD O22.5  books=15  betravon_L10=6/10
+
+NFL PIT@DEN · Jaylen Warren
+  REC O2.5  books=14  betravon_L10=6/10
+  REC_YD O18.5  books=15  betravon_L10=8/10
+  RUSH_YD O62.5  books=15  betravon_L10=5/10
+
+NFL PIT@DEN · Mason Rudolph
+  PASS_YD O174.5  books=14  betravon_L10=0/6
+  RUSH_YD O6.5  books=4  betravon_L10=1/6
+
+NFL PIT@DEN · Pat Freiermuth
+  REC O2.5  books=14  betravon_L10=5/10
+  REC_YD O20.5  books=14  betravon_L10=7/10
+
+NFL PIT@DEN · Rico Dowdle
+  REC O1.5  books=13  betravon_L10=6/7
+  REC_YD O8.5  books=13  betravon_L10=4/7
+  RUSH_YD O31.5  books=14  betravon_L10=3/7
+
+NFL PIT@DEN · Roman Wilson
+  REC O1.5  books=13  betravon_L10=5/6
+  REC_YD O12.5  books=13  betravon_L10=5/6
+
+NFL SEA@SF · AJ Barner
+  REC O2.5  books=4  betravon_L10=5/10
+  REC_YD O22.5  books=11  betravon_L10=3/10
+
+NFL SEA@SF · Jadarian Price
+  REC O1.5  books=9  betravon_L10=3/7
+  REC_YD O9.5  books=10  betravon_L10=1/7
+  RUSH_YD O25.5  books=10  betravon_L10=4/7
+
+NFL SEA@SF · Jaxon Smith-Njigba
+  REC O7.5  books=2  betravon_L10=6/10
+  REC_YD O99.5  books=3  betravon_L10=8/10
+
+NFL SEA@SF · Rashid Shaheed
+  REC O1.5  books=2  betravon_L10=5/8
+  REC_YD O17.5  books=2  betravon_L10=4/8
+
+NFL SEA@SF · Sam Darnold
+  PASS_YD O218.5  books=8  betravon_L10=3/7
+  RUSH_YD O4.5  books=9  betravon_L10=6/7
+
+NFL SEA@SF · Zach Charbonnet
+  REC O1.5  books=9  betravon_L10=1/3
+  REC_YD O8.5  books=10  betravon_L10=1/3
+  RUSH_YD O58.5  books=11  betravon_L10=2/3
+
+NFL SF@SEA · Brock Purdy
+  PASS_YD O224.5  books=7  betravon_L10=7/10
+
+NFL SF@SEA · Christian McCaffrey
+  REC O3.5  books=9  betravon_L10=6/10
+  REC_YD O29.5  books=9  betravon_L10=5/10
+  RUSH_YD O53.5  books=10  betravon_L10=6/10
+
+NFL SF@SEA · Deebo Samuel Sr.
+  REC O2.5  books=1  betravon_L10=5/7
+  REC_YD O21.5  books=1  betravon_L10=5/7
+
+NFL SF@SEA · George Kittle
+  REC O4.5  books=10  betravon_L10=5/10
+  REC_YD O46.5  books=10  betravon_L10=7/10
+
+NFL SF@SEA · Kaelon Black
+  RUSH_YD O20.5  books=2  betravon_L10=6/10
+
+NFL SF@SEA · Mike Evans
+  REC O4.5  books=8  betravon_L10=4/7
+  REC_YD O57.5  books=8  betravon_L10=4/7
+
+NFL TB@CAR · Baker Mayfield
+  PASS_YD O201.5  books=9  betravon_L10=3/7
+  RUSH_YD O15.5  books=8  betravon_L10=3/7
+
+NFL TB@CAR · Bucky Irving
+  REC O2.5  books=9  betravon_L10=4/10
+  REC_YD O17.5  books=8  betravon_L10=3/10
+  RUSH_YD O81.5  books=3  betravon_L10=5/10
+
+NFL TB@CAR · Cade Otton
+  REC O2.5  books=3  betravon_L10=6/10
+  REC_YD O29.5  books=4  betravon_L10=3/10
+
+NFL TB@CAR · Emeka Egbuka
+  REC O3.5  books=7  betravon_L10=4/8
+  REC_YD O35.5  books=7  betravon_L10=5/8
+
+NFL TEN@JAX · Carnell Tate
+  REC O4.5  books=10  betravon_L10=4/8
+  REC_YD O52.5  books=11  betravon_L10=5/8
+
+NFL TEN@JAX · Elic Ayomanor
+  REC O2.5  books=10  betravon_L10=4/10
+  REC_YD O25.5  books=11  betravon_L10=5/10
+
+NFL TEN@JAX · Gunnar Helm
+  REC O3.5  books=10  betravon_L10=3/10
+  REC_YD O21.5  books=10  betravon_L10=4/10
+
+NFL TEN@JAX · Tony Pollard
+  REC O2.5  books=10  betravon_L10=4/10
+  REC_YD O14.5  books=10  betravon_L10=4/10
+  RUSH_YD O55.5  books=11  betravon_L10=6/10
+
+NFL WSH@ARI · Antonio Williams
+  REC O3.5  books=9  betravon_L10=3/10
+  REC_YD O39.5  books=9  betravon_L10=5/10
+
+NFL WSH@ARI · Austin Ekeler
+  RUSH_YD O23.5  books=2  betravon_L10=3/6
+
+NFL WSH@ARI · Jacory Croskey-Merritt
+  RUSH_YD O53.5  books=9  betravon_L10=0/0
+
+NFL WSH@ARI · Jayden Daniels
+  PASS_YD O224.5  books=10  betravon_L10=4/8
+  RUSH_YD O31.5  books=10  betravon_L10=3/8
+
+NFL WSH@ARI · Stefon Diggs
+  REC O4.5  books=10  betravon_L10=4/9
+  REC_YD O43.5  books=10  betravon_L10=6/9
+
+NHL ANA@LA · Beckett Sennecke
+  SOG O2.5  books=9  betravon_L10=4/10
+
+NHL ANA@LA · Cutter Gauthier
+  SOG O4.5  books=9  betravon_L10=4/10
+
+NHL ANA@LA · Jackson LaCombe
+  SOG O1.5  books=2  betravon_L10=4/10
+
+NHL ANA@LA · Mikael Granlund
+  SOG O2.5  books=9  betravon_L10=7/10
+
+NHL BOS@TOR · Charlie McAvoy
+  SOG O1.5  books=3  betravon_L10=3/10
+
+NHL BOS@TOR · David Pastrnak
+  SOG O3.5  books=9  betravon_L10=7/10
+
+NHL BOS@TOR · Elias Lindholm
+  SOG O2.5  books=10  betravon_L10=4/10
+
+NHL BOS@TOR · Morgan Geekie
+  SOG O2.5  books=10  betravon_L10=4/10
+
+NHL BUF@PIT · Jack Quinn
+  SOG O2.5  books=3  betravon_L10=7/10
+
+NHL BUF@PIT · Rasmus Dahlin
+  SOG O2.5  books=3  betravon_L10=4/10
+
+NHL BUF@PIT · Tage Thompson
+  SOG O3.5  books=7  betravon_L10=4/10
+
+NHL BUF@PIT · Zach Benson
+  SOG O2.5  books=3  betravon_L10=5/10
+
+NHL CBJ@DET · Adam Fantilli
+  SOG O2.5  books=10  betravon_L10=5/10
+
+NHL CBJ@DET · Kent Johnson
+  SOG O2.5  books=10  betravon_L10=6/10
+
+NHL CBJ@DET · Zach Werenski
+  SOG O3.5  books=10  betravon_L10=6/10
+
+NHL CGY@NJ · Joel Farabee
+  SOG O1.5  books=10  betravon_L10=8/10
+
+NHL CGY@NJ · Matt Coronato
+  SOG O2.5  books=10  betravon_L10=5/10
+
+NHL CGY@NJ · Matvei Gridin
+  SOG O1.5  books=10  betravon_L10=5/10
+
+NHL CHI@NYR · Anton Frondell
+  SOG O2.5  books=7  betravon_L10=0/10
+
+NHL CHI@NYR · Frank Nazar
+  SOG O2.5  books=8  betravon_L10=5/10
+
+NHL CHI@NYR · Patrick Kane
+  SOG O2.5  books=8  betravon_L10=4/10
+
+NHL CHI@NYR · Roman Kantserov
+  SOG O1.5  books=8  betravon_L10=7/10
+
+NHL COL@MIN · Artturi Lehkonen
+  SOG O2.5  books=7  betravon_L10=3/10
+
+NHL COL@MIN · Cale Makar
+  SOG O2.5  books=7  betravon_L10=4/10
+
+NHL COL@MIN · Martin Necas
+  SOG O2.5  books=8  betravon_L10=4/10
+
+NHL COL@MIN · Nazem Kadri
+  SOG O2.5  books=8  betravon_L10=6/10
+
+NHL DAL@STL · Jason Robertson
+  SOG O3.5  books=10  betravon_L10=3/10
+
+NHL DAL@STL · Mikko Rantanen
+  SOG O1.5  books=10  betravon_L10=5/10
+
+NHL DAL@STL · Roope Hintz
+  SOG O1.5  books=9  betravon_L10=6/10
+
+NHL DAL@STL · Wyatt Johnston
+  SOG O2.5  books=10  betravon_L10=6/10
+
+NHL DET@CBJ · Alex DeBrincat
+  SOG O3.5  books=10  betravon_L10=5/10
+
+NHL DET@CBJ · Emmitt Finnie
+  SOG O1.5  books=10  betravon_L10=7/10
+
+NHL DET@CBJ · Lucas Raymond
+  SOG O2.5  books=10  betravon_L10=4/10
+
+NHL DET@CBJ · Viktor Arvidsson
+  SOG O2.5  books=8  betravon_L10=5/10
+
+NHL EDM@SEA · Connor McDavid
+  SOG O3.5  books=8  betravon_L10=3/10
+
+NHL EDM@SEA · Evan Bouchard
+  SOG O2.5  books=8  betravon_L10=3/10
+
+NHL EDM@SEA · Leon Draisaitl
+  SOG O3.5  books=8  betravon_L10=6/10
+
+NHL FLA@WSH · Aleksander Barkov
+  SOG O1.5  books=10  betravon_L10=1/3
+
+NHL FLA@WSH · Brady Tkachuk
+  SOG O2.5  books=10  betravon_L10=7/10
+
+NHL FLA@WSH · Carter Verhaeghe
+  SOG O2.5  books=9  betravon_L10=4/10
+
+NHL FLA@WSH · Matthew Tkachuk
+  SOG O2.5  books=10  betravon_L10=7/10
+
+NHL FLA@WSH · Sam Reinhart
+  SOG O2.5  books=10  betravon_L10=6/10
+
+NHL LA@ANA · Adrian Kempe
+  SOG O2.5  books=9  betravon_L10=6/10
+
+NHL LA@ANA · Alex Laferriere
+  SOG O2.5  books=9  betravon_L10=7/10
+
+NHL LA@ANA · Artemi Panarin
+  SOG O2.5  books=9  betravon_L10=8/10
+
+NHL LA@ANA · Brandt Clarke
+  SOG O1.5  books=2  betravon_L10=4/10
+
+NHL LA@ANA · Quinton Byfield
+  SOG O2.5  books=8  betravon_L10=4/10
+
+NHL MIN@COL · Joel Eriksson Ek
+  SOG O2.5  books=8  betravon_L10=5/10
+
+NHL MIN@COL · Kirill Kaprizov
+  SOG O3.5  books=8  betravon_L10=2/10
+
+NHL MIN@COL · Matt Boldy
+  SOG O3.5  books=8  betravon_L10=3/10
+
+NHL NJ@CGY · Jack Hughes
+  SOG O3.5  books=10  betravon_L10=0/0
+
+NHL NJ@CGY · Jesper Bratt
+  SOG O2.5  books=10  betravon_L10=3/10
+
+NHL NJ@CGY · Nico Hischier
+  SOG O2.5  books=10  betravon_L10=2/10
+
+NHL NJ@CGY · Timo Meier
+  SOG O3.5  books=9  betravon_L10=5/10
+
+NHL NSH@UTA · Filip Forsberg
+  SOG O2.5  books=10  betravon_L10=7/10
+
+NHL NSH@UTA · Roman Josi
+  SOG O2.5  books=8  betravon_L10=6/10
+
+NHL NSH@UTA · Ryan O'Reilly
+  SOG O1.5  books=11  betravon_L10=0/0
+
+NHL NSH@UTA · Steven Stamkos
+  SOG O2.5  books=11  betravon_L10=4/10
+
+NHL NYI@WPG · Mathew Barzal
+  SOG O2.5  books=8  betravon_L10=3/6
+
+NHL NYI@WPG · Matthew Schaefer
+  SOG O3.5  books=8  betravon_L10=0/0
+
+NHL NYI@WPG · Victor Eklund
+  SOG O1.5  books=8  betravon_L10=0/0
+
+NHL NYR@CHI · Alexis Lafreniere
+  SOG O2.5  books=8  betravon_L10=3/10
+
+NHL NYR@CHI · J.T. Miller
+  SOG O2.5  books=8  betravon_L10=4/10
+
+NHL NYR@CHI · Mika Zibanejad
+  SOG O2.5  books=8  betravon_L10=3/10
+
+NHL NYR@CHI · Will Cuylle
+  SOG O2.5  books=7  betravon_L10=3/10
+
+NHL OTT@TB · Drake Batherson
+  SOG O1.5  books=10  betravon_L10=4/10
+
+NHL OTT@TB · Dylan Cozens
+  SOG O1.5  books=10  betravon_L10=7/10
+
+NHL OTT@TB · Jake Sanderson
+  SOG O1.5  books=8  betravon_L10=5/10
+
+NHL OTT@TB · Shane Pinto
+  SOG O1.5  books=10  betravon_L10=7/10
+
+NHL OTT@TB · Tim Stutzle
+  SOG O2.5  books=2  betravon_L10=4/10
+
+NHL PHI@VAN · Matvei Michkov
+  SOG O1.5  books=10  betravon_L10=3/10
+
+NHL PHI@VAN · Owen Tippett
+  SOG O2.5  books=9  betravon_L10=5/10
+
+NHL PHI@VAN · Travis Konecny
+  SOG O2.5  books=10  betravon_L10=4/10
+
+NHL PHI@VAN · Trevor Zegras
+  SOG O1.5  books=10  betravon_L10=4/10
+
+NHL PHI@VAN · Tyson Foerster
+  SOG O1.5  books=10  betravon_L10=5/10
+
+NHL PIT@BUF · Evgeni Malkin
+  SOG O1.5  books=8  betravon_L10=4/10
+
+NHL PIT@BUF · Rickard Rakell
+  SOG O2.5  books=8  betravon_L10=7/10
+
+NHL PIT@BUF · Sidney Crosby
+  SOG O2.5  books=8  betravon_L10=3/10
+
+NHL SEA@EDM · Bobby McMann
+  SOG O2.5  books=8  betravon_L10=5/10
+
+NHL SEA@EDM · Jordan Eberle
+  SOG O1.5  books=8  betravon_L10=5/10
+
+NHL SEA@EDM · Matty Beniers
+  SOG O1.5  books=8  betravon_L10=5/10
+
+NHL SJ@VGK · Ivar Stenberg
+  SOG O1.5  books=9  betravon_L10=5/10
+
+NHL SJ@VGK · Macklin Celebrini
+  SOG O3.5  books=9  betravon_L10=6/10
+
+NHL SJ@VGK · Will Smith
+  SOG O2.5  books=9  betravon_L10=4/10
+
+NHL STL@DAL · Dylan Holloway
+  SOG O2.5  books=10  betravon_L10=4/10
+
+NHL STL@DAL · Mason McTavish
+  SOG O2.5  books=10  betravon_L10=3/10
+
+NHL STL@DAL · Robert Thomas
+  SOG O1.5  books=10  betravon_L10=7/10
+
+NHL TB@OTT · Brandon Hagel
+  SOG O2.5  books=10  betravon_L10=8/10
+
+NHL TB@OTT · Brayden Point
+  SOG O2.5  books=9  betravon_L10=5/10
+
+NHL TB@OTT · Jake Guentzel
+  SOG O2.5  books=10  betravon_L10=4/10
+
+NHL TB@OTT · Nikita Kucherov
+  SOG O2.5  books=10  betravon_L10=7/10
+
+NHL TOR@BOS · Auston Matthews
+  SOG O3.5  books=10  betravon_L10=6/10
+
+NHL TOR@BOS · Darren Raddysh
+  SOG O2.5  books=10  betravon_L10=5/10
+
+NHL TOR@BOS · John Tavares
+  SOG O2.5  books=10  betravon_L10=4/10
+
+NHL TOR@BOS · William Nylander
+  SOG O2.5  books=8  betravon_L10=3/10
+
+NHL UTA@NSH · Clayton Keller
+  SOG O2.5  books=11  betravon_L10=4/10
+
+NHL UTA@NSH · Dylan Guenther
+  SOG O2.5  books=11  betravon_L10=5/10
+
+NHL UTA@NSH · Logan Cooley
+  SOG O2.5  books=11  betravon_L10=4/10
+
+NHL VAN@PHI · Brock Boeser
+  SOG O1.5  books=10  betravon_L10=6/10
+
+NHL VAN@PHI · Filip Chytil
+  SOG O2.5  books=9  betravon_L10=4/10
+
+NHL VAN@PHI · Jake DeBrusk
+  SOG O2.5  books=10  betravon_L10=4/10
+
+NHL VAN@PHI · Jonathan Lekkerimäki
+  SOG O1.5  books=10  betravon_L10=5/10
+
+NHL VGK@SJ · Jack Eichel
+  SOG O3.5  books=9  betravon_L10=6/10
+
+NHL VGK@SJ · Mark Stone
+  SOG O2.5  books=8  betravon_L10=2/10
+
+NHL VGK@SJ · Tomas Hertl
+  SOG O2.5  books=9  betravon_L10=6/10
+
+NHL WPG@NYI · Gabriel Vilardi
+  SOG O2.5  books=8  betravon_L10=5/10
+
+NHL WPG@NYI · Kyle Connor
+  SOG O3.5  books=8  betravon_L10=5/10
+
+NHL WPG@NYI · Mark Scheifele
+  SOG O2.5  books=8  betravon_L10=3/10
+
+NHL WSH@FLA · Alex Tuch
+  SOG O2.5  books=10  betravon_L10=5/10
+
+NHL WSH@FLA · Dylan Strome
+  SOG O1.5  books=10  betravon_L10=5/10
+
+NHL WSH@FLA · Jakob Chychrun
+  SOG O2.5  books=9  betravon_L10=5/10
+
+NHL WSH@FLA · Pierre-Luc Dubois
+  SOG O1.5  books=10  betravon_L10=7/10
+
+NHL WSH@FLA · Tom Wilson
+  SOG O1.5  books=10  betravon_L10=5/10

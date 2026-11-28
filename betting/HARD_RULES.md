@@ -11,14 +11,34 @@ If those files are missing, any claim that a gate exists is false.
 
 ## Daily run order
 1. Identify every sport with games today (NBA, NFL, NHL, MLB, WNBA, NCAAF, soccer if posted).
-2. For each sport, exhaustive boards with **sport-specific** grading.
-3. **Regular season only for L10/L5 — never mix preseason into hit rates.**
-4. Main-first + ladders; HR playable only (no PP soft ghosts).
-5. Role-aware stitch; when unsure → CUR_ONLY.
-6. Separated lists by sport first; then mix if asked.
+2. **Venue + weather** — `python3 betting/pull_game_conditions.py` (mandatory). BY GAME states venue/city/indoor-outdoor/home-away. Outdoor NFL/NCAAF include temp · gust · precip% · condition.
+3. For each sport, exhaustive boards with **sport-specific** grading.
+4. **Regular season only for L10/L5 — never mix preseason into hit rates.**
+5. Main-first + ladders; HR playable only (no PP soft ghosts).
+6. Role-aware stitch; when unsure → CUR_ONLY.
+7. Separated lists by sport first; then mix if asked.
+
+## Locked 2026-11-26 — venue + weather always (user catch)
+**Incident:** TNF KC@BUF card/slip weed published on L7 hit rates only. Highmark was outdoor rain/~35°F/gust~27/precip~83%. Pass/rec overs (Allen/Shakir/Rice) were left RISK-KEEP until user asked about weather. Unacceptable.
+### Rules
+1. **Every run and every slip weed** must include location (venue · city · home/away/neutral · indoor/outdoor).
+2. **Outdoor NFL/NCAAF** must pull live weather before SAFE/PRIMARY/weed labels. Artifact: `betting/game-conditions-YYYYMMDD.json` via `pull_game_conditions.py`.
+3. **Pass-hostile** = temp≤40°F OR precip%≥40 OR gust≥20 OR rain/snow display → demote QB pass / WR-TE rec overs; prefer RB rush, game Under, soft sides/alts.
+4. Domed/indoor games: still print venue + indoor=yes (weather N/A).
+5. NBA/NHL: venue + home/away still required on BY GAME; weather only if outdoor event (rare).
+6. Completion block must include `game_conditions: PASS|FAIL|N/A`.
+
+## Locked 2026-11-26/27 — TNF kill + false KEEP scrub (user: "we have been making mistakes")
+**Incident:** Blessed TNF 6-leg kept **Allen O208.5 / Rice O44.5** as RISK-KEEP off L7 only. Weather was pass-hostile; Allen **70**, Rice **19**. Cook rush + Bills + TTU + Under was the weather-fit ticket — agent only said Under after user asked. Same night/next card: **Reaves** graded form KEEP while ESPN **Out**, and CLEAN SLIP auto-promoted **Portis O0.5 3PT** + **Daniels O1.5 STL** (binary) as slip identity.
+### Rules
+1. **Weather before weed labels on outdoor football.** Pass-hostile → CUT pass/rec overs from blessed slips; do not leave RISK-KEEP "for volume." Rebuild Under/rush/side first, then ask.
+2. **Posted/form KEEP ≠ SAFE.** `grade_posted_card.py` must scrub: OUT/GTD → BAN; binary (STL/BLK/O0.5 3PT) → add-only; cush_min&lt;1 → KEEP_HOOK (PRIMARY max, not SAFE spine).
+3. **CLEAN SLIP never includes OUT, GTD, or binary spines.** Prefer ACTIVE counting clears with cush≥1; if slate has none, say so and use weather sides / RISK-KEEP — do not invent SAFE from binaries.
+4. **OUT/GTD confirm on every KEEP name before tip** (Reaves class). Status Out with fantasy GTD still = BAN until ACTIVE.
+5. **Hook clears (cush_min&lt;1) are not SAFE3 identity** even at 7/7 — Edgecombe O3.5 / Davion O13.5 class = PRIMARY unless OUT-driven usage + explicit hook warning.
 
 ## Locked — NFL ≠ NBA grading
-- NFL: MATCHUP → script → role → then L10. Never L10-first.
+- NFL: MATCHUP → **venue/weather** → script → role → then L10. Never L10-first.
 - Do not lead with juice ghosts (Young 189.5 class). Soft alt missing → climb to posted line and re-grade.
 - Mix parlays stay on. Do not nuke mix because one NFL spine was dumb.
 - Kill-class: QB pass OVER as floor; juiced NBA PTS above real floor; Kap-class O2.5 SOG as spine.
