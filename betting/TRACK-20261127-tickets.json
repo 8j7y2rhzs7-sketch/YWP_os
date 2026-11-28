@@ -2,7 +2,7 @@
   "date": "20261127",
   "tz": "America/New_York",
   "created_et": "2026-11-27T12:40:00-05:00",
-  "status": "OPEN",
+  "status": "DONE",
   "tickets": [
     {
       "id": "A_MAIN7",
@@ -25,8 +25,8 @@
             "garbage TDs late",
             "weather clears and pass game opens"
           ],
-          "result": "PENDING",
-          "actual": "15:00 - 2nd Quarter"
+          "result": "HIT",
+          "actual": "total=32 vs U37.5"
         },
         {
           "id": "A2",
@@ -40,8 +40,8 @@
             "turnover script",
             "correlated with Under if PIT wins low"
           ],
-          "result": "PENDING",
-          "actual": "15:00 - 2nd Quarter",
+          "result": "MISS",
+          "actual": "DEN lose 5",
           "event_id": "401873083"
         },
         {
@@ -58,8 +58,8 @@
             "DEN blowout negative script",
             "pass-heavy PIT if weather better"
           ],
-          "result": "PENDING",
-          "actual": "15:00 - 2nd Quarter",
+          "result": "HIT",
+          "actual": "46.0 rush yds (need >40.5)",
           "event_id": "401873083"
         },
         {
@@ -96,8 +96,8 @@
             "0-1 SOG night",
             "D pair limited TOI"
           ],
-          "result": "PENDING",
-          "actual": "game not final",
+          "result": "HIT",
+          "actual": "3.0 SOG (need >1.5)",
           "event_id": "401892802"
         },
         {
@@ -151,7 +151,7 @@
         "most_likely_sole_killer": "Deni O1.5 3PT",
         "cash_path": "SOG floors + Nembhard + weather Under hold; Deni is the variance spike"
       },
-      "status": "OPEN"
+      "status": "LOST"
     },
     {
       "id": "B_NCAAM4",
@@ -176,8 +176,8 @@
             "neutral-site variance",
             "cover fail 1-possession"
           ],
-          "result": "PENDING",
-          "actual": "6:43 - 1st Half"
+          "result": "MISS",
+          "actual": "BAY 69-88 margin=-19"
         },
         {
           "id": "B2",
@@ -244,8 +244,8 @@
         "most_likely_sole_killer": "BAY -3.5 cover (softest HR number still cover risk)",
         "cash_path": "TTU wins outright + two of three soft spreads cover"
       },
-      "status": "OPEN"
+      "status": "LOST"
     }
   ],
-  "last_settled_et": "2026-11-27T15:41:23.987443-05:00"
+  "last_settled_et": "2026-11-27T19:40:53.559428-05:00"
 }

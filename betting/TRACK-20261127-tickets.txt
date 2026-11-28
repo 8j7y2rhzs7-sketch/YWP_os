@@ -1,17 +1,17 @@
-TRACK SETTLE 20261127 @ 2026-11-27T15:41:23.987443-05:00
-overall=OPEN
+TRACK SETTLE 20261127 @ 2026-11-27T19:40:53.559428-05:00
+overall=DONE
 
-=== A_MAIN7 Main LIST2 SGPMAX7 → OPEN ===
-  PENDING Under 37.5  | 15:00 - 2nd Quarter
-  PENDING DEN ML  | 15:00 - 2nd Quarter
-  PENDING Jaylen Warren O40.5 rush  | 15:00 - 2nd Quarter
+=== A_MAIN7 Main LIST2 SGPMAX7 → LOST ===
+  HIT     Under 37.5  | total=32 vs U37.5
+  MISS    DEN ML  | DEN lose 5
+  HIT     Jaylen Warren O40.5 rush  | 46.0 rush yds (need >40.5)
   HIT     Timo Meier O1.5 SOG  | 5.0 SOG (need >1.5)
-  PENDING Zach Werenski O1.5 SOG  | game not final
+  HIT     Zach Werenski O1.5 SOG  | 3.0 SOG (need >1.5)
   PENDING Andrew Nembhard O4.5 AST  | game not final
   PENDING Deni Avdija O1.5 3PT  | game not final
 
-=== B_NCAAM4 NCAAM PRIMARY4 → OPEN ===
-  PENDING BAY -3.5  | 6:43 - 1st Half
+=== B_NCAAM4 NCAAM PRIMARY4 → LOST ===
+  MISS    BAY -3.5  | BAY 69-88 margin=-19
   PENDING UK -4.5  | Fri, November 27th at 9:00 PM EST
   PENDING TTU ML  | Fri, November 27th at 11:30 PM EST
   PENDING GONZ -5.5  | Fri, November 27th at 11:00 PM EST
