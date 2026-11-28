@@ -1,4 +1,4 @@
-TRACK SETTLE 20261127 @ 2026-11-27T19:40:53.559428-05:00
+TRACK SETTLE 20261127 @ 2026-11-28T02:40:56.797794-05:00
 overall=DONE
 
 === A_MAIN7 Main LIST2 SGPMAX7 → LOST ===
@@ -7,11 +7,11 @@ overall=DONE
   HIT     Jaylen Warren O40.5 rush  | 46.0 rush yds (need >40.5)
   HIT     Timo Meier O1.5 SOG  | 5.0 SOG (need >1.5)
   HIT     Zach Werenski O1.5 SOG  | 3.0 SOG (need >1.5)
-  PENDING Andrew Nembhard O4.5 AST  | game not final
-  PENDING Deni Avdija O1.5 3PT  | game not final
+  MISS    Andrew Nembhard O4.5 AST  | 3.0 (need >4.5) min=26
+  MISS    Deni Avdija O1.5 3PT  | 0.0 (need >1.5) min=37
 
 === B_NCAAM4 NCAAM PRIMARY4 → LOST ===
   MISS    BAY -3.5  | BAY 69-88 margin=-19
-  PENDING UK -4.5  | Fri, November 27th at 9:00 PM EST
-  PENDING TTU ML  | Fri, November 27th at 11:30 PM EST
-  PENDING GONZ -5.5  | Fri, November 27th at 11:00 PM EST
+  MISS    UK -4.5  | UK 71-73 margin=-2
+  HIT     TTU ML  | TTU win 78
+  MISS    GONZ -5.5  | GONZ 89-97 margin=-8
